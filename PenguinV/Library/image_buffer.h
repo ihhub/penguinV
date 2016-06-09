@@ -15,9 +15,9 @@ namespace Template_Image
 			: _width     (0) // width of image
 			, _height    (0) // height of image
 			, _colorCount(1) // number of colors per pixel
-			, _rowSize   (0) // size of single row on image, usually it is equal to width
 			, _alignment (1) // some formats require that row size must be a multiple of some value (alignment)
 							 // for example for Bitmap it must be a multiple of 4
+			, _rowSize   (0) // size of single row on image, usually it is equal to width
 		{
 			_data = nullptr; // an array what store image information (pixel data)
 		}
@@ -26,8 +26,8 @@ namespace Template_Image
 			: _width     (0)
 			, _height    (0)
 			, _colorCount(1)
-			, _rowSize   (0)
 			, _alignment (1)
+			, _rowSize   (0)
 		{
 			_data = nullptr;
 			
@@ -38,8 +38,8 @@ namespace Template_Image
 			: _width     (0)
 			, _height    (0)
 			, _colorCount(1)
-			, _rowSize   (0)
 			, _alignment (1)
+			, _rowSize   (0)
 		{
 			_data = nullptr;
 			
@@ -51,8 +51,8 @@ namespace Template_Image
 			: _width     (0)
 			, _height    (0)
 			, _colorCount(1)
-			, _rowSize   (0)
 			, _alignment (1)
+			, _rowSize   (0)
 		{
 			_data = nullptr;
 
