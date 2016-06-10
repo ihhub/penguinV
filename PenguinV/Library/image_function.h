@@ -29,14 +29,14 @@ namespace Image_Function
 	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  uint32_t width, uint32_t height );
 	void  BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );	
+					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
 	Image BitwiseOr( const Image & in1, const Image & in2 );
 	void  BitwiseOr( const Image & in1, const Image & in2, Image & out );
 	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 uint32_t width, uint32_t height );
 	void  BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );	
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
 	Image BitwiseXor( const Image & in1, const Image & in2 );
 	void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
@@ -55,7 +55,7 @@ namespace Image_Function
 	void  Copy( const Image & in, Image & out );
 	Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 	void  Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-				uint32_t width, uint32_t height );	
+				uint32_t width, uint32_t height );
 
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y );
 	void    SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
@@ -81,4 +81,11 @@ namespace Image_Function
 	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
 	void                     Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
 										std::vector < uint32_t > & histogram );
+
+	Image Subtract( const Image & in1, const Image & in2 );
+	void  Subtract( const Image & in1, const Image & in2, Image & out );
+	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					uint32_t width, uint32_t height );
+	void  Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 };

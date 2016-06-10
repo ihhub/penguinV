@@ -850,6 +850,108 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
+- **Subtract** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Subtract(
+		const Image & in1,
+		const Image & in2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities from first image pixel intensities (difference between two values). Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of subtraction. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+    
+	##### Syntax:
+	```cpp
+	void Subtract(
+		const Image & in1,
+		const Image & in2,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities from first image pixel intensities (difference between two values) and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of subtraction    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Subtract(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values). If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where subtraction operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where subtraction operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Subtract(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values) and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of subtraction    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where subtraction operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where subtraction operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+		
 - **Threshold** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
