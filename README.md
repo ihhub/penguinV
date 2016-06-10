@@ -3,7 +3,7 @@
 PenguinV is a simple and easy to use C++ image processing library. It was designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
 
 - compact
-- multithreading support for individual functions (please refer to [multithreading support](#Multithreading support) section)
+- multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
 - exception-based code
 - optional SSE and AVX support
 - cross-platform
