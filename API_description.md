@@ -681,6 +681,210 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **Maximum** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Maximum(
+		const Image & in1,
+		const Image & in2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds maximum value between two images with equal height and width and returns a result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of maximum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+    
+	##### Syntax:
+	```cpp
+	void Maximum(
+		const Image & in1,
+		const Image & in2,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds maximum value between two images with equal height and width and puts result into third image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of maximum operation    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Maximum(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds maximum value between two images at area of [width, height] size and returns a result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where maximum operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where maximum operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Maximum(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds maximum value between two images at area of [width, height] size and puts result into third image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of maximum operation    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where maximum operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where maximum operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	
+- **Minimum** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Minimum(
+		const Image & in1,
+		const Image & in2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds minimum value between two images with equal height and width and returns a result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of minimum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+    
+	##### Syntax:
+	```cpp
+	void Minimum(
+		const Image & in1,
+		const Image & in2,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds minimum value between two images with equal height and width and puts result into third image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of minimum operation    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Minimum(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds minimum value between two images at area of [width, height] size and returns a result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where minimum operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where minimum operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Minimum(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Finds minimum value between two images at area of [width, height] size and puts result into third image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of minimum operation    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where minimum operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where minimum operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	
 - **ParameterValidation** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:

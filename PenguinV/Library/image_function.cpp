@@ -574,4 +574,132 @@ namespace Image_Function
 		return out;
 	}
 
+	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSize1   = in1.rowSize();
+		uint32_t rowSize2   = in2.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+		
+			const uint8_t * in1X = in1Y;
+			const uint8_t * in2X = in2Y;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+				
+				if( (*in2X) > (*in1X) )
+					(*outX) = (*in1X);
+				else
+					(*outX) = (*in2X);
+			}
+		
+		}
+	}
+
+	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				   uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Minimum( const Image & in1, const Image & in2, Image & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Minimum( const Image & in1, const Image & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		Minimum( in1, in2, out );
+
+		return out;
+	}
+
+	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSize1   = in1.rowSize();
+		uint32_t rowSize2   = in2.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+		
+			const uint8_t * in1X = in1Y;
+			const uint8_t * in2X = in2Y;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+				
+				if( (*in2X) < (*in1X) )
+					(*outX) = (*in1X);
+				else
+					(*outX) = (*in2X);
+			}
+		
+		}
+	}
+
+	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				   uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Maximum( const Image & in1, const Image & in2, Image & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Maximum( const Image & in1, const Image & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		Maximum( in1, in2, out );
+
+		return out;
+	}
+
 };
