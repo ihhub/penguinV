@@ -102,4 +102,17 @@ namespace Image_Function
 				   uint32_t width, uint32_t height );
 	void  Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+	Image Normalize( const Image & in );
+	void  Normalize( const Image & in, Image & out );
+	Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height );
+
+	// Make sure that your image is not so big to do not have overloaded value
+	uint32_t Sum( const Image & image );
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
+
+	void Fill( Image & image, uint8_t value );
+	void Fill( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value );
 };

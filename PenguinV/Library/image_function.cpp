@@ -702,4 +702,147 @@ namespace Image_Function
 		return out;
 	}
 
+	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSizeIn  = in.rowSize();
+
+		const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+		uint8_t minimum = 255;
+		uint8_t maximum = 0;
+
+		for( ; inY != inYEnd; inY += rowSizeIn ) {
+
+			const uint8_t * inX = inY;
+			const uint8_t * inXEnd = inX + width;
+
+			for( ; inX != inXEnd; ++inX ) {
+			
+				if( minimum > (*inX) )
+					minimum = (*inX);
+
+				if( maximum < (*inX) )
+					maximum = (*inX);
+
+			}
+		}
+
+		if( (minimum == 0 && maximum == 255) || (minimum == maximum) ) {
+			Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		}
+		else {
+		
+			double correction = 255.0 / ( maximum - minimum );
+
+			uint32_t rowSizeOut = out.rowSize();
+
+			inY = in.data()  + startYIn  * rowSizeIn  + startXIn;
+			uint8_t  * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+			for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+
+				const uint8_t * inX = inY;
+				uint8_t * outX = outY;
+				const uint8_t * inXEnd = inX + width;
+
+				for( ; inX != inXEnd; ++inX, ++outX ) {
+
+					(*outX) = static_cast < uint8_t >( ( (*inX) - minimum ) * correction + 0.5);
+
+				}
+			}
+
+		}
+
+	}
+
+	Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Normalize( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
+	void  Normalize( const Image & in, Image & out )
+	{
+		ParameterValidation( in, out );
+
+		Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Normalize( const Image & in )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( image, x, y, width, height );
+
+		uint32_t rowSize = image.rowSize();
+
+		const uint8_t * imageY = image.data() + y * rowSize + x;
+		const uint8_t * imageYEnd = imageY + height * rowSize;
+
+		uint32_t sum = 0;
+
+		for( ; imageY != imageYEnd; imageY += rowSize ) {
+
+			const uint8_t * imageX = imageY;
+			const uint8_t * imageXEnd = imageX + width;
+
+			for( ; imageX != imageXEnd; ++imageX ) {
+				sum += (*imageX);
+			}
+
+		}
+
+		return sum;
+	}
+
+	uint32_t Sum( const Image & image )
+	{
+		return Sum( image, 0, 0, image.width(), image.height() );
+	}
+
+	void Fill( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value )
+	{
+		ParameterValidation( image, x, y, width, height );
+
+		uint32_t rowSize = image.rowSize();
+
+		uint8_t * imageY = image.data() + y * rowSize + x;
+		const uint8_t * imageYEnd = imageY + height * rowSize;
+
+		for( ; imageY != imageYEnd; imageY += rowSize ) {
+
+			uint8_t * imageX = imageY;
+			const uint8_t * imageXEnd = imageX + width;
+
+			for( ; imageX != imageXEnd; ++imageX ) {
+				(*imageX) = value;
+			}
+
+		}
+	}
+
+	void Fill( Image & image, uint8_t value )
+	{
+		image.fill( value );
+	}
+
 };

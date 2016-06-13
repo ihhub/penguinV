@@ -491,7 +491,51 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+	
+- **Fill** [_Namespaces: **Image_Function**_]
+	
+	##### Syntax:
+	```cpp
+	void Fill(
+		Image & image,
+		uint8_t value
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Set in all pixels of an image a specified value.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image      
+	&nbsp;&nbsp;&nbsp;&nbsp;value - value to set    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Fill(
+		Image & image,
+		uint32_t x,
+		int32_t y,
+		uint32_t width,
+		uint32_t height,
+		uint8_t value
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Set in all pixels within an image area of [width, height] size a specified value.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;value - value to set    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **GetPixel** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
@@ -885,6 +929,92 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 	
+- **Normalize** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Normalize(
+		const Image & in
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Normalize(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of normalization. Height and width of result image is the same as of input image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Normalize(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 at area of [width, height] size and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where normalization is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where normalization is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Normalize(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 at area of [width, height] size and puts result into third image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where normalization is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where normalization is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **ParameterValidation** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
@@ -1155,7 +1285,47 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
-		
+	
+- **Sum** [_Namespaces: **Image_Function**_]
+	
+	##### Syntax:
+	```cpp
+	uint32_t Sum(
+		const Image & image
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a sum of all pixel intensities at image and returns this value as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image      
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	uint32_t Sum(
+		const Image & image,
+		uint32_t x,
+		int32_t y,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a sum of all pixel intensities at image area of [width, height] size and returns this value as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
+	
 - **Threshold** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
