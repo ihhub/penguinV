@@ -24,13 +24,13 @@ The library does **NOT** provide such features as:
 
 In many cases when developers design their own image processing application they are facing problems with integration of third-party library into code. To minimize such drawbacks we are giving an option to write your own code for above situations.
 
-**#Requirements**    
+#Requirements    
 To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support] is VS 2010.
 
-**#How to install**    
+#How to install    
 We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include header files and compile them as a part of your application.
 
-**#How to compile example**    
+#How to compile example    
 - Microsoft Visual Studio
 Open PenguinV.vcxproj file to create solution for your Visual Studio version. Remember that minimum version of VS is 2010.
 
@@ -40,16 +40,16 @@ In the folder with example.cpp you need to type:
 	g++ -std=c++11 -Wall example.cpp Library/image_function.cpp -o example
 	```
 
-**#Multithreading support**    
+#Multithreading support    
 Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.
 
-**#SSE/AVX support**    
+#SSE/AVX support    
 We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0. This should be your part of code. We made this to support cross-platform code.
 
 If you CPU does not support AVX 2.0 or SSE2 just do NOT use related files in your project :wink:
 
-**#License**    
+#License    
 This project is under 3-clause BSD License. Please refer to file **LICENSE** for more details.
 
-**#API description**    
+#API description    
 Please refer to file **API_description.md** for full description of API.
