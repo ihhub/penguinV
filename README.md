@@ -31,7 +31,7 @@ To compile the source code your compiler must support at least **C++ 11** versio
 We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include header files and compile them as a part of your application.
 
 #How to compile example    
-- Microsoft Visual Studio
+- Microsoft Visual Studio    
 Open PenguinV.vcxproj file to create solution for your Visual Studio version. Remember that minimum version of VS is 2010.
 
 - g++    
