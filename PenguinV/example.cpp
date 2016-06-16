@@ -54,10 +54,14 @@ int main()
 		// Forth way to do
 		example4( imageIn1, imageIn2, imageOut );
 
-	} catch(imageException ex) {
-		// uh-oh something went wrong!
+	} catch(imageException & ex) {
+		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
 		// your magic code must be here to recover from bad things
+	} catch(...) {
+		// uh-oh, something terrible happen!
+		std::cout << "Something very terrible happen. Do your black magic to recover..." << std::endl;
+		// your magic code must be here to recover from terrible things
 	}
 
 	std::cout << "Everything went fine." << std::endl;
