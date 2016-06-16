@@ -507,7 +507,11 @@ namespace Image_Function
 
 	std::vector < uint32_t > Histogram( const Image & image )
 	{
-		return Histogram( image, 0, 0, image.width(), image.height() );
+		std::vector < uint32_t > histogram( 256u, 0u );
+
+		Histogram( image, 0, 0, image.width(), image.height(), histogram );
+
+		return histogram;
 	}
 
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -843,6 +847,77 @@ namespace Image_Function
 	void Fill( Image & image, uint8_t value )
 	{
 		image.fill( value );
+	}
+
+	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+							std::vector < uint32_t > & projection )
+	{
+		ParameterValidation( image, x, y, width, height );
+
+		projection.resize( horizontal ? width : height );
+		std::fill( projection.begin(), projection.end(), 0u );
+
+		uint32_t rowSize = image.rowSize();
+
+		if( horizontal ) {
+
+			const uint8_t * imageX = image.data() + y * rowSize + x;
+			const uint8_t * imageXEnd = imageX + rowSize;
+
+			for( ; imageX != imageXEnd; ++imageX ) {
+
+				const uint8_t * imageY = imageX;
+				const uint8_t * imageYEnd = imageY + height * rowSize;
+				std::vector < uint32_t > :: iterator data = projection.begin();
+
+				for( ; imageY != imageYEnd; imageY += rowSize, ++data ) {
+					(*data) += (*imageY);
+				}
+
+			}
+		}
+		else {
+
+			const uint8_t * imageY = image.data() + y * rowSize + x;
+			const uint8_t * imageYEnd = imageY + height * rowSize;
+
+			for( ; imageY != imageYEnd; imageY += rowSize ) {
+
+				const uint8_t * imageX = imageY;
+				const uint8_t * imageXEnd = imageX + width;
+				std::vector < uint32_t > :: iterator data = projection.begin();
+
+				for( ; imageX != imageXEnd; ++imageX, ++data ) {
+					(*data) += (*imageX);
+				}
+
+			}
+		}
+
+		
+	}
+
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	{
+		std::vector < uint32_t > projection;
+
+		ProjectionProfile( image, x, y, width, height, horizontal, projection );
+
+		return projection;
+	}
+
+	void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+	{
+		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+	}
+
+	std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+	{
+		std::vector < uint32_t > projection;
+
+		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+
+		return projection;
 	}
 
 };

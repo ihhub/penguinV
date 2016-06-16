@@ -115,4 +115,10 @@ namespace Image_Function
 
 	void Fill( Image & image, uint8_t value );
 	void Fill( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value );
+
+	std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal );
+	void                     ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal );
+	void                     ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+												std::vector < uint32_t > & projection );
 };

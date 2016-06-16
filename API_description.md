@@ -38,7 +38,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of bitwise AND. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -377,7 +377,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, heigh] size into color image area with same size by setting gray-scale intensity (value) into every color channel (RGB).
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, height] size into color image area with same size by setting gray-scale intensity (value) into every color channel (RGB).
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
@@ -406,7 +406,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, heigh] size into color image area with same size by setting gray-scale intensity as an average value among red, green and blue channels of color image.
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, height] size into color image area with same size by setting gray-scale intensity as an average value among red, green and blue channels of color image.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
@@ -431,7 +431,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Copy image data from input to out image.
+	&nbsp;&nbsp;&nbsp;&nbsp;Copies image data from input to out image.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
@@ -477,7 +477,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Copy image data from input image area of [width, height] size to output image area of the same size.
+	&nbsp;&nbsp;&nbsp;&nbsp;Copies image data from input image area of [width, height] size to output image area of the same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
@@ -502,7 +502,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Set in all pixels of an image a specified value.
+	&nbsp;&nbsp;&nbsp;&nbsp;Sets in all pixels of an image a specified value.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image      
@@ -523,7 +523,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Set in all pixels within an image area of [width, height] size a specified value.
+	&nbsp;&nbsp;&nbsp;&nbsp;Sets in all pixels within an image area of [width, height] size a specified value.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
@@ -547,7 +547,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Returns a intensity on specified pixel position.
+	&nbsp;&nbsp;&nbsp;&nbsp;Returns an intensity on specified pixel position.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
@@ -742,7 +742,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of maximum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -844,7 +844,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of minimum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1083,7 +1083,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated, image area [{startX, startY}, {startX + width, startY + height}] is withing image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated, image area [{startX, startY}, {startX + width, startY + height}] is within image size, width and height are greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
@@ -1110,7 +1110,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is withing first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is withing second image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, width and height are greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -1143,7 +1143,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is withing first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is withing second image size, image area [{startX3, startY3}, {startX3 + width, startY3 + height}] is withing third image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, image area [{startX3, startY3}, {startX3 + width, startY3 + height}] is within third image size, width and height are greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -1161,6 +1161,96 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **ProjectionProfile** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	std::vector < uint32_t > ProjectionProfile(
+		const Image & image,
+		bool horizontal
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a projection profile of pixel intensities (sum) of image on one of axes and return an array what is an array with image width or height size respectively on chosen axis. Projection on X axis is performed if horizontal parameter is true else projection on Y axis.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void ProjectionProfile(
+		const Image & image,
+		bool horizontal,
+		std::vector < uint32_t > & projection
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a projection profile of pixel intensities (sum) of image on one of axes and stores result into output array what is an array with image width or height size respectively on chosen axis. No requirement that an array (vector) must be resized before calling this function. Projection on X axis is performed if horizontal parameter is true else projection on Y axis.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
+	&nbsp;&nbsp;&nbsp;&nbsp;projection - an array of pixel intensities sums    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	std::vector < uint32_t > ProjectionProfile(
+		const Image & image,
+		uint32_t x,
+		int32_t y,
+		uint32_t width,
+		uint32_t height,
+		bool horizontal
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a projection profile of pixel intensities (sum) of image area of [width, height] size on one of axes and return an array what is an array with [width] or [height] size respectively on chosen axis. Projection on X axis is performed if horizontal parameter is true else projection on Y axis.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void ProjectionProfile(
+		const Image & image,
+		uint32_t x,
+		int32_t y,
+		uint32_t width,
+		uint32_t height,
+		bool horizontal,
+		std::vector < uint32_t > & projection
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a projection profile of pixel intensities (sum) of image area of [width, height] size on one of axes and stores result into output array what is an array with [width] or [height] size respectively on chosen axis. No requirement that an array (vector) must be resized before calling this function. Projection on X axis is performed if horizontal parameter is true else projection on Y axis.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
+	&nbsp;&nbsp;&nbsp;&nbsp;projection - an array of pixel intensities sums    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **SetPixel** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
@@ -1173,7 +1263,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Set intensity at specified pixel position.
+	&nbsp;&nbsp;&nbsp;&nbsp;Sets intensity at specified pixel position.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
@@ -1194,14 +1284,14 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities from first image pixel intensities (difference between two values). Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values). Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Image which is a result of subtraction. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1212,7 +1302,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities from first image pixel intensities (difference between two values) and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values) and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -1236,7 +1326,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values). If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values). If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -1268,7 +1358,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtract second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values) and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values) and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
