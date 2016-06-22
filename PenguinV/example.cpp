@@ -58,10 +58,12 @@ int main()
 		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
 		// your magic code must be here to recover from bad things
+		return 0;
 	} catch(...) {
 		// uh-oh, something terrible happen!
 		std::cout << "Something very terrible happen. Do your black magic to recover..." << std::endl;
 		// your magic code must be here to recover from terrible things
+		return 0;
 	}
 
 	std::cout << "Everything went fine." << std::endl;
