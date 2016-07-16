@@ -32,12 +32,12 @@ We prefer that an end-user (means YOU) will compile all files what are necessary
 
 #How to compile example    
 - Microsoft Visual Studio    
-Open example_image_function.vcxproj file to create solution for your Visual Studio version. Remember that minimum version of VS for this example is 2010.
+Open example_image_function.vcxproj file in 'example_image_function' folder to create solution for your Visual Studio version. Remember that minimum version of VS for this example is 2010.
 
 - g++    
-In the folder with example.cpp you need to type:    
+In the 'PenguinV' folder you need to type/paste this text:    
 	```cpp
-	g++ -std=c++11 -Wall example_image_function.cpp Library/image_function.cpp -o example
+	g++ -std=c++11 -Wall example_image_function/example_image_function.cpp Library/image_function.cpp -o example_image_function
 	```
 
 #Multithreading support    

@@ -140,14 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="example_image_function.cpp" />
-    <ClCompile Include="Library\image_function.cpp" />
-    <ClCompile Include="Library\image_function_sse.cpp" />
+    <ClCompile Include="..\Library\image_function.cpp" />
+    <ClCompile Include="..\Library\image_function_sse.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Library\image_buffer.h" />
-    <ClInclude Include="Library\image_exception.h" />
-    <ClInclude Include="Library\image_function.h" />
-    <ClInclude Include="Library\image_function_sse.h" />
+    <ClInclude Include="..\Library\image_buffer.h" />
+    <ClInclude Include="..\Library\image_exception.h" />
+    <ClInclude Include="..\Library\image_function.h" />
+    <ClInclude Include="..\Library\image_function_sse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
