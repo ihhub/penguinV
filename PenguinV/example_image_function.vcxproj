@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="example.cpp" />
+    <ClCompile Include="example_image_function.cpp" />
     <ClCompile Include="Library\image_function.cpp" />
     <ClCompile Include="Library\image_function_sse.cpp" />
   </ItemGroup>

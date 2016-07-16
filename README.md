@@ -14,7 +14,7 @@ At current stage of development library does not have many features but we are i
 - more basic functions and their implementations by SSE and AVX
 - blob detection code
 - template matching classes
-- multi-level thread pool
+- ~~multi-level thread pool~~
 - etc.
 
 The library does **NOT** provide such features as:
@@ -32,12 +32,12 @@ We prefer that an end-user (means YOU) will compile all files what are necessary
 
 #How to compile example    
 - Microsoft Visual Studio    
-Open PenguinV.vcxproj file to create solution for your Visual Studio version. Remember that minimum version of VS is 2010.
+Open example_image_function.vcxproj file to create solution for your Visual Studio version. Remember that minimum version of VS for this example is 2010.
 
 - g++    
 In the folder with example.cpp you need to type:    
 	```cpp
-	g++ -std=c++11 -Wall example.cpp Library/image_function.cpp -o example
+	g++ -std=c++11 -Wall example_image_function.cpp Library/image_function.cpp -o example
 	```
 
 #Multithreading support    
