@@ -37,7 +37,7 @@ Open example_image_function.vcxproj file in 'example_image_function' folder to c
 - g++    
 In the 'PenguinV' folder you need to type/paste this text:    
 	```cpp
-	g++ -std=c++11 -Wall example_image_function/example_image_function.cpp Library/image_function.cpp -o example_image_function
+	g++ -std=c++11 -Wall example_image_function/example_image_function.cpp Library/image_function.cpp -o application
 	```
 
 #Multithreading support    
