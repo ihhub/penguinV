@@ -73,16 +73,16 @@ private:
 	std::vector < uint8_t > _exit;       // indicator for threads to close themselfs
 	std::condition_variable _waiting;    // condition variable for synchronization of threads
 
-	std::mutex _creation;                      // mutex for thread creation verification
-	std::atomic < size_t > _threadId;          // variable used to set thread ID
-	std::condition_variable _completeCreation; // condition variable for verification that all threads are created
-	std::size_t _threadCount;                  // current number of threads in pool
-	bool _threadsCreated;                      // indicator for pool that all threads are created
+	std::mutex _creation;                       // mutex for thread creation verification
+	std::atomic < size_t > _runningThreadCount; // variable used to calculate a number of running threads
+	std::condition_variable _completeCreation;  // condition variable for verification that all threads are created
+	std::size_t _threadCount;                   // current number of threads in pool
+	bool _threadsCreated;                       // indicator for pool that all threads are created
 
 	std::list < TaskProvider * > _task; // a list of tasks to perform
 	std::mutex _taskInfo;               // mutex for synchronization between threads and pool to manage tasks
 
 	void _stop();
 
-	static void _workerThread( ThreadPool * pool );
+	static void _workerThread( ThreadPool * pool, size_t threadId );
 };

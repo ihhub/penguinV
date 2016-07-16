@@ -93,9 +93,9 @@ bool TaskProvider::_ready() const
 
 
 ThreadPool::ThreadPool(size_t threads)
-	: _threadId      (0)
-	, _threadCount   (0)
-	, _threadsCreated(false)
+	: _runningThreadCount (0)
+	, _threadCount        (0)
+	, _threadsCreated     (false)
 {
 	resize( threads );
 }
@@ -119,7 +119,7 @@ void ThreadPool::resize( size_t threads )
 		_threadCount = threads;
 
 		while( threads > threadCount() )
-			_worker.push_back( std::thread (ThreadPool::_workerThread, this ) );
+			_worker.push_back( std::thread (ThreadPool::_workerThread, this, threadCount() ) );
 
 		std::unique_lock < std::mutex > _mutexLock( _creation );
 		_completeCreation.wait( _mutexLock, [&] { return _threadsCreated; } );
@@ -218,11 +218,9 @@ void ThreadPool::_stop()
 
 }
 
-void ThreadPool::_workerThread( ThreadPool * pool )
+void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
 {
-	size_t threadId = pool->_threadId++;
-
-	if( (threadId + 1) == pool->_threadCount ) {
+	if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
 		pool->_threadsCreated = true;
 		pool->_completeCreation.notify_one();
 	}
@@ -255,5 +253,5 @@ void ThreadPool::_workerThread( ThreadPool * pool )
 		
 	}
 
-	--(pool->_threadId);
+	--(pool->_runningThreadCount);
 }
