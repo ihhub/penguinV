@@ -64,6 +64,9 @@ public:
 	void clear();
 
 private:
+	ThreadPool & operator=(const ThreadPool &);
+	ThreadPool(const ThreadPool &);
+
 	std::vector < std::thread > _worker; // an array of worker threads
 	std::mutex _runTask;                 // mutex to synchronize threads
 	std::vector < uint8_t > _run;        // indicator for threads to run tasks
