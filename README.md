@@ -31,14 +31,7 @@ To compile the source code your compiler must support at least **C++ 11** versio
 We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include header files and compile them as a part of your application.
 
 #How to compile example    
-- Microsoft Visual Studio    
-Open example_image_function.vcxproj file in 'example_image_function' folder to create solution for your Visual Studio version. Remember that minimum version of VS for this example is 2010.
-
-- g++    
-In the 'PenguinV' folder you need to type/paste this text:    
-	```cpp
-	g++ -std=c++11 -Wall example_image_function/example_image_function.cpp Library/image_function.cpp -o application
-	```
+Open README.md file in any of example folders and follow instructions.
 
 #Multithreading support    
 Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.
