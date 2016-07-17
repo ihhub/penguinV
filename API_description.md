@@ -18,6 +18,14 @@ Contains basic functions for image processing for CPUs with ***SSE 2*** support.
 **Image_Function_Avx**    
 Contains basic functions for image processing for CPUs with ***AVX 2.0*** support.    
 
+**Thread_Pool**    
+Contains classes for multithreading using thread pool:
+- ***AbstractTaskProvider*** - abstract class what should do some tasks.
+- ***TaskProvider*** - concrete class what does tasks and from what other classes are inherited to use thread pool.
+- ***ThreadPool*** - thread pool class what manages threads and tasks.
+- ***ThreadPoolMonoid*** - singleton (or monoid) class of thread pool what allows to use only 1 copy of thread pool inside application.
+- ***TaskProviderSingleton*** - concrete class what does tasks and from what other classes are inherited to use thread pool's singleton.    
+
 ## Functions
 
 All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
