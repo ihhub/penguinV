@@ -8,6 +8,8 @@
 #include <thread>
 #include <vector>
 
+class ThreadPool;
+
 class TaskProvider
 {
 public:
