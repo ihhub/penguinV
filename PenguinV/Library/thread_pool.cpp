@@ -2,256 +2,315 @@
 #include "thread_pool.h"
 #include "image_exception.h"
 
-TaskProvider::TaskProvider()
-	: _taskCount         (0)
-	, _givenTaskCount    (0)
-	, _completedTaskCount(0)
-	, _running           (false)
-	, _threadPool        (nullptr)
+namespace Thread_Pool
 {
-}
-
-TaskProvider::TaskProvider(ThreadPool * pool)
-	: _taskCount         (0)
-	, _givenTaskCount    (0)
-	, _completedTaskCount(0)
-	, _running           (false)
-	, _threadPool        (pool)
-{
-}
-
-TaskProvider::TaskProvider(const TaskProvider & provider)
-	: _taskCount         (0)
-	, _givenTaskCount    (0)
-	, _completedTaskCount(0)
-	, _running           (false)
-	, _threadPool        (provider._threadPool)
-{
-}
-
-TaskProvider::~TaskProvider()
-{
-	if( _threadPool != nullptr )
-		_threadPool->remove( this );
-
-	_wait();
-}
-
-TaskProvider & TaskProvider::operator=(const TaskProvider & provider)
-{
-	if( this != &provider ) {
-		_threadPool = provider._threadPool;
+	AbstractTaskProvider::AbstractTaskProvider()
+		: _taskCount         (0)
+		, _givenTaskCount    (0)
+		, _completedTaskCount(0)
+		, _running           (false)
+	{
 	}
 
-	return (*this);
-}
+	AbstractTaskProvider::AbstractTaskProvider(const AbstractTaskProvider &)
+		: _taskCount         (0)
+		, _givenTaskCount    (0)
+		, _completedTaskCount(0)
+		, _running           (false)
+	{
+	}
 
-void TaskProvider::setThreadPool( ThreadPool * pool )
-{
-	_threadPool = pool;
-}
+	AbstractTaskProvider::~AbstractTaskProvider()
+	{
+		_wait();
+	}
 
-void TaskProvider::_taskRun(bool skip)
-{
-	size_t taskId = _givenTaskCount++;
+	AbstractTaskProvider & AbstractTaskProvider::operator=(const AbstractTaskProvider &)
+	{
+		return (*this);
+	}
 
-	if( taskId < _taskCount ) {
-		if( !skip )
-			_task(taskId);
+	void AbstractTaskProvider::_taskRun(bool skip)
+	{
+		size_t taskId = _givenTaskCount++;
 
-		size_t completedTasks = (++_completedTaskCount);
+		if( taskId < _taskCount ) {
+			if( !skip )
+				_task(taskId);
 
-		if( completedTasks == _taskCount ) {
-			_running = false;
-			_waiting.notify_one();
+			size_t completedTasks = (++_completedTaskCount);
+
+			if( completedTasks == _taskCount ) {
+				_running = false;
+				_waiting.notify_one();
+			}
 		}
 	}
-}
 
-void TaskProvider::_run( size_t taskCount )
-{
-	if( _ready() && taskCount > 0 ) {
-		_taskCount          = taskCount;
-		_givenTaskCount     = 0;
-		_completedTaskCount = 0;
-		_running            = true;
-
-		_threadPool->add( this, _taskCount );
+	void AbstractTaskProvider::_wait()
+	{
+		std::unique_lock < std::mutex > _mutexLock( _completion );
+		_waiting.wait( _mutexLock, [&] { return !_running; } );
 	}
-}
 
-void TaskProvider::_wait()
-{
-	std::unique_lock < std::mutex > _mutexLock( _completion );
-	_waiting.wait( _mutexLock, [&] { return !_running; } );
-}
-
-bool TaskProvider::_ready() const
-{
-	return !_running && _threadPool != nullptr;
-}
-
-
-ThreadPool::ThreadPool(size_t threads)
-	: _runningThreadCount (0)
-	, _threadCount        (0)
-	, _threadsCreated     (false)
-{
-	resize( threads );
-}
-
-ThreadPool::~ThreadPool()
-{
-	_stop();
-}
-
-void ThreadPool::resize( size_t threads )
-{
-	if( threads == 0 )
-		throw imageException("Try to set zero threads in thread pool");
-
-	if( threads > threadCount() ) {
-		_taskInfo.lock();
-		_run.resize( threads, 1 );
-		_exit.resize( threads, 0 );
-		_taskInfo.unlock();
-
-		_threadCount = threads;
-
-		while( threads > threadCount() )
-			_worker.push_back( std::thread (ThreadPool::_workerThread, this, threadCount() ) );
-
-		std::unique_lock < std::mutex > _mutexLock( _creation );
-		_completeCreation.wait( _mutexLock, [&] { return _threadsCreated; } );
-
+	bool AbstractTaskProvider::_ready() const
+	{
+		return !_running;
 	}
-	else if( threads < threadCount() ) {
-		_taskInfo.lock();
-		std::fill( _exit.begin() + threads, _exit.end(), 1 );
-		std::fill(  _run.begin() + threads,  _run.end(), 1 );
-		_taskInfo.unlock();
 
-		_waiting.notify_all();
 
-		while( threads < threadCount() ) {
-			_worker.back().join();
+	TaskProvider::TaskProvider()
+		: _threadPool (nullptr)
+	{
+	}
+	
+	TaskProvider::TaskProvider(ThreadPool * pool)
+		: _threadPool (pool)
+	{
+	}
+	
+	TaskProvider::TaskProvider(const TaskProvider & provider)
+		: _threadPool (provider._threadPool)
+	{
+	}
+	
+	TaskProvider::~TaskProvider()
+	{
+		if( _threadPool != nullptr )
+			_threadPool->remove( this );
+	}
+	
+	TaskProvider & TaskProvider::operator=(const TaskProvider & provider)
+	{
+		if( this != &provider )
+			_threadPool = provider._threadPool;
+	
+		return (*this);
+	}
+	
+	void TaskProvider::setThreadPool( ThreadPool * pool )
+	{
+		_threadPool = pool;
+	}
+	
+	void TaskProvider::_run( size_t taskCount )
+	{
+		if( _ready() && taskCount > 0 ) {
+			_taskCount          = taskCount;
+			_givenTaskCount     = 0;
+			_completedTaskCount = 0;
+			_running            = true;
+	
+			_threadPool->add( this, _taskCount );
+		}
+	}
+	
+	bool TaskProvider::_ready() const
+	{
+		return AbstractTaskProvider::_ready() && _threadPool != nullptr;
+	}
 
-			_worker.pop_back();
-			
+
+	ThreadPool::ThreadPool(size_t threads)
+		: _runningThreadCount (0)
+		, _threadCount        (0)
+		, _threadsCreated     (false)
+	{
+		resize( threads );
+	}
+
+	ThreadPool::~ThreadPool()
+	{
+		stop();
+	}
+
+	void ThreadPool::resize( size_t threads )
+	{
+		if( threads == 0 )
+			throw imageException("Try to set zero threads in thread pool");
+
+		if( threads > threadCount() ) {
 			_taskInfo.lock();
-
-			_exit.pop_back();
-			_run.pop_back();
-
+			_run.resize( threads, 1 );
+			_exit.resize( threads, 0 );
 			_taskInfo.unlock();
+
+			_threadCount = threads;
+
+			while( threads > threadCount() )
+				_worker.push_back( std::thread (ThreadPool::_workerThread, this, threadCount() ) );
+
+			std::unique_lock < std::mutex > _mutexLock( _creation );
+			_completeCreation.wait( _mutexLock, [&] { return _threadsCreated; } );
+
 		}
+		else if( threads < threadCount() ) {
+			_taskInfo.lock();
+			std::fill( _exit.begin() + threads, _exit.end(), 1 );
+			std::fill(  _run.begin() + threads,  _run.end(), 1 );
+			_taskInfo.unlock();
+
+			_waiting.notify_all();
+
+			while( threads < threadCount() ) {
+				_worker.back().join();
+
+				_worker.pop_back();
+			
+				_taskInfo.lock();
+
+				_exit.pop_back();
+				_run.pop_back();
+
+				_taskInfo.unlock();
+			}
 		
+		}
 	}
-}
 
-size_t ThreadPool::threadCount() const
-{
-	return _worker.size();
-}
+	size_t ThreadPool::threadCount() const
+	{
+		return _worker.size();
+	}
 
-void ThreadPool::add( TaskProvider * provider, size_t taskCount )
-{
-	if( taskCount == 0 )
-		throw imageException("Try to add zero tasks to thread pool");
+	void ThreadPool::add( AbstractTaskProvider * provider, size_t taskCount )
+	{
+		if( taskCount == 0 )
+			throw imageException("Try to add zero tasks to thread pool");
 
-	_taskInfo.lock();
-
-	_task.insert( _task.end(), taskCount, provider );
-
-	std::fill( _run.begin(), _run.end(), 1 );
-
-	_taskInfo.unlock();
-
-	_waiting.notify_all();
-}
-
-bool ThreadPool::empty()
-{
-	_taskInfo.lock();
-
-	bool emp = _task.empty();
-
-	_taskInfo.unlock();
-
-	return emp;
-}
-
-void ThreadPool::remove( TaskProvider * provider )
-{
-	_taskInfo.lock();
-
-	_task.remove( provider );
-
-	_taskInfo.unlock();
-}
-
-void ThreadPool::clear()
-{
-	_taskInfo.lock();
-
-	std::for_each( _task.begin(), _task.end(), [](TaskProvider * task) { task->_task( true ); } );
-	_task.clear();
-
-	_taskInfo.unlock();
-}
-
-void ThreadPool::_stop()
-{
-	clear();
-
-	if( !_worker.empty() ) {
 		_taskInfo.lock();
-		std::fill( _exit.begin(), _exit.end(), 1 );
-		std::fill(  _run.begin(),  _run.end(), 1 );
+
+		_task.insert( _task.end(), taskCount, provider );
+
+		std::fill( _run.begin(), _run.end(), 1 );
+
 		_taskInfo.unlock();
 
 		_waiting.notify_all();
-
-		for( std::vector < std::thread >::iterator thread = _worker.begin(); thread != _worker.end(); ++thread )
-			thread->join();
 	}
 
-}
+	bool ThreadPool::empty()
+	{
+		_taskInfo.lock();
 
-void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
-{
-	if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
-		pool->_threadsCreated = true;
-		pool->_completeCreation.notify_one();
+		bool emp = _task.empty();
+
+		_taskInfo.unlock();
+
+		return emp;
 	}
 
-	while( !pool->_exit[threadId] ) {
+	void ThreadPool::remove( AbstractTaskProvider * provider )
+	{
+		_taskInfo.lock();
 
-		std::unique_lock < std::mutex > _mutexLock( pool->_runTask );
-		pool->_waiting.wait( _mutexLock, [&] { return pool->_run[threadId]; } );
-		_mutexLock.unlock();
+		_task.remove( provider );
 
-		if( pool->_exit[threadId] )
-			break;
+		_taskInfo.unlock();
+	}
 
-		pool->_taskInfo.lock();
+	void ThreadPool::clear()
+	{
+		_taskInfo.lock();
+		// complete all tasks without real computations. It helps to avoid deadlock in case when thread pool is destroyed
+		std::for_each( _task.begin(), _task.end(), [](AbstractTaskProvider * task) { task->_task( true ); } );
+		_task.clear();
 
-		if( !pool->_task.empty() ) {
-			TaskProvider * task = pool->_task.front();
+		_taskInfo.unlock();
+	}
 
-			pool->_task.pop_front();
+	void ThreadPool::stop()
+	{
+		clear();
 
-			pool->_taskInfo.unlock();
+		if( !_worker.empty() ) {
+			_taskInfo.lock();
+			std::fill( _exit.begin(), _exit.end(), 1 );
+			std::fill(  _run.begin(),  _run.end(), 1 );
+			_taskInfo.unlock();
 
-			task->_taskRun( false );
+			_waiting.notify_all();
+
+			for( std::vector < std::thread >::iterator thread = _worker.begin(); thread != _worker.end(); ++thread )
+				thread->join();
+
+			_worker.clear();
 		}
-		else {
-			pool->_run[threadId] = 0;
 
-			pool->_taskInfo.unlock();
+	}
+
+	void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
+	{
+		if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
+			pool->_threadsCreated = true;
+			pool->_completeCreation.notify_one();
 		}
+
+		while( !pool->_exit[threadId] ) {
+
+			std::unique_lock < std::mutex > _mutexLock( pool->_runTask );
+			pool->_waiting.wait( _mutexLock, [&] { return pool->_run[threadId]; } );
+			_mutexLock.unlock();
+
+			if( pool->_exit[threadId] )
+				break;
+
+			pool->_taskInfo.lock();
+
+			if( !pool->_task.empty() ) {
+				AbstractTaskProvider * task = pool->_task.front();
+
+				pool->_task.pop_front();
+
+				pool->_taskInfo.unlock();
+
+				try
+				{
+					task->_taskRun( false );
+				} catch(...) {
+					// here should be some logging code stating about exception
+				}
+			}
+			else {
+				pool->_run[threadId] = 0;
+
+				pool->_taskInfo.unlock();
+			}
 		
+		}
+
+		--(pool->_runningThreadCount);
 	}
 
-	--(pool->_runningThreadCount);
-}
+
+	TaskProviderSingleton::TaskProviderSingleton()
+	{
+	}
+	
+	TaskProviderSingleton::TaskProviderSingleton(const TaskProviderSingleton &)
+	{
+	}
+	
+	TaskProviderSingleton::~TaskProviderSingleton()
+	{
+		ThreadPoolMonoid::instance().remove( this );
+	}
+	
+	TaskProviderSingleton & TaskProviderSingleton::operator=(const TaskProviderSingleton &)
+	{	
+		return (*this);
+	}
+	
+	void TaskProviderSingleton::_run( size_t taskCount )
+	{
+		if( _ready() && taskCount > 0 ) {
+			_taskCount          = taskCount;
+			_givenTaskCount     = 0;
+			_completedTaskCount = 0;
+			_running            = true;
+	
+			ThreadPoolMonoid::instance().add( this, _taskCount );
+		}
+	}
+
+};
