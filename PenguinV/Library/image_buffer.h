@@ -83,6 +83,11 @@ namespace Template_Image
 		}
 
 		ImageTemplate( ImageTemplate && image )
+			: _width     (0)
+			, _height    (0)
+			, _colorCount(1)
+			, _alignment (1)
+			, _rowSize   (0)
 		{
 			_data = nullptr;
 
@@ -116,8 +121,6 @@ namespace Template_Image
 
 		ImageTemplate & operator=(ImageTemplate && image)
 		{
-			_data = nullptr;
-
 			_swap( image );
 
 			return (*this);
@@ -136,8 +139,9 @@ namespace Template_Image
 				_width  = width_;
 				_height = height_;
 
-				_rowSize = ( sizeof(TColorDepth) * width() + colorCount() * sizeof(TColorDepth) - 1) /
-						   ( colorCount() * sizeof(TColorDepth) ) * colorCount();
+				_rowSize = sizeof(TColorDepth) * width() * colorCount();
+				if( _rowSize % alignment() != 0 )
+					_rowSize = (_rowSize / alignment() + 1) * alignment();
 
 				_data = new TColorDepth [_width * _rowSize];
 
@@ -180,6 +184,10 @@ namespace Template_Image
 			_alignment = alignment_;
 
 			_data = data_;
+
+			_rowSize = sizeof(TColorDepth) * width() * colorCount();
+			if( _rowSize % alignment() != 0 )
+				_rowSize = (_rowSize / alignment() + 1) * alignment();
 		}
 
 		bool empty() const
@@ -278,7 +286,7 @@ namespace Bitmap_Image
 	const static uint8_t BITMAP_ALIGNMENT = 4;
 
 	template <uint8_t bytes = 1>
-	class BitmapImage : protected Template_Image::ImageTemplate <uint8_t>
+	class BitmapImage : public Template_Image::ImageTemplate <uint8_t>
 	{
 	public:
 		BitmapImage()
@@ -375,12 +383,28 @@ namespace Bitmap_Image
 			return ImageTemplate::colorCount();
 		}
 
+		uint8_t alignment() const
+		{
+			return ImageTemplate::alignment();
+		}
+
 		void fill(uint8_t value)
 		{
 			if( empty() )
 				return;
 
 			memset( data(), value, sizeof(uint8_t) * height() * rowSize() );
+		}
+
+	private:
+		void setColorCount(uint8_t colorCount_)
+		{
+			ImageTemplate::setColorCount(colorCount_);
+		}
+
+		void setAlignment(uint8_t alignment_)
+		{
+			ImageTemplate::setAlignment(alignment_);
 		}
 	};
 
