@@ -121,4 +121,9 @@ namespace Image_Function
 	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal );
 	void                     ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
 												std::vector < uint32_t > & projection );
+
+	uint8_t GetThreshold( const Image & image );
+	void    GetThreshold( const Image & image, uint8_t & threshold );
+	uint8_t GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
+	void    GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t & threshold );
 };

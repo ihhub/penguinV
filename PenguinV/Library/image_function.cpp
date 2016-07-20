@@ -920,4 +920,67 @@ namespace Image_Function
 		return projection;
 	}
 
+	uint8_t GetThreshold( const Image & image )
+	{
+		uint8_t threshold;
+
+		GetThreshold( image, 0, 0, image.width(), image.height(), threshold );
+
+		return threshold;
+	}
+
+	void GetThreshold( const Image & image, uint8_t & threshold )
+	{
+		GetThreshold( image, 0, 0, image.width(), image.height(), threshold );
+	}
+	
+	uint8_t GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	{
+		uint8_t threshold;
+
+		GetThreshold( image, x, y, width, height, threshold );
+
+		return threshold;
+	}
+
+	void GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t & threshold )
+	{
+		std::vector < uint32_t > histogram = Histogram( image, x, y, width, height );
+
+		threshold = 0;
+
+		// It is well-known Otsu's method to find threshold
+		uint32_t sum = histogram[1];
+		for(uint16_t i = 2; i < 256; ++i)
+			sum  = sum  + i * histogram[i];
+
+		uint32_t sumTemp = 0;
+
+		uint32_t pixelCount     = width * height;
+		uint32_t pixelCountTemp = 0;
+		
+		double maximumSigma = -1;
+
+		for(uint16_t i = 0; i < 256; ++i) {
+
+			pixelCountTemp += histogram[i];
+
+			if(pixelCountTemp > 0 && pixelCountTemp != pixelCount) {
+				sumTemp += i * histogram[i];
+
+				double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
+				double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
+						    static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
+				double sigma = w1 * (1 - w1) * a * a;
+
+				if(sigma > maximumSigma) {
+					maximumSigma = sigma;
+					threshold = static_cast < uint8_t >(i);
+				}
+
+			}
+
+		}
+	}
+
 };
