@@ -242,15 +242,13 @@ namespace Template_Image
 			if( image.empty() || empty() || image.width() != width() || image.height() != height() || image.colorCount() != colorCount() )
 				throw imageException("Invalid image to copy");
 
-			if( image.colorCount() == colorCount() ) {
-
+			if( image.alignment() != alignment() ) {
 				TColorDepth       * rowIn = data();
 				const TColorDepth * rowOut = image.data();
 				const TColorDepth * rowInEnd = rowIn + height() * rowSize();
 
 				for( ; rowIn != rowInEnd; rowIn += _rowSize, rowOut += image._rowSize )
 					memcpy( rowIn, rowOut, sizeof(TColorDepth) * width() * colorCount() );
-
 			}
 			else {
 				memcpy( _data, image._data, sizeof(TColorDepth) * width() * rowSize() );
