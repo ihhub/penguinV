@@ -129,7 +129,7 @@ namespace Bitmap_Operation
 		if( path.empty() )
 			throw imageException("Incorrect parameters for bitmap loading");
 
-		std::basic_fstream <uint8_t> file;
+		std::fstream file;
 		file.open( path, std::fstream::in | std::fstream::binary );
 
 		if( !file )
@@ -149,7 +149,7 @@ namespace Bitmap_Operation
 
 		std::vector < uint8_t > data( sizeof(BitmapFileHeader) );
 
-		file.read( data.data(), header.overallSize );
+		file.read( reinterpret_cast<char *>(data.data()), header.overallSize );
 
 		header.set( data );
 
@@ -162,7 +162,7 @@ namespace Bitmap_Operation
 
 		data.resize( sizeof(BitmapInfoHeader) );
 
-		file.read( data.data(), info.overallSize );
+		file.read( reinterpret_cast<char *>(data.data()), info.overallSize );
 
 		info.set( data );
 
@@ -194,7 +194,7 @@ namespace Bitmap_Operation
 			while( dataToRead > 0 ) {
 				size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-				file.read( raw.pallete() + dataReaded, readSize );
+				file.read( reinterpret_cast<char *>(raw.pallete() + dataReaded), readSize );
 
 				dataReaded += readSize;
 				dataToRead -= readSize;
@@ -212,7 +212,7 @@ namespace Bitmap_Operation
 		while( dataToRead > 0 ) {
 			size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-			file.read( raw.data() + dataReaded, readSize );
+			file.read( reinterpret_cast<char *>(raw.data() + dataReaded), readSize );
 
 			dataReaded += readSize;
 			dataToRead -= readSize;
@@ -273,7 +273,7 @@ namespace Bitmap_Operation
 		info.biBitCount  = 8u * image.colorCount();
 		info.biSizeImage = width * height;
 
-		std::basic_fstream <uint8_t> file;
+		std::fstream file;
 		file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
 
 		if( !file )
@@ -282,15 +282,15 @@ namespace Bitmap_Operation
 		std::vector < uint8_t > data( sizeof(BitmapFileHeader) );
 
 		header.get( data );
-		file.write( data.data(), header.overallSize );
+		file.write( reinterpret_cast<const char *>(data.data()), header.overallSize );
 
 		data.resize( sizeof(BitmapInfoHeader) );
 
 		info.get( data );
-		file.write( data.data(), info.overallSize );
+		file.write( reinterpret_cast<const char *>(data.data()), info.overallSize );
 
 		if( !pallete.empty() )
-			file.write( pallete.data(), pallete.size() );
+			file.write( reinterpret_cast<const char *>(pallete.data()), pallete.size() );
 
 		file.flush();
 
@@ -303,7 +303,7 @@ namespace Bitmap_Operation
 		for( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
 			memcpy( temp.data(), imageY, sizeof(uint8_t) * width );
 			
-			file.write( temp.data(), lineLength );
+			file.write( reinterpret_cast<const char *>(temp.data()), lineLength );
 			file.flush();
 		}
 
