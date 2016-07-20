@@ -18,8 +18,8 @@ At current stage of development library does not have many features but we are i
 - etc.
 
 The library does **NOT** provide such features as:
-- load/save image from/to memory storage
-- image conversion to/from RAW formats
+- load/save image from/to memory storage for some image formats
+- image conversion between image formats
 - image displaying
 
 In many cases when developers design their own image processing application they are facing problems with integration of third-party library into code. To minimize such drawbacks we are giving an option to write your own code for above situations.

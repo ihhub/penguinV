@@ -1,13 +1,15 @@
 # API description
 
 ## Namespaces
-**Template_Image**    
-Includes only one template class ***ImageTemplate*** what is the main class for image buffer classes. 
-
 **Bitmap_Image**    
 Declares template class for BITMAP images and concrete classes:
 - ***Image*** - gray scale bitmap image (main class in most of image processing functions). If the type of image in description is not implicitly specified then it is a gray-scale image.
 - ***ColorImage*** - RGB (color) bitmap image.    
+
+**Bitmap_Operation**    
+Declared classes to load, save and store raw data of BITMAP images:
+- ***BitmapRawImage*** - class for raw data storage of bitmaps.
+- ***RawImageTemplate*** - template class for raw data storage of any image type.    
 
 **Image_Function**    
 Contains all basic functions for image processing for any CPU. 
@@ -17,6 +19,9 @@ Contains basic functions for image processing for CPUs with ***SSE 2*** support.
 
 **Image_Function_Avx**    
 Contains basic functions for image processing for CPUs with ***AVX 2.0*** support.    
+
+**Template_Image**    
+Includes only one template class ***ImageTemplate*** what is the main class for image buffer classes. 
 
 **Thread_Pool**    
 Contains classes for multithreading using thread pool:
@@ -815,6 +820,40 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **Load** [_Namespaces: **Bitmap_Operation**_]
+	
+	##### Syntax:
+	```cpp
+	BitmapRawImage Load(
+		std::string path
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Returns raw image data readed from file.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;path - a path of bitmap image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;raw bitmap data class. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Load(
+		std::string path,
+		BitmapRawImage & raw
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Read raw image data from file and stores it into raw bitmap data class.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;path - a path of bitmap image    
+	&nbsp;&nbsp;&nbsp;&nbsp;raw - raw image data class    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Maximum** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
@@ -1337,6 +1376,50 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
 	&nbsp;&nbsp;&nbsp;&nbsp;projection - an array of pixel intensities sums    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **Save** [_Namespaces: **Bitmap_Operation**_]
+	
+	##### Syntax:
+	```cpp
+	void Save(
+		std::string path,
+		Template_Image::ImageTemplate < uint8_t > & image
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Saves image into bitmap file.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;path - a path where to save an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Save(
+		std::string path,
+		Template_Image::ImageTemplate < uint8_t > & image,
+		uint32_t startX,
+		uint32_t startY,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Saves image area of [width, height] size into bitmap file.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;path - a path where to save an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.

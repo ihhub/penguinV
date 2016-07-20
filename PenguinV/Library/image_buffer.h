@@ -298,13 +298,8 @@ namespace Bitmap_Image
 		}
 
 		BitmapImage(const BitmapImage & image)
+			: ImageTemplate(image)
 		{
-			setColorCount( bytes );
-			setAlignment( BITMAP_ALIGNMENT );
-
-			resize( image.width(), image.height() );
-
-			_copy( image );
 		}
 
 		BitmapImage(BitmapImage && image)
