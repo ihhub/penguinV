@@ -12,7 +12,7 @@ PenguinV is a simple and easy to use C++ image processing library. It was design
 
 At current stage of development library does not have many features but we are intending to introduce them very soon:
 - more basic functions and their implementations by SSE and AVX
-- blob detection code
+- ~~blob detection code~~
 - template matching classes
 - ~~multi-level thread pool~~
 - etc.
@@ -25,7 +25,7 @@ The library does **NOT** provide such features as:
 In many cases when developers design their own image processing application they are facing problems with integration of third-party library into code. To minimize such drawbacks we are giving an option to write your own code for above situations.
 
 #Requirements    
-To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support] is VS 2010.
+To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support and thread pool] is VS 2010.
 
 #How to install    
 We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include header files and compile them as a part of your application.
