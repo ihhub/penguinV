@@ -72,10 +72,9 @@ namespace Template_Image
 
 			if( image._data != nullptr ) {
 
-				_data = new TColorDepth [_width * _rowSize];
+				_data = new TColorDepth [_height * _rowSize];
 
-				memcpy( _data, image._data, sizeof(TColorDepth) * _width * _rowSize );
-
+				memcpy( _data, image._data, sizeof(TColorDepth) * _height * _rowSize );
 			}
 			else {
 				_data = nullptr;
@@ -106,11 +105,9 @@ namespace Template_Image
 			_alignment  = image._alignment;
 
 			if( image._data != nullptr ) {
+				_data = new TColorDepth [_height * _rowSize];
 
-				_data = new TColorDepth [_width * _rowSize];
-
-				memcpy( _data, image._data, sizeof(TColorDepth) * _width * _rowSize );
-
+				memcpy( _data, image._data, sizeof(TColorDepth) * _height * _rowSize );
 			}
 			else {
 				_data = nullptr;
@@ -139,12 +136,11 @@ namespace Template_Image
 				_width  = width_;
 				_height = height_;
 
-				_rowSize = sizeof(TColorDepth) * width() * colorCount();
+				_rowSize = width() * colorCount();
 				if( _rowSize % alignment() != 0 )
 					_rowSize = (_rowSize / alignment() + 1) * alignment();
 
-				_data = new TColorDepth [_width * _rowSize];
-
+				_data = new TColorDepth [_height * _rowSize];
 			}
 		}
 
@@ -185,7 +181,7 @@ namespace Template_Image
 
 			_data = data_;
 
-			_rowSize = sizeof(TColorDepth) * width() * colorCount();
+			_rowSize = width() * colorCount();
 			if( _rowSize % alignment() != 0 )
 				_rowSize = (_rowSize / alignment() + 1) * alignment();
 		}

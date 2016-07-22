@@ -106,7 +106,7 @@ namespace Bitmap_Operation
 				_colorCount = colorCount;
 				_alignment  = alignment;
 
-				_rowSize = sizeof(TColorDepth) * width * colorCount;
+				_rowSize = width * colorCount;
 				if( _rowSize % alignment != 0 )
 					_rowSize = (_rowSize / alignment + 1) * alignment;
 
