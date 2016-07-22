@@ -12,14 +12,14 @@ namespace Template_Image
 	{
 	public:
 		ImageTemplate()
-			: _width     (0) // width of image
-			, _height    (0) // height of image
-			, _colorCount(1) // number of colors per pixel
-			, _alignment (1) // some formats require that row size must be a multiple of some value (alignment)
-							 // for example for Bitmap it must be a multiple of 4
-			, _rowSize   (0) // size of single row on image, usually it is equal to width
+			: _width     (0)       // width of image
+			, _height    (0)       // height of image
+			, _colorCount(1)       // number of colors per pixel
+			, _alignment (1)       // some formats require that row size must be a multiple of some value (alignment)
+							       // for example for Bitmap it must be a multiple of 4
+			, _rowSize   (0)       // size of single row on image, usually it is equal to width
+			, _data      (nullptr) // an array what store image information (pixel data)
 		{
-			_data = nullptr; // an array what store image information (pixel data)
 		}
 
 		ImageTemplate(uint32_t width_, uint32_t height_)
@@ -28,9 +28,8 @@ namespace Template_Image
 			, _colorCount(1)
 			, _alignment (1)
 			, _rowSize   (0)
-		{
-			_data = nullptr;
-			
+			, _data      (nullptr)
+		{			
 			resize( width_, height_ );
 		}
 
@@ -40,9 +39,8 @@ namespace Template_Image
 			, _colorCount(1)
 			, _alignment (1)
 			, _rowSize   (0)
-		{
-			_data = nullptr;
-			
+			, _data      (nullptr)
+		{			
 			setColorCount( colorCount_ );
 			resize( width_, height_ );
 		}
@@ -53,9 +51,8 @@ namespace Template_Image
 			, _colorCount(1)
 			, _alignment (1)
 			, _rowSize   (0)
+			, _data      (nullptr)
 		{
-			_data = nullptr;
-
 			setColorCount( colorCount_ );
 			setAlignment( alignment_ );
 			resize( width_, height_ );
@@ -247,7 +244,7 @@ namespace Template_Image
 					memcpy( rowIn, rowOut, sizeof(TColorDepth) * width() * colorCount() );
 			}
 			else {
-				memcpy( _data, image._data, sizeof(TColorDepth) * width() * rowSize() );
+				memcpy( _data, image._data, sizeof(TColorDepth) * height() * rowSize() );
 			}
 		}
 
@@ -264,14 +261,14 @@ namespace Template_Image
 		}
 
 	private:
-		TColorDepth * _data;
-
 		uint32_t _width;
 		uint32_t _height;
 
-		uint8_t _colorCount;
-		uint8_t _alignment;
+		uint8_t  _colorCount;
+		uint8_t  _alignment;
 		uint32_t _rowSize;
+
+		TColorDepth * _data;
 	};
 };
 

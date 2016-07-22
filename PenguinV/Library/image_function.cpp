@@ -252,7 +252,7 @@ namespace Image_Function
 			const uint8_t * outXEnd = outX + width;
 
 			for( ; outX != outXEnd; ++outX, ++inX )
-				(*outX) = (255u) ^ (*inX);
+				(*outX) = ~(*inX);
 		}
 
 	}
