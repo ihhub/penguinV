@@ -233,12 +233,11 @@ namespace Blob_Detection
 				double _cos = cos(angle);
 				double _sin = sin(angle);
 
-				const std::vector < double > contourXTemp( _contourX.begin(), _contourX.end() );
 				std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
-				std::vector < double >::const_iterator xRotated   = contourXTemp.begin();
-				std::vector < double >::iterator yRotated         = contourYTemp.begin();
-				std::vector < double >::const_iterator endRotated = contourXTemp.end();
+				std::vector < uint32_t >::const_iterator xRotated   = _contourX.begin();
+				std::vector < double >::iterator yRotated           = contourYTemp.begin();
+				std::vector < uint32_t >::const_iterator endRotated = _contourX.end();
 
 				for( ; xRotated != endRotated; ++xRotated, ++yRotated )
 					(*yRotated) = (*xRotated - startPoint.x) * _sin + (*yRotated - startPoint.y) * _cos;

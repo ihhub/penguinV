@@ -56,7 +56,7 @@ namespace Blob_Detection
 	struct BlobParameters
 	{
 		Parameter < double   > circularity; // this parameter will be 1 if blob is ideal circle and will be less than 1 if it's not
-											// closer this value to 1 --> blob shapre is closer to circle
+											// closer this value to 1 --> blob shape is closer to circle
 		Parameter < double   > elongation;  // some people call it inertia: ratio of the minor and major axes of a blob
 		Parameter < uint32_t > height;      // height, in pixels
 		Parameter < double   > length;      // maximum distance between any of 2 pixels, in pixels
@@ -210,7 +210,7 @@ namespace Blob_Detection
 	public:
 		// Sorting blobs by criteria will be in alphabet order
 		// Example: length and width creteria enabled. So first all blobs would be removed if they are not fitting length criterion
-		// and then all reamin blobs would be removed if they are not fitting for with criterion
+		// and then all reamin blobs would be removed if they are not fitting for width criterion
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
 											 uint8_t threshold = 1 );
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
@@ -231,7 +231,7 @@ namespace Blob_Detection
 
 		// before calling this function make sure that you have more than 1 found blob!
 		const BlobInfo & getBestBlob(SortCriterion criterion) const;
-		// sorting all found blob in ascending order
+		// sorting all found blobs in ascending order
 		void sort(SortCriterion criterion);
 
 	protected:
