@@ -7,9 +7,19 @@ Declares template class for BITMAP images and concrete classes:
 - ***ColorImage*** - RGB (color) bitmap image.    
 
 **Bitmap_Operation**    
-Declared classes to load, save and store raw data of BITMAP images:
+Declares classes to load, save and store raw data of BITMAP images:
 - ***BitmapRawImage*** - class for raw data storage of bitmaps.
 - ***RawImageTemplate*** - template class for raw data storage of any image type.    
+
+**Blob_Detection**    
+Contains structures and classes related to blob detection methods:
+- ***Area*** - structure representing an area of interest (rectangle): {[left, top], [right, bottom]}.
+- ***BlobDetection*** - main class what performs blob detection on input image.
+- ***BlobInfo*** - structure what holds all information related to individual found blob. This is a result of BlobDetection class inspection.
+- ***BlobParameters*** - structure for containing parameters (criteria) needed for blob detection.
+- ***Parameter*** - template structure representing single parameter used in BlobParameters structure.
+- ***Point*** - structure what represents a mathematical point in 2D space [x, y].
+- ***Value*** - template structure used in BlobInfo structure to contain information about one found blob parameter.    
 
 **Image_Function**    
 Contains all basic functions for image processing for any CPU. 
