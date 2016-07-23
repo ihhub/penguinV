@@ -178,6 +178,9 @@ namespace Thread_Pool
 		if( taskCount == 0 )
 			throw imageException("Try to add zero tasks to thread pool");
 
+		if( threadCount() == 0 )
+			throw imageException("No threads in thread pool");
+
 		_taskInfo.lock();
 
 		_task.insert( _task.end(), taskCount, provider );
@@ -236,7 +239,6 @@ namespace Thread_Pool
 
 			_worker.clear();
 		}
-
 	}
 
 	void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
@@ -264,8 +266,7 @@ namespace Thread_Pool
 
 				pool->_taskInfo.unlock();
 
-				try
-				{
+				try {
 					task->_taskRun( false );
 				} catch(...) {
 					// here should be some logging code stating about exception

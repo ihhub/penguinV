@@ -1,6 +1,6 @@
 # penguinV
 
-PenguinV is a simple and easy to use C++ image processing library. It was designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
+PenguinV is a simple and easy to use C++ image processing library. It is designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
 
 - compact
 - multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
@@ -30,11 +30,12 @@ To compile the source code your compiler must support at least **C++ 11** versio
 #How to install    
 We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include header files and compile them as a part of your application.
 
-#How to compile example    
+#How to compile an example    
 Open README.md file in any of example folders and follow instructions.
 
 #Multithreading support    
-Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.
+Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.    
+Almost all basic functions already have embedded multithreading support. Please refer to **Function_Pool** namespace and example_function_pool example.
 
 #SSE/AVX support    
 We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0. This should be your part of code. We made this to support cross-platform code.

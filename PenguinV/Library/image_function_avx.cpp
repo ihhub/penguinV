@@ -55,7 +55,6 @@ namespace Image_Function_Avx
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) & (*in2X);
-
 			}
 		
 		}
@@ -137,7 +136,6 @@ namespace Image_Function_Avx
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) | (*in2X);
-
 			}
 		
 		}
@@ -219,7 +217,6 @@ namespace Image_Function_Avx
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) ^ (*in2X);
-
 			}
 		
 		}

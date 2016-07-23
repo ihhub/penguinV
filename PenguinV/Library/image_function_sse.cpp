@@ -1,6 +1,5 @@
-
-#include "image_function_sse.h"
 #include <emmintrin.h>
+#include "image_function_sse.h"
 
 namespace Image_Function_Sse
 {
@@ -54,7 +53,6 @@ namespace Image_Function_Sse
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) & (*in2X);
-
 			}
 		
 		}
@@ -137,7 +135,6 @@ namespace Image_Function_Sse
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) | (*in2X);
-
 			}
 		
 		}
@@ -220,7 +217,6 @@ namespace Image_Function_Sse
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) ^ (*in2X);
-
 			}
 		
 		}

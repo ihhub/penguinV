@@ -31,7 +31,7 @@ namespace Thread_Pool
 										// parameter in function is task ID. This function is called by thread pool
 		void _wait();
 
-		bool _ready() const;
+		bool _ready() const; // this function tells whether class is able to use thread pool
 
 	private:
 		std::atomic < size_t > _taskCount;          // number of tasks to do
@@ -46,7 +46,7 @@ namespace Thread_Pool
 		void _taskRun(bool skip); // function called by thread pool
 	};
 
-	// Concrete class of task provider in case when thread pool is not singleton
+	// Concrete class of task provider for case when thread pool is not singleton
 	class TaskProvider : public AbstractTaskProvider
 	{
 	public:
@@ -79,12 +79,12 @@ namespace Thread_Pool
 		void resize( size_t threads );
 		size_t threadCount() const;
 
-		void add( AbstractTaskProvider * provider, size_t taskCount );
-		void remove( AbstractTaskProvider * provider );
-		bool empty();
-		void clear();
+		void add( AbstractTaskProvider * provider, size_t taskCount ); // add tasks for specific provider
+		void remove( AbstractTaskProvider * provider ); // remove all tasks related to specific provider
+		bool empty(); // tells whether thread pool contains any tasks
+		void clear(); // remove all tasks from thread pool
 
-		void stop();
+		void stop(); // stop all working threads
 	private:
 		std::vector < std::thread > _worker; // an array of worker threads
 		std::mutex _runTask;                 // mutex to synchronize threads
@@ -109,7 +109,7 @@ namespace Thread_Pool
 	class ThreadPoolMonoid
 	{
 	public:
-		static ThreadPool & instance()
+		static ThreadPool & instance() // function returns a reference to global (static) thread pool
 		{
 			static ThreadPoolMonoid provider; // one and only monoid object
 
@@ -134,7 +134,6 @@ namespace Thread_Pool
 		virtual ~TaskProviderSingleton();
 
 		TaskProviderSingleton & operator=(const TaskProviderSingleton &);
-
 	protected:
 		void _run( size_t taskCount );
 	};
