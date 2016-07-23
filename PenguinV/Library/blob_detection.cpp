@@ -556,46 +556,46 @@ namespace Blob_Detection
 			std::for_each( foundBlob.begin(), foundBlob.end(), [](BlobInfo & info) { info._getCircularity(); } );
 
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.circularity.checkMaximum && info.circularity() > parameter.circularity.maximum ||
-					   parameter.circularity.checkMinimum && info.circularity() < parameter.circularity.minimum; } );
+				return (parameter.circularity.checkMaximum && info.circularity() > parameter.circularity.maximum) ||
+					   (parameter.circularity.checkMinimum && info.circularity() < parameter.circularity.minimum); } );
 		}
 
 		if( parameter.elongation.checkMaximum || parameter.elongation.checkMinimum ) {
 			std::for_each( foundBlob.begin(), foundBlob.end(), [](BlobInfo & info) { info._getElongation(); } );
 
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.elongation.checkMaximum && info.elongation() > parameter.elongation.maximum ||
-					   parameter.elongation.checkMinimum && info.elongation() < parameter.elongation.minimum; } );
+				return (parameter.elongation.checkMaximum && info.elongation() > parameter.elongation.maximum) ||
+					   (parameter.elongation.checkMinimum && info.elongation() < parameter.elongation.minimum); } );
 		}
 
 		if( parameter.height.checkMaximum || parameter.height.checkMinimum ) {
 			std::for_each( foundBlob.begin(), foundBlob.end(), [](BlobInfo & info) { info._getHeight(); } );
 
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.height.checkMaximum && info.height() > parameter.height.maximum ||
-					   parameter.height.checkMinimum && info.height() < parameter.height.minimum; } );
+				return (parameter.height.checkMaximum && info.height() > parameter.height.maximum) ||
+					   (parameter.height.checkMinimum && info.height() < parameter.height.minimum); } );
 		}
 
 		if( parameter.length.checkMaximum || parameter.length.checkMinimum ) {
 			std::for_each( foundBlob.begin(), foundBlob.end(), [](BlobInfo & info) { info._getLength(); } );
 
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.length.checkMaximum && info.length() > parameter.length.maximum ||
-					   parameter.length.checkMinimum && info.length() < parameter.length.minimum; } );
+				return (parameter.length.checkMaximum && info.length() > parameter.length.maximum) ||
+					   (parameter.length.checkMinimum && info.length() < parameter.length.minimum); } );
 		}
 
 		if( parameter.size.checkMaximum || parameter.size.checkMinimum ) {
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.size.checkMaximum && info.size() > parameter.size.maximum ||
-					   parameter.size.checkMinimum && info.size() < parameter.size.minimum; } );
+				return (parameter.size.checkMaximum && info.size() > parameter.size.maximum) ||
+					   (parameter.size.checkMinimum && info.size() < parameter.size.minimum); } );
 		}
 
 		if( parameter.width.checkMaximum || parameter.width.checkMinimum ) {
 			std::for_each( foundBlob.begin(), foundBlob.end(), [](BlobInfo & info) { info._getWidth(); } );
 
 			foundBlob.remove_if( [&](const BlobInfo & info) {
-				return parameter.width.checkMaximum && info.width() > parameter.width.maximum ||
-					   parameter.width.checkMinimum && info.width() < parameter.width.minimum; } );
+				return (parameter.width.checkMaximum && info.width() > parameter.width.maximum) ||
+					   (parameter.width.checkMinimum && info.width() < parameter.width.minimum); } );
 		}
 
 		// prepare data for output
