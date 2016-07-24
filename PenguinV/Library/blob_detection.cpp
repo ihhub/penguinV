@@ -383,21 +383,17 @@ namespace Blob_Detection
 
 				uint32_t relativePosition = static_cast<uint32_t>( mapValueX - imageMap.begin() );
 
-				std::queue < uint32_t > queueX;
-				std::queue < uint32_t > queueY;
-
-				queueX.push( relativePosition % mapWidth );
-				queueY.push( relativePosition / mapWidth );
+				foundBlob.back()._tempPointX.push_back( relativePosition % mapWidth );
+				foundBlob.back()._tempPointY.push_back( relativePosition / mapWidth );
 
 				*mapValueX = 2;
 
-				while( !queueX.empty() ) {
-				
-					uint32_t xMap = queueX.front();
-					uint32_t yMap = queueY.front();
+				std::list < uint32_t >::iterator xIter = foundBlob.back()._tempPointX.begin();
+				std::list < uint32_t >::iterator yIter = foundBlob.back()._tempPointY.begin();
 
-					queueX.pop();
-					queueY.pop();
+				do {
+					uint32_t xMap = *xIter;
+					uint32_t yMap = *yIter;
 
 					std::vector < uint8_t >::iterator position = imageMap.begin() + yMap * mapWidth + xMap;
 
@@ -406,8 +402,8 @@ namespace Blob_Detection
 					position = position - 1 - mapWidth;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap - 1 );
-							queueY.push( yMap - 1 );
+							foundBlob.back()._tempPointX.push_back( xMap - 1 );
+							foundBlob.back()._tempPointY.push_back( yMap - 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -416,8 +412,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap     );
-							queueY.push( yMap - 1 );
+							foundBlob.back()._tempPointX.push_back( xMap     );
+							foundBlob.back()._tempPointY.push_back( yMap - 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -426,8 +422,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap + 1 );
-							queueY.push( yMap - 1 );
+							foundBlob.back()._tempPointX.push_back( xMap + 1 );
+							foundBlob.back()._tempPointY.push_back( yMap - 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -436,8 +432,8 @@ namespace Blob_Detection
 					position = position - 2 + mapWidth;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap - 1 );
-							queueY.push( yMap     );
+							foundBlob.back()._tempPointX.push_back( xMap - 1 );
+							foundBlob.back()._tempPointY.push_back( yMap     );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -446,8 +442,8 @@ namespace Blob_Detection
 					position = position + 2;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap + 1 );
-							queueY.push( yMap     );
+							foundBlob.back()._tempPointX.push_back( xMap + 1 );
+							foundBlob.back()._tempPointY.push_back( yMap     );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -456,8 +452,8 @@ namespace Blob_Detection
 					position = position - 2 + mapWidth;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap - 1 );
-							queueY.push( yMap + 1 );
+							foundBlob.back()._tempPointX.push_back( xMap - 1 );
+							foundBlob.back()._tempPointY.push_back( yMap + 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -466,8 +462,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap     );
-							queueY.push( yMap + 1 );
+							foundBlob.back()._tempPointX.push_back( xMap     );
+							foundBlob.back()._tempPointY.push_back( yMap + 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
@@ -476,15 +472,12 @@ namespace Blob_Detection
 					++position;
 					if( *(position) > 0 ) {
 						if( *(position) == 1 ) {
-							queueX.push( xMap + 1 );
-							queueY.push( yMap + 1 );
+							foundBlob.back()._tempPointX.push_back( xMap + 1 );
+							foundBlob.back()._tempPointY.push_back( yMap + 1 );
 							*(position) = 2;
 						}
 						++neighbourCount;
 					}
-
-					foundBlob.back()._tempPointX.push_back( xMap );
-					foundBlob.back()._tempPointY.push_back( yMap );
 
 					if( neighbourCount != 8 ) {
 						foundBlob.back()._tempEdgeX.push_back( xMap );
@@ -492,58 +485,58 @@ namespace Blob_Detection
 						*(position - 1 - mapWidth) = 3;
 					}
 
-				}
+					++xIter;
+					++yIter;
+
+				} while( xIter != foundBlob.back()._tempPointX.end() );
 
 				// Now we can extract outer edge points or so called contour points
-				foundBlob.back()._tempContourX.clear();
-				foundBlob.back()._tempContourY.clear();
+				foundBlob.back()._tempContourX.push_back( relativePosition % mapWidth );
+				foundBlob.back()._tempContourY.push_back( relativePosition / mapWidth );
 
-				queueX.push( relativePosition % mapWidth );
-				queueY.push( relativePosition / mapWidth );
+				xIter = foundBlob.back()._tempContourX.begin();
+				yIter = foundBlob.back()._tempContourY.begin();
 
 				*mapValueX = 4;
 
-				while( !queueX.empty() ) {
-				
-					uint32_t xMap = queueX.front();
-					uint32_t yMap = queueY.front();
-
-					queueX.pop();
-					queueY.pop();
+				do {
+					uint32_t xMap = *xIter;
+					uint32_t yMap = *yIter;
 
 					std::vector < uint8_t >::iterator position = imageMap.begin() + yMap * mapWidth + xMap;
 
 					position = position - mapWidth;
 					if( *(position) == 3 ) {
-						queueX.push( xMap     );
-						queueY.push( yMap - 1 );
+						foundBlob.back()._tempContourX.push_back( xMap     );
+						foundBlob.back()._tempContourY.push_back( yMap - 1 );
 						*(position) = 4;
 					}
 
 					position = position - 1 + mapWidth;
 					if( *(position) == 3 ) {
-						queueX.push( xMap - 1 );
-						queueY.push( yMap     );
+						foundBlob.back()._tempContourX.push_back( xMap - 1 );
+						foundBlob.back()._tempContourY.push_back( yMap     );
 						*(position) = 4;
 					}
 
 					position = position + 2;
 					if( *(position) == 3 ) {
-						queueX.push( xMap + 1 );
-						queueY.push( yMap     );
+						foundBlob.back()._tempContourX.push_back( xMap + 1 );
+						foundBlob.back()._tempContourY.push_back( yMap     );
 						*(position) = 4;
 					}
 
 					position = position - 1 + mapWidth;
 					if( *(position) == 3 ) {
-						queueX.push( xMap     );
-						queueY.push( yMap + 1 );
+						foundBlob.back()._tempContourX.push_back( xMap     );
+						foundBlob.back()._tempContourY.push_back( yMap + 1 );
 						*(position) = 4;
 					}
 
-					foundBlob.back()._tempContourX.push_back( xMap );
-					foundBlob.back()._tempContourY.push_back( yMap );
-				}
+					++xIter;
+					++yIter;
+
+				} while( xIter != foundBlob.back()._tempContourX.end() );
 
 			}
 
@@ -620,22 +613,22 @@ namespace Blob_Detection
 		switch(criterion) {
 			case CIRCULARITY :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.circularity() > blob2.circularity(); } ) );
+											{ return blob1.circularity() < blob2.circularity(); } ) );
 			case ELONGATION :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.elongation() > blob2.elongation(); } ) );
+											{ return blob1.elongation() < blob2.elongation(); } ) );
 			case HEIGHT :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.height() > blob2.height(); } ) );
+											{ return blob1.height() < blob2.height(); } ) );
 			case LENGTH :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.length() > blob2.length(); } ) );
+											{ return blob1.length() < blob2.length(); } ) );
 			case SIZE :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.size() > blob2.size(); } ) );
+											{ return blob1.size() < blob2.size(); } ) );
 			case WIDTH :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
-											{ return blob1.width() > blob2.width(); } ) );
+											{ return blob1.width() < blob2.width(); } ) );
 			default:
 				throw imageException( "Bad criterion for blob finding" );
 		}
