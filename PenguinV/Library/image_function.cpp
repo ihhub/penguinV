@@ -349,7 +349,7 @@ namespace Image_Function
 
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
 	{
-		if( image.empty() || x > image.width() || y > image.height() )
+		if( image.empty() || x >= image.width() || y >= image.height() )
 			throw imageException("Bad input parameters in image function");
 
 		return *(image.data() + y * image.rowSize() + x);
@@ -793,10 +793,31 @@ namespace Image_Function
 
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
 	{
-		if( image.empty() || x > image.width() || y > image.height() )
+		if( image.empty() || x >= image.width() || y >= image.height() )
 			throw imageException("Bad input parameters in image function");
 
 		*(image.data() + y * image.rowSize() + x) = value;
+	}
+
+	void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
+	{
+		if( image.empty() || X.empty() || Y.empty() || X.size() != Y.size() )
+			throw imageException("Bad input parameters in image function");
+
+		uint32_t rowSize = image.rowSize();
+		uint8_t * data   = image.data();
+
+		std::vector < uint32_t >::const_iterator x   = X.begin();
+		std::vector < uint32_t >::const_iterator y   = Y.begin();
+		std::vector < uint32_t >::const_iterator end = X.end();
+
+		for( ; x != end; ++x, ++y ) {
+			if( *x >= image.width() || *y >= image.height() )
+				throw imageException("Bad input parameters in image function");
+
+			*(data + (*y) * rowSize + (*x)) = value;
+		}
+
 	}
 
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

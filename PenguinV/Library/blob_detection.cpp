@@ -8,9 +8,9 @@ namespace
 	template <typename Data>
 	void listToVector( std::list <Data> & l, std::vector <Data> & v, uint32_t offset )
 	{
-		std::vector <Data> temp ( l.begin(), l.end() );
+		std::vector < Data > temp ( l.begin(), l.end() );
 
-		std::for_each( temp.begin(), temp.end(), [&](uint32_t & value) { value = value + offset - 1;  } ); // note that we extract value 1!
+		std::for_each( temp.begin(), temp.end(), [&](uint32_t & value) { value = value + offset - 1; } ); // note that we extract value 1!
 
 		std::swap(v, temp);
 		l.clear();
@@ -138,6 +138,11 @@ namespace Blob_Detection
 	uint32_t BlobInfo::width() const
 	{
 		return _width.value;
+	}
+
+	bool BlobInfo::isSolid() const
+	{
+		return _contourX.size() < _edgeX.size();
 	}
 
 	void BlobInfo::_getArea()
@@ -662,7 +667,7 @@ namespace Blob_Detection
 											{ return blob1.width() > blob2.width(); } );
 				break;
 			default:
-				throw imageException( "Bad criterion for blob finding" );
+				throw imageException( "Bad criterion for blob sorting" );
 		}
 	}
 }

@@ -172,6 +172,8 @@ namespace Blob_Detection
 		size_t   size() const;        // total number of pixels in blob
 		uint32_t width();             // width of blob
 		uint32_t width() const;       // width of blob
+
+		bool isSolid() const;         // true if blob does not have inner edge points
 	private:
 		std::vector < uint32_t > _pointX;
 		std::vector < uint32_t > _pointY;

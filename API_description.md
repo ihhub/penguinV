@@ -1459,6 +1459,27 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void SetPixel(
+		Image & image,
+		const std::vector < uint32_t > & X,
+		const std::vector < uint32_t > & Y,
+		uint8_t value
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Sets intensity at specified pixel positions.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;X - an array of pixel positions by X axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;Y - an array of pixel positions by Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;value - intensity value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
 - **Subtract** [_Namespaces: **Image_Function, Function_Pool**_]
 
