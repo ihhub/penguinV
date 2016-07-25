@@ -267,7 +267,7 @@ namespace Blob_Detection
 	{
 		if( !_pointY.empty() && !_height.found ) {
 			_height.value = *( std::max_element( _contourY.begin(), _contourY.end() ) ) -
-				*( std::min_element( _contourY.begin(), _contourY.end() ) );
+							*( std::min_element( _contourY.begin(), _contourY.end() ) );
 
 			_height.found = true;
 		}
@@ -314,7 +314,7 @@ namespace Blob_Detection
 	{
 		if( !_contourX.empty() && !_width.found ) {
 			_width.value = *( std::max_element( _contourX.begin(), _contourX.end() ) ) -
-				*( std::min_element( _contourX.begin(), _contourX.end() ) );
+						   *( std::min_element( _contourX.begin(), _contourX.end() ) );
 
 			_width.found = true;
 		}

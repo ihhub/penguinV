@@ -5,6 +5,8 @@
 
 namespace Bitmap_Operation
 {
+	const static uint8_t BITMAP_ALIGNMENT = 4; // this is standard alignment of bitmap images
+
 	// Seems like very complicated structure but we did this to avoid compiler specific code for bitmap structures :(
 	template <typename valueType>
 	void get_value( const std::vector < uint8_t > & data, size_t & offset, valueType & value )
@@ -75,7 +77,7 @@ namespace Bitmap_Operation
 			, biClrUsed      (0)  // Number of colours used
 			, biClrImportant (0)  // important colours
 			, overallSize    (40) // real size of this structure for bitmap format
-		{};
+		{ };
 
 		uint32_t biSize;
 		int32_t  biWidth;
@@ -173,8 +175,8 @@ namespace Bitmap_Operation
 			return BitmapRawImage();
 
 		uint32_t rowSize = static_cast<uint32_t>(info.biWidth) * static_cast<uint8_t>(info.biBitCount / 8u);
-		if( rowSize % Bitmap_Image::BITMAP_ALIGNMENT != 0 )
-			rowSize = (rowSize / Bitmap_Image::BITMAP_ALIGNMENT + 1) * Bitmap_Image::BITMAP_ALIGNMENT;
+		if( rowSize % BITMAP_ALIGNMENT != 0 )
+			rowSize = (rowSize / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
 		if( length != header.bfOffBits + rowSize * static_cast<uint32_t>(info.biHeight) )
 			return BitmapRawImage();
@@ -202,7 +204,7 @@ namespace Bitmap_Operation
 		}
 
 		raw.allocateImage( static_cast<uint32_t>(info.biWidth), static_cast<uint32_t>(info.biHeight),
-						   static_cast<uint8_t>(info.biBitCount / 8u), Bitmap_Image::BITMAP_ALIGNMENT );
+						   static_cast<uint8_t>(info.biBitCount / 8u), BITMAP_ALIGNMENT );
 
 		size_t dataToRead =  rowSize * static_cast < size_t > (info.biHeight);
 		size_t dataReaded = 0;
@@ -259,8 +261,8 @@ namespace Bitmap_Operation
 		}
 
 		uint32_t lineLength = width * image.colorCount();
-		if( lineLength % Bitmap_Image::BITMAP_ALIGNMENT != 0 )
-			lineLength = (lineLength / Bitmap_Image::BITMAP_ALIGNMENT + 1) * Bitmap_Image::BITMAP_ALIGNMENT;
+		if( lineLength % BITMAP_ALIGNMENT != 0 )
+			lineLength = (lineLength / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
 		BitmapFileHeader header;
 		BitmapInfoHeader info;

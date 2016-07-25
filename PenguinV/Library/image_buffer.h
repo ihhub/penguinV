@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
 #include <algorithm>
+#include <cstdint>
 #include <cstring>
 #include "image_exception.h"
 
@@ -229,6 +229,14 @@ namespace Template_Image
 			}
 		}
 
+		void fill(TColorDepth value)
+		{
+			if( empty() )
+				return;
+
+			memset( data(), value, sizeof(TColorDepth) * height() * rowSize() );
+		}
+
 	protected:
 		void _copy( const ImageTemplate & image )
 		{
@@ -274,8 +282,8 @@ namespace Template_Image
 
 namespace Bitmap_Image
 {
-	const static uint8_t BITMAP_ALIGNMENT = 4;
-
+	const static uint8_t BITMAP_ALIGNMENT = 4; // this is default alignment of Bitmap images
+											   // You can change it for your purposes
 	template <uint8_t bytes = 1>
 	class BitmapImage : public Template_Image::ImageTemplate <uint8_t>
 	{
@@ -373,15 +381,6 @@ namespace Bitmap_Image
 		{
 			return ImageTemplate::alignment();
 		}
-
-		void fill(uint8_t value)
-		{
-			if( empty() )
-				return;
-
-			memset( data(), value, sizeof(uint8_t) * height() * rowSize() );
-		}
-
 	private:
 		void setColorCount(uint8_t colorCount_)
 		{
@@ -394,6 +393,6 @@ namespace Bitmap_Image
 		}
 	};
 
-	typedef BitmapImage < 1 > Image; // gray-scale image
-	typedef BitmapImage < 3 > ColorImage; // RGB image
+	typedef BitmapImage < 1 > Image;      // gray-scale image (1 color [byte])
+	typedef BitmapImage < 3 > ColorImage; // RGB image (3 colors [bytes])
 };

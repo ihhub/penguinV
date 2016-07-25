@@ -401,7 +401,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseAnd( in1, in2, out );
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -439,7 +439,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseOr( in1, in2, out );
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -477,7 +477,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseXor( in1, in2, out );
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -556,7 +556,7 @@ namespace Function_Pool
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
 
-		std::vector < uint32_t > histogram( 256u, 0u );
+		std::vector < uint32_t > histogram;
 
 		Histogram( image, x, y, width, height, histogram );
 
@@ -570,7 +570,7 @@ namespace Function_Pool
 
 	std::vector < uint32_t > Histogram( const Image & image )
 	{
-		std::vector < uint32_t > histogram( 256u, 0u );
+		std::vector < uint32_t > histogram;
 
 		Histogram( image, 0, 0, image.width(), image.height(), histogram );
 
@@ -647,7 +647,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		Maximum( in1, in2, out );
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -685,7 +685,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		Minimum( in1, in2, out );
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -760,7 +760,7 @@ namespace Function_Pool
 
 		Image out( in1.width(), in1.height() );
 
-		Subtract( in1, in2, out );
+		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}

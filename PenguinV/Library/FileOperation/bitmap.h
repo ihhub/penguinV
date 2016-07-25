@@ -208,15 +208,21 @@ namespace Bitmap_Operation
 
 		void _copy(const RawImageTemplate & raw)
 		{
-			if( raw._data != nullptr && _data != nullptr && _rowSize == raw._rowSize && _height == raw._height)
-				memcpy( _data, raw._data, sizeof(TColorDepth) * _rowSize * _height );
-			else
+			if( _rowSize == raw._rowSize && _height == raw._height) {
+				if( raw._data != nullptr && _data != nullptr )
+					memcpy( _data, raw._data, sizeof(TColorDepth) * _rowSize * _height );
+			}
+			else {
 				throw imageException("Invalid raw image to copy");
+			}
 
-			if( raw._pallete != nullptr && _pallete != nullptr && _palleteSize == raw._palleteSize )
-				memcpy( _pallete, raw._pallete, _palleteSize * sizeof(TColorDepth) );
-			else
-				throw imageException("Invalid raw image to copy");
+			if( _palleteSize == raw._palleteSize ) {
+				if( raw._pallete != nullptr && _pallete != nullptr )
+					memcpy( _pallete, raw._pallete, _palleteSize * sizeof(TColorDepth) );
+			}
+			else {
+				throw imageException("Invalid pallete to copy");
+			}
 		}
 	};
 

@@ -85,7 +85,7 @@ namespace Image_Function_Avx
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseAnd( in1, in2, out );
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -166,7 +166,7 @@ namespace Image_Function_Avx
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseOr( in1, in2, out );
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -247,7 +247,7 @@ namespace Image_Function_Avx
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseXor( in1, in2, out );
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}

@@ -42,7 +42,7 @@ namespace Function_Pool
 	void                     Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
 										std::vector < uint32_t > & histogram );
 
-	// ImageInvert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
+	// Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
 	Image Invert( const Image & in );
 	void  Invert( const Image & in, Image & out );
 	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
