@@ -1,5 +1,5 @@
-#include <queue>
 #include <numeric>
+#include <queue>
 #include "blob_detection.h"
 #include "image_function.h"
 
@@ -10,7 +10,7 @@ namespace
 	{
 		std::vector < Data > temp ( l.begin(), l.end() );
 
-		std::for_each( temp.begin(), temp.end(), [&](uint32_t & value) { value = value + offset - 1; } ); // note that we extract value 1!
+		std::for_each( temp.begin(), temp.end(), [&](uint32_t & value) { value = value + offset - 1; } ); // note that we subtract 1!
 
 		std::swap(v, temp);
 		l.clear();
@@ -345,13 +345,13 @@ namespace Blob_Detection
 
 		_blob.clear();
 
-		// Create a map of found pixels:
-		// 0 - no pixel
+		// Create a map of pixels:
+		// 0 - no suitable pixel
 		// 1 - not used pixel
 		// 2 - found pixel
-		// 3 - edge point
-		// 4 - contour point
-		// we make the area by 2 pixels in each direction bigger so we don't need to check borders of map
+		// 3 - edge pixel
+		// 4 - contour pixel
+		// we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
 		std::vector < uint8_t > imageMap( (width + 2) * (height + 2), 0 );
 
 		uint32_t rowSize = image.rowSize();

@@ -147,8 +147,8 @@ namespace Blob_Detection
 	public:
 		friend class BlobDetection;
 
-		const std::vector < uint32_t > & pointX() const;   // returns an array what contains all blob's pixel X positions
-		const std::vector < uint32_t > & pointY() const;   // returns an array what contains all blob's pixel Y positions
+		const std::vector < uint32_t > & pointX() const;   // returns an array what contains all blob's pixel X positions (unsorted)
+		const std::vector < uint32_t > & pointY() const;   // returns an array what contains all blob's pixel Y positions (unsorted)
 		const std::vector < uint32_t > & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
 		const std::vector < uint32_t > & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
 		const std::vector < uint32_t > & edgeX() const;    // returns an array what contains all blob's edge pixel X positions (unsorted)
@@ -210,7 +210,7 @@ namespace Blob_Detection
 	class BlobDetection
 	{
 	public:
-		// Sorting blobs by criteria will be in alphabet order
+		// Sorting blobs will be in alphabet order of sorting criteria
 		// Example: length and width creteria enabled. So first all blobs would be removed if they are not fitting length criterion
 		// and then all reamin blobs would be removed if they are not fitting for width criterion
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
@@ -218,6 +218,7 @@ namespace Blob_Detection
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
 											 BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
 
+		// Retrieve and array of all found blobs
 		const std::vector < BlobInfo > & get() const;
 		std::vector < BlobInfo > & get();
 
@@ -235,7 +236,6 @@ namespace Blob_Detection
 		const BlobInfo & getBestBlob(SortCriterion criterion) const;
 		// sorting all found blobs in ascending order
 		void sort(SortCriterion criterion);
-
 	protected:
 		std::vector < BlobInfo > _blob;
 	};

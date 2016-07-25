@@ -236,7 +236,6 @@ namespace Template_Image
 
 			memset( data(), value, sizeof(TColorDepth) * height() * rowSize() );
 		}
-
 	protected:
 		void _copy( const ImageTemplate & image )
 		{
@@ -267,7 +266,6 @@ namespace Template_Image
 
 			std::swap( _data, image._data );
 		}
-
 	private:
 		uint32_t _width;
 		uint32_t _height;
