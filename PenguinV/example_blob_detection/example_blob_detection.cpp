@@ -104,9 +104,7 @@ void example2()
 		// clear image and draw contour of found blob
 		image.fill( 0 );
 
-		for( size_t i = 0; i < blob.contourX().size(); ++i ) {
-			Image_Function::SetPixel( image, blob.contourX()[i], blob.contourY()[i], 255 );
-		}
+		Image_Function::SetPixel( image, blob.contourX(), blob.contourY(), 255 );
 	}
 
 	//  and directly save result in file
