@@ -147,7 +147,7 @@ namespace Blob_Detection
 
 	void BlobInfo::_getArea()
 	{
-		if( !_pointX.empty() && !_pointY.empty() && !_area.found ) {
+		if( !_contourX.empty() && !_contourY.empty() && !_area.found ) {
 			_area.value.left   = *( std::min_element( _contourX.begin(), _contourX.end() ) );
 			_area.value.right  = *( std::max_element( _contourX.begin(), _contourX.end() ) ) + 1; // note that we add 1
 			_area.value.top    = *( std::min_element( _contourY.begin(), _contourY.end() ) );
@@ -171,7 +171,7 @@ namespace Blob_Detection
 
 	void BlobInfo::_getCircularity()
 	{
-		if( !_pointX.empty() && !_contourX.empty() && !_circularity.found ) {
+		if( !_contourX.empty() && !_circularity.found ) {
 			
 			// this formula doesn't work properly :(
 			//_circularity.value = ( 2 * sqrt(pi * static_cast<double>(size())) ) / static_cast<double>(_contourX.size());
@@ -265,7 +265,7 @@ namespace Blob_Detection
 
 	void BlobInfo::_getHeight()
 	{
-		if( !_pointY.empty() && !_height.found ) {
+		if( !_contourY.empty() && !_height.found ) {
 			_height.value = *( std::max_element( _contourY.begin(), _contourY.end() ) ) -
 							*( std::min_element( _contourY.begin(), _contourY.end() ) );
 
