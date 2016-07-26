@@ -347,6 +347,86 @@ namespace Image_Function
 		image.fill( value );
 	}
 
+	void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				uint32_t width, uint32_t height, bool horizontal, bool vertical )
+	{
+		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		if( !horizontal && !vertical ) {
+			Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		}
+		else {
+			uint32_t rowSizeIn  = in.rowSize();
+			uint32_t rowSizeOut = out.rowSize();
+
+			const uint8_t * inY    = in.data() + startYIn * rowSizeIn + startXIn;
+			const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+			if( horizontal && !vertical ) {
+				uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
+
+				for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+
+					const uint8_t * inX    = inY;
+					uint8_t       * outX   = outY;
+					const uint8_t * inXEnd = inX + width;
+
+					for( ; inX != inXEnd; ++inX, --outX )
+						(*outX) = (*inX);
+				}
+			}
+			else if( !horizontal && vertical ) {
+				uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
+
+				for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
+					memcpy( outY, inY, sizeof(uint8_t) * width );
+			}
+			else {
+				uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
+
+				for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut ) {
+
+					const uint8_t * inX    = inY;
+					uint8_t       * outX   = outY;
+					const uint8_t * inXEnd = inX + width;
+
+					for( ; inX != inXEnd; ++inX, --outX )
+						(*outX) = (*inX);
+				}
+			}
+		}
+	}
+
+	Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+				bool horizontal, bool vertical)
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Flip( in, startXIn, startYIn, out, 0, 0, width, height, horizontal, vertical );
+
+		return out;
+	}
+
+	void  Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+	{
+		ParameterValidation( in, out );
+
+		Flip( in, 0, 0, out, 0, 0, out.width(), out.height(), horizontal, vertical );
+	}
+
+	Image Flip( const Image & in, bool horizontal, bool vertical )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Flip( in, 0, 0, out, 0, 0, out.width(), out.height(), horizontal, vertical );
+
+		return out;
+	}
+
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
 	{
 		if( image.empty() || x >= image.width() || y >= image.height() )

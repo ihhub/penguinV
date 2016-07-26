@@ -60,6 +60,16 @@ namespace Image_Function
 	void Fill( Image & image, uint8_t value );
 	void Fill( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value );
 
+	// Make sure that input parameters such as input and output images are not same!
+	// horizontal flip: left-right --> right-left
+	// vertical flip: top-bottom --> bottom-top
+	Image Flip( const Image & in, bool horizontal, bool vertical );
+	void  Flip( const Image & in, Image & out, bool horizontal, bool vertical );
+	Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+				bool horizontal, bool vertical);
+	void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				uint32_t width, uint32_t height, bool horizontal, bool vertical );
+
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y );
 
 	uint8_t GetThreshold( const Image & image );

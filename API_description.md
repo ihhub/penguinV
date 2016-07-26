@@ -562,6 +562,108 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **Flip** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Flip(
+		const Image & in,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips image in one or both directions and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Flip(
+		const Image & in,
+		Image & out,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips image in one or both directions and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which in a result of image flipping. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Flip(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips an area of [width, height] size on image in one or both directions and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where Bitwise operation NOT is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation NOT is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of image flipping with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Flip(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips an area of [width, height] size on image in one or both directions and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where Bitwise operation NOT is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation NOT is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **GetPixel** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
@@ -818,7 +920,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs bitwise NOT on image at area of [width, height] size and puts result into third image of the same size.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs bitwise NOT on image at area of [width, height] size and puts result into second image of the same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
@@ -1142,7 +1244,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 at area of [width, height] size and puts result into third image of the same size.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 at area of [width, height] size and puts result into second image of the same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
