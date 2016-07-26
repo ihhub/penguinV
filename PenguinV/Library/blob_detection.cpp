@@ -613,25 +613,25 @@ namespace Blob_Detection
 		return _blob;
 	}
 
-	const BlobInfo & BlobDetection::getBestBlob(SortCriterion criterion) const
+	const BlobInfo & BlobDetection::getBestBlob(BlobCriterion criterion) const
 	{
 		switch(criterion) {
-			case CIRCULARITY :
+			case CRITERION_CIRCULARITY :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.circularity() < blob2.circularity(); } ) );
-			case ELONGATION :
+			case CRITERION_ELONGATION :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.elongation() < blob2.elongation(); } ) );
-			case HEIGHT :
+			case CRITERION_HEIGHT :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.height() < blob2.height(); } ) );
-			case LENGTH :
+			case CRITERION_LENGTH :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.length() < blob2.length(); } ) );
-			case SIZE :
+			case CRITERION_SIZE :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.size() < blob2.size(); } ) );
-			case WIDTH :
+			case CRITERION_WIDTH :
 				return *( std::max_element( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.width() < blob2.width(); } ) );
 			default:
@@ -639,30 +639,30 @@ namespace Blob_Detection
 		}
 	}
 
-	void BlobDetection::sort(SortCriterion criterion)
+	void BlobDetection::sort(BlobCriterion criterion)
 	{
 		switch(criterion) {
-			case CIRCULARITY :
+			case CRITERION_CIRCULARITY :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.circularity() > blob2.circularity(); } );
 				break;
-			case ELONGATION :
+			case CRITERION_ELONGATION :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.elongation() > blob2.elongation(); } );
 				break;
-			case HEIGHT :
+			case CRITERION_HEIGHT :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.height() > blob2.height(); } );
 				break;
-			case LENGTH :
+			case CRITERION_LENGTH :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.length() > blob2.length(); } );
 				break;
-			case SIZE :
+			case CRITERION_SIZE :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.size() > blob2.size(); } );
 				break;
-			case WIDTH :
+			case CRITERION_WIDTH :
 				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
 											{ return blob1.width() > blob2.width(); } );
 				break;

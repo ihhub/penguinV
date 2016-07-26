@@ -211,31 +211,31 @@ namespace Blob_Detection
 	{
 	public:
 		// Sorting blobs will be in alphabet order of sorting criteria
-		// Example: length and width creteria enabled. So first all blobs would be removed if they are not fitting length criterion
+		// Example: length and width criteria enabled. So first all blobs would be removed if they are not fitting length criterion
 		// and then all reamin blobs would be removed if they are not fitting for width criterion
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
 											 uint8_t threshold = 1 );
 		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
 											 BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
 
-		// Retrieve and array of all found blobs
+		// Retrieve an array of all found blobs
 		const std::vector < BlobInfo > & get() const;
 		std::vector < BlobInfo > & get();
 
-		enum SortCriterion
+		enum BlobCriterion
 		{
-			CIRCULARITY,
-			ELONGATION,
-			HEIGHT,
-			LENGTH,
-			SIZE,
-			WIDTH
+			CRITERION_CIRCULARITY,
+			CRITERION_ELONGATION,
+			CRITERION_HEIGHT,
+			CRITERION_LENGTH,
+			CRITERION_SIZE,
+			CRITERION_WIDTH
 		};
 
 		// before calling this function make sure that you have more than 1 found blob!
-		const BlobInfo & getBestBlob(SortCriterion criterion) const;
+		const BlobInfo & getBestBlob(BlobCriterion criterion) const;
 		// sorting all found blobs in ascending order
-		void sort(SortCriterion criterion);
+		void sort(BlobCriterion criterion);
 	protected:
 		std::vector < BlobInfo > _blob;
 	};
