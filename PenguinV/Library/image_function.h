@@ -116,6 +116,14 @@ namespace Image_Function
 	void                     ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
 												std::vector < uint32_t > & projection );
 
+	// Image resizing (scaling) is based on nearest-neighbour interpolation method
+	Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut );
+	void  Resize( const Image & in, Image & out );
+	Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				  uint32_t widthOut, uint32_t heightOut );
+	void  Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
+
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
 	void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
 

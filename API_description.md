@@ -1495,6 +1495,102 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **Resize** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Resize(
+		const Image & in,
+		uint32_t widthOut,
+		uint32_t heightOut
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) an image to [widthOut, heightOut] size and returns result image of the scaled size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthOut - width of output image    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of output image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Resize(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) one image to second image with (probably) different size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - second image as a result of resizing    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Resize(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t widthIn,
+		uint32_t heightIn,
+		uint32_t widthOut,
+		uint32_t heightOut
+		);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) image area of [width, height] size to [widthOut, heightOut] size and returns result image of the scaled size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthIn - width of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightIn - height of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthOut - width of image area to what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Resize(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t widthIn,
+		uint32_t heightIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t widthOut,
+		uint32_t heightOut
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) image area of [width, height] size to [widthOut, heightOut] size of second image.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthIn - width of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightIn - height of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthOut - width of image area to what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image what contains a result of resizing    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Save** [_Namespaces: **Bitmap_Operation**_]
 	
 	##### Syntax:

@@ -871,6 +871,67 @@ namespace Image_Function
 		return projection;
 	}
 
+	void  Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+	{
+		ParameterValidation( in,  startXIn,  startYIn,  widthIn,  heightIn );
+		ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
+
+		uint32_t idY = 0;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+
+			const uint8_t * inX = inY + (idY * heightIn / heightOut) * rowSizeIn;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + widthOut;
+
+			uint32_t idX = 0;
+
+			for( ; outX != outXEnd; ++outX, ++idX )
+				(*outX) = *(inX + idX * widthIn / widthOut);
+		}
+	}
+
+	Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				  uint32_t widthOut, uint32_t heightOut )
+	{
+		ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
+
+		Image out( widthOut, heightOut );
+
+		Resize( in, startXIn, startYIn, widthIn, heightIn, out, 0, 0, widthOut, heightOut );
+
+		return out;
+	}
+
+	void  Resize( const Image & in, Image & out )
+	{
+		ParameterValidation( in );
+		ParameterValidation( out );
+
+		Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
+	{
+		ParameterValidation( in );
+
+		Image out( widthOut, heightOut );
+
+		Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, widthOut, heightOut );
+
+		return out;
+	}
+
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
 	{
 		if( image.empty() || x >= image.width() || y >= image.height() )
