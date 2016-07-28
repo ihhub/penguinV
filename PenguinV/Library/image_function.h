@@ -147,4 +147,12 @@ namespace Image_Function
 	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold );
 	void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 					 uint32_t width, uint32_t height, uint8_t threshold );
+
+	// Swap columns and rows in input image. It is equivalent to 90 degree rotation
+	// Output image (area) must be [height, width] compare to original [width, height]
+	Image Transpose( const Image & in );
+	void  Transpose( const Image & in, Image & out );
+	Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void  Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height );
 };

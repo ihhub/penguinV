@@ -1106,4 +1106,60 @@ namespace Image_Function
 
 		return out;
 	}
+	
+	void  Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in,  startXIn,  startYIn,  width,  height );
+		ParameterValidation( out, startXOut, startYOut, height, width  );
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
+
+			const uint8_t * inY = inX;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for( ; outX != outXEnd; ++outX, inY += rowSizeIn )
+				(*outX) = *(inY);
+		}
+	}
+
+	Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out(height, width);
+
+		Transpose( in, startXIn, startYIn, out, 0, 0, in.width(), in.height() );
+
+		return out;
+	}
+
+	void  Transpose( const Image & in, Image & out )
+	{
+		ParameterValidation( in );
+		ParameterValidation( out );
+
+		Transpose( in, 0, 0, out, 0, 0, in.width(), in.height() );
+	}
+
+	Image Transpose( const Image & in )
+	{
+		ParameterValidation( in );
+
+		Image out(in.height(), in.width());
+
+		Transpose( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+		return out;
+	}
 };

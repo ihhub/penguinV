@@ -1543,7 +1543,7 @@ All images in function parameter list must have width and height greater than 0 
 		uint32_t heightIn,
 		uint32_t widthOut,
 		uint32_t heightOut
-		);
+	);
 	```
 	**Description:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) image area of [width, height] size to [widthOut, heightOut] size and returns result image of the scaled size.
@@ -1580,13 +1580,15 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
-	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;widthIn - width of image area from what image will be resized    
 	&nbsp;&nbsp;&nbsp;&nbsp;heightIn - height of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transpose    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;widthOut - width of image area to what image will be resized    
 	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - an image what contains a result of resizing    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -1919,6 +1921,92 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **Transpose** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Transpose(
+		const Image & in
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Swaps columns and rows in input image {of [width, height] size} and returns result image {of the [height, width] size}.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image       
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image {of [height, width] size} which is a result of image (matrix) transpose. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Transpose(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Swaps columns and rows in first image {of [width, height] size} and puts result into second image {of the [height, width] size}.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - second image as a result of transpose    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Transpose(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Swaps columns and rows in image area of [width, height] size and returns result image of the [height, width] size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area       
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [height, width] size which is a result of image (matrix) transpose. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Transpose(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Swaps columns and rows in first image {of [width, height] size} and puts result into second image of the [height, width] size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transpose    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where transpose operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where transpose operation is performed    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
