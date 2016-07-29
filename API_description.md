@@ -935,6 +935,54 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **IsEqual** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	bool IsEqual(
+		const Image & in1,
+		const Image & in2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Compares two images with same size byte by byte and returns true if both images contain same pixel intensities (values).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	bool IsEqual(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Compares two image areas with same [width, height] size byte by byte and returns true if both images areas contain same pixel intensities (values).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where comparison is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where comparison is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception imageException is raised.
+	
 - **Load** [_Namespaces: **Bitmap_Operation**_]
 	
 	##### Syntax:

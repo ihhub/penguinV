@@ -599,6 +599,41 @@ namespace Image_Function
 
 		return out;
 	}
+
+	bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		uint32_t rowSize1  = in1.rowSize();
+		uint32_t rowSize2 = in2.rowSize();
+
+		const uint8_t * in1Y = in1.data()  + startY1  * rowSize1  + startX1;
+		const uint8_t * in2Y = in2.data()  + startY2  * rowSize2  + startX2;
+
+		const uint8_t * in1YEnd = in1Y + height * rowSize1;
+
+		for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
+
+			const uint8_t * in1X = in1Y;
+			const uint8_t * in2X = in2Y;
+			const uint8_t * in1XEnd = in1X + width;
+
+			for( ; in1X != in1XEnd; ++in1X, ++in2X ) {
+				if( (*in1X) != (*in2X) )
+					return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool IsEqual( const Image & in1, const Image & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+	}
 	
 	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
