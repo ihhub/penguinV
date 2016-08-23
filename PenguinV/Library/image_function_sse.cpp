@@ -54,7 +54,6 @@ namespace Image_Function_Sse
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) & (*in2X);
 			}
-		
 		}
 	}
 
@@ -124,7 +123,6 @@ namespace Image_Function_Sse
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_or_si128( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-
 			if( nonSseWidth > 0 ) {
 
 				const uint8_t * in1X = in1Y + totalSseWidth;
@@ -136,7 +134,6 @@ namespace Image_Function_Sse
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) | (*in2X);
 			}
-		
 		}
 	}
 
@@ -218,7 +215,6 @@ namespace Image_Function_Sse
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) ^ (*in2X);
 			}
-		
 		}
 	}
 
@@ -298,9 +294,7 @@ namespace Image_Function_Sse
 				for( ; outX != outXEnd; ++outX, ++inX )
 					(*outX) = ~(*inX);
 			}
-
 		}
-
 	}
 
 	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
@@ -333,7 +327,7 @@ namespace Image_Function_Sse
 	}
 
 	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
 		if (width < 16u) {
@@ -368,7 +362,6 @@ namespace Image_Function_Sse
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_max_epu8( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-
 			if( nonSseWidth > 0 ) {
 
 				const uint8_t * in1X = in1Y + totalSseWidth;
@@ -384,7 +377,6 @@ namespace Image_Function_Sse
 						(*outX) = (*in2X);
 				}
 			}
-		
 		}
 	}
 
@@ -419,7 +411,7 @@ namespace Image_Function_Sse
 	}
 
 	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
 		if (width < 16u) {
@@ -454,7 +446,6 @@ namespace Image_Function_Sse
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_min_epu8( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-
 			if( nonSseWidth > 0 ) {
 
 				const uint8_t * in1X = in1Y + totalSseWidth;
@@ -470,7 +461,6 @@ namespace Image_Function_Sse
 						(*outX) = (*in2X);
 				}
 			}
-		
 		}
 	}
 
@@ -505,7 +495,7 @@ namespace Image_Function_Sse
 	}
 
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
 		if (width < 16u) {
@@ -557,7 +547,6 @@ namespace Image_Function_Sse
 						(*outX) = (*in1X) - (*in2X);
 				}
 			}
-		
 		}
 	}
 
@@ -647,9 +636,7 @@ namespace Image_Function_Sse
 					for( ; outX != outXEnd; ++outX, ++inX )
 						(*outX) = (*inX) < threshold ? 0 : 255;
 				}
-		
 			}
-
 		}
 		else {
 			uint32_t rowSizeOut = out.rowSize();
@@ -660,7 +647,6 @@ namespace Image_Function_Sse
 			for( ; outY != outYEnd; outY += rowSizeOut ) 
 				memset( outY, 255u, sizeof(uint8_t) * width );
 		}
-
 	}
 
 	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )

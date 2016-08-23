@@ -347,8 +347,8 @@ namespace Image_Function
 		image.fill( value );
 	}
 
-	void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-				uint32_t width, uint32_t height, bool horizontal, bool vertical )
+	void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+			   uint32_t width, uint32_t height, bool horizontal, bool vertical )
 	{
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -409,7 +409,7 @@ namespace Image_Function
 		return out;
 	}
 
-	void  Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+	void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
 	{
 		ParameterValidation( in, out );
 
@@ -492,9 +492,7 @@ namespace Image_Function
 					maximumSigma = sigma;
 					threshold = static_cast < uint8_t >(i);
 				}
-
 			}
-
 		}
 	}
 
@@ -545,8 +543,8 @@ namespace Image_Function
 		return histogram;
 	}
 
-	void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-				  uint32_t width, uint32_t height )
+	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				 uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -568,7 +566,6 @@ namespace Image_Function
 			for( ; outX != outXEnd; ++outX, ++inX )
 				(*outX) = ~(*inX);
 		}
-
 	}
 
 	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
@@ -582,7 +579,7 @@ namespace Image_Function
 		return out;
 	}
 
-	void  Invert( const Image & in, Image & out )
+	void Invert( const Image & in, Image & out )
 	{
 		ParameterValidation( in, out );
 
@@ -658,13 +655,8 @@ namespace Image_Function
 
 			const uint8_t * outXEnd = outX + width;
 
-			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-				
-				if( (*in2X) < (*in1X) )
-					(*outX) = (*in1X);
-				else
-					(*outX) = (*in2X);
-			}
+			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+				(*outX) = (*in2X) < (*in1X) ? (*in1X) : (*in2X);
 		}
 	}
 
@@ -721,13 +713,8 @@ namespace Image_Function
 
 			const uint8_t * outXEnd = outX + width;
 
-			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-				
-				if( (*in2X) > (*in1X) )
-					(*outX) = (*in1X);
-				else
-					(*outX) = (*in2X);
-			}
+			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+				(*outX) = (*in2X) > (*in1X) ? (*in1X) : (*in2X);
 		}
 	}
 
@@ -761,8 +748,8 @@ namespace Image_Function
 		return out;
 	}
 	
-	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-					 uint32_t width, uint32_t height )
+	void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -809,7 +796,6 @@ namespace Image_Function
 				for( ; inX != inXEnd; ++inX, ++outX )
 					(*outX) = static_cast < uint8_t >( ( (*inX) - minimum ) * correction + 0.5);
 			}
-
 		}
 	}
 
@@ -824,7 +810,7 @@ namespace Image_Function
 		return out;
 	}
 
-	void  Normalize( const Image & in, Image & out )
+	void Normalize( const Image & in, Image & out )
 	{
 		ParameterValidation( in, out );
 
@@ -880,7 +866,6 @@ namespace Image_Function
 					(*data) += (*imageX);
 			}
 		}
-		
 	}
 
 	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
@@ -906,8 +891,8 @@ namespace Image_Function
 		return projection;
 	}
 
-	void  Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+	void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
 	{
 		ParameterValidation( in,  startXIn,  startYIn,  widthIn,  heightIn );
 		ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
@@ -948,7 +933,7 @@ namespace Image_Function
 		return out;
 	}
 
-	void  Resize( const Image & in, Image & out )
+	void Resize( const Image & in, Image & out )
 	{
 		ParameterValidation( in );
 		ParameterValidation( out );
@@ -988,12 +973,11 @@ namespace Image_Function
 		std::vector < uint32_t >::const_iterator end = X.end();
 
 		for( ; x != end; ++x, ++y ) {
-			if( *x >= image.width() || *y >= image.height() )
+			if( (*x) >= image.width() || (*y) >= image.height() )
 				throw imageException("Bad input parameters in image function");
 
 			*(data + (*y) * rowSize + (*x)) = value;
 		}
-
 	}
 
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -1019,13 +1003,8 @@ namespace Image_Function
 
 			const uint8_t * outXEnd = outX + width;
 
-			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-				if( (*in2X) > (*in1X) )
-					(*outX) = 0;
-				else
-					(*outX) = (*in1X) - (*in2X);
-			}
-		
+			for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+				(*outX) = (*in2X) > (*in1X) ? 0 : (*in1X) - (*in2X);		
 		}
 	}
 
@@ -1065,7 +1044,7 @@ namespace Image_Function
 
 		uint32_t rowSize = image.rowSize();
 
-		const uint8_t * imageY = image.data() + y * rowSize + x;
+		const uint8_t * imageY    = image.data() + y * rowSize + x;
 		const uint8_t * imageYEnd = imageY + height * rowSize;
 
 		uint32_t sum = 0;
@@ -1110,7 +1089,6 @@ namespace Image_Function
 			for( ; outX != outXEnd; ++outX, ++inX )
 				(*outX) = (*inX) < threshold ? 0 : 255;
 		}
-
 	}
 
 	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
@@ -1142,8 +1120,8 @@ namespace Image_Function
 		return out;
 	}
 	
-	void  Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-					 uint32_t width, uint32_t height )
+	void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in,  startXIn,  startYIn,  width,  height );
 		ParameterValidation( out, startXOut, startYOut, height, width  );
@@ -1179,7 +1157,7 @@ namespace Image_Function
 		return out;
 	}
 
-	void  Transpose( const Image & in, Image & out )
+	void Transpose( const Image & in, Image & out )
 	{
 		ParameterValidation( in );
 		ParameterValidation( out );

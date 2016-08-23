@@ -68,7 +68,6 @@ namespace Template_Image
 			_alignment  = image._alignment;
 
 			if( image._data != nullptr ) {
-
 				_data = new TColorDepth [_height * _rowSize];
 
 				memcpy( _data, image._data, sizeof(TColorDepth) * _height * _rowSize );
@@ -84,9 +83,8 @@ namespace Template_Image
 			, _colorCount(1)
 			, _alignment (1)
 			, _rowSize   (0)
+			, _data      (nullptr)
 		{
-			_data = nullptr;
-
 			_swap( image );
 		}
 
@@ -105,9 +103,6 @@ namespace Template_Image
 				_data = new TColorDepth [_height * _rowSize];
 
 				memcpy( _data, image._data, sizeof(TColorDepth) * _height * _rowSize );
-			}
-			else {
-				_data = nullptr;
 			}
 
 			return (*this);
