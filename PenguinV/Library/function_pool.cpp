@@ -110,15 +110,18 @@ namespace Function_Pool
 	struct InputInfo
 	{
 		InputInfo()
-			: threshold(0)
+			: threshold           (0)
+			, horizontalProjection(false)
 		{ }
 
 		uint8_t threshold; // for Threshold() function
+		bool horizontalProjection; // for ProjectionProfile() function
 	};
 	// This structure holds output data for some specific functions
 	struct OutputInfo
 	{
-		std::vector < std::vector < uint32_t > > histogram; // for Histogram() function
+		std::vector < std::vector < uint32_t > > histogram;  // for Histogram() function
+		std::vector < std::vector < uint32_t > > projection; // for ProjectionProfile() function
 
 		void resize(size_t count)
 		{
@@ -127,24 +130,35 @@ namespace Function_Pool
 
 		void getHistogram(std::vector <uint32_t> & histogram_ )
 		{
-			if( histogram.empty() )
-				throw imageException("Output histogram is empty");
+			_getArray( histogram, histogram_ );
+		}
 
-			histogram_ = histogram.front();
+		void getProjection(std::vector <uint32_t> & projection_ )
+		{
+			_getArray( projection, projection_ );
+		}
 
-			if( std::any_of( histogram.begin(), histogram.end(), [&](std::vector <uint32_t> & h) { return h.size() != histogram_.size(); } ) )
+	private:
+		void _getArray( std::vector < std::vector < uint32_t > > & input, std::vector < uint32_t > & output ) const
+		{
+			if( input.empty() )
+				throw imageException("Output array is empty");
+
+			output = input.front();
+
+			if( std::any_of( input.begin(), input.end(), [&output](std::vector <uint32_t> & v) { return v.size() != output.size(); } ) )
 				throw imageException("Returned histograms are not the same size");
 
-			for( size_t i = 1; i < histogram.size(); ++i ) {
-				std::vector < uint32_t >::iterator       output = histogram_.begin();
-				std::vector < uint32_t >::const_iterator input  = histogram[i].begin();
-				std::vector < uint32_t >::const_iterator end    = histogram[i].end();
+			for( size_t i = 1; i < input.size(); ++i ) {
+				std::vector < uint32_t >::iterator       out = output.begin();
+				std::vector < uint32_t >::const_iterator in  = input[i].begin();
+				std::vector < uint32_t >::const_iterator end = input[i].end();
 
-				for( ; input != end; ++input, ++output )
-					*output += *input;
+				for( ; in != end; ++in, ++out )
+					*out += *in;
 			}
 
-			histogram.clear(); // to guarantee that no one can use it second time
+			input.clear(); // to guarantee that no one can use it second time
 		}
 	};
 
@@ -214,6 +228,16 @@ namespace Function_Pool
 			_process( _Normalize );
 		}
 
+		void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+								std::vector < uint32_t > & projection )
+		{
+			_setup( image, x, y, width, height );
+			_dataOut.resize(_infoIn1->_size());
+			_dataIn.horizontalProjection = horizontal;
+			_process( _ProjectionProfile );
+			_dataOut.getProjection( projection );
+		}
+
 		void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
@@ -240,6 +264,7 @@ namespace Function_Pool
 			_Maximum,
 			_Minimum,
 			_Normalize,
+			_ProjectionProfile,
 			_Subtract,
 			_Threshold
 		};
@@ -290,6 +315,11 @@ namespace Function_Pool
 				Image_Function::Normalize(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _ProjectionProfile:
+				Image_Function::ProjectionProfile(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.horizontalProjection,
+											_dataOut.projection[taskId] );
 				break;
 			case _Subtract:
 				Image_Function::Subtract(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -725,6 +755,37 @@ namespace Function_Pool
 		Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
+	}
+
+	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+							std::vector < uint32_t > & projection )
+	{
+		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+
+		ptr->ProjectionProfile(image, x, y, width, height, horizontal, projection );
+	}
+
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	{
+		std::vector < uint32_t > projection;
+
+		ProjectionProfile( image, x, y, width, height, horizontal, projection );
+
+		return projection;
+	}
+
+	void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+	{
+		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+	}
+
+	std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+	{
+		std::vector < uint32_t > projection;
+
+		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+
+		return projection;
 	}
 
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

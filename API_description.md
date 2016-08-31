@@ -1453,7 +1453,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ProjectionProfile** [_Namespaces: **Image_Function**_]
+- **ProjectionProfile** [_Namespaces: **Image_Function, Function_Pool**_]
 
 	##### Syntax:
 	```cpp

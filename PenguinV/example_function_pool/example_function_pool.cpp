@@ -41,8 +41,8 @@ int main()
 		std::for_each( frame.begin(), frame.end(),
 			[]( Bitmap_Image::Image & image ) {
 
-			if( rand() % 10 == 0 ) { // at least ~6 of 30 images would have objects
-				// generate random place of object, in our case is retangle
+			if( rand() % 10 == 0 ) { // at least ~6 of 60 images would have objects
+				// generate random place of object, in our case is rectangle
 				uint32_t x      = static_cast<uint32_t>(rand()) % (image.width()  * 2 / 3);
 				uint32_t y      = static_cast<uint32_t>(rand()) % (image.height() * 2 / 3);
 				uint32_t width  = static_cast<uint32_t>(rand()) % (image.width()  - x);
@@ -100,6 +100,7 @@ double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > sta
 
 void basic(const std::vector < Bitmap_Image::Image > & frame)
 {
+	// Prepare image map
 	Bitmap_Image::Image map( frame.front().width(), frame.front().height() );
 	map.fill( 0 );
 
@@ -128,6 +129,7 @@ void multithreaded(const std::vector < Bitmap_Image::Image > & frame)
 	// okay we setup 4 thread in global thread pool
 	Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
 
+	// Prepare image map
 	Bitmap_Image::Image map( frame.front().width(), frame.front().height() );
 	map.fill( 0 );
 
