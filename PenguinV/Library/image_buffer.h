@@ -29,7 +29,7 @@ namespace Template_Image
 			, _alignment (1)
 			, _rowSize   (0)
 			, _data      (nullptr)
-		{			
+		{
 			resize( width_, height_ );
 		}
 
@@ -40,7 +40,7 @@ namespace Template_Image
 			, _alignment (1)
 			, _rowSize   (0)
 			, _data      (nullptr)
-		{			
+		{
 			setColorCount( colorCount_ );
 			resize( width_, height_ );
 		}
@@ -160,7 +160,7 @@ namespace Template_Image
 
 		void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
 		{
-			if( width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
+			if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
 				throw imageException("Invalid image assignment parameters");
 
 			clear();

@@ -58,7 +58,6 @@ namespace Function_Pool
 					startY[i] = previousValue;
 					previousValue = startY[i] + height[i];
 				}
-
 			}
 			else { // process by columns
 				count = maximumXTaskCount;
@@ -178,7 +177,7 @@ namespace Function_Pool
 		}
 
 		void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+						Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
 			_setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 			_process( _BitwiseOr );
@@ -208,14 +207,14 @@ namespace Function_Pool
 		}
 
 		void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
 			_setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 			_process( _Maximum );
 		}
 
 		void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
 			_setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 			_process( _Minimum );
@@ -239,7 +238,7 @@ namespace Function_Pool
 		}
 
 		void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+					   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
 			_setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 			_process( _Subtract );
@@ -356,7 +355,7 @@ namespace Function_Pool
 
 			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
 
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x  , y  , width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, count ) );
 		}
 
 		void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height )
@@ -368,7 +367,7 @@ namespace Function_Pool
 
 			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
 
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, inX , inY  , width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, count ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, count ) );
 		}
 
@@ -407,7 +406,7 @@ namespace Function_Pool
 	}
 
 	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				  uint32_t width, uint32_t height )
+					  uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -437,7 +436,7 @@ namespace Function_Pool
 	}
 
 	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
 
@@ -445,7 +444,7 @@ namespace Function_Pool
 	}
 
 	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				  uint32_t width, uint32_t height )
+					 uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -483,7 +482,7 @@ namespace Function_Pool
 	}
 
 	Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				  uint32_t width, uint32_t height )
+					  uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
