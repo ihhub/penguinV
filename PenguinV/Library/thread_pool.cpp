@@ -99,7 +99,6 @@ namespace Thread_Pool
 			_taskCount          = taskCount;
 			_givenTaskCount     = 0;
 			_completedTaskCount = 0;
-			_running            = true;
 	
 			_threadPool->add( this, _taskCount );
 		}
@@ -180,6 +179,8 @@ namespace Thread_Pool
 
 		if( threadCount() == 0 )
 			throw imageException("No threads in thread pool");
+
+		provider->_running = true;
 
 		_taskInfo.lock();
 
@@ -308,7 +309,6 @@ namespace Thread_Pool
 			_taskCount          = taskCount;
 			_givenTaskCount     = 0;
 			_completedTaskCount = 0;
-			_running            = true;
 	
 			ThreadPoolMonoid::instance().add( this, _taskCount );
 		}

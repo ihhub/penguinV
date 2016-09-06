@@ -28,10 +28,12 @@ namespace Function_Pool
 		void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
 		{
 			uint32_t maximumXTaskCount = width_  / cacheSize;
+			if( maximumXTaskCount == 0 )
+				maximumXTaskCount = width_;
 			if( maximumXTaskCount > count )
 				maximumXTaskCount = count;
 
-			uint32_t maximumYTaskCount = height_ / cacheSize;
+			uint32_t maximumYTaskCount = height_;
 			if( maximumYTaskCount > count )
 				maximumYTaskCount = count;
 
@@ -47,7 +49,7 @@ namespace Function_Pool
 				std::fill( width.begin() , width.end() , width_ );
 
 				uint32_t remainValue = height_ % count;
-				uint32_t previousValue = 0;
+				uint32_t previousValue = y;
 
 				for( size_t i = 0; i < startX.size(); ++i ) {
 					height[i] = height_ / count;
@@ -71,7 +73,7 @@ namespace Function_Pool
 				std::fill( height.begin(), height.end(), height_ );
 
 				uint32_t remainValue = width_ % count;
-				uint32_t previousValue = 0;
+				uint32_t previousValue = x;
 
 				for( size_t i = 0; i < startX.size(); ++i ) {
 					width[i] = width_ / count;
@@ -345,6 +347,14 @@ namespace Function_Pool
 		InputInfo  _dataIn;  // structure that hold some unique input parameters
 		OutputInfo _dataOut; // structure that hold some unique output values
 
+		uint32_t threadCount()
+		{
+			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+			if (count == 0)
+				throw imageException("Thread Pool is not initialized.");
+			return count;
+		}
+
 		// functions for setting up all parameters needed for multithreading and to validate input parameters
 		void _setup( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 		{
@@ -353,7 +363,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+			uint32_t count = threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, count ) );
 		}
@@ -365,7 +375,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+			uint32_t count = threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, count ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, count ) );
@@ -379,7 +389,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+			uint32_t count = threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, count ) );
 			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, count ) );
