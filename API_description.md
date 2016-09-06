@@ -849,7 +849,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **Invert** [_Namespaces: **Image_Function, Image_Function_Sse, Function_Pool**_]
+- **Invert** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
 	```cpp
@@ -1017,7 +1017,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Maximum** [_Namespaces: **Image_Function, Image_Function_Sse, Function_Pool**_]
+- **Maximum** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
 	```cpp
@@ -1119,7 +1119,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 	
-- **Minimum** [_Namespaces: **Image_Function, Image_Function_Sse, Function_Pool**_]
+- **Minimum** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
 	```cpp
@@ -1729,7 +1729,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **Subtract** [_Namespaces: **Image_Function, Image_Function_Sse, Function_Pool**_]
+- **Subtract** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
 	```cpp
@@ -1871,7 +1871,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
 	
-- **Threshold** [_Namespaces: **Image_Function, Image_Function_Sse, Function_Pool**_]
+- **Threshold** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
 	```cpp
