@@ -16,8 +16,8 @@ namespace Bitmap_Operation
 			, _data       (nullptr) // pointer to image data
 			, _freeData   (true)    // flag to clear data if no conversion to image made
 			, _pallete    (nullptr) // pointer to image pallete
-			, _palleteSize(0)      // the size of pallete elements
-			, _freePallete(true)   // flag to clear pallete
+			, _palleteSize(0)       // the size of pallete elements
+			, _freePallete(true)    // flag to clear pallete
 		{ }
 
 		RawImageTemplate(const RawImageTemplate & raw)
@@ -151,7 +151,6 @@ namespace Bitmap_Operation
 				}
 			}
 		}
-
 	protected:
 		uint32_t _width;
 		uint32_t _height;
@@ -320,7 +319,6 @@ namespace Bitmap_Operation
 				Image_Function::Convert( grayImage, image );
 			}
 		}
-
 	};
 	
 	// Below functions support only Bitmap_Image::Image and Bitmap_Image::ColorImage classes
