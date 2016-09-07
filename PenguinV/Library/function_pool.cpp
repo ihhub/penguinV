@@ -29,7 +29,7 @@ namespace Function_Pool
 		{
 			uint32_t maximumXTaskCount = width_  / cacheSize;
 			if( maximumXTaskCount == 0 )
-				maximumXTaskCount = width_;
+				maximumXTaskCount = 1;
 			if( maximumXTaskCount > count )
 				maximumXTaskCount = count;
 
@@ -563,7 +563,6 @@ namespace Function_Pool
 		double maximumSigma = -1;
 
 		for(uint16_t i = 0; i < 256; ++i) {
-
 			pixelCountTemp += histogram[i];
 
 			if(pixelCountTemp > 0 && pixelCountTemp != pixelCount) {
@@ -578,9 +577,7 @@ namespace Function_Pool
 					maximumSigma = sigma;
 					threshold = static_cast < uint8_t >(i);
 				}
-
 			}
-
 		}
 	}
 

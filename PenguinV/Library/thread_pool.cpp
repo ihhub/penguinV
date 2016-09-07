@@ -1,6 +1,6 @@
 #include <algorithm>
-#include "thread_pool.h"
 #include "image_exception.h"
+#include "thread_pool.h"
 
 namespace Thread_Pool
 {
@@ -41,7 +41,10 @@ namespace Thread_Pool
 			size_t completedTasks = (++_completedTaskCount);
 
 			if( completedTasks == _taskCount ) {
+				_completion.lock();
 				_running = false;
+				_completion.unlock();
+				
 				_waiting.notify_one();
 			}
 		}
@@ -141,7 +144,6 @@ namespace Thread_Pool
 
 			std::unique_lock < std::mutex > _mutexLock( _creation );
 			_completeCreation.wait( _mutexLock, [&] { return _threadsCreated; } );
-
 		}
 		else if( threads < threadCount() ) {
 			_taskInfo.lock();
@@ -163,7 +165,6 @@ namespace Thread_Pool
 
 				_taskInfo.unlock();
 			}
-		
 		}
 	}
 
@@ -180,7 +181,9 @@ namespace Thread_Pool
 		if( threadCount() == 0 )
 			throw imageException("No threads in thread pool");
 
+		provider->_completion.lock();
 		provider->_running = true;
+		provider->_completion.unlock();
 
 		_taskInfo.lock();
 
@@ -245,13 +248,15 @@ namespace Thread_Pool
 	void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
 	{
 		if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
+			pool->_creation.lock();
 			pool->_threadsCreated = true;
+			pool->_creation.unlock();
 			pool->_completeCreation.notify_one();
 		}
 
 		while( !pool->_exit[threadId] ) {
 
-			std::unique_lock < std::mutex > _mutexLock( pool->_runTask );
+			std::unique_lock < std::mutex > _mutexLock( pool->_taskInfo );
 			pool->_waiting.wait( _mutexLock, [&] { return pool->_run[threadId]; } );
 			_mutexLock.unlock();
 
@@ -278,7 +283,6 @@ namespace Thread_Pool
 
 				pool->_taskInfo.unlock();
 			}
-		
 		}
 
 		--(pool->_runningThreadCount);

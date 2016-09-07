@@ -87,7 +87,6 @@ namespace Thread_Pool
 		void stop(); // stop all working threads
 	private:
 		std::vector < std::thread > _worker; // an array of worker threads
-		std::mutex _runTask;                 // mutex to synchronize threads
 		std::vector < uint8_t > _run;        // indicator for threads to run tasks
 		std::vector < uint8_t > _exit;       // indicator for threads to close themselfs
 		std::condition_variable _waiting;    // condition variable for synchronization of threads
