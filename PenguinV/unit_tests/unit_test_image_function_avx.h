@@ -6,43 +6,46 @@ namespace Unit_Test
 {
 	void addTests_Image_Function_Avx(UnitTestFramework & framework); // function what adds all below tests to framework
 
-	bool BitwiseAndAvx2ParametersTest();
-	bool BitwiseAndAvx3ParametersTest();
-	bool BitwiseAndAvx8ParametersTest();
-	bool BitwiseAndAvx11ParametersTest();
+	namespace Image_Function_Avx_Test
+	{
+		bool BitwiseAnd2ParametersTest();
+		bool BitwiseAnd3ParametersTest();
+		bool BitwiseAnd8ParametersTest();
+		bool BitwiseAnd11ParametersTest();
 
-	bool BitwiseOrAvx2ParametersTest();
-	bool BitwiseOrAvx3ParametersTest();
-	bool BitwiseOrAvx8ParametersTest();
-	bool BitwiseOrAvx11ParametersTest();
+		bool BitwiseOr2ParametersTest();
+		bool BitwiseOr3ParametersTest();
+		bool BitwiseOr8ParametersTest();
+		bool BitwiseOr11ParametersTest();
 
-	bool BitwiseXorAvx2ParametersTest();
-	bool BitwiseXorAvx3ParametersTest();
-	bool BitwiseXorAvx8ParametersTest();
-	bool BitwiseXorAvx11ParametersTest();
+		bool BitwiseXor2ParametersTest();
+		bool BitwiseXor3ParametersTest();
+		bool BitwiseXor8ParametersTest();
+		bool BitwiseXor11ParametersTest();
 
-	bool InvertAvx1ParameterTest();
-	bool InvertAvx2ParametersTest();
-	bool InvertAvx5ParametersTest();
-	bool InvertAvx8ParametersTest();
+		bool Invert1ParameterTest();
+		bool Invert2ParametersTest();
+		bool Invert5ParametersTest();
+		bool Invert8ParametersTest();
 
-	bool MaximumAvx2ParametersTest();
-	bool MaximumAvx3ParametersTest();
-	bool MaximumAvx8ParametersTest();
-	bool MaximumAvx11ParametersTest();
+		bool Maximum2ParametersTest();
+		bool Maximum3ParametersTest();
+		bool Maximum8ParametersTest();
+		bool Maximum11ParametersTest();
 
-	bool MinimumAvx2ParametersTest();
-	bool MinimumAvx3ParametersTest();
-	bool MinimumAvx8ParametersTest();
-	bool MinimumAvx11ParametersTest();
+		bool Minimum2ParametersTest();
+		bool Minimum3ParametersTest();
+		bool Minimum8ParametersTest();
+		bool Minimum11ParametersTest();
 
-	bool SubtractAvx2ParametersTest();
-	bool SubtractAvx3ParametersTest();
-	bool SubtractAvx8ParametersTest();
-	bool SubtractAvx11ParametersTest();
+		bool Subtract2ParametersTest();
+		bool Subtract3ParametersTest();
+		bool Subtract8ParametersTest();
+		bool Subtract11ParametersTest();
 
-	bool ThresholdAvx2ParametersTest();
-	bool ThresholdAvx3ParametersTest();
-	bool ThresholdAvx6ParametersTest();
-	bool ThresholdAvx9ParametersTest();
+		bool Threshold2ParametersTest();
+		bool Threshold3ParametersTest();
+		bool Threshold6ParametersTest();
+		bool Threshold9ParametersTest();
+	};
 };

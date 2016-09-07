@@ -4,9 +4,9 @@
 
 namespace Unit_Test
 {
-	void addTests_Image_Function(UnitTestFramework & framework); // function what adds all below tests to framework
+	void addTests_Function_Pool(UnitTestFramework & framework); // function what adds all below tests to framework
 
-	namespace Image_Function_Test
+	namespace Function_Pool_Test
 	{
 		bool BitwiseAnd2ParametersTest();
 		bool BitwiseAnd3ParametersTest();
@@ -22,10 +22,6 @@ namespace Unit_Test
 		bool BitwiseXor3ParametersTest();
 		bool BitwiseXor8ParametersTest();
 		bool BitwiseXor11ParametersTest();
-
-		bool Copy2ParametersTest();
-		bool Copy5ParametersTest();
-		bool Copy8ParametersTest();
 
 		bool Invert1ParameterTest();
 		bool Invert2ParametersTest();
@@ -51,8 +47,5 @@ namespace Unit_Test
 		bool Threshold3ParametersTest();
 		bool Threshold6ParametersTest();
 		bool Threshold9ParametersTest();
-
-		bool Sum1ParameterTest();
-		bool Sum5ParametersTest();
 	};
 };

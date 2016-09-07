@@ -6,43 +6,46 @@ namespace Unit_Test
 {
 	void addTests_Image_Function_Sse(UnitTestFramework & framework); // function what adds all below tests to framework
 
-	bool BitwiseAndSse2ParametersTest();
-	bool BitwiseAndSse3ParametersTest();
-	bool BitwiseAndSse8ParametersTest();
-	bool BitwiseAndSse11ParametersTest();
+	namespace Image_Function_Sse_Test
+	{
+		bool BitwiseAnd2ParametersTest();
+		bool BitwiseAnd3ParametersTest();
+		bool BitwiseAnd8ParametersTest();
+		bool BitwiseAnd11ParametersTest();
 
-	bool BitwiseOrSse2ParametersTest();
-	bool BitwiseOrSse3ParametersTest();
-	bool BitwiseOrSse8ParametersTest();
-	bool BitwiseOrSse11ParametersTest();
+		bool BitwiseOr2ParametersTest();
+		bool BitwiseOr3ParametersTest();
+		bool BitwiseOr8ParametersTest();
+		bool BitwiseOr11ParametersTest();
 
-	bool BitwiseXorSse2ParametersTest();
-	bool BitwiseXorSse3ParametersTest();
-	bool BitwiseXorSse8ParametersTest();
-	bool BitwiseXorSse11ParametersTest();
+		bool BitwiseXor2ParametersTest();
+		bool BitwiseXor3ParametersTest();
+		bool BitwiseXor8ParametersTest();
+		bool BitwiseXor11ParametersTest();
 
-	bool InvertSse1ParameterTest();
-	bool InvertSse2ParametersTest();
-	bool InvertSse5ParametersTest();
-	bool InvertSse8ParametersTest();
+		bool Invert1ParameterTest();
+		bool Invert2ParametersTest();
+		bool Invert5ParametersTest();
+		bool Invert8ParametersTest();
 
-	bool MaximumSse2ParametersTest();
-	bool MaximumSse3ParametersTest();
-	bool MaximumSse8ParametersTest();
-	bool MaximumSse11ParametersTest();
+		bool Maximum2ParametersTest();
+		bool Maximum3ParametersTest();
+		bool Maximum8ParametersTest();
+		bool Maximum11ParametersTest();
 
-	bool MinimumSse2ParametersTest();
-	bool MinimumSse3ParametersTest();
-	bool MinimumSse8ParametersTest();
-	bool MinimumSse11ParametersTest();
+		bool Minimum2ParametersTest();
+		bool Minimum3ParametersTest();
+		bool Minimum8ParametersTest();
+		bool Minimum11ParametersTest();
 
-	bool SubtractSse2ParametersTest();
-	bool SubtractSse3ParametersTest();
-	bool SubtractSse8ParametersTest();
-	bool SubtractSse11ParametersTest();
+		bool Subtract2ParametersTest();
+		bool Subtract3ParametersTest();
+		bool Subtract8ParametersTest();
+		bool Subtract11ParametersTest();
 
-	bool ThresholdSse2ParametersTest();
-	bool ThresholdSse3ParametersTest();
-	bool ThresholdSse6ParametersTest();
-	bool ThresholdSse9ParametersTest();
+		bool Threshold2ParametersTest();
+		bool Threshold3ParametersTest();
+		bool Threshold6ParametersTest();
+		bool Threshold9ParametersTest();
+	};
 };

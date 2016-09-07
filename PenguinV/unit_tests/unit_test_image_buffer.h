@@ -6,35 +6,38 @@ namespace Unit_Test
 {
 	void addTests_Image_Buffer(UnitTestFramework & framework); // function what adds all below tests to framework
 
-	bool ImageTemplateEmptyConstructorTest();
+	namespace Template_Image_Test
+	{
+		bool EmptyConstructorTest();
 
-	bool ImageTemplateConstructor2ParametersTest();
+		bool Constructor2ParametersTest();
 
-	bool ImageTemplateConstructor3ParametersTest();
+		bool Constructor3ParametersTest();
 
-	bool ImageTemplateConstructor4ParametersTest();
+		bool Constructor4ParametersTest();
 
-	bool ImageTemplateCopyConstructorU8Test();
-	bool ImageTemplateCopyConstructorU16Test();
-	bool ImageTemplateCopyConstructorU32Test();
-	bool ImageTemplateCopyConstructorU64Test();
-	bool ImageTemplateCopyConstructorS8Test();
-	bool ImageTemplateCopyConstructorS16Test();
-	bool ImageTemplateCopyConstructorS32Test();
-	bool ImageTemplateCopyConstructorS64Test();
-	bool ImageTemplateCopyConstructorFTest();
-	bool ImageTemplateCopyConstructorDTest();
+		bool CopyConstructorU8Test();
+		bool CopyConstructorU16Test();
+		bool CopyConstructorU32Test();
+		bool CopyConstructorU64Test();
+		bool CopyConstructorS8Test();
+		bool CopyConstructorS16Test();
+		bool CopyConstructorS32Test();
+		bool CopyConstructorS64Test();
+		bool CopyConstructorFTest();
+		bool CopyConstructorDTest();
 
-	bool ImageTemplateNullAssignmentTest();
+		bool NullAssignmentTest();
 
-	bool ImageTemplateAssignmentOperatorU8Test();
-	bool ImageTemplateAssignmentOperatorU16Test();
-	bool ImageTemplateAssignmentOperatorU32Test();
-	bool ImageTemplateAssignmentOperatorU64Test();
-	bool ImageTemplateAssignmentOperatorS8Test();
-	bool ImageTemplateAssignmentOperatorS16Test();
-	bool ImageTemplateAssignmentOperatorS32Test();
-	bool ImageTemplateAssignmentOperatorS64Test();
-	bool ImageTemplateAssignmentOperatorFTest();
-	bool ImageTemplateAssignmentOperatorDTest();
+		bool AssignmentOperatorU8Test();
+		bool AssignmentOperatorU16Test();
+		bool AssignmentOperatorU32Test();
+		bool AssignmentOperatorU64Test();
+		bool AssignmentOperatorS8Test();
+		bool AssignmentOperatorS16Test();
+		bool AssignmentOperatorS32Test();
+		bool AssignmentOperatorS64Test();
+		bool AssignmentOperatorFTest();
+		bool AssignmentOperatorDTest();
+	};
 };
