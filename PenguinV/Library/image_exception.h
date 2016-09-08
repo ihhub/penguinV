@@ -23,9 +23,8 @@ public:
 		_name = ex._name;
 	}
 
-	~imageException()
+	virtual ~imageException()
 	{
-
 	}
 
 	imageException & operator=(const imageException & ex)
@@ -37,7 +36,7 @@ public:
 		return (*this);
 	}
 
-	const char * what()
+	virtual const char * what() const noexcept
 	{
 		return _name.c_str();
 	}
