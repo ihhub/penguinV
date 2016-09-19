@@ -1,6 +1,13 @@
 #include <emmintrin.h>
 #include "image_function_sse.h"
 
+// This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
+namespace
+{
+	const uint32_t simdSize = 16u;
+	typedef __m128i simd;
+};
+
 namespace Image_Function_Sse
 {
 	// We are not sure that input data is aligned by 16 bytes so we use loadu() functions instead of load()
@@ -10,7 +17,7 @@ namespace Image_Function_Sse
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -27,29 +34,28 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_and_si128( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
+			if( nonSimdWidth > 0 ) {
 
-			if( nonSseWidth > 0 ) {
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
-
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) & (*in2X);
@@ -91,7 +97,7 @@ namespace Image_Function_Sse
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -108,28 +114,28 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_or_si128( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) | (*in2X);
@@ -171,7 +177,7 @@ namespace Image_Function_Sse
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -188,29 +194,28 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_xor_si128( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
+			if( nonSimdWidth > 0 ) {
 
-			if( nonSseWidth > 0 ) {
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
-
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) ^ (*in2X);
@@ -252,7 +257,7 @@ namespace Image_Function_Sse
 				  uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -267,29 +272,29 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
-		__m128i mask = _mm_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+		simd mask = _mm_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+								  0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (inY);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (inY);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++dst )
 				_mm_storeu_si128( dst, _mm_andnot_si128(_mm_loadu_si128(src1), mask) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * inX  = inY  + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++inX )
 					(*outX) = ~(*inX);
@@ -330,7 +335,7 @@ namespace Image_Function_Sse
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -347,28 +352,28 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_max_epu8( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) < (*in1X) )
@@ -381,7 +386,7 @@ namespace Image_Function_Sse
 	}
 
 	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+				   uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -414,7 +419,7 @@ namespace Image_Function_Sse
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -431,28 +436,28 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm_storeu_si128(dst, _mm_min_epu8( _mm_loadu_si128(src1), _mm_loadu_si128(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) > (*in1X) )
@@ -465,7 +470,7 @@ namespace Image_Function_Sse
 	}
 
 	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+				   uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -498,7 +503,7 @@ namespace Image_Function_Sse
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -515,30 +520,30 @@ namespace Image_Function_Sse
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 16u;
-		uint32_t totalSseWidth = sseWidth * 16u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m128i * src1 = reinterpret_cast < const __m128i* > (in1Y);
-			const __m128i * src2 = reinterpret_cast < const __m128i* > (in2Y);
-			__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m128i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst ) {
-				__m128i data = _mm_loadu_si128(src1);
+				simd data = _mm_loadu_si128(src1);
 				_mm_storeu_si128(dst, _mm_sub_epi8(data, _mm_min_epu8( data, _mm_loadu_si128(src2)) ) );
 			}
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) > (*in1X) )
@@ -551,7 +556,7 @@ namespace Image_Function_Sse
 	}
 
 	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+					uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -584,7 +589,7 @@ namespace Image_Function_Sse
 					uint32_t width, uint32_t height, uint8_t threshold )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
-		if (width < 16u) {
+		if (width < simdSize) {
 			Image_Function::Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold);
 			return;
 		}
@@ -603,14 +608,14 @@ namespace Image_Function_Sse
 
 			const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-			uint32_t sseWidth = width / 16u;
-			uint32_t totalSseWidth = sseWidth * 16u;
-			uint32_t nonSseWidth = width - totalSseWidth;
+			uint32_t simdWidth = width / simdSize;
+			uint32_t totalSimdWidth = simdWidth * simdSize;
+			uint32_t nonSimdWidth = width - totalSimdWidth;
 
-			__m128i mask = _mm_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+			simd mask = _mm_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+									  0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
 
-			__m128i compare = _mm_set_epi8(
+			simd compare = _mm_set_epi8(
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
@@ -618,20 +623,20 @@ namespace Image_Function_Sse
 
 			for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 		
-				const __m128i * src1 = reinterpret_cast < const __m128i* > (inY);
-				__m128i       * dst  = reinterpret_cast <       __m128i* > (outY);
+				const simd * src1 = reinterpret_cast < const simd* > (inY);
+				simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-				const __m128i * src1End = src1 + sseWidth;
+				const simd * src1End = src1 + simdWidth;
 
 				for( ; src1 != src1End; ++src1, ++dst )
 					_mm_storeu_si128( dst, _mm_cmpgt_epi8(_mm_xor_si128( _mm_loadu_si128(src1), mask ), compare) );
 
-				if( nonSseWidth > 0 ) {
+				if( nonSimdWidth > 0 ) {
 
-					const uint8_t * inX  = inY  + totalSseWidth;
-					uint8_t       * outX = outY + totalSseWidth;
+					const uint8_t * inX  = inY  + totalSimdWidth;
+					uint8_t       * outX = outY + totalSimdWidth;
 
-					const uint8_t * outXEnd = outX + nonSseWidth;
+					const uint8_t * outXEnd = outX + nonSimdWidth;
 
 					for( ; outX != outXEnd; ++outX, ++inX )
 						(*outX) = (*inX) < threshold ? 0 : 255;

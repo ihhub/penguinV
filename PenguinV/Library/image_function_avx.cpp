@@ -2,6 +2,13 @@
 #include "image_function_avx.h"
 #include "image_function_sse.h"
 
+// This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
+namespace
+{
+	const uint32_t simdSize = 32u;
+	typedef __m256i simd;
+};
+
 namespace Image_Function_Avx
 {
 	// We are not sure that input data is aligned by 16 bytes so we use loadu() functions instead of load()
@@ -13,7 +20,7 @@ namespace Image_Function_Avx
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -30,33 +37,32 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm256_storeu_si256(dst, _mm256_and_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) & (*in2X);
 			}
-		
 		}
 	}
 
@@ -94,7 +100,7 @@ namespace Image_Function_Avx
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -111,33 +117,32 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm256_storeu_si256(dst, _mm256_or_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) | (*in2X);
 			}
-		
 		}
 	}
 
@@ -175,7 +180,7 @@ namespace Image_Function_Avx
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -192,38 +197,37 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm256_storeu_si256(dst, _mm256_xor_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
 					(*outX) = (*in1X) ^ (*in2X);
 			}
-		
 		}
 	}
 
 	Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-						   uint32_t width, uint32_t height )
+					  uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -256,7 +260,7 @@ namespace Image_Function_Avx
 				  uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -271,31 +275,31 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
-		__m256i mask = _mm256_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+		simd mask = _mm256_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (inY);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (inY);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++dst )
 				_mm256_storeu_si256( dst, _mm256_andnot_si256(_mm256_loadu_si256(src1), mask) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * inX  = inY  + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++inX )
 					(*outX) = ~(*inX);
@@ -336,7 +340,7 @@ namespace Image_Function_Avx
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -353,28 +357,28 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm256_storeu_si256(dst, _mm256_max_epu8( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) < (*in1X) )
@@ -387,7 +391,7 @@ namespace Image_Function_Avx
 	}
 
 	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+				   uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -420,7 +424,7 @@ namespace Image_Function_Avx
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -437,28 +441,28 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst )
 				_mm256_storeu_si256(dst, _mm256_min_epu8( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) > (*in1X) )
@@ -471,7 +475,7 @@ namespace Image_Function_Avx
 	}
 
 	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+				   uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -504,7 +508,7 @@ namespace Image_Function_Avx
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -521,30 +525,30 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t sseWidth = width / 32u;
-		uint32_t totalSseWidth = sseWidth * 32u;
-		uint32_t nonSseWidth = width - totalSseWidth;
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 		
-			const __m256i * src1 = reinterpret_cast < const __m256i* > (in1Y);
-			const __m256i * src2 = reinterpret_cast < const __m256i* > (in2Y);
-			__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-			const __m256i * src1End = src1 + sseWidth;
+			const simd * src1End = src1 + simdWidth;
 
 			for( ; src1 != src1End; ++src1, ++src2, ++dst ) {
-				__m256i data = _mm256_loadu_si256(src1);
+				simd data = _mm256_loadu_si256(src1);
 				_mm256_storeu_si256(dst, _mm256_sub_epi8(data, _mm256_min_epu8( data, _mm256_loadu_si256(src2)) ) );
 			}
 
-			if( nonSseWidth > 0 ) {
+			if( nonSimdWidth > 0 ) {
 
-				const uint8_t * in1X = in1Y + totalSseWidth;
-				const uint8_t * in2X = in2Y + totalSseWidth;
-				uint8_t       * outX = outY + totalSseWidth;
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
 
-				const uint8_t * outXEnd = outX + nonSseWidth;
+				const uint8_t * outXEnd = outX + nonSimdWidth;
 
 				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
 					if( (*in2X) > (*in1X) )
@@ -557,7 +561,7 @@ namespace Image_Function_Avx
 	}
 
 	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+					uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -590,14 +594,14 @@ namespace Image_Function_Avx
 					uint32_t width, uint32_t height, uint8_t threshold )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < 32u) {
+		if (width < simdSize) {
 			Image_Function_Sse::Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-		// SSE doesn't have command "great or equal to" so we have 2 situations:
+		// AVX doesn't have command "great or equal to" so we have 2 situations:
 		// when threshold value is 0 and it is not
 		if( threshold > 0 ) {
 
@@ -609,16 +613,16 @@ namespace Image_Function_Avx
 
 			const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-			uint32_t sseWidth = width / 32u;
-			uint32_t totalSseWidth = sseWidth * 32u;
-			uint32_t nonSseWidth = width - totalSseWidth;
+			uint32_t simdWidth = width / simdSize;
+			uint32_t totalSimdWidth = simdWidth * simdSize;
+			uint32_t nonSimdWidth = width - totalSimdWidth;
 
-			__m256i mask = _mm256_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-											0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-											0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-											0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+			simd mask = _mm256_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
 
-			__m256i compare = _mm256_set_epi8(
+			simd compare = _mm256_set_epi8(
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
@@ -630,20 +634,20 @@ namespace Image_Function_Avx
 
 			for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 		
-				const __m256i * src1 = reinterpret_cast < const __m256i* > (inY);
-				__m256i       * dst  = reinterpret_cast <       __m256i* > (outY);
+				const simd * src1 = reinterpret_cast < const simd* > (inY);
+				simd       * dst  = reinterpret_cast <       simd* > (outY);
 
-				const __m256i * src1End = src1 + sseWidth;
+				const simd * src1End = src1 + simdWidth;
 
 				for( ; src1 != src1End; ++src1, ++dst )
 					_mm256_storeu_si256( dst, _mm256_cmpgt_epi8(_mm256_xor_si256( _mm256_loadu_si256(src1), mask ), compare) );
 
-				if( nonSseWidth > 0 ) {
+				if( nonSimdWidth > 0 ) {
 
-					const uint8_t * inX  = inY  + totalSseWidth;
-					uint8_t       * outX = outY + totalSseWidth;
+					const uint8_t * inX  = inY  + totalSimdWidth;
+					uint8_t       * outX = outY + totalSimdWidth;
 
-					const uint8_t * outXEnd = outX + nonSseWidth;
+					const uint8_t * outXEnd = outX + nonSimdWidth;
 
 					for( ; outX != outXEnd; ++outX, ++inX )
 						(*outX) = (*inX) < threshold ? 0 : 255;
