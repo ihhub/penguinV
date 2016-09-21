@@ -166,7 +166,7 @@ namespace Unit_Test
 
 	uint32_t runCount()
 	{
-		return 256;
+		return 1024;
 	}
 
 	uint32_t rowSize(uint32_t width, uint8_t colorCount, uint8_t alignment)

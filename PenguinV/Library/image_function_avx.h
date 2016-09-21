@@ -6,9 +6,11 @@
 
 // These functions contain AXV 2.0 code through Intel Intrinsics functions
 // Functions have totally same results like normal functions but they are faster!
-// You will have speed up compare to normal functions if the width of inspection area is bigger than 32 pixels
+// You will have a speed up compare to normal functions if a width of inspection area is bigger than 32 pixels
 // because 32 pixels is minimum width what AVX 2.0 function can process
 // Anyway you do not need to care about this. Everything is done inside. Just use it if you want to have faster code
+
+// Remember to include all necessary files for SSE too!
 
 namespace Image_Function_Avx
 {

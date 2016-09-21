@@ -82,6 +82,11 @@ namespace Function_Pool
 	void  Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+	// Make sure that your image is not so big to do not have overloaded uint32_t value
+	// For example not bigger than [4096 * 4096] for 32-bit application
+	uint32_t Sum( const Image & image );
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
+
 	// Thresholding works in such way:
 		// if pixel intensity on input image is          less (  < ) than threshold then set pixel intensity on output image as 0
 		// if pixel intensity on input image is equal or more ( >= ) than threshold then set pixel intensity on output image as 255

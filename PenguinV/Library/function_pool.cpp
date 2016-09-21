@@ -123,10 +123,13 @@ namespace Function_Pool
 	{
 		std::vector < std::vector < uint32_t > > histogram;  // for Histogram() function
 		std::vector < std::vector < uint32_t > > projection; // for ProjectionProfile() function
+		std::vector < uint32_t > sum;						 // for Sum() function
 
 		void resize(size_t count)
 		{
 			histogram.resize(count);
+			projection.resize(count);
+			sum.resize(count);
 		}
 
 		void getHistogram(std::vector <uint32_t> & histogram_ )
@@ -139,6 +142,20 @@ namespace Function_Pool
 			_getArray( projection, projection_ );
 		}
 
+		uint32_t getSum()
+		{
+			if( sum.empty() )
+				throw imageException("Output array is empty");
+
+			uint32_t total = 0;
+
+			for( std::vector < uint32_t >::const_iterator value = sum.begin(); value != sum.end(); ++value )
+				total += *value;
+
+			sum.empty(); // to guarantee that no one can use it second time
+
+			return total;
+		}
 	private:
 		void _getArray( std::vector < std::vector < uint32_t > > & input, std::vector < uint32_t > & output ) const
 		{
@@ -246,6 +263,14 @@ namespace Function_Pool
 			_process( _Subtract );
 		}
 
+		uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+		{
+			_setup( image, x, y, width, height );
+			_dataOut.resize(_infoIn1->_size());
+			_process( _Sum );
+			return _dataOut.getSum();
+		}
+
 		void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 						uint32_t width, uint32_t height, uint8_t threshold )
 		{
@@ -267,6 +292,7 @@ namespace Function_Pool
 			_Normalize,
 			_ProjectionProfile,
 			_Subtract,
+			_Sum,
 			_Threshold
 		};
 
@@ -326,6 +352,11 @@ namespace Function_Pool
 				Image_Function::Subtract(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _Sum:
+				_dataOut.sum[taskId] = Image_Function::Sum(
+											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
 			case _Threshold:
@@ -830,6 +861,18 @@ namespace Function_Pool
 		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
+	}
+
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	{
+		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+
+		return ptr->Sum(image, x, y, width, height );
+	}
+
+	uint32_t Sum( const Image & image )
+	{
+		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
 	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,

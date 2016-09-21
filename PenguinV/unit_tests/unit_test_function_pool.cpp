@@ -42,6 +42,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Function_Pool_Test::Subtract8ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Subtract11ParametersTest );
 
+		ADD_TEST( framework, Function_Pool_Test::Sum1ParameterTest );
+		ADD_TEST( framework, Function_Pool_Test::Sum5ParametersTest );
+
 		ADD_TEST( framework, Function_Pool_Test::Threshold2ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Threshold3ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Threshold6ParametersTest );
@@ -653,6 +656,42 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensityValue[0] > intensityValue[1] ? intensityValue[0] - intensityValue[1] : 0 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Sum1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				if( Function_Pool::Sum( input[0] ) != input[0].width() * input[0].height() * intensityValue[0] )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Sum5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( Function_Pool::Sum( input[0], roiX[0], roiY[0], roiWidth, roiHeight ) !=
+					roiWidth * roiHeight * intensityValue[0] )
 					return false;
 			}
 

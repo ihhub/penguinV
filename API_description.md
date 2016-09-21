@@ -1831,7 +1831,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 	
-- **Sum** [_Namespaces: **Image_Function**_]
+- **Sum** [_Namespaces: **Image_Function, Function_Pool**_]
 	
 	##### Syntax:
 	```cpp
