@@ -88,7 +88,7 @@ namespace Function_Pool
 		}
 	};
 
-	struct InputImageInfo : AreaInfo
+	struct InputImageInfo : public AreaInfo
 	{
 		InputImageInfo(const Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count)
 			: AreaInfo( x, y, width_, height_, count)
@@ -98,7 +98,7 @@ namespace Function_Pool
 		const Image & image;
 	};
 
-	struct OutputImageInfo : AreaInfo
+	struct OutputImageInfo : public AreaInfo
 	{
 		OutputImageInfo(Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count)
 			: AreaInfo( x, y, width_, height_, count)
@@ -180,12 +180,14 @@ namespace Function_Pool
 		}
 	};
 
-	class FunctionTask : Thread_Pool::TaskProviderSingleton
+	class FunctionTask : public Thread_Pool::TaskProviderSingleton
 	{
 	public:
 		FunctionTask()
 			: functionId(_none)
 		{ };
+
+		virtual ~FunctionTask() { };
 
 		// this is a list of image functions
 		void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -438,12 +440,22 @@ namespace Function_Pool
 	};
 
 	// The list of global functions
-	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	Image BitwiseAnd( const Image & in1, const Image & in2 )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ptr->BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Image out( in1.width(), in1.height() );
+
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -458,30 +470,28 @@ namespace Function_Pool
 		return out;
 	}
 
-	void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
+	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
-	Image BitwiseAnd( const Image & in1, const Image & in2 )
+	Image BitwiseOr( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
 
-	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	void BitwiseOr( const Image & in1, const Image & in2, Image & out )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in1, in2, out );
 
-		ptr->BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -496,30 +506,28 @@ namespace Function_Pool
 		return out;
 	}
 
-	void BitwiseOr( const Image & in1, const Image & in2, Image & out )
+	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
-	Image BitwiseOr( const Image & in1, const Image & in2 )
+	Image BitwiseXor( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
 
-	void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	void BitwiseXor( const Image & in1, const Image & in2, Image & out )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in1, in2, out );
 
-		ptr->BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -534,89 +542,24 @@ namespace Function_Pool
 		return out;
 	}
 
-	void BitwiseXor( const Image & in1, const Image & in2, Image & out )
+	void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
-	Image BitwiseXor( const Image & in1, const Image & in2 )
+	std::vector < uint32_t > Histogram( const Image & image )
 	{
-		Image_Function::ParameterValidation( in1, in2 );
+		std::vector < uint32_t > histogram;
 
-		Image out( in1.width(), in1.height() );
+		Histogram( image, 0, 0, image.width(), image.height(), histogram );
 
-		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-		return out;
+		return histogram;
 	}
 
-	uint8_t GetThreshold( const Image & image )
+	void Histogram( const Image & image, std::vector < uint32_t > & histogram )
 	{
-		uint8_t threshold;
-
-		GetThreshold( image, 0, 0, image.width(), image.height(), threshold );
-
-		return threshold;
-	}
-
-	void GetThreshold( const Image & image, uint8_t & threshold )
-	{
-		GetThreshold( image, 0, 0, image.width(), image.height(), threshold );
-	}
-	
-	uint8_t GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
-	{
-		uint8_t threshold;
-
-		GetThreshold( image, x, y, width, height, threshold );
-
-		return threshold;
-	}
-
-	void GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t & threshold )
-	{
-		std::vector < uint32_t > histogram = Histogram( image, x, y, width, height );
-
-		threshold = 0;
-
-		// It is well-known Otsu's method to find threshold
-		uint32_t sum = histogram[1];
-		for(uint16_t i = 2; i < 256; ++i)
-			sum  = sum  + i * histogram[i];
-
-		uint32_t sumTemp = 0;
-
-		uint32_t pixelCount     = width * height;
-		uint32_t pixelCountTemp = 0;
-		
-		double maximumSigma = -1;
-
-		for(uint16_t i = 0; i < 256; ++i) {
-			pixelCountTemp += histogram[i];
-
-			if(pixelCountTemp > 0 && pixelCountTemp != pixelCount) {
-				sumTemp += i * histogram[i];
-
-				double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
-				double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
-						    static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
-				double sigma = w1 * (1 - w1) * a * a;
-
-				if(sigma > maximumSigma) {
-					maximumSigma = sigma;
-					threshold = static_cast < uint8_t >(i);
-				}
-			}
-		}
-	}
-
-	void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
-	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
-
-		ptr->Histogram(image, x, y, width, height, histogram );
+		Histogram( image, 0, 0, image.width(), image.height(), histogram );
 	}
 
 	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
@@ -630,44 +573,9 @@ namespace Function_Pool
 		return histogram;
 	}
 
-	void Histogram( const Image & image, std::vector < uint32_t > & histogram )
+	void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
 	{
-		Histogram( image, 0, 0, image.width(), image.height(), histogram );
-	}
-
-	std::vector < uint32_t > Histogram( const Image & image )
-	{
-		std::vector < uint32_t > histogram;
-
-		Histogram( image, 0, 0, image.width(), image.height(), histogram );
-
-		return histogram;
-	}
-
-	void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-				  uint32_t width, uint32_t height )
-	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
-
-		ptr->Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-	}
-
-	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-	{
-		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-		Image out( width, height );
-
-		Invert( in, startXIn, startYIn, out, 0, 0, width, height );
-
-		return out;
-	}
-
-	void  Invert( const Image & in, Image & out )
-	{
-		Image_Function::ParameterValidation( in, out );
-
-		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().Histogram(image, x, y, width, height, histogram );
 	}
 
 	Image Invert( const Image & in )
@@ -681,12 +589,46 @@ namespace Function_Pool
 		return out;
 	}
 
-	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	void  Invert( const Image & in, Image & out )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in, out );
 
-		ptr->Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Invert( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
+	void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				  uint32_t width, uint32_t height )
+	{
+		FunctionTask().Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+	}
+
+	Image Maximum( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Maximum( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -701,30 +643,28 @@ namespace Function_Pool
 		return out;
 	}
 
-	void Maximum( const Image & in1, const Image & in2, Image & out )
+	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
-	Image Maximum( const Image & in1, const Image & in2 )
+	Image Minimum( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
 
-	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	void Minimum( const Image & in1, const Image & in2, Image & out )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in1, in2, out );
 
-		ptr->Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -739,48 +679,10 @@ namespace Function_Pool
 		return out;
 	}
 
-	void Minimum( const Image & in1, const Image & in2, Image & out )
+	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image Minimum( const Image & in1, const Image & in2 )
-	{
-		Image_Function::ParameterValidation( in1, in2 );
-
-		Image out( in1.width(), in1.height() );
-
-		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-	
-	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-					 uint32_t width, uint32_t height )
-	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
-
-		ptr->Normalize(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-	}
-
-	Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-	{
-		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-		Image out( width, height );
-
-		Normalize( in, startXIn, startYIn, out, 0, 0, width, height );
-
-		return out;
-	}
-
-	void  Normalize( const Image & in, Image & out )
-	{
-		Image_Function::ParameterValidation( in, out );
-
-		Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
+		FunctionTask().Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
 	Image Normalize( const Image & in )
@@ -794,26 +696,28 @@ namespace Function_Pool
 		return out;
 	}
 
-	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
-							std::vector < uint32_t > & projection )
+	void  Normalize( const Image & in, Image & out )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		Image_Function::ParameterValidation( in, out );
 
-		ptr->ProjectionProfile(image, x, y, width, height, horizontal, projection );
+		Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
-	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
 	{
-		std::vector < uint32_t > projection;
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-		ProjectionProfile( image, x, y, width, height, horizontal, projection );
+		Image out( width, height );
 
-		return projection;
+		Normalize( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
 	}
-
-	void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+	
+	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height )
 	{
-		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+		FunctionTask().Normalize(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
 	std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
@@ -825,12 +729,42 @@ namespace Function_Pool
 		return projection;
 	}
 
-	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+	}
 
-		ptr->Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	{
+		std::vector < uint32_t > projection;
+
+		ProjectionProfile( image, x, y, width, height, horizontal, projection );
+
+		return projection;
+	}
+
+	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+							std::vector < uint32_t > & projection )
+	{
+		FunctionTask().ProjectionProfile(image, x, y, width, height, horizontal, projection );
+	}
+
+	Image Subtract( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Subtract( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
 	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -845,29 +779,10 @@ namespace Function_Pool
 		return out;
 	}
 
-	void Subtract( const Image & in1, const Image & in2, Image & out )
+	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image Subtract( const Image & in1, const Image & in2 )
-	{
-		Image_Function::ParameterValidation( in1, in2 );
-
-		Image out( in1.width(), in1.height() );
-
-		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
-	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
-
-		return ptr->Sum(image, x, y, width, height );
+		FunctionTask().Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
 	uint32_t Sum( const Image & image )
@@ -875,12 +790,27 @@ namespace Function_Pool
 		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
-	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-					uint32_t width, uint32_t height, uint8_t threshold )
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
 	{
-		std::unique_ptr < FunctionTask > ptr( new FunctionTask );
+		return FunctionTask().Sum(image, x, y, width, height );
+	}
 
-		ptr->Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
+	Image Threshold( const Image & in, uint8_t threshold )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t threshold )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
 	}
 
 	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
@@ -894,21 +824,9 @@ namespace Function_Pool
 		return out;
 	}
 
-	void Threshold( const Image & in, Image & out, uint8_t threshold )
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t threshold )
 	{
-		Image_Function::ParameterValidation( in, out );
-
-		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-	}
-
-	Image Threshold( const Image & in, uint8_t threshold )
-	{
-		Image_Function::ParameterValidation( in );
-
-		Image out( in.width(), in.height() );
-
-		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-
-		return out;
+		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
 	}
 };

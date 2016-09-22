@@ -16,6 +16,36 @@ namespace Image_Function_Avx
 
 	// All processors what support AVX 2.0 support SSE too
 
+	Image BitwiseAnd( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					  uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
 	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
@@ -53,7 +83,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256(dst, _mm256_and_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -66,32 +95,32 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
-	{
-		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-		Image out( width, height );
-
-		BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
-	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image BitwiseAnd( const Image & in1, const Image & in2 )
+	Image BitwiseOr( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void BitwiseOr( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					 uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -133,7 +162,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256(dst, _mm256_or_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -146,32 +174,32 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 uint32_t width, uint32_t height )
-	{
-		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-		Image out( width, height );
-
-		BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	void BitwiseOr( const Image & in1, const Image & in2, Image & out )
-	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image BitwiseOr( const Image & in1, const Image & in2 )
+	Image BitwiseXor( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void BitwiseXor( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					  uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -213,7 +241,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256(dst, _mm256_xor_si256( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -226,37 +253,36 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  uint32_t width, uint32_t height )
+	Image Invert( const Image & in )
 	{
-		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Invert( const Image & in, Image & out )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
 		Image out( width, height );
 
-		BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+		Invert( in, startXIn, startYIn, out, 0, 0, width, height );
 
 		return out;
 	}
 
-	void BitwiseXor( const Image & in1, const Image & in2, Image & out )
-	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image BitwiseXor( const Image & in1, const Image & in2 )
-	{
-		Image_Function::ParameterValidation( in1, in2 );
-
-		Image out( in1.width(), in1.height() );
-
-		BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 				  uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
@@ -295,7 +321,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256( dst, _mm256_andnot_si256(_mm256_loadu_si256(src1), mask) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * inX  = inY  + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
 
@@ -307,31 +332,32 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	Image Maximum( const Image & in1, const Image & in2 )
 	{
-		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		Image out( width, height );
+		Image out( in1.width(), in1.height() );
 
-		Invert( in, startXIn, startYIn, out, 0, 0, width, height );
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
 
-	void  Invert( const Image & in, Image & out )
+	void Maximum( const Image & in1, const Image & in2, Image & out )
 	{
-		Image_Function::ParameterValidation( in, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
-		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 	}
 
-	Image Invert( const Image & in )
+	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				   uint32_t width, uint32_t height )
 	{
-		Image_Function::ParameterValidation( in );
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-		Image out( in.width(), in.height() );
+		Image out( width, height );
 
-		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+		Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -373,7 +399,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256(dst, _mm256_max_epu8( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -390,32 +415,32 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+	Image Minimum( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Minimum( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
 		Image out( width, height );
 
-		Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	void Maximum( const Image & in1, const Image & in2, Image & out )
-	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image Maximum( const Image & in1, const Image & in2 )
-	{
-		Image_Function::ParameterValidation( in1, in2 );
-
-		Image out( in1.width(), in1.height() );
-
-		Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -457,7 +482,6 @@ namespace Image_Function_Avx
 				_mm256_storeu_si256(dst, _mm256_min_epu8( _mm256_loadu_si256(src1), _mm256_loadu_si256(src2) ) );
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -474,32 +498,32 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				   uint32_t width, uint32_t height )
-	{
-		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-		Image out( width, height );
-
-		Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-		return out;
-	}
-
-	void Minimum( const Image & in1, const Image & in2, Image & out )
-	{
-		Image_Function::ParameterValidation( in1, in2, out );
-
-		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-	}
-
-	Image Minimum( const Image & in1, const Image & in2 )
+	Image Subtract( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
 
 		Image out( in1.width(), in1.height() );
 
-		Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Subtract( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		Subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
 		return out;
 	}
@@ -543,7 +567,6 @@ namespace Image_Function_Avx
 			}
 
 			if( nonSimdWidth > 0 ) {
-
 				const uint8_t * in1X = in1Y + totalSimdWidth;
 				const uint8_t * in2X = in2Y + totalSimdWidth;
 				uint8_t       * outX = outY + totalSimdWidth;
@@ -560,32 +583,31 @@ namespace Image_Function_Avx
 		}
 	}
 
-	Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					uint32_t width, uint32_t height )
+	Image Threshold( const Image & in, uint8_t threshold )
 	{
-		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+		Image_Function::ParameterValidation( in );
 
-		Image out( width, height );
+		Image out( in.width(), in.height() );
 
-		Subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
 
 		return out;
 	}
 
-	void Subtract( const Image & in1, const Image & in2, Image & out )
+	void Threshold( const Image & in, Image & out, uint8_t threshold )
 	{
-		Image_Function::ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in, out );
 
-		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
 	}
 
-	Image Subtract( const Image & in1, const Image & in2 )
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
 	{
-		Image_Function::ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-		Image out( in1.width(), in1.height() );
+		Image out( width, height );
 
-		Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
 
 		return out;
 	}
@@ -643,7 +665,6 @@ namespace Image_Function_Avx
 					_mm256_storeu_si256( dst, _mm256_cmpgt_epi8(_mm256_xor_si256( _mm256_loadu_si256(src1), mask ), compare) );
 
 				if( nonSimdWidth > 0 ) {
-
 					const uint8_t * inX  = inY  + totalSimdWidth;
 					uint8_t       * outX = outY + totalSimdWidth;
 
@@ -664,34 +685,4 @@ namespace Image_Function_Avx
 				memset( outY, 255u, sizeof(uint8_t) * width );
 		}
 	}
-
-	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
-	{
-		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-		Image out( width, height );
-
-		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
-
-		return out;
-	}
-
-	void Threshold( const Image & in, Image & out, uint8_t threshold )
-	{
-		Image_Function::ParameterValidation( in, out );
-
-		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-	}
-
-	Image Threshold( const Image & in, uint8_t threshold )
-	{
-		Image_Function::ParameterValidation( in );
-
-		Image out( in.width(), in.height() );
-
-		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-
-		return out;
-	}
-
 };

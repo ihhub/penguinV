@@ -75,7 +75,7 @@ void method1()
 	Image_Function::Convert( inputImage, image );
 
 	// Threshold image with calculated optimal threshold
-	image = Image_Function::Threshold( image, Image_Function::GetThreshold(image) );
+	image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
 
 	// Save result
 	Bitmap_Operation::Save( "result1.bmp", image );
@@ -96,7 +96,7 @@ void method2()
 	raw >> image;
 
 	// Threshold image with calculated optimal threshold
-	image = Image_Function::Threshold( image, Image_Function::GetThreshold(image) );
+	image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
 
 	// Save result
 	Bitmap_Operation::Save( "result2.bmp", image );
@@ -117,5 +117,7 @@ void method3()
 
 	// Threshold image with calculated optimal threshold and directly save result in file
 	Bitmap_Operation::Save( "result3.bmp",
-							image = Image_Function::Threshold( image, Image_Function::GetThreshold(image) ) );
+							image = Image_Function::Threshold(
+								image, Image_Function::GetThreshold(
+									Image_Function::Histogram(image) ) ) );
 }

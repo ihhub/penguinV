@@ -111,7 +111,7 @@ void basic(const std::vector < Bitmap_Image::Image > & frame)
 		Image_Function::Subtract( frame[i + 1], frame[i], result );
 
 		// find optimal threshold
-		uint8_t threshold = Image_Function::GetThreshold( result );
+		uint8_t threshold = Image_Function::GetThreshold( Image_Function::Histogram(result) );
 
 		if( threshold > 0 ) { // there is something more than just background!
 			// threshold image
@@ -141,7 +141,7 @@ void multithreaded(const std::vector < Bitmap_Image::Image > & frame)
 		Function_Pool::Subtract( frame[i + 1], frame[i], result );
 
 		// find optimal threshold
-		uint8_t threshold = Function_Pool::GetThreshold( result );
+		uint8_t threshold = Image_Function::GetThreshold( Function_Pool::Histogram(result) );
 
 		if( threshold > 0 ) { // there is something more than just background!
 			// threshold image

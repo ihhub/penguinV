@@ -56,7 +56,7 @@ void example1()
 	Bitmap_Operation::Load("mercury.bmp") >> image;
 
 	// Threshold image with calculated optimal threshold
-	Image_Function::Threshold( image, image, Image_Function::GetThreshold(image) );
+	Image_Function::Threshold( image, image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
 
 	// Search all possible blobs on image
 	Blob_Detection::BlobDetection detection;
@@ -94,7 +94,7 @@ void example2()
 
 	// Search all possible blobs on image with calculated optimal threshold
 	Blob_Detection::BlobDetection detection;
-	detection.find( image, Blob_Detection::BlobParameters(), Image_Function::GetThreshold(image) );	
+	detection.find( image, Blob_Detection::BlobParameters(), Image_Function::GetThreshold( Image_Function::Histogram(image) ) );	
 
 	if( !detection.get().empty() ) {
 		// okay, our image contains some blobs

@@ -72,10 +72,7 @@ namespace Image_Function
 
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y );
 
-	uint8_t GetThreshold( const Image & image );
-	void    GetThreshold( const Image & image, uint8_t & threshold );
-	uint8_t GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
-	void    GetThreshold( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t & threshold );
+	uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
 	std::vector < uint32_t > Histogram( const Image & image );
 	void                     Histogram( const Image & image, std::vector < uint32_t > & histogram );

@@ -690,82 +690,17 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	uint8_t GetThreshold(
-		const Image & image
+		const std::vector < uint32_t > & histogram
 	);
 	```
 	**Description:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;Returns optimal threshold value between background and foreground.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image histogram    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	void GetThreshold(
-		const Image & image,
-		uint8_t & threshold
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates optimal threshold value between background and foreground and puts this value into variable.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
-	&nbsp;&nbsp;&nbsp;&nbsp;threshold - a threshold value 
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	uint8_t GetThreshold(
-		const Image & image,
-		uint32_t x,
-		int32_t y,
-		uint32_t width,
-		uint32_t height
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Returns optimal threshold value between background and foreground on image area of [width, height] size.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
-	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	void GetThreshold(
-		const Image & image,
-		uint32_t x,
-		int32_t y,
-		uint32_t width,
-		uint32_t height,
-		uint8_t & threshold
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates optimal threshold value between background and foreground on image area of [width, height] size and puts this value into variable.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
-	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;width - width of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;threshold - a threshold value    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
 - **Histogram** [_Namespaces: **Image_Function, Function_Pool**_]
 
