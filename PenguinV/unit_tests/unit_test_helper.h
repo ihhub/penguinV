@@ -43,6 +43,8 @@ namespace Unit_Test
 		return memcmp(image1.data(), image2.data(), sizeof(data) * image1.height() * image1.rowSize()) == 0;
 	};
 
+	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+
 	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
 	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
 

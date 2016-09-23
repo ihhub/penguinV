@@ -103,6 +103,11 @@ namespace Unit_Test
 		return image.width() == width && image.height() == height && !image.empty();
 	}
 
+	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+	{
+		Image_Function::Fill( image, x, y, width, height, value );
+	}
+
 	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
