@@ -83,7 +83,6 @@ namespace Blob_Detection
 			size.reset();
 			width.reset();
 		}
-
 	};
 
 	struct Point

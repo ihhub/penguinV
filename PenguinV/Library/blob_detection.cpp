@@ -172,10 +172,6 @@ namespace Blob_Detection
 	void BlobInfo::_getCircularity()
 	{
 		if( !_contourX.empty() && !_circularity.found ) {
-			
-			// this formula doesn't work properly :(
-			//_circularity.value = ( 2 * sqrt(pi * static_cast<double>(size())) ) / static_cast<double>(_contourX.size());
-
 			double radius = sqrt(static_cast<double>(size()) / pi);
 			_getCenter();
 
@@ -228,7 +224,6 @@ namespace Blob_Detection
 							endPoint.y = *xx;
 						}
 					}
-
 				}
 
 				double length = sqrt( static_cast<double>( maximumDistance ) );
@@ -282,7 +277,7 @@ namespace Blob_Detection
 				std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
 				std::vector < uint32_t >::const_iterator end = _contourX.cend();
 
-				uint32_t maximumDistance = 0;
+				int32_t maximumDistance = 0;
 
 				for( ; x != (end - 1); ++x, ++y ) {
 
@@ -291,19 +286,18 @@ namespace Blob_Detection
 
 					for( ; xx != end; ++xx, ++yy ) {
 
-						uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
+						int32_t distance = static_cast< int32_t >(*x - *xx) * static_cast< int32_t >(*x - *xx) +
+										   static_cast< int32_t >(*y - *yy) * static_cast< int32_t >(*y - *yy);
 
 						if( maximumDistance < distance )
 							maximumDistance = distance;
 					}
-
 				}
 
 				_length.value = sqrt( static_cast<double>( maximumDistance ) );
-
 			}
 			else {
-				_length.value = 0.5;
+				_length.value = 0;
 			}
 
 			_length.found = true;
@@ -542,9 +536,7 @@ namespace Blob_Detection
 					++yIter;
 
 				} while( xIter != foundBlob.back()._tempContourX.end() );
-
 			}
-
 		}
 
 		std::for_each( foundBlob.begin(), foundBlob.end(), [&](BlobInfo & info) { info._preparePoints(x, y); } );
