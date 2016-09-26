@@ -72,7 +72,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -151,7 +150,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -230,7 +228,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -311,7 +308,6 @@ namespace Image_Function_Avx
 									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-
 			const simd * src1 = reinterpret_cast < const simd* > (inY);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
 
@@ -388,7 +384,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -471,7 +466,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -554,7 +548,6 @@ namespace Image_Function_Avx
 		uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-		
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
 			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
 			simd       * dst  = reinterpret_cast <       simd* > (outY);
@@ -623,10 +616,9 @@ namespace Image_Function_Avx
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-		// AVX doesn't have command "great or equal to" so we have 2 situations:
+		// AVX does not have command "great or equal to" so we have 2 situations:
 		// when threshold value is 0 and it is not
 		if( threshold > 0 ) {
-
 			uint32_t rowSizeIn  = in.rowSize();
 			uint32_t rowSizeOut = out.rowSize();
 
@@ -655,7 +647,6 @@ namespace Image_Function_Avx
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u );
 
 			for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-		
 				const simd * src1 = reinterpret_cast < const simd* > (inY);
 				simd       * dst  = reinterpret_cast <       simd* > (outY);
 

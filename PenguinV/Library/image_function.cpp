@@ -100,7 +100,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -158,7 +157,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -216,7 +214,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -257,7 +254,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for (; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn) {
-
 			const uint8_t * inX  = inY;
 			uint8_t       * outX = outY;
 
@@ -283,7 +279,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for (; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn) {
-
 			const uint8_t * inX = inY;
 			uint8_t       * outX = outY;
 
@@ -396,7 +391,6 @@ namespace Image_Function
 				uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
 
 				for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-
 					const uint8_t * inX    = inY;
 					uint8_t       * outX   = outY;
 					const uint8_t * inXEnd = inX + width;
@@ -415,7 +409,6 @@ namespace Image_Function
 				uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
 
 				for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut ) {
-
 					const uint8_t * inX    = inY;
 					uint8_t       * outX   = outY;
 					const uint8_t * inXEnd = inX + width;
@@ -456,7 +449,6 @@ namespace Image_Function
 		double maximumSigma = -1;
 
 		for(uint16_t i = 0; i < 256; ++i) {
-
 			pixelCountTemp += histogram[i];
 
 			if(pixelCountTemp > 0 && pixelCountTemp != pixelCount) {
@@ -515,8 +507,7 @@ namespace Image_Function
 		const uint8_t * imageYEnd = imageY + height * rowSize;
 
 		for( ; imageY != imageYEnd; imageY += rowSize ) {
-
-			const uint8_t * imageX = imageY;
+			const uint8_t * imageX    = imageY;
 			const uint8_t * imageXEnd = imageX + width;
 
 			for( ; imageX != imageXEnd; ++imageX )
@@ -567,8 +558,7 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-
-			const uint8_t * inX = inY;
+			const uint8_t * inX  = inY;
 			uint8_t       * outX = outY;
 
 			const uint8_t * outXEnd = outX + width;
@@ -599,7 +589,6 @@ namespace Image_Function
 		const uint8_t * in1YEnd = in1Y + height * rowSize1;
 
 		for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
-
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			const uint8_t * in1XEnd = in1X + width;
@@ -659,7 +648,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -717,7 +705,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -772,12 +759,10 @@ namespace Image_Function
 		uint8_t maximum = 0;
 
 		for( ; inY != inYEnd; inY += rowSizeIn ) {
-
 			const uint8_t * inX = inY;
 			const uint8_t * inXEnd = inX + width;
 
 			for( ; inX != inXEnd; ++inX ) {
-			
 				if( minimum > (*inX) )
 					minimum = (*inX);
 
@@ -798,9 +783,8 @@ namespace Image_Function
 			uint8_t  * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 			for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-
-				const uint8_t * inX = inY;
-				uint8_t * outX = outY;
+				const uint8_t * inX    = inY;
+				uint8_t       * outX   = outY;
 				const uint8_t * inXEnd = inX + width;
 
 				for( ; inX != inXEnd; ++inX, ++outX )
@@ -847,8 +831,7 @@ namespace Image_Function
 			const uint8_t * imageXEnd = imageX + rowSize;
 
 			for( ; imageX != imageXEnd; ++imageX ) {
-
-				const uint8_t * imageY = imageX;
+				const uint8_t * imageY    = imageX;
 				const uint8_t * imageYEnd = imageY + height * rowSize;
 				std::vector < uint32_t > :: iterator data = projection.begin();
 
@@ -861,8 +844,7 @@ namespace Image_Function
 			const uint8_t * imageYEnd = imageY + height * rowSize;
 
 			for( ; imageY != imageYEnd; imageY += rowSize ) {
-
-				const uint8_t * imageX = imageY;
+				const uint8_t * imageX    = imageY;
 				const uint8_t * imageXEnd = imageX + width;
 				std::vector < uint32_t > :: iterator data = projection.begin();
 
@@ -920,8 +902,7 @@ namespace Image_Function
 		uint32_t idY = 0;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
-
-			const uint8_t * inX = inY + (idY * heightIn / heightOut) * rowSizeIn;
+			const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
 			uint8_t       * outX = outY;
 
 			const uint8_t * outXEnd = outX + widthOut;
@@ -1007,7 +988,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
-		
 			const uint8_t * in1X = in1Y;
 			const uint8_t * in2X = in2Y;
 			uint8_t       * outX = outY;
@@ -1036,8 +1016,7 @@ namespace Image_Function
 		uint32_t sum = 0;
 
 		for( ; imageY != imageYEnd; imageY += rowSize ) {
-
-			const uint8_t * imageX = imageY;
+			const uint8_t * imageX    = imageY;
 			const uint8_t * imageXEnd = imageX + width;
 
 			for( ; imageX != imageXEnd; ++imageX )
@@ -1090,8 +1069,7 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-
-			const uint8_t * inX = inY;
+			const uint8_t * inX  = inY;
 			uint8_t       * outX = outY;
 
 			const uint8_t * outXEnd = outX + width;
@@ -1146,7 +1124,6 @@ namespace Image_Function
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
-
 			const uint8_t * inY  = inX;
 			uint8_t       * outX = outY;
 
