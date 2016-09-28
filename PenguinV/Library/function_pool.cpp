@@ -380,7 +380,7 @@ namespace Function_Pool
 		InputInfo  _dataIn;  // structure that hold some unique input parameters
 		OutputInfo _dataOut; // structure that hold some unique output values
 
-		uint32_t threadCount()
+		uint32_t _threadCount()
 		{
 			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
 			if (count == 0)
@@ -396,7 +396,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = threadCount();
+			uint32_t count = _threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, count ) );
 		}
@@ -408,7 +408,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = threadCount();
+			uint32_t count = _threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, count ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, count ) );
@@ -422,7 +422,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = threadCount();
+			uint32_t count = _threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, count ) );
 			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, count ) );
@@ -433,7 +433,7 @@ namespace Function_Pool
 		{
 			functionId = id;
 
-			_run( _infoIn1->height.size() );
+			_run( _infoIn1->_size() );
 
 			_wait();
 		}
