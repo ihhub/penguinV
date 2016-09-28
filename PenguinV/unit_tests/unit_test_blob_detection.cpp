@@ -30,8 +30,12 @@ namespace Unit_Test
 
 				detection.find( image );
 
+				uint32_t contour = roiWidth > 1 && roiHeight > 2 ? 2 * roiWidth + 2 * (roiHeight - 2) : roiWidth * roiHeight;
+
 				if( detection.get().size() != 1 || detection.get()[0].width() != roiWidth ||
-					detection.get()[0].height() != roiHeight || detection.get()[0].size() != roiWidth * roiHeight )
+					detection.get()[0].height() != roiHeight || detection.get()[0].size() != roiWidth * roiHeight ||
+					detection.get()[0].contourX().size() != contour ||
+					detection.get()[0].edgeX   ().size() != contour )
 					return false;
 
 			}
