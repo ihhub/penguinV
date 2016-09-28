@@ -28,7 +28,7 @@ In many cases when developers design their own image processing application they
 To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support and thread pool] is VS 2010.
 
 #How to install    
-We prefer that an end-user (means YOU) will compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include files into project and compile them as a part of your application.
+We prefer that an end-user (that means YOU) compile all files what are necessary for your application. For this you have to copy files into your project folder and use them. That's it! No more extra moves! Just copy, include files into project and compile them as a part of your application.
 
 #How to compile an example    
 Open README.md file in any of example folders and follow instructions.
