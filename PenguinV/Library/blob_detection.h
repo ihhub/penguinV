@@ -211,11 +211,11 @@ namespace Blob_Detection
 	public:
 		// Sorting blobs will be in alphabet order of sorting criteria
 		// Example: length and width criteria enabled. So first all blobs would be removed if they are not fitting length criterion
-		// and then all reamin blobs would be removed if they are not fitting for width criterion
-		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
-											 uint8_t threshold = 1 );
-		const std::vector < BlobInfo > find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
-											 BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
+		// and then all remain blobs would be removed if they are not fitting for width criterion
+		const std::vector < BlobInfo > & find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
+											   uint8_t threshold = 1 );
+		const std::vector < BlobInfo > & find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
+											   BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
 
 		// Retrieve an array of all found blobs
 		const std::vector < BlobInfo > & get() const;

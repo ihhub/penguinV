@@ -10,7 +10,8 @@ namespace
 	{
 		std::vector < Data > temp ( l.begin(), l.end() );
 
-		std::for_each( temp.begin(), temp.end(), [&](uint32_t & value) { value = value + offset - 1; } ); // note that we subtract 1!
+		for( std::vector < Data >::iterator value = temp.begin(); value != temp.end(); ++value )
+			*value = *value + offset - 1; // note that we subtract 1!
 
 		std::swap(v, temp);
 		l.clear();
@@ -325,13 +326,13 @@ namespace Blob_Detection
 	}
 
 
-	const std::vector < BlobInfo > BlobDetection::find( const Bitmap_Image::Image & image, BlobParameters parameter, uint8_t threshold )
+	const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, BlobParameters parameter, uint8_t threshold )
 	{
 		return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
 	}
 
-	const std::vector < BlobInfo > BlobDetection::find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width,
-														uint32_t height, BlobParameters parameter, uint8_t threshold )
+	const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, uint32_t x, int32_t y, uint32_t width,
+														  uint32_t height, BlobParameters parameter, uint8_t threshold )
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
 
@@ -358,8 +359,7 @@ namespace Blob_Detection
 		std::vector < uint8_t >::iterator mapValueX = imageMap.begin() + mapWidth + 1;
 
 		for( ; imageY != imageYEnd; imageY += rowSize, mapValueX += mapWidth ) {
-
-			const uint8_t * imageX = imageY;
+			const uint8_t * imageX    = imageY;
 			const uint8_t * imageXEnd = imageX + width;
 
 			std::vector < uint8_t >::iterator mapValueY = mapValueX;
@@ -504,14 +504,28 @@ namespace Blob_Detection
 
 					std::vector < uint8_t >::iterator position = imageMap.begin() + yMap * mapWidth + xMap;
 
-					position = position - mapWidth;
+					position = position - mapWidth - 1;
+					if( *(position) == 3 ) {
+						foundBlob.back()._tempContourX.push_back( xMap - 1 );
+						foundBlob.back()._tempContourY.push_back( yMap - 1 );
+						*(position) = 4;
+					}
+
+					position = position + 1;
 					if( *(position) == 3 ) {
 						foundBlob.back()._tempContourX.push_back( xMap     );
 						foundBlob.back()._tempContourY.push_back( yMap - 1 );
 						*(position) = 4;
 					}
 
-					position = position - 1 + mapWidth;
+					position = position + 1;
+					if( *(position) == 3 ) {
+						foundBlob.back()._tempContourX.push_back( xMap + 1 );
+						foundBlob.back()._tempContourY.push_back( yMap - 1 );
+						*(position) = 4;
+					}
+
+					position = position - 2 + mapWidth;
 					if( *(position) == 3 ) {
 						foundBlob.back()._tempContourX.push_back( xMap - 1 );
 						foundBlob.back()._tempContourY.push_back( yMap     );
@@ -525,9 +539,23 @@ namespace Blob_Detection
 						*(position) = 4;
 					}
 
-					position = position - 1 + mapWidth;
+					position = position - 2 + mapWidth;
 					if( *(position) == 3 ) {
 						foundBlob.back()._tempContourX.push_back( xMap     );
+						foundBlob.back()._tempContourY.push_back( yMap + 1 );
+						*(position) = 4;
+					}
+
+					position = position + 1;
+					if( *(position) == 3 ) {
+						foundBlob.back()._tempContourX.push_back( xMap     );
+						foundBlob.back()._tempContourY.push_back( yMap + 1 );
+						*(position) = 4;
+					}
+
+					position = position + 1;
+					if( *(position) == 3 ) {
+						foundBlob.back()._tempContourX.push_back( xMap + 1 );
 						foundBlob.back()._tempContourY.push_back( yMap + 1 );
 						*(position) = 4;
 					}
