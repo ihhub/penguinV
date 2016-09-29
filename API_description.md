@@ -47,6 +47,51 @@ Contains classes for multithreading using thread pool:
 ## Functions
 
 All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
+
+- **Accumulate** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	void Accumulate(
+		const Image & image,
+		std::vector < uint32_t > & result
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Adds pixel intensity values to result array. The size of result array must be same as image size [width * height].
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an array    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Accumulate(
+		const Image & image,
+		uint32_t x,
+		int32_t y,
+		uint32_t width,
+		uint32_t height,
+		std::vector < uint32_t > & result
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Adds pixel intensity values of image on area of [width, height] size to result array. The size of result array must be same as image area [width * height].
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where accumulation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where accumulation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an array    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
 - **BitwiseAnd** [_Namespaces: **Image_Function, Image_Function_Sse, Image_Function_Avx, Function_Pool**_]
 
 	##### Syntax:
@@ -514,6 +559,81 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **ExtractChannel** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image ExtractChannel(
+		const ColorImage & in,
+		uint8_t channelId
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Extracts one channel image from color image and returns a gray-scale image with the same size as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2)    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	Image ExtractChannel(
+		const ColorImage & in,
+		uint32_t x,
+		uint32_t y,
+		uint32_t width,
+		uint32_t height,
+		uint8_t channelId
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Extracts one channel image with [width, height] size from color image and returns a gray-scale image with the [width, height] size as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;x - start X position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;y - start Y position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2)    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void ExtractChannel(
+		const ColorImage & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		uint8_t channelId
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Extracts one channel image with [width, height] size from color image and puts result into a gray-scale image with the [width, height] size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2)    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.

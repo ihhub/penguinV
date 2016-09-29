@@ -54,6 +54,35 @@ namespace Image_Function
 	}
 
 
+	void Accumulate( const Image & image, std::vector < uint32_t > & result )
+	{
+		ParameterValidation( image );
+
+		Accumulate( image, 0, 0, image.width(), image.height(), result );
+	}
+
+	void Accumulate( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+	{
+		ParameterValidation( image, x, y, width, height );
+
+		if( result.size() != width * height )
+			throw imageException("Array size is not equal to image ROI (width * height) size");
+
+		uint32_t rowSize = image.rowSize();
+
+		const uint8_t * imageY    = image.data() + y * rowSize + x;
+		const uint8_t * imageYEnd = imageY + height * rowSize;
+		std::vector < uint32_t >::iterator v = result.begin();
+
+		for( ; imageY != imageYEnd; imageY += rowSize ) {
+			const uint8_t * imageX    = imageY;
+			const uint8_t * imageXEnd = imageX + width;
+
+			for( ; imageX != imageXEnd; ++imageX, ++v )
+				*v += (*imageX);
+		}
+	}
+
 	Image BitwiseAnd( const Image & in1, const Image & in2 )
 	{
 		ParameterValidation( in1, in2 );
@@ -322,6 +351,56 @@ namespace Image_Function
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
 			memcpy( outY, inY, sizeof(uint8_t) * width );
+	}
+
+	Image ExtractChannel( const ColorImage & in, uint8_t channelId )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
+
+		return out;
+	}
+
+	Image ExtractChannel( const ColorImage & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+	{
+		ParameterValidation( in, x, y, width, height );
+
+		Image out( width, height );
+
+		ExtractChannel( in, x, y, out, 0, 0, width, height, channelId );
+
+		return out;
+	}
+
+	void ExtractChannel( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+						 uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+	{
+		ParameterValidation(in, startXIn, startYIn, width, height);
+		ParameterValidation(out, startXOut, startYOut, width, height);
+
+		if( channelId > 2 )
+			throw imageException("Channel ID for color image is greater than 2");
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn + channelId;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for (; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn) {
+			const uint8_t * inX  = inY;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for (; outX != outXEnd; ++outX, inX += 3)
+				(*outX) = *(inX);
+		}
 	}
 
 	void Fill( Image & image, uint8_t value )
