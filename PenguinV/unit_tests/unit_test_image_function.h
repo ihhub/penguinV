@@ -47,12 +47,12 @@ namespace Unit_Test
 		bool Subtract8ParametersTest();
 		bool Subtract11ParametersTest();
 
+		bool Sum1ParameterTest();
+		bool Sum5ParametersTest();
+
 		bool Threshold2ParametersTest();
 		bool Threshold3ParametersTest();
 		bool Threshold6ParametersTest();
 		bool Threshold9ParametersTest();
-
-		bool Sum1ParameterTest();
-		bool Sum5ParametersTest();
 	};
 };

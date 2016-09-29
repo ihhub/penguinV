@@ -45,13 +45,13 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Subtract8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Subtract11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::Sum1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::Sum5ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Threshold2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Threshold3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Threshold6ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Threshold9ParametersTest );
-
-		ADD_TEST( framework, Image_Function_Test::Sum1ParameterTest );
-		ADD_TEST( framework, Image_Function_Test::Sum5ParametersTest );
 	}
 
 	namespace Image_Function_Test
@@ -670,6 +670,40 @@ namespace Unit_Test
 			return true;
 		}
 
+		bool Sum1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				if( Image_Function::Sum( input[0] ) != intensityValue[0] * input[0].width() * input[0].height() )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Sum5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input;
+
+				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+					{ input.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( Image_Function::Sum( input[0], roiX[0], roiY[0], roiWidth, roiHeight ) != intensityValue[0] * roiWidth * roiHeight )
+					return false;
+			}
+
+			return true;
+		}
+
 		bool Threshold2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -748,40 +782,6 @@ namespace Unit_Test
 				Image_Function::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensityValue[0] < threshold ? 0 : 255 ) )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool Sum1ParameterTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
-
-				if( Image_Function::Sum( input[0] ) != intensityValue[0] * input[0].width() * input[0].height() )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool Sum5ParametersTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
-
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
-
-				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
-
-				if( Image_Function::Sum( input[0], roiX[0], roiY[0], roiWidth, roiHeight ) != intensityValue[0] * roiWidth * roiHeight )
 					return false;
 			}
 
