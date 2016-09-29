@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib>
 #include <algorithm>
 #include <vector>
 #include "../Library/image_buffer.h"
