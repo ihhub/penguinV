@@ -1,5 +1,7 @@
 #pragma once
+
 #include <algorithm>
+#include <cstdlib>
 #include <vector>
 #include "../Library/image_buffer.h"
 #include "../Library/image_exception.h"
