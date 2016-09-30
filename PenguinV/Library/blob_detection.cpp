@@ -10,8 +10,8 @@ namespace
 	{
 		std::vector < Data > temp ( l.begin(), l.end() );
 
-		for( std::vector < Data >::iterator value = temp.begin(); value != temp.end(); ++value )
-			*value = *value + offset - 1; // note that we subtract 1!
+		std::for_each( temp.begin(), temp.end(),
+			[&](uint32_t & value) { value = value + offset - 1; } ); // note that we subtract 1!
 
 		std::swap(v, temp);
 		l.clear();
@@ -541,7 +541,7 @@ namespace Blob_Detection
 
 					position = position - 2 + mapWidth;
 					if( *(position) == 3 ) {
-						foundBlob.back()._tempContourX.push_back( xMap     );
+						foundBlob.back()._tempContourX.push_back( xMap - 1 );
 						foundBlob.back()._tempContourY.push_back( yMap + 1 );
 						*(position) = 4;
 					}
@@ -663,27 +663,27 @@ namespace Blob_Detection
 	{
 		switch(criterion) {
 			case CRITERION_CIRCULARITY :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.circularity() > blob2.circularity(); } );
 				break;
 			case CRITERION_ELONGATION :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.elongation() > blob2.elongation(); } );
 				break;
 			case CRITERION_HEIGHT :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.height() > blob2.height(); } );
 				break;
 			case CRITERION_LENGTH :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.length() > blob2.length(); } );
 				break;
 			case CRITERION_SIZE :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.size() > blob2.size(); } );
 				break;
 			case CRITERION_WIDTH :
-				std::sort( _blob.begin(), _blob.end(), [](BlobInfo & blob1, BlobInfo & blob2)
+				std::sort( _blob.begin(), _blob.end(), [](const BlobInfo & blob1, const BlobInfo & blob2)
 											{ return blob1.width() > blob2.width(); } );
 				break;
 			default:
