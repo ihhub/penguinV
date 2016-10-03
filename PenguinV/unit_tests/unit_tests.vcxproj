@@ -139,17 +139,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Library\blob_detection.cpp" />
+    <ClCompile Include="..\Library\FileOperation\bitmap.cpp" />
     <ClCompile Include="..\Library\image_function.cpp" />
     <ClCompile Include="unit_tests.cpp" />
+    <ClCompile Include="unit_test_bitmap.cpp" />
+    <ClCompile Include="unit_test_blob_detection.cpp" />
     <ClCompile Include="unit_test_framework.cpp" />
     <ClCompile Include="unit_test_helper.cpp" />
     <ClCompile Include="unit_test_image_buffer.cpp" />
     <ClCompile Include="unit_test_image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Library\blob_detection.h" />
+    <ClInclude Include="..\Library\FileOperation\bitmap.h" />
     <ClInclude Include="..\Library\image_buffer.h" />
     <ClInclude Include="..\Library\image_exception.h" />
     <ClInclude Include="..\Library\image_function.h" />
+    <ClInclude Include="unit_test_bitmap.h" />
+    <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_framework.h" />
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />
