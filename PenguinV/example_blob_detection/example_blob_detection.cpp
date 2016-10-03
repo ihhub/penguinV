@@ -62,7 +62,7 @@ void example1()
 	Blob_Detection::BlobDetection detection;
 	detection.find( image );
 
-	if( !detection.get().empty() ) {
+	if( !detection().empty() ) {
 		// okay, our image contains some blobs
 		// extract a biggest one
 		const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::CRITERION_SIZE );
@@ -96,7 +96,7 @@ void example2()
 	Blob_Detection::BlobDetection detection;
 	detection.find( image, Blob_Detection::BlobParameters(), Image_Function::GetThreshold( Image_Function::Histogram(image) ) );	
 
-	if( !detection.get().empty() ) {
+	if( !detection().empty() ) {
 		// okay, our image contains some blobs
 		// extract a biggest one
 		const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::CRITERION_SIZE );

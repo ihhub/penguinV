@@ -633,6 +633,16 @@ namespace Blob_Detection
 		return _blob;
 	}
 
+	const std::vector < BlobInfo > & BlobDetection::operator()() const
+	{
+		return _blob;
+	}
+
+	std::vector < BlobInfo > & BlobDetection::operator()()
+	{
+		return _blob;
+	}
+
 	const BlobInfo & BlobDetection::getBestBlob(BlobCriterion criterion) const
 	{
 		switch(criterion) {

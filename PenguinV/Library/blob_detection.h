@@ -219,7 +219,9 @@ namespace Blob_Detection
 
 		// Retrieve an array of all found blobs
 		const std::vector < BlobInfo > & get() const;
-		std::vector < BlobInfo > & get();
+		      std::vector < BlobInfo > & get();
+		const std::vector < BlobInfo > & operator()() const; // these are same functions, added to simplify coding
+		      std::vector < BlobInfo > & operator()();
 
 		enum BlobCriterion
 		{
