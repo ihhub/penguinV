@@ -3,6 +3,13 @@
 #include <exception>
 #include <string>
 
+// Thanks to Visual Studio noexcept is no supported so we have to do like this :(
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept
+#else
+#define NOEXCEPT
+#endif
+
 class imageException : public std::exception
 {
 public:
@@ -36,7 +43,7 @@ public:
 		return (*this);
 	}
 
-	virtual const char * what() const noexcept
+	virtual const char * what() const NOEXCEPT
 	{
 		return _name.c_str();
 	}
