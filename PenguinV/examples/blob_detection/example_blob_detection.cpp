@@ -1,9 +1,9 @@
 // Example application of blob detection utilization
 #include <iostream>
-#include "../Library/blob_detection.h"
-#include "../Library/image_buffer.h"
-#include "../Library/image_function.h"
-#include "../Library/FileOperation/bitmap.h"
+#include "../../Library/blob_detection.h"
+#include "../../Library/image_buffer.h"
+#include "../../Library/image_function.h"
+#include "../../Library/FileOperation/bitmap.h"
 
 void example1();
 void example2();

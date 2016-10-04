@@ -35,7 +35,7 @@ Open README.md file in any of example folders and follow instructions.
 
 #Multithreading support    
 Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.    
-Almost all basic functions already have embedded multithreading support. Please refer to **Function_Pool** namespace and example_function_pool example.
+Almost all basic functions already have embedded multithreading support. Please refer to **Function_Pool** namespace and function_pool example.
 
 #SSE/AVX support    
 We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0. This should be your part of code. We made this to support cross-platform code.

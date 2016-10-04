@@ -1,8 +1,8 @@
 // Example application of library's thread pool utilization
 #include <iostream>
-#include "../Library/image_exception.h"
-#include "../Library/image_function.h"
-#include "../Library/thread_pool.h"
+#include "../../Library/image_exception.h"
+#include "../../Library/image_function.h"
+#include "../../Library/thread_pool.h"
 
 void example1();
 void example2();

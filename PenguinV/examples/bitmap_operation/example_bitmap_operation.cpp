@@ -1,8 +1,8 @@
 // Example application of library utilization for bitmaps
 #include <iostream>
-#include "../Library/image_buffer.h"
-#include "../Library/image_function.h"
-#include "../Library/FileOperation/bitmap.h"
+#include "../../Library/image_buffer.h"
+#include "../../Library/image_function.h"
+#include "../../Library/FileOperation/bitmap.h"
 
 void method1();
 void method2();

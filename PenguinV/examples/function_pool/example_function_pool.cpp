@@ -1,9 +1,9 @@
 // Example application of library's function pool utilization
 #include <iostream>
-#include "../Library/image_exception.h"
-#include "../Library/image_function.h"
-#include "../Library/function_pool.h"
-#include "../Library/thread_pool.h"
+#include "../../Library/image_exception.h"
+#include "../../Library/image_function.h"
+#include "../../Library/function_pool.h"
+#include "../../Library/thread_pool.h"
 
 void basic(const std::vector < Bitmap_Image::Image > & frame);
 void multithreaded(const std::vector < Bitmap_Image::Image > & frame);

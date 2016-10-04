@@ -1,7 +1,7 @@
 // Example application of library utilization
 #include <iostream>
-#include "../Library/image_buffer.h"
-#include "../Library/image_function.h"
+#include "../../Library/image_buffer.h"
+#include "../../Library/image_function.h"
 
 void example1( const Bitmap_Image::Image & imageIn1, const Bitmap_Image::Image & imageIn2, Bitmap_Image::Image & imageOut );
 void example2( const Bitmap_Image::Image & imageIn1, const Bitmap_Image::Image & imageIn2, Bitmap_Image::Image & imageOut );

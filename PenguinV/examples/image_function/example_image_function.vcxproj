@@ -139,17 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Library\blob_detection.cpp" />
-    <ClCompile Include="..\Library\FileOperation\bitmap.cpp" />
-    <ClCompile Include="example_blob_detection.cpp" />
-    <ClCompile Include="..\Library\image_function.cpp" />
+    <ClCompile Include="example_image_function.cpp" />
+    <ClCompile Include="..\..\Library\image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Library\blob_detection.h" />
-    <ClInclude Include="..\Library\FileOperation\bitmap.h" />
-    <ClInclude Include="..\Library\image_buffer.h" />
-    <ClInclude Include="..\Library\image_exception.h" />
-    <ClInclude Include="..\Library\image_function.h" />
+    <ClInclude Include="..\..\Library\image_buffer.h" />
+    <ClInclude Include="..\..\Library\image_exception.h" />
+    <ClInclude Include="..\..\Library\image_function.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
