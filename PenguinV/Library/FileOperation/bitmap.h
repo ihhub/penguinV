@@ -269,7 +269,7 @@ namespace Bitmap_Operation
 		
 		bool isColor() const
 		{
-			return _availableImage() && _colorCount == 3u;
+			return _availableImage() && (_colorCount == 3u || _colorCount == 4u);
 		}
 
 		// copy data to image if data is the same format as image

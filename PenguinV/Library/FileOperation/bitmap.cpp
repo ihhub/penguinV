@@ -1,4 +1,5 @@
 #include <fstream>
+#include <memory>
 #include <vector>
 #include "bitmap.h"
 #include "../image_exception.h"
@@ -62,7 +63,111 @@ namespace Bitmap_Operation
 		};
 	};
 
-	struct BitmapInfoHeader
+	struct BitmapDibHeader
+	{
+		virtual void set( const std::vector < uint8_t > &) = 0;
+		virtual void get( std::vector < uint8_t > & )      = 0;
+
+		virtual uint32_t width()      = 0;
+		virtual uint32_t height()     = 0;
+		virtual uint8_t  colorCount() = 0;
+		virtual uint32_t size()       = 0;
+
+		virtual void setWidth(uint32_t)      = 0;
+		virtual void setHeight(uint32_t)     = 0;
+		virtual void setColorCount(uint16_t) = 0;
+		virtual void setImageSize(uint32_t)  = 0;
+
+		virtual bool validate(const BitmapFileHeader &) = 0;
+	};
+
+	struct BitmapCoreHeader : public BitmapDibHeader
+	{
+		BitmapCoreHeader()
+			: bcSize     (12) // the size of this structure
+			, bcWidth    (0)  // width of image
+			, bcHeight   (0)  // height of image
+			, bcPlanes   (1)  // number of colour planes (always 1)
+			, bcBitCount (0)  // bits per pixel
+			, overallSize(12) // real size of this structure for bitmap format
+		{ };
+
+		uint32_t bcSize;
+		uint16_t bcWidth;
+		uint16_t bcHeight;
+		uint16_t bcPlanes;
+		uint16_t bcBitCount;
+
+		uint32_t overallSize;
+
+		void set( const std::vector < uint8_t > & data )
+		{
+			size_t offset = 0;
+			get_value( data, offset, bcSize          );
+			get_value( data, offset, bcWidth         );
+			get_value( data, offset, bcHeight        );
+			get_value( data, offset, bcPlanes        );
+			get_value( data, offset, bcBitCount      );
+		};
+
+		void get( std::vector < uint8_t > & data )
+		{
+			size_t offset = 0;
+			set_value( data, offset, bcSize          );
+			set_value( data, offset, bcWidth         );
+			set_value( data, offset, bcHeight        );
+			set_value( data, offset, bcPlanes        );
+			set_value( data, offset, bcBitCount      );
+		};
+
+		virtual uint32_t width()
+		{
+			return bcWidth;
+		};
+
+		virtual uint32_t height()
+		{
+			return bcHeight;
+		};
+
+		virtual uint8_t colorCount()
+		{
+			return static_cast<uint8_t>(bcBitCount / 8u);
+		};
+
+		virtual uint32_t size()
+		{
+			return overallSize;
+		};
+
+		virtual void setWidth(uint32_t w)
+		{
+			bcWidth = static_cast<uint16_t>(w);
+		};
+
+		virtual void setHeight(uint32_t h)
+		{
+			bcHeight = static_cast<uint16_t>(h);
+		};
+
+		virtual void setColorCount(uint16_t c)
+		{
+			bcBitCount = c * 8u;
+		};
+
+		virtual void setImageSize(uint32_t)
+		{
+		};
+
+		virtual bool validate(const BitmapFileHeader & header)
+		{
+			return !(bcBitCount == 8u || bcBitCount == 24u || bcBitCount == 32u) ||
+				   bcWidth == 0 || bcHeight == 0 || bcSize != BitmapCoreHeader().bcSize ||
+				   bcPlanes != BitmapCoreHeader().bcPlanes || header.bfOffBits < overallSize + header.overallSize;
+		};
+	};
+
+	struct BitmapInfoHeader : public BitmapDibHeader
 	{
 		BitmapInfoHeader()
 			: biSize         (40) // the size of this structure
@@ -124,6 +229,71 @@ namespace Bitmap_Operation
 			set_value( data, offset, biClrUsed       );
 			set_value( data, offset, biClrImportant  );
 		};
+
+		virtual uint32_t width()
+		{
+			return static_cast<uint32_t>(biWidth);
+		};
+
+		virtual uint32_t height()
+		{
+			return static_cast<uint32_t>(biHeight);
+		};
+
+		virtual uint8_t colorCount()
+		{
+			return static_cast<uint8_t>(biBitCount / 8u);
+		};
+
+		virtual uint32_t size()
+		{
+			return overallSize;
+		};
+
+		virtual void setWidth(uint32_t w)
+		{
+			biWidth = static_cast<int32_t>(w);
+		};
+
+		virtual void setHeight(uint32_t h)
+		{
+			biHeight = static_cast<int32_t>(h);
+		};
+
+		virtual void setColorCount(uint16_t c)
+		{
+			biBitCount = c * 8u;
+		};
+
+		virtual void setImageSize(uint32_t s)
+		{
+			biSizeImage = s;
+		};
+
+		virtual bool validate(const BitmapFileHeader & header)
+		{
+			uint32_t rowSize = width() * colorCount();
+			if (rowSize % BITMAP_ALIGNMENT != 0)
+				rowSize = (rowSize / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
+
+			return !(biBitCount == 8u || biBitCount == 24u || biBitCount == 32u) ||
+				   biWidth <= 0 || biHeight <= 0 || biSize != BitmapInfoHeader().biSize ||
+				   (biSizeImage != static_cast<uint32_t>(rowSize * biHeight) && biSizeImage != 0 ) ||
+				   biPlanes != BitmapInfoHeader().biPlanes || header.bfOffBits < overallSize + header.overallSize;
+		};
+	};
+
+	BitmapDibHeader * getInfoHeader(uint32_t size)
+	{
+		switch( size )
+		{
+			case 12u:
+				return new BitmapCoreHeader;
+			case 40u:
+				return new BitmapInfoHeader;
+			default:
+				return nullptr;
+		};
 	};
 
 	BitmapRawImage Load(std::string path)
@@ -159,31 +329,42 @@ namespace Bitmap_Operation
 		if( header.bfType != BitmapFileHeader().bfType || header.bfOffBits >= length )
 			return BitmapRawImage();
 
-		// read bitmap info
-		BitmapInfoHeader info;
+		// read the size of dib header
+		data.resize( 4u );
 
-		data.resize( sizeof(BitmapInfoHeader) );
+		file.read( reinterpret_cast<char *>(data.data()), data.size() );
 
-		file.read( reinterpret_cast<char *>(data.data()), info.overallSize );
+		size_t dibHeaderOffset = 0;
+		uint32_t dibHeaderSize = 0;
 
-		info.set( data );
+		get_value( data, dibHeaderOffset, dibHeaderSize );
 
-		if( !(info.biBitCount == 8u || info.biBitCount == 24u) ||
-			info.biWidth <= 0 || info.biHeight <= 0 || info.biSize != BitmapInfoHeader().biSize ||
-			(info.biSizeImage != static_cast<uint32_t>(info.biWidth * info.biHeight) && info.biSizeImage != 0 ) ||
-			info.biPlanes != BitmapInfoHeader().biPlanes || header.bfOffBits < info.overallSize - header.overallSize)
+		// create proper dib header 
+		std::unique_ptr <BitmapDibHeader> info( getInfoHeader( dibHeaderSize ) );
+
+		if( info.get() == nullptr )
 			return BitmapRawImage();
 
-		uint32_t rowSize = static_cast<uint32_t>(info.biWidth) * static_cast<uint8_t>(info.biBitCount / 8u);
+		data.resize( dibHeaderSize );
+
+		// read bitmap info
+		file.read( reinterpret_cast<char *>(data.data() + sizeof(dibHeaderSize)), data.size() - sizeof(dibHeaderSize) );
+
+		info->set( data );
+
+		if( info->validate( header ) )
+			return BitmapRawImage();
+
+		uint32_t rowSize = info->width() * info->colorCount();
 		if( rowSize % BITMAP_ALIGNMENT != 0 )
 			rowSize = (rowSize / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
-		if( length != header.bfOffBits + rowSize * static_cast<uint32_t>(info.biHeight) )
+		if( length != header.bfOffBits + rowSize * info->height() )
 			return BitmapRawImage();
 
 		BitmapRawImage raw;
 
-		uint32_t palleteSize = header.bfOffBits - info.overallSize - header.overallSize;
+		uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
 
 		if( palleteSize > 0 ) {
 			raw.allocatePallete( palleteSize );
@@ -203,10 +384,9 @@ namespace Bitmap_Operation
 			}
 		}
 
-		raw.allocateImage( static_cast<uint32_t>(info.biWidth), static_cast<uint32_t>(info.biHeight),
-						   static_cast<uint8_t>(info.biBitCount / 8u), BITMAP_ALIGNMENT );
+		raw.allocateImage( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
 
-		size_t dataToRead =  rowSize * static_cast < size_t > (info.biHeight);
+		size_t dataToRead =  rowSize * info->height();
 		size_t dataReaded = 0;
 
 		const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks
@@ -245,7 +425,7 @@ namespace Bitmap_Operation
 		uint32_t palleteSize = 0;
 		std::vector < uint8_t > pallete;
 
-		// Create pallete only for gray-scale image
+		// Create a pallete only for gray-scale image
 		if( image.colorCount() == 1u ) {
 			palleteSize = 1024u;
 			pallete.resize( palleteSize );
@@ -267,13 +447,13 @@ namespace Bitmap_Operation
 		BitmapFileHeader header;
 		BitmapInfoHeader info;
 
-		header.bfSize    = header.overallSize + info.overallSize + palleteSize + lineLength * height;
-		header.bfOffBits = header.overallSize + info.overallSize + palleteSize;
-		
-		info.biWidth     = static_cast<int32_t>(width);
-		info.biHeight    = static_cast<int32_t>(height);
-		info.biBitCount  = 8u * image.colorCount();
-		info.biSizeImage = width * height;
+		header.bfSize    = header.overallSize + info.size() + palleteSize + lineLength * height;
+		header.bfOffBits = header.overallSize + info.size() + palleteSize;
+
+		info.setWidth     (width);
+		info.setHeight    (height);
+		info.setColorCount(image.colorCount());
+		info.setImageSize (lineLength * height);
 
 		std::fstream file;
 		file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
@@ -289,7 +469,7 @@ namespace Bitmap_Operation
 		data.resize( sizeof(BitmapInfoHeader) );
 
 		info.get( data );
-		file.write( reinterpret_cast<const char *>(data.data()), info.overallSize );
+		file.write( reinterpret_cast<const char *>(data.data()), info.size() );
 
 		if( !pallete.empty() )
 			file.write( reinterpret_cast<const char *>(pallete.data()), pallete.size() );

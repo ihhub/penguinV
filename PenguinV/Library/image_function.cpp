@@ -277,8 +277,10 @@ namespace Image_Function
 		uint32_t rowSizeIn  = in.rowSize();
 		uint32_t rowSizeOut = out.rowSize();
 
+		const uint8_t colorCount = out.colorCount();
+
 		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -286,9 +288,9 @@ namespace Image_Function
 			const uint8_t * inX  = inY;
 			uint8_t       * outX = outY;
 
-			const uint8_t * outXEnd = outX + width * 3;
+			const uint8_t * outXEnd = outX + width * colorCount;
 
-			for (; outX != outXEnd; outX += 3, ++inX)
+			for (; outX != outXEnd; outX += colorCount, ++inX)
 				*(outX) = *(outX + 1) = *(outX + 2) = (*inX);
 		}
 	}
@@ -302,7 +304,9 @@ namespace Image_Function
 		uint32_t rowSizeIn  = in.rowSize();
 		uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		const uint8_t colorCount = in.colorCount();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
@@ -313,7 +317,7 @@ namespace Image_Function
 
 			const uint8_t * outXEnd = outX + width;
 
-			for (; outX != outXEnd; ++outX, inX += 3)
+			for (; outX != outXEnd; ++outX, inX += colorCount)
 				(*outX) = static_cast <uint8_t>( ( *(inX) + *(inX + 1) + *(inX + 2) ) / 3 ); // average of red, green and blue components
 		}
 	}
@@ -387,7 +391,9 @@ namespace Image_Function
 		uint32_t rowSizeIn  = in.rowSize();
 		uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn + channelId;
+		const uint8_t colorCount = in.colorCount();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount + channelId;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
@@ -398,7 +404,7 @@ namespace Image_Function
 
 			const uint8_t * outXEnd = outX + width;
 
-			for (; outX != outXEnd; ++outX, inX += 3)
+			for (; outX != outXEnd; ++outX, inX += colorCount)
 				(*outX) = *(inX);
 		}
 	}

@@ -387,5 +387,5 @@ namespace Bitmap_Image
 	};
 
 	typedef BitmapImage < 1 > Image;      // gray-scale image (1 color [byte])
-	typedef BitmapImage < 3 > ColorImage; // RGB image (3 colors [bytes])
+	typedef BitmapImage < 3 > ColorImage; // RGB image (usually 3 colors [bytes] but could contain 4)
 };
