@@ -27,6 +27,11 @@ namespace Unit_Test
 		bool Copy5ParametersTest();
 		bool Copy8ParametersTest();
 
+		bool Histogram1ParameterTest();
+		bool Histogram2ParametersTest();
+		bool Histogram4ParametersTest();
+		bool Histogram5ParametersTest();
+
 		bool Invert1ParameterTest();
 		bool Invert2ParametersTest();
 		bool Invert5ParametersTest();

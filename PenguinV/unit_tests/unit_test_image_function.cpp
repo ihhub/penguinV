@@ -1,3 +1,4 @@
+#include <numeric>
 #include "../Library/image_function.h"
 #include "unit_test_image_function.h"
 #include "unit_test_helper.h"
@@ -24,6 +25,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Copy2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Copy5ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Copy8ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Test::Histogram1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::Histogram2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Histogram4ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Histogram5ParametersTest );
 
 		ADD_TEST( framework, Image_Function_Test::Invert1ParameterTest );
 		ADD_TEST( framework, Image_Function_Test::Invert2ParametersTest );
@@ -345,6 +351,82 @@ namespace Unit_Test
 				Image_Function::Copy( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensityValue[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Histogram1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				Bitmap_Image::Image image = uniformImage( intensityValue[0] );
+
+				std::vector < uint32_t > histogram = Image_Function::Histogram( image );
+
+				if( histogram.size() != 256u || histogram[intensityValue[0]] != image.width() * image.height() ||
+					std::accumulate(histogram.begin(), histogram.end(), 0u)  != image.width() * image.height() )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Histogram2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				Bitmap_Image::Image image = uniformImage( intensityValue[0] );
+
+				std::vector < uint32_t > histogram;
+				Image_Function::Histogram( image, histogram );
+
+				if( histogram.size() != 256u || histogram[intensityValue[0]] != image.width() * image.height() ||
+					std::accumulate(histogram.begin(), histogram.end(), 0u)  != image.width() * image.height() )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Histogram4ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				std::vector < uint32_t > histogram = Image_Function::Histogram( input[0], roiX[0], roiY[0], roiWidth, roiHeight );
+
+				if( histogram.size() != 256u || histogram[intensityValue[0]] != roiWidth * roiHeight ||
+					std::accumulate(histogram.begin(), histogram.end(), 0u)  != roiWidth * roiHeight )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Histogram5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				std::vector < uint32_t > histogram;
+				Image_Function::Histogram( input[0], roiX[0], roiY[0], roiWidth, roiHeight, histogram );
+
+				if( histogram.size() != 256u || histogram[intensityValue[0]] != roiWidth * roiHeight ||
+					std::accumulate(histogram.begin(), histogram.end(), 0u)  != roiWidth * roiHeight )
 					return false;
 			}
 
