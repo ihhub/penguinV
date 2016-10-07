@@ -5,10 +5,13 @@ SRCS :=  \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/FileOperation/bitmap.cpp \
 	$(LIB_DIR)/image_function.cpp \
+	$(LIB_DIR)/function_pool.cpp \
+	$(LIB_DIR)/thread_pool.cpp \
 	unit_tests.cpp \
 	unit_test_bitmap.cpp \
 	unit_test_blob_detection.cpp \
 	unit_test_framework.cpp \
+	unit_test_function_pool.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
 	unit_test_image_function.cpp
