@@ -35,8 +35,14 @@ namespace Thread_Pool
 		size_t taskId = _givenTaskCount++;
 
 		if( taskId < _taskCount ) {
-			if( !skip )
-				_task(taskId);
+			if( !skip ) {
+				try {
+					_task(taskId);
+				} catch(...) {
+					// here should be some logging code stating about exception
+					// or add your code to feedback about exception here
+				}
+			}
 
 			size_t completedTasks = (++_completedTaskCount);
 
@@ -272,11 +278,7 @@ namespace Thread_Pool
 
 				pool->_taskInfo.unlock();
 
-				try {
-					task->_taskRun( false );
-				} catch(...) {
-					// here should be some logging code stating about exception
-				}
+				task->_taskRun( false );
 			}
 			else {
 				pool->_run[threadId] = 0;
