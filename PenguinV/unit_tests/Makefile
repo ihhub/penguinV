@@ -12,13 +12,13 @@ SRCS :=  \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
 	unit_test_image_function.cpp
-TARGET := unittest
+TARGET := unit_tests
 
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 LIBS := -pthread
-CXXFLAGS := -std=c++11 -O2
+CXXFLAGS := -std=c++11 -Wall -O2
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))
