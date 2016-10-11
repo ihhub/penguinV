@@ -36,6 +36,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Invert5ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Invert8ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::IsEqual2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::IsEqual8ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Maximum2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Maximum3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Maximum8ParametersTest );
@@ -503,6 +506,41 @@ namespace Unit_Test
 				Image_Function::Invert( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool IsEqual2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				if( (intensity[0] == intensity[1]) != (Image_Function::IsEqual( input[0], input[1] )) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool IsEqual8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				if( (intensity[0] == intensity[1]) !=
+					(Image_Function::IsEqual( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight )) )
 					return false;
 			}
 

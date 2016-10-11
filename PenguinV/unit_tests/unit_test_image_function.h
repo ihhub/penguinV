@@ -37,6 +37,9 @@ namespace Unit_Test
 		bool Invert5ParametersTest();
 		bool Invert8ParametersTest();
 
+		bool IsEqual2ParametersTest();
+		bool IsEqual8ParametersTest();
+
 		bool Maximum2ParametersTest();
 		bool Maximum3ParametersTest();
 		bool Maximum8ParametersTest();
