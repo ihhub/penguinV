@@ -322,9 +322,9 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				Bitmap_Image::Image output = Function_Pool::Invert( input[0] );
+				Bitmap_Image::Image output = Function_Pool::Invert( input );
 
 				if( !verifyImage( output, ~intensityValue[0] ) )
 					return false;
@@ -356,17 +356,13 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-				Bitmap_Image::Image output = Function_Pool::Invert( input[0], roiX[0], roiY[0], roiWidth, roiHeight );
+				Bitmap_Image::Image output = Function_Pool::Invert( input, roiX, roiY, roiWidth, roiHeight );
 
 				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensityValue[0] ) )
 					return false;
@@ -673,9 +669,9 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				if( Function_Pool::Sum( input[0] ) != input[0].width() * input[0].height() * intensityValue[0] )
+				if( Function_Pool::Sum( input ) != input.width() * input.height() * intensityValue[0] )
 					return false;
 			}
 
@@ -688,14 +684,13 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-				if( Function_Pool::Sum( input[0], roiX[0], roiY[0], roiWidth, roiHeight ) !=
+				if( Function_Pool::Sum( input, roiX, roiY, roiWidth, roiHeight ) !=
 					roiWidth * roiHeight * intensityValue[0] )
 					return false;
 			}
@@ -709,11 +704,11 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
-				Bitmap_Image::Image output = Function_Pool::Threshold( input[0], threshold );
+				Bitmap_Image::Image output = Function_Pool::Threshold( input, threshold );
 
 				if( !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
 					return false;
@@ -747,19 +742,15 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
-				Bitmap_Image::Image output = Function_Pool::Threshold( input[0], roiX[0], roiY[0], roiWidth, roiHeight, threshold );
+				Bitmap_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
 				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
 					return false;
@@ -801,12 +792,12 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-				Bitmap_Image::Image output = Function_Pool::Threshold( input[0], minThreshold, maxThreshold );
+				Bitmap_Image::Image output = Function_Pool::Threshold( input, minThreshold, maxThreshold );
 
 				if( !verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
 					return false;
@@ -841,20 +832,16 @@ namespace Unit_Test
 				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
 
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-				Bitmap_Image::Image output = Function_Pool::Threshold( input[0], roiX[0], roiY[0], roiWidth, roiHeight, minThreshold,
+				Bitmap_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold,
 																	   maxThreshold );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||

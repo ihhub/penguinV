@@ -292,9 +292,9 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Invert( input[0] );
+				Bitmap_Image::Image output = Image_Function_Sse::Invert( input );
 
 				if( !verifyImage( output, ~intensityValue[0] ) )
 					return false;
@@ -322,17 +322,13 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Invert( input[0], roiX[0], roiY[0], roiWidth, roiHeight );
+				Bitmap_Image::Image output = Image_Function_Sse::Invert( input, roiX, roiY, roiWidth, roiHeight );
 
 				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensityValue[0] ) )
 					return false;
@@ -611,11 +607,11 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input[0], threshold );
+				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input, threshold );
 
 				if( !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
 					return false;
@@ -645,19 +641,15 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input[0], roiX[0], roiY[0], roiWidth, roiHeight, threshold );
+				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
 				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
 					return false;
@@ -695,12 +687,12 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input[0], minThreshold, maxThreshold );
+				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input, minThreshold, maxThreshold );
 
 				if( !verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
 					return false;
@@ -731,20 +723,16 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				std::vector < Bitmap_Image::Image > input;
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
-					{ input.push_back( uniformImage( value ) ); } );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
+				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input[0], roiX[0], roiY[0], roiWidth, roiHeight,
+				Bitmap_Image::Image output = Image_Function_Sse::Threshold( input, roiX, roiY, roiWidth, roiHeight,
 																			minThreshold, maxThreshold );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||
