@@ -74,6 +74,11 @@ namespace Unit_Test
 		return fillArray;
 	}
 
+	uint8_t intensityValue()
+	{
+		return randomValue<uint8_t>(255);
+	}
+
 	std::vector < uint8_t > intensityArray( uint32_t size )
 	{
 		return generateArray<uint8_t>( size, 256 );
@@ -103,11 +108,6 @@ namespace Unit_Test
 		return image.width() == width && image.height() == height && !image.empty();
 	}
 
-	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
-	{
-		Image_Function::Fill( image, x, y, width, height, value );
-	}
-
 	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
@@ -129,6 +129,11 @@ namespace Unit_Test
 		return verifyImage( image, 0, 0, image.width(), image.height(), value );
 	}
 
+	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+	{
+		Image_Function::Fill( image, x, y, width, height, value );
+	}
+
 	void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
 	{
 		width  = randomValue<uint32_t>( 1, image.width()  + 1 );
@@ -145,7 +150,6 @@ namespace Unit_Test
 		uint32_t maximumHeight = 0;
 
 		for( std::vector < Bitmap_Image::Image >::const_iterator im = image.begin(); im != image.end(); ++im ) {
-			
 			if( maximumWidth == 0 )
 				maximumWidth = im->width();
 			else if( maximumWidth > im->width() )
@@ -169,17 +173,17 @@ namespace Unit_Test
 		}
 	}
 
-	uint32_t runCount()
-	{
-		return 1024;
-	}
-
 	uint32_t rowSize(uint32_t width, uint8_t colorCount, uint8_t alignment)
 	{
 		uint32_t size = width * colorCount;
-		if( size % alignment != 0  )
+		if( size % alignment != 0 )
 			size = ((size / alignment) + 1) * alignment;
 
 		return size;
+	}
+
+	uint32_t runCount()
+	{
+		return 1024; // some magic number for loop. Higher value = higher chance to verify all possible situations
 	}
 };

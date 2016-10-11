@@ -9,6 +9,7 @@
 // A bunch of functions to help writing unit tests
 namespace Unit_Test
 {
+	// Generate images
 	Bitmap_Image::Image uniformImage();
 	Bitmap_Image::Image uniformImage(uint8_t value);
 	Bitmap_Image::Image blackImage();
@@ -17,8 +18,11 @@ namespace Unit_Test
 	std::vector < Bitmap_Image::Image > uniformImages( uint32_t images );
 	std::vector < Bitmap_Image::Image > uniformImages( std::vector < uint8_t > intensityValue );
 	
+	// Generate pixel intensity values
+	uint8_t intensityValue();
 	std::vector < uint8_t > intensityArray( uint32_t size );
 
+	// Image size and ROI verification
 	template <typename data>
 	bool equalSize( const data & image1, const data & image2 )
 	{
@@ -45,15 +49,6 @@ namespace Unit_Test
 		return memcmp(image1.data(), image2.data(), sizeof(data) * image1.height() * image1.rowSize()) == 0;
 	};
 
-	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-
-	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
-
-	void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height );
-	void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
-					  uint32_t & width, uint32_t & height );
-
 	template <typename data>
 	bool isEmpty( const Template_Image::ImageTemplate < data > & image)
 	{
@@ -61,8 +56,23 @@ namespace Unit_Test
 			   image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
 	};
 
-	uint32_t runCount();
+	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
 
+	// Fill image ROI with specific intensity
+	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+
+	// Generate and return ROI based on full image size
+	void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height );
+	void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
+					  uint32_t & width, uint32_t & height );
+
+	// Return calculated row size
+	uint32_t rowSize(uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1);
+
+	uint32_t runCount(); // fixed value for all test loops
+
+	// Return random value for specific range or variable type
 	template <typename data>
 	data randomValue(int maximum)
 	{
@@ -87,6 +97,4 @@ namespace Unit_Test
 			return value;
 		}
 	};
-
-	uint32_t rowSize(uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1);
 };

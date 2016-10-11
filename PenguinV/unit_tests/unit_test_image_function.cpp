@@ -75,12 +75,12 @@ namespace Unit_Test
 		bool BitwiseAnd2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::BitwiseAnd( input[0], input[1] );
 
-				if( !equalSize( input[0], output ) || !verifyImage( output, intensityValue[0] & intensityValue[1] ) )
+				if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] & intensity[1] ) )
 					return false;
 			}
 
@@ -90,12 +90,12 @@ namespace Unit_Test
 		bool BitwiseAnd3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::BitwiseAnd( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] & intensityValue[1] ) )
+				if( !verifyImage( image[2], intensity[0] & intensity[1] ) )
 					return false;
 			}
 
@@ -105,10 +105,10 @@ namespace Unit_Test
 		bool BitwiseAnd8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -119,7 +119,7 @@ namespace Unit_Test
 				Bitmap_Image::Image output = Image_Function::BitwiseAnd(
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] & intensityValue[1] ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] & intensity[1] ) )
 					return false;
 			}
 
@@ -129,10 +129,10 @@ namespace Unit_Test
 		bool BitwiseAnd11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -143,7 +143,7 @@ namespace Unit_Test
 				Image_Function::BitwiseAnd( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1],
 											image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensityValue[0] & intensityValue[1] ) )
+				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] & intensity[1] ) )
 					return false;
 			}
 
@@ -153,12 +153,12 @@ namespace Unit_Test
 		bool BitwiseOr2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::BitwiseOr( input[0], input[1] );
 
-				if( !equalSize( input[0], output ) || !verifyImage( output, intensityValue[0] | intensityValue[1] ) )
+				if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] | intensity[1] ) )
 					return false;
 			}
 
@@ -168,12 +168,12 @@ namespace Unit_Test
 		bool BitwiseOr3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::BitwiseOr( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] | intensityValue[1] ) )
+				if( !verifyImage( image[2], intensity[0] | intensity[1] ) )
 					return false;
 			}
 
@@ -183,10 +183,10 @@ namespace Unit_Test
 		bool BitwiseOr8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -197,7 +197,7 @@ namespace Unit_Test
 				Bitmap_Image::Image output = Image_Function::BitwiseOr(
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] | intensityValue[1] ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] | intensity[1] ) )
 					return false;
 			}
 
@@ -207,10 +207,10 @@ namespace Unit_Test
 		bool BitwiseOr11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -221,7 +221,7 @@ namespace Unit_Test
 				Image_Function::BitwiseOr( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1],
 										   image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensityValue[0] | intensityValue[1] ) )
+				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] | intensity[1] ) )
 					return false;
 			}
 
@@ -231,12 +231,12 @@ namespace Unit_Test
 		bool BitwiseXor2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::BitwiseXor( input[0], input[1] );
 
-				if( !equalSize( input[0], output ) || !verifyImage( output, intensityValue[0] ^ intensityValue[1] ) )
+				if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
 					return false;
 			}
 
@@ -246,12 +246,12 @@ namespace Unit_Test
 		bool BitwiseXor3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::BitwiseXor( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] ^ intensityValue[1] ) )
+				if( !verifyImage( image[2], intensity[0] ^ intensity[1] ) )
 					return false;
 			}
 
@@ -261,10 +261,10 @@ namespace Unit_Test
 		bool BitwiseXor8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -275,7 +275,7 @@ namespace Unit_Test
 				Bitmap_Image::Image output = Image_Function::BitwiseXor(
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] ^ intensityValue[1] ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
 					return false;
 			}
 
@@ -285,10 +285,10 @@ namespace Unit_Test
 		bool BitwiseXor11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -299,7 +299,7 @@ namespace Unit_Test
 				Image_Function::BitwiseXor( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1],
 										   image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensityValue[0] ^ intensityValue[1] ) )
+				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] ) )
 					return false;
 			}
 
@@ -309,12 +309,12 @@ namespace Unit_Test
 		bool Copy2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Image_Function::Copy( input[0], input[1] );
 
-				if( !verifyImage( input[1], intensityValue[0] ) )
+				if( !verifyImage( input[1], intensity[0] ) )
 					return false;
 			}
 
@@ -324,8 +324,8 @@ namespace Unit_Test
 		bool Copy5ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -333,7 +333,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Image_Function::Copy( input, roiX, roiY, roiWidth, roiHeight );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity ) )
 					return false;
 			}
 
@@ -343,10 +343,10 @@ namespace Unit_Test
 		bool Copy8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -356,7 +356,7 @@ namespace Unit_Test
 
 				Image_Function::Copy( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensityValue[0] ) )
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
 					return false;
 			}
 
@@ -366,12 +366,12 @@ namespace Unit_Test
 		bool Histogram1ParameterTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image image = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
 
 				std::vector < uint32_t > histogram = Image_Function::Histogram( image );
 
-				if( histogram.size() != 256u || histogram[intensityValue[0]] != image.width() * image.height() ||
+				if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
 					std::accumulate(histogram.begin(), histogram.end(), 0u)  != image.width() * image.height() )
 					return false;
 			}
@@ -382,13 +382,13 @@ namespace Unit_Test
 		bool Histogram2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image image = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
 
 				std::vector < uint32_t > histogram;
 				Image_Function::Histogram( image, histogram );
 
-				if( histogram.size() != 256u || histogram[intensityValue[0]] != image.width() * image.height() ||
+				if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
 					std::accumulate(histogram.begin(), histogram.end(), 0u)  != image.width() * image.height() )
 					return false;
 			}
@@ -399,8 +399,8 @@ namespace Unit_Test
 		bool Histogram4ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -408,7 +408,7 @@ namespace Unit_Test
 
 				std::vector < uint32_t > histogram = Image_Function::Histogram( input, roiX, roiY, roiWidth, roiHeight );
 
-				if( histogram.size() != 256u || histogram[intensityValue[0]] != roiWidth * roiHeight ||
+				if( histogram.size() != 256u || histogram[intensity] != roiWidth * roiHeight ||
 					std::accumulate(histogram.begin(), histogram.end(), 0u)  != roiWidth * roiHeight )
 					return false;
 			}
@@ -419,8 +419,8 @@ namespace Unit_Test
 		bool Histogram5ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -429,7 +429,7 @@ namespace Unit_Test
 				std::vector < uint32_t > histogram;
 				Image_Function::Histogram( input, roiX, roiY, roiWidth, roiHeight, histogram );
 
-				if( histogram.size() != 256u || histogram[intensityValue[0]] != roiWidth * roiHeight ||
+				if( histogram.size() != 256u || histogram[intensity] != roiWidth * roiHeight ||
 					std::accumulate(histogram.begin(), histogram.end(), 0u)  != roiWidth * roiHeight )
 					return false;
 			}
@@ -440,12 +440,12 @@ namespace Unit_Test
 		bool Invert1ParameterTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				Bitmap_Image::Image output = Image_Function::Invert( input );
 
-				if( !verifyImage( output, ~intensityValue[0] ) )
+				if( !verifyImage( output, ~intensity ) )
 					return false;
 			}
 
@@ -455,12 +455,12 @@ namespace Unit_Test
 		bool Invert2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Image_Function::Invert( input[0], input[1] );
 
-				if( !verifyImage( input[1], ~intensityValue[0] ) )
+				if( !verifyImage( input[1], ~intensity[0] ) )
 					return false;
 			}
 
@@ -470,8 +470,8 @@ namespace Unit_Test
 		bool Invert5ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -479,7 +479,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Image_Function::Invert( input, roiX, roiY, roiWidth, roiHeight );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensityValue[0] ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensity ) )
 					return false;
 			}
 
@@ -489,10 +489,10 @@ namespace Unit_Test
 		bool Invert8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -502,7 +502,7 @@ namespace Unit_Test
 
 				Image_Function::Invert( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensityValue[0] ) )
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] ) )
 					return false;
 			}
 
@@ -512,13 +512,13 @@ namespace Unit_Test
 		bool Maximum2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::Maximum( input[0], input[1] );
 
 				if( !equalSize( input[0], output ) ||
-					!verifyImage( output, intensityValue[0] > intensityValue[1] ? intensityValue[0] : intensityValue[1] ))
+					!verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ))
 					return false;
 			}
 
@@ -528,12 +528,12 @@ namespace Unit_Test
 		bool Maximum3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::Maximum( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] > intensityValue[1] ? intensityValue[0] : intensityValue[1] ) )
+				if( !verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
 					return false;
 			}
 
@@ -543,10 +543,10 @@ namespace Unit_Test
 		bool Maximum8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -558,7 +558,7 @@ namespace Unit_Test
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||
-					!verifyImage( output, intensityValue[0] > intensityValue[1] ? intensityValue[0] : intensityValue[1] ))
+					!verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ))
 					return false;
 			}
 
@@ -568,10 +568,10 @@ namespace Unit_Test
 		bool Maximum11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -583,7 +583,7 @@ namespace Unit_Test
 											image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-					intensityValue[0] > intensityValue[1] ? intensityValue[0] : intensityValue[1] ) )
+					intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
 					return false;
 			}
 
@@ -593,13 +593,13 @@ namespace Unit_Test
 		bool Minimum2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::Minimum( input[0], input[1] );
 
 				if( !equalSize( input[0], output ) ||
-					!verifyImage( output, intensityValue[0] < intensityValue[1] ? intensityValue[0] : intensityValue[1] ))
+					!verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ))
 					return false;
 			}
 
@@ -609,12 +609,12 @@ namespace Unit_Test
 		bool Minimum3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::Minimum( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] < intensityValue[1] ? intensityValue[0] : intensityValue[1] ) )
+				if( !verifyImage( image[2], intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
 					return false;
 			}
 
@@ -624,10 +624,10 @@ namespace Unit_Test
 		bool Minimum8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -639,7 +639,7 @@ namespace Unit_Test
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||
-					!verifyImage( output, intensityValue[0] < intensityValue[1] ? intensityValue[0] : intensityValue[1] ))
+					!verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ))
 					return false;
 			}
 
@@ -649,10 +649,10 @@ namespace Unit_Test
 		bool Minimum11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -664,7 +664,7 @@ namespace Unit_Test
 											image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-					intensityValue[0] < intensityValue[1] ? intensityValue[0] : intensityValue[1] ) )
+					intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
 					return false;
 			}
 
@@ -674,15 +674,15 @@ namespace Unit_Test
 		bool Resize2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
 				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
 
 				Bitmap_Image::Image output = Image_Function::Resize( input, outputWidth, outputHeight );
 
-				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensityValue[0] ) )
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
 					return false;
 			}
 
@@ -692,13 +692,13 @@ namespace Unit_Test
 		bool Resize3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				Bitmap_Image::Image input  = uniformImage( intensityValue[0] );
-				Bitmap_Image::Image output = uniformImage( intensityValue[1] );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage( intensity[1] );
 
 				Image_Function::Resize( input, output );
 
-				if( !verifyImage( output, intensityValue[0] ) )
+				if( !verifyImage( output, intensity[0] ) )
 					return false;
 			}
 
@@ -708,8 +708,8 @@ namespace Unit_Test
 		bool Resize7ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 				
 				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
 				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
@@ -720,7 +720,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Image_Function::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
 
-				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensityValue[0] ) )
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
 					return false;
 			}
 
@@ -730,9 +730,9 @@ namespace Unit_Test
 		bool Resize9ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				Bitmap_Image::Image input  = uniformImage( intensityValue[0] );
-				Bitmap_Image::Image output = uniformImage( intensityValue[1] );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage( intensity[1] );
 
 				std::vector < uint32_t > roiX(2), roiY(2), roiWidth(2), roiHeight(2);
 
@@ -742,7 +742,7 @@ namespace Unit_Test
 				Image_Function::Resize( input , roiX[0], roiY[0], roiWidth[0], roiHeight[0],
 										output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
 
-				if( !verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensityValue[0] ) )
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] ) )
 					return false;
 			}
 
@@ -752,13 +752,13 @@ namespace Unit_Test
 		bool Subtract2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				Bitmap_Image::Image output = Image_Function::Subtract( input[0], input[1] );
 
 				if( !equalSize( input[0], output ) ||
-					!verifyImage( output, intensityValue[0] > intensityValue[1] ? intensityValue[0] - intensityValue[1] : 0 ))
+					!verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ))
 					return false;
 			}
 
@@ -768,12 +768,12 @@ namespace Unit_Test
 		bool Subtract3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
-				std::vector < Bitmap_Image::Image > image = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
 
 				Image_Function::Subtract( image[0], image[1], image[2] );
 
-				if( !verifyImage( image[2], intensityValue[0] > intensityValue[1] ? intensityValue[0] - intensityValue[1] : 0 ) )
+				if( !verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
 					return false;
 			}
 
@@ -783,10 +783,10 @@ namespace Unit_Test
 		bool Subtract8ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > input;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ input.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -798,7 +798,7 @@ namespace Unit_Test
 					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||
-					!verifyImage( output, intensityValue[0] > intensityValue[1] ? intensityValue[0] - intensityValue[1] : 0 ))
+					!verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ))
 					return false;
 			}
 
@@ -808,10 +808,10 @@ namespace Unit_Test
 		bool Subtract11ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 3 );
+				std::vector < uint8_t > intensity = intensityArray( 3 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -823,7 +823,7 @@ namespace Unit_Test
 											image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-					intensityValue[0] > intensityValue[1] ? intensityValue[0] - intensityValue[1] : 0 ) )
+					intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
 					return false;
 			}
 
@@ -833,10 +833,10 @@ namespace Unit_Test
 		bool Sum1ParameterTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
-				if( Image_Function::Sum( input ) != intensityValue[0] * input.width() * input.height() )
+				if( Image_Function::Sum( input ) != intensity * input.width() * input.height() )
 					return false;
 			}
 
@@ -846,14 +846,14 @@ namespace Unit_Test
 		bool Sum5ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
 				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-				if( Image_Function::Sum( input, roiX, roiY, roiWidth, roiHeight ) != intensityValue[0] * roiWidth * roiHeight )
+				if( Image_Function::Sum( input, roiX, roiY, roiWidth, roiHeight ) != intensity * roiWidth * roiHeight )
 					return false;
 			}
 
@@ -863,14 +863,14 @@ namespace Unit_Test
 		bool Threshold2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
 				Bitmap_Image::Image output = Image_Function::Threshold( input, threshold );
 
-				if( !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
+				if( !verifyImage( output, intensity < threshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -880,14 +880,14 @@ namespace Unit_Test
 		bool Threshold3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				uint8_t threshold = randomValue <uint8_t>( 255 );
 
 				Image_Function::Threshold( input[0], input[1], threshold );
 
-				if( !verifyImage( input[1], intensityValue[0] < threshold ? 0 : 255 ) )
+				if( !verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -897,8 +897,8 @@ namespace Unit_Test
 		bool Threshold6ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -908,7 +908,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Image_Function::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
-				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensityValue[0] < threshold ? 0 : 255 ) )
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity < threshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -918,10 +918,10 @@ namespace Unit_Test
 		bool Threshold9ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -933,7 +933,7 @@ namespace Unit_Test
 
 				Image_Function::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
-				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensityValue[0] < threshold ? 0 : 255 ) )
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] < threshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -943,15 +943,15 @@ namespace Unit_Test
 		bool ThresholdDouble3ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
 				Bitmap_Image::Image output = Image_Function::Threshold( input, minThreshold, maxThreshold );
 
-				if( !verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+				if( !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -961,15 +961,15 @@ namespace Unit_Test
 		bool ThresholdDouble4ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
-				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
 				uint8_t minThreshold = randomValue <uint8_t>( 255 );
 				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
 				Image_Function::Threshold( input[0], input[1], minThreshold, maxThreshold );
 
-				if( !verifyImage( input[1], intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+				if( !verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -979,8 +979,8 @@ namespace Unit_Test
 		bool ThresholdDouble7ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 1 );
-				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
 
 				uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -993,7 +993,7 @@ namespace Unit_Test
 																		maxThreshold );
 
 				if( !equalSize( output, roiWidth, roiHeight ) ||
-					!verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+					!verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 
@@ -1003,10 +1003,10 @@ namespace Unit_Test
 		bool ThresholdDouble10ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < uint8_t > intensity = intensityArray( 2 );
 				std::vector < Bitmap_Image::Image > image;
 
-				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
 					{ image.push_back( uniformImage( value ) ); } );
 
 				std::vector < uint32_t > roiX, roiY;
@@ -1021,7 +1021,7 @@ namespace Unit_Test
 										   maxThreshold);
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
-					intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+					intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 
