@@ -665,4 +665,103 @@ namespace Image_Function_Sse
 				memset( outY, 255u, sizeof(uint8_t) * width );
 		}
 	}
+
+	Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+	}
+
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+					 uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		// image width is less than 16 bytes so no use to utilize SSE :(
+		if (width < simdSize) {
+			Image_Function::Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold);
+			return;
+		}
+
+		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		simd shiftMask = _mm_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+									   0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+
+		simd notMask = _mm_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+
+		simd minCompare = _mm_set_epi8(
+			minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u,
+			minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u,
+			minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u,
+			minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u, minThreshold ^ 0x80u );
+
+		simd maxCompare = _mm_set_epi8(
+			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
+			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
+			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
+			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u );
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const simd * src1 = reinterpret_cast < const simd* > (inY);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
+
+			const simd * src1End = src1 + simdWidth;
+
+			for( ; src1 != src1End; ++src1, ++dst ) {
+				simd data = _mm_xor_si128( _mm_loadu_si128(src1), shiftMask );
+				
+				_mm_storeu_si128( dst, _mm_andnot_si128(
+										_mm_or_si128(
+											_mm_cmplt_epi8(data, minCompare),
+											_mm_cmpgt_epi8(data, maxCompare) ),
+										notMask ) );
+			}
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
+
+				const uint8_t * outXEnd = outX + nonSimdWidth;
+
+				for( ; outX != outXEnd; ++outX, ++inX )
+					(*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
+			}
+		}
+	}
 };

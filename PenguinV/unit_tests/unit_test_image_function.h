@@ -59,5 +59,10 @@ namespace Unit_Test
 		bool Threshold3ParametersTest();
 		bool Threshold6ParametersTest();
 		bool Threshold9ParametersTest();
+
+		bool ThresholdDouble3ParametersTest();
+		bool ThresholdDouble4ParametersTest();
+		bool ThresholdDouble7ParametersTest();
+		bool ThresholdDouble10ParametersTest();
 	};
 };

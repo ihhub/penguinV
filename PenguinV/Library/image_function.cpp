@@ -1164,6 +1164,63 @@ namespace Image_Function
 		}
 	}
 
+	Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+	}
+
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+					 uint8_t maxThreshold )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		if( minThreshold > maxThreshold )
+			throw imageException("Minimum threshold value is bigger than maximum threshold value");
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * inX  = inY;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for( ; outX != outXEnd; ++outX, ++inX )
+				(*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
+		}
+	}
+
 	Image Transpose( const Image & in )
 	{
 		ParameterValidation( in );

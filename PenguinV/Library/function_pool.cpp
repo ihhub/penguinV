@@ -111,11 +111,13 @@ namespace Function_Pool
 	struct InputInfo
 	{
 		InputInfo()
-			: threshold           (0)
+			: minThreshold        (0)
+			, maxThreshold        (255)
 			, horizontalProjection(false)
 		{ }
 
-		uint8_t threshold; // for Threshold() function
+		uint8_t minThreshold; // for Threshold() function same as threshold
+		uint8_t maxThreshold; // for Threshold() function
 		bool horizontalProjection; // for ProjectionProfile() function
 	};
 	// This structure holds output data for some specific functions
@@ -277,8 +279,17 @@ namespace Function_Pool
 						uint32_t width, uint32_t height, uint8_t threshold )
 		{
 			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-			_dataIn.threshold = threshold;
+			_dataIn.minThreshold = threshold;
 			_process( _Threshold );
+		}
+
+		void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+		{
+			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			_dataIn.minThreshold = minThreshold;
+			_dataIn.maxThreshold = maxThreshold;
+			_process( _ThresholdDouble );
 		}
 	protected:
 		enum TaskName // enumeration to define for thread what function need to execute
@@ -295,7 +306,8 @@ namespace Function_Pool
 			_ProjectionProfile,
 			_Subtract,
 			_Sum,
-			_Threshold
+			_Threshold,
+			_ThresholdDouble
 		};
 
 		void _task(size_t taskId)
@@ -364,7 +376,13 @@ namespace Function_Pool
 			case _Threshold:
 				Image_Function::Threshold(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.threshold );
+											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold );
+				break;
+			case _ThresholdDouble:
+				Image_Function::Threshold(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold,
+											_dataIn.maxThreshold);
 				break;
 			default:
 				throw imageException("Wrong image function task");
@@ -828,5 +846,44 @@ namespace Function_Pool
 					uint32_t width, uint32_t height, uint8_t threshold )
 	{
 		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
+	}
+
+	Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+	}
+
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+					 uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		if( minThreshold > maxThreshold )
+			throw imageException("Minimum threshold value is bigger than maximum threshold value");
+
+		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
 	}
 };

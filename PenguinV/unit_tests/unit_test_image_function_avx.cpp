@@ -45,6 +45,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Avx_Test::Threshold3ParametersTest );
 		ADD_TEST( framework, Image_Function_Avx_Test::Threshold6ParametersTest );
 		ADD_TEST( framework, Image_Function_Avx_Test::Threshold9ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble3ParametersTest );
+		ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble4ParametersTest );
+		ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble7ParametersTest );
+		ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble10ParametersTest );
 	}
 
 	namespace Image_Function_Avx_Test
@@ -681,6 +686,98 @@ namespace Unit_Test
 				Image_Function_Avx::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensityValue[0] < threshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Bitmap_Image::Image output = Image_Function_Avx::Threshold( input[0], minThreshold, maxThreshold );
+
+				if( !verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble4ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensityValue );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Image_Function_Avx::Threshold( input[0], input[1], minThreshold, maxThreshold );
+
+				if( !verifyImage( input[1], intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				std::vector < Bitmap_Image::Image > input;
+
+				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+					{ input.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Bitmap_Image::Image output = Image_Function_Avx::Threshold( input[0], roiX[0], roiY[0], roiWidth, roiHeight,
+																			minThreshold, maxThreshold );
+
+				if( !equalSize( output, roiWidth, roiHeight ) ||
+					!verifyImage( output, intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble10ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensityValue.begin(), intensityValue.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Image_Function_Avx::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight,
+											   minThreshold, maxThreshold);
+
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
+					intensityValue[0] < minThreshold || intensityValue[0] > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 

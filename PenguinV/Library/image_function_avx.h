@@ -73,4 +73,15 @@ namespace Image_Function_Avx
 	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold );
 	void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 					 uint32_t width, uint32_t height, uint8_t threshold );
+
+	// Thresholding works in such way:
+		// if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold
+		// then      set pixel intensity on output image as 0
+		// otherwise set pixel intensity on output image as 255
+	Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold );
+	void  Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+					 uint8_t maxThreshold );
+	void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					 uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
 };

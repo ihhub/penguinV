@@ -1949,6 +1949,25 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
+	Image Threshold(
+		const Image & in,
+		uint8_t minThreshold,
+		uint8_t maxThreshold
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into pseudo binary image based on threshold and returns an image as a result of this operation with same size as input image. Thresholding works in such way: if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold then set pixel intensity on output image as 0 otherwise set pixel intensity on output image as 255.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;minThreshold - minimum threshold value    
+	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
 	void Threshold(
 		const Image & in,
 		Image & out,
@@ -1964,6 +1983,27 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image what is a result of thresholding    
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void  Threshold(
+		const Image & in,
+		Image & out,
+		uint8_t minThreshold,
+		uint8_t maxThreshold
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into pseudo binary image based on threshold and puts result into output image with same size as input image. Thresholding works in such way: if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold then set pixel intensity on output image as 0 otherwise set pixel intensity on output image as 255.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image what is a result of thresholding    
+	&nbsp;&nbsp;&nbsp;&nbsp;minThreshold - minimum threshold value    
+	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -1997,6 +2037,33 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
+	Image Threshold(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		uint8_t minThreshold,
+		uint8_t maxThreshold
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area of [width, height] size into pseudo binary image based on threshold and returns an image as a result of this operation with same area size. Thresholding works in such way: if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold then set pixel intensity on output image as 0 otherwise set pixel intensity on output image as 255.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;minThreshold - minimum threshold value    
+	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
 	void Threshold(
 		const Image & in,
 		uint32_t startXIn,
@@ -2024,6 +2091,39 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  Threshold(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		uint8_t minThreshold,
+		uint8_t maxThreshold
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area of [width, height] size into pseudo binary image based on threshold and puts result into output image with same area size as input image. Thresholding works in such way: if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold then set pixel intensity on output image as 0 otherwise set pixel intensity on output image as 255.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image what is a result of thresholding    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;minThreshold - minimum threshold value    
+	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
