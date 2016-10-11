@@ -46,6 +46,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Minimum8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Minimum11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::Resize2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Resize3ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Resize7ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Resize9ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Subtract2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Subtract3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Subtract8ParametersTest );
@@ -670,6 +675,84 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensityValue[0] < intensityValue[1] ? intensityValue[0] : intensityValue[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+
+				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
+				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
+
+				Bitmap_Image::Image output = Image_Function::Resize( input, outputWidth, outputHeight );
+
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensityValue[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensityValue[0] );
+				Bitmap_Image::Image output = uniformImage( intensityValue[1] );
+
+				Image_Function::Resize( input, output );
+
+				if( !verifyImage( output, intensityValue[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensityValue[0] );
+				
+				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
+				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
+
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensityValue[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize9ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensityValue = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensityValue[0] );
+				Bitmap_Image::Image output = uniformImage( intensityValue[1] );
+
+				std::vector < uint32_t > roiX(2), roiY(2), roiWidth(2), roiHeight(2);
+
+				generateRoi( input , roiX[0], roiY[0], roiWidth[0], roiHeight[0] );
+				generateRoi( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
+
+				Image_Function::Resize( input , roiX[0], roiY[0], roiWidth[0], roiHeight[0],
+										output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensityValue[0] ) )
 					return false;
 			}
 
