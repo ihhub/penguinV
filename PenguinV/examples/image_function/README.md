@@ -4,13 +4,12 @@ Open example_image_function.vcxproj file in this folder to create solution for y
 
 - g++    
 In this folder you need to type/paste this text in terminal:    
-	```cpp
+	```bash
 	g++ -std=c++11 -Wall example_image_function.cpp ../../Library/image_function.cpp -o application
 	```
 
-- make
-In this folder type:
-        ```bash
-        make
-        ./example_image_function
-        ```
+- make    
+In this folder you need to type/paste this text in terminal:    
+	```bash
+	make ./example_image_function
+	```

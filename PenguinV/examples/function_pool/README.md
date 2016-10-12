@@ -4,12 +4,12 @@ Open example_function_pool.vcxproj file in this folder to create solution for yo
 
 - g++    
 In this folder you need to type/paste this text in terminal:    
-	```cpp
+	```bash
 	g++ -std=c++11 -pthread -Wall example_function_pool.cpp ../../Library/image_function.cpp ../../Library/thread_pool.cpp ../../Library/function_pool.cpp -o application
 	```
-- make
-In this folder type:
-        ```bash
-        make
-        ./example_function_pool
-        ```
+
+- make    
+In this folder you need to type/paste this text in terminal:    
+	```bash
+	make ./example_function_pool
+	```
