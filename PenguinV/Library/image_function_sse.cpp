@@ -571,6 +571,65 @@ namespace Image_Function_Sse
 		}
 	}
 
+	uint32_t Sum( const Image & image )
+	{
+		return Sum( image, 0, 0, image.width(), image.height() );
+	}
+
+	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	{
+		// image width is less than 16 bytes so no use to utilize SSE :(
+		if (width < simdSize) {
+			return Image_Function::Sum(image, x, y, width, height);
+		}
+
+		Image_Function::ParameterValidation( image, x, y, width, height );
+
+		uint32_t rowSize = image.rowSize();
+
+		const uint8_t * imageY    = image.data() + y * rowSize + x;
+		const uint8_t * imageYEnd = imageY + height * rowSize;
+
+		uint32_t sum = 0;
+
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		simd simdSum = _mm_setzero_si128();
+		simd zero    = _mm_setzero_si128();
+
+		for( ; imageY != imageYEnd; imageY += rowSize ) {
+			const simd * src    = reinterpret_cast < const simd* > (imageY);
+			const simd * srcEnd = src + simdWidth;
+
+			for( ; src != srcEnd; ++src ) {
+				simd data = _mm_loadu_si128(src);
+
+				simd dataLo  = _mm_unpacklo_epi8(data, zero);
+				simd dataHi  = _mm_unpackhi_epi8(data, zero);
+				simd sumLoHi = _mm_add_epi16(dataLo, dataHi);
+
+				simdSum = _mm_add_epi32( simdSum, _mm_add_epi32( _mm_unpacklo_epi16( sumLoHi, zero ),
+																 _mm_unpackhi_epi16( sumLoHi, zero ) ) );
+			}
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * imageX    = imageY + totalSimdWidth;
+				const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+				for( ; imageX != imageXEnd; ++imageX )
+					sum += (*imageX);
+			}
+		}
+
+		uint32_t output[4] = {0};
+
+		_mm_storeu_si128(reinterpret_cast < simd* >(output), simdSum );
+
+		return sum + output[0] + output[1] + output[2] + output[3];
+	}
+
 	Image Threshold( const Image & in, uint8_t threshold )
 	{
 		Image_Function::ParameterValidation( in );

@@ -41,6 +41,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Sse_Test::Subtract8ParametersTest );
 		ADD_TEST( framework, Image_Function_Sse_Test::Subtract11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Sse_Test::Sum1ParameterTest );
+		ADD_TEST( framework, Image_Function_Sse_Test::Sum5ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Sse_Test::Threshold2ParametersTest );
 		ADD_TEST( framework, Image_Function_Sse_Test::Threshold3ParametersTest );
 		ADD_TEST( framework, Image_Function_Sse_Test::Threshold6ParametersTest );
@@ -597,6 +600,36 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Sum1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				if( Image_Function_Sse::Sum( input ) != intensity * input.width() * input.height() )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Sum5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( Image_Function_Sse::Sum( input, roiX, roiY, roiWidth, roiHeight ) != intensity * roiWidth * roiHeight )
 					return false;
 			}
 
