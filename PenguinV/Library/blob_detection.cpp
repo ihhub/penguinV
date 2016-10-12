@@ -1,3 +1,4 @@
+#include <cmath>
 #include <numeric>
 #include <queue>
 #include "blob_detection.h"
