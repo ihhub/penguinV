@@ -913,14 +913,15 @@ namespace Image_Function
 
 		if( horizontal ) {
 			const uint8_t * imageX = image.data() + y * rowSize + x;
-			const uint8_t * imageXEnd = imageX + rowSize;
+			const uint8_t * imageXEnd = imageX + width;
 
-			for( ; imageX != imageXEnd; ++imageX ) {
+			std::vector < uint32_t > :: iterator data = projection.begin();
+
+			for( ; imageX != imageXEnd; ++imageX, ++data ) {
 				const uint8_t * imageY    = imageX;
 				const uint8_t * imageYEnd = imageY + height * rowSize;
-				std::vector < uint32_t > :: iterator data = projection.begin();
 
-				for( ; imageY != imageYEnd; imageY += rowSize, ++data )
+				for( ; imageY != imageYEnd; imageY += rowSize )
 					(*data) += (*imageY);
 			}
 		}
@@ -928,12 +929,13 @@ namespace Image_Function
 			const uint8_t * imageY = image.data() + y * rowSize + x;
 			const uint8_t * imageYEnd = imageY + height * rowSize;
 
-			for( ; imageY != imageYEnd; imageY += rowSize ) {
+			std::vector < uint32_t > :: iterator data = projection.begin();
+
+			for( ; imageY != imageYEnd; imageY += rowSize, ++data ) {
 				const uint8_t * imageX    = imageY;
 				const uint8_t * imageXEnd = imageX + width;
-				std::vector < uint32_t > :: iterator data = projection.begin();
 
-				for( ; imageX != imageXEnd; ++imageX, ++data )
+				for( ; imageX != imageXEnd; ++imageX )
 					(*data) += (*imageX);
 			}
 		}

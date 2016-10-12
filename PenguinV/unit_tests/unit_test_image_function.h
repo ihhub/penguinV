@@ -50,6 +50,11 @@ namespace Unit_Test
 		bool Minimum8ParametersTest();
 		bool Minimum11ParametersTest();
 
+		bool ProjectionProfile2ParametersTest();
+		bool ProjectionProfile3ParametersTest();
+		bool ProjectionProfile6ParametersTest();
+		bool ProjectionProfile7ParametersTest();
+
 		bool Resize2ParametersTest();
 		bool Resize3ParametersTest();
 		bool Resize7ParametersTest();

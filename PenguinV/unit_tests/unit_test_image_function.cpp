@@ -49,6 +49,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Minimum8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Minimum11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::ProjectionProfile2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ProjectionProfile3ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ProjectionProfile6ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ProjectionProfile7ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Resize2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Resize3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Resize7ParametersTest );
@@ -703,6 +708,98 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ProjectionProfile2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
+
+				bool horizontal = (i % 2 == 0);
+
+				std::vector < uint32_t > projection = Image_Function::ProjectionProfile( image, horizontal );
+
+				uint32_t value = (horizontal ? image.height() : image.width()) * intensity;
+
+				if( projection.size() != (horizontal ? image.width() : image.height()) ||
+					std::any_of( projection.begin(), projection.end(), [&value] ( uint32_t v ) { return value != v; } ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ProjectionProfile3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
+
+				bool horizontal = (i % 2 == 0);
+
+				std::vector < uint32_t > projection;
+				
+				Image_Function::ProjectionProfile( image, horizontal, projection );
+
+				uint32_t value = (horizontal ? image.height() : image.width()) * intensity;
+
+				if( projection.size() != (horizontal ? image.width() : image.height()) ||
+					std::any_of( projection.begin(), projection.end(), [&value] ( uint32_t v ) { return value != v; } ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ProjectionProfile6ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				bool horizontal = (i % 2 == 0);
+
+				std::vector < uint32_t > projection = Image_Function::ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
+
+				uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
+
+				if( projection.size() != (horizontal ? roiWidth : roiHeight) ||
+					std::any_of( projection.begin(), projection.end(), [&value] ( uint32_t v ) { return value != v; } ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ProjectionProfile7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image image = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				bool horizontal = (i % 2 == 0);
+
+				std::vector < uint32_t > projection;
+				
+				Image_Function::ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
+
+				uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
+
+				if( projection.size() != (horizontal ? roiWidth : roiHeight) ||
+					std::any_of( projection.begin(), projection.end(), [&value] ( uint32_t v ) { return value != v; } ) )
 					return false;
 			}
 
