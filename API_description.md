@@ -27,6 +27,9 @@ Contains basic functions for image processing for any CPU with multithreading su
 **Image_Function**    
 Contains all basic functions for image processing for any CPU.    
 
+**Image_Function::Filtering**    
+Contains functions for image filtering.    
+
 **Image_Function_Sse**    
 Contains basic functions for image processing for CPUs with ***SSE 2*** support.    
 
@@ -705,7 +708,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Flip(
+	void Flip(
 		const Image & in,
 		Image & out,
 		bool horizontal,
@@ -753,7 +756,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Flip(
+	void Flip(
 		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
@@ -1173,6 +1176,100 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	
+- **Median** [_Namespaces: **Image_Function::Filtering**_]
+
+	##### Syntax:
+	```cpp
+	Image Median(
+		const Image & in,
+		uint32_t kernelSize
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs median filtering on image and returns result image of the same size. Kernel size must be odd and greater than 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Median(
+		const Image & in,
+		Image & out,
+		uint32_t kernelSize
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs median filtering on image and puts result into second image of the same size. Kernel size must be odd and greater than 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of median filtering. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Median(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		uint32_t kernelSize
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs median filtering on image at area of [width, height] size and returns result image of the same size. Kernel size must be odd and greater than 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where median filtering is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where median filtering is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Median(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		uint32_t kernelSize
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs median filtering on image at area of [width, height] size and puts result into second image of the same size. Kernel size must be odd and greater than 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where median filtering is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where median filtering is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
 - **Minimum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
 
@@ -1621,7 +1718,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Resize(
+	void Resize(
 		const Image & in,
 		Image & out
 	);
@@ -1665,7 +1762,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Resize(
+	void Resize(
 		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
@@ -1989,7 +2086,7 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	void  Threshold(
+	void Threshold(
 		const Image & in,
 		Image & out,
 		uint8_t minThreshold,
@@ -2097,7 +2194,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Threshold(
+	void Threshold(
 		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
@@ -2147,7 +2244,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Transpose(
+	void Transpose(
 		const Image & in,
 		Image & out
 	);
@@ -2187,7 +2284,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	void  Transpose(
+	void Transpose(
 		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
