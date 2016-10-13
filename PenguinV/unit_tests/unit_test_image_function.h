@@ -27,6 +27,11 @@ namespace Unit_Test
 		bool Copy5ParametersTest();
 		bool Copy8ParametersTest();
 
+		bool GammaCorrection3ParametersTest();
+		bool GammaCorrection4ParametersTest();
+		bool GammaCorrection7ParametersTest();
+		bool GammaCorrection10ParametersTest();
+
 		bool Histogram1ParameterTest();
 		bool Histogram2ParametersTest();
 		bool Histogram4ParametersTest();

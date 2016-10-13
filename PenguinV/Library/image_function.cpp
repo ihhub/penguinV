@@ -1,3 +1,4 @@
+#include <cmath>
 #include "image_function.h"
 
 namespace Image_Function
@@ -502,6 +503,72 @@ namespace Image_Function
 						(*outX) = (*inX);
 				}
 			}
+		}
+	}
+
+	Image GammaCorrection( const Image & in, double a, double gamma )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
+
+		return out;
+	}
+
+	void GammaCorrection( const Image & in, Image & out, double a, double gamma )
+	{
+		ParameterValidation( in, out );
+
+		GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
+	}
+
+	Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		GammaCorrection( in, startXIn, startYIn, out, 0, 0, width, height, a, gamma );
+
+		return out;
+	}
+
+	void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						  uint32_t width, uint32_t height, double a, double gamma )
+	{
+		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		if( a < 0 || gamma < 0 )
+			throw imageException("Bad input parameters in image function");
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		const uint8_t * inYEnd = inY + height * rowSizeIn;
+		uint8_t       * outY   = out.data() + startYOut * rowSizeOut + startXOut;
+
+		// We precalculate all values and store them in lookup table
+		uint8_t value[256];
+
+		for( uint16_t i = 0; i < 256; ++i ) {
+			double data = a * pow( i, gamma ) + 0.5;
+
+			if( data < 256 )
+				value[i] = static_cast<uint8_t>(data);
+			else
+				value[i] = 255;
+		}
+
+		for (; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut) {
+			const uint8_t * inX = inY;
+			uint8_t       * outX = outY;
+			const uint8_t * inXEnd = inX + width;
+
+			for (; inX != inXEnd; ++inX, ++outX)
+				(*outX) = value[*inX];
 		}
 	}
 

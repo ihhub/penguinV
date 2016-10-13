@@ -787,6 +787,108 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **GammaCorrection** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image GammaCorrection(
+		const Image & in,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and returns result image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void GammaCorrection(
+		const Image & in,
+		Image & out,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of gamma correction. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image GammaCorrection(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and returns result image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where gamma correction is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where gamma correction is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void GammaCorrection(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where gamma correction is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where gamma correction is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **GetPixel** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
