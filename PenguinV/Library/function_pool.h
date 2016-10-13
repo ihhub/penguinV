@@ -31,6 +31,15 @@ namespace Function_Pool
 	void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+	// Gamma correction works by formula:
+	// output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0
+	// Usually people set A as 1
+	Image GammaCorrection( const Image & in, double a, double gamma );
+	void  GammaCorrection( const Image & in, Image & out, double a, double gamma );
+	Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
+	void  GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						   uint32_t width, uint32_t height, double a, double gamma );
+
 	std::vector < uint32_t > Histogram( const Image & image );
 	void                     Histogram( const Image & image, std::vector < uint32_t > & histogram );
 	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );

@@ -114,11 +114,15 @@ namespace Function_Pool
 			: minThreshold        (0)
 			, maxThreshold        (255)
 			, horizontalProjection(false)
+			, coefficientA        (1)
+			, coefficientGamma    (1)
 		{ }
 
 		uint8_t minThreshold; // for Threshold() function same as threshold
 		uint8_t maxThreshold; // for Threshold() function
 		bool horizontalProjection; // for ProjectionProfile() function
+		double coefficientA;  // for GammaCorrection() function
+		double coefficientGamma;  // for GammaCorrection() function
 	};
 	// This structure holds output data for some specific functions
 	struct OutputInfo
@@ -213,6 +217,20 @@ namespace Function_Pool
 			_process( _BitwiseXor );
 		}
 
+		void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							  uint32_t width, uint32_t height, double a, double gamma )
+		{
+			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+			if( a < 0 || gamma < 0 )
+				throw imageException("Bad input parameters in image function");
+
+			_dataIn.coefficientA = a;
+			_dataIn.coefficientGamma = gamma;
+
+			_process( _GammaCorrection );
+		}
+
 		void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
 						std::vector < uint32_t > & histogram )
 		{
@@ -287,6 +305,10 @@ namespace Function_Pool
 						uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
 		{
 			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+			if( minThreshold > maxThreshold )
+				throw imageException("Minimum threshold value is bigger than maximum threshold value");
+
 			_dataIn.minThreshold = minThreshold;
 			_dataIn.maxThreshold = maxThreshold;
 			_process( _ThresholdDouble );
@@ -298,6 +320,7 @@ namespace Function_Pool
 			_BitwiseAnd,
 			_BitwiseOr,
 			_BitwiseXor,
+			_GammaCorrection,
 			_Histogram,
 			_Invert,
 			_Maximum,
@@ -330,6 +353,12 @@ namespace Function_Pool
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _GammaCorrection:
+				Image_Function::GammaCorrection(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.coefficientA,
+											_dataIn.coefficientGamma);
 				break;
 			case _Histogram:
 				Image_Function::Histogram(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -564,6 +593,41 @@ namespace Function_Pool
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		FunctionTask().BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+	}
+
+	Image GammaCorrection( const Image & in, double a, double gamma )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
+
+		return out;
+	}
+
+	void GammaCorrection( const Image & in, Image & out, double a, double gamma )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
+	}
+
+	Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		GammaCorrection( in, startXIn, startYIn, out, 0, 0, width, height, a, gamma );
+
+		return out;
+	}
+
+	void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						  uint32_t width, uint32_t height, double a, double gamma )
+	{
+		FunctionTask().GammaCorrection( in, startXIn, startYIn, out, startXOut, startYOut, width, height, a, gamma );
 	}
 
 	std::vector < uint32_t > Histogram( const Image & image )
@@ -881,9 +945,6 @@ namespace Function_Pool
 	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
 	{
-		if( minThreshold > maxThreshold )
-			throw imageException("Minimum threshold value is bigger than maximum threshold value");
-
 		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
 	}
 };

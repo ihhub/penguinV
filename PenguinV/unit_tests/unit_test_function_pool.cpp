@@ -22,6 +22,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXor8ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXor11ParametersTest );
 
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrection3ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrection4ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrection7ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrection10ParametersTest );
+
 		ADD_TEST( framework, Function_Pool_Test::Invert1ParameterTest );
 		ADD_TEST( framework, Function_Pool_Test::Invert2ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Invert5ParametersTest );
@@ -310,6 +315,130 @@ namespace Unit_Test
 												image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, a, gamma );
+
+				double value = a * pow(intensity, gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !verifyImage( output, corrected ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection4ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Function_Pool::GammaCorrection( input[0], input[1], a, gamma );
+
+				double value = a * pow(intensity[0], gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !verifyImage( input[1], corrected ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
+
+				double value = a * pow(intensity, gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, corrected ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection10ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Function_Pool::GammaCorrection( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, a, gamma );
+
+				double value = a * pow(intensity[0], gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, corrected ) )
 					return false;
 			}
 
