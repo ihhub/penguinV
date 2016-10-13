@@ -862,6 +862,12 @@ namespace Image_Function
 		else {
 			double correction = 255.0 / ( maximum - minimum );
 
+			// We precalculate all values and store them in lookup table
+			uint8_t value[256];
+
+			for( uint16_t i = 0; i < 256; ++i )
+				value[i] = static_cast < uint8_t >( ( i - minimum ) * correction + 0.5);
+
 			uint32_t rowSizeOut = out.rowSize();
 
 			inY = in.data()  + startYIn  * rowSizeIn  + startXIn;
@@ -873,7 +879,7 @@ namespace Image_Function
 				const uint8_t * inXEnd = inX + width;
 
 				for( ; inX != inXEnd; ++inX, ++outX )
-					(*outX) = static_cast < uint8_t >( ( (*inX) - minimum ) * correction + 0.5);
+					(*outX) = value[*inX];
 			}
 		}
 	}
