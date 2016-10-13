@@ -40,7 +40,7 @@ Almost all basic functions already have embedded multithreading support. Please 
 #SSE/AVX support    
 We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0. This should be your part of code. We made this to support cross-platform code.
 
-If you CPU does not support AVX 2.0 or SSE2 just do NOT use related files in your project :wink:
+If your CPU does not support AVX 2.0 or SSE2 just do NOT use related files in your project :wink:
 
 #License    
 This project is under 3-clause BSD License. Please refer to file **LICENSE** for more details.
