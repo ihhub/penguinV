@@ -30,11 +30,14 @@ Contains all basic functions for image processing for any CPU.
 **Image_Function::Filtering**    
 Contains functions for image filtering.    
 
-**Image_Function_Sse**    
-Contains basic functions for image processing for CPUs with ***SSE 2*** support.    
-
 **Image_Function_Avx**    
 Contains basic functions for image processing for CPUs with ***AVX 2.0*** support.    
+
+**Image_Function_Neon**    
+Contains basic functions for image processing for CPUs with ***NEON*** support.    
+
+**Image_Function_Sse**    
+Contains basic functions for image processing for CPUs with ***SSE 2*** support.    
 
 **Template_Image**    
 Includes only one template class ***ImageTemplate*** what is the main class for image buffer classes.    
@@ -95,7 +98,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
-- **BitwiseAnd** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+- **BitwiseAnd** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:
 	```cpp
@@ -197,7 +200,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 
-- **BitwiseOr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+- **BitwiseOr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:
 	```cpp

@@ -5,13 +5,13 @@ PenguinV is a simple and easy to use C++ image processing library. It is designe
 - compact
 - multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
 - exception-based code
-- optional SSE and AVX support
+- optional SSE, AVX, NEON support
 - cross-platform
 - functions can perform processing on separate image parts (no need to make a copy of image for area on what you want to do something, just set area parameters)
 - user-defined image types support (you can create your own image types and image functions [See API description, ImageTemplate class])
 
 At current stage of development library does not have many features but we are intending to introduce them very soon:
-- more basic functions and their implementations by SSE and AVX
+- more basic functions and their implementations by SSE, AVX, NEON
 - ~~blob detection code~~
 - template matching classes
 - ~~multi-level thread pool~~
@@ -37,10 +37,10 @@ Open README.md file in any of example folders and follow instructions.
 Every image (not empty) can be divided by multiple parts or areas (in scientific terms region of interest - ROI). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intercepting by each other.    
 Almost all basic functions already have embedded multithreading support. Please refer to **Function_Pool** namespace and function_pool example.
 
-#SSE/AVX support    
-We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0. This should be your part of code. We made this to support cross-platform code.
+#SSE/AVX/NEON support    
+We do not provide source code for identification whether your CPU supports SSE2/AVX 2.0/NEON. This should be your part of code. We made this to support cross-platform code.
 
-If your CPU does not support AVX 2.0 or SSE2 just do NOT use related files in your project :wink:
+If your CPU does not support SSE2, AVX 2.0 or NEON just do NOT use related files in your project :wink:
 
 #License    
 This project is under 3-clause BSD License. Please refer to file **LICENSE** for more details.
