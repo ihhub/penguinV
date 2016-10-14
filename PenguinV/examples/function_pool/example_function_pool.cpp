@@ -1,11 +1,12 @@
 // Example application of library's function pool utilization
+#include <cstdlib>
 #include <iostream>
+#include "../../Library/function_pool.h"
 #include "../../Library/image_exception.h"
 #include "../../Library/image_function.h"
-#include "../../Library/function_pool.h"
 #include "../../Library/thread_pool.h"
 
-void basic(const std::vector < Bitmap_Image::Image > & frame);
+void basic        (const std::vector < Bitmap_Image::Image > & frame);
 void multithreaded(const std::vector < Bitmap_Image::Image > & frame);
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
@@ -33,39 +34,37 @@ int main()
 		// Create a set of 60 frames
 		std::vector < Bitmap_Image::Image > frame(60, Bitmap_Image::Image(1920, 1080) );
 
-		// Fill background. Let's assume that background varies from 0 to 15 gray scale values
-		std::for_each( frame.begin(), frame.end(),
-			[]( Bitmap_Image::Image & image ) { image.fill( static_cast<uint8_t>(rand() % 16) ); } );
+		for( std::vector < Bitmap_Image::Image >::iterator image = frame.begin(); image != frame.end(); ++image ) {
+			// Fill background. Let's assume that background varies from 0 to 15 gray scale values
+			image->fill( static_cast<uint8_t>(rand() % 16) );
 
-		// Then add some 'suspicious' objects on some random images
-		std::for_each( frame.begin(), frame.end(),
-			[]( Bitmap_Image::Image & image ) {
-
+			// Then add some 'suspicious' objects on some random images
 			if( rand() % 10 == 0 ) { // at least ~6 of 60 images would have objects
 				// generate random place of object, in our case is rectangle
-				uint32_t x      = static_cast<uint32_t>(rand()) % (image.width()  * 2 / 3);
-				uint32_t y      = static_cast<uint32_t>(rand()) % (image.height() * 2 / 3);
-				uint32_t width  = static_cast<uint32_t>(rand()) % (image.width()  - x);
-				uint32_t height = static_cast<uint32_t>(rand()) % (image.height() - y);
+				uint32_t x      = static_cast<uint32_t>(rand()) % (image->width()  * 2 / 3);
+				uint32_t y      = static_cast<uint32_t>(rand()) % (image->height() * 2 / 3);
+				uint32_t width  = static_cast<uint32_t>(rand()) % (image->width()  - x);
+				uint32_t height = static_cast<uint32_t>(rand()) % (image->height() - y);
 
 				// fill an area with some random value what is bigger than background value
-				Image_Function::Fill( image, x, y, width, height, static_cast<uint8_t>(rand() % 128) + 64 );
+				Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>(rand() % 128) + 64 );
 			}
-
-		} );
+		}
 
 		std::cout << "----------" << std::endl
-			<< "Basic functions. Evaluating time..." << std::endl
-			<< "----------" << std::endl;
+			<< "Basic functions. Evaluating time..." << std::endl << "----------" << std::endl;
 		std::chrono::time_point < std::chrono::system_clock > startTime = std::chrono::system_clock::now();
+
 		basic(frame);
+
 		std::cout << "Total time is " << getElapsedTime(startTime) << " seconds" << std::endl;
 
 		std::cout << "----------" << std::endl
-			<< "Functions with thread pool support. Evaluating time..." << std::endl
-			<< "----------" << std::endl;
+			<< "Functions with thread pool support. Evaluating time..." << std::endl << "----------" << std::endl;
 		startTime = std::chrono::system_clock::now();
+
 		multithreaded(frame);
+
 		std::cout << "Total time is " << getElapsedTime(startTime) << " seconds" << std::endl;
 	} catch(imageException & ex) {
 		// uh-oh, something went wrong!
@@ -96,7 +95,7 @@ double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > sta
 	std::chrono::duration < double > time = end - start;
 
 	return time.count();
-};
+}
 
 void basic(const std::vector < Bitmap_Image::Image > & frame)
 {
@@ -135,7 +134,7 @@ void multithreaded(const std::vector < Bitmap_Image::Image > & frame)
 
 	Bitmap_Image::Image result( map.width(), map.height() );
 
-	// As you see the only difference in this loop is different namespace usage
+	// As you see the only difference in this loop is namespace name
 	for( size_t i = 0; i + 1 < frame.size(); ++i ) {
 		// subtract one image from another
 		Function_Pool::Subtract( frame[i + 1], frame[i], result );

@@ -26,7 +26,6 @@ int main()
 		method2();
 		// Third way to do
 		method3();
-
 	} catch(imageException & ex) {
 		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
@@ -46,12 +45,12 @@ int main()
 
 void method1()
 {
-	// Load image from storage
-	// Please take note that the image must be in same folder as this application or project (for Visual Studio)
+	// Load an image from storage
+	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where the image stored
 	Bitmap_Operation::BitmapRawImage raw = Bitmap_Operation::Load("mercury.bmp");
 
-	// We know for 100% that this image is color image so we must assign raw data to image
+	// We know that this image must be color image so we assign raw data to image
 	Bitmap_Image::ColorImage inputImage;
 
 	if( raw.isColor() ) {
@@ -84,7 +83,7 @@ void method1()
 void method2()
 {
 	// Load image from storage
-	// Please take note that the image must be in same folder as this application or project (for Visual Studio)
+	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where the image stored
 	Bitmap_Operation::BitmapRawImage raw = Bitmap_Operation::Load("mercury.bmp");
 
@@ -108,7 +107,7 @@ void method3()
 	Bitmap_Image::Image image;
 
 	// Load image from storage
-	// Please take note that the image must be in same folder as this application or project (for Visual Studio)
+	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where the image stored
 
 	// This is not bitwise operation. Think about this like:

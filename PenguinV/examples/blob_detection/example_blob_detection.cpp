@@ -24,7 +24,6 @@ int main()
 		example1();
 		// Second way to do
 		example2();
-
 	} catch(imageException & ex) {
 		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;

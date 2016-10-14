@@ -1,4 +1,5 @@
 // Example application of library's thread pool utilization
+#include <cstdlib>
 #include <iostream>
 #include "../../Library/image_exception.h"
 #include "../../Library/image_function.h"
@@ -14,11 +15,15 @@ int main()
 		std::cout << "----------" << std::endl
 			<< "Thread pool as a class object. The pool will be destroyed at the end of function" << std::endl
 			<< "----------" << std::endl;
+
 		example1();
+
 		std::cout << "----------" << std::endl
 			<< "Thread pool as singleton. The pool will be destroyed at the end of application." << std::endl
 			<< "----------" << std::endl;
+
 		example2();
+
 	} catch(imageException & ex) {
 		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
