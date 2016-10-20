@@ -17,5 +17,20 @@ namespace Unit_Test
 		bool BitwiseOr3ParametersTest();
 		bool BitwiseOr8ParametersTest();
 		bool BitwiseOr11ParametersTest();
+
+		bool Maximum2ParametersTest();
+		bool Maximum3ParametersTest();
+		bool Maximum8ParametersTest();
+		bool Maximum11ParametersTest();
+
+		bool Minimum2ParametersTest();
+		bool Minimum3ParametersTest();
+		bool Minimum8ParametersTest();
+		bool Minimum11ParametersTest();
+
+		bool Subtract2ParametersTest();
+		bool Subtract3ParametersTest();
+		bool Subtract8ParametersTest();
+		bool Subtract11ParametersTest();
 	};
 };
