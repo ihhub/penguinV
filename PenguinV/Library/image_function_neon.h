@@ -3,7 +3,6 @@
 #include "image_function.h"
 
 // Utilize these image functions only if your CPU is ARM with NEON intructions support!!!
-
 // These functions contain NEON code
 // Functions have totally same results like normal functions but they are faster!
 // You will have speed up compare to normal functions if the width of inspection area is bigger than 16 pixels
@@ -31,22 +30,21 @@ namespace Image_Function_Neon
 	Image Maximum(const Image & in1, const Image & in2);
 	void  Maximum(const Image & in1, const Image & in2, Image & out);
 	Image Maximum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		uint32_t width, uint32_t height);
+				  uint32_t width, uint32_t height);
 	void  Maximum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
 
 	Image Minimum(const Image & in1, const Image & in2);
 	void  Minimum(const Image & in1, const Image & in2, Image & out);
 	Image Minimum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		uint32_t width, uint32_t height);
+				  uint32_t width, uint32_t height);
 	void  Minimum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
+				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
 
 	Image Subtract(const Image & in1, const Image & in2);
 	void  Subtract(const Image & in1, const Image & in2, Image & out);
 	Image Subtract(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		uint32_t width, uint32_t height);
+				   uint32_t width, uint32_t height);
 	void  Subtract(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-
+				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
 };

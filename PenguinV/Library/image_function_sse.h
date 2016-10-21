@@ -19,14 +19,14 @@ namespace Image_Function_Sse
 	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  uint32_t width, uint32_t height );
 	void  BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );	
+					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
 	Image BitwiseOr( const Image & in1, const Image & in2 );
 	void  BitwiseOr( const Image & in1, const Image & in2, Image & out );
 	Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 uint32_t width, uint32_t height );
 	void  BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );	
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
 	Image BitwiseXor( const Image & in1, const Image & in2 );
 	void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
