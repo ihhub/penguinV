@@ -4,9 +4,9 @@
 
 namespace Performance_Test
 {
-	void addTests_Image_Function(PerformanceTestFramework & framework); // function what adds all below tests to framework
+	void addTests_Image_Function_Avx(PerformanceTestFramework & framework); // function what adds all below tests to framework
 
-	namespace Image_Function_Test
+	namespace Image_Function_Avx_Test
 	{
 		std::pair < double, double > BitwiseAndSize256();
 		std::pair < double, double > BitwiseAndSize512();

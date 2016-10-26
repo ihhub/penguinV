@@ -20,6 +20,26 @@ namespace Performance_Test
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize512 );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize1024 );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::InvertSize256 );
+		ADD_TEST( framework, Function_Pool_Test::InvertSize512 );
+		ADD_TEST( framework, Function_Pool_Test::InvertSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::InvertSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::MaximumSize256 );
+		ADD_TEST( framework, Function_Pool_Test::MaximumSize512 );
+		ADD_TEST( framework, Function_Pool_Test::MaximumSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::MaximumSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::MinimumSize256 );
+		ADD_TEST( framework, Function_Pool_Test::MinimumSize512 );
+		ADD_TEST( framework, Function_Pool_Test::MinimumSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::MinimumSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::SubtractSize256 );
+		ADD_TEST( framework, Function_Pool_Test::SubtractSize512 );
+		ADD_TEST( framework, Function_Pool_Test::SubtractSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::SubtractSize2048 );
 	}
 
 	namespace Function_Pool_Test
@@ -233,6 +253,294 @@ namespace Performance_Test
 				timer.start();
 
 				Function_Pool::BitwiseXor( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > InvertSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Invert( image[0], image[1] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > InvertSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Invert( image[0], image[1] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > InvertSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Invert( image[0], image[1] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > InvertSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Invert( image[0], image[1] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}

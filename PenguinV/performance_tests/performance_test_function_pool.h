@@ -22,5 +22,25 @@ namespace Performance_Test
 		std::pair < double, double > BitwiseXorSize512();
 		std::pair < double, double > BitwiseXorSize1024();
 		std::pair < double, double > BitwiseXorSize2048();
+
+		std::pair < double, double > InvertSize256();
+		std::pair < double, double > InvertSize512();
+		std::pair < double, double > InvertSize1024();
+		std::pair < double, double > InvertSize2048();
+
+		std::pair < double, double > MaximumSize256();
+		std::pair < double, double > MaximumSize512();
+		std::pair < double, double > MaximumSize1024();
+		std::pair < double, double > MaximumSize2048();
+
+		std::pair < double, double > MinimumSize256();
+		std::pair < double, double > MinimumSize512();
+		std::pair < double, double > MinimumSize1024();
+		std::pair < double, double > MinimumSize2048();
+
+		std::pair < double, double > SubtractSize256();
+		std::pair < double, double > SubtractSize512();
+		std::pair < double, double > SubtractSize1024();
+		std::pair < double, double > SubtractSize2048();
 	};
 };

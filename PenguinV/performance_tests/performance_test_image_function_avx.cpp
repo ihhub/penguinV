@@ -1,48 +1,48 @@
-#include "../Library/image_function_sse.h"
-#include "performance_test_image_function_sse.h"
+#include "../Library/image_function_avx.h"
+#include "performance_test_image_function_avx.h"
 #include "performance_test_helper.h"
 
 namespace Performance_Test
 {
-	void addTests_Image_Function_Sse(PerformanceTestFramework & framework)
+	void addTests_Image_Function_Avx(PerformanceTestFramework & framework)
 	{
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAndSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAndSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAndSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAndSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOrSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOrSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOrSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOrSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXorSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXorSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXorSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXorSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::InvertSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::InvertSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::InvertSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::InvertSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::InvertSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::InvertSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::InvertSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::InvertSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MaximumSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MaximumSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MaximumSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MaximumSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MinimumSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MinimumSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MinimumSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::MinimumSize2048 );
 
-		ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize256 );
-		ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize512 );
-		ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize1024 );
-		ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize2048 );
+		ADD_TEST( framework, Image_Function_Avx_Test::SubtractSize256 );
+		ADD_TEST( framework, Image_Function_Avx_Test::SubtractSize512 );
+		ADD_TEST( framework, Image_Function_Avx_Test::SubtractSize1024 );
+		ADD_TEST( framework, Image_Function_Avx_Test::SubtractSize2048 );
 	}
 
-	namespace Image_Function_Sse_Test
+	namespace Image_Function_Avx_Test
 	{
 		std::pair < double, double > BitwiseAndSize256()
 		{
@@ -53,7 +53,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseAnd( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseAnd( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -70,7 +70,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseAnd( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseAnd( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -87,7 +87,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseAnd( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseAnd( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -104,7 +104,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseAnd( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseAnd( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -121,7 +121,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseOr( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseOr( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -138,7 +138,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseOr( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseOr( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -155,7 +155,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseOr( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseOr( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -172,7 +172,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseOr( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseOr( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -189,7 +189,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseXor( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseXor( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -206,7 +206,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseXor( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseXor( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -223,7 +223,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseXor( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseXor( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -240,7 +240,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::BitwiseXor( image[0], image[1], image[2] );
+				Image_Function_Avx::BitwiseXor( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -257,7 +257,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Invert( image[0], image[1] );
+				Image_Function_Avx::Invert( image[0], image[1] );
 
 				timer.stop();
 			}
@@ -274,7 +274,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Invert( image[0], image[1] );
+				Image_Function_Avx::Invert( image[0], image[1] );
 
 				timer.stop();
 			}
@@ -291,7 +291,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Invert( image[0], image[1] );
+				Image_Function_Avx::Invert( image[0], image[1] );
 
 				timer.stop();
 			}
@@ -308,7 +308,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Invert( image[0], image[1] );
+				Image_Function_Avx::Invert( image[0], image[1] );
 
 				timer.stop();
 			}
@@ -325,7 +325,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Maximum( image[0], image[1], image[2] );
+				Image_Function_Avx::Maximum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -342,7 +342,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Maximum( image[0], image[1], image[2] );
+				Image_Function_Avx::Maximum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -359,7 +359,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Maximum( image[0], image[1], image[2] );
+				Image_Function_Avx::Maximum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -376,7 +376,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Maximum( image[0], image[1], image[2] );
+				Image_Function_Avx::Maximum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -393,7 +393,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Minimum( image[0], image[1], image[2] );
+				Image_Function_Avx::Minimum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -410,7 +410,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Minimum( image[0], image[1], image[2] );
+				Image_Function_Avx::Minimum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -427,7 +427,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Minimum( image[0], image[1], image[2] );
+				Image_Function_Avx::Minimum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -444,7 +444,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Minimum( image[0], image[1], image[2] );
+				Image_Function_Avx::Minimum( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -461,7 +461,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Subtract( image[0], image[1], image[2] );
+				Image_Function_Avx::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -478,7 +478,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Subtract( image[0], image[1], image[2] );
+				Image_Function_Avx::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -495,7 +495,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Subtract( image[0], image[1], image[2] );
+				Image_Function_Avx::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
@@ -512,7 +512,7 @@ namespace Performance_Test
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function_Sse::Subtract( image[0], image[1], image[2] );
+				Image_Function_Avx::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}
