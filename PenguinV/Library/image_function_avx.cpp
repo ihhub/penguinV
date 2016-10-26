@@ -1,4 +1,5 @@
 #include <immintrin.h>
+#include "image_function.h"
 #include "image_function_avx.h"
 #include "image_function_sse.h"
 

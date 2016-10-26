@@ -1,6 +1,7 @@
 #pragma once
 
-#include "image_function.h"
+#include <vector>
+#include "image_buffer.h"
 
 // Utilize these image functions only if your CPU is ARM with NEON intructions support!!!
 // These functions contain NEON code

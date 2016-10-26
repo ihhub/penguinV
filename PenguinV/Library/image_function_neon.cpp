@@ -1,4 +1,5 @@
 #include <arm_neon.h>
+#include "image_function.h"
 #include "image_function_neon.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing

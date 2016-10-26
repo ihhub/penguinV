@@ -1,6 +1,7 @@
 #pragma once
 
-#include "image_function.h"
+#include <vector>
+#include "image_buffer.h"
 
 // Utilize these image functions only if your CPU supports AXV 2.0 !!!
 
