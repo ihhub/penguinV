@@ -42,5 +42,10 @@ namespace Performance_Test
 		std::pair < double, double > SubtractSize512();
 		std::pair < double, double > SubtractSize1024();
 		std::pair < double, double > SubtractSize2048();
+
+		std::pair < double, double > SumSize256();
+		std::pair < double, double > SumSize512();
+		std::pair < double, double > SumSize1024();
+		std::pair < double, double > SumSize2048();
 	};
 };

@@ -40,6 +40,11 @@ namespace Performance_Test
 		ADD_TEST( framework, Function_Pool_Test::SubtractSize512 );
 		ADD_TEST( framework, Function_Pool_Test::SubtractSize1024 );
 		ADD_TEST( framework, Function_Pool_Test::SubtractSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::SumSize256 );
+		ADD_TEST( framework, Function_Pool_Test::SumSize512 );
+		ADD_TEST( framework, Function_Pool_Test::SumSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::SumSize2048 );
 	}
 
 	namespace Function_Pool_Test
@@ -541,6 +546,78 @@ namespace Performance_Test
 				timer.start();
 
 				Function_Pool::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SumSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Sum( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SumSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Sum( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SumSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Sum( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SumSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Sum( image );
 
 				timer.stop();
 			}
