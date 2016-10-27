@@ -6,6 +6,11 @@ namespace Performance_Test
 {
 	void addTests_Image_Function_Sse(PerformanceTestFramework & framework)
 	{
+		ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize256 );
+		ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize512 );
+		ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize1024 );
+		ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize2048 );
+
 		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize256 );
 		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize512 );
 		ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize1024 );
@@ -49,6 +54,74 @@ namespace Performance_Test
 
 	namespace Image_Function_Sse_Test
 	{
+		std::pair < double, double > AbsoluteDifferenceSize256()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Sse::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize512()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Sse::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize1024()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Sse::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize2048()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Sse::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
 		std::pair < double, double > BitwiseAndSize256()
 		{
 			TimerContainer timer;
