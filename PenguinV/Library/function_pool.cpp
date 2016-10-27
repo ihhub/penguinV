@@ -158,7 +158,7 @@ namespace Function_Pool
 			for( std::vector < uint32_t >::const_iterator value = sum.begin(); value != sum.end(); ++value )
 				total += *value;
 
-			sum.empty(); // to guarantee that no one can use it second time
+			sum.clear(); // to guarantee that no one can use it second time
 
 			return total;
 		}
