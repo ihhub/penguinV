@@ -196,6 +196,13 @@ namespace Function_Pool
 		virtual ~FunctionTask() { };
 
 		// this is a list of image functions
+		void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+								 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+		{
+			_setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+			_process( _AbsoluteDifference );
+		}
+
 		void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
@@ -317,6 +324,7 @@ namespace Function_Pool
 		enum TaskName // enumeration to define for thread what function need to execute
 		{
 			_none,
+			_AbsoluteDifference,
 			_BitwiseAnd,
 			_BitwiseOr,
 			_BitwiseXor,
@@ -336,6 +344,12 @@ namespace Function_Pool
 		void _task(size_t taskId)
 		{
 			switch(functionId) {
+			case _AbsoluteDifference:
+				Image_Function::AbsoluteDifference(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
 			case _BitwiseAnd:
 				Image_Function::BitwiseAnd( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
@@ -487,6 +501,42 @@ namespace Function_Pool
 	};
 
 	// The list of global functions
+	Image AbsoluteDifference( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	{
+		FunctionTask().AbsoluteDifference(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+	}
+
 	Image BitwiseAnd( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );

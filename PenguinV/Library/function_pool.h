@@ -10,6 +10,13 @@ namespace Function_Pool
 	// Please make sure before calling of any of these functions that global (singleton) thread pool has at least 1 thread!
 	using namespace Bitmap_Image;
 
+	Image AbsoluteDifference( const Image & in1, const Image & in2 );
+	void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
+	Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+							  uint32_t width, uint32_t height );
+	void  AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+							  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
 	Image BitwiseAnd( const Image & in1, const Image & in2 );
 	void  BitwiseAnd( const Image & in1, const Image & in2, Image & out );
 	Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

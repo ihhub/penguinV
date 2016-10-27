@@ -54,6 +54,108 @@ Contains classes for multithreading using thread pool:
 
 All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
 
+- **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+
+	##### Syntax:
+	```cpp
+	Image AbsoluteDifference(
+		const Image & in1,
+		const Image & in2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images. Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+    
+	##### Syntax:
+	```cpp
+	void AbsoluteDifference(
+		const Image & in1,
+		const Image & in2,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of absolute difference    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image AbsoluteDifference(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height]. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where absolute difference operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where absolute difference operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void AbsoluteDifference(
+		const Image & in1,
+		uint32_t startX1,
+		uint32_t startY1,
+		const Image & in2,
+		uint32_t startX2,
+		uint32_t startY2,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height] and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX1 - start X position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY1 - start Y position of in1 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startX2 - start X position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startY2 - start Y position of in2 image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of subtraction    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where absolute difference operation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where absolute difference operation is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+
 - **Accumulate** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:

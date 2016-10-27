@@ -8,6 +8,11 @@ namespace Unit_Test
 
 	namespace Image_Function_Test
 	{
+		bool AbsoluteDifference2ParametersTest();
+		bool AbsoluteDifference3ParametersTest();
+		bool AbsoluteDifference8ParametersTest();
+		bool AbsoluteDifference11ParametersTest();
+
 		bool BitwiseAnd2ParametersTest();
 		bool BitwiseAnd3ParametersTest();
 		bool BitwiseAnd8ParametersTest();

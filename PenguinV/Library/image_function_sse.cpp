@@ -14,6 +14,87 @@ namespace Image_Function_Sse
 	// We are not sure that input data is aligned by 16 bytes so we use loadu() functions instead of load()
 	// You can change it in case if your application has always aligned by 16 images images and areas (ROIs - regions of interest)
 
+	Image AbsoluteDifference( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		Image out( in1.width(), in1.height() );
+
+		AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
+	{
+		Image_Function::ParameterValidation( in1, in2, out );
+
+		AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+							  uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+		Image out( width, height );
+
+		AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+							 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	{
+		// image width is less than 16 bytes so no use to utilize SSE :(
+		if (width < simdSize) {
+			Image_Function::AbsoluteDifference(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+			return;
+		}
+
+		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSizeIn1 = in1.rowSize();
+		uint32_t rowSizeIn2 = in2.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
+			const simd * src2 = reinterpret_cast < const simd* > (in2Y);
+			simd       * dst  = reinterpret_cast <       simd* > (outY);
+
+			const simd * src1End = src1 + simdWidth;
+
+			for( ; src1 != src1End; ++src1, ++src2, ++dst ) {
+				simd data1 = _mm_loadu_si128(src1);
+				simd data2 = _mm_loadu_si128(src2);
+				_mm_storeu_si128(dst, _mm_sub_epi8( _mm_max_epu8( data1, data2 ), _mm_min_epu8( data1, data2 ) ) );
+			}
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * in1X = in1Y + totalSimdWidth;
+				const uint8_t * in2X = in2Y + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
+
+				const uint8_t * outXEnd = outX + nonSimdWidth;
+
+				for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+					(*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
+			}
+		}
+	}
+
 	Image BitwiseAnd( const Image & in1, const Image & in2 )
 	{
 		Image_Function::ParameterValidation( in1, in2 );
