@@ -21,6 +21,11 @@ namespace Performance_Test
 		ADD_TEST( framework, Image_Function_Test::BitwiseXorSize1024 );
 		ADD_TEST( framework, Image_Function_Test::BitwiseXorSize2048 );
 
+		ADD_TEST( framework, Image_Function_Test::FillSize256 );
+		ADD_TEST( framework, Image_Function_Test::FillSize512 );
+		ADD_TEST( framework, Image_Function_Test::FillSize1024 );
+		ADD_TEST( framework, Image_Function_Test::FillSize2048 );
+
 		ADD_TEST( framework, Image_Function_Test::InvertSize256 );
 		ADD_TEST( framework, Image_Function_Test::InvertSize512 );
 		ADD_TEST( framework, Image_Function_Test::InvertSize1024 );
@@ -246,6 +251,78 @@ namespace Performance_Test
 				timer.start();
 
 				Image_Function::BitwiseXor( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > FillSize256()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(256, 256);
+			uint8_t value = randomValue<uint8_t>(256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Fill( image, value );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > FillSize512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(512, 512);
+			uint8_t value = randomValue<uint8_t>(256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Fill( image, value );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > FillSize1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(1024, 1024);
+			uint8_t value = randomValue<uint8_t>(256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Fill( image, value );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > FillSize2048()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(2048, 2048);
+			uint8_t value = randomValue<uint8_t>(256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Fill( image, value );
 
 				timer.stop();
 			}
