@@ -130,12 +130,14 @@ namespace Function_Pool
 		std::vector < std::vector < uint32_t > > histogram;  // for Histogram() function
 		std::vector < std::vector < uint32_t > > projection; // for ProjectionProfile() function
 		std::vector < uint32_t > sum;						 // for Sum() function
+		std::vector < bool > equality;                       // for IsEqual() function
 
 		void resize(size_t count)
 		{
-			histogram.resize(count);
+			histogram .resize(count);
 			projection.resize(count);
-			sum.resize(count);
+			sum       .resize(count);
+			equality  .resize(count);
 		}
 
 		void getHistogram(std::vector <uint32_t> & histogram_ )
@@ -161,6 +163,25 @@ namespace Function_Pool
 			sum.clear(); // to guarantee that no one can use it second time
 
 			return total;
+		}
+
+		bool isEqual()
+		{
+			if( equality.empty() )
+				throw imageException("Output array is empty");
+
+			bool equal = true;
+
+			for( std::vector < bool >::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
+				if( !(*value) ) {
+					equal = false;
+					break;
+				}
+			}
+
+			equality.clear(); // to guarantee that no one can use it second time
+
+			return equal;
 		}
 	private:
 		void _getArray( std::vector < std::vector < uint32_t > > & input, std::vector < uint32_t > & output ) const
@@ -254,6 +275,15 @@ namespace Function_Pool
 			_process( _Invert );
 		}
 
+		bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					  uint32_t width, uint32_t height )
+		{
+			_setup( in1, startX1, startY1, in2, startX2, startY2, width, height );
+			_dataOut.resize(_infoIn1->_size());
+			_process( _IsEqual );
+			return _dataOut.isEqual();
+		}
+
 		void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
@@ -331,6 +361,7 @@ namespace Function_Pool
 			_GammaCorrection,
 			_Histogram,
 			_Invert,
+			_IsEqual,
 			_Maximum,
 			_Minimum,
 			_Normalize,
@@ -381,6 +412,12 @@ namespace Function_Pool
 			case _Invert:
 				Image_Function::Invert(     _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _IsEqual:
+				_dataOut.equality[taskId] = Image_Function::IsEqual(
+											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
 			case _Maximum:
@@ -460,6 +497,20 @@ namespace Function_Pool
 			uint32_t count = _threadCount();
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, count ) );
+		}
+
+		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+					 uint32_t width, uint32_t height )
+		{
+			Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+			if( !_ready() )
+				throw imageException("FunctionTask object was called multiple times!");
+
+			uint32_t count = _threadCount();
+
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, count ) );
+			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, count ) );
 		}
 
 		void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height )
@@ -743,6 +794,19 @@ namespace Function_Pool
 				  uint32_t width, uint32_t height )
 	{
 		FunctionTask().Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+	}
+
+	bool IsEqual( const Image & in1, const Image & in2 )
+	{
+		Image_Function::ParameterValidation( in1, in2 );
+
+		return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+	}
+
+	bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+				  uint32_t width, uint32_t height )
+	{
+		return FunctionTask().IsEqual( in1, startX1, startY1, in2, startX2, startY2, width, height );
 	}
 
 	Image Maximum( const Image & in1, const Image & in2 )
