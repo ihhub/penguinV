@@ -166,6 +166,78 @@ namespace Image_Function_Neon
 		}
 	}
 
+	Image Invert( const Image & in )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
+	void Invert( const Image & in, Image & out )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Invert( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
+	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				  uint32_t width, uint32_t height )
+	{
+		// image width is less than 16 bytes so no use to utilize NEON :(
+		if (width < simdSize) {
+			Image_Function::Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
+			return;
+		}
+
+		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		uint32_t simdWidth = width / simdSize;
+		uint32_t totalSimdWidth = simdWidth * simdSize;
+		uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * src1 = inY;
+			uint8_t       * dst  = outY;
+
+			const uint8_t * src1End = src1 + totalSimdWidth;
+
+			for( ; src1 != src1End; src1 += simdSize, dst += simdSize )
+				vst1q_u8( dst, vmvnq_u8( vld1q_u8( src1 ) ) );
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
+
+				const uint8_t * outXEnd = outX + nonSimdWidth;
+
+				for( ; outX != outXEnd; ++outX, ++inX )
+					(*outX) = ~(*inX);
+			}
+		}
+	}
 
 	Image Maximum(const Image & in1, const Image & in2)
 	{

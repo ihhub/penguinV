@@ -16,6 +16,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr8ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Neon_Test::Invert1ParameterTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Invert2ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Invert5ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Invert8ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Neon_Test::Maximum2ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Maximum3ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Maximum8ParametersTest );
@@ -184,6 +189,78 @@ namespace Unit_Test
 											   image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] | intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Invert1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Invert( input );
+
+				if( !verifyImage( output, ~intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Invert2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				Image_Function_Neon::Invert( input[0], input[1] );
+
+				if( !verifyImage( input[1], ~intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Invert5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Invert( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Invert8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				Image_Function_Neon::Invert( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] ) )
 					return false;
 			}
 

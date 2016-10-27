@@ -18,6 +18,11 @@ namespace Unit_Test
 		bool BitwiseOr8ParametersTest();
 		bool BitwiseOr11ParametersTest();
 
+		bool Invert1ParameterTest();
+		bool Invert2ParametersTest();
+		bool Invert5ParametersTest();
+		bool Invert8ParametersTest();
+
 		bool Maximum2ParametersTest();
 		bool Maximum3ParametersTest();
 		bool Maximum8ParametersTest();
