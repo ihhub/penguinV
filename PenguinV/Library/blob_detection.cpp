@@ -1,4 +1,5 @@
 #include <cmath>
+#include <list>
 #include <numeric>
 #include <queue>
 #include "blob_detection.h"
@@ -7,16 +8,32 @@
 namespace
 {
 	template <typename Data>
-	void listToVector( std::list <Data> & l, std::vector <Data> & v, uint32_t offset )
+	void splitVector( std::vector <Data> & l, std::vector <Data> & vX, std::vector <Data> & vY, uint32_t offsetX, uint32_t offsetY )
 	{
-		std::vector < Data > temp ( l.begin(), l.end() );
+		vX.resize( l.size() / 2 );
+		vY.resize( l.size() / 2 );
 
-		std::for_each( temp.begin(), temp.end(),
-			[&](uint32_t & value) { value = value + offset - 1; } ); // note that we subtract 1!
+		std::vector <Data>::iterator x = vX.begin();
+		std::vector <Data>::iterator y = vY.begin();
 
-		std::swap(v, temp);
+		for( std::vector <Data>::iterator data = l.begin(); data != l.end(); ++x, ++y) {
+			*x = *data + offsetX - 1; // note that we subtract 1!
+			++data;
+			*y = *data + offsetY - 1; // note that we subtract 1!
+			++data;
+		}
+
 		l.clear();
 	}
+
+	enum PixelState
+	{
+		EMPTY      = 0u,
+		NOT_IN_USE = 1u,
+		FOUND      = 2u,
+		EDGE       = 3u,
+		CONTOUR    = 4u
+	};
 
 	const double pi = 3.1415926536;
 };
@@ -198,7 +215,6 @@ namespace Blob_Detection
 	{
 		if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
 			if( _contourX.size() > 1 ) {
-			
 				std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
 				std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
 				std::vector < uint32_t >::const_iterator end = _contourX.cend();
@@ -208,7 +224,6 @@ namespace Blob_Detection
 				Point startPoint, endPoint;
 
 				for( ; x != (end - 1); ++x, ++y ) {
-
 					std::vector < uint32_t >::const_iterator xx = x + 1;
 					std::vector < uint32_t >::const_iterator yy = y + 1;
 
@@ -274,7 +289,6 @@ namespace Blob_Detection
 	{
 		if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
 			if( _contourX.size() > 1 ) {
-
 				std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
 				std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
 				std::vector < uint32_t >::const_iterator end = _contourX.cend();
@@ -282,12 +296,10 @@ namespace Blob_Detection
 				int32_t maximumDistance = 0;
 
 				for( ; x != (end - 1); ++x, ++y ) {
-
 					std::vector < uint32_t >::const_iterator xx = x + 1;
 					std::vector < uint32_t >::const_iterator yy = y + 1;
 
 					for( ; xx != end; ++xx, ++yy ) {
-
 						int32_t distance = static_cast< int32_t >(*x - *xx) * static_cast< int32_t >(*x - *xx) +
 										   static_cast< int32_t >(*y - *yy) * static_cast< int32_t >(*y - *yy);
 
@@ -318,12 +330,9 @@ namespace Blob_Detection
 
 	void BlobInfo::_preparePoints(uint32_t offsetX, uint32_t offsetY)
 	{
-		listToVector( _tempPointX  , _pointX  , offsetX );
-		listToVector( _tempPointY  , _pointY  , offsetY );
-		listToVector( _tempContourX, _contourX, offsetX );
-		listToVector( _tempContourY, _contourY, offsetY );
-		listToVector( _tempEdgeX   , _edgeX   , offsetX );
-		listToVector( _tempEdgeY   , _edgeY   , offsetY );
+		splitVector( _tempPoint  , _pointX  , _pointY  , offsetX, offsetY );
+		splitVector( _tempContour, _contourX, _contourY, offsetX, offsetY );
+		splitVector( _tempEdge   , _edgeX   , _edgeY   , offsetX, offsetY );
 	}
 
 
@@ -341,14 +350,8 @@ namespace Blob_Detection
 
 		_blob.clear();
 
-		// Create a map of pixels:
-		// 0 - no suitable pixel
-		// 1 - not used pixel
-		// 2 - found pixel
-		// 3 - edge pixel
-		// 4 - contour pixel
 		// we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
-		std::vector < uint8_t > imageMap( (width + 2) * (height + 2), 0 );
+		std::vector < uint8_t > imageMap( (width + 2) * (height + 2), EMPTY );
 
 		uint32_t rowSize = image.rowSize();
 
@@ -366,7 +369,8 @@ namespace Blob_Detection
 			std::vector < uint8_t >::iterator mapValueY = mapValueX;
 
 			for( ; imageX != imageXEnd; ++imageX, ++mapValueY ) {
-				*mapValueY = (*imageX) < threshold ? 0 : 1;
+				if( (*imageX) >= threshold )
+					*mapValueY = NOT_IN_USE;
 			}
 		}
 
@@ -377,200 +381,189 @@ namespace Blob_Detection
 		std::vector < uint8_t >::const_iterator endMap = imageMap.end() - mapWidth;
 
 		for( ; mapValueX != endMap; ++mapValueX ) {
-		
-			if( *mapValueX == 1 ) { // blob found!
+			if( *mapValueX == NOT_IN_USE ) { // blob found!
 				foundBlob.push_back( BlobInfo() );
 
 				BlobInfo & newBlob = foundBlob.back();
 
 				uint32_t relativePosition = static_cast<uint32_t>( mapValueX - imageMap.begin() );
 
-				std::list < uint32_t > & tempPointX = newBlob._tempPointX;
-				std::list < uint32_t > & tempPointY = newBlob._tempPointY;
+				std::vector < uint32_t > & tempPoint = newBlob._tempPoint;
 
-				tempPointX.push_back( relativePosition % mapWidth );
-				tempPointY.push_back( relativePosition / mapWidth );
+				tempPoint.push_back( relativePosition % mapWidth );
+				tempPoint.push_back( relativePosition / mapWidth );
 
-				*mapValueX = 2;
+				*mapValueX = FOUND;
 
-				std::list < uint32_t >::iterator xIter = tempPointX.begin();
-				std::list < uint32_t >::iterator yIter = tempPointY.begin();
+				size_t pointId = 0;
 
 				do {
-					uint32_t xMap = *xIter;
-					uint32_t yMap = *yIter;
+					uint32_t xMap = tempPoint[pointId++];
+					uint32_t yMap = tempPoint[pointId++];
 
 					uint8_t neighbourCount = 0;
 
 					uint8_t * position = imageMap.data() + (yMap - 1) * mapWidth + xMap - 1;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap - 1 );
-							tempPointY.push_back( yMap - 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap - 1 );
+							tempPoint.push_back( yMap - 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					++position;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap     );
-							tempPointY.push_back( yMap - 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap     );
+							tempPoint.push_back( yMap - 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					++position;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap + 1 );
-							tempPointY.push_back( yMap - 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap + 1 );
+							tempPoint.push_back( yMap - 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					position = position - 2 + mapWidth;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap - 1 );
-							tempPointY.push_back( yMap     );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap - 1 );
+							tempPoint.push_back( yMap     );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					position = position + 2;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap + 1 );
-							tempPointY.push_back( yMap     );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap + 1 );
+							tempPoint.push_back( yMap     );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					position = position - 2 + mapWidth;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap - 1 );
-							tempPointY.push_back( yMap + 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap - 1 );
+							tempPoint.push_back( yMap + 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					++position;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap     );
-							tempPointY.push_back( yMap + 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap     );
+							tempPoint.push_back( yMap + 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					++position;
-					if( *(position) > 0 ) {
-						if( *(position) == 1 ) {
-							tempPointX.push_back( xMap + 1 );
-							tempPointY.push_back( yMap + 1 );
-							*(position) = 2;
+					if( *(position) != EMPTY ) {
+						if( *(position) == NOT_IN_USE ) {
+							tempPoint.push_back( xMap + 1 );
+							tempPoint.push_back( yMap + 1 );
+							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					if( neighbourCount != 8 ) {
-						newBlob._tempEdgeX.push_back( xMap );
-						newBlob._tempEdgeY.push_back( yMap );
-						*(position - 1 - mapWidth) = 3;
+						newBlob._tempEdge.push_back( xMap );
+						newBlob._tempEdge.push_back( yMap );
+						*(position - 1 - mapWidth) = EDGE;
 					}
 
-					++xIter;
-					++yIter;
-
-				} while( xIter != tempPointX.end() );
+				} while( pointId != tempPoint.size() );
 
 				// Now we can extract outer edge points or so called contour points
-				std::list < uint32_t > & tempContourX = newBlob._tempContourX;
-				std::list < uint32_t > & tempContourY = newBlob._tempContourY;
+				std::vector < uint32_t > & tempContour = newBlob._tempContour;
 
-				tempContourX.push_back( relativePosition % mapWidth );
-				tempContourY.push_back( relativePosition / mapWidth );
+				tempContour.push_back( relativePosition % mapWidth );
+				tempContour.push_back( relativePosition / mapWidth );
 
-				xIter = tempContourX.begin();
-				yIter = tempContourY.begin();
+				pointId = 0;
 
-				*mapValueX = 4;
+				*mapValueX = CONTOUR;
 
 				do {
-					uint32_t xMap = *xIter;
-					uint32_t yMap = *yIter;
+					uint32_t xMap = tempContour[pointId++];
+					uint32_t yMap = tempContour[pointId++];
 
 					std::vector < uint8_t >::iterator position = imageMap.begin() + yMap * mapWidth + xMap;
 
 					position = position - mapWidth - 1;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap - 1 );
-						tempContourY.push_back( yMap - 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap - 1 );
+						tempContour.push_back( yMap - 1 );
+						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap     );
-						tempContourY.push_back( yMap - 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap     );
+						tempContour.push_back( yMap - 1 );
+						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap + 1 );
-						tempContourY.push_back( yMap - 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap + 1 );
+						tempContour.push_back( yMap - 1 );
+						*(position) = CONTOUR;
 					}
 
 					position = position - 2 + mapWidth;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap - 1 );
-						tempContourY.push_back( yMap     );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap - 1 );
+						tempContour.push_back( yMap     );
+						*(position) = CONTOUR;
 					}
 
 					position = position + 2;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap + 1 );
-						tempContourY.push_back( yMap     );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap + 1 );
+						tempContour.push_back( yMap     );
+						*(position) = CONTOUR;
 					}
 
 					position = position - 2 + mapWidth;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap - 1 );
-						tempContourY.push_back( yMap + 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap - 1 );
+						tempContour.push_back( yMap + 1 );
+						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap     );
-						tempContourY.push_back( yMap + 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap     );
+						tempContour.push_back( yMap + 1 );
+						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
-					if( *(position) == 3 ) {
-						tempContourX.push_back( xMap + 1 );
-						tempContourY.push_back( yMap + 1 );
-						*(position) = 4;
+					if( *(position) == EDGE ) {
+						tempContour.push_back( xMap + 1 );
+						tempContour.push_back( yMap + 1 );
+						*(position) = CONTOUR;
 					}
 
-					++xIter;
-					++yIter;
-
-				} while( xIter != tempContourX.end() );
+				} while( pointId != tempContour.size() );
 			}
 		}
 

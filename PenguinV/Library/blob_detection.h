@@ -1,5 +1,4 @@
 #pragma once
-#include <list>
 #include <vector>
 #include "image_buffer.h"
 
@@ -180,12 +179,9 @@ namespace Blob_Detection
 		std::vector < uint32_t > _contourY;
 		std::vector < uint32_t > _edgeX;
 		std::vector < uint32_t > _edgeY;
-		std::list   < uint32_t > _tempPointX;
-		std::list   < uint32_t > _tempPointY;
-		std::list   < uint32_t > _tempContourX;
-		std::list   < uint32_t > _tempContourY;
-		std::list   < uint32_t > _tempEdgeX;
-		std::list   < uint32_t > _tempEdgeY;
+		std::vector < uint32_t > _tempPoint;
+		std::vector < uint32_t > _tempContour;
+		std::vector < uint32_t > _tempEdge;
 
 		Value < Area   > _area;
 		Value < Point  > _center;
