@@ -106,9 +106,14 @@ namespace Performance_Test
 
 	Bitmap_Image::Image uniformImage(uint32_t width, uint32_t height)
 	{
+		return uniformImage( width, height, randomValue<uint8_t>(256) );
+	}
+
+	Bitmap_Image::Image uniformImage(uint32_t width, uint32_t height, uint8_t value)
+	{
 		Bitmap_Image::Image image( width, height );
 
-		image.fill( static_cast<uint8_t>(rand() % 256) );
+		image.fill( value );
 
 		return image;
 	}
