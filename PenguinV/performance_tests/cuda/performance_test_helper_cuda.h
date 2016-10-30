@@ -1,0 +1,41 @@
+#pragma once
+
+#include <vector>
+#include "../../Library/cuda/image_buffer_cuda.cuh"
+
+namespace Performance_Test
+{
+	namespace Cuda
+	{
+		// Functions to generate images
+		Bitmap_Image_Cuda::ImageCuda uniformImage(uint32_t width, uint32_t height);
+		Bitmap_Image_Cuda::ImageCuda uniformImage(uint32_t width, uint32_t height, uint8_t value);
+		std::vector< Bitmap_Image_Cuda::ImageCuda > uniformImages(uint32_t count, uint32_t width, uint32_t height);
+
+		// Return random value for specific range or variable type
+		template <typename data>
+		data randomValue(int maximum)
+		{
+			if( maximum <= 0 )
+				return 0;
+			else
+				return static_cast<data>( rand() ) % maximum;
+		};
+
+		template <typename data>
+		data randomValue(data minimum, int maximum)
+		{
+			if( maximum <= 0 ) {
+				return 0;
+			}
+			else {
+				data value = static_cast<data>( rand() ) % maximum;
+
+				if( value < minimum )
+					value = minimum;
+
+				return value;
+			}
+		};
+	};
+};
