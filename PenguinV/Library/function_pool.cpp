@@ -2,6 +2,17 @@
 #include "image_function.h"
 #include "thread_pool.h"
 
+namespace
+{
+	uint32_t threadCount()
+	{
+		uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+		if (count == 0)
+			throw imageException("Thread Pool is not initialized.");
+		return count;
+	};
+};
+
 namespace Function_Pool
 {
 	struct AreaInfo
@@ -22,12 +33,12 @@ namespace Function_Pool
 		}
 	private:
 		static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of subsequent memory cells is much faster!
-											  // Change this value if you need to adjust to specific CPU. 16 bytes are set for proper SSE support
+											  // Change this value if you need to adjust to specific CPU. 16 bytes are set for proper SSE/NEON support
 
 		// this function will sort out all input data into arrays for multithreading execution
 		void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
 		{
-			uint32_t maximumXTaskCount = width_  / cacheSize;
+			uint32_t maximumXTaskCount = width_ / cacheSize;
 			if( maximumXTaskCount == 0 )
 				maximumXTaskCount = 1;
 			if( maximumXTaskCount > count )
@@ -37,21 +48,21 @@ namespace Function_Pool
 			if( maximumYTaskCount > count )
 				maximumYTaskCount = count;
 
+			count = (maximumYTaskCount >= maximumXTaskCount) ? maximumYTaskCount : maximumXTaskCount;
+
+			startX.resize( count );
+			startY.resize( count );
+			width .resize( count );
+			height.resize( count );
+
 			if( maximumYTaskCount >= maximumXTaskCount ) { // process by rows
-				count = maximumYTaskCount;
-
-				startX.resize( count );
-				startY.resize( count );
-				width .resize( count );
-				height.resize( count );
-
 				std::fill( startX.begin(), startX.end(), x );
 				std::fill( width.begin() , width.end() , width_ );
 
 				uint32_t remainValue = height_ % count;
 				uint32_t previousValue = y;
 
-				for( size_t i = 0; i < startX.size(); ++i ) {
+				for( size_t i = 0; i < count; ++i ) {
 					height[i] = height_ / count;
 					if( remainValue > 0 ) {
 						--remainValue;
@@ -62,20 +73,13 @@ namespace Function_Pool
 				}
 			}
 			else { // process by columns
-				count = maximumXTaskCount;
-
-				startX.resize( count );
-				startY.resize( count );
-				width .resize( count );
-				height.resize( count );
-
 				std::fill( startY.begin(), startY.end(), y );
 				std::fill( height.begin(), height.end(), height_ );
 
 				uint32_t remainValue = width_ % count;
 				uint32_t previousValue = x;
 
-				for( size_t i = 0; i < startX.size(); ++i ) {
+				for( size_t i = 0; i < count; ++i ) {
 					width[i] = width_ / count;
 					if( remainValue > 0 ) {
 						--remainValue;
@@ -118,11 +122,11 @@ namespace Function_Pool
 			, coefficientGamma    (1)
 		{ }
 
-		uint8_t minThreshold; // for Threshold() function same as threshold
-		uint8_t maxThreshold; // for Threshold() function
+		uint8_t minThreshold;      // for Threshold() function same as threshold
+		uint8_t maxThreshold;      // for Threshold() function
 		bool horizontalProjection; // for ProjectionProfile() function
-		double coefficientA;  // for GammaCorrection() function
-		double coefficientGamma;  // for GammaCorrection() function
+		double coefficientA;       // for GammaCorrection() function
+		double coefficientGamma;   // for GammaCorrection() function
 	};
 	// This structure holds output data for some specific functions
 	struct OutputInfo
@@ -253,7 +257,7 @@ namespace Function_Pool
 			if( a < 0 || gamma < 0 )
 				throw imageException("Bad input parameters in image function");
 
-			_dataIn.coefficientA = a;
+			_dataIn.coefficientA     = a;
 			_dataIn.coefficientGamma = gamma;
 
 			_process( _GammaCorrection );
@@ -376,7 +380,8 @@ namespace Function_Pool
 		{
 			switch(functionId) {
 			case _AbsoluteDifference:
-				Image_Function::AbsoluteDifference(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+				Image_Function::AbsoluteDifference(
+											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
@@ -400,7 +405,8 @@ namespace Function_Pool
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
 			case _GammaCorrection:
-				Image_Function::GammaCorrection(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+				Image_Function::GammaCorrection(
+											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.coefficientA,
 											_dataIn.coefficientGamma);
@@ -438,9 +444,10 @@ namespace Function_Pool
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
 			case _ProjectionProfile:
-				Image_Function::ProjectionProfile(  _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-											_infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.horizontalProjection,
-											_dataOut.projection[taskId] );
+				Image_Function::ProjectionProfile(
+											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId],
+											_dataIn.horizontalProjection, _dataOut.projection[taskId] );
 				break;
 			case _Subtract:
 				Image_Function::Subtract(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -478,14 +485,6 @@ namespace Function_Pool
 		InputInfo  _dataIn;  // structure that hold some unique input parameters
 		OutputInfo _dataOut; // structure that hold some unique output values
 
-		uint32_t _threadCount()
-		{
-			uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
-			if (count == 0)
-				throw imageException("Thread Pool is not initialized.");
-			return count;
-		}
-
 		// functions for setting up all parameters needed for multithreading and to validate input parameters
 		void _setup( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 		{
@@ -494,9 +493,7 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = _threadCount();
-
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x , y, width, height, threadCount() ) );
 		}
 
 		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -507,10 +504,8 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = _threadCount();
-
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, count ) );
-			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, threadCount() ) );
+			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, threadCount() ) );
 		}
 
 		void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height )
@@ -520,10 +515,8 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = _threadCount();
-
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, count ) );
-			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, threadCount() ) );
+			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, threadCount() ) );
 		}
 
 		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -534,11 +527,9 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			uint32_t count = _threadCount();
-
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, count ) );
-			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, count ) );
-			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, width, height, count ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1  , startY1  , width, height, threadCount() ) );
+			_infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2  , startY2  , width, height, threadCount() ) );
+			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, width, height, threadCount() ) );
 		}
 
 		void _process(TaskName id) // function what calls global thread pool and waits results from it
