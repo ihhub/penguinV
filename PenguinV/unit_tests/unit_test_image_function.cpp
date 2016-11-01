@@ -12,6 +12,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::AbsoluteDifference8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::AbsoluteDifference11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::Accumulate2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Accumulate6ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::BitwiseAnd2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::BitwiseAnd3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::BitwiseAnd8ParametersTest );
@@ -165,6 +168,56 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Accumulate2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>(1, 16) );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
+
+				for( std::vector < Bitmap_Image::Image >::const_iterator image = input.begin(); image != input.end(); ++image ) {
+					Image_Function::Accumulate( *image, result );
+				}
+
+				uint32_t sum = std::accumulate( intensity.begin(), intensity.end(), 0u );
+
+				if( std::any_of( result.begin(), result.end(), [&sum](uint32_t v){ return v != sum; } ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Accumulate6ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>(1, 16) );
+				std::vector < Bitmap_Image::Image > input;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ input.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				std::vector < uint32_t > result( roiWidth * roiHeight, 0 );
+
+				for( size_t imageId = 0; imageId < input.size(); ++imageId ) {
+					Image_Function::Accumulate( input[imageId], roiX[imageId], roiY[imageId], roiWidth, roiHeight, result );
+				}
+
+				uint32_t sum = std::accumulate( intensity.begin(), intensity.end(), 0u );
+
+				if( std::any_of( result.begin(), result.end(), [&sum](uint32_t v){ return v != sum; } ) )
 					return false;
 			}
 

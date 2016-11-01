@@ -13,6 +13,9 @@ namespace Unit_Test
 		bool AbsoluteDifference8ParametersTest();
 		bool AbsoluteDifference11ParametersTest();
 
+		bool Accumulate2ParametersTest();
+		bool Accumulate6ParametersTest();
+
 		bool BitwiseAnd2ParametersTest();
 		bool BitwiseAnd3ParametersTest();
 		bool BitwiseAnd8ParametersTest();
