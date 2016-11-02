@@ -18,6 +18,15 @@ namespace
 	};
 
 	// The list of CUDA device functions
+	__global__ void absoluteDifference(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
+	{
+	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	    if (i < size) {
+	        out[i] = in1[i] > in2[i] ? in1[i] - in2[i] : in2[i] - in1[i];
+	    }
+	};
+
 	__global__ void bitwiseAnd(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
 	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
@@ -53,6 +62,33 @@ namespace
 	        out[i] = ~in[i];
 	    }
 	};
+
+	__global__ void maximum(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
+	{
+	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	    if (i < size) {
+	        out[i] = in1[i] > in2[i] ? in1[i] : in2[i];
+	    }
+	};
+
+	__global__ void minimum(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
+	{
+	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	    if (i < size) {
+	        out[i] = in1[i] < in2[i] ? in1[i] : in2[i];
+	    }
+	};
+
+	__global__ void subtract(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
+	{
+	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	    if (i < size) {
+	        out[i] = in1[i] > in2[i] ? in1[i] - in2[i] : 0;
+	    }
+	};
 };
 
 namespace Image_Function_Cuda
@@ -79,6 +115,30 @@ namespace Image_Function_Cuda
 			throw imageException("Bad input parameters in image function");
 	}
 
+
+	ImageCuda AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		ImageCuda out( in1.width(), in1.height() );
+
+		AbsoluteDifference( in1, in2, out );
+
+		return out;
+	}
+
+	void AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+
+		absoluteDifference<<<blocksPerGrid, threadsPerBlock>>>( in1.data(), in2.data(), out.data(), out.width() * out.height() );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
+	}
 
 	ImageCuda BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2 )
 	{
@@ -217,6 +277,78 @@ namespace Image_Function_Cuda
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
 
 		invert<<<blocksPerGrid, threadsPerBlock>>>( in.data(), out.data(), out.width() * out.height() );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
+	}
+
+	ImageCuda Maximum( const ImageCuda & in1, const ImageCuda & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		ImageCuda out( in1.width(), in1.height() );
+
+		Maximum( in1, in2, out );
+
+		return out;
+	}
+
+	void Maximum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+
+		maximum<<<blocksPerGrid, threadsPerBlock>>>( in1.data(), in2.data(), out.data(), out.width() * out.height() );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
+	}
+
+	ImageCuda Minimum( const ImageCuda & in1, const ImageCuda & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		ImageCuda out( in1.width(), in1.height() );
+
+		Minimum( in1, in2, out );
+
+		return out;
+	}
+
+	void Minimum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+
+		minimum<<<blocksPerGrid, threadsPerBlock>>>( in1.data(), in2.data(), out.data(), out.width() * out.height() );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
+	}
+
+	ImageCuda Subtract( const ImageCuda & in1, const ImageCuda & in2 )
+	{
+		ParameterValidation( in1, in2 );
+
+		ImageCuda out( in1.width(), in1.height() );
+
+		Subtract( in1, in2, out );
+
+		return out;
+	}
+
+	void Subtract( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	{
+		ParameterValidation( in1, in2, out );
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+
+		subtract<<<blocksPerGrid, threadsPerBlock>>>( in1.data(), in2.data(), out.data(), out.width() * out.height() );
 		cudaError_t error = cudaGetLastError();
 		if(error != cudaSuccess)
 			throw imageException("Failed to launch CUDA kernel");

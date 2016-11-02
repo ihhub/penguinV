@@ -8,6 +8,11 @@ namespace Performance_Test
 {
 	void addTests_Image_Function_Cuda(PerformanceTestFramework & framework)
 	{
+		ADD_TEST( framework, Image_Function_Cuda_Test::AbsoluteDifferenceSize256 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::AbsoluteDifferenceSize512 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::AbsoluteDifferenceSize1024 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::AbsoluteDifferenceSize2048 );
+
 		ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseAndSize256 );
 		ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseAndSize512 );
 		ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseAndSize1024 );
@@ -27,10 +32,93 @@ namespace Performance_Test
 		ADD_TEST( framework, Image_Function_Cuda_Test::InvertSize512 );
 		ADD_TEST( framework, Image_Function_Cuda_Test::InvertSize1024 );
 		ADD_TEST( framework, Image_Function_Cuda_Test::InvertSize2048 );
+
+		ADD_TEST( framework, Image_Function_Cuda_Test::MaximumSize256 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MaximumSize512 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MaximumSize1024 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MaximumSize2048 );
+
+		ADD_TEST( framework, Image_Function_Cuda_Test::MinimumSize256 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MinimumSize512 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MinimumSize1024 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::MinimumSize2048 );
+
+		ADD_TEST( framework, Image_Function_Cuda_Test::SubtractSize256 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::SubtractSize512 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::SubtractSize1024 );
+		ADD_TEST( framework, Image_Function_Cuda_Test::SubtractSize2048 );
 	}
 
 	namespace Image_Function_Cuda_Test
 	{
+		std::pair < double, double > AbsoluteDifferenceSize256()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize512()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize1024()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > AbsoluteDifferenceSize2048()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
 		std::pair < double, double > BitwiseAndSize256()
 		{
 			TimerContainer timer;
@@ -296,6 +384,210 @@ namespace Performance_Test
 				timer.start();
 
 				Image_Function_Cuda::Invert( image[0], image[1] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize256()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize512()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize1024()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MaximumSize2048()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize256()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize512()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize1024()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > MinimumSize2048()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize256()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize512()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize1024()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > SubtractSize2048()
+		{
+			TimerContainer timer;
+
+			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
 
 				timer.stop();
 			}

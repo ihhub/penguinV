@@ -15,6 +15,9 @@ namespace Image_Function_Cuda
 	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
 	void ParameterValidation( const BitmapImageCuda <bytes1> & image1, const BitmapImageCuda <bytes2> & image2, const BitmapImageCuda <bytes3> & image3 );
 
+	ImageCuda AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2 );
+	void      AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+
 	ImageCuda BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2 );
 	void      BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
 
@@ -30,4 +33,13 @@ namespace Image_Function_Cuda
 	// Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
 	ImageCuda Invert( const ImageCuda & in );
 	void      Invert( const ImageCuda & in, ImageCuda & out );
+
+	ImageCuda Maximum( const ImageCuda & in1, const ImageCuda & in2 );
+	void      Maximum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+
+	ImageCuda Minimum( const ImageCuda & in1, const ImageCuda & in2 );
+	void      Minimum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+
+	ImageCuda Subtract( const ImageCuda & in1, const ImageCuda & in2 );
+	void      Subtract( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
 };

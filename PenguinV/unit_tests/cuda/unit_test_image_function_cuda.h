@@ -8,6 +8,9 @@ namespace Unit_Test
 
 	namespace Image_Function_Cuda_Test
 	{
+		bool AbsoluteDifference2ParametersTest();
+		bool AbsoluteDifference3ParametersTest();
+
 		bool BitwiseAnd2ParametersTest();
 		bool BitwiseAnd3ParametersTest();
 
@@ -19,5 +22,14 @@ namespace Unit_Test
 
 		bool Invert1ParameterTest();
 		bool Invert2ParametersTest();
+
+		bool Maximum2ParametersTest();
+		bool Maximum3ParametersTest();
+
+		bool Minimum2ParametersTest();
+		bool Minimum3ParametersTest();
+
+		bool Subtract2ParametersTest();
+		bool Subtract3ParametersTest();
 	};
 };
