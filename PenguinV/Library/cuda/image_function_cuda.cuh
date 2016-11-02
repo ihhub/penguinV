@@ -30,6 +30,12 @@ namespace Image_Function_Cuda
 	void Convert( const Bitmap_Image::Image & in, ImageCuda & out );
 	void Convert( const ImageCuda & in, Bitmap_Image::Image & out );
 
+	// Gamma correction works by formula:
+	// output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0
+	// Usually people set A as 1
+	ImageCuda GammaCorrection( const ImageCuda & in, double a, double gamma );
+	void      GammaCorrection( const ImageCuda & in, ImageCuda & out, double a, double gamma );
+
 	// Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
 	ImageCuda Invert( const ImageCuda & in );
 	void      Invert( const ImageCuda & in, ImageCuda & out );

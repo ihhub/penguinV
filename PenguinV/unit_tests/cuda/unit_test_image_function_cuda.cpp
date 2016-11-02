@@ -19,6 +19,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseXor2ParametersTest );
 		ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseXor3ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection3ParametersTest );
+		ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection4ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Cuda_Test::Invert1ParameterTest );
 		ADD_TEST( framework, Image_Function_Cuda_Test::Invert2ParametersTest );
 
@@ -149,6 +152,58 @@ namespace Unit_Test
 				Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
 
 				if( !Cuda::verifyImage( image[2], intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image_Cuda::ImageCuda input = Cuda::uniformImage( intensity );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Bitmap_Image_Cuda::ImageCuda output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
+
+				double value = a * pow(intensity, gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !Cuda::verifyImage( output, corrected ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool GammaCorrection4ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image_Cuda::ImageCuda > input = Cuda::uniformImages( intensity );
+
+				double a     = randomValue <uint32_t>(100) / 100.0;
+				double gamma = randomValue <uint32_t>(300) / 100.0;
+
+				Image_Function_Cuda::GammaCorrection( input[0], input[1], a, gamma );
+
+				double value = a * pow(intensity[0], gamma) + 0.5;
+				uint8_t corrected = 0;
+
+				if( value < 256 )
+					corrected = static_cast<uint8_t>( value );
+				else
+					corrected = 255;
+
+				if( !Cuda::verifyImage( input[1], corrected ) )
 					return false;
 			}
 

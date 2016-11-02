@@ -20,6 +20,9 @@ namespace Unit_Test
 		bool BitwiseXor2ParametersTest();
 		bool BitwiseXor3ParametersTest();
 
+		bool GammaCorrection3ParametersTest();
+		bool GammaCorrection4ParametersTest();
+
 		bool Invert1ParameterTest();
 		bool Invert2ParametersTest();
 

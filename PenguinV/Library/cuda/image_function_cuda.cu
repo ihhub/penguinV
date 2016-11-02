@@ -1,4 +1,5 @@
 #include <cuda_runtime.h>
+#include <math.h>
 #include "../image_function.h"
 #include "image_function_cuda.cuh"
 
@@ -20,73 +21,97 @@ namespace
 	// The list of CUDA device functions
 	__global__ void absoluteDifference(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] > in2[i] ? in1[i] - in2[i] : in2[i] - in1[i];
+	    if( id < size ) {
+	        out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : in2[id] - in1[id];
 	    }
 	};
 
 	__global__ void bitwiseAnd(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] & in2[i];
+	    if( id < size ) {
+	        out[id] = in1[id] & in2[id];
 	    }
 	};
 
 	__global__ void bitwiseOr(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] | in2[i];
+	    if( id < size ) {
+	        out[id] = in1[id] | in2[id];
 	    }
 	};
 
 	__global__ void bitwiseXor(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] ^ in2[i];
+	    if( id < size ) {
+	        out[id] = in1[id] ^ in2[id];
+	    }
+	};
+
+	__global__ void gammaCorrection(const uint8_t * in, uint8_t * out, uint32_t size, double a, float gamma)
+	{
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+	
+		__shared__ uint8_t value[256];
+		
+		if( threadIdx.x == 0 ) {
+			for( uint16_t i = 0; i < 256; ++i ) {
+				double data = a * pow( static_cast<float>(i), gamma ) + 0.5;
+				
+				if( data < 256 )
+					value[i] = static_cast<uint8_t>(data);
+				else
+					value[i] = 255;
+			}
+		}
+		
+		__syncthreads();
+
+	    if( id < size ) {
+	        out[id] = value[in[id]];
 	    }
 	};
 
 	__global__ void invert(const uint8_t * in, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = ~in[i];
+	    if( id < size ) {
+	        out[id] = ~in[id];
 	    }
 	};
 
 	__global__ void maximum(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] > in2[i] ? in1[i] : in2[i];
+	    if( id < size ) {
+	        out[id] = in1[id] > in2[id] ? in1[id] : in2[id];
 	    }
 	};
 
 	__global__ void minimum(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] < in2[i] ? in1[i] : in2[i];
+	    if( id < size ) {
+	        out[id] = in1[id] < in2[id] ? in1[id] : in2[id];
 	    }
 	};
 
 	__global__ void subtract(const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size)
 	{
-	    uint32_t i = blockDim.x * blockIdx.x + threadIdx.x;
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	
-	    if (i < size) {
-	        out[i] = in1[i] > in2[i] ? in1[i] - in2[i] : 0;
+	    if( id < size ) {
+	        out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;
 	    }
 	};
 };
@@ -256,6 +281,33 @@ namespace Image_Function_Cuda
 			if( error != cudaSuccess )
 				throw imageException("Cannot copy a memory from CUDA device");
 		}
+	}
+
+	ImageCuda GammaCorrection( const ImageCuda & in, double a, double gamma )
+	{
+		ParameterValidation( in );
+
+		ImageCuda out( in.width(), in.height() );
+
+		GammaCorrection( in, out, a, gamma );
+
+		return out;
+	}
+
+	void GammaCorrection( const ImageCuda & in, ImageCuda & out, double a, double gamma )
+	{
+		ParameterValidation( in, out );
+
+		if( a < 0 || gamma < 0 )
+			throw imageException("Bad input parameters in image function");
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+
+		gammaCorrection<<<blocksPerGrid, threadsPerBlock>>>( in.data(), out.data(), out.width() * out.height(), a, gamma );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
 	}
 
 	ImageCuda Invert( const ImageCuda & in )

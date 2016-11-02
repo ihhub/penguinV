@@ -204,6 +204,48 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
+- **GammaCorrection** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	ImageCuda GammaCorrection(
+		const ImageCuda & in,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and returns result image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void GammaCorrection(
+		const ImageCuda & in,
+		ImageCuda & out,
+		double a,
+		double gamma
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of gamma correction. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
+	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Invert** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
