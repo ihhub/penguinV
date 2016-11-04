@@ -393,6 +393,8 @@ namespace Blob_Detection
 				tempPoint.push_back( relativePosition % mapWidth );
 				tempPoint.push_back( relativePosition / mapWidth );
 
+				std::vector < uint32_t > & tempEdge = newBlob._tempEdge;
+
 				*mapValueX = FOUND;
 
 				size_t pointId = 0;
@@ -484,8 +486,8 @@ namespace Blob_Detection
 					}
 
 					if( neighbourCount != 8 ) {
-						newBlob._tempEdge.push_back( xMap );
-						newBlob._tempEdge.push_back( yMap );
+						tempEdge.push_back( xMap );
+						tempEdge.push_back( yMap );
 						*(position - 1 - mapWidth) = EDGE;
 					}
 
