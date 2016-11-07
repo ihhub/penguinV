@@ -611,7 +611,7 @@ namespace Image_Function
 		uint8_t value[256];
 
 		for( uint16_t i = 0; i < 256; ++i ) {
-			double data = a * pow( i, gamma ) + 0.5;
+			double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
 
 			if( data < 256 )
 				value[i] = static_cast<uint8_t>(data);

@@ -431,7 +431,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, a, gamma );
 
-				double value = a * pow(intensity, gamma) + 0.5;
+				double value = a * pow(intensity / 255.0, gamma) * 255 + 0.5;
 				uint8_t corrected = 0;
 
 				if( value < 256 )
@@ -459,7 +459,7 @@ namespace Unit_Test
 
 				Function_Pool::GammaCorrection( input[0], input[1], a, gamma );
 
-				double value = a * pow(intensity[0], gamma) + 0.5;
+				double value = a * pow(intensity[0] / 255.0, gamma) * 255 + 0.5;
 				uint8_t corrected = 0;
 
 				if( value < 256 )
@@ -491,7 +491,7 @@ namespace Unit_Test
 
 				Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
-				double value = a * pow(intensity, gamma) + 0.5;
+				double value = a * pow(intensity / 255.0, gamma) * 255 + 0.5;
 				uint8_t corrected = 0;
 
 				if( value < 256 )
@@ -527,7 +527,7 @@ namespace Unit_Test
 
 				Function_Pool::GammaCorrection( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, a, gamma );
 
-				double value = a * pow(intensity[0], gamma) + 0.5;
+				double value = a * pow(intensity[0] / 255.0, gamma) * 255 + 0.5;
 				uint8_t corrected = 0;
 
 				if( value < 256 )
