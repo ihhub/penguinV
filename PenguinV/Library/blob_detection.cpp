@@ -7,25 +7,6 @@
 
 namespace
 {
-	template <typename Data>
-	void splitVector( std::vector <Data> & l, std::vector <Data> & vX, std::vector <Data> & vY, uint32_t offsetX, uint32_t offsetY )
-	{
-		vX.resize( l.size() / 2 );
-		vY.resize( l.size() / 2 );
-
-		std::vector <Data>::iterator x = vX.begin();
-		std::vector <Data>::iterator y = vY.begin();
-
-		for( std::vector <Data>::iterator data = l.begin(); data != l.end(); ++x, ++y) {
-			*x = *data + offsetX - 1; // note that we subtract 1!
-			++data;
-			*y = *data + offsetY - 1; // note that we subtract 1!
-			++data;
-		}
-
-		l.clear();
-	}
-
 	enum PixelState
 	{
 		EMPTY      = 0u,
@@ -328,13 +309,6 @@ namespace Blob_Detection
 		}
 	}
 
-	void BlobInfo::_preparePoints(uint32_t offsetX, uint32_t offsetY)
-	{
-		splitVector( _tempPoint  , _pointX  , _pointY  , offsetX, offsetY );
-		splitVector( _tempContour, _contourX, _contourY, offsetX, offsetY );
-		splitVector( _tempEdge   , _edgeX   , _edgeY   , offsetX, offsetY );
-	}
-
 
 	const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, BlobParameters parameter, uint8_t threshold )
 	{
@@ -388,28 +362,34 @@ namespace Blob_Detection
 
 				uint32_t relativePosition = static_cast<uint32_t>( mapValueX - imageMap.begin() );
 
-				std::vector < uint32_t > & tempPoint = newBlob._tempPoint;
+				std::vector < uint32_t > & pointX = newBlob._pointX;
+				std::vector < uint32_t > & pointY = newBlob._pointY;
 
-				tempPoint.push_back( relativePosition % mapWidth );
-				tempPoint.push_back( relativePosition / mapWidth );
+				// we put extra shift [-1, -1] to point position because our map starts from [1, 1]
+				// not from [0, 0]
+				pointX.push_back( relativePosition % mapWidth + x - 1 );
+				pointY.push_back( relativePosition / mapWidth + y - 1 );
 
-				std::vector < uint32_t > & tempEdge = newBlob._tempEdge;
+				std::vector < uint32_t > & edgeX = newBlob._edgeX;
+				std::vector < uint32_t > & edgeY = newBlob._edgeY;
 
 				*mapValueX = FOUND;
 
 				size_t pointId = 0;
 
 				do {
-					uint32_t xMap = tempPoint[pointId++];
-					uint32_t yMap = tempPoint[pointId++];
+					uint32_t xMap = pointX[pointId  ];
+					uint32_t yMap = pointY[pointId++];
 
 					uint8_t neighbourCount = 0;
 
-					uint8_t * position = imageMap.data() + (yMap - 1) * mapWidth + xMap - 1;
+					uint8_t * position = imageMap.data() + (yMap + 1 - y) * mapWidth + (xMap + 1 - x);
+
+					position = position - mapWidth - 1;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap - 1 );
-							tempPoint.push_back( yMap - 1 );
+							pointX.push_back( xMap - 1 );
+							pointY.push_back( yMap - 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -418,8 +398,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap     );
-							tempPoint.push_back( yMap - 1 );
+							pointX.push_back( xMap     );
+							pointY.push_back( yMap - 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -428,8 +408,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap + 1 );
-							tempPoint.push_back( yMap - 1 );
+							pointX.push_back( xMap + 1 );
+							pointY.push_back( yMap - 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -438,8 +418,8 @@ namespace Blob_Detection
 					position = position - 2 + mapWidth;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap - 1 );
-							tempPoint.push_back( yMap     );
+							pointX.push_back( xMap - 1 );
+							pointY.push_back( yMap     );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -448,8 +428,8 @@ namespace Blob_Detection
 					position = position + 2;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap + 1 );
-							tempPoint.push_back( yMap     );
+							pointX.push_back( xMap + 1 );
+							pointY.push_back( yMap     );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -458,8 +438,8 @@ namespace Blob_Detection
 					position = position - 2 + mapWidth;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap - 1 );
-							tempPoint.push_back( yMap + 1 );
+							pointX.push_back( xMap - 1 );
+							pointY.push_back( yMap + 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -468,8 +448,8 @@ namespace Blob_Detection
 					++position;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap     );
-							tempPoint.push_back( yMap + 1 );
+							pointX.push_back( xMap     );
+							pointY.push_back( yMap + 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
@@ -478,98 +458,99 @@ namespace Blob_Detection
 					++position;
 					if( *(position) != EMPTY ) {
 						if( *(position) == NOT_IN_USE ) {
-							tempPoint.push_back( xMap + 1 );
-							tempPoint.push_back( yMap + 1 );
+							pointX.push_back( xMap + 1 );
+							pointY.push_back( yMap + 1 );
 							*(position) = FOUND;
 						}
 						++neighbourCount;
 					}
 
 					if( neighbourCount != 8 ) {
-						tempEdge.push_back( xMap );
-						tempEdge.push_back( yMap );
+						edgeX.push_back( xMap );
+						edgeY.push_back( yMap );
 						*(position - 1 - mapWidth) = EDGE;
 					}
 
-				} while( pointId != tempPoint.size() );
+				} while( pointId != pointX.size() );
 
 				// Now we can extract outer edge points or so called contour points
-				std::vector < uint32_t > & tempContour = newBlob._tempContour;
+				std::vector < uint32_t > & contourX = newBlob._contourX;
+				std::vector < uint32_t > & contourY = newBlob._contourY;
 
-				tempContour.push_back( relativePosition % mapWidth );
-				tempContour.push_back( relativePosition / mapWidth );
+				// we put extra shift [-1, -1] to point position because our map starts from [1, 1]
+				// not from [0, 0]
+				contourX.push_back( relativePosition % mapWidth + x - 1 );
+				contourY.push_back( relativePosition / mapWidth + y - 1 );
 
 				pointId = 0;
 
 				*mapValueX = CONTOUR;
 
 				do {
-					uint32_t xMap = tempContour[pointId++];
-					uint32_t yMap = tempContour[pointId++];
+					uint32_t xMap = contourX[pointId  ];
+					uint32_t yMap = contourY[pointId++];
 
-					std::vector < uint8_t >::iterator position = imageMap.begin() + yMap * mapWidth + xMap;
+					uint8_t * position = imageMap.data() + (yMap + 1 - y) * mapWidth + (xMap + 1 - x);
 
 					position = position - mapWidth - 1;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap - 1 );
-						tempContour.push_back( yMap - 1 );
+						contourX.push_back( xMap - 1 );
+						contourY.push_back( yMap - 1 );
 						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap     );
-						tempContour.push_back( yMap - 1 );
+						contourX.push_back( xMap     );
+						contourY.push_back( yMap - 1 );
 						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap + 1 );
-						tempContour.push_back( yMap - 1 );
+						contourX.push_back( xMap + 1 );
+						contourY.push_back( yMap - 1 );
 						*(position) = CONTOUR;
 					}
 
 					position = position - 2 + mapWidth;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap - 1 );
-						tempContour.push_back( yMap     );
+						contourX.push_back( xMap - 1 );
+						contourY.push_back( yMap     );
 						*(position) = CONTOUR;
 					}
 
 					position = position + 2;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap + 1 );
-						tempContour.push_back( yMap     );
+						contourX.push_back( xMap + 1 );
+						contourY.push_back( yMap     );
 						*(position) = CONTOUR;
 					}
 
 					position = position - 2 + mapWidth;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap - 1 );
-						tempContour.push_back( yMap + 1 );
+						contourX.push_back( xMap - 1 );
+						contourY.push_back( yMap + 1 );
 						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap     );
-						tempContour.push_back( yMap + 1 );
+						contourX.push_back( xMap     );
+						contourY.push_back( yMap + 1 );
 						*(position) = CONTOUR;
 					}
 
 					position = position + 1;
 					if( *(position) == EDGE ) {
-						tempContour.push_back( xMap + 1 );
-						tempContour.push_back( yMap + 1 );
+						contourX.push_back( xMap + 1 );
+						contourY.push_back( yMap + 1 );
 						*(position) = CONTOUR;
 					}
 
-				} while( pointId != tempContour.size() );
+				} while( pointId != contourX.size() );
 			}
 		}
-
-		std::for_each( foundBlob.begin(), foundBlob.end(), [&x, &y](BlobInfo & info) { info._preparePoints(x, y); } );
 
 		// All blobs found. Now we need to sort them
 		if( parameter.circularity.checkMaximum || parameter.circularity.checkMinimum ) {

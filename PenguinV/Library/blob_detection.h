@@ -179,9 +179,6 @@ namespace Blob_Detection
 		std::vector < uint32_t > _contourY;
 		std::vector < uint32_t > _edgeX;
 		std::vector < uint32_t > _edgeY;
-		std::vector < uint32_t > _tempPoint;
-		std::vector < uint32_t > _tempContour;
-		std::vector < uint32_t > _tempEdge;
 
 		Value < Area   > _area;
 		Value < Point  > _center;
@@ -198,8 +195,6 @@ namespace Blob_Detection
 		void _getHeight();
 		void _getLength();
 		void _getWidth();
-
-		void _preparePoints(uint32_t offsetX, uint32_t offsetY);
 	};
 
 	class BlobDetection
