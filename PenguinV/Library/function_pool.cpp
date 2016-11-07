@@ -134,7 +134,7 @@ namespace Function_Pool
 		std::vector < std::vector < uint32_t > > histogram;  // for Histogram() function
 		std::vector < std::vector < uint32_t > > projection; // for ProjectionProfile() function
 		std::vector < uint32_t > sum;						 // for Sum() function
-		std::vector < bool > equality;                       // for IsEqual() function
+		std::vector < uint8_t > equality;                    // for IsEqual() function
 
 		void resize(size_t count)
 		{
@@ -176,7 +176,7 @@ namespace Function_Pool
 
 			bool equal = true;
 
-			for( std::vector < bool >::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
+			for( std::vector < uint8_t >::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
 				if( !(*value) ) {
 					equal = false;
 					break;
