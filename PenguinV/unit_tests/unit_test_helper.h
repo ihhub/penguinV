@@ -12,6 +12,8 @@ namespace Unit_Test
 	// Generate images
 	Bitmap_Image::Image uniformImage();
 	Bitmap_Image::Image uniformImage(uint8_t value);
+	Bitmap_Image::ColorImage uniformColorImage();
+	Bitmap_Image::ColorImage uniformColorImage(uint8_t value);
 	Bitmap_Image::Image blackImage();
 	Bitmap_Image::Image whiteImage();
 	Bitmap_Image::Image randomImage();
@@ -56,8 +58,29 @@ namespace Unit_Test
 			   image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
 	};
 
-	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
+	template <uint8_t byteCount>
+	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+	{
+		if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
+			throw imageException("Bad input parameters in image function");
+
+		const uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
+		const uint8_t * endY    = outputY + image.rowSize() * height;
+
+		for( ; outputY != endY; outputY += image.rowSize() ) {
+			if( std::any_of( outputY, outputY + width * image.colorCount(),
+				[value](const uint8_t & v){ return v != value; } ) )
+				return false;
+		}
+
+		return true;
+	};
+
+	template <uint8_t byteCount>
+	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, uint8_t value )
+	{
+		return verifyImage( image, 0, 0, image.width(), image.height(), value );
+	};
 
 	// Fill image ROI with specific intensity
 	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
@@ -66,6 +89,9 @@ namespace Unit_Test
 	void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height );
 	void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
 					  uint32_t & width, uint32_t & height );
+	// first element in pair structure is width, second - height
+	void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
+					  std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
 
 	// Return calculated row size
 	uint32_t rowSize(uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1);

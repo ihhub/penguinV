@@ -35,6 +35,11 @@ namespace Unit_Test
 		bool Copy5ParametersTest();
 		bool Copy8ParametersTest();
 
+		bool ConvertToGray2ParametersTest();
+		bool ConvertToGray8ParametersTest();
+		bool ConvertToColor2ParametersTest();
+		bool ConvertToColor8ParametersTest();
+
 		bool GammaCorrection3ParametersTest();
 		bool GammaCorrection4ParametersTest();
 		bool GammaCorrection7ParametersTest();

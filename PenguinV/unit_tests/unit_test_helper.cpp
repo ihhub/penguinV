@@ -3,6 +3,11 @@
 
 namespace Unit_Test
 {
+	Bitmap_Image::Image uniformImage()
+	{
+		return uniformImage( randomValue<uint8_t>( 256 ) );
+	}
+
 	Bitmap_Image::Image uniformImage(uint8_t value)
 	{
 		Bitmap_Image::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
@@ -12,9 +17,18 @@ namespace Unit_Test
 		return image;
 	}
 
-	Bitmap_Image::Image uniformImage()
+	Bitmap_Image::ColorImage uniformColorImage()
 	{
-		return uniformImage( randomValue<uint8_t>( 256 ) );
+		return uniformColorImage( randomValue<uint8_t>( 256 ) );
+	}
+
+	Bitmap_Image::ColorImage uniformColorImage(uint8_t value)
+	{
+		Bitmap_Image::ColorImage image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
+
+		image.fill( value );
+
+		return image;
 	}
 
 	Bitmap_Image::Image blackImage()
@@ -108,27 +122,6 @@ namespace Unit_Test
 		return image.width() == width && image.height() == height && !image.empty();
 	}
 
-	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
-	{
-		Image_Function::ParameterValidation( image, x, y, width, height );
-
-		const uint8_t * outputY = image.data() + y * image.rowSize() + x;
-		const uint8_t * endY    = outputY + image.rowSize() * height;
-
-		for( ; outputY != endY; outputY += image.rowSize() ) {
-			if( std::any_of( outputY, outputY + width,
-				[value](const uint8_t & v){ return v != value; } ) )
-				return false;
-		}
-
-		return true;
-	}
-
-	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value )
-	{
-		return verifyImage( image, 0, 0, image.width(), image.height(), value );
-	}
-
 	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
 	{
 		Image_Function::Fill( image, x, y, width, height, value );
@@ -146,31 +139,49 @@ namespace Unit_Test
 	void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
 					  uint32_t & width, uint32_t & height )
 	{
+		std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );
+
+		for( size_t i = 0; i < image.size(); ++i )
+			imageSize[i] = std::pair < uint32_t, uint32_t >( image[i].width(), image[i].height() ) ;
+
+		generateRoi( imageSize, x, y, width, height );
+	}
+
+	void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
+					  std::vector < uint32_t > & y, uint32_t & width, uint32_t & height )
+	{
 		uint32_t maximumWidth  = 0;
 		uint32_t maximumHeight = 0;
 
-		for( std::vector < Bitmap_Image::Image >::const_iterator im = image.begin(); im != image.end(); ++im ) {
+		for( std::vector < std::pair< uint32_t, uint32_t > >::const_iterator im = imageSize.begin();
+			im != imageSize.end(); ++im ) {
 			if( maximumWidth == 0 )
-				maximumWidth = im->width();
-			else if( maximumWidth > im->width() )
-				maximumWidth = im->width();
+				maximumWidth = im->first;
+			else if( maximumWidth > im->first )
+				maximumWidth = im->first;
 
 			if( maximumHeight == 0 )
-				maximumHeight = im->height();
-			else if( maximumHeight > im->height() )
-				maximumHeight = im->height();
+				maximumHeight = im->second;
+			else if( maximumHeight > im->second )
+				maximumHeight = im->second;
 		}
 
 		width  = randomValue<uint32_t>( 1, maximumWidth  + 1 );
 		height = randomValue<uint32_t>( 1, maximumHeight + 1 );
 
-		x.resize( image.size() );
-		y.resize( image.size() );
+		x.resize( imageSize.size() );
+		y.resize( imageSize.size() );
 
-		for( size_t i = 0; i < image.size(); ++i ) {
-			x[i] = randomValue<uint32_t>( image[i].width()  - width  );
-			y[i] = randomValue<uint32_t>( image[i].height() - height );
+		for( size_t i = 0; i < imageSize.size(); ++i ) {
+			x[i] = randomValue<uint32_t>( imageSize[i].first  - width  );
+			y[i] = randomValue<uint32_t>( imageSize[i].second - height );
 		}
+	}
+
+	void generateOffset( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
+	{
+		x = randomValue<uint32_t>( image.width()  - width  );
+		y = randomValue<uint32_t>( image.height() - height );
 	}
 
 	uint32_t rowSize(uint32_t width, uint8_t colorCount, uint8_t alignment)
