@@ -1,5 +1,6 @@
 // This application is designed to run performance tests on penguinV library
 #include <iostream>
+#include "performance_test_blob_detection.h"
 #include "performance_test_framework.h"
 #include "performance_test_function_pool.h"
 #include "performance_test_image_function.h"
@@ -13,8 +14,9 @@ int main()
 	Performance_Test::PerformanceTestFramework framework;
 
 	// We add tests
-	Performance_Test::addTests_Image_Function( framework );
+	Performance_Test::addTests_Blob_Detection( framework );
 	Performance_Test::addTests_Function_Pool ( framework );
+	Performance_Test::addTests_Image_Function( framework );
 
 	// Just run the framework what will handle all tests
 	framework.run();

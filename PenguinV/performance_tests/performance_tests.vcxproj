@@ -111,7 +111,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -129,7 +129,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -143,21 +143,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Library\blob_detection.cpp" />
     <ClCompile Include="..\Library\function_pool.cpp" />
     <ClCompile Include="..\Library\image_function.cpp" />
     <ClCompile Include="..\Library\thread_pool.cpp" />
     <ClCompile Include="performance_tests.cpp" />
+    <ClCompile Include="performance_test_blob_detection.cpp" />
     <ClCompile Include="performance_test_framework.cpp" />
     <ClCompile Include="performance_test_function_pool.cpp" />
     <ClCompile Include="performance_test_helper.cpp" />
     <ClCompile Include="performance_test_image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Library\blob_detection.h" />
     <ClInclude Include="..\Library\function_pool.h" />
     <ClInclude Include="..\Library\image_buffer.h" />
     <ClInclude Include="..\Library\image_exception.h" />
     <ClInclude Include="..\Library\image_function.h" />
     <ClInclude Include="..\Library\thread_pool.h" />
+    <ClInclude Include="performance_test_blob_detection.h" />
     <ClInclude Include="performance_test_framework.h" />
     <ClInclude Include="performance_test_function_pool.h" />
     <ClInclude Include="performance_test_helper.h" />
