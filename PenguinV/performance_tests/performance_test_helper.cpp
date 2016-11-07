@@ -8,7 +8,7 @@
 namespace
 {
 	// The function calculates mean and sigma value of distribution
-	void getDistribution( const std::vector < double > & data, double & mean, double & sigma )
+	void getDistribution( std::vector < double > & data, double & mean, double & sigma )
 	{
 		if( data.empty() ) {
 			mean = sigma = 0;
@@ -26,34 +26,38 @@ namespace
 				sumSquare += (*v) * (*v);
 			}
 
-			mean  = sum / data.size();
-			sigma = sqrt( (sumSquare / (data.size()) - mean * mean) * (data.size()) / (data.size() - 1) );
-		}
-	};
+			bool removed = false;
 
-	// The function removes 'biggest' element from an array is case if a difference between a value and mean is more than 6 sigma
-	bool removeBiggestValue( std::vector < double > & data, double mean, double sigma )
-	{
-		double maximumValue = 0;
-		size_t maximumPosition = 0;
+			do {
+				// The function removes 'biggest' element from an array is case
+				// if a difference between a value and mean is more than 6 sigma
+				mean  = sum / data.size();
+				sigma = sqrt( (sumSquare / (data.size()) - mean * mean) * (data.size()) / (data.size() - 1) );
 
-		size_t position = 0;
+				double maximumValue = 0;
+				std::vector < double >::const_iterator maximumPosition = data.begin();
 
-		for( std::vector < double >::const_iterator v = data.begin(); v != data.end(); ++v, ++position ) {
-			double value = fabs( (*v) - mean );
+				for( std::vector < double >::const_iterator v = data.begin(); v != data.end(); ++v ) {
+					double value = fabs( (*v) - mean );
 
-			if( maximumValue < value ) {
-				maximumPosition = position;
-				maximumValue = value;
-			}
-		}
+					if( maximumValue < value ) {
+						maximumPosition = v;
+						maximumValue = value;
+					}
+				}
 
-		if( maximumValue > 6 * sigma ) {
-			data  .erase( data.begin() + maximumPosition );
-			return true;
-		}
-		else {
-			return false;
+				if( maximumValue > 6 * sigma ) {
+					sum = sum - (*maximumPosition);
+					sumSquare = sumSquare - (*maximumPosition) * (*maximumPosition);
+
+					data.erase( maximumPosition );
+					removed = true;
+				}
+				else {
+					removed = false;
+				}
+
+			} while( removed || data.size() < 2 );
 		}
 	};
 };
@@ -93,14 +97,9 @@ namespace Performance_Test
 
 		double mean = 0, sigma = 0;
 
-		do {
-			getDistribution( time, mean, sigma );
-
-		} while( removeBiggestValue( time, mean, sigma ) );
-
-		// Return results
 		getDistribution( time, mean, sigma );
 
+		// return results in milliseconds
 		return std::pair<double, double>( 1000 * mean, 1000 * sigma);
 	};
 
