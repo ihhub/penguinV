@@ -31,6 +31,11 @@ namespace Performance_Test
 		ADD_TEST( framework, Image_Function_Test::FillSize1024 );
 		ADD_TEST( framework, Image_Function_Test::FillSize2048 );
 
+		ADD_TEST( framework, Image_Function_Test::HistogramSize256 );
+		ADD_TEST( framework, Image_Function_Test::HistogramSize512 );
+		ADD_TEST( framework, Image_Function_Test::HistogramSize1024 );
+		ADD_TEST( framework, Image_Function_Test::HistogramSize2048 );
+
 		ADD_TEST( framework, Image_Function_Test::InvertSize256 );
 		ADD_TEST( framework, Image_Function_Test::InvertSize512 );
 		ADD_TEST( framework, Image_Function_Test::InvertSize1024 );
@@ -396,6 +401,74 @@ namespace Performance_Test
 				timer.start();
 
 				Image_Function::Fill( image, value );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize256()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize2048()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image image = uniformImage(2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Histogram( image );
 
 				timer.stop();
 			}

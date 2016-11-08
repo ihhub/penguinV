@@ -26,6 +26,11 @@ namespace Performance_Test
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize1024 );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize2048 );
 
+		ADD_TEST( framework, Function_Pool_Test::HistogramSize256 );
+		ADD_TEST( framework, Function_Pool_Test::HistogramSize512 );
+		ADD_TEST( framework, Function_Pool_Test::HistogramSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::HistogramSize2048 );
+
 		ADD_TEST( framework, Function_Pool_Test::InvertSize256 );
 		ADD_TEST( framework, Function_Pool_Test::InvertSize512 );
 		ADD_TEST( framework, Function_Pool_Test::InvertSize1024 );
@@ -335,6 +340,78 @@ namespace Performance_Test
 				timer.start();
 
 				Function_Pool::BitwiseXor( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Histogram( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > HistogramSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			Bitmap_Image::Image image = uniformImage(2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Histogram( image );
 
 				timer.stop();
 			}

@@ -33,6 +33,11 @@ namespace Performance_Test
 		std::pair < double, double > FillSize1024();
 		std::pair < double, double > FillSize2048();
 
+		std::pair < double, double > HistogramSize256();
+		std::pair < double, double > HistogramSize512();
+		std::pair < double, double > HistogramSize1024();
+		std::pair < double, double > HistogramSize2048();
+
 		std::pair < double, double > InvertSize256();
 		std::pair < double, double > InvertSize512();
 		std::pair < double, double > InvertSize1024();
