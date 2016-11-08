@@ -2000,6 +2000,35 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **Rotate** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	void Rotate(
+		const Image & in,
+		double centerXIn,
+		double centerYIn,
+		Image & out,
+		double centerXOut,
+		double centerYOut,
+		double angle
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Rotates an input image around specified center and puts results into an output image. Rotation center on output image could be different compate to input image center.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;centerXIn - X position of rotation center on input image     
+	&nbsp;&nbsp;&nbsp;&nbsp;centerYIn - Y position of rotation center on input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - an output image    
+	&nbsp;&nbsp;&nbsp;&nbsp;centerXOut - X position of rotation center on output image    
+	&nbsp;&nbsp;&nbsp;&nbsp;centerYOut - Y position of rotation center on output image    
+	&nbsp;&nbsp;&nbsp;&nbsp;angle - rotation anle    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Save** [_Namespaces: **Bitmap_Operation**_]
 	
 	##### Syntax:

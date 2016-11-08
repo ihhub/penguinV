@@ -1131,6 +1131,63 @@ namespace Image_Function
 		}
 	}
 
+	void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+	{
+		ParameterValidation( in, out );
+
+		double cosAngle = cos(angle);
+		double sinAngle = sin(angle);
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		uint32_t width  = in.width();
+		uint32_t height = in.height();
+
+		const uint8_t * inY  = in.data();
+		uint8_t       * outY = out.data();
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+	
+		double inXPos = -( cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
+		double inYPos = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
+			uint8_t       * outX = outY;
+			const uint8_t * outXEnd = outX + width;
+
+			double posX = inXPos;
+			double posY = inYPos;
+
+			for( ; outX != outXEnd; ++outX, posX += cosAngle, posY -= sinAngle ) {
+				if( posX < 0 || posY < 0 ) {
+					(*outX) = 0; // we actually do not know what is beyond an image so we set value 0
+				}
+				else {
+					uint32_t x = static_cast<uint32_t>(posX);
+					uint32_t y = static_cast<uint32_t>(posY);
+
+					if( x >= width - 1 || y >= height - 1 ) {
+						(*outX) = 0; // we actually do not know what is beyond an image so we set value 0
+					}
+					else {
+						const uint8_t * inX = inY + y * rowSizeIn + x;
+
+						// we use bilinear approximation to find pixel intensity value
+						double coeffX = posX - x;
+						double coeffY = posY - y;
+
+						double sum = (*inX                ) * (1 - coeffX) * (1 - coeffY) +
+									 (*inX + 1            ) * (    coeffX) * (1 - coeffY) +
+									 (*inX + rowSizeIn    ) * (1 - coeffX) * (    coeffY) +
+									 (*inX + rowSizeIn + 1) * (    coeffX) * (    coeffY) + 0.5;
+
+						(*outX) = static_cast<uint8_t>( sum );
+					}
+				}
+			}
+		}
+	}
+
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
 	{
 		if( image.empty() || x >= image.width() || y >= image.height() )
