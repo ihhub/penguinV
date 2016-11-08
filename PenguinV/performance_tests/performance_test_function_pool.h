@@ -28,6 +28,11 @@ namespace Performance_Test
 		std::pair < double, double > BitwiseXorSize1024();
 		std::pair < double, double > BitwiseXorSize2048();
 
+		std::pair < double, double > GammaCorrectionSize256();
+		std::pair < double, double > GammaCorrectionSize512();
+		std::pair < double, double > GammaCorrectionSize1024();
+		std::pair < double, double > GammaCorrectionSize2048();
+
 		std::pair < double, double > HistogramSize256();
 		std::pair < double, double > HistogramSize512();
 		std::pair < double, double > HistogramSize1024();

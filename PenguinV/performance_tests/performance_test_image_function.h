@@ -33,6 +33,11 @@ namespace Performance_Test
 		std::pair < double, double > FillSize1024();
 		std::pair < double, double > FillSize2048();
 
+		std::pair < double, double > GammaCorrectionSize256();
+		std::pair < double, double > GammaCorrectionSize512();
+		std::pair < double, double > GammaCorrectionSize1024();
+		std::pair < double, double > GammaCorrectionSize2048();
+
 		std::pair < double, double > HistogramSize256();
 		std::pair < double, double > HistogramSize512();
 		std::pair < double, double > HistogramSize1024();

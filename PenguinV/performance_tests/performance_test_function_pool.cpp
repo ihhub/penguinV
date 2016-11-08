@@ -26,6 +26,11 @@ namespace Performance_Test
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize1024 );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXorSize2048 );
 
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrectionSize256 );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrectionSize512 );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrectionSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::GammaCorrectionSize2048 );
+
 		ADD_TEST( framework, Function_Pool_Test::HistogramSize256 );
 		ADD_TEST( framework, Function_Pool_Test::HistogramSize512 );
 		ADD_TEST( framework, Function_Pool_Test::HistogramSize1024 );
@@ -340,6 +345,90 @@ namespace Performance_Test
 				timer.start();
 
 				Function_Pool::BitwiseXor( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > GammaCorrectionSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 256, 256);
+
+			double a     = randomValue <uint32_t>(100) / 100.0;
+			double gamma = randomValue <uint32_t>(300) / 100.0;
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::GammaCorrection( image[0], image[1], a, gamma );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > GammaCorrectionSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 512, 512);
+
+			double a     = randomValue <uint32_t>(100) / 100.0;
+			double gamma = randomValue <uint32_t>(300) / 100.0;
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::GammaCorrection( image[0], image[1], a, gamma );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > GammaCorrectionSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 1024, 1024);
+
+			double a     = randomValue <uint32_t>(100) / 100.0;
+			double gamma = randomValue <uint32_t>(300) / 100.0;
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::GammaCorrection( image[0], image[1], a, gamma );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > GammaCorrectionSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 2048, 2048);
+
+			double a     = randomValue <uint32_t>(100) / 100.0;
+			double gamma = randomValue <uint32_t>(300) / 100.0;
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::GammaCorrection( image[0], image[1], a, gamma );
 
 				timer.stop();
 			}
