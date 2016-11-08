@@ -1,6 +1,19 @@
 #include "unit_test_helper.h"
 #include "../Library/image_function.h"
 
+namespace
+{
+	uint32_t randomWidth()
+	{
+		return Unit_Test::randomValue<uint32_t>( 1, 2048 );
+	};
+
+	uint32_t randomHeight()
+	{
+		return Unit_Test::randomValue<uint32_t>( 1, 2048 );
+	};
+};
+
 namespace Unit_Test
 {
 	Bitmap_Image::Image uniformImage()
@@ -10,7 +23,7 @@ namespace Unit_Test
 
 	Bitmap_Image::Image uniformImage(uint8_t value)
 	{
-		Bitmap_Image::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
+		Bitmap_Image::Image image( randomWidth(), randomHeight() );
 
 		image.fill( value );
 
@@ -24,7 +37,7 @@ namespace Unit_Test
 
 	Bitmap_Image::ColorImage uniformColorImage(uint8_t value)
 	{
-		Bitmap_Image::ColorImage image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
+		Bitmap_Image::ColorImage image( randomWidth(), randomHeight() );
 
 		image.fill( value );
 
@@ -43,7 +56,7 @@ namespace Unit_Test
 
 	Bitmap_Image::Image randomImage()
 	{
-		Bitmap_Image::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
+		Bitmap_Image::Image image( randomWidth(), randomHeight() );
 
 		uint8_t * outY = image.data();
 		const uint8_t * outYEnd = outY + image.height() * image.rowSize();
@@ -54,6 +67,32 @@ namespace Unit_Test
 
 			for( ; outX != outXEnd; ++outX )
 				(*outX) = randomValue<uint8_t>( 256 );
+		}
+
+		return image;
+	}
+
+	Bitmap_Image::Image randomImage(const std::vector <uint8_t> & value)
+	{
+		if( value.empty() )
+			return randomImage();
+
+		Bitmap_Image::Image image( randomWidth(), randomHeight() );
+
+		uint8_t * outY = image.data();
+		const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+
+		size_t id = 0;
+
+		for( ; outY != outYEnd; outY += image.rowSize() ) {
+			uint8_t * outX = outY;
+			const uint8_t * outXEnd = outX + image.width();
+
+			for( ; outX != outXEnd; ++outX ) {
+				(*outX) = value[ id++ ];
+				if( id == value.size() )
+					id = 0;
+			}
 		}
 
 		return image;
@@ -125,6 +164,28 @@ namespace Unit_Test
 	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
 	{
 		Image_Function::Fill( image, x, y, width, height, value );
+	}
+
+	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+					const std::vector < uint8_t > & value )
+	{
+		Image_Function::ParameterValidation( image, x, y, width, height );
+
+		      uint8_t * outputY = image.data() + y * image.rowSize() + x;
+		const uint8_t * endY    = outputY + image.rowSize() * height;
+
+		size_t id = 0;
+
+		for( ; outputY != endY; outputY += image.rowSize() ) {
+			      uint8_t * outputX = outputY;
+			const uint8_t * endX    = outputX + width;
+
+			for( ; outputX != endX; ++outputX ) {
+				(*outputX) = value[ id++ ];
+				if( id == value.size() )
+					id = 0;
+			}
+		}
 	}
 
 	void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )

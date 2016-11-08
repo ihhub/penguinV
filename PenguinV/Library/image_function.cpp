@@ -600,15 +600,8 @@ namespace Image_Function
 		if( a < 0 || gamma < 0 )
 			throw imageException("Bad input parameters in image function");
 
-		uint32_t rowSizeIn  = in.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
-
-		const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn  + startXIn;
-		const uint8_t * inYEnd = inY + height * rowSizeIn;
-		uint8_t       * outY   = out.data() + startYOut * rowSizeOut + startXOut;
-
 		// We precalculate all values and store them in lookup table
-		uint8_t value[256];
+		std::vector < uint8_t > value(256);
 
 		for( uint16_t i = 0; i < 256; ++i ) {
 			double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
@@ -619,14 +612,7 @@ namespace Image_Function
 				value[i] = 255;
 		}
 
-		for (; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut) {
-			const uint8_t * inX = inY;
-			uint8_t       * outX = outY;
-			const uint8_t * inXEnd = inX + width;
-
-			for (; inX != inXEnd; ++inX, ++outX)
-				(*outX) = value[*inX];
-		}
+		LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
 	}
 
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
@@ -811,6 +797,63 @@ namespace Image_Function
 		return true;
 	}
 
+	Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
+	{
+		ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
+
+		return out;
+	}
+
+	void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
+	{
+		ParameterValidation( in, out );
+
+		LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
+	}
+
+	Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+					   const std::vector < uint8_t > & table )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		LookupTable( in, startXIn, startYIn, out, 0, 0, width, height, table );
+
+		return out;
+	}
+	
+	void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					  uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+	{
+		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+		if( table.size() != 256u )
+			throw imageException("Bad input parameters in image function");
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * inX  = inY;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width;
+
+			for( ; outX != outXEnd; ++outX, ++inX )
+				(*outX) = table[*inX];
+		}
+	}
+
 	Image Maximum( const Image & in1, const Image & in2 )
 	{
 		ParameterValidation( in1, in2 );
@@ -987,24 +1030,12 @@ namespace Image_Function
 			double correction = 255.0 / ( maximum - minimum );
 
 			// We precalculate all values and store them in lookup table
-			uint8_t value[256];
+			std::vector < uint8_t > value(256);
 
 			for( uint16_t i = 0; i < 256; ++i )
 				value[i] = static_cast < uint8_t >( ( i - minimum ) * correction + 0.5);
 
-			uint32_t rowSizeOut = out.rowSize();
-
-			inY = in.data()  + startYIn  * rowSizeIn  + startXIn;
-			uint8_t  * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-			for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-				const uint8_t * inX    = inY;
-				uint8_t       * outX   = outY;
-				const uint8_t * inXEnd = inX + width;
-
-				for( ; inX != inXEnd; ++inX, ++outX )
-					(*outX) = value[*inX];
-			}
+			LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
 		}
 	}
 

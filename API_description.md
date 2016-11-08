@@ -2,24 +2,24 @@
 
 ## Namespaces
 **Bitmap_Image**    
-Declares template class for BITMAP images and concrete classes:
-- ***Image*** - gray scale bitmap image (main class in most of image processing functions). If the type of image in description is not implicitly specified then it is a gray-scale image.
-- ***ColorImage*** - RGB (color) bitmap image.    
+Declares a template class for BITMAP images and concrete classes:
+- ***Image*** - a gray-scale bitmap image (a main class is in most of image processing functions). If the type of image in this description is not implicitly specified then it is a gray-scale image.
+- ***ColorImage*** - a RGB (colour) bitmap image.    
 
 **Bitmap_Operation**    
 Declares classes to load, save and store raw data of BITMAP images:
-- ***BitmapRawImage*** - class for raw data storage of bitmaps.
-- ***RawImageTemplate*** - template class for raw data storage of any image type.    
+- ***BitmapRawImage*** - a class for raw data storage for bitmap images.
+- ***RawImageTemplate*** - a template class for raw data storage of any image type.    
 
 **Blob_Detection**    
 Contains structures and classes related to blob detection methods:
-- ***Area*** - structure representing an area of interest (rectangle): {[left, top], [right, bottom]}.
-- ***BlobDetection*** - main class what performs blob detection on input image.
-- ***BlobInfo*** - structure what holds all information related to individual found blob. This is a result of BlobDetection class inspection.
-- ***BlobParameters*** - structure for containing parameters (criteria) needed for blob detection.
-- ***Parameter*** - template structure representing single parameter used in BlobParameters structure.
-- ***Point*** - structure what represents a mathematical point in 2D space [x, y].
-- ***Value*** - template structure used in BlobInfo structure to contain information about one found blob parameter.    
+- ***Area*** - a structure representing an area of interest (AOI). The area is a rectangle area: {[left, top], [right, bottom]}.
+- ***BlobDetection*** - a main class which performs blob detection on an input image.
+- ***BlobInfo*** - a structure which stores all information related to individual blob. This is a result of BlobDetection class inspection.
+- ***BlobParameters*** - a structure to contain parameters (criteria) needed for blob detection.
+- ***Parameter*** - a template structure to represent a single parameter used in BlobParameters structure.
+- ***Point*** - a structure which represents a mathematical point in 2D space [x, y].
+- ***Value*** - a template structure used in BlobInfo structure to contain information about one found blob parameter.    
 
 **Function_Pool**    
 Contains basic functions for image processing for any CPU with multithreading support.    
@@ -40,19 +40,19 @@ Contains basic functions for image processing for CPUs with ***NEON*** support.
 Contains basic functions for image processing for CPUs with ***SSE 2*** support.    
 
 **Template_Image**    
-Includes only one template class ***ImageTemplate*** what is the main class for image buffer classes.    
+Includes only one template class ***ImageTemplate*** which is the main class for image buffer classes.    
 
 **Thread_Pool**    
 Contains classes for multithreading using thread pool:
-- ***AbstractTaskProvider*** - abstract class what should do some tasks.
-- ***TaskProvider*** - concrete class what does tasks and from what other classes are inherited to use thread pool.
-- ***ThreadPool*** - thread pool class what manages threads and tasks.
-- ***ThreadPoolMonoid*** - singleton (or monoid) class of thread pool what allows to use only 1 copy of thread pool inside application.
-- ***TaskProviderSingleton*** - concrete class what does tasks and from what other classes are inherited to use thread pool's singleton.    
+- ***AbstractTaskProvider*** - an abstract class which should do some tasks.
+- ***TaskProvider*** - a concrete class which performs tasks and from which other classes are inherited to use thread pool.
+- ***ThreadPool*** - a thread pool class which manages threads and tasks.
+- ***ThreadPoolMonoid*** - a singleton (or monoid) class of thread pool which allows to use only 1 copy of thread pool inside application.
+- ***TaskProviderSingleton*** - a concrete class which performs tasks and from which other classes are inherited to use thread pool's singleton.    
 
 ## Functions
 
-All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
+All images in function parameter list must have width and height greater than 0 otherwise an exception imageException is raised.
 
 - **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
 
@@ -64,14 +64,14 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images. Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images. Both images must be the same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -82,7 +82,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images and puts result into third image. Three images must be same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -106,7 +106,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height]. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height].
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -138,7 +138,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height] and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates absolute (by module) difference between pixel intensities on two images within an area with [width, height] and puts result into third image area of same size.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -217,7 +217,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -319,7 +319,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -421,7 +421,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -809,7 +809,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -824,8 +824,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Flips image in one or both directions and puts result into second image of the same size.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - image which in a result of image flipping. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which in a result of image flipping. Height and width of result image are the same as of input image    
 	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
@@ -911,7 +911,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -926,8 +926,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of gamma correction. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of gamma correction. Height and width of result image are the same as of input image    
 	&nbsp;&nbsp;&nbsp;&nbsp;a - A coefficient    
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
@@ -1129,7 +1129,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1142,8 +1142,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Performs bitwise NOT on image and puts result into second image of the same size.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of bitwise NOT. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -1282,6 +1282,100 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **LookupTable** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image LookupTable(
+		const Image & in,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of pixel intensity transformation. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  LookupTable(
+		const Image & in,
+		Image & out,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transformation. Height and width of result image are the same as of input image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image LookupTable(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table at area of [width, height] size and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where transformation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where transformation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of transformation with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  LookupTable(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table at area of [width, height] size and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise NOT    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where transformation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where transformation is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Maximum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:
@@ -1299,7 +1393,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1401,7 +1495,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1415,8 +1509,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Performs median filtering on image and puts result into second image of the same size. Kernel size must be odd and greater than 1.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of median filtering. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of median filtering. Height and width of result image are the same as of input image    
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
@@ -1495,7 +1589,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1595,7 +1689,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization. Height and width of result image is the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1608,8 +1702,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Performs image normalization in range from 0 to 255 and puts result into second image of the same size.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of normalization. Height and width of result image is the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of normalization. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -1934,8 +2028,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Resizes (scales) one image to second image with (probably) different size.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - second image as a result of resizing    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image as a result of resizing    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -2127,14 +2221,14 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values). Both images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values). Both images must be same size. If pixel intensity at first image is less than pixel intensity at second image the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction. Height and width of result image is the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
     
 	##### Syntax:
 	```cpp
@@ -2145,7 +2239,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values) and puts result into third image. Three images must be same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities from first image pixel intensities (difference between two values) and puts result into third image. Three images must be same size. If pixel intensity at first image is less than pixel intensity at second image the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -2169,7 +2263,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values). If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values). If pixel intensity at first image is less than pixel intensity at second image the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -2201,7 +2295,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values) and puts result into third image area of same size. If first image pixel intensity less than second image pixel intensity the result pixel intensity will be 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Subtracts second image pixel intensities on an area with [width, height] size from first image pixel intensities on an area with same size (difference between two values) and puts result into third image area of same size. If pixel intensity at first image is less than pixel intensity at second image the result pixel intensity will be 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first image    
@@ -2489,8 +2583,8 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;Swaps columns and rows in first image {of [width, height] size} and puts result into second image {of the [height, width] size}.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - second image as a result of transpose    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image as a result of transpose    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.

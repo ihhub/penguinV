@@ -58,6 +58,11 @@ namespace Unit_Test
 		bool IsEqual2ParametersTest();
 		bool IsEqual8ParametersTest();
 
+		bool LookupTable2ParametersTest();
+		bool LookupTable3ParametersTest();
+		bool LookupTable6ParametersTest();
+		bool LookupTable9ParametersTest();
+
 		bool Maximum2ParametersTest();
 		bool Maximum3ParametersTest();
 		bool Maximum8ParametersTest();
@@ -67,6 +72,11 @@ namespace Unit_Test
 		bool Minimum3ParametersTest();
 		bool Minimum8ParametersTest();
 		bool Minimum11ParametersTest();
+
+		bool Normalize1ParameterTest();
+		bool Normalize2ParametersTest();
+		bool Normalize5ParametersTest();
+		bool Normalize8ParametersTest();
 
 		bool ProjectionProfile2ParametersTest();
 		bool ProjectionProfile3ParametersTest();

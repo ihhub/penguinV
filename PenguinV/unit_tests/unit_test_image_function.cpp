@@ -57,6 +57,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::IsEqual2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::IsEqual8ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::LookupTable2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::LookupTable3ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::LookupTable6ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::LookupTable9ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Maximum2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Maximum3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Maximum8ParametersTest );
@@ -66,6 +71,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::Minimum3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Minimum8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Minimum11ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Test::Normalize1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::Normalize2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Normalize5ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Normalize8ParametersTest );
 
 		ADD_TEST( framework, Image_Function_Test::ProjectionProfile2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::ProjectionProfile3ParametersTest );
@@ -545,15 +555,15 @@ namespace Unit_Test
 				Bitmap_Image::ColorImage input  = uniformColorImage( intensity[0] );
 				Bitmap_Image::Image      output = uniformImage     ( intensity[1] );
 
-				std::vector < std::pair <uint32_t, uint32_t> > imageSize( 2 );
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
-				imageSize[0] = std::pair <uint32_t, uint32_t>( input .width(), input .height() );
-				imageSize[1] = std::pair <uint32_t, uint32_t>( output.width(), output.height() );
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
 
 				std::vector < uint32_t > roiX, roiY;
 				uint32_t roiWidth, roiHeight;
 
-				generateRoi( imageSize, roiX, roiY, roiWidth, roiHeight );
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
 				Image_Function::Convert( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
@@ -589,15 +599,15 @@ namespace Unit_Test
 				Bitmap_Image::Image      input  = uniformImage     ( intensity[0] );
 				Bitmap_Image::ColorImage output = uniformColorImage( intensity[1] );
 
-				std::vector < std::pair <uint32_t, uint32_t> > imageSize( 2 );
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
-				imageSize[0] = std::pair <uint32_t, uint32_t>( input .width(), input .height() );
-				imageSize[1] = std::pair <uint32_t, uint32_t>( output.width(), output.height() );
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
 
 				std::vector < uint32_t > roiX, roiY;
 				uint32_t roiWidth, roiHeight;
 
-				generateRoi( imageSize, roiX, roiY, roiWidth, roiHeight );
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
 				Image_Function::Convert( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
@@ -905,6 +915,128 @@ namespace Unit_Test
 			return true;
 		}
 
+		bool LookupTable2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input = randomImage( intensity );
+
+				std::vector < uint8_t > lookupTable( 256, 0 );
+
+				lookupTable[intensity[0]] = intensityValue();
+				lookupTable[intensity[1]] = intensityValue();
+
+				Bitmap_Image::Image output = Image_Function::LookupTable( input, lookupTable );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				normalized[0] = lookupTable[intensity[0]];
+				normalized[1] = lookupTable[intensity[1]];
+
+				if( !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool LookupTable3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = randomImage( intensity );
+				Bitmap_Image::Image output( input.width(), input.height() );
+
+				output.fill( intensityValue() );
+
+				std::vector < uint8_t > lookupTable( 256, 0 );
+
+				lookupTable[intensity[0]] = intensityValue();
+				lookupTable[intensity[1]] = intensityValue();
+
+				Image_Function::LookupTable( input, output, lookupTable );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				normalized[0] = lookupTable[intensity[0]];
+				normalized[1] = lookupTable[intensity[1]];
+
+				if( !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool LookupTable6ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input = uniformImage();
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+				std::vector < uint8_t > lookupTable( 256, 0 );
+
+				lookupTable[intensity[0]] = intensityValue();
+				lookupTable[intensity[1]] = intensityValue();
+
+				Bitmap_Image::Image output = Image_Function::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				normalized[0] = lookupTable[intensity[0]];
+				normalized[1] = lookupTable[intensity[1]];
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool LookupTable9ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage();
+				Bitmap_Image::Image output = uniformImage();
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				std::vector < std::pair < uint32_t, uint32_t > > size(2);
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				fillImage( input, roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+				std::vector < uint8_t > lookupTable( 256, 0 );
+
+				lookupTable[intensity[0]] = intensityValue();
+				lookupTable[intensity[1]] = intensityValue();
+
+				Image_Function::LookupTable( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, lookupTable );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				normalized[0] = lookupTable[intensity[0]];
+				normalized[1] = lookupTable[intensity[1]];
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
 		bool Maximum2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -1061,6 +1193,128 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Normalize1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input = randomImage( intensity );
+
+				Bitmap_Image::Image output = Image_Function::Normalize( input );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				if( intensity[0] == intensity[1] || input.width() == 1 && input.height() == 2 ) {
+					normalized[0] = normalized[1] = intensity[0];
+				}
+				else {
+					normalized[0] = 0;
+					normalized[1] = 255;
+				}
+
+				if( !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Normalize2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = randomImage( intensity );
+				Bitmap_Image::Image output( input.width(), input.height() );
+
+				output.fill( intensityValue() );
+
+				Image_Function::Normalize( input, output );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				if( intensity[0] == intensity[1] || input.width() == 1 && input.height() == 2 ) {
+					normalized[0] = normalized[1] = intensity[0];
+				}
+				else {
+					normalized[0] = 0;
+					normalized[1] = 255;
+				}
+
+				if( !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Normalize5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input = uniformImage();
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+				Bitmap_Image::Image output = Image_Function::Normalize( input, roiX, roiY, roiWidth, roiHeight );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				if( intensity[0] == intensity[1] || roiWidth == 1 && roiHeight == 2 ) {
+					normalized[0] = normalized[1] = intensity[0];
+				}
+				else {
+					normalized[0] = 0;
+					normalized[1] = 255;
+				}
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, normalized ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Normalize8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage();
+				Bitmap_Image::Image output = uniformImage();
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				std::vector < std::pair < uint32_t, uint32_t > > size(2);
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				fillImage( input, roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+				Image_Function::Normalize( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				std::vector < uint8_t > normalized( 2 );
+
+				if( intensity[0] == intensity[1] || roiWidth == 1 && roiHeight == 2 ) {
+					normalized[0] = normalized[1] = intensity[0];
+				}
+				else {
+					normalized[0] = 0;
+					normalized[1] = 255;
+				}
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized ) )
 					return false;
 			}
 
