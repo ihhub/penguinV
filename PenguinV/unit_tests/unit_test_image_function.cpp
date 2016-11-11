@@ -1209,7 +1209,7 @@ namespace Unit_Test
 
 				std::vector < uint8_t > normalized( 2 );
 
-				if( intensity[0] == intensity[1] || input.width() == 1 && input.height() == 2 ) {
+				if( intensity[0] == intensity[1] || (input.width() == 1 && input.height() == 1) ) {
 					normalized[0] = normalized[1] = intensity[0];
 				}
 				else {
@@ -1237,7 +1237,7 @@ namespace Unit_Test
 
 				std::vector < uint8_t > normalized( 2 );
 
-				if( intensity[0] == intensity[1] || input.width() == 1 && input.height() == 2 ) {
+				if( intensity[0] == intensity[1] || (input.width() == 1 && input.height() == 1) ) {
 					normalized[0] = normalized[1] = intensity[0];
 				}
 				else {
@@ -1268,7 +1268,7 @@ namespace Unit_Test
 
 				std::vector < uint8_t > normalized( 2 );
 
-				if( intensity[0] == intensity[1] || roiWidth == 1 && roiHeight == 2 ) {
+				if( intensity[0] == intensity[1] || (roiWidth == 1 && roiHeight == 1) ) {
 					normalized[0] = normalized[1] = intensity[0];
 				}
 				else {
@@ -1306,7 +1306,7 @@ namespace Unit_Test
 
 				std::vector < uint8_t > normalized( 2 );
 
-				if( intensity[0] == intensity[1] || roiWidth == 1 && roiHeight == 2 ) {
+				if( intensity[0] == intensity[1] || (roiWidth == 1 && roiHeight == 1) ) {
 					normalized[0] = normalized[1] = intensity[0];
 				}
 				else {
