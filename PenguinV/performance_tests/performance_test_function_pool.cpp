@@ -69,6 +69,16 @@ namespace Performance_Test
 		ADD_TEST( framework, Function_Pool_Test::SumSize512 );
 		ADD_TEST( framework, Function_Pool_Test::SumSize1024 );
 		ADD_TEST( framework, Function_Pool_Test::SumSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::ThresholdSize256 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdSize512 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdSize2048 );
+
+		ADD_TEST( framework, Function_Pool_Test::ThresholdDoubleSize256 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdDoubleSize512 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdDoubleSize1024 );
+		ADD_TEST( framework, Function_Pool_Test::ThresholdDoubleSize2048 );
 	}
 
 	namespace Function_Pool_Test
@@ -1022,6 +1032,162 @@ namespace Performance_Test
 				timer.start();
 
 				Function_Pool::Sum( image );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 256, 256);
+			uint8_t threshold = randomValue<uint8_t>( 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], threshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 512, 512);
+			uint8_t threshold = randomValue<uint8_t>( 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], threshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 1024, 1024);
+			uint8_t threshold = randomValue<uint8_t>( 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], threshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 2048, 2048);
+			uint8_t threshold = randomValue<uint8_t>( 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], threshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdDoubleSize256()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 256, 256);
+			uint8_t minThreshold = randomValue<uint8_t>( 256 );
+			uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], minThreshold, maxThreshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdDoubleSize512()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 512, 512);
+			uint8_t minThreshold = randomValue<uint8_t>( 256 );
+			uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], minThreshold, maxThreshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdDoubleSize1024()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 1024, 1024);
+			uint8_t minThreshold = randomValue<uint8_t>( 256 );
+			uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], minThreshold, maxThreshold );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ThresholdDoubleSize2048()
+		{
+			TimerContainer timer;
+			setFunctionPoolThreadCount();
+
+			std::vector < Bitmap_Image::Image > image = uniformImages(2, 2048, 2048);
+			uint8_t minThreshold = randomValue<uint8_t>( 256 );
+			uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Function_Pool::Threshold( image[0], image[1], minThreshold, maxThreshold );
 
 				timer.stop();
 			}

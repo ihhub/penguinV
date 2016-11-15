@@ -52,5 +52,15 @@ namespace Performance_Test
 		std::pair < double, double > SumSize512();
 		std::pair < double, double > SumSize1024();
 		std::pair < double, double > SumSize2048();
+
+		std::pair < double, double > ThresholdSize256();
+		std::pair < double, double > ThresholdSize512();
+		std::pair < double, double > ThresholdSize1024();
+		std::pair < double, double > ThresholdSize2048();
+
+		std::pair < double, double > ThresholdDoubleSize256();
+		std::pair < double, double > ThresholdDoubleSize512();
+		std::pair < double, double > ThresholdDoubleSize1024();
+		std::pair < double, double > ThresholdDoubleSize2048();
 	};
 };
