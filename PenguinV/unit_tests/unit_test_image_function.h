@@ -40,6 +40,9 @@ namespace Unit_Test
 		bool ConvertToColor2ParametersTest();
 		bool ConvertToColor8ParametersTest();
 
+		bool Fill2ParametersTest();
+		bool Fill6ParametersTest();
+
 		bool GammaCorrection3ParametersTest();
 		bool GammaCorrection4ParametersTest();
 		bool GammaCorrection7ParametersTest();

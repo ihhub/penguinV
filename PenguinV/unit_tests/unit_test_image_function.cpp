@@ -39,6 +39,9 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::ConvertToColor2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::ConvertToColor8ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::Fill2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Fill6ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::GammaCorrection3ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::GammaCorrection4ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::GammaCorrection7ParametersTest );
@@ -612,6 +615,40 @@ namespace Unit_Test
 				Image_Function::Convert( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Fill2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image image = uniformImage( intensity[0] );
+
+				Image_Function::Fill( image, intensity[1] );
+
+				if( !verifyImage( image, intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Fill6ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image image = uniformImage( intensity[0] );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				Image_Function::Fill( image, roiX, roiY, roiWidth, roiHeight, intensity[1] );
+
+				if( !verifyImage( image, roiX, roiY, roiWidth, roiHeight, intensity[1] ) )
 					return false;
 			}
 
