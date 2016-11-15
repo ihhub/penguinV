@@ -31,6 +31,24 @@ namespace Function_Pool
 		{
 			return startX.size();
 		}
+
+		// this function makes a similar input data sorting like it is done in info parameter
+		void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ )
+		{
+			if( info._size() > 0 ) {
+
+				bool yAxis = true;
+
+				for( size_t i = 0; i < info._size() - 1; ++i ) {
+					if( info.startX[i] != info.startX[i + 1] || info.width[i] != info.width[i + 1] ) {
+						yAxis = false;
+						break;
+					}
+				}
+
+				_fill( x, y, width_, height_, static_cast<uint32_t>(info._size()), yAxis );
+			}
+		}
 	private:
 		static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of subsequent memory cells is much faster!
 											  // Change this value if you need to adjust to specific CPU. 16 bytes are set for proper SSE/NEON support
@@ -50,12 +68,18 @@ namespace Function_Pool
 
 			count = (maximumYTaskCount >= maximumXTaskCount) ? maximumYTaskCount : maximumXTaskCount;
 
+			_fill( x, y, width_, height_, count, maximumYTaskCount >= maximumXTaskCount );
+		}
+
+		// this function fills all arrays by necessary values
+		void _fill(uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count, bool yAxis)
+		{
 			startX.resize( count );
 			startY.resize( count );
 			width .resize( count );
 			height.resize( count );
 
-			if( maximumYTaskCount >= maximumXTaskCount ) { // process by rows
+			if( yAxis ) { // process by rows
 				std::fill( startX.begin(), startX.end(), x );
 				std::fill( width.begin() , width.end() , width_ );
 
@@ -545,13 +569,7 @@ namespace Function_Pool
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , widthIn , heightIn , threadCount() ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, threadCount() ) );
 
-			if( _infoIn1->height.size() != _infoOut->height.size() ) {
-				uint32_t minCount = static_cast<uint32_t>(
-										_infoIn1->height.size() < _infoOut->height.size() ? _infoIn1->height.size() : _infoOut->height.size() );
-
-				_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , widthIn , heightIn , minCount ) );
-				_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, minCount ) );
-			}
+			_infoOut->_copy( *_infoIn1, startXOut, startYOut, widthOut, heightOut );
 		}
 
 		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

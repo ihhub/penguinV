@@ -51,6 +51,11 @@ namespace Unit_Test
 		bool Minimum8ParametersTest();
 		bool Minimum11ParametersTest();
 
+		bool Resize2ParametersTest();
+		bool Resize3ParametersTest();
+		bool Resize7ParametersTest();
+		bool Resize9ParametersTest();
+
 		bool Subtract2ParametersTest();
 		bool Subtract3ParametersTest();
 		bool Subtract8ParametersTest();

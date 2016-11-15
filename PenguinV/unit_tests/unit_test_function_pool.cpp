@@ -50,6 +50,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Function_Pool_Test::Minimum8ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Minimum11ParametersTest );
 
+		ADD_TEST( framework, Function_Pool_Test::Resize2ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::Resize3ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::Resize7ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::Resize9ParametersTest );
+
 		ADD_TEST( framework, Function_Pool_Test::Subtract2ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Subtract3ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::Subtract8ParametersTest );
@@ -833,6 +838,92 @@ namespace Unit_Test
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
+				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
+
+				Bitmap_Image::Image output = Function_Pool::Resize( input, outputWidth, outputHeight );
+
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage( intensity[1] );
+
+				Function_Pool::Resize( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+				
+				uint32_t outputWidth  = randomValue<uint32_t>(1, 2048);
+				uint32_t outputHeight = randomValue<uint32_t>(1, 2048);
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Function_Pool::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
+
+				if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Resize9ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage( intensity[1] );
+
+				std::vector < uint32_t > roiX(2), roiY(2), roiWidth(2), roiHeight(2);
+
+				generateRoi( input , roiX[0], roiY[0], roiWidth[0], roiHeight[0] );
+				generateRoi( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
+
+				Function_Pool::Resize( input , roiX[0], roiY[0], roiWidth[0], roiHeight[0],
+										output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] ) )
 					return false;
 			}
 
