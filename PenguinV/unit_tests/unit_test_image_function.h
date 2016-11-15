@@ -108,5 +108,10 @@ namespace Unit_Test
 		bool ThresholdDouble4ParametersTest();
 		bool ThresholdDouble7ParametersTest();
 		bool ThresholdDouble10ParametersTest();
+
+		bool Transpose1ParameterTest();
+		bool Transpose2ParametersTest();
+		bool Transpose5ParametersTest();
+		bool Transpose8ParametersTest();
 	};
 };

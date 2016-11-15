@@ -138,6 +138,8 @@ namespace Unit_Test
 	void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
 					  std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
 
+	void generateOffset( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
+
 	template <uint8_t byteCount>
 	std::pair <uint32_t, uint32_t> imageSize( const Bitmap_Image::BitmapImage < byteCount > & image )
 	{

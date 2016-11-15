@@ -1466,7 +1466,7 @@ namespace Image_Function
 
 		Image out(height, width);
 
-		Transpose( in, startXIn, startYIn, out, 0, 0, in.width(), in.height() );
+		Transpose( in, startXIn, startYIn, out, 0, 0, width, height );
 
 		return out;
 	}
@@ -1483,13 +1483,13 @@ namespace Image_Function
 		const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
-		const uint8_t * outYEnd = outY + height * rowSizeOut;
+		const uint8_t * outYEnd = outY + width * rowSizeOut;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
 			const uint8_t * inY  = inX;
 			uint8_t       * outX = outY;
 
-			const uint8_t * outXEnd = outX + width;
+			const uint8_t * outXEnd = outX + height;
 
 			for( ; outX != outXEnd; ++outX, inY += rowSizeIn )
 				(*outX) = *(inY);

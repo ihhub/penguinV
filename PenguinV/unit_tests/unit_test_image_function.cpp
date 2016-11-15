@@ -107,6 +107,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::ThresholdDouble4ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::ThresholdDouble7ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::ThresholdDouble10ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Test::Transpose1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::Transpose2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Transpose5ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::Transpose8ParametersTest );
 	}
 
 	namespace Image_Function_Test
@@ -1801,6 +1806,86 @@ namespace Unit_Test
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
 					intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Transpose1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				Bitmap_Image::Image output = Image_Function::Transpose( input );
+
+				if( !equalSize( output, input.height(), input.width() ) || !verifyImage( output, intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Transpose2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output( input.height(), input.width() );
+
+				output.fill( intensity[1] );
+
+				Image_Function::Transpose( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Transpose5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function::Transpose( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !equalSize( output, roiHeight, roiWidth ) || !verifyImage( output, intensity ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Transpose8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray(2);
+				Bitmap_Image::Image input  = uniformImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage( intensity[1] );
+
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+				size[0] = imageSize( input  );
+				size[1] = std::pair <uint32_t, uint32_t>( output.height(), output.width() );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				generateOffset( output, roiX[1], roiY[1], roiHeight, roiWidth );
+
+				Image_Function::Transpose( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiHeight, roiWidth, intensity[0] ) )
 					return false;
 			}
 
