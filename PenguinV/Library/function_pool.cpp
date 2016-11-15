@@ -319,6 +319,13 @@ namespace Function_Pool
 			_dataOut.getProjection( projection );
 		}
 
+		void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+		{
+			_setup( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
+			_process( _Resize );
+		}
+
 		void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
@@ -370,6 +377,7 @@ namespace Function_Pool
 			_Minimum,
 			_Normalize,
 			_ProjectionProfile,
+			_Resize,
 			_Subtract,
 			_Sum,
 			_Threshold,
@@ -449,6 +457,12 @@ namespace Function_Pool
 											_infoIn1->width[taskId], _infoIn1->height[taskId],
 											_dataIn.horizontalProjection, _dataOut.projection[taskId] );
 				break;
+			case _Resize:
+				Image_Function::Resize(     _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoOut->width[taskId], _infoOut->height[taskId] );
+				break;
 			case _Subtract:
 				Image_Function::Subtract(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
@@ -517,6 +531,27 @@ namespace Function_Pool
 
 			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , inX , inY , width, height, threadCount() ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, threadCount() ) );
+		}
+
+		void _setup( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+		{
+			Image_Function::ParameterValidation( in , startXIn , startYIn , widthIn , heightIn  );
+			Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+
+			if( !_ready() )
+				throw imageException("FunctionTask object was called multiple times!");
+
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , widthIn , heightIn , threadCount() ) );
+			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, threadCount() ) );
+
+			if( _infoIn1->height.size() != _infoOut->height.size() ) {
+				uint32_t minCount = static_cast<uint32_t>(
+										_infoIn1->height.size() < _infoOut->height.size() ? _infoIn1->height.size() : _infoOut->height.size() );
+
+				_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , widthIn , heightIn , minCount ) );
+				_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, minCount ) );
+			}
 		}
 
 		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -934,6 +969,46 @@ namespace Function_Pool
 							std::vector < uint32_t > & projection )
 	{
 		FunctionTask().ProjectionProfile(image, x, y, width, height, horizontal, projection );
+	}
+
+	Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( widthOut, heightOut );
+
+		Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, widthOut, heightOut );
+
+		return out;
+	}
+
+	void Resize( const Image & in, Image & out )
+	{
+		Image_Function::ParameterValidation( in );
+		Image_Function::ParameterValidation( out );
+
+		Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				  uint32_t widthOut, uint32_t heightOut )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
+
+		Image out( widthOut, heightOut );
+
+		Resize( in, startXIn, startYIn, widthIn, heightIn, out, 0, 0, widthOut, heightOut );
+
+		return out;
+	}
+
+	void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+				 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+	{
+		Image_Function::ParameterValidation( in,  startXIn,  startYIn,  widthIn,  heightIn );
+		Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+
+		FunctionTask().Resize(in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
 	}
 
 	Image Subtract( const Image & in1, const Image & in2 )

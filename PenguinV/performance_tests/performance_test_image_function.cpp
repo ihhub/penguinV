@@ -56,6 +56,15 @@ namespace Performance_Test
 		ADD_TEST( framework, Image_Function_Test::MinimumSize1024 );
 		ADD_TEST( framework, Image_Function_Test::MinimumSize2048 );
 
+		ADD_TEST( framework, Image_Function_Test::ResizeSize256to128 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize256to512 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize512to256 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize512to1024 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize1024to512 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize1024to2048 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize2048to1024 );
+		ADD_TEST( framework, Image_Function_Test::ResizeSize2048to4096 );
+
 		ADD_TEST( framework, Image_Function_Test::SubtractSize256 );
 		ADD_TEST( framework, Image_Function_Test::SubtractSize512 );
 		ADD_TEST( framework, Image_Function_Test::SubtractSize1024 );
@@ -758,6 +767,150 @@ namespace Performance_Test
 				timer.start();
 
 				Image_Function::Minimum( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize256to128()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(256, 256);
+			Bitmap_Image::Image output = uniformImage(128, 128);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize256to512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(256, 256);
+			Bitmap_Image::Image output = uniformImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize512to256()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(512, 512);
+			Bitmap_Image::Image output = uniformImage(256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize512to1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(512, 512);
+			Bitmap_Image::Image output = uniformImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize1024to512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(1024, 1024);
+			Bitmap_Image::Image output = uniformImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize1024to2048()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(1024, 1024);
+			Bitmap_Image::Image output = uniformImage(2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize2048to1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(2048, 2048);
+			Bitmap_Image::Image output = uniformImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ResizeSize2048to4096()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image input  = uniformImage(2048, 2048);
+			Bitmap_Image::Image output = uniformImage(4096, 4096);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Resize( input, output );
 
 				timer.stop();
 			}

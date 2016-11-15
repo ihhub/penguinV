@@ -58,6 +58,15 @@ namespace Performance_Test
 		std::pair < double, double > MinimumSize1024();
 		std::pair < double, double > MinimumSize2048();
 
+		std::pair < double, double > ResizeSize256to128();
+		std::pair < double, double > ResizeSize256to512();
+		std::pair < double, double > ResizeSize512to256();
+		std::pair < double, double > ResizeSize512to1024();
+		std::pair < double, double > ResizeSize1024to512();
+		std::pair < double, double > ResizeSize1024to2048();
+		std::pair < double, double > ResizeSize2048to1024();
+		std::pair < double, double > ResizeSize2048to4096();
+
 		std::pair < double, double > SubtractSize256();
 		std::pair < double, double > SubtractSize512();
 		std::pair < double, double > SubtractSize1024();
