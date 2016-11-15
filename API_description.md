@@ -903,7 +903,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and returns result image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and returns result image of the same size. Gamma correction works by formula: output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
@@ -923,7 +923,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image and puts result into second image of the same size. Gamma correction works by formula: output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
@@ -947,7 +947,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and returns result image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and returns result image of the same size. Gamma correction works by formula: output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
@@ -977,7 +977,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and puts result into second image of the same size. Gamma correction works by formula: output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Performs gamma correction on image at area of [width, height] size and puts result into second image of the same size. Gamma correction works by formula: output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
