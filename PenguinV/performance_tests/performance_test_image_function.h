@@ -28,6 +28,16 @@ namespace Performance_Test
 		std::pair < double, double > BitwiseXorSize1024();
 		std::pair < double, double > BitwiseXorSize2048();
 
+		std::pair < double, double > ConvertToColorSize256();
+		std::pair < double, double > ConvertToColorSize512();
+		std::pair < double, double > ConvertToColorSize1024();
+		std::pair < double, double > ConvertToColorSize2048();
+
+		std::pair < double, double > ConvertToGrayscaleSize256();
+		std::pair < double, double > ConvertToGrayscaleSize512();
+		std::pair < double, double > ConvertToGrayscaleSize1024();
+		std::pair < double, double > ConvertToGrayscaleSize2048();
+
 		std::pair < double, double > FillSize256();
 		std::pair < double, double > FillSize512();
 		std::pair < double, double > FillSize1024();

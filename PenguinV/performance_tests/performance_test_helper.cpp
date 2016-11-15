@@ -117,6 +117,20 @@ namespace Performance_Test
 		return image;
 	}
 
+	Bitmap_Image::ColorImage uniformColorImage(uint32_t width, uint32_t height)
+	{
+		return uniformColorImage( width, height, randomValue<uint8_t>(256) );
+	}
+
+	Bitmap_Image::ColorImage uniformColorImage(uint32_t width, uint32_t height, uint8_t value)
+	{
+		Bitmap_Image::ColorImage image( width, height );
+
+		image.fill( value );
+
+		return image;
+	}
+
 	std::vector< Bitmap_Image::Image > uniformImages(uint32_t count, uint32_t width, uint32_t height)
 	{
 		std::vector < Bitmap_Image::Image > image( count );

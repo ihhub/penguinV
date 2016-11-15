@@ -26,6 +26,16 @@ namespace Performance_Test
 		ADD_TEST( framework, Image_Function_Test::BitwiseXorSize1024 );
 		ADD_TEST( framework, Image_Function_Test::BitwiseXorSize2048 );
 
+		ADD_TEST( framework, Image_Function_Test::ConvertToColorSize256 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToColorSize512 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToColorSize1024 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToColorSize2048 );
+
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayscaleSize256 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayscaleSize512 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayscaleSize1024 );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayscaleSize2048 );
+
 		ADD_TEST( framework, Image_Function_Test::FillSize256 );
 		ADD_TEST( framework, Image_Function_Test::FillSize512 );
 		ADD_TEST( framework, Image_Function_Test::FillSize1024 );
@@ -343,6 +353,150 @@ namespace Performance_Test
 				timer.start();
 
 				Image_Function::BitwiseXor( image[0], image[1], image[2] );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToColorSize256()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image      input  = uniformImage     (256, 256);
+			Bitmap_Image::ColorImage output = uniformColorImage(256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToColorSize512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image      input  = uniformImage     (512, 512);
+			Bitmap_Image::ColorImage output = uniformColorImage(512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToColorSize1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image      input  = uniformImage     (1024, 1024);
+			Bitmap_Image::ColorImage output = uniformColorImage(1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToColorSize2048()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::Image      input  = uniformImage     (2048, 2048);
+			Bitmap_Image::ColorImage output = uniformColorImage(2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToGrayscaleSize256()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::ColorImage input  = uniformColorImage(256, 256);
+			Bitmap_Image::Image      output = uniformImage     (256, 256);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToGrayscaleSize512()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::ColorImage input  = uniformColorImage(512, 512);
+			Bitmap_Image::Image      output = uniformImage     (512, 512);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToGrayscaleSize1024()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::ColorImage input  = uniformColorImage(1024, 1024);
+			Bitmap_Image::Image      output = uniformImage     (1024, 1024);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
+
+				timer.stop();
+			}
+
+			return timer.mean();
+		}
+
+		std::pair < double, double > ConvertToGrayscaleSize2048()
+		{
+			TimerContainer timer;
+
+			Bitmap_Image::ColorImage input  = uniformColorImage(2048, 2048);
+			Bitmap_Image::Image      output = uniformImage     (2048, 2048);
+
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				timer.start();
+
+				Image_Function::Convert( input, output );
 
 				timer.stop();
 			}
