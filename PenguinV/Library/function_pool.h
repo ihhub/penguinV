@@ -39,7 +39,7 @@ namespace Function_Pool
 					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
 	// Gamma correction works by formula:
-	// output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0
+	// output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0
 	// Usually people set A as 1
 	Image GammaCorrection( const Image & in, double a, double gamma );
 	void  GammaCorrection( const Image & in, Image & out, double a, double gamma );

@@ -22,10 +22,10 @@ namespace Function_Pool
 			_calculate( x, y, width_, height_, count );
 		};
 
-		std::vector < uint32_t > startX; // start X position of image roi
-		std::vector < uint32_t > startY; // start Y position of image roi
-		std::vector < uint32_t > width;  // width of image roi
-		std::vector < uint32_t > height; // height of image roi
+		std::vector < uint32_t > startX; // start X position of image ROI
+		std::vector < uint32_t > startY; // start Y position of image ROI
+		std::vector < uint32_t > width;  // width of image ROI
+		std::vector < uint32_t > height; // height of image ROI
 
 		size_t _size() const
 		{
@@ -36,7 +36,6 @@ namespace Function_Pool
 		void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ )
 		{
 			if( info._size() > 0 ) {
-
 				bool yAxis = true;
 
 				for( size_t i = 0; i < info._size() - 1; ++i ) {
@@ -50,8 +49,10 @@ namespace Function_Pool
 			}
 		}
 	private:
-		static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of subsequent memory cells is much faster!
-											  // Change this value if you need to adjust to specific CPU. 16 bytes are set for proper SSE/NEON support
+		static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of
+											  // subsequent memory cells is much faster!
+											  // Change this value if you need to adjust to specific CPU. 16 bytes are set
+											  // for proper SSE/NEON support
 
 		// this function will sort out all input data into arrays for multithreading execution
 		void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
@@ -386,7 +387,7 @@ namespace Function_Pool
 			_process( _ThresholdDouble );
 		}
 	protected:
-		enum TaskName // enumeration to define for thread what function need to execute
+		enum TaskName // enumeration to define for thread which function need to execute
 		{
 			_none,
 			_AbsoluteDifference,
@@ -516,12 +517,12 @@ namespace Function_Pool
 
 	private:
 		TaskName functionId;
-		std::unique_ptr < InputImageInfo  > _infoIn1; // structure that holds information about first input image
-		std::unique_ptr < InputImageInfo  > _infoIn2; // structure that holds information about second input image
-		std::unique_ptr < OutputImageInfo > _infoOut; // structure that holds information about output image
+		std::unique_ptr < InputImageInfo  > _infoIn1; // structure which holds information about first input image
+		std::unique_ptr < InputImageInfo  > _infoIn2; // structure which holds information about second input image
+		std::unique_ptr < OutputImageInfo > _infoOut; // structure which holds information about output image
 
-		InputInfo  _dataIn;  // structure that hold some unique input parameters
-		OutputInfo _dataOut; // structure that hold some unique output values
+		InputInfo  _dataIn;  // structure which holds some unique input parameters
+		OutputInfo _dataOut; // structure which holds some unique output values
 
 		// functions for setting up all parameters needed for multithreading and to validate input parameters
 		void _setup( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
@@ -585,7 +586,7 @@ namespace Function_Pool
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, width, height, threadCount() ) );
 		}
 
-		void _process(TaskName id) // function what calls global thread pool and waits results from it
+		void _process(TaskName id) // function which calls global thread pool and waits results from it
 		{
 			functionId = id;
 
