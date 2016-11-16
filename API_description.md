@@ -1764,9 +1764,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes> & image1
+		const Template_Image::ImageTemplate < TColorDepth > & image1
 	);
 	```
 	**Description:**    
@@ -1780,10 +1780,10 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes1, uint8_t bytes2>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes1> & image1,
-		const BitmapImage <bytes2> & image2
+		const Template_Image::ImageTemplate < TColorDepth > & image1,
+		const Template_Image::ImageTemplate < TColorDepth > & image2
 	);
 	```
 	**Description:**    
@@ -1798,11 +1798,11 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes1> & image1,
-		const BitmapImage <bytes2> & image2,
-		const BitmapImage <bytes3> & image3
+		const Template_Image::ImageTemplate < TColorDepth > & image1,
+		const Template_Image::ImageTemplate < TColorDepth > & image2,
+		const Template_Image::ImageTemplate < TColorDepth > & image3
 	);
 	```
 	**Description:**    
@@ -1818,9 +1818,9 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes> & image,
+		const Template_Image::ImageTemplate < TColorDepth > & image,
 		uint32_t startX,
 		uint32_t startY,
 		uint32_t width,
@@ -1842,12 +1842,12 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes1, uint8_t bytes2>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes1> & image1,
+		const Template_Image::ImageTemplate < TColorDepth > & image1,
 		uint32_t startX1,
 		uint32_t startY1,
-		const BitmapImage <bytes2> & image2,
+		const Template_Image::ImageTemplate < TColorDepth > & image2,
 		uint32_t startX2,
 		uint32_t startY2,
 		uint32_t width,
@@ -1872,15 +1872,15 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
+	template <typename TColorDepth>
 	void ParameterValidation(
-		const BitmapImage <bytes1> & image1,
+		const Template_Image::ImageTemplate < TColorDepth > & image1,
 		uint32_t startX1,
 		uint32_t startY1,
-		const BitmapImage <bytes2> & image2,
+		const Template_Image::ImageTemplate < TColorDepth > & image2,
 		uint32_t startX2,
 		uint32_t startY2,
-		const BitmapImage <bytes3> & image3,
+		const Template_Image::ImageTemplate < TColorDepth > & image3,
 		uint32_t startX3,
 		uint32_t startY3,
 		uint32_t width,

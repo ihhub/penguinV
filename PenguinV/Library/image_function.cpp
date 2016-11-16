@@ -3,58 +3,6 @@
 
 namespace Image_Function
 {
-	template <uint8_t bytes>
-	void ParameterValidation( const BitmapImage <bytes> & image1 )
-	{
-		if( image1.empty() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes1, uint8_t bytes2>
-	void ParameterValidation( const BitmapImage <bytes1> & image1, const BitmapImage <bytes2> & image2 )
-	{
-		if( image1.empty() || image2.empty() || image1.width() != image2.width() || image1.height() != image2.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
-	void ParameterValidation( const BitmapImage <bytes1> & image1, const BitmapImage <bytes2> & image2, const BitmapImage <bytes3> & image3 )
-	{
-		if( image1.empty() || image2.empty() || image3.empty() || image1.width() != image2.width() || image1.height() != image2.height() ||
-			image1.width() != image3.width() || image1.height() != image3.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes>
-	void ParameterValidation( const BitmapImage <bytes> & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
-	{
-		if( image.empty() || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes1, uint8_t bytes2>
-	void ParameterValidation( const BitmapImage <bytes1> & image1, uint32_t startX1, uint32_t startY1, const BitmapImage <bytes2> & image2,
-							  uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
-	{
-		if( image1.empty() || image2.empty() || width == 0 || height == 0 ||
-			startX1 + width > image1.width() || startY1 + height > image1.height() ||
-			startX2 + width > image2.width() || startY2 + height > image2.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
-	void ParameterValidation( const BitmapImage <bytes1> & image1, uint32_t startX1, uint32_t startY1, const BitmapImage <bytes2> & image2,
-							  uint32_t startX2, uint32_t startY2, const BitmapImage <bytes3> & image3, uint32_t startX3, uint32_t startY3,
-							  uint32_t width, uint32_t height )
-	{
-		if( image1.empty() || image2.empty() || image3.empty() || width == 0 || height == 0 ||
-			startX1 + width > image1.width() || startY1 + height > image1.height() ||
-			startX2 + width > image2.width() || startY2 + height > image2.height() ||
-			startX3 + width > image3.width() || startY3 + height > image3.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-
 	Image AbsoluteDifference( const Image & in1, const Image & in2 )
 	{
 		ParameterValidation( in1, in2 );
@@ -598,7 +546,7 @@ namespace Image_Function
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
 		if( a < 0 || gamma < 0 )
-			throw imageException("Bad input parameters in image function");
+			throw imageException("Gamma correction parameters are invalid");
 
 		// We precalculate all values and store them in lookup table
 		std::vector < uint8_t > value(256);
@@ -618,7 +566,7 @@ namespace Image_Function
 	uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
 	{
 		if( image.empty() || x >= image.width() || y >= image.height() )
-			throw imageException("Bad input parameters in image function");
+			throw imageException("Position of point [x, y] is out of image");
 
 		return *(image.data() + y * image.rowSize() + x);
 	}
@@ -833,7 +781,7 @@ namespace Image_Function
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
 		if( table.size() != 256u )
-			throw imageException("Bad input parameters in image function");
+			throw imageException("Lookup table size is not equal to 256");
 
 		uint32_t rowSizeIn  = in.rowSize();
 		uint32_t rowSizeOut = out.rowSize();
@@ -1222,7 +1170,7 @@ namespace Image_Function
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
 	{
 		if( image.empty() || x >= image.width() || y >= image.height() )
-			throw imageException("Bad input parameters in image function");
+			throw imageException("Position of point [x, y] is out of image");
 
 		*(image.data() + y * image.rowSize() + x) = value;
 	}
@@ -1241,7 +1189,7 @@ namespace Image_Function
 
 		for( ; x != end; ++x, ++y ) {
 			if( (*x) >= image.width() || (*y) >= image.height() )
-				throw imageException("Bad input parameters in image function");
+				throw imageException("Position of point [x, y] is out of image");
 
 			*(data + (*y) * rowSize + (*x)) = value;
 		}
