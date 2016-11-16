@@ -39,8 +39,8 @@ namespace Thread_Pool
 				try {
 					_task(taskId);
 				} catch(...) {
-					// here should be some logging code stating about exception
-					// or add your code to feedback about exception here
+					// here should be some logging code stating about an exception
+					// or add your code to feedback about an exception
 				}
 			}
 
@@ -225,7 +225,7 @@ namespace Thread_Pool
 	void ThreadPool::clear()
 	{
 		_taskInfo.lock();
-		// complete all tasks without real computations. It helps to avoid deadlock in case when thread pool is destroyed
+		// complete all tasks without real computations. It helps to avoid a deadlock in a case when thread pool is destroyed
 		std::for_each( _task.begin(), _task.end(), [](AbstractTaskProvider * task) { task->_task( true ); } );
 		_task.clear();
 
@@ -261,7 +261,6 @@ namespace Thread_Pool
 		}
 
 		while( !pool->_exit[threadId] ) {
-
 			std::unique_lock < std::mutex > _mutexLock( pool->_taskInfo );
 			pool->_waiting.wait( _mutexLock, [&] { return pool->_run[threadId]; } );
 			_mutexLock.unlock();
@@ -319,5 +318,4 @@ namespace Thread_Pool
 			ThreadPoolMonoid::instance().add( this, _taskCount );
 		}
 	}
-
 };

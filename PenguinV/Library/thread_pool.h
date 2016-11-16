@@ -25,17 +25,15 @@ namespace Thread_Pool
 		virtual ~AbstractTaskProvider();
 
 		AbstractTaskProvider & operator=(const AbstractTaskProvider &);
-
 	protected:
-		virtual void _task(size_t) = 0; // this function must be overrided in child class and should contain code specific to task ID
-										// parameter in function is task ID. This function is called by thread pool
+		virtual void _task(size_t) = 0; // this function must be overrided in child class and should contain a code specific to task ID
+										// parameter in the function is task ID. This function must be called by thread pool
 		void _wait();
 
 		bool _ready() const; // this function tells whether class is able to use thread pool
-
 	private:
 		std::atomic < size_t > _taskCount;          // number of tasks to do
-		std::atomic < size_t > _givenTaskCount;     // number of tasks what were given to thread pool
+		std::atomic < size_t > _givenTaskCount;     // number of tasks which were given to thread pool
 		std::atomic < size_t > _completedTaskCount; // number of completed tasks
 
 		bool _running;                    // boolean variable specifies the state of tasks processing
@@ -43,10 +41,10 @@ namespace Thread_Pool
 										  // this mutex is waited in _wait() function
 		std::condition_variable _waiting; // condition variable for verification that all tasks are really completed
 
-		void _taskRun(bool skip); // function called by thread pool
+		void _taskRun(bool skip); // function is called only by thread pool to call _task() function and increment counters
 	};
 
-	// Concrete class of task provider for case when thread pool is not singleton
+	// Concrete class of task provider for case when thread pool is not a singleton
 	class TaskProvider : public AbstractTaskProvider
 	{
 	public:
@@ -58,13 +56,12 @@ namespace Thread_Pool
 		TaskProvider & operator=(const TaskProvider & provider);
 
 		void setThreadPool( ThreadPool * pool );
-
 	protected:
 		void _run( size_t taskCount );
 
 		bool _ready() const;
 	private:
-		ThreadPool * _threadPool; // a pointer to thread pool
+		ThreadPool * _threadPool; // a pointer to a thread pool
 	};
 
 	class ThreadPool
@@ -104,7 +101,7 @@ namespace Thread_Pool
 	};
 
 	// Thread pool singleton (or monoid class) for whole application
-	// In most situation thread pool must be one
+	// In most situations thread pool must be one
 	class ThreadPoolMonoid
 	{
 	public:
