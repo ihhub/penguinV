@@ -1,3 +1,4 @@
+#include <math.h>
 #include <numeric>
 #include "../Library/image_function.h"
 #include "unit_test_image_function.h"
