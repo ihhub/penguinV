@@ -1,10 +1,11 @@
 #pragma once
 
 #include <algorithm>
-#include <cuda_runtime.h>
 #include <cstdint>
 #include <cstring>
+#include <cuda_runtime.h>
 #include "../image_exception.h"
+#include "cuda_memory.cuh"
 
 namespace Template_Image_Cuda
 {
@@ -47,11 +48,9 @@ namespace Template_Image_Cuda
 			_colorCount = image._colorCount;
 
 			if( image._data != NULL ) {
-				cudaError_t error = cudaMalloc((void **)&_data, _height * _width * sizeof(TColorDepth));
-				if( error != cudaSuccess )
-					throw imageException("Cannot allocate a memory for CUDA device");
+				Cuda_Memory::MemoryAllocator::instance().allocate(&_data, _height * _width);
 
-				error = cudaMemcpy( image._data, _data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
+				cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
 				if( error != cudaSuccess )
 					throw imageException("Cannot copy a memory in CUDA device");
 			}
@@ -79,11 +78,9 @@ namespace Template_Image_Cuda
 			_colorCount = image._colorCount;
 
 			if( image._data != NULL ) {
-				cudaError_t error = cudaMalloc((void **)&_data, _height * _width * sizeof(TColorDepth));
-				if( error != cudaSuccess )
-					throw imageException("Cannot allocate a memory for CUDA device");
+				Cuda_Memory::MemoryAllocator::instance().allocate(&_data, _height * _width);
 
-				error = cudaMemcpy( image._data, _data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
+				cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
 				if( error != cudaSuccess )
 					throw imageException("Cannot copy a memory in CUDA device");
 			}
@@ -111,18 +108,14 @@ namespace Template_Image_Cuda
 				_width  = width_;
 				_height = height_;
 
-				cudaError_t error = cudaMalloc((void **)&_data, _height * _width * sizeof(TColorDepth));
-				if( error != cudaSuccess )
-					throw imageException("Cannot allocate a memory for CUDA device");
+				Cuda_Memory::MemoryAllocator::instance().allocate(&_data, _height * _width);
 			}
 		}
 
 		void clear()
 		{
 			if( _data != NULL ) {
-				cudaError_t error = cudaFree(_data);
-				if (error != cudaSuccess)
-					throw imageException("Cannot deallocate memory for CUDA device");
+				Cuda_Memory::MemoryAllocator::instance().free(_data);
 
 				_data = NULL;
 			}
@@ -184,7 +177,7 @@ namespace Template_Image_Cuda
 			if( image.empty() || empty() || image.width() != width() || image.height() != height() || image.colorCount() != colorCount() )
 				throw imageException("Invalid image to copy");
 
-			cudaError_t error = cudaMemcpy( image._data, _data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
+			cudaError_t error = cudaMemcpy( _data, image._data, _height * _width * sizeof(TColorDepth), cudaMemcpyDeviceToDevice );
 			if( error != cudaSuccess )
 				throw imageException("Cannot copy a memory in CUDA device");
 		}
