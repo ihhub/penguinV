@@ -170,6 +170,11 @@ namespace Image_Function
 	void  Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+	void Merge( const Image & in1, const Image & in2, const Image & in3, ColorImage & out );
+	void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+				const Image & in3, uint32_t startXIn3, uint32_t startYIn3,  ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+				uint32_t width, uint32_t height);
+
 	Image Minimum( const Image & in1, const Image & in2 );
 	void  Minimum( const Image & in1, const Image & in2, Image & out );
 	Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -201,6 +206,11 @@ namespace Image_Function
 
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
 	void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
+
+	void Split( const ColorImage & in, Image & out1, Image & out2, Image & out3 );
+	void Split( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+				Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+				uint32_t width, uint32_t height);
 
 	Image Subtract( const Image & in1, const Image & in2 );
 	void  Subtract( const Image & in1, const Image & in2, Image & out );

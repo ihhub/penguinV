@@ -1571,6 +1571,70 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **Merge** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	void Merge(
+		const Image & in1,
+		const Image & in2,
+		const Image & in3,
+		ColorImage & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Merges 3 gray-scale images into one 3-color image with same width and height by setting gray-scale intensity (value) into color channels.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in3 - third gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void Merge(
+		const Image & in1,
+		uint32_t startXIn1,
+		uint32_t startYIn1,
+		const Image & in2,
+		uint32_t startXIn2,
+		uint32_t startYIn2,
+		const Image & in3,
+		uint32_t startXIn3,
+		uint32_t startYIn3,
+		ColorImage & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Merges 3 gray-scale images within an area of [width, height] size into one 3-color image with the same size by setting gray-scale intensity (value) into color channels.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn1 - start X position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn1 - start Y position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn2 - start X position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn2 - start Y position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in3 - third gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn3 - start X position of third gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn3 - start Y position of third gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
 - **Minimum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
@@ -2210,7 +2274,72 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **Split** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	void Split(
+		const ColorImage & in,
+		Image & out1,
+		Image & out2,
+		Image & out3
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Splits a single 3-color image into 3 gray-scale images with same width and height.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out3 - third gray-scale image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
+	##### Syntax:
+	```cpp
+	void Split(
+		const ColorImage & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out1,
+		uint32_t startXOut1,
+		uint32_t startYOut1,
+		Image & out2,
+		uint32_t startXOut2,
+		uint32_t startYOut2,
+		Image & out3,
+		uint32_t startXOut3,
+		uint32_t startYOut3,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Splits a single 3-color image within an area of [width, height] size into 3 gray-scale images with the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut1 - start X position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut1 - start Y position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut2 - start X position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut2 - start Y position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out3 - third gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut3 - start X position of third gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut3 - start Y position of third gray-scale image area    
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Subtract** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:

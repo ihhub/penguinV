@@ -859,6 +859,56 @@ namespace Image_Function
 		}
 	}
 
+	void Merge( const Image & in1, const Image & in2, const Image & in3, ColorImage & out )
+	{
+		ParameterValidation( in1, in2, in3 );
+		ParameterValidation( in1, out );
+
+		Merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+				const Image & in3, uint32_t startXIn3, uint32_t startYIn3,  ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+				uint32_t width, uint32_t height )
+	{
+		ParameterValidation(in1, startXIn1, startYIn1, width, height);
+		ParameterValidation(in2, startXIn2, startYIn2, width, height);
+		ParameterValidation(in3, startXIn3, startYIn3, width, height);
+		ParameterValidation(out, startXOut, startYOut, width, height);
+
+		const uint8_t colorCount = out.colorCount();
+
+		if (colorCount != 3u )
+			throw imageException("Color image is not 3-colored image");
+
+		uint32_t rowSizeIn1 = in1.rowSize();
+		uint32_t rowSizeIn2 = in2.rowSize();
+		uint32_t rowSizeIn3 = in3.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * in1Y = in1.data() + startYIn1 * rowSizeIn1 + startXIn1;
+		const uint8_t * in2Y = in2.data() + startYIn2 * rowSizeIn2 + startXIn2;
+		const uint8_t * in3Y = in3.data() + startYIn3 * rowSizeIn3 + startXIn3;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for (; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3) {
+			const uint8_t * in1X = in1Y;
+			const uint8_t * in2X = in2Y;
+			const uint8_t * in3X = in3Y;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width * colorCount;
+
+			for (; outX != outXEnd; ) {
+				*(outX++) = *(in1X++);
+				*(outX++) = *(in2X++);
+				*(outX++) = *(in3X++);
+			}
+		}
+	}
+
 	Image Minimum( const Image & in1, const Image & in2 )
 	{
 		ParameterValidation( in1, in2 );
@@ -1192,6 +1242,56 @@ namespace Image_Function
 				throw imageException("Position of point [x, y] is out of image");
 
 			*(data + (*y) * rowSize + (*x)) = value;
+		}
+	}
+
+	void Split( const ColorImage & in, Image & out1, Image & out2, Image & out3 )
+	{
+		ParameterValidation( out1, out2, out3 );
+		ParameterValidation( in, out1 );
+
+		Split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
+	}
+
+	void Split( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+				Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+				uint32_t width, uint32_t height)
+	{
+		ParameterValidation(in, startXIn, startYIn, width, height);
+		ParameterValidation(out1, startXOut1, startYOut1, width, height);
+		ParameterValidation(out2, startXOut2, startYOut2, width, height);
+		ParameterValidation(out3, startXOut3, startYOut3, width, height);
+
+		const uint8_t colorCount = in.colorCount();
+
+		if (colorCount != 3u )
+			throw imageException("Color image is not 3-colored image");
+
+		uint32_t rowSizeIn   = in  .rowSize();
+		uint32_t rowSizeOut1 = out1.rowSize();
+		uint32_t rowSizeOut2 = out2.rowSize();
+		uint32_t rowSizeOut3 = out3.rowSize();
+		
+		const uint8_t * inY = in.data() + startYIn * rowSizeIn + startXIn * colorCount;
+		uint8_t * out1Y = out1.data() + startYOut1 * rowSizeOut1 + startXOut1;
+		uint8_t * out2Y = out2.data() + startYOut2 * rowSizeOut2 + startXOut2;
+		uint8_t * out3Y = out3.data() + startYOut3 * rowSizeOut3 + startXOut3;
+
+		const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+		for (; inY != inYEnd; inY += rowSizeIn, out1Y += rowSizeOut1, out2Y += rowSizeOut2, out3Y += rowSizeOut3) {
+			const uint8_t * inX = inY;
+			uint8_t * out1X = out1Y;
+			uint8_t * out2X = out2Y;
+			uint8_t * out3X = out3Y;
+
+			const uint8_t * inXEnd = inX + width * colorCount;
+
+			for (; inX != inXEnd; ) {
+				*(out1X++) = *(inX++);
+				*(out2X++) = *(inX++);
+				*(out3X++) = *(inX++);
+			}
 		}
 	}
 
