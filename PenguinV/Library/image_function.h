@@ -202,6 +202,12 @@ namespace Image_Function
 	void  Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
 
+	ColorImage RgbToBgr( const ColorImage & in );
+	void       RgbToBgr( const ColorImage & in, ColorImage & out );
+	ColorImage RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void       RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+						 uint32_t width, uint32_t height );
+
 	void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
 
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );

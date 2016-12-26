@@ -2059,6 +2059,92 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **RgbToBgr** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	ColorImage RgbToBgr(
+		const ColorImage & in
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image from RGB represantation to a 3-colored image in BGR representation (inverting color channel order).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an input image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void RgbToBgr(
+		const ColorImage & in,
+		ColorImage & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image from RGB represantation and put the result into a 3-colored image of the same size in BGR representation (inverting color channel order).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of conversion. Height and width of result image are the same as of input image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	ColorImage RgbToBgr(
+		const ColorImage & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image at area of [width, height] size from RGB represantation to a 3-colored image of the the same size in BGR representation (inverting color channel order).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where conversion is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion with size [width, height]. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void RgbToBgr(
+		const ColorImage & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		ColorImage & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image at area of [width, height] size from RGB represantation and put the result into a 3-colored image of the the same size in BGR representation (inverting color channel order).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of conversion    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where conversion is performed    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
 - **Resize** [_Namespaces: **Image_Function**_]
 

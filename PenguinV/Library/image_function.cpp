@@ -876,9 +876,9 @@ namespace Image_Function
 		ParameterValidation(in3, startXIn3, startYIn3, width, height);
 		ParameterValidation(out, startXOut, startYOut, width, height);
 
-		const uint8_t colorCount = out.colorCount();
+		const uint8_t colorCount = 3u;
 
-		if (colorCount != 3u )
+		if (colorCount != out.colorCount() )
 			throw imageException("Color image is not 3-colored image");
 
 		uint32_t rowSizeIn1 = in1.rowSize();
@@ -1160,6 +1160,67 @@ namespace Image_Function
 		}
 	}
 
+	ColorImage RgbToBgr(const ColorImage & in)
+	{
+		ParameterValidation(in);
+
+		ColorImage out(in.width(), in.height());
+
+		RgbToBgr(in, 0, 0, out, 0, 0, in.width(), in.height());
+
+		return out;
+	}
+
+	void RgbToBgr(const ColorImage & in, ColorImage & out)
+	{
+		ParameterValidation(in, out);
+
+		RgbToBgr(in, 0, 0, out, 0, 0, in.width(), in.height());
+	}
+
+	ColorImage RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		ParameterValidation(in, startXIn, startYIn, width, height);
+
+		ColorImage out(width, height);
+
+		RgbToBgr(in, startXIn, startYIn, out, 0, 0, width, height);
+
+		return out;
+	}
+
+	void  RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+				  uint32_t width, uint32_t height )
+	{
+		ParameterValidation(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
+
+		const uint8_t colorCount = 3u;
+
+		if (colorCount != in.colorCount() || colorCount != out.colorCount() )
+			throw imageException("Color image is not 3-colored image");
+
+		uint32_t rowSizeIn  = in.rowSize();
+		uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * inX  = inY;
+			uint8_t       * outX = outY;
+
+			const uint8_t * outXEnd = outX + width * colorCount;
+
+			for( ; outX != outXEnd; outX += colorCount, inX += colorCount ) {
+				*(outX + 2) = *(inX    );
+				*(outX + 1) = *(inX + 1);
+				*(outX    ) = *(inX + 2);
+			}
+		}
+	}
+
 	void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
 	{
 		ParameterValidation( in, out );
@@ -1262,9 +1323,9 @@ namespace Image_Function
 		ParameterValidation(out2, startXOut2, startYOut2, width, height);
 		ParameterValidation(out3, startXOut3, startYOut3, width, height);
 
-		const uint8_t colorCount = in.colorCount();
+		const uint8_t colorCount = 3u;
 
-		if (colorCount != 3u )
+		if (colorCount != in.colorCount() )
 			throw imageException("Color image is not 3-colored image");
 
 		uint32_t rowSizeIn   = in  .rowSize();
