@@ -567,10 +567,11 @@ namespace Function_Pool
 			if( !_ready() )
 				throw imageException("FunctionTask object was called multiple times!");
 
-			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , widthIn , heightIn , threadCount() ) );
+			_infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in , startXIn , startYIn , __min(widthIn, widthOut), __min(heightIn, heightOut), threadCount() ) );
 			_infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, threadCount() ) );
 
 			_infoOut->_copy( *_infoIn1, startXOut, startYOut, widthOut, heightOut );
+			_infoIn1->_copy( *_infoOut, startXIn , startYIn , widthIn , heightIn  );
 		}
 
 		void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
