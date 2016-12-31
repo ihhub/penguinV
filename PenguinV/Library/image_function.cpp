@@ -291,6 +291,17 @@ namespace Image_Function
 		ConvertToGrayScale(in, 0, 0, out, 0, 0, out.width(), out.height());
 	}
 
+	Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		ConvertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
 	void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 							 uint32_t width, uint32_t height )
 	{
@@ -339,6 +350,17 @@ namespace Image_Function
 		ParameterValidation( in, out );
 
 		ConvertToRgb(in, 0, 0, out, 0, 0, out.width(), out.height());
+	}
+
+	Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height, RGB );
+
+		ConvertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
 	}
 
 	void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -420,6 +442,13 @@ namespace Image_Function
 		ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
 
 		return out;
+	}
+
+	void ExtractChannel( const Image & in, Image & out, uint8_t channelId )
+	{
+		ParameterValidation( in, out );
+
+		ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
 	}
 
 	Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
