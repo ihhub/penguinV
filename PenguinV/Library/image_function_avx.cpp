@@ -50,8 +50,10 @@ namespace Image_Function_Avx
 	void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::AbsoluteDifference(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
@@ -59,13 +61,15 @@ namespace Image_Function_Avx
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
+		width = width * colorCount;
+
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -132,22 +136,25 @@ namespace Image_Function_Avx
 	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -211,22 +218,25 @@ namespace Image_Function_Avx
 	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -290,22 +300,25 @@ namespace Image_Function_Avx
 	void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -368,20 +381,23 @@ namespace Image_Function_Avx
 	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 				  uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -449,22 +465,25 @@ namespace Image_Function_Avx
 	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -532,22 +551,25 @@ namespace Image_Function_Avx
 	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -615,22 +637,25 @@ namespace Image_Function_Avx
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function_Sse::Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 

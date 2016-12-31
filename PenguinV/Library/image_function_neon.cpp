@@ -43,22 +43,25 @@ namespace Image_Function_Neon
 	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -122,22 +125,25 @@ namespace Image_Function_Neon
 	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -200,20 +206,23 @@ namespace Image_Function_Neon
 	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 				  uint32_t width, uint32_t height )
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-		Image_Function::VerifyGrayScaleImage( in, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -275,22 +284,25 @@ namespace Image_Function_Neon
 	void Maximum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height)
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -358,22 +370,25 @@ namespace Image_Function_Neon
 	void Minimum(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height)
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
@@ -441,22 +456,25 @@ namespace Image_Function_Neon
 	void Subtract(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 		Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height)
 	{
+		const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+
 		// image width is less than 16 bytes so no use to utilize NEON :(
-		if (width < simdSize) {
+		if (width * colorCount < simdSize) {
 			Image_Function::Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 			return;
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
-		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
+		width = width * colorCount;
 
 		const uint32_t rowSizeIn1 = in1.rowSize();
 		const uint32_t rowSizeIn2 = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
