@@ -592,7 +592,9 @@ namespace Function_Pool
 
 			_run( _infoIn1->_size() );
 
-			_wait();
+			if( !_wait() ) {
+				throw imageException("An exception raised during task execution in function pool");
+			}
 		}
 	};
 

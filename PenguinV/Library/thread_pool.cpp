@@ -9,6 +9,7 @@ namespace Thread_Pool
 		, _givenTaskCount    (0)
 		, _completedTaskCount(0)
 		, _running           (false)
+		, _exceptionRaised   (false)
 	{
 	}
 
@@ -17,6 +18,7 @@ namespace Thread_Pool
 		, _givenTaskCount    (0)
 		, _completedTaskCount(0)
 		, _running           (false)
+		, _exceptionRaised   (false)
 	{
 	}
 
@@ -41,6 +43,7 @@ namespace Thread_Pool
 				} catch(...) {
 					// here should be some logging code stating about an exception
 					// or add your code to feedback about an exception
+					_exceptionRaised = true;
 				}
 			}
 
@@ -56,10 +59,15 @@ namespace Thread_Pool
 		}
 	}
 
-	void AbstractTaskProvider::_wait()
+	bool AbstractTaskProvider::_wait()
 	{
 		std::unique_lock < std::mutex > _mutexLock( _completion );
 		_waiting.wait( _mutexLock, [&] { return !_running; } );
+
+		bool noException = !_exceptionRaised;
+		_exceptionRaised = false;
+
+		return noException;
 	}
 
 	bool AbstractTaskProvider::_ready() const

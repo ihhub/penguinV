@@ -28,7 +28,7 @@ namespace Thread_Pool
 	protected:
 		virtual void _task(size_t) = 0; // this function must be overrided in child class and should contain a code specific to task ID
 										// parameter in the function is task ID. This function must be called by thread pool
-		void _wait();
+		bool _wait(); // waits for all task execution completions. Returns true in case of success, false when an exception is raised
 
 		bool _ready() const; // this function tells whether class is able to use thread pool
 	private:
@@ -40,6 +40,8 @@ namespace Thread_Pool
 		std::mutex _completion;           // mutex for synchronization reporting about completion of all tasks
 										  // this mutex is waited in _wait() function
 		std::condition_variable _waiting; // condition variable for verification that all tasks are really completed
+
+		bool _exceptionRaised; // notifies whether an exception raised during task execution
 
 		void _taskRun(bool skip); // function is called only by thread pool to call _task() function and increment counters
 	};
