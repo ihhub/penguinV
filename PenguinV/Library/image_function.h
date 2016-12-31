@@ -7,63 +7,109 @@ namespace Image_Function
 {
 	using namespace Bitmap_Image;
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image1 )
+	template <typename TImage>
+	bool IsCorrectColorCount(const TImage & image1)
 	{
-		if( image1.empty() )
+		return image1.colorCount() == GRAY_SCALE || image1.colorCount() == RGB;
+	}
+
+	template <typename TImage>
+	void VerifyColoredImage(const TImage & image1)
+	{
+		if( image1.colorCount() != RGB )
+			throw imageException("Bad input parameters in image function: colored image has different than 3 color channels");
+	}
+
+	template <typename TImage>
+	void VerifyColoredImage(const TImage & image1, const TImage & image2)
+	{
+		if( image1.colorCount() != RGB || image2.colorCount() != RGB )
+			throw imageException("Bad input parameters in image function: colored image has different than 3 color channels");
+	}
+	
+	template <typename TImage>
+	void VerifyColoredImage(const TImage & image1, const TImage & image2, const TImage & image3)
+	{
+		if( image1.colorCount() != RGB || image2.colorCount() != RGB || image3.colorCount() != RGB )
+			throw imageException("Bad input parameters in image function: colored image has different than 3 color channels");
+	}
+
+	template <typename TImage>
+	void VerifyGrayScaleImage(const TImage & image1)
+	{
+		if( image1.colorCount() != GRAY_SCALE )
+			throw imageException("Bad input parameters in image function: gray-scaled image has more than 1 color channels");
+	}
+
+	template <typename TImage>
+	void VerifyGrayScaleImage(const TImage & image1, const TImage & image2)
+	{
+		if( image1.colorCount() != GRAY_SCALE || image2.colorCount() != GRAY_SCALE )
+			throw imageException("Bad input parameters in image function: gray-scaled image has more than 1 color channels");
+	}
+
+	template <typename TImage>
+	void VerifyGrayScaleImage(const TImage & image1, const TImage & image2, const TImage & image3)
+	{
+		if( image1.colorCount() != GRAY_SCALE || image2.colorCount() != GRAY_SCALE || image3.colorCount() != GRAY_SCALE )
+			throw imageException("Bad input parameters in image function: gray-scaled image has more than 1 color channels");
+	}
+
+	template <typename TImage>
+	void ParameterValidation( const TImage & image1 )
+	{
+		if( image1.empty() || !IsCorrectColorCount(image1) )
 			throw imageException("Bad input parameters in image function");
 	}
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image1,
-							  const Template_Image::ImageTemplate < TColorDepth > & image2 )
+	template <typename TImage>
+	void ParameterValidation( const TImage & image1, const TImage & image2 )
 	{
-		if( image1.empty() || image2.empty() || image1.width() != image2.width() || image1.height() != image2.height() )
+		if( image1.empty() || image2.empty() || !IsCorrectColorCount(image1) || !IsCorrectColorCount(image2) ||
+			image1.width() != image2.width() || image1.height() != image2.height() )
 			throw imageException("Bad input parameters in image function");
 	}
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image1,
-							  const Template_Image::ImageTemplate < TColorDepth > & image2,
-							  const Template_Image::ImageTemplate < TColorDepth > & image3 )
+	template <typename TImage>
+	void ParameterValidation( const TImage & image1, const TImage & image2, const TImage & image3 )
 	{
-		if( image1.empty() || image2.empty() || image3.empty() || image1.width() != image2.width() || image1.height() != image2.height() ||
+		if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount(image1) || !IsCorrectColorCount(image2) ||
+			!IsCorrectColorCount(image3) || image1.width() != image2.width() || image1.height() != image2.height() ||
 			image1.width() != image3.width() || image1.height() != image3.height() )
 			throw imageException("Bad input parameters in image function");
 	}
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image, uint32_t startX, uint32_t startY,
-							  uint32_t width, uint32_t height )
+	template <typename TImage>
+	void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
 	{
-		if( image.empty() || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
+		if( image.empty() || !IsCorrectColorCount(image) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
 			throw imageException("Bad input parameters in image function");
 	}
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image1, uint32_t startX1, uint32_t startY1,
-							  const Template_Image::ImageTemplate < TColorDepth > & image2, uint32_t startX2, uint32_t startY2,
+	template <typename TImage>
+	void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
+							  const TImage & image2, uint32_t startX2, uint32_t startY2,
 							  uint32_t width, uint32_t height )
 	{
-		if( image1.empty() || image2.empty() || width == 0 || height == 0 ||
+		if( image1.empty() || image2.empty() || !IsCorrectColorCount(image1) || !IsCorrectColorCount(image2) || width == 0 || height == 0 ||
 			startX1 + width > image1.width() || startY1 + height > image1.height() ||
 			startX2 + width > image2.width() || startY2 + height > image2.height() )
 			throw imageException("Bad input parameters in image function");
 	}
 
-	template <typename TColorDepth>
-	void ParameterValidation( const Template_Image::ImageTemplate < TColorDepth > & image1, uint32_t startX1, uint32_t startY1,
-							  const Template_Image::ImageTemplate < TColorDepth > & image2, uint32_t startX2, uint32_t startY2,
-							  const Template_Image::ImageTemplate < TColorDepth > & image3, uint32_t startX3, uint32_t startY3,
+	template <typename TImage>
+	void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
+							  const TImage & image2, uint32_t startX2, uint32_t startY2,
+							  const TImage & image3, uint32_t startX3, uint32_t startY3,
 							  uint32_t width, uint32_t height )
 	{
-		if( image1.empty() || image2.empty() || image3.empty() || width == 0 || height == 0 ||
+		if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount(image1) || !IsCorrectColorCount(image2) ||
+			!IsCorrectColorCount(image3) || width == 0 || height == 0 ||
 			startX1 + width > image1.width() || startY1 + height > image1.height() ||
 			startX2 + width > image2.width() || startY2 + height > image2.height() ||
 			startX3 + width > image3.width() || startY3 + height > image3.height() )
 			throw imageException("Bad input parameters in image function");
 	}
-
 
 	Image AbsoluteDifference( const Image & in1, const Image & in2 );
 	void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
@@ -96,21 +142,24 @@ namespace Image_Function
 	void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-	void Convert( const Image & in, ColorImage & out );
-	void Convert( const ColorImage & in, Image & out );
-	void Convert( const Image & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
-				  uint32_t width, uint32_t height );
-	void Convert( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-				  uint32_t width, uint32_t height );
+	Image ConvertToGrayScale( const Image & in );
+	void  ConvertToGrayScale( const Image & in, Image & out );
+	void  ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							 uint32_t width, uint32_t height );
+
+	Image ConvertToRgb( const Image & in );
+	void  ConvertToRgb( const Image & in, Image & out );
+	void  ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					   uint32_t width, uint32_t height );
 
 	void  Copy( const Image & in, Image & out );
 	Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 	void  Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 				uint32_t width, uint32_t height );
 
-	Image ExtractChannel( const ColorImage & in, uint8_t channelId );
-	Image ExtractChannel( const ColorImage & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId );
-	void  ExtractChannel( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+	Image ExtractChannel( const Image & in, uint8_t channelId );
+	Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId );
+	void  ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
 						  uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId );
 
 	void Fill( Image & image, uint8_t value );
@@ -170,9 +219,9 @@ namespace Image_Function
 	void  Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-	void Merge( const Image & in1, const Image & in2, const Image & in3, ColorImage & out );
+	void Merge( const Image & in1, const Image & in2, const Image & in3, Image & out );
 	void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
-				const Image & in3, uint32_t startXIn3, uint32_t startYIn3,  ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+				const Image & in3, uint32_t startXIn3, uint32_t startYIn3,  Image & out, uint32_t startXOut, uint32_t startYOut,
 				uint32_t width, uint32_t height);
 
 	Image Minimum( const Image & in1, const Image & in2 );
@@ -202,19 +251,19 @@ namespace Image_Function
 	void  Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
 
-	ColorImage RgbToBgr( const ColorImage & in );
-	void       RgbToBgr( const ColorImage & in, ColorImage & out );
-	ColorImage RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
-	void       RgbToBgr( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
-						 uint32_t width, uint32_t height );
+	Image RgbToBgr( const Image & in );
+	void  RgbToBgr( const Image & in, Image & out );
+	Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height );
 
 	void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
 
 	void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
 	void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
 
-	void Split( const ColorImage & in, Image & out1, Image & out2, Image & out3 );
-	void Split( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+	void Split( const Image & in, Image & out1, Image & out2, Image & out3 );
+	void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
 				Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
 				uint32_t width, uint32_t height);
 

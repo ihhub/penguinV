@@ -8,44 +8,41 @@ namespace Image_Function_Cuda
 {
 	using namespace Bitmap_Image_Cuda;
 
-	template <uint8_t bytes>
-	void ParameterValidation( const BitmapImageCuda <bytes> & image1 );
-	template <uint8_t bytes1, uint8_t bytes2>
-	void ParameterValidation( const BitmapImageCuda <bytes1> & image1, const BitmapImageCuda <bytes2> & image2 );
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
-	void ParameterValidation( const BitmapImageCuda <bytes1> & image1, const BitmapImageCuda <bytes2> & image2, const BitmapImageCuda <bytes3> & image3 );
+	Image AbsoluteDifference( const Image & in1, const Image & in2 );
+	void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2 );
-	void      AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image BitwiseAnd( const Image & in1, const Image & in2 );
+	void  BitwiseAnd( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2 );
-	void      BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image BitwiseOr( const Image & in1, const Image & in2 );
+	void  BitwiseOr( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda BitwiseOr( const ImageCuda & in1, const ImageCuda & in2 );
-	void      BitwiseOr( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image BitwiseXor( const Image & in1, const Image & in2 );
+	void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda BitwiseXor( const ImageCuda & in1, const ImageCuda & in2 );
-	void      BitwiseXor( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	void  Convert( const Bitmap_Image::Image & in, Image & out );
+	void  Convert( const Image & in, Bitmap_Image::Image & out );
 
-	void Convert( const Bitmap_Image::Image & in, ImageCuda & out );
-	void Convert( const ImageCuda & in, Bitmap_Image::Image & out );
+	void  Copy( const Image & in, Image & out );
+
+	void  Fill( Image & image, uint8_t value );
 
 	// Gamma correction works by formula:
 	// output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0
 	// Usually people set A as 1
-	ImageCuda GammaCorrection( const ImageCuda & in, double a, double gamma );
-	void      GammaCorrection( const ImageCuda & in, ImageCuda & out, double a, double gamma );
+	Image GammaCorrection( const Image & in, double a, double gamma );
+	void  GammaCorrection( const Image & in, Image & out, double a, double gamma );
 
 	// Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
-	ImageCuda Invert( const ImageCuda & in );
-	void      Invert( const ImageCuda & in, ImageCuda & out );
+	Image Invert( const Image & in );
+	void  Invert( const Image & in, Image & out );
 
-	ImageCuda Maximum( const ImageCuda & in1, const ImageCuda & in2 );
-	void      Maximum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image Maximum( const Image & in1, const Image & in2 );
+	void  Maximum( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda Minimum( const ImageCuda & in1, const ImageCuda & in2 );
-	void      Minimum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image Minimum( const Image & in1, const Image & in2 );
+	void  Minimum( const Image & in1, const Image & in2, Image & out );
 
-	ImageCuda Subtract( const ImageCuda & in1, const ImageCuda & in2 );
-	void      Subtract( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out );
+	Image Subtract( const Image & in1, const Image & in2 );
+	void  Subtract( const Image & in1, const Image & in2, Image & out );
 };

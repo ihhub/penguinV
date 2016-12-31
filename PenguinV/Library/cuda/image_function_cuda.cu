@@ -55,6 +55,15 @@ namespace
 	    }
 	};
 
+	__global__ void fill(uint8_t * data, uint8_t value, uint32_t size)
+	{
+	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+	
+	    if( id < size ) {
+	        data[id] = value;
+	    }
+	};
+
 	__global__ void gammaCorrection(const uint8_t * in, uint8_t * out, uint32_t size, double a, float gamma)
 	{
 	    uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
@@ -63,9 +72,9 @@ namespace
 		
 		if( threadIdx.x == 0 ) {
 			for( uint16_t i = 0; i < 256; ++i ) {
-				double data = a * pow( static_cast<float>(i), gamma ) + 0.5;
+				double data = a * __powf(__fdividef((float)i, 255.0f), gamma) * 255 + 0.5;
 				
-				if( data < 256 )
+				if( data < 255 )
 					value[i] = static_cast<uint8_t>(data);
 				else
 					value[i] = 255;
@@ -118,43 +127,20 @@ namespace
 
 namespace Image_Function_Cuda
 {
-	template <uint8_t bytes>
-	void ParameterValidation( const BitmapImageCuda <bytes> & image1 )
+	Image AbsoluteDifference( const Image & in1, const Image & in2 )
 	{
-		if( image1.empty() )
-			throw imageException("Bad input parameters in image function");
-	}
+		Image_Function::ParameterValidation( in1, in2 );
 
-	template <uint8_t bytes1, uint8_t bytes2>
-	void ParameterValidation( const BitmapImageCuda <bytes1> & image1, const BitmapImageCuda <bytes2> & image2 )
-	{
-		if( image1.empty() || image2.empty() || image1.width() != image2.width() || image1.height() != image2.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
-	void ParameterValidation( const BitmapImageCuda <bytes1> & image1, const BitmapImageCuda <bytes2> & image2, const BitmapImageCuda <bytes3> & image3 )
-	{
-		if( image1.empty() || image2.empty() || image3.empty() || image1.width() != image2.width() || image1.height() != image2.height() ||
-			image1.width() != image3.width() || image1.height() != image3.height() )
-			throw imageException("Bad input parameters in image function");
-	}
-
-
-	ImageCuda AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2 )
-	{
-		ParameterValidation( in1, in2 );
-
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		AbsoluteDifference( in1, in2, out );
 
 		return out;
 	}
 
-	void AbsoluteDifference( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -165,20 +151,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2 )
+	Image BitwiseAnd( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		BitwiseAnd( in1, in2, out );
 
 		return out;
 	}
 
-	void BitwiseAnd( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -189,20 +175,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda BitwiseOr( const ImageCuda & in1, const ImageCuda & in2 )
+	Image BitwiseOr( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		BitwiseOr( in1, in2, out );
 
 		return out;
 	}
 
-	void BitwiseOr( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void BitwiseOr( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -213,20 +199,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda BitwiseXor( const ImageCuda & in1, const ImageCuda & in2 )
+	Image BitwiseXor( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		BitwiseXor( in1, in2, out );
 
 		return out;
 	}
 
-	void BitwiseXor( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void BitwiseXor( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -237,10 +223,10 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	void Convert( const Bitmap_Image::Image & in, ImageCuda & out )
+	void Convert( const Bitmap_Image::Image & in, Image & out )
 	{
 		Image_Function::ParameterValidation( in );
-		ParameterValidation( out );
+		Image_Function::ParameterValidation( out );
 
 		if( in.width() != out.width() || in.height() != out.height() )
 			throw imageException("Bad input parameters in image function");
@@ -260,9 +246,9 @@ namespace Image_Function_Cuda
 		}
 	}
 
-	void Convert( const ImageCuda & in, Bitmap_Image::Image & out )
+	void Convert( const Image & in, Bitmap_Image::Image & out )
 	{
-		ParameterValidation( in );
+		Image_Function::ParameterValidation( in );
 		Image_Function::ParameterValidation( out );
 
 		if( in.width() != out.width() || in.height() != out.height() )
@@ -283,20 +269,40 @@ namespace Image_Function_Cuda
 		}
 	}
 
-	ImageCuda GammaCorrection( const ImageCuda & in, double a, double gamma )
+	void Copy( const Image & in, Image & out )
 	{
-		ParameterValidation( in );
+		Image_Function::ParameterValidation( in, out );
 
-		ImageCuda out( in.width(), in.height() );
+		out = in;
+	}
+
+	void Fill( Image & image, uint8_t value )
+	{
+		Image_Function::ParameterValidation( image );
+
+		int threadsPerBlock = 1, blocksPerGrid = 1;
+		getKernelParameters( threadsPerBlock, blocksPerGrid, image.width() * image.height() );
+
+		fill<<<blocksPerGrid, threadsPerBlock>>>( image.data(), value, image.width() * image.height() );
+		cudaError_t error = cudaGetLastError();
+		if(error != cudaSuccess)
+			throw imageException("Failed to launch CUDA kernel");
+	}
+
+	Image GammaCorrection( const Image & in, double a, double gamma )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
 
 		GammaCorrection( in, out, a, gamma );
 
 		return out;
 	}
 
-	void GammaCorrection( const ImageCuda & in, ImageCuda & out, double a, double gamma )
+	void GammaCorrection( const Image & in, Image & out, double a, double gamma )
 	{
-		ParameterValidation( in, out );
+		Image_Function::ParameterValidation( in, out );
 
 		if( a < 0 || gamma < 0 )
 			throw imageException("Bad input parameters in image function");
@@ -304,26 +310,26 @@ namespace Image_Function_Cuda
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
 
-		gammaCorrection<<<blocksPerGrid, threadsPerBlock>>>( in.data(), out.data(), out.width() * out.height(), a, gamma );
+		gammaCorrection<<<blocksPerGrid, threadsPerBlock>>>( in.data(), out.data(), out.width() * out.height(), a, static_cast<float>(gamma) );
 		cudaError_t error = cudaGetLastError();
 		if(error != cudaSuccess)
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda Invert( const ImageCuda & in )
+	Image Invert( const Image & in )
 	{
-		ParameterValidation( in );
+		Image_Function::ParameterValidation( in );
 
-		ImageCuda out( in.width(), in.height() );
+		Image out( in.width(), in.height() );
 
 		Invert( in, out );
 
 		return out;
 	}
 
-	void Invert( const ImageCuda & in, ImageCuda & out )
+	void Invert( const Image & in, Image & out )
 	{
-		ParameterValidation( in, out );
+		Image_Function::ParameterValidation( in, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -334,20 +340,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda Maximum( const ImageCuda & in1, const ImageCuda & in2 )
+	Image Maximum( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		Maximum( in1, in2, out );
 
 		return out;
 	}
 
-	void Maximum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void Maximum( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -358,20 +364,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda Minimum( const ImageCuda & in1, const ImageCuda & in2 )
+	Image Minimum( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		Minimum( in1, in2, out );
 
 		return out;
 	}
 
-	void Minimum( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void Minimum( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
@@ -382,20 +388,20 @@ namespace Image_Function_Cuda
 			throw imageException("Failed to launch CUDA kernel");
 	}
 
-	ImageCuda Subtract( const ImageCuda & in1, const ImageCuda & in2 )
+	Image Subtract( const Image & in1, const Image & in2 )
 	{
-		ParameterValidation( in1, in2 );
+		Image_Function::ParameterValidation( in1, in2 );
 
-		ImageCuda out( in1.width(), in1.height() );
+		Image out( in1.width(), in1.height() );
 
 		Subtract( in1, in2, out );
 
 		return out;
 	}
 
-	void Subtract( const ImageCuda & in1, const ImageCuda & in2, ImageCuda & out )
+	void Subtract( const Image & in1, const Image & in2, Image & out )
 	{
-		ParameterValidation( in1, in2, out );
+		Image_Function::ParameterValidation( in1, in2, out );
 
 		int threadsPerBlock = 1, blocksPerGrid = 1;
 		getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );

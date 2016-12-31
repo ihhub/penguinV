@@ -172,7 +172,7 @@ namespace Blob_Detection
 	void BlobInfo::_getCircularity()
 	{
 		if( !_contourX.empty() && !_circularity.found ) {
-			double radius = sqrt(static_cast<double>(size()) / pi);
+			const double radius = sqrt(static_cast<double>(size()) / pi);
 			_getCenter();
 
 			double difference = 0;
@@ -224,12 +224,12 @@ namespace Blob_Detection
 					}
 				}
 
-				double length = sqrt( static_cast<double>( maximumDistance ) );
-				double angle  = -atan2( static_cast< double >( endPoint.y - startPoint.y ),
-										static_cast< double >( endPoint.x - startPoint.x ) );
+				const double length = sqrt( static_cast<double>( maximumDistance ) );
+				const double angle  = -atan2( static_cast< double >( endPoint.y - startPoint.y ),
+											  static_cast< double >( endPoint.x - startPoint.x ) );
 
-				double _cos = cos(angle);
-				double _sin = sin(angle);
+				const double _cos = cos(angle);
+				const double _sin = sin(angle);
 
 				std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
@@ -319,6 +319,7 @@ namespace Blob_Detection
 														  uint32_t height, BlobParameters parameter, uint8_t threshold )
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
+		Image_Function::VerifyGrayScaleImage( image );
 
 		parameter._verify();
 

@@ -12,12 +12,12 @@ namespace Unit_Test
 	namespace Cuda
 	{
 		// Generate images
-		Bitmap_Image_Cuda::ImageCuda uniformImage();
-		Bitmap_Image_Cuda::ImageCuda uniformImage(uint8_t value);
-		Bitmap_Image_Cuda::ImageCuda blackImage();
-		Bitmap_Image_Cuda::ImageCuda whiteImage();
-		std::vector < Bitmap_Image_Cuda::ImageCuda > uniformImages( uint32_t images );
-		std::vector < Bitmap_Image_Cuda::ImageCuda > uniformImages( std::vector < uint8_t > intensityValue );
+		Bitmap_Image_Cuda::Image uniformImage();
+		Bitmap_Image_Cuda::Image uniformImage(uint8_t value);
+		Bitmap_Image_Cuda::Image blackImage();
+		Bitmap_Image_Cuda::Image whiteImage();
+		std::vector < Bitmap_Image_Cuda::Image > uniformImages( uint32_t images );
+		std::vector < Bitmap_Image_Cuda::Image > uniformImages( std::vector < uint8_t > intensityValue );
 
 		// Image size and ROI verification
 		template <typename data>
@@ -27,7 +27,7 @@ namespace Unit_Test
 				   image1.colorCount() == image2.colorCount();
 		};
 
-		bool verifyImage( const Bitmap_Image_Cuda::ImageCuda & image, uint8_t value );
+		bool verifyImage( const Bitmap_Image_Cuda::Image & image, uint8_t value );
 
 		// Return random value for specific range or variable type
 		template <typename data>

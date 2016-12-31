@@ -12,8 +12,8 @@ namespace Unit_Test
 	// Generate images
 	Bitmap_Image::Image uniformImage();
 	Bitmap_Image::Image uniformImage(uint8_t value);
-	Bitmap_Image::ColorImage uniformColorImage();
-	Bitmap_Image::ColorImage uniformColorImage(uint8_t value);
+	Bitmap_Image::Image uniformColorImage();
+	Bitmap_Image::Image uniformColorImage(uint8_t value);
 	Bitmap_Image::Image blackImage();
 	Bitmap_Image::Image whiteImage();
 	Bitmap_Image::Image randomImage();
@@ -59,71 +59,11 @@ namespace Unit_Test
 			   image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
 	};
 
-	template <uint8_t byteCount>
-	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
-	{
-		if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-			throw imageException("Bad input parameters in image function");
-
-		const uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
-		const uint8_t * endY    = outputY + image.rowSize() * height;
-
-		for( ; outputY != endY; outputY += image.rowSize() ) {
-			const uint8_t * outputX = outputY;
-			const uint8_t * endX    = outputX + width * image.colorCount();
-
-			for( ; outputX != endX; ++outputX ) {
-				if( (*outputX) != value )
-					return false;
-			}
-		}
-
-		return true;
-	};
-
-	template <uint8_t byteCount>
-	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-					  const std::vector < uint8_t > & value )
-	{
-		if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-			throw imageException("Bad input parameters in image function");
-
-		const uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
-		const uint8_t * endY    = outputY + image.rowSize() * height;
-
-		for( ; outputY != endY; outputY += image.rowSize() ) {
-			const uint8_t * outputX = outputY;
-			const uint8_t * endX    = outputX + width * image.colorCount();
-
-			for( ; outputX != endX; ++outputX ) {
-				bool equal = false;
-				
-				for( std::vector < uint8_t >::const_iterator v = value.begin(); v != value.end(); ++v ) {
-					if( (*outputX) == (*v) ) {
-						equal = true;
-						break;
-					}
-				}
-
-				if( !equal )
-					return false;
-			}
-		}
-
-		return true;
-	};
-
-	template <uint8_t byteCount>
-	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, uint8_t value )
-	{
-		return verifyImage( image, 0, 0, image.width(), image.height(), value );
-	};
-
-	template <uint8_t byteCount>
-	bool verifyImage( const Bitmap_Image::BitmapImage < byteCount > & image, const std::vector < uint8_t > & value )
-	{
-		return verifyImage( image, 0, 0, image.width(), image.height(), value );
-	};
+	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+	bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+					  const std::vector < uint8_t > & value );
+	bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
+	bool verifyImage( const Bitmap_Image::Image & image, const std::vector < uint8_t > & value );
 
 	// Fill image ROI with specific intensity
 	void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
@@ -140,11 +80,7 @@ namespace Unit_Test
 
 	void generateOffset( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
 
-	template <uint8_t byteCount>
-	std::pair <uint32_t, uint32_t> imageSize( const Bitmap_Image::BitmapImage < byteCount > & image )
-	{
-		return std::pair <uint32_t, uint32_t>( image.width(), image.height() );
-	};
+	std::pair <uint32_t, uint32_t> imageSize( const Bitmap_Image::Image & image );
 
 	// Return calculated row size
 	uint32_t rowSize(uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1);

@@ -2,14 +2,11 @@
 
 ## Namespaces
 **Bitmap_Image**    
-Declares a template class for BITMAP images and concrete classes:
-- ***Image*** - a gray-scale bitmap image (a main class is in most of image processing functions). If the type of image in this description is not implicitly specified then it is a gray-scale image.
-- ***ColorImage*** - a RGB (colour) bitmap image.    
+Declares a class for BITMAP images:
+- ***Image*** - a bitmap image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).   
 
 **Bitmap_Operation**    
-Declares classes to load, save and store raw data of BITMAP images:
-- ***BitmapRawImage*** - a class for raw data storage for bitmap images.
-- ***RawImageTemplate*** - a template class for raw data storage of any image type.    
+Contains functions to load and save BITMAP images.  
 
 **Blob_Detection**    
 Contains structures and classes related to blob detection methods:
@@ -506,29 +503,27 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **Convert** [_Namespaces: **Image_Function**_]
-
+- **ConvertToGrayScale** [_Namespaces: **Image_Function**_]
+	
 	##### Syntax:
 	```cpp
-	void Convert(
+	Image ConvertToGrayScale(
 		const Image & in,
-		ColorImage & out
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into color image with same width and height by setting gray-scale intensity (value) into every color channel (RGB).
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts color image into gray-scale image with same width and height by setting gray-scale intensity as an average value among red, green and blue channels of color image.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+	&nbsp;&nbsp;&nbsp;&nbsp;a gray-scale image with same width and height. If the function fails exception imageException is raised.
+	
 	##### Syntax:
 	```cpp
-	void Convert(
-		const ColorImage & in,
+	void ConvertToGrayScale(
+		const Image & in,
 		Image & out
 	);
 	```
@@ -544,37 +539,8 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	void Convert(
+	void ConvertToGrayScale(
 		const Image & in,
-		uint32_t startXIn,
-		uint32_t startYIn,
-		ColorImage & out,
-		uint32_t startXOut,
-		uint32_t startYOut,
-		uint32_t width,
-		uint32_t height
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, height] size into color image area with same size by setting gray-scale intensity (value) into every color channel (RGB).
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
-	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a gray-scale image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a gray-scale image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
-	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of a color image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of a color image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
-	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	void Convert(
-		const ColorImage & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
 		Image & out,
@@ -594,6 +560,69 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image    
 	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of a gray-scale image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+		
+- **ConvertToRgb** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image ConvertToRgb(
+		const Image & in,
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into color image with same width and height by setting gray-scale intensity (value) into every color channel (RGB).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	void ConvertToRgb(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into color image with same width and height by setting gray-scale intensity (value) into every color channel (RGB).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void ConvertToRgb(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image area with [width, height] size into color image area with same size by setting gray-scale intensity (value) into every color channel (RGB).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of a gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of a color image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of a color image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
@@ -676,7 +705,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	Image ExtractChannel(
-		const ColorImage & in,
+		const Image & in,
 		uint8_t channelId
 	);
 	```
@@ -693,7 +722,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	Image ExtractChannel(
-		const ColorImage & in,
+		const Image & in,
 		uint32_t x,
 		uint32_t y,
 		uint32_t width,
@@ -718,7 +747,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void ExtractChannel(
-		const ColorImage & in,
+		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
 		Image & out,
@@ -1200,6 +1229,24 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **IsCorrectColorCount** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	bool IsCorrectColorCount(
+		const TImage & image1
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count: 1 (gray-scale image) or 3 (RGB).
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;true in a case of correct color channel count and false if it is not.
+	
 - **IsEqual** [_Namespaces: **Function_Pool, Image_Function**_]
 
 	##### Syntax:
@@ -1580,7 +1627,7 @@ All images in function parameter list must have width and height greater than 0 
 		const Image & in1,
 		const Image & in2,
 		const Image & in3,
-		ColorImage & out
+		Image & out
 	);
 	```
 	**Description:**    
@@ -1607,7 +1654,7 @@ All images in function parameter list must have width and height greater than 0 
 		const Image & in3,
 		uint32_t startXIn3,
 		uint32_t startYIn3,
-		ColorImage & out,
+		Image & out,
 		uint32_t startXOut,
 		uint32_t startYOut,
 		uint32_t width,
@@ -1828,13 +1875,13 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image1
+		const TImage & image1
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated and has a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
@@ -1844,14 +1891,14 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image1,
-		const Template_Image::ImageTemplate < TColorDepth > & image2
+		const TImage & image1,
+		const TImage & image2
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated and they are same size.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, they are same size and have a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -1862,15 +1909,15 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image1,
-		const Template_Image::ImageTemplate < TColorDepth > & image2,
-		const Template_Image::ImageTemplate < TColorDepth > & image3
+		const TImage & image1,
+		const TImage & image2,
+		const TImage & image3
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether three images are allocated and they are same size.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether three images are allocated, they are same size and have a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -1882,9 +1929,9 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image,
+		const TImage & image,
 		uint32_t startX,
 		uint32_t startY,
 		uint32_t width,
@@ -1892,7 +1939,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated, image area [{startX, startY}, {startX + width, startY + height}] is within image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated, image area [{startX, startY}, {startX + width, startY + height}] is within image size, width and height are greater than 0 and it has a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
@@ -1906,12 +1953,12 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image1,
+		const TImage & image1,
 		uint32_t startX1,
 		uint32_t startY1,
-		const Template_Image::ImageTemplate < TColorDepth > & image2,
+		const TImage & image2,
 		uint32_t startX2,
 		uint32_t startY2,
 		uint32_t width,
@@ -1919,7 +1966,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, width and height are greater than 0 and images have a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -1936,15 +1983,15 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	template <typename TColorDepth>
+	template <typename TImage>
 	void ParameterValidation(
-		const Template_Image::ImageTemplate < TColorDepth > & image1,
+		const TImage & image1,
 		uint32_t startX1,
 		uint32_t startY1,
-		const Template_Image::ImageTemplate < TColorDepth > & image2,
+		const TImage & image2,
 		uint32_t startX2,
 		uint32_t startY2,
-		const Template_Image::ImageTemplate < TColorDepth > & image3,
+		const TImage & image3,
 		uint32_t startX3,
 		uint32_t startY3,
 		uint32_t width,
@@ -1952,7 +1999,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, image area [{startX3, startY3}, {startX3 + width, startY3 + height}] is within third image size, width and height are greater than 0.
+	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, image area [{startX1, startY1}, {startX1 + width, startY1 + height}] is within first image size, image area [{startX2, startY2}, {startX2 + width, startY2 + height}] is within second image size, image area [{startX3, startY3}, {startX3 + width, startY3 + height}] is within third image size, width and height are greater than 0 and images have a valid color channel count.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
@@ -2064,8 +2111,8 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ColorImage RgbToBgr(
-		const ColorImage & in
+	Image RgbToBgr(
+		const Image & in
 	);
 	```
 	**Description:**    
@@ -2080,8 +2127,8 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void RgbToBgr(
-		const ColorImage & in,
-		ColorImage & out
+		const Image & in,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -2096,8 +2143,8 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	ColorImage RgbToBgr(
-		const ColorImage & in,
+	Image RgbToBgr(
+		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
 		uint32_t width,
@@ -2120,10 +2167,10 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void RgbToBgr(
-		const ColorImage & in,
+		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
-		ColorImage & out,
+		Image & out,
 		uint32_t startXOut,
 		uint32_t startYOut,
 		uint32_t width,
@@ -2366,7 +2413,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Split(
-		const ColorImage & in,
+		const Image & in,
 		Image & out1,
 		Image & out2,
 		Image & out3
@@ -2387,7 +2434,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Split(
-		const ColorImage & in,
+		const Image & in,
 		uint32_t startXIn,
 		uint32_t startYIn,
 		Image & out1,
@@ -2855,3 +2902,116 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **VerifyColoredImage** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyColoredImage(
+		const TImage & image1
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count as a RGB image - 3.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyColoredImage(
+		const TImage & image1,
+		const TImage & image2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a RGB image - 3.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyColoredImage(
+		const TImage & image1,
+		const TImage & image2,
+		const TImage & image3
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a RGB image - 3.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **VerifyGrayScaleImage** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyGrayScaleImage(
+		const TImage & image1
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count as a gray-scale image - 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyGrayScaleImage(
+		const TImage & image1,
+		const TImage & image2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a gray-scale image - 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyGrayScaleImage(
+		const TImage & image1,
+		const TImage & image2,
+		const TImage & image3
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a gray-scale image - 1.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	

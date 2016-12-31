@@ -8,6 +8,27 @@ namespace Bitmap_Operation
 {
 	const static uint8_t BITMAP_ALIGNMENT = 4; // this is standard alignment of bitmap images
 
+	void flipData(Bitmap_Image::Image & image)
+	{
+		if (image.empty() || image.height() < 2u )
+			return;
+
+		const uint32_t rowSize = image.rowSize();
+		const uint32_t width   = image.width();
+		const uint32_t height  = image.height();
+
+		std::vector < uint8_t > temp( rowSize );
+
+		uint8_t * start = image.data();
+		uint8_t * end   = image.data() + rowSize * (height - 1);
+
+		for( uint32_t rowId = 0; rowId < height / 2; ++rowId, start += rowSize, end -= rowSize ) {
+			memcpy( temp.data(), start      , sizeof( uint8_t ) * rowSize );
+			memcpy( start      , end        , sizeof( uint8_t ) * rowSize );
+			memcpy( end        , temp.data(), sizeof( uint8_t ) * rowSize );
+		}
+	}
+
 	// Seems like very complicated structure but we did this to avoid compiler specific code for bitmap structures :(
 	template <typename valueType>
 	void get_value( const std::vector < uint8_t > & data, size_t & offset, valueType & value )
@@ -296,7 +317,7 @@ namespace Bitmap_Operation
 		};
 	};
 
-	BitmapRawImage Load(std::string path)
+	Bitmap_Image::Image Load(std::string path)
 	{
 		if( path.empty() )
 			throw imageException("Incorrect parameters for bitmap loading");
@@ -305,14 +326,14 @@ namespace Bitmap_Operation
 		file.open( path, std::fstream::in | std::fstream::binary );
 
 		if( !file )
-			return BitmapRawImage();
+			return Bitmap_Image::Image();
 
 		file.seekg(0, file.end);
 		std::streamoff length = file.tellg();
 
 		if( length == std::char_traits<char>::pos_type(-1) ||
 			static_cast<size_t>(length) < sizeof(BitmapFileHeader) + sizeof(BitmapInfoHeader) )
-			return BitmapRawImage();
+			return Bitmap_Image::Image();
 
 		file.seekg(0, file.beg);
 
@@ -327,7 +348,7 @@ namespace Bitmap_Operation
 
 		// we suppose to compare header.bfSize and length but some editors don't put correct information
 		if( header.bfType != BitmapFileHeader().bfType || header.bfOffBits >= length )
-			return BitmapRawImage();
+			return Bitmap_Image::Image();
 
 		// read the size of dib header
 		data.resize( 4u );
@@ -343,7 +364,7 @@ namespace Bitmap_Operation
 		std::unique_ptr <BitmapDibHeader> info( getInfoHeader( dibHeaderSize ) );
 
 		if( info.get() == nullptr )
-			return BitmapRawImage();
+			return Bitmap_Image::Image();
 
 		data.resize( dibHeaderSize );
 
@@ -353,21 +374,19 @@ namespace Bitmap_Operation
 		info->set( data );
 
 		if( info->validate( header ) )
-			return BitmapRawImage();
+			return Bitmap_Image::Image();
 
 		uint32_t rowSize = info->width() * info->colorCount();
 		if( rowSize % BITMAP_ALIGNMENT != 0 )
 			rowSize = (rowSize / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
 		if( length != header.bfOffBits + rowSize * info->height() )
-			return BitmapRawImage();
-
-		BitmapRawImage raw;
+			return Bitmap_Image::Image();
 
 		uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
 
 		if( palleteSize > 0 ) {
-			raw.allocatePallete( palleteSize );
+			std::vector < uint8_t > pallete(palleteSize);
 
 			size_t dataToRead = palleteSize;
 			size_t dataReaded = 0;
@@ -377,16 +396,16 @@ namespace Bitmap_Operation
 			while( dataToRead > 0 ) {
 				size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-				file.read( reinterpret_cast<char *>(raw.pallete() + dataReaded), readSize );
+				file.read( reinterpret_cast<char *>(pallete.data() + dataReaded), readSize );
 
 				dataReaded += readSize;
 				dataToRead -= readSize;
 			}
 		}
 
-		raw.allocateImage( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
+		Bitmap_Image::Image image( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
 
-		size_t dataToRead =  rowSize * info->height();
+		size_t dataToRead = rowSize * info->height();
 		size_t dataReaded = 0;
 
 		const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks
@@ -394,29 +413,29 @@ namespace Bitmap_Operation
 		while( dataToRead > 0 ) {
 			size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-			file.read( reinterpret_cast<char *>(raw.data() + dataReaded), readSize );
+			file.read( reinterpret_cast<char *>(image.data() + dataReaded), readSize );
 
 			dataReaded += readSize;
 			dataToRead -= readSize;
 		}
 
 		// thanks to bitmap creators image is stored in wrong flipped format so we have to flip back
-		raw.flipData();
+		flipData(image);
 
-		return raw;
+		return image;
 	}
 
-	void Load(std::string path, BitmapRawImage & raw)
+	void Load(std::string path, Bitmap_Image::Image & raw)
 	{
 		raw = Load(path);
 	}
 
-	void Save( std::string path, Template_Image::ImageTemplate < uint8_t > & image )
+	void Save( std::string path, Bitmap_Image::Image & image )
 	{
 		Save( path, image, 0, 0, image.width(), image.height() );
 	}
 
-	void Save( std::string path, Template_Image::ImageTemplate < uint8_t > & image, uint32_t startX, uint32_t startY,
+	void Save( std::string path, Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
 			   uint32_t width, uint32_t height )
 	{
 		if( path.empty() || image.empty() || !(image.colorCount() == 1u || image.colorCount() == 3u)  )

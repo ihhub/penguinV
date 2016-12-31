@@ -17,13 +17,13 @@ namespace penguinV
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 		void (*BitwiseXor)       ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
-		void (*Convert)          ( const Image & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+		void (*ConvertToRgb)     ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 								   uint32_t width, uint32_t height );
-		void (*Convert2)         ( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+		void (*ConvertToGrayScale)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 								   uint32_t width, uint32_t height );
 		void (*Copy)             ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 								   uint32_t width, uint32_t height );
-		void (*ExtractChannel)   ( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+		void (*ExtractChannel)   ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
 								   uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId );
 		void (*Fill)             ( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value );
 		void (*Flip)             ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -88,16 +88,16 @@ namespace penguinV
 		functionTable().BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 	}
 
-	inline void Convert( const Image & in, uint32_t startXIn, uint32_t startYIn, ColorImage & out, uint32_t startXOut, uint32_t startYOut,
+	inline void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 						 uint32_t width, uint32_t height )
 	{
-		functionTable().Convert( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		functionTable().ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
-	inline void Convert( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+	inline void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 						 uint32_t width, uint32_t height )
 	{
-		functionTable().Convert2( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		functionTable().ConvertToGrayScale( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
 	inline void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -106,7 +106,7 @@ namespace penguinV
 		functionTable().Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
-	inline void ExtractChannel( const ColorImage & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+	inline void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
 								uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
 	{
 		functionTable().ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );

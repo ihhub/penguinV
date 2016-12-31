@@ -543,12 +543,12 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::ColorImage input = uniformColorImage( intensity[0] );
-				Bitmap_Image::Image      output( input.width(), input.height() );
+				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height() );
 				
 				output.fill( intensity[1] );
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToGrayScale( input, output );
 
 				if( !verifyImage( output, intensity[0] ) )
 					return false;
@@ -561,8 +561,8 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::ColorImage input  = uniformColorImage( intensity[0] );
-				Bitmap_Image::Image      output = uniformImage     ( intensity[1] );
+				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage     ( intensity[1] );
 
 				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -574,7 +574,7 @@ namespace Unit_Test
 
 				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
-				Image_Function::Convert( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+				Image_Function::ConvertToGrayScale( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
 					return false;
@@ -587,12 +587,12 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image      input = uniformImage( intensity[0] );
-				Bitmap_Image::ColorImage output( input.width(), input.height() );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
 				
 				output.fill( intensity[1] );
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToRgb( input, output );
 
 				if( !verifyImage( output, intensity[0] ) )
 					return false;
@@ -605,8 +605,8 @@ namespace Unit_Test
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image      input  = uniformImage     ( intensity[0] );
-				Bitmap_Image::ColorImage output = uniformColorImage( intensity[1] );
+				Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
+				Bitmap_Image::Image output = uniformColorImage( intensity[1] );
 
 				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -618,7 +618,7 @@ namespace Unit_Test
 
 				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
-				Image_Function::Convert( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+				Image_Function::ConvertToRgb( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
 					return false;

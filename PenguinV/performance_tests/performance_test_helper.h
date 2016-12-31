@@ -25,8 +25,8 @@ namespace Performance_Test
 	// Functions to generate images
 	Bitmap_Image::Image uniformImage(uint32_t width, uint32_t height);
 	Bitmap_Image::Image uniformImage(uint32_t width, uint32_t height, uint8_t value);
-	Bitmap_Image::ColorImage uniformColorImage(uint32_t width, uint32_t height);
-	Bitmap_Image::ColorImage uniformColorImage(uint32_t width, uint32_t height, uint8_t value);
+	Bitmap_Image::Image uniformColorImage(uint32_t width, uint32_t height);
+	Bitmap_Image::Image uniformColorImage(uint32_t width, uint32_t height, uint8_t value);
 	std::vector< Bitmap_Image::Image > uniformImages(uint32_t count, uint32_t width, uint32_t height);
 
 	uint32_t runCount(); // fixed value for all test loops

@@ -6,7 +6,6 @@
 
 void method1();
 void method2();
-void method3();
 
 int main()
 {
@@ -24,8 +23,6 @@ int main()
 		method1();
 		// Second way to do
 		method2();
-		// Third way to do
-		method3();
 	} catch(imageException & ex) {
 		// uh-oh, something went wrong!
 		std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
@@ -48,30 +45,25 @@ void method1()
 	// Load an image from storage
 	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where the image stored
-	Bitmap_Operation::BitmapRawImage raw = Bitmap_Operation::Load("mercury.bmp");
+	Bitmap_Image::Image input = Bitmap_Operation::Load("mercury.bmp");
 
-	// We know that this image must be color image so we assign raw data to image
-	Bitmap_Image::ColorImage inputImage;
-
-	if( raw.isColor() ) {
-		// This is not logical operation (comparison). Think about this like:
-		// raw data goes to image or raw --> image
-		raw > inputImage;
-	}
-	else {
-		throw imageException( "Loaded data is not color image." );
-	}
-
-	// To double sure that data transfer from raw format to image format went well we validate image size
-	// By default above isColor() function verifies the same
-	if( inputImage.empty() )
+	// To be sure that data transfer from raw format to image format went well we validate that the image is not empty
+	if( input.empty() )
 		throw imageException( "Cannot load color image. Is it color image?" );
 
-	// Create gray-scale image with same size as color image
-	Bitmap_Image::Image image( inputImage.width(), inputImage.height() );
+	// Create gray-scale image because our input image could be color-image (actually it is)
+	Bitmap_Image::Image image;
+
+	if( input.colorCount() == Bitmap_Image::RGB ) { // okay, it's a color image
+		image.resize( input.width(), input.height() );
+		Image_Function::ConvertToGrayScale( input, image );
+	}
+	else { // nope, it's gray-scale image. Then we just swap images
+		image.swap( input );
+	}
 
 	// Convert color image to gray-scale image
-	Image_Function::Convert( inputImage, image );
+	Image_Function::ConvertToGrayScale( input, image );
 
 	// Threshold image with calculated optimal threshold
 	image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
@@ -82,41 +74,31 @@ void method1()
 
 void method2()
 {
-	// Load image from storage
+	// Load an image from storage
 	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where the image stored
-	Bitmap_Operation::BitmapRawImage raw = Bitmap_Operation::Load("mercury.bmp");
+	Bitmap_Image::Image input = Bitmap_Operation::Load("mercury.bmp");
 
-	// We do not care about bitmap image type. What we want is to get gray-scale image
+	// To be sure that data transfer from raw format to image format went well we validate that the image is not empty
+	if( input.empty() )
+		throw imageException( "Cannot load color image. Is it color image?" );
+
+	// Create gray-scale image because our input image could be color-image (actually it is)
 	Bitmap_Image::Image image;
 
-	// This is not bitwise operation. Think about this like:
-	// I insist that raw data will go to image or raw -->> image
-	raw >> image;
+	if( input.colorCount() == Bitmap_Image::RGB ) { // okay, it's a color image
+		image = Image_Function::ConvertToGrayScale( input );
+	}
+	else { // nope, it's gray-scale image. Then we just swap images
+		image.swap( input );
+	}
 
-	// Threshold image with calculated optimal threshold
-	image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
-
-	// Save result
-	Bitmap_Operation::Save( "result2.bmp", image );
-}
-
-void method3()
-{
-	// We do not care about bitmap image type. What we want is to get gray-scale image
-	Bitmap_Image::Image image;
-
-	// Load image from storage
-	// Please take note that the image must be in the same folder as this application or project (for Visual Studio)
-	// Otherwise you can change the path where the image stored
-
-	// This is not bitwise operation. Think about this like:
-	// I insist that raw data will go to image or raw -->> image
-	Bitmap_Operation::Load("mercury.bmp") >> image;
+	// Convert color image to gray-scale image
+	Image_Function::ConvertToGrayScale( input, image );
 
 	// Threshold image with calculated optimal threshold and directly save result in file
-	Bitmap_Operation::Save( "result3.bmp",
-							image = Image_Function::Threshold(
-								image, Image_Function::GetThreshold(
-									Image_Function::Histogram(image) ) ) );
+	Bitmap_Operation::Save( "result2.bmp",
+								image = Image_Function::Threshold(
+									image, Image_Function::GetThreshold(
+										Image_Function::Histogram(image) ) ) );
 }

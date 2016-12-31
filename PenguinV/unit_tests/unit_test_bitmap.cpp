@@ -17,9 +17,7 @@ namespace Unit_Test
 
 			Bitmap_Operation::Save( "white.bmp", original );
 
-			Bitmap_Image::Image loaded;
-
-			Bitmap_Operation::Load( "white.bmp" ) > loaded;
+			Bitmap_Image::Image loaded = Bitmap_Operation::Load( "white.bmp" );
 
 			if( !equalSize( original, loaded ) || !verifyImage( loaded, 255u ) )
 				return false;

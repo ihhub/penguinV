@@ -3,6 +3,7 @@
 #include <QLabel>
 #include "../../../Library/blob_detection.h"
 #include "../../../Library/image_buffer.h"
+#include "../../../Library/image_function.h"
 #include "../../../Library/FileOperation/bitmap.h"
 
 void showImage( QLabel & window, QImage & image );
@@ -15,17 +16,12 @@ int main(int argc, char *argv[])
         QApplication app(argc, argv);
 
         // Load a color image from storage
-        Bitmap_Image::ColorImage original;
+        Bitmap_Image::Image original = Bitmap_Operation::Load("qt-logo.bmp");
 
-        Bitmap_Operation::BitmapRawImage raw = Bitmap_Operation::Load("qt-logo.bmp");
-
-        if( !raw.isColor() ) {
+        if( original.colorCount() != Bitmap_Image::RGB || original.empty() ) {
             std::cout << "Looks like no image or it is not a color image" << std::endl;
             return 0;
         }
-
-        // Move data from raw format to image
-        raw > original;
 
         // Convert image into QImage format
         QImage originalQt(original.data(), original.width(), original.height(), original.rowSize(), QImage::Format_RGB888);

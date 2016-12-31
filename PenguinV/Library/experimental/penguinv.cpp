@@ -26,8 +26,8 @@ namespace
 		table.BitwiseAnd        = &Image_Function::BitwiseAnd;
 		table.BitwiseOr         = &Image_Function::BitwiseOr;
 		table.BitwiseXor        = &Image_Function::BitwiseXor;
-		table.Convert           = &Image_Function::Convert;
-		table.Convert2          = &Image_Function::Convert;
+		table.ConvertToRgb      = &Image_Function::ConvertToRgb;
+		table.ConvertToGrayScale= &Image_Function::ConvertToGrayScale;
 		table.Copy              = &Image_Function::Copy;
 		table.ExtractChannel    = &Image_Function::ExtractChannel;
 		table.Fill              = &Image_Function::Fill;

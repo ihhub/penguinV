@@ -65,7 +65,7 @@ namespace Template_Image_Cuda
 			, _colorCount(1)
 			, _data      (NULL)
 		{
-			_swap( image );
+			swap( image );
 		}
 
 		ImageTemplateCuda & operator=(const ImageTemplateCuda & image)
@@ -90,7 +90,7 @@ namespace Template_Image_Cuda
 
 		ImageTemplateCuda & operator=(ImageTemplateCuda && image)
 		{
-			_swap( image );
+			swap( image );
 
 			return (*this);
 		}
@@ -171,6 +171,16 @@ namespace Template_Image_Cuda
 			if (error != cudaSuccess)
 					throw imageException("Cannot fill a memory for CUDA device");
 		}
+
+		void swap( ImageTemplateCuda & image )
+		{
+			_width  = image._width;
+			_height = image._height;
+
+			_colorCount = image._colorCount;
+
+			std::swap( _data, image._data );
+		}
 	protected:
 		void _copy( const ImageTemplateCuda & image )
 		{
@@ -182,15 +192,6 @@ namespace Template_Image_Cuda
 				throw imageException("Cannot copy a memory in CUDA device");
 		}
 
-		void _swap( ImageTemplateCuda & image )
-		{
-			_width  = image._width;
-			_height = image._height;
-
-			_colorCount = image._colorCount;
-
-			std::swap( _data, image._data );
-		}
 	private:
 		uint32_t _width;
 		uint32_t _height;
@@ -202,95 +203,59 @@ namespace Template_Image_Cuda
 
 namespace Bitmap_Image_Cuda
 {
-	template <uint8_t bytes = 1>
-	class BitmapImageCuda : public Template_Image_Cuda::ImageTemplateCuda <uint8_t>
+	const static uint8_t GRAY_SCALE = 1u;
+	const static uint8_t RGB = 3u;
+
+	class Image : public Template_Image_Cuda::ImageTemplateCuda <uint8_t>
 	{
 	public:
-		BitmapImageCuda()
-			: ImageTemplateCuda(0, 0, bytes)
+		Image()
+			: ImageTemplateCuda(0, 0, GRAY_SCALE)
 		{
 		}
 
-		BitmapImageCuda(uint32_t width_, uint32_t height_)
-			: ImageTemplateCuda( width_, height_, bytes )
+		Image(uint8_t colorCount_)
+			: ImageTemplateCuda(0, 0, colorCount_)
 		{
 		}
 
-		BitmapImageCuda(const BitmapImageCuda & image)
+		Image(uint32_t width_, uint32_t height_)
+			: ImageTemplateCuda( width_, height_, GRAY_SCALE )
+		{
+		}
+
+		Image(uint32_t width_, uint32_t height_, uint8_t colorCount_)
+			: ImageTemplateCuda( width_, height_, colorCount_ )
+		{
+		}
+
+		Image(const Image & image)
 			: ImageTemplateCuda(image)
 		{
 		}
 
-		BitmapImageCuda(BitmapImageCuda && image)
-			: ImageTemplateCuda(0, 0, bytes)
+		Image(Image && image)
+			: ImageTemplateCuda(0, 0, GRAY_SCALE)
 		{
-			_swap( image );
+			swap( image );
 		}
 
-		BitmapImageCuda & operator=(const BitmapImageCuda & image)
+		Image & operator=(const Image & image)
 		{
 			ImageTemplateCuda::operator=( image );
 
 			return (*this);
 		}
 
-		BitmapImageCuda & operator=(BitmapImageCuda && image)
+		Image & operator=(Image && image)
 		{
-			_swap( image );
+			swap( image );
 
 			return (*this);
 		}
 
-		~BitmapImageCuda()
+		~Image()
 		{
-		}
-
-		void resize(uint32_t width_, uint32_t height_)
-		{
-			ImageTemplateCuda::resize( width_, height_ );
-		}
-
-		void clear()
-		{
-			ImageTemplateCuda::clear();
-		}
-
-		uint8_t * data()
-		{
-			return ImageTemplateCuda::data();
-		}
-
-		const uint8_t * data() const
-		{
-			return ImageTemplateCuda::data();
-		}
-
-		bool empty() const
-		{
-			return ImageTemplateCuda::empty();
-		}
-
-		uint32_t width() const
-		{
-			return ImageTemplateCuda::width();
-		}
-
-		uint32_t height() const
-		{
-			return ImageTemplateCuda::height();
-		}
-
-		uint8_t colorCount() const
-		{
-			return ImageTemplateCuda::colorCount();
-		}
-	private:
-		void setColorCount(uint8_t colorCount_)
-		{
-			ImageTemplateCuda::setColorCount(colorCount_);
 		}
 	};
-
-	typedef BitmapImageCuda < 1 > ImageCuda;      // gray-scale image (1 color [byte])
-	typedef BitmapImageCuda < 3 > ColorImageCuda; // RGB image (usually 3 colors [bytes] but could contain 4)
 };

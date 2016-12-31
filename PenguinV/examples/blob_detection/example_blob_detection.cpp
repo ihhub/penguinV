@@ -43,16 +43,17 @@ int main()
 
 void example1()
 {
-	// We do not care about bitmap image type. What we want is to get gray-scale image
-	Bitmap_Image::Image image;
-
 	// Load image from storage
 	// Please take a note that the image must be in same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where to load the image from
+	Bitmap_Image::Image image = Bitmap_Operation::Load("mercury.bmp");
 
-	// This is not bitwise operation. Think about this like:
-	// 'I insist that raw data will go to image' or raw -->> image
-	Bitmap_Operation::Load("mercury.bmp") >> image;
+	if (image.colorCount() == Bitmap_Image::RGB ) {
+		Bitmap_Image::Image gray(image.width(), image.height());
+
+		Image_Function::ConvertToGrayScale( image, gray );
+		image.swap( gray );
+	}
 
 	// Threshold image with calculated optimal threshold
 	Image_Function::Threshold( image, image, Image_Function::GetThreshold( Image_Function::Histogram(image) ) );
@@ -80,16 +81,13 @@ void example1()
 
 void example2()
 {
-	// We do not care about bitmap image type. What we want is to get gray-scale image
-	Bitmap_Image::Image image;
-
 	// Load image from storage
 	// Please take a note that the image must be in same folder as this application or project (for Visual Studio)
 	// Otherwise you can change the path where to load the image from
+	Bitmap_Image::Image image = Bitmap_Operation::Load("mercury.bmp");
 
-	// This is not bitwise operation. Think about this like:
-	// 'I insist that raw data will go to image' or raw -->> image
-	Bitmap_Operation::Load("mercury.bmp") >> image;
+	if (image.colorCount() == Bitmap_Image::RGB )
+		image = Image_Function::ConvertToGrayScale( image );
 
 	// Search all possible blobs on image with calculated optimal threshold
 	Blob_Detection::BlobDetection detection;

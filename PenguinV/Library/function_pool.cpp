@@ -616,7 +616,7 @@ namespace Function_Pool
 	}
 
 	Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-					uint32_t width, uint32_t height )
+							  uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -628,8 +628,10 @@ namespace Function_Pool
 	}
 
 	void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+							 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().AbsoluteDifference(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -666,6 +668,8 @@ namespace Function_Pool
 	void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().BitwiseAnd(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -702,6 +706,8 @@ namespace Function_Pool
 	void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().BitwiseOr(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -738,6 +744,8 @@ namespace Function_Pool
 	void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -773,6 +781,8 @@ namespace Function_Pool
 	void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 						  uint32_t width, uint32_t height, double a, double gamma )
 	{
+		Image_Function::VerifyGrayScaleImage( in, out );
+
 		FunctionTask().GammaCorrection( in, startXIn, startYIn, out, startXOut, startYOut, width, height, a, gamma );
 	}
 
@@ -803,6 +813,8 @@ namespace Function_Pool
 
 	void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
 	{
+		Image_Function::VerifyGrayScaleImage( image );
+
 		FunctionTask().Histogram(image, x, y, width, height, histogram );
 	}
 
@@ -817,7 +829,7 @@ namespace Function_Pool
 		return out;
 	}
 
-	void  Invert( const Image & in, Image & out )
+	void Invert( const Image & in, Image & out )
 	{
 		Image_Function::ParameterValidation( in, out );
 
@@ -835,9 +847,11 @@ namespace Function_Pool
 		return out;
 	}
 
-	void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+	void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 				  uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in, out );
+
 		FunctionTask().Invert(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
@@ -851,6 +865,8 @@ namespace Function_Pool
 	bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2 );
+
 		return FunctionTask().IsEqual( in1, startX1, startY1, in2, startX2, startY2, width, height );
 	}
 
@@ -887,6 +903,8 @@ namespace Function_Pool
 	void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().Maximum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -923,6 +941,8 @@ namespace Function_Pool
 	void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().Minimum(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -937,7 +957,7 @@ namespace Function_Pool
 		return out;
 	}
 
-	void  Normalize( const Image & in, Image & out )
+	void Normalize( const Image & in, Image & out )
 	{
 		Image_Function::ParameterValidation( in, out );
 
@@ -955,9 +975,11 @@ namespace Function_Pool
 		return out;
 	}
 	
-	void  Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-					 uint32_t width, uint32_t height )
+	void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in, out );
+
 		FunctionTask().Normalize(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
@@ -987,6 +1009,8 @@ namespace Function_Pool
 	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
 							std::vector < uint32_t > & projection )
 	{
+		Image_Function::VerifyGrayScaleImage( image );
+
 		FunctionTask().ProjectionProfile(image, x, y, width, height, horizontal, projection );
 	}
 
@@ -1026,6 +1050,7 @@ namespace Function_Pool
 	{
 		Image_Function::ParameterValidation( in,  startXIn,  startYIn,  widthIn,  heightIn );
 		Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+		Image_Function::VerifyGrayScaleImage( in, out );
 
 		FunctionTask().Resize(in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
 	}
@@ -1063,6 +1088,8 @@ namespace Function_Pool
 	void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
+
 		FunctionTask().Subtract(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
 	}
 
@@ -1073,6 +1100,8 @@ namespace Function_Pool
 
 	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
 	{
+		Image_Function::VerifyGrayScaleImage( image );
+
 		return FunctionTask().Sum(image, x, y, width, height );
 	}
 
@@ -1108,6 +1137,8 @@ namespace Function_Pool
 	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 					uint32_t width, uint32_t height, uint8_t threshold )
 	{
+		Image_Function::VerifyGrayScaleImage( in, out );
+
 		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
 	}
 
@@ -1144,6 +1175,8 @@ namespace Function_Pool
 	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
 	{
+		Image_Function::VerifyGrayScaleImage( in, out );
+
 		FunctionTask().Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
 	}
 };

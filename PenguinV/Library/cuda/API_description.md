@@ -2,15 +2,14 @@
 
 ## Namespaces
 **Bitmap_Image_Cuda**    
-Declares template class for BITMAP images and concrete classes:
-- ***ImageCuda*** - gray-scale bitmap image (main class in most of image processing functions). If the type of image in description is not implicitly specified then it is a gray-scale image.
-- ***ColorImageCuda*** - RGB (color) bitmap image.    
+Declares a class for BITMAP images:
+- ***Image*** - a bitmap image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
 
 **Image_Function_Cuda**    
 Contains all basic functions for image processing by CUDA.    
 
 **Template_Image_Cuda**    
-Includes only one template class ***ImageTemplateCuda*** what is the main class for image buffer classes.    
+Includes only one template class ***ImageTemplateCuda*** which is the main class for image buffer classes.    
 
 ## Functions
 
@@ -20,9 +19,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda AbsoluteDifference(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image AbsoluteDifference(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -38,9 +37,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void AbsoluteDifference(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -58,9 +57,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda BitwiseAnd(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image BitwiseAnd(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -76,9 +75,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void BitwiseAnd(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -96,9 +95,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda BitwiseOr(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image BitwiseOr(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -114,9 +113,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void BitwiseOr(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -134,9 +133,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda BitwiseXor(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image BitwiseXor(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -152,9 +151,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void BitwiseXor(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -174,7 +173,7 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	void Convert(
 		const Bitmap_Image::Image & in,
-		ImageCuda & out
+		Image & out
 	);
 	```
 	**Description:**    
@@ -190,7 +189,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Convert(
-		const ImageCuda & in,
+		const Image & in,
 		Bitmap_Image::Image & out
 	);
 	```
@@ -208,8 +207,8 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda GammaCorrection(
-		const ImageCuda & in,
+	Image GammaCorrection(
+		const Image & in,
 		double a,
 		double gamma
 	);
@@ -228,8 +227,8 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void GammaCorrection(
-		const ImageCuda & in,
-		ImageCuda & out,
+		const Image & in,
+		Image & out,
 		double a,
 		double gamma
 	);
@@ -250,8 +249,8 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda Invert(
-		const ImageCuda & in
+	Image Invert(
+		const Image & in
 	);
 	```
 	**Description:**    
@@ -266,8 +265,8 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Invert(
-		const ImageCuda & in,
-		ImageCuda & out
+		const Image & in,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -284,9 +283,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda Maximum(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image Maximum(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -302,9 +301,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Maximum(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -322,9 +321,9 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
-	ImageCuda Minimum(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image Minimum(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -340,9 +339,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Minimum(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    
@@ -356,69 +355,13 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ParameterValidation** [_Namespaces: **Image_Function_Cuda**_]
-
-	##### Syntax:
-	```cpp
-	template <uint8_t bytes>
-	void ParameterValidation(
-		const BitmapImageCuda <bytes> & image1
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	template <uint8_t bytes1, uint8_t bytes2>
-	void ParameterValidation(
-		const BitmapImageCuda <bytes1> & image1,
-		const BitmapImageCuda <bytes2> & image2
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated and they are same size.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	template <uint8_t bytes1, uint8_t bytes2, uint8_t bytes3>
-	void ParameterValidation(
-		const BitmapImageCuda <bytes1> & image1,
-		const BitmapImageCuda <bytes2> & image2,
-		const BitmapImageCuda <bytes3> & image3
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether three images are allocated and they are same size.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image3 - third image    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-
 - **Subtract** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
-	ImageCuda Subtract(
-		const ImageCuda & in1,
-		const ImageCuda & in2
+	Image Subtract(
+		const Image & in1,
+		const Image & in2
 	);
 	```
 	**Description:**    
@@ -434,9 +377,9 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void Subtract(
-		const ImageCuda & in1,
-		const ImageCuda & in2,
-		ImageCuda & out
+		const Image & in1,
+		const Image & in2,
+		Image & out
 	);
 	```
 	**Description:**    

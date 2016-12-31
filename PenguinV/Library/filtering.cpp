@@ -38,6 +38,7 @@ namespace Image_Function
 					  uint32_t width, uint32_t height, uint32_t kernelSize )
 		{
 			ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			VerifyGrayScaleImage( in, out );
 
 			if( kernelSize < 3 || kernelSize % 2 == 0 || kernelSize >= width || kernelSize >= height )
 				throw imageException("Kernel size for filter is not correct");
@@ -55,8 +56,8 @@ namespace Image_Function
 
 			std::vector < uint8_t > data( kernelSize * kernelSize );
 
-			uint32_t rowSizeIn  = in.rowSize();
-			uint32_t rowSizeOut = out.rowSize();
+			const uint32_t rowSizeIn  = in.rowSize();
+			const uint32_t rowSizeOut = out.rowSize();
 
 			const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 			uint8_t       * outY = out.data() + (startYOut + kernelSize / 2) * rowSizeOut + startXOut + kernelSize / 2;

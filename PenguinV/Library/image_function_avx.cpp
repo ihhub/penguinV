@@ -57,10 +57,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -68,9 +69,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -138,10 +139,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -149,9 +151,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -216,10 +218,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -227,9 +230,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -294,10 +297,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -305,9 +309,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -371,23 +375,25 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
 
-		uint32_t rowSizeIn  = in.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn  = in.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-		simd mask = _mm256_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-									 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+		const simd mask = _mm256_set_epi8(
+							0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+							0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+							0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+							0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 			const simd * src1 = reinterpret_cast < const simd* > (inY);
@@ -450,10 +456,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -461,9 +468,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -532,10 +539,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -543,9 +551,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -614,10 +622,11 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -625,9 +634,9 @@ namespace Image_Function_Avx
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const simd * src1 = reinterpret_cast < const simd* > (in1Y);
@@ -671,17 +680,18 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( image, x, y, width, height );
+		Image_Function::VerifyGrayScaleImage( image );
 
-		uint32_t rowSize = image.rowSize();
+		const uint32_t rowSize = image.rowSize();
 
 		const uint8_t * imageY    = image.data() + y * rowSize + x;
 		const uint8_t * imageYEnd = imageY + height * rowSize;
 
 		uint32_t sum = 0;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		simd simdSum = _mm256_setzero_si256();
 		simd zero    = _mm256_setzero_si256();
@@ -756,28 +766,30 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
 
 		// AVX does not have command "great or equal to" so we have 2 situations:
 		// when threshold value is 0 and it is not
 		if( threshold > 0 ) {
-			uint32_t rowSizeIn  = in.rowSize();
-			uint32_t rowSizeOut = out.rowSize();
+			const uint32_t rowSizeIn  = in.rowSize();
+			const uint32_t rowSizeOut = out.rowSize();
 
 			const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 			uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 			const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-			uint32_t simdWidth = width / simdSize;
-			uint32_t totalSimdWidth = simdWidth * simdSize;
-			uint32_t nonSimdWidth = width - totalSimdWidth;
+			const uint32_t simdWidth = width / simdSize;
+			const uint32_t totalSimdWidth = simdWidth * simdSize;
+			const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-			simd mask = _mm256_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+			const simd mask = _mm256_set_epi8(
+								0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+								0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+								0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+								0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
 
-			simd compare = _mm256_set_epi8(
+			const simd compare = _mm256_set_epi8(
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
 				(threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
@@ -808,7 +820,7 @@ namespace Image_Function_Avx
 			}
 		}
 		else {
-			uint32_t rowSizeOut = out.rowSize();
+			const uint32_t rowSizeOut = out.rowSize();
 
 			uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 			const uint8_t * outYEnd = outY + height * rowSizeOut;
@@ -858,30 +870,33 @@ namespace Image_Function_Avx
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
 
-		uint32_t rowSizeIn  = in.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn  = in.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-		simd shiftMask = _mm256_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										  0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										  0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-										  0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u);
+		const simd shiftMask = _mm256_set_epi8(
+									0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+									0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+									0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
+									0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u);
 
-		simd notMask = _mm256_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-										0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+		const simd notMask = _mm256_set_epi8(
+									0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
+									0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
 
-		simd maxCompare = _mm256_set_epi8(
+		const simd maxCompare = _mm256_set_epi8(
 			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
 			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
 			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
@@ -892,7 +907,7 @@ namespace Image_Function_Avx
 			maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u);
 
 		if( minThreshold > 0 ) {
-			simd minCompare = _mm256_set_epi8(
+			const simd minCompare = _mm256_set_epi8(
 				(minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
 				(minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
 				(minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,

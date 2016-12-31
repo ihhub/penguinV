@@ -85,7 +85,7 @@ namespace Template_Image
 			, _rowSize   (0)
 			, _data      (nullptr)
 		{
-			_swap( image );
+			swap( image );
 		}
 
 		ImageTemplate & operator=(const ImageTemplate & image)
@@ -110,7 +110,7 @@ namespace Template_Image
 
 		ImageTemplate & operator=(ImageTemplate && image)
 		{
-			_swap( image );
+			swap( image );
 
 			return (*this);
 		}
@@ -231,6 +231,18 @@ namespace Template_Image
 
 			memset( data(), value, sizeof(TColorDepth) * height() * rowSize() );
 		}
+
+		void swap( ImageTemplate & image )
+		{
+			_width  = image._width;
+			_height = image._height;
+
+			_colorCount = image._colorCount;
+			_rowSize    = image._rowSize;
+			_alignment  = image._alignment;
+
+			std::swap( _data, image._data );
+		}
 	protected:
 		void _copy( const ImageTemplate & image )
 		{
@@ -249,18 +261,6 @@ namespace Template_Image
 				memcpy( _data, image._data, sizeof(TColorDepth) * height() * rowSize() );
 			}
 		}
-
-		void _swap( ImageTemplate & image )
-		{
-			_width  = image._width;
-			_height = image._height;
-
-			_colorCount = image._colorCount;
-			_rowSize    = image._rowSize;
-			_alignment  = image._alignment;
-
-			std::swap( _data, image._data );
-		}
 	private:
 		uint32_t _width;
 		uint32_t _height;
@@ -275,117 +275,67 @@ namespace Template_Image
 
 namespace Bitmap_Image
 {
-	const static uint8_t BITMAP_ALIGNMENT = 4; // this is default alignment of Bitmap images
-											   // You can change it for your purposes
-	template <uint8_t bytes = 1>
-	class BitmapImage : public Template_Image::ImageTemplate <uint8_t>
+	const static uint8_t BITMAP_ALIGNMENT = 4u; // this is default alignment of Bitmap images
+												// you can change it for your purposes
+
+	const static uint8_t GRAY_SCALE = 1u;
+	const static uint8_t RGB = 3u;
+
+	class Image : public Template_Image::ImageTemplate <uint8_t>
 	{
 	public:
-		BitmapImage()
-			: ImageTemplate(0, 0, bytes, BITMAP_ALIGNMENT)
+		Image()
+			: ImageTemplate(0, 0, GRAY_SCALE, BITMAP_ALIGNMENT)
 		{
 		}
 
-		BitmapImage(uint32_t width_, uint32_t height_)
-			: ImageTemplate( width_, height_, bytes, BITMAP_ALIGNMENT )
+		Image(uint8_t colorCount_)
+			: ImageTemplate(0, 0, colorCount_, BITMAP_ALIGNMENT)
 		{
 		}
 
-		BitmapImage(const BitmapImage & image)
+		Image(uint32_t width_, uint32_t height_)
+			: ImageTemplate( width_, height_, GRAY_SCALE, BITMAP_ALIGNMENT )
+		{
+		}
+
+		Image(uint32_t width_, uint32_t height_, uint8_t colorCount_)
+			: ImageTemplate( width_, height_, colorCount_, BITMAP_ALIGNMENT )
+		{
+		}
+
+		Image(uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_)
+			: ImageTemplate( width_, height_, colorCount_, alignment_ )
+		{
+		}
+
+		Image(const Image & image)
 			: ImageTemplate(image)
 		{
 		}
 
-		BitmapImage(BitmapImage && image)
-			: ImageTemplate(0, 0, bytes, BITMAP_ALIGNMENT)
+		Image(Image && image)
+			: ImageTemplate(0, 0, GRAY_SCALE, BITMAP_ALIGNMENT)
 		{
-			_swap( image );
+			swap( image );
 		}
 
-		BitmapImage & operator=(const BitmapImage & image)
+		Image & operator=(const Image & image)
 		{
 			ImageTemplate::operator=( image );
 
 			return (*this);
 		}
 
-		BitmapImage & operator=(BitmapImage && image)
+		Image & operator=(Image && image)
 		{
-			_swap( image );
+			swap( image );
 
 			return (*this);
 		}
 
-		~BitmapImage()
+		~Image()
 		{
-		}
-
-		void resize(uint32_t width_, uint32_t height_)
-		{
-			ImageTemplate::resize( width_, height_ );
-		}
-
-		void clear()
-		{
-			ImageTemplate::clear();
-		}
-
-		uint8_t * data()
-		{
-			return ImageTemplate::data();
-		}
-
-		const uint8_t * data() const
-		{
-			return ImageTemplate::data();
-		}
-
-		void assign( uint8_t * data_, uint32_t width_, uint32_t height_ )
-		{
-			ImageTemplate::assign( data_, width_, height_, bytes, BITMAP_ALIGNMENT );
-		}
-
-		bool empty() const
-		{
-			return ImageTemplate::empty();
-		}
-
-		uint32_t width() const
-		{
-			return ImageTemplate::width();
-		}
-
-		uint32_t height() const
-		{
-			return ImageTemplate::height();
-		}
-
-		uint32_t rowSize() const
-		{
-			return ImageTemplate::rowSize();
-		}
-
-		uint8_t colorCount() const
-		{
-			return ImageTemplate::colorCount();
-		}
-
-		uint8_t alignment() const
-		{
-			return ImageTemplate::alignment();
-		}
-	private:
-		void setColorCount(uint8_t colorCount_)
-		{
-			ImageTemplate::setColorCount(colorCount_);
-		}
-
-		void setAlignment(uint8_t alignment_)
-		{
-			ImageTemplate::setAlignment(alignment_);
 		}
 	};
-
-	typedef BitmapImage < 1 > Image;      // gray-scale image (1 color [byte])
-	typedef BitmapImage < 3 > ColorImage; // RGB image (usually 3 colors [bytes] but could contain 4)
 };

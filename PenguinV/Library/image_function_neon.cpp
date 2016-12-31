@@ -50,10 +50,11 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -61,9 +62,9 @@ namespace Image_Function_Neon
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const uint8_t * src1 = in1Y;
@@ -128,10 +129,11 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -139,9 +141,9 @@ namespace Image_Function_Neon
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
 			const uint8_t * src1 = in1Y;
@@ -205,18 +207,19 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
 
-		uint32_t rowSizeIn  = in.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn  = in.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
 		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 			const uint8_t * src1 = inY;
@@ -279,10 +282,11 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -290,9 +294,9 @@ namespace Image_Function_Neon
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for (; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2) {
 			const uint8_t * src1 = in1Y;
@@ -361,10 +365,11 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -372,9 +377,9 @@ namespace Image_Function_Neon
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for (; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2) {
 			const uint8_t * src1 = in1Y;
@@ -443,10 +448,11 @@ namespace Image_Function_Neon
 		}
 
 		Image_Function::ParameterValidation(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+		Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
-		uint32_t rowSizeIn1 = in1.rowSize();
-		uint32_t rowSizeIn2 = in2.rowSize();
-		uint32_t rowSizeOut = out.rowSize();
+		const uint32_t rowSizeIn1 = in1.rowSize();
+		const uint32_t rowSizeIn2 = in2.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
 
 		const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1;
 		const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2;
@@ -454,9 +460,9 @@ namespace Image_Function_Neon
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-		uint32_t simdWidth = width / simdSize;
-		uint32_t totalSimdWidth = simdWidth * simdSize;
-		uint32_t nonSimdWidth = width - totalSimdWidth;
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
 
 		for (; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2) {
 			const uint8_t * src1 = in1Y;

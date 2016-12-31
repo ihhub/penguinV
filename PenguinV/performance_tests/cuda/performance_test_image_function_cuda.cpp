@@ -55,7 +55,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -72,7 +72,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -89,7 +89,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -106,7 +106,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -123,7 +123,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -140,7 +140,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -157,7 +157,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -174,7 +174,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -191,7 +191,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -208,7 +208,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -225,7 +225,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -242,7 +242,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -259,7 +259,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -276,7 +276,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -293,7 +293,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -310,7 +310,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -327,7 +327,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -344,7 +344,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -361,7 +361,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -378,7 +378,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -395,7 +395,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -412,7 +412,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -429,7 +429,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -446,7 +446,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -463,7 +463,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -480,7 +480,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -497,7 +497,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -514,7 +514,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -531,7 +531,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 256, 256);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -548,7 +548,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 512, 512);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -565,7 +565,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 1024, 1024);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
@@ -582,7 +582,7 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			std::vector < Bitmap_Image_Cuda::ImageCuda > image = Cuda::uniformImages(3, 2048, 2048);
+			std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages(3, 2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();

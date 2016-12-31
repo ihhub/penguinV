@@ -374,13 +374,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::Image      input  = uniformImage     (256, 256);
-			Bitmap_Image::ColorImage output = uniformColorImage(256, 256);
+			Bitmap_Image::Image input  = uniformImage     (256, 256);
+			Bitmap_Image::Image output = uniformColorImage(256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToRgb( input, output );
 
 				timer.stop();
 			}
@@ -392,13 +392,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::Image      input  = uniformImage     (512, 512);
-			Bitmap_Image::ColorImage output = uniformColorImage(512, 512);
+			Bitmap_Image::Image input  = uniformImage     (512, 512);
+			Bitmap_Image::Image output = uniformColorImage(512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToRgb( input, output );
 
 				timer.stop();
 			}
@@ -410,13 +410,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::Image      input  = uniformImage     (1024, 1024);
-			Bitmap_Image::ColorImage output = uniformColorImage(1024, 1024);
+			Bitmap_Image::Image input  = uniformImage     (1024, 1024);
+			Bitmap_Image::Image output = uniformColorImage(1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToRgb( input, output );
 
 				timer.stop();
 			}
@@ -428,13 +428,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::Image      input  = uniformImage     (2048, 2048);
-			Bitmap_Image::ColorImage output = uniformColorImage(2048, 2048);
+			Bitmap_Image::Image input  = uniformImage     (2048, 2048);
+			Bitmap_Image::Image output = uniformColorImage(2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToRgb( input, output );
 
 				timer.stop();
 			}
@@ -446,13 +446,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::ColorImage input  = uniformColorImage(256, 256);
-			Bitmap_Image::Image      output = uniformImage     (256, 256);
+			Bitmap_Image::Image input  = uniformColorImage(256, 256);
+			Bitmap_Image::Image output = uniformImage     (256, 256);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToGrayScale( input, output );
 
 				timer.stop();
 			}
@@ -464,13 +464,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::ColorImage input  = uniformColorImage(512, 512);
-			Bitmap_Image::Image      output = uniformImage     (512, 512);
+			Bitmap_Image::Image input  = uniformColorImage(512, 512);
+			Bitmap_Image::Image output = uniformImage     (512, 512);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToGrayScale( input, output );
 
 				timer.stop();
 			}
@@ -482,13 +482,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::ColorImage input  = uniformColorImage(1024, 1024);
-			Bitmap_Image::Image      output = uniformImage     (1024, 1024);
+			Bitmap_Image::Image input  = uniformColorImage(1024, 1024);
+			Bitmap_Image::Image output = uniformImage     (1024, 1024);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToGrayScale( input, output );
 
 				timer.stop();
 			}
@@ -500,13 +500,13 @@ namespace Performance_Test
 		{
 			TimerContainer timer;
 
-			Bitmap_Image::ColorImage input  = uniformColorImage(2048, 2048);
-			Bitmap_Image::Image      output = uniformImage     (2048, 2048);
+			Bitmap_Image::Image input  = uniformColorImage(2048, 2048);
+			Bitmap_Image::Image output = uniformImage     (2048, 2048);
 
 			for( uint32_t i = 0; i < runCount(); ++i ) {
 				timer.start();
 
-				Image_Function::Convert( input, output );
+				Image_Function::ConvertToGrayScale( input, output );
 
 				timer.stop();
 			}

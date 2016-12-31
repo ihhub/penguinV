@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 		std::cout << "Original image saved at original.ppm" << std::endl;
 		
 		// Create a colour image and assign received data from camera to it
-		Bitmap_Image::ColorImage rgbImage;
-		rgbImage.assign(data, camera.getWidth(), camera.getHeight()); // here we give a control of allocated memory into ColorImage class
+		Bitmap_Image::Image rgbImage;
+		rgbImage.assign(data, camera.getWidth(), camera.getHeight(), 3u, 1u); // here we give a control of allocated memory into ColorImage class
 		
 		// Correct image because representation inside image is wrong (at least for my camera :) )
 		rgbImage = Image_Function::RgbToBgr(rgbImage);
