@@ -287,8 +287,12 @@ namespace Image_Function
 							 uint32_t width, uint32_t height )
 	{
 		ParameterValidation(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
-		VerifyColoredImage  ( in  );
 		VerifyGrayScaleImage( out );
+
+		if( in.colorCount() == GRAY_SCALE ) {
+			Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			return;
+		}
 
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
@@ -333,8 +337,12 @@ namespace Image_Function
 					   uint32_t width, uint32_t height )
 	{
 		ParameterValidation(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
-		VerifyGrayScaleImage( in  );
 		VerifyColoredImage  ( out );
+
+		if( in.colorCount() == RGB ) {
+			Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			return;
+		}
 
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
