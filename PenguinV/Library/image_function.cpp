@@ -37,17 +37,19 @@ namespace Image_Function
 							 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
 
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -125,17 +127,19 @@ namespace Image_Function
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
 
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -183,17 +187,19 @@ namespace Image_Function
 					Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -241,17 +247,19 @@ namespace Image_Function
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -387,11 +395,8 @@ namespace Image_Function
 			   uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-		
-		if (in.colorCount() != out.colorCount() )
-			throw imageException("Input and output images have different number of color channels");
 
-		const uint8_t colorCount  = in.colorCount();
+		const uint8_t colorCount  = CommonColorCount( in, out );
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
@@ -738,15 +743,17 @@ namespace Image_Function
 				 uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in, out );
 		const uint32_t rowSizeIn  = in.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
 			const uint8_t * inX  = inY;
@@ -770,15 +777,17 @@ namespace Image_Function
 				  uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-		VerifyGrayScaleImage( in1, in2 );
+		
+		const uint8_t colorCount = CommonColorCount( in1, in2 );
+		const uint32_t rowSize1  = in1.rowSize();
+		const uint32_t rowSize2  = in2.rowSize();
 
-		const uint32_t rowSize1 = in1.rowSize();
-		const uint32_t rowSize2 = in2.rowSize();
-
-		const uint8_t * in1Y = in1.data() + startY1 * rowSize1 + startX1;
-		const uint8_t * in2Y = in2.data() + startY2 * rowSize2 + startX2;
+		const uint8_t * in1Y = in1.data() + startY1 * rowSize1 + startX1 * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2 * rowSize2 + startX2 * colorCount;
 
 		const uint8_t * in1YEnd = in1Y + height * rowSize1;
+
+		width = width * colorCount;
 
 		for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -886,17 +895,19 @@ namespace Image_Function
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -996,17 +1007,19 @@ namespace Image_Function
 				  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;
@@ -1450,17 +1463,19 @@ namespace Image_Function
 				   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-		VerifyGrayScaleImage( in1, in2, out );
-
+		
+		const uint8_t colorCount  = CommonColorCount( in1, in2, out );
 		const uint32_t rowSize1   = in1.rowSize();
 		const uint32_t rowSize2   = in2.rowSize();
 		const uint32_t rowSizeOut = out.rowSize();
 
-		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1;
-		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2;
-		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+		const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
+		const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
 		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		width = width * colorCount;
 
 		for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
 			const uint8_t * in1X = in1Y;

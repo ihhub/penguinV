@@ -8,9 +8,27 @@ namespace Image_Function
 	using namespace Bitmap_Image;
 
 	template <typename TImage>
-	bool IsCorrectColorCount(const TImage & image1)
+	uint8_t CommonColorCount(const TImage & image1, const TImage & image2)
 	{
-		return image1.colorCount() == GRAY_SCALE || image1.colorCount() == RGB;
+		if( image1.colorCount() != image2.colorCount() )
+			throw imageException("Color counts of images are different");
+
+		return image1.colorCount();
+	}
+
+	template <typename TImage>
+	uint8_t CommonColorCount(const TImage & image1, const TImage & image2, const TImage & image3)
+	{
+		if( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
+			throw imageException("Color counts of images are different");
+
+		return image1.colorCount();
+	}
+
+	template <typename TImage>
+	bool IsCorrectColorCount(const TImage & image)
+	{
+		return image.colorCount() == GRAY_SCALE || image.colorCount() == RGB;
 	}
 
 	template <typename TImage>

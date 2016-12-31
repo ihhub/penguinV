@@ -502,7 +502,47 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+	
+- **CommonColorCount** [_Namespaces: **Image_Function**_]
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	uint8_t CommonColorCount(
+		const TImage & image1,
+		const TImage & image2
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies that images have the same channel count and returns it as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	uint8_t CommonColorCount(
+		const TImage & image1,
+		const TImage & image2,
+		const TImage & image3
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies that images have the same channel count and returns it as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
+	
 - **ConvertToGrayScale** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
@@ -1235,14 +1275,14 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	template <typename TImage>
 	bool IsCorrectColorCount(
-		const TImage & image1
+		const TImage & image
 	);
 	```
 	**Description:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count: 1 (gray-scale image) or 3 (RGB).
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;true in a case of correct color channel count and false if it is not.
