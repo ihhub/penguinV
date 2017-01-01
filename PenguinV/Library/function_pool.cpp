@@ -351,6 +351,13 @@ namespace Function_Pool
 			_process( _Resize );
 		}
 
+		void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					   uint32_t width, uint32_t height )
+		{
+			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			_process( _RgbToBgr );
+		}
+
 		void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 		{
@@ -403,6 +410,7 @@ namespace Function_Pool
 			_Normalize,
 			_ProjectionProfile,
 			_Resize,
+			_RgbToBgr,
 			_Subtract,
 			_Sum,
 			_Threshold,
@@ -487,6 +495,11 @@ namespace Function_Pool
 											_infoIn1->width[taskId], _infoIn1->height[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoOut->width[taskId], _infoOut->height[taskId] );
+				break;
+			case _RgbToBgr:
+				Image_Function::RgbToBgr(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
 			case _Subtract:
 				Image_Function::Subtract(   _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -1031,6 +1044,41 @@ namespace Function_Pool
 		Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
 
 		FunctionTask().Resize(in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
+	}
+
+	Image RgbToBgr(const Image & in)
+	{
+		Image_Function::ParameterValidation(in);
+
+		Image out(in.width(), in.height(), 3u);
+
+		RgbToBgr(in, 0, 0, out, 0, 0, in.width(), in.height());
+
+		return out;
+	}
+
+	void RgbToBgr(const Image & in, Image & out)
+	{
+		Image_Function::ParameterValidation(in, out);
+
+		RgbToBgr(in, 0, 0, out, 0, 0, in.width(), in.height());
+	}
+
+	Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation(in, startXIn, startYIn, width, height);
+
+		Image out(width, height, 3u);
+
+		RgbToBgr(in, startXIn, startYIn, out, 0, 0, width, height);
+
+		return out;
+	}
+
+	void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+				   uint32_t width, uint32_t height )
+	{
+		FunctionTask().RgbToBgr(in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
 	Image Subtract( const Image & in1, const Image & in2 )
