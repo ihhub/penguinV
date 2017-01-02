@@ -31,14 +31,19 @@ namespace Unit_Test
 		bool BitwiseXor8ParametersTest();
 		bool BitwiseXor11ParametersTest();
 
+		bool ConvertToGrayScale1ParameterTest();
+		bool ConvertToGrayScale2ParametersTest();
+		bool ConvertToGrayScale5ParametersTest();
+		bool ConvertToGrayScale8ParametersTest();
+
+		bool ConvertToRgb1ParameterTest();
+		bool ConvertToRgb2ParametersTest();
+		bool ConvertToRgb5ParametersTest();
+		bool ConvertToRgb8ParametersTest();
+
 		bool Copy2ParametersTest();
 		bool Copy5ParametersTest();
 		bool Copy8ParametersTest();
-
-		bool ConvertToGray2ParametersTest();
-		bool ConvertToGray8ParametersTest();
-		bool ConvertToColor2ParametersTest();
-		bool ConvertToColor8ParametersTest();
 
 		bool Fill2ParametersTest();
 		bool Fill6ParametersTest();

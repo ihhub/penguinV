@@ -27,6 +27,16 @@ namespace Unit_Test
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXor8ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::BitwiseXor11ParametersTest );
 
+		ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale1ParameterTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale2ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale5ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale8ParametersTest );
+
+		ADD_TEST( framework, Function_Pool_Test::ConvertToRgb1ParameterTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToRgb2ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToRgb5ParametersTest );
+		ADD_TEST( framework, Function_Pool_Test::ConvertToRgb8ParametersTest );
+
 		ADD_TEST( framework, Function_Pool_Test::GammaCorrection3ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::GammaCorrection4ParametersTest );
 		ADD_TEST( framework, Function_Pool_Test::GammaCorrection7ParametersTest );
@@ -417,6 +427,176 @@ namespace Unit_Test
 												image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+
+				Bitmap_Image::Image output = Function_Pool::ConvertToGrayScale( input );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height() );
+				
+				output.fill( intensity[1] );
+
+				Function_Pool::ConvertToGrayScale( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Function_Pool::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage     ( intensity[1] );
+
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				Function_Pool::ConvertToGrayScale( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+				Bitmap_Image::Image output = Function_Pool::ConvertToRgb( input );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
+				
+				output.fill( intensity[1] );
+
+				Function_Pool::ConvertToRgb( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Function_Pool::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>(1, 8) );
+
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
+				Bitmap_Image::Image output = uniformColorImage( intensity[1] );
+
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				Function_Pool::ConvertToRgb( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
 					return false;
 			}
 

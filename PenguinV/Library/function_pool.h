@@ -38,6 +38,18 @@ namespace Function_Pool
 	void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 					  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+	Image ConvertToGrayScale( const Image & in );
+	void  ConvertToGrayScale( const Image & in, Image & out );
+	Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void  ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							 uint32_t width, uint32_t height );
+
+	Image ConvertToRgb( const Image & in );
+	void  ConvertToRgb( const Image & in, Image & out );
+	Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+	void  ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					   uint32_t width, uint32_t height );
+
 	// Gamma correction works by formula:
 	// output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0
 	// Usually people set A as 1

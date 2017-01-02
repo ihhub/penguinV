@@ -274,6 +274,20 @@ namespace Function_Pool
 			_process( _BitwiseXor );
 		}
 
+		void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+								 uint32_t width, uint32_t height )
+		{
+			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			_process( _ConvertToGrayScale );
+		}
+
+		void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						   uint32_t width, uint32_t height )
+		{
+			_setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+			_process( _ConvertToRgb );
+		}
+
 		void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 							  uint32_t width, uint32_t height, double a, double gamma )
 		{
@@ -401,6 +415,8 @@ namespace Function_Pool
 			_BitwiseAnd,
 			_BitwiseOr,
 			_BitwiseXor,
+			_ConvertToGrayScale,
+			_ConvertToRgb,
 			_GammaCorrection,
 			_Histogram,
 			_Invert,
@@ -442,6 +458,16 @@ namespace Function_Pool
 			case _BitwiseXor:
 				Image_Function::BitwiseXor( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _ConvertToGrayScale:
+				Image_Function::ConvertToGrayScale(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+											_infoIn1->width[taskId], _infoIn1->height[taskId] );
+				break;
+			case _ConvertToRgb:
+				Image_Function::ConvertToRgb(_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
 											_infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
 											_infoIn1->width[taskId], _infoIn1->height[taskId] );
 				break;
@@ -755,6 +781,76 @@ namespace Function_Pool
 					 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		FunctionTask().BitwiseXor(in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+	}
+
+	Image ConvertToGrayScale( const Image & in )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		ConvertToGrayScale(in, 0, 0, out, 0, 0, out.width(), out.height());
+
+		return out;
+	}
+
+	void ConvertToGrayScale( const Image & in, Image & out )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		ConvertToGrayScale(in, 0, 0, out, 0, 0, out.width(), out.height());
+	}
+
+	Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		ConvertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
+	void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							 uint32_t width, uint32_t height )
+	{
+		FunctionTask().ConvertToGrayScale(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
+	}
+
+	Image ConvertToRgb( const Image & in )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height(), RGB );
+
+		ConvertToRgb(in, 0, 0, out, 0, 0, out.width(), out.height());
+
+		return out;
+	}
+
+	void ConvertToRgb( const Image & in, Image & out )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		ConvertToRgb(in, 0, 0, out, 0, 0, out.width(), out.height());
+	}
+
+	Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height, RGB );
+
+		ConvertToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
+
+		return out;
+	}
+
+	void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					   uint32_t width, uint32_t height )
+	{
+		FunctionTask().ConvertToRgb(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
 	}
 
 	Image GammaCorrection( const Image & in, double a, double gamma )

@@ -31,14 +31,19 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Test::BitwiseXor8ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::BitwiseXor11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale5ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale8ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Test::ConvertToRgb1ParameterTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToRgb2ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToRgb5ParametersTest );
+		ADD_TEST( framework, Image_Function_Test::ConvertToRgb8ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Test::Copy2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Copy5ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Copy8ParametersTest );
-
-		ADD_TEST( framework, Image_Function_Test::ConvertToGray2ParametersTest );
-		ADD_TEST( framework, Image_Function_Test::ConvertToGray8ParametersTest );
-		ADD_TEST( framework, Image_Function_Test::ConvertToColor2ParametersTest );
-		ADD_TEST( framework, Image_Function_Test::ConvertToColor8ParametersTest );
 
 		ADD_TEST( framework, Image_Function_Test::Fill2ParametersTest );
 		ADD_TEST( framework, Image_Function_Test::Fill6ParametersTest );
@@ -482,6 +487,162 @@ namespace Unit_Test
 			return true;
 		}
 
+		bool ConvertToGrayScale1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+
+				Bitmap_Image::Image output = Image_Function::ConvertToGrayScale( input );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height() );
+				
+				output.fill( intensity[1] );
+
+				Image_Function::ConvertToGrayScale( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToGrayScale8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+				Bitmap_Image::Image output = uniformImage     ( intensity[1] );
+
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				Image_Function::ConvertToGrayScale( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb1ParameterTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+				Bitmap_Image::Image output = Image_Function::ConvertToRgb( input );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+				Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
+				
+				output.fill( intensity[1] );
+
+				Image_Function::ConvertToRgb( input, output );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb5ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 1 );
+				Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
+
+				if( !verifyImage( output, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ConvertToRgb8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
+				Bitmap_Image::Image output = uniformColorImage( intensity[1] );
+
+				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+				size[0] = imageSize( input  );
+				size[1] = imageSize( output );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+				Image_Function::ConvertToRgb( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
+					return false;
+			}
+
+			return true;
+		}
+
 		bool Copy2ParametersTest()
 		{
 			for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -533,94 +694,6 @@ namespace Unit_Test
 				Image_Function::Copy( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
 				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool ConvertToGray2ParametersTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image input = uniformColorImage( intensity[0] );
-				Bitmap_Image::Image output( input.width(), input.height() );
-				
-				output.fill( intensity[1] );
-
-				Image_Function::ConvertToGrayScale( input, output );
-
-				if( !verifyImage( output, intensity[0] ) )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool ConvertToGray8ParametersTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
-				Bitmap_Image::Image output = uniformImage     ( intensity[1] );
-
-				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
-
-				size[0] = imageSize( input  );
-				size[1] = imageSize( output );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
-
-				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
-
-				Image_Function::ConvertToGrayScale( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
-
-				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool ConvertToColor2ParametersTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image input = uniformImage( intensity[0] );
-				Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
-				
-				output.fill( intensity[1] );
-
-				Image_Function::ConvertToRgb( input, output );
-
-				if( !verifyImage( output, intensity[0] ) )
-					return false;
-			}
-
-			return true;
-		}
-
-		bool ConvertToColor8ParametersTest()
-		{
-			for( uint32_t i = 0; i < runCount(); ++i ) {
-				std::vector < uint8_t > intensity = intensityArray( 2 );
-				Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
-				Bitmap_Image::Image output = uniformColorImage( intensity[1] );
-
-				std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
-
-				size[0] = imageSize( input  );
-				size[1] = imageSize( output );
-
-				std::vector < uint32_t > roiX, roiY;
-				uint32_t roiWidth, roiHeight;
-
-				generateRoi( size, roiX, roiY, roiWidth, roiHeight );
-
-				Image_Function::ConvertToRgb( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
-
-				if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
 					return false;
 			}
 

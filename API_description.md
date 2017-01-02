@@ -543,7 +543,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
 	
-- **ConvertToGrayScale** [_Namespaces: **Image_Function**_]
+- **ConvertToGrayScale** [_Namespaces: **Function_Pool, Image_Function**_]
 	
 	##### Syntax:
 	```cpp
@@ -629,7 +629,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **ConvertToRgb** [_Namespaces: **Image_Function**_]
+- **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function**_]
 
 	##### Syntax:
 	```cpp

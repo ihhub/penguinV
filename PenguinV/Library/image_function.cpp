@@ -358,7 +358,7 @@ namespace Image_Function
 
 		Image out( width, height, RGB );
 
-		ConvertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
+		ConvertToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
 
 		return out;
 	}

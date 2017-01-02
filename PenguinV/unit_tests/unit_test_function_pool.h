@@ -28,6 +28,16 @@ namespace Unit_Test
 		bool BitwiseXor8ParametersTest();
 		bool BitwiseXor11ParametersTest();
 
+		bool ConvertToGrayScale1ParameterTest();
+		bool ConvertToGrayScale2ParametersTest();
+		bool ConvertToGrayScale5ParametersTest();
+		bool ConvertToGrayScale8ParametersTest();
+
+		bool ConvertToRgb1ParameterTest();
+		bool ConvertToRgb2ParametersTest();
+		bool ConvertToRgb5ParametersTest();
+		bool ConvertToRgb8ParametersTest();
+
 		bool GammaCorrection3ParametersTest();
 		bool GammaCorrection4ParametersTest();
 		bool GammaCorrection7ParametersTest();
