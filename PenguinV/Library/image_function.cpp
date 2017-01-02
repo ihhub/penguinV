@@ -950,12 +950,35 @@ namespace Image_Function
 		}
 	}
 
+	Image Merge( const Image & in1, const Image & in2, const Image & in3 )
+	{
+		ParameterValidation( in1, in2, in3 );
+
+		Image out( in1.width(), in1.height(), RGB );
+
+		Merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
+
+		return out;
+	}
+
 	void Merge( const Image & in1, const Image & in2, const Image & in3, Image & out )
 	{
 		ParameterValidation( in1, in2, in3 );
 		ParameterValidation( in1, out );
 
 		Merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
+	}
+
+	Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+				 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height)
+	{
+		ParameterValidation(in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height);
+
+		Image out( width, height, RGB );
+
+		Merge( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, out, 0, 0, width, height );
+
+		return out;
 	}
 
 	void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,

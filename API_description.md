@@ -1728,6 +1728,25 @@ All images in function parameter list must have width and height greater than 0 
 
 	##### Syntax:
 	```cpp
+	Image Merge(
+		const Image & in1,
+		const Image & in2,
+		const Image & in3
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Merges 3 gray-scale images into one 3-color image with same width and height by setting gray-scale intensity (value) into color channels and returns it as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;in3 - third gray-scale image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
 	void Merge(
 		const Image & in1,
 		const Image & in2,
@@ -1746,7 +1765,42 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+	
+	##### Syntax:
+	```cpp
+	Image Merge(
+		const Image & in1,
+		uint32_t startXIn1,
+		uint32_t startYIn1,
+		const Image & in2,
+		uint32_t startXIn2,
+		uint32_t startYIn2,
+		const Image & in3,
+		uint32_t startXIn3,
+		uint32_t startYIn3,
+		uint32_t width,
+		uint32_t height
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Merges 3 gray-scale images within an area of [width, height] size into one 3-color image with the same size by setting gray-scale intensity (value) into color channels and returns it as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in1 - first gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn1 - start X position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn1 - start Y position of first gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn2 - start X position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn2 - start Y position of second gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;in3 - third gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn3 - start X position of third gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn3 - start Y position of third gray-scale image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image of [width, height] size. If the function fails exception imageException is raised.
+	
 	##### Syntax:
 	```cpp
 	void Merge(
