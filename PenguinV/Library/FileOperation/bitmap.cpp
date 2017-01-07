@@ -14,7 +14,6 @@ namespace Bitmap_Operation
 			return;
 
 		const uint32_t rowSize = image.rowSize();
-		const uint32_t width   = image.width();
 		const uint32_t height  = image.height();
 
 		std::vector < uint8_t > temp( rowSize );
