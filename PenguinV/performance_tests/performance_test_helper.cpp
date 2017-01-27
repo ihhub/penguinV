@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <math.h>
 #include <numeric>
 #include <vector>
 #include "performance_test_helper.h"

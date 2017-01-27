@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <cstdlib>
 #include <list>
 #include "../Library/image_buffer.h"
 
