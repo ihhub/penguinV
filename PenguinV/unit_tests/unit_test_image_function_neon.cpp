@@ -35,6 +35,16 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Neon_Test::Subtract3ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Subtract8ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Subtract11ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Neon_Test::Threshold2ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Threshold3ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Threshold6ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::Threshold9ParametersTest );
+
+		ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble3ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble4ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble7ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble10ParametersTest );
 	}
 
 	namespace Image_Function_Neon_Test
@@ -504,6 +514,174 @@ namespace Unit_Test
 
 				if (!verifyImage(image[2], roiX[2], roiY[2], roiWidth, roiHeight,
 					intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0))
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Threshold2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint8_t threshold = randomValue <uint8_t>( 255 );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Threshold( input, threshold );
+
+				if( !verifyImage( output, intensity < threshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Threshold3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				uint8_t threshold = randomValue <uint8_t>( 255 );
+
+				Image_Function_Neon::Threshold( input[0], input[1], threshold );
+
+				if( !verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Threshold6ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t threshold = randomValue <uint8_t>( 255 );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity < threshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool Threshold9ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t threshold = randomValue <uint8_t>( 255 );
+
+				Image_Function_Neon::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
+
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] < threshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Threshold( input, minThreshold, maxThreshold );
+
+				if( !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble4ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Image_Function_Neon::Threshold( input[0], input[1], minThreshold, maxThreshold );
+
+				if( !verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble7ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				uint8_t intensity = intensityValue();
+				Bitmap_Image::Image input = uniformImage( intensity );
+
+				uint32_t roiX, roiY, roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Bitmap_Image::Image output = Image_Function_Neon::Threshold( input, roiX, roiY, roiWidth, roiHeight,
+																			minThreshold, maxThreshold );
+
+				if( !equalSize( output, roiWidth, roiHeight ) ||
+					!verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool ThresholdDouble10ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				uint8_t minThreshold = randomValue <uint8_t>( 255 );
+				uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+				Image_Function_Neon::Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight,
+											   minThreshold, maxThreshold);
+
+				if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
+					intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
 					return false;
 			}
 

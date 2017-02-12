@@ -6,6 +6,7 @@
 namespace
 {
 	const uint32_t simdSize = 16u;
+	typedef uint8x16_t simd;
 };
 
 namespace Image_Function_Neon
@@ -490,7 +491,7 @@ namespace Image_Function_Neon
 			const uint8_t * src1End = src1 + totalSimdWidth;
 
 			for( ; src1 != src1End; src1 += simdSize, src2 += simdSize, dst += simdSize ) {
-				uint8x16_t data = vld1q_u8(src1);
+				const simd data = vld1q_u8(src1);
 				vst1q_u8( dst, vsubq_u8( data, vminq_u8( data, vld1q_u8(src2) ) ) );
 			}
 
@@ -507,6 +508,174 @@ namespace Image_Function_Neon
 					else
 						(*outX) = (*in1X) - (*in2X);
 				}
+			}
+		}
+	}
+
+	Image Threshold( const Image & in, uint8_t threshold )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t threshold )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+	}
+
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t threshold )
+	{
+		// image width is less than 16 bytes so no use to utilize NEON :(
+		if (width < simdSize) {
+			Image_Function::Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold);
+			return;
+		}
+
+		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
+
+		const uint32_t rowSizeIn  = in.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		const uint8_t thresholdValue[16] = {threshold, threshold, threshold, threshold, threshold, threshold, threshold, threshold,
+											threshold, threshold, threshold, threshold, threshold, threshold, threshold, threshold};
+		const simd compare = vld1q_u8(thresholdValue);
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * src = inY;
+			uint8_t       * dst = outY;
+
+			const uint8_t * srcEnd = src + totalSimdWidth;
+
+			for( ; src != srcEnd; src += simdSize, dst += simdSize )
+				vst1q_u8( dst, vcgeq_u8( vld1q_u8(src), compare ) );
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
+
+				const uint8_t * outXEnd = outX + nonSimdWidth;
+
+				for( ; outX != outXEnd; ++outX, ++inX )
+					(*outX) = (*inX) < threshold ? 0 : 255;
+			}
+		}
+		
+	}
+
+	Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in );
+
+		Image out( in.width(), in.height() );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, out );
+
+		Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+	}
+
+	Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+					 uint8_t maxThreshold )
+	{
+		Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+		Image out( width, height );
+
+		Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
+
+		return out;
+	}
+
+	void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+					uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+	{
+		// image width is less than 16 bytes so no use to utilize NEOD :(
+		if (width < simdSize) {
+			Image_Function::Threshold(in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold);
+			return;
+		}
+
+		Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+		Image_Function::VerifyGrayScaleImage( in, out );
+
+		const uint32_t rowSizeIn  = in.rowSize();
+		const uint32_t rowSizeOut = out.rowSize();
+
+		const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+		uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+		const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+		const uint32_t simdWidth = width / simdSize;
+		const uint32_t totalSimdWidth = simdWidth * simdSize;
+		const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+		const uint8_t thresholdMinValue[16] = {minThreshold, minThreshold, minThreshold, minThreshold,
+											   minThreshold, minThreshold, minThreshold, minThreshold,
+											   minThreshold, minThreshold, minThreshold, minThreshold,
+											   minThreshold, minThreshold, minThreshold, minThreshold};
+		const simd compareMin = vld1q_u8(thresholdMinValue);
+
+		const uint8_t thresholdMaxValue[16] = {maxThreshold, maxThreshold, maxThreshold, maxThreshold,
+											   maxThreshold, maxThreshold, maxThreshold, maxThreshold,
+											   maxThreshold, maxThreshold, maxThreshold, maxThreshold,
+											   maxThreshold, maxThreshold, maxThreshold, maxThreshold};
+		const simd compareMax = vld1q_u8(thresholdMaxValue);
+
+		for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+			const uint8_t * src = inY;
+			uint8_t       * dst = outY;
+
+			const uint8_t * srcEnd = src + totalSimdWidth;
+
+			for( ; src != srcEnd; src += simdSize, dst += simdSize ) {
+				const simd data = vld1q_u8(src);
+				vst1q_u8( dst, vandq_u8( vcgeq_u8(data, compareMin), vcleq_u8(data, compareMax) ));
+			}
+
+			if( nonSimdWidth > 0 ) {
+				const uint8_t * inX  = inY  + totalSimdWidth;
+				uint8_t       * outX = outY + totalSimdWidth;
+
+				const uint8_t * outXEnd = outX + nonSimdWidth;
+
+				for( ; outX != outXEnd; ++outX, ++inX )
+					(*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
 			}
 		}
 	}
