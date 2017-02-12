@@ -55,6 +55,8 @@ namespace penguinV
 								   std::vector < uint32_t > & projection );
 		void (*Resize)           ( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
+		void (*RgbToBgr)         ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+								   uint32_t width, uint32_t height );
 		void (*SetPixel)         ( Image & image, uint32_t x, uint32_t y, uint8_t value );
 		void (*SetPixel2)        ( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
 		void (*Split)            ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
@@ -215,6 +217,12 @@ namespace penguinV
 						Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
 	{
 		functionTable().Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
+	}
+
+	inline void RgbToBgr ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							uint32_t width, uint32_t height )
+	{
+		functionTable().RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
 	inline void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )

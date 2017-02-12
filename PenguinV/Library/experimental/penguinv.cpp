@@ -46,6 +46,7 @@ namespace
 		table.Normalize          = &Image_Function::Normalize;
 		table.ProjectionProfile  = &Image_Function::ProjectionProfile;
 		table.Resize             = &Image_Function::Resize;
+		table.RgbToBgr           = &Image_Function::RgbToBgr;
 		table.SetPixel           = &Image_Function::SetPixel;
 		table.SetPixel2          = &Image_Function::SetPixel;
 		table.Split              = &Image_Function::Split;
@@ -92,6 +93,7 @@ namespace
 			table.AbsoluteDifference = &Image_Function_Neon::AbsoluteDifference;
 			table.BitwiseAnd         = &Image_Function_Neon::BitwiseAnd;
 			table.BitwiseOr          = &Image_Function_Neon::BitwiseOr;
+			table.BitwiseXor         = &Image_Function_Neon::BitwiseXor;
 			table.Invert             = &Image_Function_Neon::Invert;
 			table.Maximum            = &Image_Function_Neon::Maximum;
 			table.Minimum            = &Image_Function_Neon::Minimum;
