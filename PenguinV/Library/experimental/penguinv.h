@@ -10,6 +10,8 @@ namespace penguinV
 	// A table which contains pointers to basic functions
 	struct FunctionTable
 	{
+		void (*AbsoluteDifference)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 		void (*Accumulate)       ( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result );
 		void (*BitwiseAnd)       ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
@@ -17,9 +19,9 @@ namespace penguinV
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 		void (*BitwiseXor)       ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
-		void (*ConvertToRgb)     ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-								   uint32_t width, uint32_t height );
 		void (*ConvertToGrayScale)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+								   uint32_t width, uint32_t height );
+		void (*ConvertToRgb)     ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 								   uint32_t width, uint32_t height );
 		void (*Copy)             ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 								   uint32_t width, uint32_t height );
@@ -38,8 +40,13 @@ namespace penguinV
 								   uint32_t width, uint32_t height );
 		bool (*IsEqual)          ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   uint32_t width, uint32_t height );
+		void (*LookupTable)      ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+								   uint32_t width, uint32_t height, const std::vector < uint8_t > & table );
 		void (*Maximum)          ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+		void (*Merge)            ( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+								   const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+								   uint32_t width, uint32_t height);
 		void (*Minimum)          ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 		void (*Normalize)        ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -50,6 +57,9 @@ namespace penguinV
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
 		void (*SetPixel)         ( Image & image, uint32_t x, uint32_t y, uint8_t value );
 		void (*SetPixel2)        ( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
+		void (*Split)            ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+								   Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+								   uint32_t width, uint32_t height);
 		void (*Subtract)         ( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 								   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 		uint32_t (*Sum)          ( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
@@ -65,6 +75,12 @@ namespace penguinV
 	const FunctionTable & functionTable();
 
 	// A list of basic functions
+	inline void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+									Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+	{
+		functionTable().AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height);
+	}
+
 	inline void Accumulate( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
 	{
 		functionTable().Accumulate( image, x, y, width, height, result );
@@ -88,16 +104,16 @@ namespace penguinV
 		functionTable().BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 	}
 
-	inline void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-						 uint32_t width, uint32_t height )
-	{
-		functionTable().ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-	}
-
 	inline void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
 						 uint32_t width, uint32_t height )
 	{
 		functionTable().ConvertToGrayScale( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+	}
+
+	inline void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+						 uint32_t width, uint32_t height )
+	{
+		functionTable().ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 	}
 
 	inline void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -157,10 +173,24 @@ namespace penguinV
 		return functionTable().IsEqual( in1, startX1, startY1, in2, startX2, startY2, width, height );
 	}
 
+	inline void LookupTable ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+							  uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+	{
+		functionTable().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, table );
+	}
+
 	inline void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
 						 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
 	{
 		functionTable().Maximum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+	}
+
+	inline void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+					   const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+					   uint32_t width, uint32_t height)
+	{
+		functionTable().Merge( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3,
+							   out, startXOut, startYOut, width, height );
 	}
 
 	inline void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -195,6 +225,14 @@ namespace penguinV
 	inline void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
 	{
 		functionTable().SetPixel2( image, X, Y,  value );
+	}
+
+	inline void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+					   Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+					   uint32_t width, uint32_t height)
+	{
+		functionTable().Split( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2,
+							   out3, startXOut3, startYOut3, width, height );
 	}
 
 	inline void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
