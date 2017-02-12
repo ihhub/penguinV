@@ -23,6 +23,11 @@ namespace Unit_Test
 		bool BitwiseOr8ParametersTest();
 		bool BitwiseOr11ParametersTest();
 
+		bool BitwiseXor2ParametersTest();
+		bool BitwiseXor3ParametersTest();
+		bool BitwiseXor8ParametersTest();
+		bool BitwiseXor11ParametersTest();
+
 		bool Invert1ParameterTest();
 		bool Invert2ParametersTest();
 		bool Invert5ParametersTest();

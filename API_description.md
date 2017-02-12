@@ -401,7 +401,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
-- **BitwiseXor** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+- **BitwiseXor** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:
 	```cpp

@@ -21,6 +21,11 @@ namespace Unit_Test
 		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr8ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr11ParametersTest );
 
+		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor2ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor3ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor8ParametersTest );
+		ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor11ParametersTest );
+
 		ADD_TEST( framework, Image_Function_Neon_Test::Invert1ParameterTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Invert2ParametersTest );
 		ADD_TEST( framework, Image_Function_Neon_Test::Invert5ParametersTest );
@@ -285,6 +290,84 @@ namespace Unit_Test
 											   image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
 				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] | intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool BitwiseXor2ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+				Bitmap_Image::Image output = Image_Function_Neon::BitwiseXor( input[0], input[1] );
+
+				if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool BitwiseXor3ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+
+				Image_Function_Neon::BitwiseXor( image[0], image[1], image[2] );
+
+				if( !verifyImage( image[2], intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool BitwiseXor8ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 2 );
+				std::vector < Bitmap_Image::Image > input;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ input.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+				Bitmap_Image::Image output = Image_Function_Neon::BitwiseXor(
+					input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+				if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
+					return false;
+			}
+
+			return true;
+		}
+
+		bool BitwiseXor11ParametersTest()
+		{
+			for( uint32_t i = 0; i < runCount(); ++i ) {
+				std::vector < uint8_t > intensity = intensityArray( 3 );
+				std::vector < Bitmap_Image::Image > image;
+
+				std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+					{ image.push_back( uniformImage( value ) ); } );
+
+				std::vector < uint32_t > roiX, roiY;
+				uint32_t roiWidth, roiHeight;
+
+				generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+				Image_Function_Neon::BitwiseXor( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1],
+												image[2], roiX[2], roiY[2], roiWidth, roiHeight );
+
+				if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] ) )
 					return false;
 			}
 

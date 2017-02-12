@@ -23,6 +23,11 @@ namespace Performance_Test
 		std::pair < double, double > BitwiseOrSize1024();
 		std::pair < double, double > BitwiseOrSize2048();
 
+		std::pair < double, double > BitwiseXorSize256();
+		std::pair < double, double > BitwiseXorSize512();
+		std::pair < double, double > BitwiseXorSize1024();
+		std::pair < double, double > BitwiseXorSize2048();
+
 		std::pair < double, double > InvertSize256();
 		std::pair < double, double > InvertSize512();
 		std::pair < double, double > InvertSize1024();
