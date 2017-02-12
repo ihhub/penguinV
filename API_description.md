@@ -51,7 +51,7 @@ Contains classes for multithreading using thread pool:
 
 All images in function parameter list must have width and height greater than 0 otherwise an exception imageException is raised.
 
-- **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+- **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
 
 	##### Syntax:
 	```cpp

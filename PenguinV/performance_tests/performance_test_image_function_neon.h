@@ -8,6 +8,11 @@ namespace Performance_Test
 
 	namespace Image_Function_Neon_Test
 	{
+		std::pair < double, double > AbsoluteDifferenceSize256();
+		std::pair < double, double > AbsoluteDifferenceSize512();
+		std::pair < double, double > AbsoluteDifferenceSize1024();
+		std::pair < double, double > AbsoluteDifferenceSize2048();
+
 		std::pair < double, double > BitwiseAndSize256();
 		std::pair < double, double > BitwiseAndSize512();
 		std::pair < double, double > BitwiseAndSize1024();
