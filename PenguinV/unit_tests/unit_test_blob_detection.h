@@ -4,10 +4,10 @@
 
 namespace Unit_Test
 {
-	void addTests_Blob_Detection(UnitTestFramework & framework); // function what adds all below tests to framework
+    void addTests_Blob_Detection( UnitTestFramework & framework ); // function what adds all below tests to framework
 
-	namespace Blob_Detection_Test
-	{
-		bool Detect1Blob();
-	};
+    namespace Blob_Detection_Test
+    {
+        bool Detect1Blob();
+    };
 };
