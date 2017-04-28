@@ -7,18 +7,18 @@
 
 namespace Performance_Test
 {
-	// pointer to performance test function. Function must return 2 values:
-	// - mean value in milliseconds
-	// - sigma value in milliseconds
-	typedef std::pair < double, double > (*testFunction)();
+    // pointer to performance test function. Function must return 2 values:
+    // - mean value in milliseconds
+    // - sigma value in milliseconds
+    typedef std::pair < double, double > ( *testFunction )();
 
-	class PerformanceTestFramework
-	{
-	public:
-		void add(const testFunction test, const std::string & name ); // register function in framework
+    class PerformanceTestFramework
+    {
+    public:
+        void add( const testFunction test, const std::string & name ); // register function in framework
 
-		void run() const; // run framework performance tests
-	private:
-		std::map < testFunction, std::string > _performanceTest; // container with pointer to functions and their names
-	};
+        void run() const; // run framework performance tests
+    private:
+        std::map < testFunction, std::string > _performanceTest; // container with pointer to functions and their names
+    };
 };

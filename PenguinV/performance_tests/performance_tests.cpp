@@ -7,19 +7,19 @@
 
 int main()
 {
-	// The main purpose of this application is to test everything within library
-	// To do this we need an engine (framework) and a bunch of tests
+    // The main purpose of this application is to test everything within library
+    // To do this we need an engine (framework) and a bunch of tests
 
-	// We create a framework
-	Performance_Test::PerformanceTestFramework framework;
+    // We create a framework
+    Performance_Test::PerformanceTestFramework framework;
 
-	// We add tests
-	Performance_Test::addTests_Blob_Detection( framework );
-	Performance_Test::addTests_Function_Pool ( framework );
-	Performance_Test::addTests_Image_Function( framework );
+    // We add tests
+    Performance_Test::addTests_Blob_Detection( framework );
+    Performance_Test::addTests_Function_Pool ( framework );
+    Performance_Test::addTests_Image_Function( framework );
 
-	// Just run the framework what will handle all tests
-	framework.run();
+    // Just run the framework what will handle all tests
+    framework.run();
 
-	return 0;
+    return 0;
 }
