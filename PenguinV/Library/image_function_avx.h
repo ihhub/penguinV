@@ -76,7 +76,7 @@ namespace Image_Function_Avx
 	// Make sure that your image is not so big to do not have overloaded uint32_t value
 	// For example not bigger than [4096 * 4096] for 32-bit application
 	uint32_t Sum( const Image & image );
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
 
 	// Thresholding works in such way:
 		// if pixel intensity on input image is          less (  < ) than threshold then set pixel intensity on output image as 0

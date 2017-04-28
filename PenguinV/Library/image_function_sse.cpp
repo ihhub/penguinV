@@ -690,7 +690,7 @@ namespace Image_Function_Sse
 		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		// image width is less than 16 bytes so no use to utilize SSE :(
 		if (width < simdSize) {

@@ -302,7 +302,7 @@ namespace Function_Pool
 			_process( _GammaCorrection );
 		}
 
-		void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
+		void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
 						std::vector < uint32_t > & histogram )
 		{
 			_setup( image, x, y, width, height );
@@ -348,7 +348,7 @@ namespace Function_Pool
 			_process( _Normalize );
 		}
 
-		void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+		void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
 								std::vector < uint32_t > & projection )
 		{
 			_setup( image, x, y, width, height );
@@ -379,7 +379,7 @@ namespace Function_Pool
 			_process( _Subtract );
 		}
 
-		uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+		uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 		{
 			_setup( image, x, y, width, height );
 			_dataOut.resize(_infoIn1->_size());
@@ -436,6 +436,8 @@ namespace Function_Pool
 		void _task(size_t taskId)
 		{
 			switch(functionId) {
+			case _none:
+				throw imageException("Image function task is not setup");
 			case _AbsoluteDifference:
 				Image_Function::AbsoluteDifference(
 											_infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -550,7 +552,7 @@ namespace Function_Pool
 											_dataIn.maxThreshold);
 				break;
 			default:
-				throw imageException("Wrong image function task");
+				throw imageException("Unknown image function task");
 			}
 		}
 
@@ -902,7 +904,7 @@ namespace Function_Pool
 		Histogram( image, 0, 0, image.width(), image.height(), histogram );
 	}
 
-	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		Image_Function::ParameterValidation( image, x, y, width, height );
 
@@ -913,7 +915,7 @@ namespace Function_Pool
 		return histogram;
 	}
 
-	void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+	void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
 	{
 		FunctionTask().Histogram(image, x, y, width, height, histogram );
 	}
@@ -1087,7 +1089,7 @@ namespace Function_Pool
 		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
 	}
 
-	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
 	{
 		std::vector < uint32_t > projection;
 
@@ -1096,7 +1098,7 @@ namespace Function_Pool
 		return projection;
 	}
 
-	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+	void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
 							std::vector < uint32_t > & projection )
 	{
 		FunctionTask().ProjectionProfile(image, x, y, width, height, horizontal, projection );
@@ -1218,7 +1220,7 @@ namespace Function_Pool
 		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		return FunctionTask().Sum(image, x, y, width, height );
 	}

@@ -70,7 +70,7 @@ namespace Image_Function
 		Accumulate( image, 0, 0, image.width(), image.height(), result );
 	}
 
-	void Accumulate( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+	void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
 	{
 		ParameterValidation( image, x, y, width, height );
 		VerifyGrayScaleImage( image );
@@ -497,7 +497,7 @@ namespace Image_Function
 		image.fill( value );
 	}
 
-	void Fill( Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, uint8_t value )
+	void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
 	{
 		ParameterValidation( image, x, y, width, height );
 		VerifyGrayScaleImage( image );
@@ -706,7 +706,7 @@ namespace Image_Function
 		Histogram( image, 0, 0, image.width(), image.height(), histogram );
 	}
 
-	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( image, x, y, width, height );
 
@@ -717,7 +717,7 @@ namespace Image_Function
 		return histogram;
 	}
 
-	void Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+	void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
 	{
 		ParameterValidation( image, x, y, width, height );
 		VerifyGrayScaleImage( image );
@@ -1171,7 +1171,7 @@ namespace Image_Function
 		ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
 	}
 
-	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal )
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
 	{
 		std::vector < uint32_t > projection;
 
@@ -1180,7 +1180,7 @@ namespace Image_Function
 		return projection;
 	}
 
-	void ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+	void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
 							std::vector < uint32_t > & projection )
 	{
 		ParameterValidation( image, x, y, width, height );
@@ -1546,7 +1546,7 @@ namespace Image_Function
 		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		ParameterValidation( image, x, y, width, height );
 		VerifyGrayScaleImage( image );

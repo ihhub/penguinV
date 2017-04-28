@@ -697,7 +697,7 @@ namespace Image_Function_Avx
 		return Sum( image, 0, 0, image.width(), image.height() );
 	}
 
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height )
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
 	{
 		// image width is less than 32 bytes so no use to utilize AVX 2.0 :( Let's try SSE!
 		if (width < simdSize) {

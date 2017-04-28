@@ -61,8 +61,8 @@ namespace Function_Pool
 
 	std::vector < uint32_t > Histogram( const Image & image );
 	void                     Histogram( const Image & image, std::vector < uint32_t > & histogram );
-	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
-	void                     Histogram( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height,
+	std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
+	void                     Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
 										std::vector < uint32_t > & histogram );
 
 	// Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
@@ -98,8 +98,8 @@ namespace Function_Pool
 
 	std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal );
 	void                     ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
-	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal );
-	void                     ProjectionProfile( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height, bool horizontal,
+	std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
+	void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
 												std::vector < uint32_t > & projection );
 
 	// Image resizing (scaling) is based on nearest-neighbour interpolation method
@@ -126,7 +126,7 @@ namespace Function_Pool
 	// Make sure that your image is not so big to do not have overloaded uint32_t value
 	// For example not bigger than [4096 * 4096] for 32-bit application
 	uint32_t Sum( const Image & image );
-	uint32_t Sum( const Image & image, uint32_t x, int32_t y, uint32_t width, uint32_t height );
+	uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
 
 	// Thresholding works in such way:
 		// if pixel intensity on input image is          less (  < ) than threshold then set pixel intensity on output image as 0
