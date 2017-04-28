@@ -1,3 +1,4 @@
+#include <math.h>
 #include "../Library/function_pool.h"
 #include "../Library/thread_pool.h"
 #include "unit_test_function_pool.h"
