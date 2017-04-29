@@ -177,7 +177,7 @@ All images in function parameter list must have width and height greater than 0 
 	void Accumulate(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height,
 		std::vector < uint32_t > & result
@@ -904,7 +904,7 @@ All images in function parameter list must have width and height greater than 0 
 	void Fill(
 		Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height,
 		uint8_t value
@@ -1205,7 +1205,7 @@ All images in function parameter list must have width and height greater than 0 
 	std::vector < uint32_t > Histogram(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height
 	);
@@ -1228,7 +1228,7 @@ All images in function parameter list must have width and height greater than 0 
 	void Histogram(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height,
 		std::vector < uint32_t > & histogram
@@ -2219,7 +2219,7 @@ All images in function parameter list must have width and height greater than 0 
 	std::vector < uint32_t > ProjectionProfile(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height,
 		bool horizontal
@@ -2244,7 +2244,7 @@ All images in function parameter list must have width and height greater than 0 
 	void ProjectionProfile(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height,
 		bool horizontal,
@@ -2756,7 +2756,7 @@ All images in function parameter list must have width and height greater than 0 
 	uint32_t Sum(
 		const Image & image,
 		uint32_t x,
-		int32_t y,
+		uint32_t y,
 		uint32_t width,
 		uint32_t height
 	);
