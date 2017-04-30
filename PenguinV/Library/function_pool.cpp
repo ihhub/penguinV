@@ -1,6 +1,7 @@
 #include "function_pool.h"
 #include "image_function.h"
 #include "thread_pool.h"
+#include "penguinv\penguinv.h"
 
 namespace
 {
@@ -439,117 +440,117 @@ namespace Function_Pool
                 case _none:
                     throw imageException( "Image function task is not setup" );
                 case _AbsoluteDifference:
-                    Image_Function::AbsoluteDifference(
+                    penguinV::AbsoluteDifference(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseAnd:
-                    Image_Function::BitwiseAnd( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                                _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                                _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                                _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::BitwiseAnd( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                          _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                          _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                          _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseOr:
-                    Image_Function::BitwiseOr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                               _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                               _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                               _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::BitwiseOr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseXor:
-                    Image_Function::BitwiseXor( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                                _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                                _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                                _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::BitwiseXor( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                          _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                          _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                          _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ConvertToGrayScale:
-                    Image_Function::ConvertToGrayScale( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
-                    break;
-                case _ConvertToRgb:
-                    Image_Function::ConvertToRgb( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                    penguinV::ConvertToGrayScale( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                                   _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                                                   _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
+                case _ConvertToRgb:
+                    penguinV::ConvertToRgb( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                            _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                            _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    break;
                 case _GammaCorrection:
-                    Image_Function::GammaCorrection(
+                    penguinV::GammaCorrection(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.coefficientA,
                         _dataIn.coefficientGamma );
                     break;
                 case _Histogram:
-                    Image_Function::Histogram( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                               _infoIn1->width[taskId], _infoIn1->height[taskId], _dataOut.histogram[taskId] );
+                    penguinV::Histogram( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataOut.histogram[taskId] );
                     break;
                 case _Invert:
-                    Image_Function::Invert( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                            _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                            _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::Invert( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                      _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                      _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _IsEqual:
-                    _dataOut.equality[taskId] = Image_Function::IsEqual(
+                    _dataOut.equality[taskId] = penguinV::IsEqual(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Maximum:
-                    Image_Function::Maximum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                             _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                             _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                             _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::Maximum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                       _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                       _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                       _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Minimum:
-                    Image_Function::Minimum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                             _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                             _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                             _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::Minimum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                       _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                       _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                       _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Normalize:
-                    Image_Function::Normalize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                               _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                               _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::Normalize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ProjectionProfile:
-                    Image_Function::ProjectionProfile(
+                    penguinV::ProjectionProfile(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId],
                         _dataIn.horizontalProjection, _dataOut.projection[taskId] );
                     break;
                 case _Resize:
-                    Image_Function::Resize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                            _infoIn1->width[taskId], _infoIn1->height[taskId],
-                                            _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                            _infoOut->width[taskId], _infoOut->height[taskId] );
+                    penguinV::Resize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                      _infoIn1->width[taskId], _infoIn1->height[taskId],
+                                      _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                      _infoOut->width[taskId], _infoOut->height[taskId] );
                     break;
                 case _RgbToBgr:
-                    Image_Function::RgbToBgr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                              _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                              _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::RgbToBgr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Subtract:
-                    Image_Function::Subtract( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                              _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                              _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                              _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    penguinV::Subtract( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                        _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Sum:
-                    _dataOut.sum[taskId] = Image_Function::Sum(
+                    _dataOut.sum[taskId] = penguinV::Sum(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Threshold:
-                    Image_Function::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                               _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                               _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold );
+                    penguinV::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold );
                     break;
                 case _ThresholdDouble:
-                    Image_Function::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                               _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                               _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold,
-                                               _dataIn.maxThreshold );
+                    penguinV::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold,
+                                         _dataIn.maxThreshold );
                     break;
                 default:
                     throw imageException( "Unknown image function task" );

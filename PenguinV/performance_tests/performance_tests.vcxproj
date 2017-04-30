@@ -146,6 +146,7 @@
     <ClCompile Include="..\Library\blob_detection.cpp" />
     <ClCompile Include="..\Library\function_pool.cpp" />
     <ClCompile Include="..\Library\image_function.cpp" />
+    <ClCompile Include="..\Library\penguinv\penguinv.cpp" />
     <ClCompile Include="..\Library\thread_pool.cpp" />
     <ClCompile Include="performance_tests.cpp" />
     <ClCompile Include="performance_test_blob_detection.cpp" />
@@ -160,6 +161,8 @@
     <ClInclude Include="..\Library\image_buffer.h" />
     <ClInclude Include="..\Library\image_exception.h" />
     <ClInclude Include="..\Library\image_function.h" />
+    <ClInclude Include="..\Library\penguinv\cpu_identification.h" />
+    <ClInclude Include="..\Library\penguinv\penguinv.h" />
     <ClInclude Include="..\Library\thread_pool.h" />
     <ClInclude Include="performance_test_blob_detection.h" />
     <ClInclude Include="performance_test_framework.h" />

@@ -6,6 +6,7 @@ SRCS :=  \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
+	$(LIB_DIR)/penguinv/penguinv.cpp \
 	performance_tests.cpp \
 	performance_test_blob_detection.cpp \
 	performance_test_framework.cpp \
