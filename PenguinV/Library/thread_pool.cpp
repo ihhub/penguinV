@@ -52,10 +52,11 @@ namespace Thread_Pool
 
             if( completedTasks == _taskCount ) {
                 _completion.lock();
-                _running = false;
-                _completion.unlock();
 
+                _running = false;
                 _waiting.notify_one();
+
+                _completion.unlock();
             }
         }
     }
@@ -162,11 +163,12 @@ namespace Thread_Pool
         }
         else if( threads < threadCount() ) {
             _taskInfo.lock();
+
             std::fill( _exit.begin() + threads, _exit.end(), 1 );
             std::fill( _run.begin() + threads, _run.end(), 1 );
-            _taskInfo.unlock();
-
             _waiting.notify_all();
+
+            _taskInfo.unlock();
 
             while( threads < threadCount() ) {
                 _worker.back().join();
@@ -205,10 +207,9 @@ namespace Thread_Pool
         _task.insert( _task.end(), taskCount, provider );
 
         std::fill( _run.begin(), _run.end(), 1 );
+        _waiting.notify_all();
 
         _taskInfo.unlock();
-
-        _waiting.notify_all();
     }
 
     bool ThreadPool::empty()
@@ -247,11 +248,12 @@ namespace Thread_Pool
 
         if( !_worker.empty() ) {
             _taskInfo.lock();
+
             std::fill( _exit.begin(), _exit.end(), 1 );
             std::fill( _run.begin(), _run.end(), 1 );
-            _taskInfo.unlock();
-
             _waiting.notify_all();
+
+            _taskInfo.unlock();
 
             for( std::vector < std::thread >::iterator thread = _worker.begin(); thread != _worker.end(); ++thread )
                 thread->join();
@@ -265,8 +267,8 @@ namespace Thread_Pool
         if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
             pool->_creation.lock();
             pool->_threadsCreated = true;
-            pool->_creation.unlock();
             pool->_completeCreation.notify_one();
+            pool->_creation.unlock();
         }
 
         while( !pool->_exit[threadId] ) {
