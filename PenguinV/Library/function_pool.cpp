@@ -1,7 +1,7 @@
 #include "function_pool.h"
 #include "image_function.h"
 #include "thread_pool.h"
-#include "penguinv\penguinv.h"
+#include "penguinv/penguinv.h"
 
 namespace
 {
