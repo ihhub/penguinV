@@ -94,7 +94,7 @@ namespace Unit_Test
         if( maximum <= 0 )
             return 0;
         else
-            return static_cast<data>(rand()) % maximum;
+            return static_cast<data>(rand() % maximum);
     };
 
     template <typename data>
@@ -104,7 +104,7 @@ namespace Unit_Test
             return 0;
         }
         else {
-            data value = static_cast<data>(rand()) % maximum;
+            data value = static_cast<data>(rand() % maximum);
 
             if( value < minimum )
                 value = minimum;
