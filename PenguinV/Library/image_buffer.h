@@ -59,22 +59,9 @@ namespace Template_Image
         }
 
         ImageTemplate( const ImageTemplate & image )
+            : _data      ( nullptr )
         {
-            _width  = image._width;
-            _height = image._height;
-
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
-            _alignment  = image._alignment;
-
-            if( image._data != nullptr ) {
-                _data = new TColorDepth[_height * _rowSize];
-
-                memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
-            }
-            else {
-                _data = nullptr;
-            }
+            copy( image );
         }
 
         ImageTemplate( ImageTemplate && image )
@@ -92,18 +79,7 @@ namespace Template_Image
         {
             clear();
 
-            _width  = image._width;
-            _height = image._height;
-
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
-            _alignment  = image._alignment;
-
-            if( image._data != nullptr ) {
-                _data = new TColorDepth[_height * _rowSize];
-
-                memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
-            }
+            copy( image );
 
             return (*this);
         }
@@ -243,22 +219,20 @@ namespace Template_Image
 
             std::swap( _data, image._data );
         }
-    protected:
-        void _copy( const ImageTemplate & image )
+
+        void copy( const ImageTemplate & image )
         {
-            if( image.empty() || empty() || image.width() != width() || image.height() != height() || image.colorCount() != colorCount() )
-                throw imageException( "Invalid image to copy" );
+            _width  = image._width;
+            _height = image._height;
 
-            if( image.alignment() != alignment() ) {
-                TColorDepth       * rowIn = data();
-                const TColorDepth * rowOut = image.data();
-                const TColorDepth * rowInEnd = rowIn + height() * rowSize();
+            _colorCount = image._colorCount;
+            _rowSize    = image._rowSize;
+            _alignment  = image._alignment;
 
-                for( ; rowIn != rowInEnd; rowIn += _rowSize, rowOut += image._rowSize )
-                    memcpy( rowIn, rowOut, sizeof( TColorDepth ) * width() * colorCount() );
-            }
-            else {
-                memcpy( _data, image._data, sizeof( TColorDepth ) * height() * rowSize() );
+            if( image._data != nullptr ) {
+                _data = new TColorDepth[_height * _rowSize];
+
+                memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
             }
         }
     private:
