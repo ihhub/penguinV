@@ -11,8 +11,8 @@ namespace
         if( count == 0 )
             throw imageException( "Thread Pool is not initialized." );
         return count;
-    };
-};
+    }
+}
 
 namespace Function_Pool
 {
@@ -21,7 +21,7 @@ namespace Function_Pool
         AreaInfo( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
         {
             _calculate( x, y, width_, height_, count );
-        };
+        }
 
         std::vector < uint32_t > startX; // start X position of image ROI
         std::vector < uint32_t > startY; // start Y position of image ROI
@@ -146,6 +146,7 @@ namespace Function_Pool
             , horizontalProjection( false )
             , coefficientA        ( 1 )
             , coefficientGamma    ( 1 )
+            , extractChannelId    ( 255 )
         { }
 
         uint8_t minThreshold;      // for Threshold() function same as threshold
@@ -153,6 +154,7 @@ namespace Function_Pool
         bool horizontalProjection; // for ProjectionProfile() function
         double coefficientA;       // for GammaCorrection() function
         double coefficientGamma;   // for GammaCorrection() function
+        uint8_t extractChannelId;  // for ExtractChannel() function
     };
     // This structure holds output data for some specific functions
     struct OutputInfo
@@ -242,9 +244,9 @@ namespace Function_Pool
     public:
         FunctionTask()
             : functionId( _none )
-        { };
+        {}
 
-        virtual ~FunctionTask() { };
+        virtual ~FunctionTask() {}
 
         // this is a list of image functions
         void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -287,6 +289,16 @@ namespace Function_Pool
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _ConvertToRgb );
+        }
+
+        void  ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                              uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+        {
+            _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+            _dataIn.extractChannelId = channelId;
+
+            _process( _ExtractChannel );
         }
 
         void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -418,6 +430,7 @@ namespace Function_Pool
             _BitwiseXor,
             _ConvertToGrayScale,
             _ConvertToRgb,
+            _ExtractChannel,
             _GammaCorrection,
             _Histogram,
             _Invert,
@@ -474,6 +487,11 @@ namespace Function_Pool
                                             _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                                             _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
+                case _ExtractChannel:
+                    penguinV::ExtractChannel(
+                        _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                        _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.extractChannelId );
                 case _GammaCorrection:
                     penguinV::GammaCorrection(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -854,6 +872,44 @@ namespace Function_Pool
                        uint32_t width, uint32_t height )
     {
         FunctionTask().ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+    }
+
+    Image ExtractChannel( const Image & in, uint8_t channelId )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
+
+        return out;
+    }
+
+    void ExtractChannel( const Image & in, Image & out, uint8_t channelId )
+    {
+        Image_Function::ParameterValidation( in, out );
+
+        ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
+    }
+
+    Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        Image_Function::ParameterValidation( in, x, y, width, height );
+
+        Image out( width, height );
+
+        ExtractChannel( in, x, y, out, 0, 0, width, height, channelId );
+
+        return out;
+    }
+
+    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( out );
+
+        FunctionTask().ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );
     }
 
     Image GammaCorrection( const Image & in, double a, double gamma )
