@@ -8,14 +8,8 @@ namespace
     // Helper function which should return proper arguments for CUDA device functions
     void getKernelParameters( int & threadsPerBlock, int & blocksPerGrid, uint32_t size )
     {
-        if( size < 256 ) {
-            threadsPerBlock = size;
-            blocksPerGrid = 1;
-        }
-        else {
-            threadsPerBlock = 256;
-            blocksPerGrid = (size + threadsPerBlock - 1) / threadsPerBlock;
-        }
+        threadsPerBlock = 256;
+        blocksPerGrid = (size + threadsPerBlock - 1) / threadsPerBlock;
     };
 
     // The list of CUDA device functions
