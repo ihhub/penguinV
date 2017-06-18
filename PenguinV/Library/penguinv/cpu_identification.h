@@ -22,23 +22,33 @@
 
 #include "cpu_id_macos.h"
 
-    #include "TargetConditionals.h"
-    #if TARGET_IPHONE_SIMULATOR
-         // iOS Simulator
-    #elif TARGET_OS_IPHONE
-        // iOS device
-    #elif TARGET_OS_MAC
-        // Other kinds of Mac OS
+    #ifdef __arm__
+        #define PENGUINV_NEON_SET
     #else
-    #   error "Unknown Apple platform"
+
     #endif
-#else // Linux or something else?
+
+#elsif linux // Linux
+
+    #ifdef __arm__
+        #define PENGUINV_NEON_SET
+    #else
+
+    #endif
 
 #include "cpu_id_linux.h"
 
+#else
+	#error "Unknown platform"
 #endif
 
 // Identify available technologies during runtime
+#ifdef PENGUINV_AVX_SET
 static const bool isAvxAvailable  = isAvxSupported();
+#endif
+#ifdef PENGUINV_SSE_SET
 static const bool isSseAvailable  = isSseSupported();
+#endif
+#ifdef PENGUINV_NEON_SET
 static const bool isNeonAvailable = isNeonSupported();
+#endif

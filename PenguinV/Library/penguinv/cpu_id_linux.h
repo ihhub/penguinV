@@ -2,15 +2,19 @@
 
 bool isSseSupported()
 {
-	return false;
+    return false;
 }
 
 bool isAvxSupported()
 {
-	return false;
+    return false;
 }
 
 bool isNeonSupported()
 {
-	return false;
+#ifdef __arm__
+    return true;
+#else
+    return false;
+#endif
 }
