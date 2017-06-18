@@ -3,29 +3,42 @@
 // This file is very important to setup penguinV library to have the best performance
 // Please be very carefull in setting these parameters!!!
 
-// 1) First of all we need to setup proper CPU architecture what you are compiling on
-//    If you do not know what type of processor you are compiling for then just comment below lines
-//    Otherwise comment all lines except one what you are compiling for
+#ifdef _WIN32 // Windows
 
-//#define PENGUINV_INTEL_AMD // Mainly for desktops, laptops, servers
-//#define PENGUINV_ARM       // Mainly for mobiles, IoT devices
+#include "cpu_id_windows.h"
 
+	#ifdef _M_ARM
+		#define PENGUINV_NEON_SET
+	#else
+		#define PENGUINV_SSE_SET
 
-// 2) Enable possible supported instruction sets on diffirent architectures
-//    This part of code should not be changed expect some specific situations in below comments
-#if defined(PENGUINV_INTEL_AMD)
-	#define PENGUINV_AVX_SET // old Visual Studio (2010 and older) does not have such instruction so we recommend to comment this line
-	#define PENGUINV_SSE_SET
-#elif defined(PENGUINV_ARM)
-	#define PENGUINV_NEON_SET
-#else
-	
+		#ifdef _MSC_VER
+			#if _MSC_VER >= 1700
+				#define PENGUINV_AVX_SET
+			#endif
+		#endif
+	#endif
+#elif __APPLE__ // MacOS
+
+#include "cpu_id_macos.h"
+
+    #include "TargetConditionals.h"
+    #if TARGET_IPHONE_SIMULATOR
+         // iOS Simulator
+    #elif TARGET_OS_IPHONE
+        // iOS device
+    #elif TARGET_OS_MAC
+        // Other kinds of Mac OS
+    #else
+    #   error "Unknown Apple platform"
+    #endif
+#else // Linux or something else?
+
+#include "cpu_id_linux.h"
+
 #endif
 
-
-// 3) Here actually should be your code for identification of supported instruction set
-//    You can use third-party libraries, setup manually or something else
-//    So we are giving an identification step in your hands
-static const bool isAvxAvailable  = false;
-static const bool isSseAvailable  = false;
-static const bool isNeonAvailable = false;
+// Identify available technologies during runtime
+static const bool isAvxAvailable  = isAvxSupported();
+static const bool isSseAvailable  = isSseSupported();
+static const bool isNeonAvailable = isNeonSupported();
