@@ -1,13 +1,15 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator for PenguinV library
+# Project created for PenguinV library
 #
 #-------------------------------------------------
 
-QT       += core
-QT       += gui declarative
+QT += core
+QT += gui
 
-TARGET = application
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = QtSample
 CONFIG   += console
 CONFIG   += c++11
 CONFIG   -= app_bundle
