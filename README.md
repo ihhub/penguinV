@@ -1,4 +1,5 @@
-# penguinV
+penguinV
+======
 
 PenguinV is a simple and easy to use C++ image processing library. It is designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
 
@@ -23,24 +24,31 @@ The library does **NOT** provide such features as:
 
 In many cases when developers design their own image processing application they are facing problems with integration of third-party library into code. To minimize such drawbacks we are giving an option to write your own code for above situations.
 
-#Requirements    
+Requirements
+---------------------------
 To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support and thread pool] is VS 2010.
 
-#How to install    
+How to install
+---------------------------
 The library is distributed in the form of source code. To use the library you need to include library files into your application project. That's it! No more extra moves!
 
-#How to compile an example    
+How to compile an example
+---------------------------
 Open README.md file in any of example directories and follow instructions.
 
-#Multithreading support    
+Multithreading support
+---------------------------
 Every non empty image can be divided into multiple parts or areas (in scientific terms ROI - region of interest). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intersecting by each other.    
 Almost all basic functions support multithreading. Please refer to **Function_Pool** namespace and function_pool example.
 
-#CUDA support    
+CUDA support
+---------------------------
 All source code related to CUDA is located in separate directory named as **cuda**. Read full description about CUDA support in **README** file in specified directory.
 
-#License    
+License
+---------------------------
 This project is under 3-clause BSD License. Please refer to file **LICENSE** for more details.
 
-#API description    
+API description
+---------------------------
 Please refer to file **API_description.md** for full description of API.
