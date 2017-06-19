@@ -73,6 +73,8 @@ int main( int argc, char *argv[] )
         QLabel window4;
         showImage( window4, outputQt );
 
+        std::cout << "Everything went fine." << std::endl;
+        
         return app.exec();
     }
     catch( imageException & ex ) {
@@ -87,8 +89,6 @@ int main( int argc, char *argv[] )
         // your magic code must be here to recover from terrible things
         return 0;
     }
-
-    std::cout << "Everything went fine." << std::endl;
 
     return 0;
 }
