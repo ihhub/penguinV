@@ -28,7 +28,7 @@
 
     #endif
 
-#elsif linux // Linux
+#elif linux // Linux
 
     #ifdef __arm__
         #define PENGUINV_NEON_SET
