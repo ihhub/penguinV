@@ -1,4 +1,5 @@
-# CUDA support in penguinV
+CUDA support in penguinV
+======
 
 All source code related to CUDA is located in ```*.cu``` and ```*.cuh``` files. During a compilation of your project make sure that you are compiling with compiler supporting CUDA otherwise you will have compilation errors.
 
@@ -7,5 +8,6 @@ CUDA is a GPGPU technology from NVidia, which allows to perform computations wit
 - use image functions for newly created image in CUDA namespace
 - convert back the image from CUDA namespace 
 
-#API description    
+API description
+---------------------------
 Please refer to file **API_description.md** for full description of API.
