@@ -316,7 +316,7 @@ namespace Bitmap_Operation
         };
     };
 
-    Bitmap_Image::Image Load( std::string path )
+    Bitmap_Image::Image Load( const std::string & path )
     {
         if( path.empty() )
             throw imageException( "Incorrect parameters for bitmap loading" );
@@ -424,21 +424,20 @@ namespace Bitmap_Operation
         return image;
     }
 
-    void Load( std::string path, Bitmap_Image::Image & raw )
+    void Load( const std::string & path, Bitmap_Image::Image & raw )
     {
         raw = Load( path );
     }
 
-    void Save( std::string path, Bitmap_Image::Image & image )
+    void Save( const std::string & path, const Bitmap_Image::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( std::string path, Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
+    void Save( const std::string & path, const Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height )
     {
-        if( path.empty() || image.empty() || !(image.colorCount() == Bitmap_Image::GRAY_SCALE || image.colorCount() == Bitmap_Image::RGB) )
-            throw imageException( "Incorrect parameters for bitmap saving" );
+        Image_Function::ParameterValidation( image, startX, startY, width, height );
 
         uint32_t palleteSize = 0;
         std::vector < uint8_t > pallete;

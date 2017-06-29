@@ -3,7 +3,6 @@
 #include <numeric>
 #include <queue>
 #include "blob_detection.h"
-#include "image_function.h"
 
 namespace
 {

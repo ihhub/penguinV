@@ -219,8 +219,8 @@ namespace penguinV
         functionTable().Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
     }
 
-    inline void RgbToBgr ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                           uint32_t width, uint32_t height )
+    inline void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                          uint32_t width, uint32_t height )
     {
         functionTable().RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
