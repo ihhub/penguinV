@@ -254,6 +254,7 @@ namespace Bitmap_Image
 
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
+    const static uint8_t RGBA = 4u;
 
     class Image : public Template_Image::ImageTemplate <uint8_t>
     {
