@@ -437,7 +437,7 @@ namespace Bitmap_Operation
     void Save( std::string path, Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height )
     {
-        if( path.empty() || image.empty() || !(image.colorCount() == 1u || image.colorCount() == 3u) )
+        if( path.empty() || image.empty() || !(image.colorCount() == Bitmap_Image::GRAY_SCALE || image.colorCount() == Bitmap_Image::RGB) )
             throw imageException( "Incorrect parameters for bitmap saving" );
 
         uint32_t palleteSize = 0;
