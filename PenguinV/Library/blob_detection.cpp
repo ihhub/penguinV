@@ -415,7 +415,7 @@ namespace Blob_Detection
                         ++neighbourCount;
                     }
 
-                    position = position - 2 + mapWidth;
+                    position = position + width; // (mapWidth - 2) is width
                     if( *(position) != EMPTY ) {
                         if( *(position) == NOT_IN_USE ) {
                             pointX.push_back( xMap - 1 );
@@ -435,7 +435,7 @@ namespace Blob_Detection
                         ++neighbourCount;
                     }
 
-                    position = position - 2 + mapWidth;
+                    position = position + width; // (mapWidth - 2) is width
                     if( *(position) != EMPTY ) {
                         if( *(position) == NOT_IN_USE ) {
                             pointX.push_back( xMap - 1 );
@@ -499,21 +499,21 @@ namespace Blob_Detection
                         *(position) = CONTOUR;
                     }
 
-                    position = position + 1;
+                    ++position;
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap );
                         contourY.push_back( yMap - 1 );
                         *(position) = CONTOUR;
                     }
 
-                    position = position + 1;
+                    ++position;
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap + 1 );
                         contourY.push_back( yMap - 1 );
                         *(position) = CONTOUR;
                     }
 
-                    position = position - 2 + mapWidth;
+                    position = position + width; // (mapWidth - 2) is width
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap - 1 );
                         contourY.push_back( yMap );
@@ -527,21 +527,21 @@ namespace Blob_Detection
                         *(position) = CONTOUR;
                     }
 
-                    position = position - 2 + mapWidth;
+                    position = position + width; // (mapWidth - 2) is width
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap - 1 );
                         contourY.push_back( yMap + 1 );
                         *(position) = CONTOUR;
                     }
 
-                    position = position + 1;
+                    ++position;
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap );
                         contourY.push_back( yMap + 1 );
                         *(position) = CONTOUR;
                     }
 
-                    position = position + 1;
+                    ++position;
                     if( *(position) == EDGE ) {
                         contourX.push_back( xMap + 1 );
                         contourY.push_back( yMap + 1 );
