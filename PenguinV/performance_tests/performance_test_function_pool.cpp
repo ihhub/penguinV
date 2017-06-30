@@ -41,6 +41,11 @@ namespace Performance_Test
         ADD_TEST( framework, Function_Pool_Test::InvertSize1024 );
         ADD_TEST( framework, Function_Pool_Test::InvertSize2048 );
 
+        ADD_TEST( framework, Function_Pool_Test::LookupTable256 );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable512 );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable1024 );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable2048 );
+
         ADD_TEST( framework, Function_Pool_Test::MaximumSize256 );
         ADD_TEST( framework, Function_Pool_Test::MaximumSize512 );
         ADD_TEST( framework, Function_Pool_Test::MaximumSize1024 );
@@ -592,6 +597,86 @@ namespace Performance_Test
                 timer.start();
 
                 Function_Pool::Invert( image[0], image[1] );
+
+                timer.stop();
+            }
+
+            return timer.mean();
+        }
+
+        std::pair < double, double > LookupTable256()
+        {
+            TimerContainer timer;
+            setFunctionPoolThreadCount();
+
+            std::vector < Bitmap_Image::Image > image = uniformImages( 2, 256, 256 );
+
+            std::vector<uint8_t> table(256, 0);
+
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                timer.start();
+
+                Function_Pool::LookupTable( image[0], image[1], table );
+
+                timer.stop();
+            }
+
+            return timer.mean();
+        }
+
+        std::pair < double, double > LookupTable512()
+        {
+            TimerContainer timer;
+            setFunctionPoolThreadCount();
+
+            std::vector < Bitmap_Image::Image > image = uniformImages( 2, 512, 512 );
+
+            std::vector<uint8_t> table(256, 0);
+
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                timer.start();
+
+                Function_Pool::LookupTable( image[0], image[1], table );
+
+                timer.stop();
+            }
+
+            return timer.mean();
+        }
+
+        std::pair < double, double > LookupTable1024()
+        {
+            TimerContainer timer;
+            setFunctionPoolThreadCount();
+
+            std::vector < Bitmap_Image::Image > image = uniformImages( 2, 1024, 1024 );
+
+            std::vector<uint8_t> table(256, 0);
+
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                timer.start();
+
+                Function_Pool::LookupTable( image[0], image[1], table );
+
+                timer.stop();
+            }
+
+            return timer.mean();
+        }
+
+        std::pair < double, double > LookupTable2048()
+        {
+            TimerContainer timer;
+            setFunctionPoolThreadCount();
+
+            std::vector < Bitmap_Image::Image > image = uniformImages( 2, 2048, 2048 );
+
+            std::vector<uint8_t> table(256, 0);
+
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                timer.start();
+
+                Function_Pool::LookupTable( image[0], image[1], table );
 
                 timer.stop();
             }

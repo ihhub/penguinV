@@ -51,6 +51,11 @@ namespace Unit_Test
         ADD_TEST( framework, Function_Pool_Test::IsEqual2ParametersTest );
         ADD_TEST( framework, Function_Pool_Test::IsEqual8ParametersTest );
 
+        ADD_TEST( framework, Function_Pool_Test::LookupTable2ParametersTest );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable3ParametersTest );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable6ParametersTest );
+        ADD_TEST( framework, Function_Pool_Test::LookupTable9ParametersTest );
+
         ADD_TEST( framework, Function_Pool_Test::Maximum2ParametersTest );
         ADD_TEST( framework, Function_Pool_Test::Maximum3ParametersTest );
         ADD_TEST( framework, Function_Pool_Test::Maximum8ParametersTest );
@@ -841,6 +846,136 @@ namespace Unit_Test
 
                 if( (intensity[0] == intensity[1]) !=
                     (Function_Pool::IsEqual( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight )) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
+
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input = randomImage( intensity );
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Bitmap_Image::Image output = Function_Pool::LookupTable( input, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !verifyImage( output, normalized ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable3ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
+
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input  = randomImage( intensity );
+                Bitmap_Image::Image output( input.width(), input.height() );
+
+                output.fill( intensityValue() );
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Function_Pool::LookupTable( input, output, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !verifyImage( output, normalized ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable6ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
+
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input = uniformImage();
+
+                uint32_t roiX, roiY, roiWidth, roiHeight;
+
+                generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+                fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Bitmap_Image::Image output = Function_Pool::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, normalized ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable9ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
+
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input  = uniformImage();
+                Bitmap_Image::Image output = uniformImage();
+
+                std::vector < uint32_t > roiX, roiY;
+                uint32_t roiWidth, roiHeight;
+
+                std::vector < std::pair < uint32_t, uint32_t > > size( 2 );
+
+                size[0] = imageSize( input );
+                size[1] = imageSize( output );
+
+                generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+                fillImage( input, roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Function_Pool::LookupTable( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized ) )
                     return false;
             }
 

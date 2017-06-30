@@ -154,6 +154,7 @@ namespace Function_Pool
         double coefficientA;       // for GammaCorrection() function
         double coefficientGamma;   // for GammaCorrection() function
         uint8_t extractChannelId;  // for ExtractChannel() function
+        std::vector<uint8_t> lookupTable; // for LookupTable() function
     };
     // This structure holds output data for some specific functions
     struct OutputInfo
@@ -339,6 +340,16 @@ namespace Function_Pool
             return _dataOut.isEqual();
         }
 
+        void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                          uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+        {
+            _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+            _dataIn.lookupTable = table;
+
+            _process( _LookupTable );
+        }
+
         void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
         {
@@ -434,6 +445,7 @@ namespace Function_Pool
             _Histogram,
             _Invert,
             _IsEqual,
+            _LookupTable,
             _Maximum,
             _Minimum,
             _Normalize,
@@ -512,6 +524,11 @@ namespace Function_Pool
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    break;
+                case _LookupTable:
+                    penguinV::LookupTable( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                           _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                           _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.lookupTable );
                     break;
                 case _Maximum:
                     penguinV::Maximum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -1022,6 +1039,42 @@ namespace Function_Pool
                   uint32_t width, uint32_t height )
     {
         return FunctionTask().IsEqual( in1, startX1, startY1, in2, startX2, startY2, width, height );
+    }
+
+    Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
+
+        return out;
+    }
+
+    void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
+    {
+        Image_Function::ParameterValidation( in, out );
+
+        LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
+    }
+
+    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                       const std::vector < uint8_t > & table )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out( width, height );
+
+        LookupTable( in, startXIn, startYIn, out, 0, 0, width, height, table );
+
+        return out;
+    }
+
+    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                      uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+    {
+        return FunctionTask().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, table );
     }
 
     Image Maximum( const Image & in1, const Image & in2 )

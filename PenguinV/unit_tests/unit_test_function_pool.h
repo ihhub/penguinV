@@ -51,6 +51,11 @@ namespace Unit_Test
         bool IsEqual2ParametersTest();
         bool IsEqual8ParametersTest();
 
+        bool LookupTable2ParametersTest();
+        bool LookupTable3ParametersTest();
+        bool LookupTable6ParametersTest();
+        bool LookupTable9ParametersTest();
+
         bool Maximum2ParametersTest();
         bool Maximum3ParametersTest();
         bool Maximum8ParametersTest();

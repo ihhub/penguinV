@@ -58,6 +58,11 @@ namespace Performance_Test
         std::pair < double, double > InvertSize1024();
         std::pair < double, double > InvertSize2048();
 
+        std::pair < double, double > LookupTable256();
+        std::pair < double, double > LookupTable512();
+        std::pair < double, double > LookupTable1024();
+        std::pair < double, double > LookupTable2048();
+
         std::pair < double, double > MaximumSize256();
         std::pair < double, double > MaximumSize512();
         std::pair < double, double > MaximumSize1024();

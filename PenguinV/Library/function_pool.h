@@ -82,6 +82,13 @@ namespace Function_Pool
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   uint32_t width, uint32_t height );
 
+    Image LookupTable( const Image & in, const std::vector < uint8_t > & table );
+    void  LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table );
+    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                       const std::vector < uint8_t > & table );
+    void  LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table );
+
     Image Maximum( const Image & in1, const Image & in2 );
     void  Maximum( const Image & in1, const Image & in2, Image & out );
     Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

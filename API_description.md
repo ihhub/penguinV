@@ -1434,7 +1434,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **LookupTable** [_Namespaces: **Image_Function**_]
+- **LookupTable** [_Namespaces: **Function_Pool, Image_Function**_]
 
 	##### Syntax:
 	```cpp
