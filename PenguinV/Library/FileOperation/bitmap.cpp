@@ -298,7 +298,7 @@ namespace Bitmap_Operation
 
             return !(biBitCount == 8u || biBitCount == 24u || biBitCount == 32u) ||
                 biWidth <= 0 || biHeight <= 0 || biSize != BitmapInfoHeader().biSize ||
-                (biSizeImage != static_cast<uint32_t>(rowSize * biHeight) && biSizeImage != 0) ||
+                (biSizeImage != rowSize * static_cast<uint32_t>(biHeight) && biSizeImage != 0) ||
                 biPlanes != BitmapInfoHeader().biPlanes || header.bfOffBits < overallSize + header.overallSize;
         };
     };
