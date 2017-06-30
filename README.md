@@ -16,11 +16,7 @@ At the current stage of development library does not have many features but we a
 - more basic functions and their implementations by SSE, AVX, NEON
 - Fourier transform
 
-The library does **NOT** provide such features as:
-- load/save image from/to memory storage for some image formats
-- image conversion between image formats
-- image displaying
-- identification whether your PC supports CUDA, SSE, AVX, NEON. If your PC does not support some feature just do NOT use related files in your project :wink:
+The library does **NOT** have it's own image displaying code but you can refer to QT example.
 
 In many cases when developers design their own image processing application they are facing problems with integration of third-party library into code. To minimize such drawbacks we are giving an option to write your own code for above situations.
 
