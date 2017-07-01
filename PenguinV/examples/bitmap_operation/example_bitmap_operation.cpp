@@ -64,9 +64,6 @@ void method1()
         image.swap( input );
     }
 
-    // Convert color image to gray-scale image
-    Image_Function::ConvertToGrayScale( input, image );
-
     // Threshold image with calculated optimal threshold
     image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram( image ) ) );
 
@@ -94,9 +91,6 @@ void method2()
     else { // nope, it's gray-scale image. Then we just swap images
         image.swap( input );
     }
-
-    // Convert color image to gray-scale image
-    Image_Function::ConvertToGrayScale( input, image );
 
     // Threshold image with calculated optimal threshold and directly save result in file
     Bitmap_Operation::Save( "result2.bmp",

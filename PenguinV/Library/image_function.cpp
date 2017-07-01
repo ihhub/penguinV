@@ -656,13 +656,11 @@ namespace Image_Function
         if( histogram.size() != 256 )
             throw imageException( "Histogram size is not 256" );
 
-        uint8_t threshold = 0;
-
         // It is well-known Otsu's method to find threshold
         uint32_t pixelCount = histogram[0] + histogram[1];
         uint32_t sum = histogram[1];
         for( uint16_t i = 2; i < 256; ++i ) {
-            sum  = sum  + i * histogram[i];
+            sum = sum + i * histogram[i];
             pixelCount += histogram[i];
         }
 
@@ -670,6 +668,8 @@ namespace Image_Function
         uint32_t pixelCountTemp = 0;
 
         double maximumSigma = -1;
+
+        uint8_t threshold = 0;
 
         for( uint16_t i = 0; i < 256; ++i ) {
             pixelCountTemp += histogram[i];
