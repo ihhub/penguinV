@@ -47,22 +47,15 @@ void method1()
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    Bitmap_Image::Image input = Bitmap_Operation::Load( "mercury.bmp" );
+    Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    // To be sure that data transfer from raw format to image format went well we validate that the image is not empty
-    if( input.empty() )
-        throw imageException( "Cannot load color image. Is it color image?" );
+    // If the image is not empty it means that the image doesn't exist or the file is not readable
+    if( image.empty() )
+        throw imageException( "Cannot load the image" );
 
-    // Create gray-scale image because our input image could be color-image (actually it is)
-    Bitmap_Image::Image image;
-
-    if( input.colorCount() == Bitmap_Image::RGB ) { // okay, it's a color image
-        image.resize( input.width(), input.height() );
-        Image_Function::ConvertToGrayScale( input, image );
-    }
-    else { // nope, it's gray-scale image. Then we just swap images
-        image.swap( input );
-    }
+    // Convert to gray-scale image if it's not
+    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
+        image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
     image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram( image ) ) );
@@ -76,21 +69,15 @@ void method2()
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    Bitmap_Image::Image input = Bitmap_Operation::Load( "mercury.bmp" );
+    Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    // To be sure that data transfer from raw format to image format went well we validate that the image is not empty
-    if( input.empty() )
-        throw imageException( "Cannot load color image. Is it color image?" );
+    // If the image is not empty it means that the image doesn't exist or the file is not readable
+    if( image.empty() )
+        throw imageException( "Cannot load the image" );
 
-    // Create gray-scale image because our input image could be color-image (actually it is)
-    Bitmap_Image::Image image;
-
-    if( input.colorCount() == Bitmap_Image::RGB ) { // okay, it's a color image
-        image = Image_Function::ConvertToGrayScale( input );
-    }
-    else { // nope, it's gray-scale image. Then we just swap images
-        image.swap( input );
-    }
+    // Convert to gray-scale image if it's not
+    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
+        image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold and directly save result in file
     Bitmap_Operation::Save( "result2.bmp",
