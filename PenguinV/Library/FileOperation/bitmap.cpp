@@ -382,7 +382,7 @@ namespace Bitmap_Operation
         if( length != header.bfOffBits + rowSize * info->height() )
             return Bitmap_Image::Image();
 
-        uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
+        const uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
 
         if( palleteSize > 0 ) {
             std::vector < uint8_t > pallete( palleteSize );
@@ -445,7 +445,7 @@ namespace Bitmap_Operation
         // Create a pallete only for gray-scale image
         if( image.colorCount() == 1u ) {
             palleteSize = 1024u;
-            pallete.resize( palleteSize );
+            pallete.resize( palleteSize, 0 );
 
             uint8_t * palleteData = pallete.data();
             uint8_t * palleteEnd = palleteData + pallete.size();
@@ -493,7 +493,7 @@ namespace Bitmap_Operation
 
         file.flush();
 
-        uint32_t rowSize = image.rowSize();
+        const uint32_t rowSize = image.rowSize();
 
         const uint8_t * imageY = image.data() + (startY + height - 1) * rowSize + startX;
 
