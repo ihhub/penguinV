@@ -50,12 +50,13 @@ void example1()
     // Otherwise you can change the path where to load the image from
     Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    if( image.colorCount() == Bitmap_Image::RGB ) {
-        Bitmap_Image::Image gray( image.width(), image.height() );
+    // If the image is empty it means that the image doesn't exist or the file is not readable
+    if( image.empty() )
+        throw imageException( "Cannot load the image" );
 
-        Image_Function::ConvertToGrayScale( image, gray );
-        image.swap( gray );
-    }
+    // Convert to gray-scale image if it's not
+    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
+        image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
     Image_Function::Threshold( image, image, Image_Function::GetThreshold( Image_Function::Histogram( image ) ) );
@@ -88,7 +89,12 @@ void example2()
     // Otherwise you can change the path where to load the image from
     Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    if( image.colorCount() == Bitmap_Image::RGB )
+    // If the image is empty it means that the image doesn't exist or the file is not readable
+    if( image.empty() )
+        throw imageException( "Cannot load the image" );
+
+    // Convert to gray-scale image if it's not
+    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Search all possible blobs on image with calculated optimal threshold
