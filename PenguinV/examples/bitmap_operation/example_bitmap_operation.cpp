@@ -49,7 +49,7 @@ void method1()
     // Otherwise you can change the path where the image stored
     Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    // If the image is not empty it means that the image doesn't exist or the file is not readable
+    // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
@@ -71,7 +71,7 @@ void method2()
     // Otherwise you can change the path where the image stored
     Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    // If the image is not empty it means that the image doesn't exist or the file is not readable
+    // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
