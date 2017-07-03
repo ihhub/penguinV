@@ -1,5 +1,11 @@
 #include <stdlib.h>
-#include <png.h>
+
+#ifdef _WIN32
+
+#else
+    #include <png.h>
+#endif
+
 #include <vector>
 #include "png_file.h"
 #include "../image_exception.h"
