@@ -89,22 +89,22 @@ namespace Unit_Test
 
     // Return random value for specific range or variable type
     template <typename data>
-    data randomValue( int maximum )
+    data randomValue( uint32_t maximum )
     {
         if( maximum <= 0 )
             return 0;
         else
-            return static_cast<data>(rand() % maximum);
+            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
     };
 
     template <typename data>
-    data randomValue( data minimum, int maximum )
+    data randomValue( data minimum, uint32_t maximum )
     {
         if( maximum <= 0 ) {
             return 0;
         }
         else {
-            data value = static_cast<data>(rand() % maximum);
+            data value = static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
 
             if( value < minimum )
                 value = minimum;

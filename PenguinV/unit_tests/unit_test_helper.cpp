@@ -118,7 +118,7 @@ namespace Unit_Test
     }
 
     template <typename data>
-    std::vector < data > generateArray( uint32_t size, int maximumValue )
+    std::vector < data > generateArray( uint32_t size, uint32_t maximumValue )
     {
         std::vector < data > fillArray( size );
 
@@ -134,7 +134,7 @@ namespace Unit_Test
 
     std::vector < uint8_t > intensityArray( uint32_t size )
     {
-        return generateArray<uint8_t>( size, 256 );
+        return generateArray<uint8_t>( size, 256u );
     }
 
     std::vector < Bitmap_Image::Image > uniformImages( std::vector < uint8_t > intensityValue )
@@ -323,6 +323,6 @@ namespace Unit_Test
 
     uint32_t runCount()
     {
-        return 1024; // some magic number for loop. Higher value = higher chance to verify all possible situations
+        return 1024u; // some magic number for loop. Higher value = higher chance to verify all possible situations
     }
 };
