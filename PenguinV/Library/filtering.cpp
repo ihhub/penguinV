@@ -55,11 +55,12 @@ namespace Image_Function
                   startYOut + kernelSize / 2, kernelSize / 2, height - (kernelSize - 1) );
 
             std::vector < uint8_t > data( kernelSize * kernelSize );
+            const size_t dataMedianPosition = data.size() / 2;
 
             const uint32_t rowSizeIn  = in.rowSize();
             const uint32_t rowSizeOut = out.rowSize();
 
-            const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+            const uint8_t * inY  = in.data()  + startYIn                     * rowSizeIn  + startXIn;
             uint8_t       * outY = out.data() + (startYOut + kernelSize / 2) * rowSizeOut + startXOut + kernelSize / 2;
 
             width  = width  - (kernelSize - 1);
@@ -87,9 +88,9 @@ namespace Image_Function
                             *value = *inXRead;
                     }
 
-                    std::partial_sort( data.begin(), data.begin() + data.size() / 2 + 1, data.end() );
+                    std::nth_element( data.begin(), data.begin() + dataMedianPosition, data.end() );
 
-                    (*outX) = data[data.size() / 2];
+                    (*outX) = data[dataMedianPosition];
                 }
             }
         }
