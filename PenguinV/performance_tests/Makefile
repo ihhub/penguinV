@@ -3,12 +3,14 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../Library
 SRCS :=  \
 	$(LIB_DIR)/blob_detection.cpp \
+	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	performance_tests.cpp \
 	performance_test_blob_detection.cpp \
+	performance_test_filtering.cpp \
 	performance_test_framework.cpp \
 	performance_test_function_pool.cpp \
 	performance_test_helper.cpp \

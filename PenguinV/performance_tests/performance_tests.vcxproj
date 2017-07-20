@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Library\blob_detection.cpp" />
+    <ClCompile Include="..\Library\filtering.cpp" />
     <ClCompile Include="..\Library\function_pool.cpp" />
     <ClCompile Include="..\Library\image_function.cpp" />
     <ClCompile Include="..\Library\image_function_avx.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="..\Library\thread_pool.cpp" />
     <ClCompile Include="performance_tests.cpp" />
     <ClCompile Include="performance_test_blob_detection.cpp" />
+    <ClCompile Include="performance_test_filtering.cpp" />
     <ClCompile Include="performance_test_framework.cpp" />
     <ClCompile Include="performance_test_function_pool.cpp" />
     <ClCompile Include="performance_test_helper.cpp" />
@@ -159,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Library\blob_detection.h" />
+    <ClInclude Include="..\Library\filtering.h" />
     <ClInclude Include="..\Library\function_pool.h" />
     <ClInclude Include="..\Library\image_buffer.h" />
     <ClInclude Include="..\Library\image_exception.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="..\Library\penguinv\penguinv.h" />
     <ClInclude Include="..\Library\thread_pool.h" />
     <ClInclude Include="performance_test_blob_detection.h" />
+    <ClInclude Include="performance_test_filtering.h" />
     <ClInclude Include="performance_test_framework.h" />
     <ClInclude Include="performance_test_function_pool.h" />
     <ClInclude Include="performance_test_helper.h" />
