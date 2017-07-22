@@ -4,14 +4,38 @@
 
 namespace
 {
-    // Helper function which should return proper arguments for CUDA device functions
-    void getKernelParameters( int & threadsPerBlock, int & blocksPerGrid, uint32_t size )
+    struct KernelParameters
     {
-        threadsPerBlock = 256;
-        blocksPerGrid = (size + threadsPerBlock - 1) / threadsPerBlock;
+        KernelParameters()
+            : threadsPerBlock( 0 )
+            , blocksPerGrid  ( 0 )
+        {};
+
+        KernelParameters( int threadsPerBlock_, int blocksPerGrid_  )
+            : threadsPerBlock( threadsPerBlock_ )
+            , blocksPerGrid  ( blocksPerGrid_   )
+        {};
+
+        int threadsPerBlock;
+        int blocksPerGrid;
     };
 
-    // The list of CUDA device functions
+    // Helper function which should return proper arguments for CUDA device functions
+    KernelParameters getKernelParameters( uint32_t size )
+    {
+        static const int threadsPerBlock = 256;
+        return KernelParameters( threadsPerBlock, (size + threadsPerBlock - 1) / threadsPerBlock );
+    };
+
+    // Validation of last occured error in functions on host side
+    void ValidateLastError()
+    {
+        cudaError_t error = cudaGetLastError();
+        if( error != cudaSuccess )
+            throw imageException( "Failed to launch CUDA kernel" );
+    };
+
+    // The list of CUDA device functions on device side
     __global__ void absoluteDifference( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
@@ -135,13 +159,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        absoluteDifference<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        absoluteDifference<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
+        
+        ValidateLastError();
     }
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
@@ -159,13 +182,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseAnd<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        bitwiseAnd<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     Image BitwiseOr( const Image & in1, const Image & in2 )
@@ -183,13 +205,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseOr<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        bitwiseOr<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     Image BitwiseXor( const Image & in1, const Image & in2 )
@@ -207,13 +228,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseXor<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        bitwiseXor<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     void Convert( const Bitmap_Image::Image & in, Image & out )
@@ -273,13 +293,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( image );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, image.width() * image.height() );
+        const uint32_t size = image.width() * image.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        fill<<<blocksPerGrid, threadsPerBlock>>>(image.data(), value, image.width() * image.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        fill<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), value, size);
+        
+        ValidateLastError();
     }
 
     Image GammaCorrection( const Image & in, double a, double gamma )
@@ -300,13 +319,12 @@ namespace Image_Function_Cuda
         if( a < 0 || gamma < 0 )
             throw imageException( "Bad input parameters in image function" );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        gammaCorrection<<<blocksPerGrid, threadsPerBlock>>>(in.data(), out.data(), out.width() * out.height(), a, static_cast<float>(gamma));
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        gammaCorrection<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, a, static_cast<float>(gamma));
+        
+        ValidateLastError();
     }
 
     Image Invert( const Image & in )
@@ -324,13 +342,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        invert<<<blocksPerGrid, threadsPerBlock>>>(in.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        invert<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     Image Maximum( const Image & in1, const Image & in2 )
@@ -348,13 +365,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        maximum<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        maximum<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     Image Minimum( const Image & in1, const Image & in2 )
@@ -372,13 +388,12 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        minimum<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        minimum<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
@@ -396,12 +411,11 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        int threadsPerBlock = 1, blocksPerGrid = 1;
-        getKernelParameters( threadsPerBlock, blocksPerGrid, out.width() * out.height() );
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
 
-        subtract<<<blocksPerGrid, threadsPerBlock>>>(in1.data(), in2.data(), out.data(), out.width() * out.height());
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
+        subtract<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
     }
 };
