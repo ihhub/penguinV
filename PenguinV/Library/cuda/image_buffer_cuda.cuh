@@ -181,7 +181,7 @@ namespace Template_Image_Cuda
 
             std::swap( _data, image._data );
         }
-    protected:
+
         void _copy( const ImageTemplateCuda & image )
         {
             if( image.empty() || empty() || image.width() != width() || image.height() != height() || image.colorCount() != colorCount() )
@@ -205,6 +205,7 @@ namespace Bitmap_Image_Cuda
 {
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
+    const static uint8_t RGBA = 4u;
 
     class Image : public Template_Image_Cuda::ImageTemplateCuda <uint8_t>
     {

@@ -1,6 +1,5 @@
 #include <cuda_runtime.h>
 #include <math.h>
-#include "../image_function.h"
 #include "image_function_cuda.cuh"
 
 namespace
