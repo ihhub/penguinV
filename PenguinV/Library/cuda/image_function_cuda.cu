@@ -1,5 +1,6 @@
 #include <cuda_runtime.h>
 #include <math.h>
+#include "cuda_types.cuh"
 #include "image_function_cuda.cuh"
 
 namespace
@@ -97,27 +98,12 @@ namespace
         }
     };
 
-    __global__ void gammaCorrectionCuda( const uint8_t * in, uint8_t * out, uint32_t size, double a, float gamma )
+    __global__ void lookupTableCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t * table )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
-        __shared__ uint8_t value[256];
-
-        if( threadIdx.x == 0 ) {
-            for( uint16_t i = 0; i < 256; ++i ) {
-                double data = a * __powf( __fdividef( (float)i, 255.0f ), gamma ) * 255 + 0.5;
-
-                if( data < 255 )
-                    value[i] = static_cast<uint8_t>(data);
-                else
-                    value[i] = 255;
-            }
-        }
-
-        __syncthreads();
-
         if( id < size ) {
-            out[id] = value[in[id]];
+            out[id] = table[in[id]];
         }
     };
 
@@ -368,12 +354,19 @@ namespace Image_Function_Cuda
         if( a < 0 || gamma < 0 )
             throw imageException( "Bad input parameters in image function" );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        // We precalculate all values and store them in lookup table
+        std::vector < uint8_t > value( 256 );
 
-        gammaCorrectionCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, a, static_cast<float>(gamma));
-        
-        ValidateLastError();
+        for( uint16_t i = 0; i < 256; ++i ) {
+            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
+
+            if( data < 256 )
+                value[i] = static_cast<uint8_t>(data);
+            else
+                value[i] = 255;
+        }
+
+        LookupTable( in, out, value );
     }
 
     Image Invert( const Image & in )
@@ -396,6 +389,35 @@ namespace Image_Function_Cuda
 
         invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size);
         
+        ValidateLastError();
+    }
+
+    Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        LookupTable( in, out, table );
+
+        return out;
+    }
+    
+    void  LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        if( table.size() != 256u )
+            throw imageException( "Lookup table size is not equal to 256" );
+
+        Cuda_Types::Array< uint8_t > tableCuda( table );
+
+        const uint32_t size = out.rowSize() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
+
+        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, &tableCuda);
+
         ValidateLastError();
     }
 

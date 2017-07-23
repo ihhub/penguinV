@@ -32,7 +32,7 @@ namespace Image_Function_Cuda
     void  Fill( Image & image, uint8_t value );
 
     // Gamma correction works by formula:
-    // output = A * (input ^ gamma), where A - multiplication, gamma - power base. Both values must be greater than 0
+    // output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0
     // Usually people set A as 1
     Image GammaCorrection( const Image & in, double a, double gamma );
     void  GammaCorrection( const Image & in, Image & out, double a, double gamma );
@@ -40,6 +40,9 @@ namespace Image_Function_Cuda
     // Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
     Image Invert( const Image & in );
     void  Invert( const Image & in, Image & out );
+
+    Image LookupTable( const Image & in, const std::vector < uint8_t > & table );
+    void  LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table );
 
     Image Maximum( const Image & in1, const Image & in2 );
     void  Maximum( const Image & in1, const Image & in2, Image & out );

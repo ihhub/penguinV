@@ -313,6 +313,44 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
+- **LookupTable** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	Image LookupTable(
+		const Image & in,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of pixel intensity transformation. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  LookupTable(
+		const Image & in,
+		Image & out,
+		const std::vector < uint8_t > & table
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Replaces pixel intensities values by values stored in lookup table and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transformation. Height and width of result image are the same as of input image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
 - **Maximum** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
