@@ -6,11 +6,6 @@ namespace
 {
     struct KernelParameters
     {
-        KernelParameters()
-            : threadsPerBlock( 0 )
-            , blocksPerGrid  ( 0 )
-        {};
-
         KernelParameters( int threadsPerBlock_, int blocksPerGrid_  )
             : threadsPerBlock( threadsPerBlock_ )
             , blocksPerGrid  ( blocksPerGrid_   )
@@ -36,7 +31,7 @@ namespace
     };
 
     // The list of CUDA device functions on device side
-    __global__ void absoluteDifference( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void absoluteDifferenceCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -45,7 +40,7 @@ namespace
         }
     };
 
-    __global__ void bitwiseAnd( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseAndCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -54,7 +49,7 @@ namespace
         }
     };
 
-    __global__ void bitwiseOr( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseOrCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -63,7 +58,7 @@ namespace
         }
     };
 
-    __global__ void bitwiseXor( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseXorCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -72,7 +67,28 @@ namespace
         }
     };
 
-    __global__ void fill( uint8_t * data, uint8_t value, uint32_t size )
+    __global__ void convertToGrayScaleCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint32_t width, uint8_t colorCount )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            uint32_t x = id % width;
+            uint32_t y = id / width;
+
+            uint32_t sum = 0;
+
+            const uint8_t * data = in + (width * y + x) * colorCount;
+
+            for( uint8_t i = 0; i < colorCount; ++i, ++data )
+            {
+                sum += (*data);
+            }
+
+            out[id] = static_cast<uint8_t>(static_cast<float>(sum) / colorCount + 0.5);
+        }
+    };
+
+    __global__ void fillCuda( uint8_t * data, uint8_t value, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -81,7 +97,7 @@ namespace
         }
     };
 
-    __global__ void gammaCorrection( const uint8_t * in, uint8_t * out, uint32_t size, double a, float gamma )
+    __global__ void gammaCorrectionCuda( const uint8_t * in, uint8_t * out, uint32_t size, double a, float gamma )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -105,7 +121,7 @@ namespace
         }
     };
 
-    __global__ void invert( const uint8_t * in, uint8_t * out, uint32_t size )
+    __global__ void invertCuda( const uint8_t * in, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -114,7 +130,7 @@ namespace
         }
     };
 
-    __global__ void maximum( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void maximumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -123,7 +139,7 @@ namespace
         }
     };
 
-    __global__ void minimum( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void minimumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -132,12 +148,30 @@ namespace
         }
     };
 
-    __global__ void subtract( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void subtractCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
         if( id < size ) {
             out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;
+        }
+    };
+
+    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t threshold )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            out[id] = in[id] < threshold ? 0 : 255;
+        }
+    };
+
+    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t minThreshold, uint8_t maxThreshold )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            out[id] = in[id] < minThreshold || in[id] > maxThreshold ? 0 : 255;
         }
     };
 };
@@ -159,10 +193,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        absoluteDifference<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
+        absoluteDifferenceCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -182,10 +216,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseAnd<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -205,10 +239,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseOr<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -228,10 +262,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseXor<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -241,22 +275,15 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
 
-        if( in.width() != out.width() || in.height() != out.height() )
+        if( in.width() != out.width() || in.height() != out.height() || in.alignment() != 1u ||
+            in.colorCount() != out.colorCount())
             throw imageException( "Bad input parameters in image function" );
 
-        uint32_t rowSizeIn  = in.rowSize();
-        uint32_t rowSizeOut = out.width();
+        const uint32_t size = in.rowSize() * in.height();
 
-        const uint8_t * Y    = in.data();
-        const uint8_t * YEnd = Y + in.height() * rowSizeIn;
-
-        uint8_t * cudaY = out.data();
-
-        for( ; Y != YEnd; Y += rowSizeIn, cudaY += rowSizeOut ) {
-            cudaError_t error = cudaMemcpy( cudaY, Y, out.width() * sizeof( uint8_t ), cudaMemcpyHostToDevice );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot copy a memory to CUDA device" );
-        }
+        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
+        if( error != cudaSuccess )
+            throw imageException( "Cannot copy a memory to CUDA device" );
     }
 
     void Convert( const Image & in, Bitmap_Image::Image & out )
@@ -264,22 +291,44 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
 
-        if( in.width() != out.width() || in.height() != out.height() )
+        if( in.width() != out.width() || in.height() != out.height() || out.alignment() != 1u ||
+            in.colorCount() != out.colorCount())
             throw imageException( "Bad input parameters in image function" );
 
-        uint32_t rowSizeIn  = in.width();
-        uint32_t rowSizeOut = out.rowSize();
+        const uint32_t size = out.rowSize() * out.height();
 
-        uint8_t * Y    = out.data();
-        const uint8_t * YEnd = Y + out.height() * rowSizeOut;
+        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
+        if( error != cudaSuccess )
+            throw imageException( "Cannot copy a memory from CUDA device" );
+    }
 
-        const uint8_t * cudaY = in.data();
+    Image ConvertToGrayScale( const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
 
-        for( ; Y != YEnd; Y += rowSizeOut, cudaY += rowSizeIn ) {
-            cudaError_t error = cudaMemcpy( Y, cudaY, in.width() * sizeof( uint8_t ), cudaMemcpyDeviceToHost );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot copy a memory from CUDA device" );
+        Image out( in.width(), in.height() );
+
+        ConvertToGrayScale( in, out );
+
+        return out;
+    }
+
+    void ConvertToGrayScale( const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( out );
+
+        if( in.colorCount() == GRAY_SCALE ) {
+            Copy( in, out );
+            return;
         }
+
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
+
+        convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, in.width(), in.colorCount());
+
+        ValidateLastError();
     }
 
     void Copy( const Image & in, Image & out )
@@ -293,10 +342,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( image );
 
-        const uint32_t size = image.width() * image.height();
+        const uint32_t size = image.rowSize() * image.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        fill<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), value, size);
+        fillCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), value, size);
         
         ValidateLastError();
     }
@@ -319,10 +368,10 @@ namespace Image_Function_Cuda
         if( a < 0 || gamma < 0 )
             throw imageException( "Bad input parameters in image function" );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        gammaCorrection<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, a, static_cast<float>(gamma));
+        gammaCorrectionCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, a, static_cast<float>(gamma));
         
         ValidateLastError();
     }
@@ -342,10 +391,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        invert<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size);
+        invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -365,10 +414,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        maximum<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -388,10 +437,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.width() * out.height();
+        const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        minimum<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
         
         ValidateLastError();
     }
@@ -411,10 +460,58 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
+        const uint32_t size = out.rowSize() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
+
+        subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        
+        ValidateLastError();
+    }
+
+    Image Threshold( const Image & in, uint8_t threshold )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        Threshold( in, out, threshold );
+
+        return out;
+    }
+
+    void Threshold( const Image & in, Image & out, uint8_t threshold )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
         const uint32_t size = out.width() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        subtract<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, threshold);
+        
+        ValidateLastError();
+    }
+
+    Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        Threshold( in, out, minThreshold, maxThreshold );
+
+        return out;
+    }
+
+    void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
+
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, minThreshold, maxThreshold);
         
         ValidateLastError();
     }

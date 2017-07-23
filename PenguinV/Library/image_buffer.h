@@ -77,8 +77,6 @@ namespace Template_Image
 
         ImageTemplate & operator=( const ImageTemplate & image )
         {
-            clear();
-
             copy( image );
 
             return (*this);
@@ -222,6 +220,8 @@ namespace Template_Image
 
         void copy( const ImageTemplate & image )
         {
+            clear();
+
             _width  = image._width;
             _height = image._height;
 
@@ -234,6 +234,22 @@ namespace Template_Image
 
                 memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
             }
+        }
+
+        void mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        {
+            uint32_t rowSize_ = width_ * colorCount_;
+            if( rowSize_ % alignment_ != 0 )
+                rowSize_ = (rowSize_ / alignment_ + 1) * alignment_;
+
+            if( rowSize_ * height_ != _rowSize * _height )
+                throw imageException( "Cannot mutate the image" );
+
+            _width      = width_;
+            _height     = height_;
+            _colorCount = colorCount_;
+            _alignment  = alignment_;
+            _rowSize    = rowSize_;
         }
     private:
         uint32_t _width;

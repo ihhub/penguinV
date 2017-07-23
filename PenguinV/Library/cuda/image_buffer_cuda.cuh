@@ -17,6 +17,7 @@ namespace Template_Image_Cuda
             : _width     ( 0 )    // width of image
             , _height    ( 0 )    // height of image
             , _colorCount( 1 )    // number of colors per pixel
+            , _rowSize   ( 0 )    // size of single row on image which is equal to width * colorCount
             , _data      ( NULL ) // an array what store image information (pixel data)
         {
         }
@@ -25,6 +26,7 @@ namespace Template_Image_Cuda
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
+            , _rowSize   ( 0 )
             , _data      ( NULL )
         {
             resize( width_, height_ );
@@ -34,6 +36,7 @@ namespace Template_Image_Cuda
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
+            , _rowSize   ( 0 )
             , _data      ( NULL )
         {
             setColorCount( colorCount_ );
@@ -41,22 +44,9 @@ namespace Template_Image_Cuda
         }
 
         ImageTemplateCuda( const ImageTemplateCuda & image )
+            : _data      ( NULL )
         {
-            _width  = image._width;
-            _height = image._height;
-
-            _colorCount = image._colorCount;
-
-            if( image._data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _height * _width );
-
-                cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
-            }
-            else {
-                _data = NULL;
-            }
+            copy( image );
         }
 
         ImageTemplateCuda( ImageTemplateCuda && image )
@@ -70,20 +60,7 @@ namespace Template_Image_Cuda
 
         ImageTemplateCuda & operator=( const ImageTemplateCuda & image )
         {
-            clear();
-
-            _width  = image._width;
-            _height = image._height;
-
-            _colorCount = image._colorCount;
-
-            if( image._data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _height * _width );
-
-                cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
-            }
+            copy( image );
 
             return (*this);
         }
@@ -107,8 +84,9 @@ namespace Template_Image_Cuda
 
                 _width  = width_;
                 _height = height_;
+                _rowSize = width() * colorCount();
 
-                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _height * _width );
+                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _rowSize * _height );
             }
         }
 
@@ -149,6 +127,11 @@ namespace Template_Image_Cuda
             return _height;
         }
 
+        uint32_t rowSize() const
+        {
+            return _rowSize;
+        }
+
         uint8_t colorCount() const
         {
             return _colorCount;
@@ -178,24 +161,34 @@ namespace Template_Image_Cuda
             _height = image._height;
 
             _colorCount = image._colorCount;
+            _rowSize    = image._rowSize;
 
             std::swap( _data, image._data );
         }
 
-        void _copy( const ImageTemplateCuda & image )
+        void copy( const ImageTemplateCuda & image )
         {
-            if( image.empty() || empty() || image.width() != width() || image.height() != height() || image.colorCount() != colorCount() )
-                throw imageException( "Invalid image to copy" );
+            clear();
 
-            cudaError_t error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot copy a memory in CUDA device" );
+            _width  = image._width;
+            _height = image._height;
+            _colorCount = image._colorCount;
+            _rowSize    = image._rowSize; 
+
+            if( image._data != NULL ) {
+                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _height * _width );
+
+                cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
+                if( error != cudaSuccess )
+                    throw imageException( "Cannot copy a memory in CUDA device" );
+            }
         }
 
     private:
         uint32_t _width;
         uint32_t _height;
         uint8_t  _colorCount;
+        uint32_t _rowSize;
 
         TColorDepth * _data;
     };

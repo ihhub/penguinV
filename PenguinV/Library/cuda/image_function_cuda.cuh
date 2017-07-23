@@ -20,8 +20,12 @@ namespace Image_Function_Cuda
     Image BitwiseXor( const Image & in1, const Image & in2 );
     void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
 
+    // To call these functions Bitmap_Image::Image must have 1 pixel alignment only
     void  Convert( const Bitmap_Image::Image & in, Image & out );
     void  Convert( const Image & in, Bitmap_Image::Image & out );
+
+    Image ConvertToGrayScale( const Image & in );
+    void  ConvertToGrayScale( const Image & in, Image & out );
 
     void  Copy( const Image & in, Image & out );
 
@@ -45,4 +49,17 @@ namespace Image_Function_Cuda
 
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );
+
+    // Thresholding works in such way:
+        // if pixel intensity on input image is          less (  < ) than threshold then set pixel intensity on output image as 0
+        // if pixel intensity on input image is equal or more ( >= ) than threshold then set pixel intensity on output image as 255
+    Image Threshold( const Image & in, uint8_t threshold );
+    void  Threshold( const Image & in, Image & out, uint8_t threshold );
+
+    // Thresholding works in such way:
+        // if pixel intensity on input image is less ( < ) than minimum threshold or more ( > ) than maximum threshold
+        // then      set pixel intensity on output image as 0
+        // otherwise set pixel intensity on output image as 255
+    Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold );
+    void  Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
 };
