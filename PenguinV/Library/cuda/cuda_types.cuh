@@ -218,7 +218,7 @@ namespace Cuda_Types
             }
         };
 
-        TData _copyTo() const
+        std::vector <TData> _copyTo() const
         {
             std::vector <TData> out( _size );
 

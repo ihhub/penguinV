@@ -61,7 +61,7 @@ namespace Cuda_Memory
                 const uint8_t level = _getAllocationLevel( size );
 
                 if( _split( level ) ) {
-                    *address = static_cast<uint8_t*>(_data) + *_freeChunck[level].begin();
+                    *address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
                     _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
                     _freeChunck[level].erase( _freeChunck[level].begin() );
                     return;
