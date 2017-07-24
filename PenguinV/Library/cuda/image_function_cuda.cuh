@@ -37,6 +37,11 @@ namespace Image_Function_Cuda
     Image GammaCorrection( const Image & in, double a, double gamma );
     void  GammaCorrection( const Image & in, Image & out, double a, double gamma );
 
+    uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
+
+    std::vector < uint32_t > Histogram( const Image & image );
+    void                     Histogram( const Image & image, std::vector < uint32_t > & histogram );
+
     // Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
     Image Invert( const Image & in );
     void  Invert( const Image & in, Image & out );
