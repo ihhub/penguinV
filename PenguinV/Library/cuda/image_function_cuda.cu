@@ -265,7 +265,16 @@ namespace Image_Function_Cuda
         ValidateLastError();
     }
 
-    void Convert( const Bitmap_Image::Image & in, Image & out )
+    Image ConvertToCuda( const Bitmap_Image::Image & in )
+    {
+        Image out( in.width(), in.height(), in.colorCount() );
+
+        ConvertToCuda( in, out );
+
+        return out;
+    }
+
+    void ConvertToCuda( const Bitmap_Image::Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -281,7 +290,16 @@ namespace Image_Function_Cuda
             throw imageException( "Cannot copy a memory to CUDA device" );
     }
 
-    void Convert( const Image & in, Bitmap_Image::Image & out )
+    Bitmap_Image::Image ConvertFromCuda( const Image & in )
+    {
+        Bitmap_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
+
+        ConvertFromCuda( in, out );
+
+        return out;
+    }
+
+    void ConvertFromCuda( const Image & in, Bitmap_Image::Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -292,7 +310,7 @@ namespace Image_Function_Cuda
 
         const uint32_t size = out.rowSize() * out.height();
 
-        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
+        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost );
         if( error != cudaSuccess )
             throw imageException( "Cannot copy a memory from CUDA device" );
     }

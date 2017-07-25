@@ -21,8 +21,10 @@ namespace Image_Function_Cuda
     void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
 
     // To call these functions Bitmap_Image::Image must have 1 pixel alignment only
-    void  Convert( const Bitmap_Image::Image & in, Image & out );
-    void  Convert( const Image & in, Bitmap_Image::Image & out );
+    Image ConvertToCuda( const Bitmap_Image::Image & in );
+    void  ConvertToCuda( const Bitmap_Image::Image & in, Image & out );
+    Bitmap_Image::Image ConvertFromCuda( const Image & in );
+    void                ConvertFromCuda( const Image & in, Bitmap_Image::Image & out );
 
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );

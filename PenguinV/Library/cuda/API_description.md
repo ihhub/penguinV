@@ -166,39 +166,71 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-- **Convert** [_Namespaces: **Image_Function_Cuda**_]
+	
+- **ConvertFromCuda** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
-	void Convert(
-		const Bitmap_Image::Image & in,
-		Image & out
+	Bitmap_Image::Image ConvertFromCuda(
+		const Image & in
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image from main memory into gray-scale image in videocard memory with same width and height.
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts an image from videocard memory into an image in main memory with same width and height.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image in main memory     
-	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image in videocard memory    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in videocard memory        
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image in main memory. If the function fails exception imageException is raised.
 		
 	##### Syntax:
 	```cpp
-	void Convert(
+	void ConvertFromCuda(
 		const Image & in,
 		Bitmap_Image::Image & out
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image from videocard memory into gray-scale image in main memory with same width and height.
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts an image from videocard memory into an image in main memory with same width and height.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image in videocard memory     
-	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image in main memory    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in videocard memory     
+	&nbsp;&nbsp;&nbsp;&nbsp;out - an image in main memory    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **ConvertToCuda** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	void ConvertToCuda(
+		const Bitmap_Image::Image & in,
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts an image from main memory into an image in videocard memory with same width and height.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in main memory      
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image in videocard memory. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void ConvertToCuda(
+		const Bitmap_Image::Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts an image from main memory into an image in videocard memory with same width and height.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in main memory     
+	&nbsp;&nbsp;&nbsp;&nbsp;out - an image in videocard memory    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
