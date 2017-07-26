@@ -20,7 +20,8 @@ namespace Image_Function_Cuda
     Image BitwiseXor( const Image & in1, const Image & in2 );
     void  BitwiseXor( const Image & in1, const Image & in2, Image & out );
 
-    // To call these functions Bitmap_Image::Image must have 1 pixel alignment only
+    // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
+    // or (width * color count) will be equal to row size
     Image ConvertToCuda( const Bitmap_Image::Image & in );
     void  ConvertToCuda( const Bitmap_Image::Image & in, Image & out );
     Bitmap_Image::Image ConvertFromCuda( const Image & in );

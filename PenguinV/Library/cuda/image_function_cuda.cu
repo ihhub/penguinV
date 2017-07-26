@@ -279,15 +279,24 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
 
-        if( in.width() != out.width() || in.height() != out.height() || in.alignment() != 1u ||
+        if( in.width() != out.width() || in.height() != out.height() ||
             in.colorCount() != out.colorCount())
             throw imageException( "Bad input parameters in image function" );
 
-        const uint32_t size = in.rowSize() * in.height();
+        if (in.alignment() == 1u || (in.rowSize() == in.width() * in.colorCount()))
+        {
+            const uint32_t size = in.rowSize() * in.height();
 
-        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
-        if( error != cudaSuccess )
-            throw imageException( "Cannot copy a memory to CUDA device" );
+            cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
+            if( error != cudaSuccess )
+                throw imageException( "Cannot copy a memory to CUDA device" );
+        }
+        else
+        {
+            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(), in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice);
+            if( error != cudaSuccess )
+                throw imageException( "Cannot copy a memory to CUDA device" );
+        }
     }
 
     Bitmap_Image::Image ConvertFromCuda( const Image & in )
@@ -304,15 +313,24 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
 
-        if( in.width() != out.width() || in.height() != out.height() || out.alignment() != 1u ||
+        if( in.width() != out.width() || in.height() != out.height() ||
             in.colorCount() != out.colorCount())
             throw imageException( "Bad input parameters in image function" );
 
-        const uint32_t size = out.rowSize() * out.height();
+        if (out.alignment() == 1u || (out.rowSize() == out.width() * out.colorCount()))
+        {
+            const uint32_t size = in.rowSize() * in.height();
 
-        cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost );
-        if( error != cudaSuccess )
-            throw imageException( "Cannot copy a memory from CUDA device" );
+            cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost );
+            if( error != cudaSuccess )
+                throw imageException( "Cannot copy a memory from CUDA device" );
+        }
+        else
+        {
+            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(), in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost);
+            if( error != cudaSuccess )
+                throw imageException( "Cannot copy a memory to CUDA device" );
+        }
     }
 
     Image ConvertToGrayScale( const Image & in )

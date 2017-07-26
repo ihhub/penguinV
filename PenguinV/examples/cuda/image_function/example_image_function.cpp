@@ -83,7 +83,7 @@ void gpuBased()
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
-    // We mutate the image to make alignment equal to 1
+    // We try to mutate the image to make alignment equal to 1
     image.mutate( image.width(), image.height(), image.colorCount(), 1u );
 
     // Copy image from GPU space to GPU space

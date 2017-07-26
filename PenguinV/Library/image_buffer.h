@@ -236,7 +236,7 @@ namespace Template_Image
             }
         }
 
-        void mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        bool mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( colorCount_ > 0 && alignment_ > 0 )
             {
@@ -245,14 +245,18 @@ namespace Template_Image
                     rowSize_ = (rowSize_ / alignment_ + 1) * alignment_;
 
                 if( rowSize_ * height_ != _rowSize * _height )
-                    throw imageException( "Cannot mutate the image" );
+                    return false;
 
                 _width      = width_;
                 _height     = height_;
                 _colorCount = colorCount_;
                 _alignment  = alignment_;
                 _rowSize    = rowSize_;
+
+                return true;
             }
+
+            return false;
         }
     private:
         uint32_t _width;
