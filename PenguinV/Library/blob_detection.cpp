@@ -141,7 +141,7 @@ namespace Blob_Detection
 
     bool BlobInfo::isSolid() const
     {
-        return _contourX.size() < _edgeX.size();
+        return _contourX.size() == _edgeX.size();
     }
 
     void BlobInfo::_getArea()
