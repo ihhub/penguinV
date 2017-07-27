@@ -34,6 +34,20 @@ namespace Unit_Test
             return uniformImage( randomValue<uint8_t>( 256 ) );
         }
 
+        Bitmap_Image_Cuda::Image uniformColorImage()
+        {
+            return uniformColorImage( randomValue<uint8_t>( 256 ) );
+        }
+
+        Bitmap_Image_Cuda::Image uniformColorImage( uint8_t value )
+        {
+            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), Bitmap_Image_Cuda::RGB );
+
+            image.fill( value );
+
+            return image;
+        }
+
         Bitmap_Image_Cuda::Image blackImage()
         {
             return uniformImage( 0u );

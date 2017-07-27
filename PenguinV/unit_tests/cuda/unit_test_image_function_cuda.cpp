@@ -1,3 +1,4 @@
+#include <numeric>
 #include "../../Library/cuda/image_function_cuda.cuh"
 #include "../../Library/cuda/cuda_memory.cuh"
 #include "../unit_test_helper.h"
@@ -20,11 +21,20 @@ namespace Unit_Test
         ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseXor2ParametersTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::BitwiseXor3ParametersTest );
 
+        ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToGrayScale1ParameterTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToGrayScale2ParametersTest );
+
         ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection3ParametersTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection4ParametersTest );
 
+        ADD_TEST( framework, Image_Function_Cuda_Test::Histogram1ParameterTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::Histogram2ParametersTest );
+
         ADD_TEST( framework, Image_Function_Cuda_Test::Invert1ParameterTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::Invert2ParametersTest );
+
+        ADD_TEST( framework, Image_Function_Cuda_Test::LookupTable2ParametersTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::LookupTable3ParametersTest );
 
         ADD_TEST( framework, Image_Function_Cuda_Test::Maximum2ParametersTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::Maximum3ParametersTest );
@@ -34,6 +44,12 @@ namespace Unit_Test
 
         ADD_TEST( framework, Image_Function_Cuda_Test::Subtract2ParametersTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::Subtract3ParametersTest );
+
+        ADD_TEST( framework, Image_Function_Cuda_Test::Threshold2ParametersTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::Threshold3ParametersTest );
+
+        ADD_TEST( framework, Image_Function_Cuda_Test::ThresholdDouble3ParametersTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::ThresholdDouble4ParametersTest );
     }
 
     namespace Image_Function_Cuda_Test
@@ -159,6 +175,39 @@ namespace Unit_Test
             return true;
         }
 
+        bool ConvertToGrayScale1ParameterTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 1 );
+                Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
+
+                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
+
+                if( !Cuda::verifyImage( output, intensity[0] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool ConvertToGrayScale2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
+                Bitmap_Image_Cuda::Image output( input.width(), input.height() );
+
+                output.fill( intensity[1] );
+
+                Image_Function_Cuda::ConvertToGrayScale( input, output );
+
+                if( !Cuda::verifyImage( output, intensity[0] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
         bool GammaCorrection3ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -211,6 +260,39 @@ namespace Unit_Test
             return true;
         }
 
+        bool Histogram1ParameterTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                uint8_t intensity = intensityValue();
+                Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
+
+                std::vector < uint32_t > histogram = Image_Function_Cuda::Histogram( image );
+
+                if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
+                    std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool Histogram2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                uint8_t intensity = intensityValue();
+                Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
+
+                std::vector < uint32_t > histogram;
+                Image_Function_Cuda::Histogram( image, histogram );
+
+                if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
+                    std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
+                    return false;
+            }
+
+            return true;
+        }
+
         bool Invert1ParameterTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -235,6 +317,59 @@ namespace Unit_Test
                 Image_Function_Cuda::Invert( input[0], input[1] );
 
                 if( !Cuda::verifyImage( input[1], ~intensity[0] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::LookupTable( input, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !Cuda::verifyImage( output, normalized[0] ) && !Cuda::verifyImage( output, normalized[1] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool LookupTable3ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+                Bitmap_Image_Cuda::Image output( input.width(), input.height() );
+
+                output.fill( intensityValue() );
+
+                std::vector < uint8_t > lookupTable( 256, 0 );
+
+                lookupTable[intensity[0]] = intensityValue();
+                lookupTable[intensity[1]] = intensityValue();
+
+                Image_Function_Cuda::LookupTable( input, output, lookupTable );
+
+                std::vector < uint8_t > normalized( 2 );
+
+                normalized[0] = lookupTable[intensity[0]];
+                normalized[1] = lookupTable[intensity[1]];
+
+                if( !Cuda::verifyImage( output, normalized[0] ) && !Cuda::verifyImage( output, normalized[1] ) )
                     return false;
             }
 
@@ -328,6 +463,76 @@ namespace Unit_Test
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
 
                 if( !Cuda::verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool Threshold2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                uint8_t intensity = intensityValue();
+                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+
+                uint8_t threshold = randomValue <uint8_t>( 255 );
+
+                Image_Function_Cuda::Image output = Image_Function_Cuda::Threshold( input, threshold );
+
+                if( !Cuda::verifyImage( output, intensity < threshold ? 0 : 255 ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool Threshold3ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+
+                uint8_t threshold = randomValue <uint8_t>( 255 );
+
+                Image_Function_Cuda::Threshold( input[0], input[1], threshold );
+
+                if( !Cuda::verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool ThresholdDouble3ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                uint8_t intensity = intensityValue();
+                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+
+                uint8_t minThreshold = randomValue <uint8_t>( 255 );
+                uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Threshold( input, minThreshold, maxThreshold );
+
+                if( !Cuda::verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool ThresholdDouble4ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+
+                uint8_t minThreshold = randomValue <uint8_t>( 255 );
+                uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+
+                Image_Function_Cuda::Threshold( input[0], input[1], minThreshold, maxThreshold );
+
+                if( !Cuda::verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
                     return false;
             }
 

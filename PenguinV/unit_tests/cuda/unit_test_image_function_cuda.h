@@ -20,11 +20,20 @@ namespace Unit_Test
         bool BitwiseXor2ParametersTest();
         bool BitwiseXor3ParametersTest();
 
+        bool ConvertToGrayScale1ParameterTest();
+        bool ConvertToGrayScale2ParametersTest();
+
         bool GammaCorrection3ParametersTest();
         bool GammaCorrection4ParametersTest();
 
+        bool Histogram1ParameterTest();
+        bool Histogram2ParametersTest();
+
         bool Invert1ParameterTest();
         bool Invert2ParametersTest();
+
+        bool LookupTable2ParametersTest();
+        bool LookupTable3ParametersTest();
 
         bool Maximum2ParametersTest();
         bool Maximum3ParametersTest();
@@ -34,5 +43,11 @@ namespace Unit_Test
 
         bool Subtract2ParametersTest();
         bool Subtract3ParametersTest();
+
+        bool Threshold2ParametersTest();
+        bool Threshold3ParametersTest();
+
+        bool ThresholdDouble3ParametersTest();
+        bool ThresholdDouble4ParametersTest();
     };
 };

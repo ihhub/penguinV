@@ -85,7 +85,7 @@ namespace
                 sum += (*data);
             }
 
-            out[id] = static_cast<uint8_t>(static_cast<float>(sum) / colorCount + 0.5);
+            out[id] = static_cast<uint8_t>(sum / colorCount);
         }
     };
 
