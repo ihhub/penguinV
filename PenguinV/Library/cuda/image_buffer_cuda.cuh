@@ -150,7 +150,7 @@ namespace Template_Image_Cuda
             if( empty() )
                 return;
 
-            cudaError_t error = cudaMemset( data(), value, sizeof( TColorDepth ) * height() * width() );
+            cudaError_t error = cudaMemset( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
             if( error != cudaSuccess )
                 throw imageException( "Cannot fill a memory for CUDA device" );
         }
