@@ -1,3 +1,4 @@
+#include <cuda_runtime.h>
 #include "../../Library/image_buffer.h"
 #include "../../Library/image_function.h"
 #include "../../Library/cuda/cuda_types.cuh"
@@ -7,12 +8,37 @@
 namespace
 {
     // This function must run with thread count as 1
-    __global__ void isEqual( const uint8_t * image, uint8_t value, uint32_t size, uint8_t * equal )
+    __global__ void isEqualCuda( const uint8_t * image, uint8_t value, uint32_t size, uint32_t * differenceCount )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
-        if( image[id] != value )
-            *equal = false;
+        if( id < size )
+        {
+            if( image[id] != value )
+                atomicAdd( differenceCount, 1 );
+        }
+    };
+
+    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, uint32_t valueCount, uint32_t size, uint32_t * differenceCount )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size )
+        {
+            bool equal = false;
+
+            for( uint32_t i = 0; i < valueCount; ++i )
+            {
+                if( image[id] == value[i] )
+                {
+                    equal = true;
+                    break;
+                }
+            }
+
+            if( !equal )
+                atomicAdd( differenceCount, 1 );
+        }
     };
 };
 
@@ -98,14 +124,35 @@ namespace Unit_Test
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, uint8_t value )
         {
-            Cuda_Types::_cbool equal( true );
+            Cuda_Types::_cuint32_t differenceCount( 0 );
 
-            isEqual<<< max( image.width(), image.height() ), 1 >>>(image.data(), value, image.width() * image.height(), &equal);
+            const uint32_t size = image.rowSize() * image.height();
+
+            isEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), value, size, &differenceCount);
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
 
-            return equal.get() != 0;
+            uint32_t count = differenceCount.get();
+
+            return differenceCount.get() == 0;
+        }
+
+        bool verifyImage( const Bitmap_Image_Cuda::Image & image, const std::vector < uint8_t > & value )
+        {
+            Cuda_Types::_cuint32_t differenceCount( 0 );
+            Cuda_Types::Array<uint8_t> valueCuda( value );
+
+            const uint32_t size = image.rowSize() * image.height();
+
+            isAnyEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), &valueCuda, valueCuda.size(), size, &differenceCount);
+            cudaError_t error = cudaGetLastError();
+            if( error != cudaSuccess )
+                throw imageException( "Failed to launch CUDA kernel" );
+
+            uint32_t count = differenceCount.get();
+
+            return differenceCount.get() == 0;
         }
     };
 };

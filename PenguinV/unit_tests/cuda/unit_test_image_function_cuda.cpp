@@ -341,7 +341,7 @@ namespace Unit_Test
                 normalized[0] = lookupTable[intensity[0]];
                 normalized[1] = lookupTable[intensity[1]];
 
-                if( !Cuda::verifyImage( output, normalized[0] ) && !Cuda::verifyImage( output, normalized[1] ) )
+                if( !Cuda::verifyImage( output, normalized ) )
                     return false;
             }
 
@@ -369,7 +369,7 @@ namespace Unit_Test
                 normalized[0] = lookupTable[intensity[0]];
                 normalized[1] = lookupTable[intensity[1]];
 
-                if( !Cuda::verifyImage( output, normalized[0] ) && !Cuda::verifyImage( output, normalized[1] ) )
+                if( !Cuda::verifyImage( output, normalized ) )
                     return false;
             }
 

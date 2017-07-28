@@ -185,6 +185,11 @@ namespace Cuda_Types
         {
             return _copyTo();
         };
+
+        size_t size() const
+        {
+            return _size;
+        }
     private:
         TData * _data;
         size_t _size;

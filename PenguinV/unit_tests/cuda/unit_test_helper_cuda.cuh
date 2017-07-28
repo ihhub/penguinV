@@ -30,6 +30,7 @@ namespace Unit_Test
         };
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, uint8_t value );
+        bool verifyImage( const Bitmap_Image_Cuda::Image & image, const std::vector < uint8_t > & value );
 
         // Return random value for specific range or variable type
         template <typename data>
