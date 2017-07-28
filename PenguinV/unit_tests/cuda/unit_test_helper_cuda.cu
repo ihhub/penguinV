@@ -133,8 +133,6 @@ namespace Unit_Test
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
 
-            uint32_t count = differenceCount.get();
-
             return differenceCount.get() == 0;
         }
 
@@ -149,8 +147,6 @@ namespace Unit_Test
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
-
-            uint32_t count = differenceCount.get();
 
             return differenceCount.get() == 0;
         }
