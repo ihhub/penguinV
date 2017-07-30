@@ -190,6 +190,11 @@ namespace Cuda_Types
         {
             return _size;
         }
+
+        bool empty() const
+        {
+            return _data == NULL;
+        }
     private:
         TData * _data;
         size_t _size;
