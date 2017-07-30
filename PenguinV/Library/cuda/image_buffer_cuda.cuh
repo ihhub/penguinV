@@ -157,11 +157,11 @@ namespace Template_Image_Cuda
 
         void swap( ImageTemplateCuda & image )
         {
-            _width  = image._width;
-            _height = image._height;
+            std::swap( _width, image._width );
+            std::swap( _height, image._height );
 
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
+            std::swap( _colorCount, image._colorCount );
+            std::swap( _rowSize   , image._rowSize );
 
             std::swap( _data, image._data );
         }

@@ -208,12 +208,12 @@ namespace Template_Image
 
         void swap( ImageTemplate & image )
         {
-            _width  = image._width;
-            _height = image._height;
+            std::swap( _width, image._width );
+            std::swap( _height, image._height );
 
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
-            _alignment  = image._alignment;
+            std::swap( _colorCount, image._colorCount );
+            std::swap( _rowSize   , image._rowSize );
+            std::swap( _alignment , image._alignment );
 
             std::swap( _data, image._data );
         }
