@@ -24,6 +24,7 @@
     <ClCompile Include="example_image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Library\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\Library\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\..\Library\cuda\cuda_types.cuh" />
     <ClInclude Include="..\..\..\Library\cuda\image_buffer_cuda.cuh" />
@@ -34,6 +35,7 @@
     <ClInclude Include="..\..\..\Library\image_function.h" />
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="..\..\..\Library\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\..\Library\cuda\image_function_cuda.cu" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

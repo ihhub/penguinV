@@ -1,36 +1,11 @@
 #include <cuda_runtime.h>
 #include <math.h>
 #include "cuda_types.cuh"
+#include "cuda_helper.cuh"
 #include "image_function_cuda.cuh"
 
 namespace
 {
-    struct KernelParameters
-    {
-        KernelParameters( int threadsPerBlock_, int blocksPerGrid_  )
-            : threadsPerBlock( threadsPerBlock_ )
-            , blocksPerGrid  ( blocksPerGrid_   )
-        {};
-
-        int threadsPerBlock;
-        int blocksPerGrid;
-    };
-
-    // Helper function which should return proper arguments for CUDA device functions
-    KernelParameters getKernelParameters( uint32_t size )
-    {
-        static const int threadsPerBlock = 256;
-        return KernelParameters( threadsPerBlock, (size + threadsPerBlock - 1) / threadsPerBlock );
-    };
-
-    // Validation of last occured error in functions on host side
-    void ValidateLastError()
-    {
-        cudaError_t error = cudaGetLastError();
-        if( error != cudaSuccess )
-            throw imageException( "Failed to launch CUDA kernel" );
-    };
-
     // The list of CUDA device functions on device side
     __global__ void absoluteDifferenceCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -39,7 +14,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : in2[id] - in1[id];
         }
-    };
+    }
 
     __global__ void bitwiseAndCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -48,7 +23,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] & in2[id];
         }
-    };
+    }
 
     __global__ void bitwiseOrCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -57,7 +32,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] | in2[id];
         }
-    };
+    }
 
     __global__ void bitwiseXorCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -66,7 +41,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] ^ in2[id];
         }
-    };
+    }
 
     __global__ void convertToGrayScaleCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint32_t width, uint8_t colorCount )
     {
@@ -87,7 +62,7 @@ namespace
 
             out[id] = static_cast<uint8_t>(sum / colorCount);
         }
-    };
+    }
 
     __global__ void fillCuda( uint8_t * data, uint8_t value, uint32_t size )
     {
@@ -96,7 +71,7 @@ namespace
         if( id < size ) {
             data[id] = value;
         }
-    };
+    }
 
     __global__ void histogramCuda( const uint8_t * data, uint32_t size, uint32_t * histogram )
     {
@@ -105,7 +80,7 @@ namespace
         if( id < size ) {
             atomicAdd( &histogram[data[id]], 1 );
         }
-    };
+    }
 
     __global__ void invertCuda( const uint8_t * in, uint8_t * out, uint32_t size )
     {
@@ -114,7 +89,7 @@ namespace
         if( id < size ) {
             out[id] = ~in[id];
         }
-    };
+    }
 
     __global__ void lookupTableCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t * table )
     {
@@ -123,7 +98,7 @@ namespace
         if( id < size ) {
             out[id] = table[in[id]];
         }
-    };
+    }
 
     __global__ void maximumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -132,7 +107,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] > in2[id] ? in1[id] : in2[id];
         }
-    };
+    }
 
     __global__ void minimumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -141,7 +116,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] < in2[id] ? in1[id] : in2[id];
         }
-    };
+    }
 
     __global__ void subtractCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
     {
@@ -150,7 +125,7 @@ namespace
         if( id < size ) {
             out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;
         }
-    };
+    }
 
     __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t threshold )
     {
@@ -159,7 +134,7 @@ namespace
         if( id < size ) {
             out[id] = in[id] < threshold ? 0 : 255;
         }
-    };
+    }
 
     __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t minThreshold, uint8_t maxThreshold )
     {
@@ -168,8 +143,8 @@ namespace
         if( id < size ) {
             out[id] = in[id] < minThreshold || in[id] > maxThreshold ? 0 : 255;
         }
-    };
-};
+    }
+}
 
 namespace Image_Function_Cuda
 {
@@ -214,7 +189,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -237,7 +212,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -260,7 +235,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -293,7 +268,8 @@ namespace Image_Function_Cuda
         }
         else
         {
-            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(), in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice);
+            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
+                                              in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
@@ -327,7 +303,8 @@ namespace Image_Function_Cuda
         }
         else
         {
-            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(), in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost);
+            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
+                                              in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
@@ -357,7 +334,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.width() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, in.width(), in.colorCount());
+        convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, in.width(), in.colorCount() );
 
         ValidateLastError();
     }
@@ -376,7 +353,7 @@ namespace Image_Function_Cuda
         const uint32_t size = image.rowSize() * image.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        fillCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), value, size);
+        fillCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), value, size );
         
         ValidateLastError();
     }
@@ -479,7 +456,7 @@ namespace Image_Function_Cuda
         const uint32_t size = image.width() * image.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), size, &tableCuda);
+        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), size, &tableCuda );
 
         ValidateLastError();
 
@@ -504,7 +481,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size);
+        invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -533,7 +510,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, &tableCuda);
+        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, &tableCuda );
 
         ValidateLastError();
     }
@@ -556,7 +533,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -579,7 +556,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -602,7 +579,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.rowSize() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
         
         ValidateLastError();
     }
@@ -626,7 +603,7 @@ namespace Image_Function_Cuda
         const uint32_t size = out.width() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, threshold);
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, threshold );
         
         ValidateLastError();
     }
@@ -650,8 +627,8 @@ namespace Image_Function_Cuda
         const uint32_t size = out.width() * out.height();
         const KernelParameters kernel = getKernelParameters( size );
 
-        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in.data(), out.data(), size, minThreshold, maxThreshold);
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, minThreshold, maxThreshold );
         
         ValidateLastError();
     }
-};
+}
