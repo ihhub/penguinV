@@ -145,6 +145,9 @@ namespace FFT_Cuda
 
     Bitmap_Image_Cuda::Image ComplexData::get() const
     {
+        if( empty() )
+            return Bitmap_Image_Cuda::Image();
+        
         Bitmap_Image_Cuda::Image image( _width, _height );
 
         const uint32_t size = image.width() * image.height();
