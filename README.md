@@ -14,7 +14,6 @@ PenguinV is a simple and easy to use C++ image processing library. It is designe
 At the current stage of development library does not have some features but we are intending to introduce them very soon:
 - better support of CUDA
 - more basic functions and their implementations by SSE, AVX, NEON
-- Fourier transform
 - color space conversions
 
 The library does **NOT** have it's own image displaying code but you can refer to QT example.
