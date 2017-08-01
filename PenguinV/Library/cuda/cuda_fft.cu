@@ -217,7 +217,7 @@ namespace FFT_Cuda
         resize( data._width, data._height );
 
         if( !empty() ) {
-            cudaError_t error = cudaMemcpy( _data, data._data, _width * _height, cudaMemcpyDeviceToDevice );
+            cudaError_t error = cudaMemcpy( _data, data._data, _width * _height * sizeof(cufftComplex), cudaMemcpyDeviceToDevice );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory to CUDA device" );  
         }
@@ -298,10 +298,10 @@ namespace FFT_Cuda
         cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE);
     }
 
-    void FFTExecutor::complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out )
+    void FFTExecutor::complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out ) const
     {
-        if( _plan == 0 || _width != in1.width() || _height != in2.height() || _width != in2.width() || _height != in2.height() ||
-            _width != out.width() || _height != out.height() )
+         if( in1.width() != in2.width() || in1.height() != in2.height() || in1.width() != out.width() || in1.height() != out.height() ||
+             in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         const uint32_t size = _width * _height;

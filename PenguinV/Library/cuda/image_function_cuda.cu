@@ -262,7 +262,7 @@ namespace Image_Function_Cuda
         {
             const uint32_t size = in.rowSize() * in.height();
 
-            cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyHostToDevice );
+            cudaError_t error = cudaMemcpy( out.data(), in.data(), size * sizeof(uint8_t), cudaMemcpyHostToDevice );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }

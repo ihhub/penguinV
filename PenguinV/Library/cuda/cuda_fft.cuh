@@ -73,7 +73,7 @@ namespace FFT_Cuda
         void inverseTransform( ComplexData & data );
         void inverseTransform( ComplexData & in, ComplexData & out );
 
-        void complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out );
+        void complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out ) const;
 
     private:
         cufftHandle _plan;
