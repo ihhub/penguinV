@@ -94,5 +94,56 @@ namespace Image_Function
                 }
             }
         }
+
+        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, float sigma )
+        {
+            if( width < 3 || height < 3 || sigma < 0 )
+                throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
+
+            const uint32_t size = width * height;
+
+            filter.resize( size );
+
+            std::fill( filter.begin(), filter.end(), 0.0f );
+
+            uint32_t filterSize = static_cast<uint32_t>(3 * sigma + 0.5);
+            if( (filterSize * 2 + 1) > width )
+                filterSize = (width  - 1) / 2;
+            if( (filterSize * 2 + 1) > height )
+                filterSize = (height - 1) / 2;
+            if( filterSize == 0 )
+                filterSize = 1;
+
+            static const float pi = 3.1415926536f;
+            const float doubleSigma = sigma * 2;
+
+            float * y = filter.data() + (height / 2 - filterSize) * width + width / 2 - filterSize;
+            const float * endY = y + (2 * filterSize + 1) * width;
+
+            float sum = 0;
+
+            for( int32_t posY = -static_cast<int32_t>(filterSize) ; y != endY; y += width, ++posY ) {
+                float * x = y;
+                const float * endX = x + 2 * filterSize + 1;
+
+                for( int32_t posX = -static_cast<int32_t>(filterSize) ; x != endX; ++x, ++posX ) {
+                    *x = 1.0f / ( pi * doubleSigma ) * exp( -(posX * posX + posY * posY) / doubleSigma );
+                    sum += *x;
+                }
+            }
+
+            const float normalization = 1.0f / sum;
+
+            y = filter.data() + (height / 2 - filterSize) * width + width / 2 - filterSize;
+
+            for( int32_t posY = -static_cast<int32_t>(filterSize) ; y != endY; y += width, ++posY ) {
+                float * x = y;
+                const float * endX = x + 2 * filterSize + 1;
+
+                for( int32_t posX = -static_cast<int32_t>(filterSize) ; x != endX; ++x, ++posX ) {
+                    *x *= normalization;
+                }
+            }
+        }
     };
 };
