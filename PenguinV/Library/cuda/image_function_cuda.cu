@@ -64,6 +64,23 @@ namespace
         }
     }
 
+    __global__ void convertToRgbCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint32_t width, uint8_t colorCount )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            uint32_t x = id % width;
+            uint32_t y = id / width;
+
+            uint8_t * data = out + (width * y + x) * colorCount;
+
+            for( uint8_t i = 0; i < colorCount; ++i, ++data )
+            {
+                (*data) = in[id];
+            }
+        }
+    }
+
     __global__ void fillCuda( uint8_t * data, uint8_t value, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
@@ -335,6 +352,35 @@ namespace Image_Function_Cuda
         const KernelParameters kernel = getKernelParameters( size );
 
         convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, in.width(), in.colorCount() );
+
+        ValidateLastError();
+    }
+
+    Image ConvertToRgb( const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height(), RGB );
+
+        ConvertToRgb( in, out );
+
+        return out;
+    }
+
+    void  ConvertToRgb( const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyColoredImage( out );
+
+        if( in.colorCount() == RGB ) {
+            Copy( in, out );
+            return;
+        }
+
+        const uint32_t size = out.width() * out.height();
+        const KernelParameters kernel = getKernelParameters( size );
+
+        convertToRgbCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, in.width(), out.colorCount() );
 
         ValidateLastError();
     }

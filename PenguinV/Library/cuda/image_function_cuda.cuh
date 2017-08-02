@@ -30,6 +30,9 @@ namespace Image_Function_Cuda
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );
 
+    Image ConvertToRgb( const Image & in );
+    void  ConvertToRgb( const Image & in, Image & out );
+
     void  Copy( const Image & in, Image & out );
 
     void  Fill( Image & image, uint8_t value );

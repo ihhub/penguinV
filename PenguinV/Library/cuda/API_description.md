@@ -244,7 +244,7 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts color image into gray-scale image with same width and height by setting gray-scale intensity as an average value among red, green and blue channels of color image.
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts RGB (color) image into gray-scale image with same width and height by setting gray-scale intensity as an average value among red, green and blue channels of color image.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
@@ -260,11 +260,45 @@ All images in function parameter list must have width and height greater than 0 
 	);
 	```
 	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Converts color image into gray-scale image with same width and height by setting gray-scale intensity as an average value among red, green and blue channels of color image.
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts RGB (color) image into gray-scale image with same width and height by setting gray-scale intensity as an average value among red, green and blue channels of color image.
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
 	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **ConvertToRgb** [_Namespaces: **Image_Function_Cuda**_]
+	
+	##### Syntax:
+	```cpp
+	Image ConvertToRgb(
+		const Image & in,
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into RGB (color) image with same width and height by setting gray-scale intensity in each of red, green and blue channels of color image.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void ConvertToRgb(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts gray-scale image into RGB (color) image with same width and height by setting gray-scale intensity in each of red, green and blue channels of color image.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.

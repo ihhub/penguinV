@@ -23,6 +23,9 @@ namespace Unit_Test
         bool ConvertToGrayScale1ParameterTest();
         bool ConvertToGrayScale2ParametersTest();
 
+        bool ConvertToRgb1ParameterTest();
+        bool ConvertToRgb2ParametersTest();
+
         bool GammaCorrection3ParametersTest();
         bool GammaCorrection4ParametersTest();
 

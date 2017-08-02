@@ -24,6 +24,9 @@ namespace Unit_Test
         ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToGrayScale1ParameterTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToGrayScale2ParametersTest );
 
+        ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToRgb1ParameterTest );
+        ADD_TEST( framework, Image_Function_Cuda_Test::ConvertToRgb2ParametersTest );
+
         ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection3ParametersTest );
         ADD_TEST( framework, Image_Function_Cuda_Test::GammaCorrection4ParametersTest );
 
@@ -200,6 +203,39 @@ namespace Unit_Test
                 output.fill( intensity[1] );
 
                 Image_Function_Cuda::ConvertToGrayScale( input, output );
+
+                if( !Cuda::verifyImage( output, intensity[0] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool ConvertToRgb1ParameterTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 1 );
+                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
+
+                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::ConvertToRgb( input );
+
+                if( !Cuda::verifyImage( output, intensity[0] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool ConvertToRgb2ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
+                Bitmap_Image_Cuda::Image output( input.width(), input.height(), Bitmap_Image_Cuda::RGB );
+
+                output.fill( intensity[1] );
+
+                Image_Function_Cuda::ConvertToRgb( input, output );
 
                 if( !Cuda::verifyImage( output, intensity[0] ) )
                     return false;
