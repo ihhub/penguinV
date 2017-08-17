@@ -629,15 +629,13 @@ namespace Image_Function
             throw imageException( "Gamma correction parameters are invalid" );
 
         // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256 );
+        std::vector < uint8_t > value( 256, 255u );
 
         for( uint16_t i = 0; i < 256; ++i ) {
             double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
 
             if( data < 256 )
                 value[i] = static_cast<uint8_t>(data);
-            else
-                value[i] = 255;
         }
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
@@ -674,13 +672,16 @@ namespace Image_Function
         for( uint16_t i = 0; i < 256; ++i ) {
             pixelCountTemp += histogram[i];
 
-            if( pixelCountTemp > 0 && pixelCountTemp != pixelCount ) {
+            if( pixelCountTemp == pixelCount )
+                break;
+
+            if( pixelCountTemp > 0 ) {
                 sumTemp += i * histogram[i];
 
-                double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
-                double a  = static_cast<double>(sumTemp) / pixelCountTemp -
-                    static_cast<double>(sum - sumTemp) / (pixelCount - pixelCountTemp);
-                double sigma = w1 * (1 - w1) * a * a;
+                const double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
+                const double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
+                                  static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
+                const double sigma = w1 * (1 - w1) * a * a;
 
                 if( sigma > maximumSigma ) {
                     maximumSigma = sigma;
