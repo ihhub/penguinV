@@ -1,4 +1,3 @@
-#include <cuda_runtime.h>
 #include "cuda_helper.cuh"
 #include "../image_exception.h"
 
@@ -51,5 +50,10 @@ namespace Cuda
     {
         static const uint32_t threadsPerBlock = 256;
         return KernelParameters( threadsPerBlock, (size + threadsPerBlock - 1) / threadsPerBlock );
+    }
+
+    cudaStream_t getCudaStream()
+    {
+        return 0;
     }
 }

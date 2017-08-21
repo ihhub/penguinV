@@ -19,7 +19,7 @@ namespace
         }
     };
 
-    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, uint32_t valueCount, uint32_t size, uint32_t * differenceCount )
+    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, size_t valueCount, uint32_t size, uint32_t * differenceCount )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 

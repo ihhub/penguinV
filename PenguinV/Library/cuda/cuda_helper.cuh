@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cuda_runtime.h>
 #include <stdint.h>
 
 namespace Cuda
@@ -20,4 +20,6 @@ namespace Cuda
 
     // Helper function which returns proper arguments for CUDA device kernel functions
     KernelParameters getKernelParameters( uint32_t size );
+
+    cudaStream_t getCudaStream();
 }
