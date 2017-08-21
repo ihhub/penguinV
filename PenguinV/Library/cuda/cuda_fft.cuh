@@ -16,7 +16,7 @@ namespace FFT_Cuda
     public:
         ComplexData();
         ComplexData( const Bitmap_Image_Cuda::Image & image );
-        
+
         ComplexData( const ComplexData & data );
         ComplexData( ComplexData && data );
 

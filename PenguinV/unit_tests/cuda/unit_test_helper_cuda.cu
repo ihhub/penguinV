@@ -128,7 +128,7 @@ namespace Unit_Test
 
             const uint32_t size = image.rowSize() * image.height();
 
-            isEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), value, size, &differenceCount);
+            isEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), value, size, differenceCount.data());
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
@@ -143,7 +143,7 @@ namespace Unit_Test
 
             const uint32_t size = image.rowSize() * image.height();
 
-            isAnyEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), &valueCuda, valueCuda.size(), size, &differenceCount);
+            isAnyEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), valueCuda.data(), valueCuda.size(), size, differenceCount.data());
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );

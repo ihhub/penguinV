@@ -74,6 +74,21 @@ namespace Cuda_Memory
                 throw imageException( "Cannot allocate a memory for CUDA device" );
         }
 
+        // returns true if memory allocator has enough space for specified size in bytes
+        bool isSpaceAvailable( size_t size = 1 )
+        {
+            if( _data != nullptr && size < _size ) {
+                const uint8_t level = _getAllocationLevel( size );
+
+                for( uint8_t i = level; i < _freeChunck.size(); ++i ) {
+                    if( !_freeChunck[i].empty() )
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         // deallocates a memory by input address
         // if a pointer points on allocated chuck of memory inside the allocator then
         // the allocator just removes a reference to such area without any cost
@@ -207,7 +222,7 @@ namespace Cuda_Memory
                 ++neighbour;
 
                 if( neighbour != level->end() ) {
-                    if( *(neighbour)-*(pos) == memorySize ) {
+                    if( *(neighbour) - *(pos) == memorySize ) {
                         offset = *pos;
                         (level + 1)->insert( offset );
                         level->erase( pos, ++neighbour );
@@ -219,7 +234,7 @@ namespace Cuda_Memory
                     neighbour = pos;
                     --neighbour;
 
-                    if( *(pos)-*(neighbour) == memorySize ) {
+                    if( *(pos) - *(neighbour) == memorySize ) {
                         offset = *neighbour;
                         (level + 1)->insert( offset );
                         level->erase( neighbour, ++pos );

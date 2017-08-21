@@ -109,7 +109,7 @@ namespace FFT_Cuda
     {
         _clean();
     }
-    
+
     void ComplexData::set( const Bitmap_Image_Cuda::Image & image )
     {
         if( image.empty() || image.colorCount() != 1u )
@@ -119,55 +119,52 @@ namespace FFT_Cuda
 
         const uint32_t size = image.width() * image.height();
 
-        cudaMalloc( &_data, size * sizeof(cufftComplex) );
+        Cuda::cudaCheck( cudaMalloc( &_data, size * sizeof( cufftComplex ) ) );
 
         _width  = image.width();
         _height = image.height();
-        
-        const KernelParameters kernel = getKernelParameters( size );
 
-        copyFromImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), _data, size );
-        
-        ValidateLastError();
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+
+        copyFromImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), _data, size);
+        Cuda::validateKernel();
     }
 
     void ComplexData::set( const Cuda_Types::Array<float> & data )
     {
         if( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
-        
-        const KernelParameters kernel = getKernelParameters( static_cast<uint32_t>(data.size()) );
 
-        copyFromFloatCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( &data, _data, static_cast<uint32_t>(data.size()) );
-        
-        ValidateLastError();
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( static_cast<uint32_t>(data.size()) );
+
+        copyFromFloatCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(data.data(), _data, static_cast<uint32_t>(data.size()));
+        Cuda::validateKernel();
     }
 
     Bitmap_Image_Cuda::Image ComplexData::get() const
     {
         if( empty() )
             return Bitmap_Image_Cuda::Image();
-        
+
         Bitmap_Image_Cuda::Image image( _width, _height );
 
         const uint32_t size = image.width() * image.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
-        copyToImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( _data, image.data(), size, _width, _height );
-        
-        ValidateLastError();
+        copyToImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(_data, image.data(), size, _width, _height);
+        Cuda::validateKernel();
 
         return image;
     }
-    
+
     void ComplexData::resize( uint32_t width_, uint32_t height_ )
     {
-        if( ( width_ != _width || height_ != _height ) && width_ != 0 && height_ != 0 ) {
+        if( (width_ != _width || height_ != _height) && width_ != 0 && height_ != 0 ) {
             _clean();
 
             const uint32_t size = width_ * height_;
 
-            cudaMalloc( &_data, size * sizeof(cufftComplex) );
+            Cuda::cudaCheck( cudaMalloc( &_data, size * sizeof( cufftComplex ) ) );
 
             _width  = width_;
             _height = height_;
@@ -183,7 +180,7 @@ namespace FFT_Cuda
     {
         return _data;
     }
-    
+
     uint32_t ComplexData::width() const
     {
         return _width;
@@ -217,16 +214,15 @@ namespace FFT_Cuda
         resize( data._width, data._height );
 
         if( !empty() ) {
-            cudaError_t error = cudaMemcpy( _data, data._data, _width * _height * sizeof(cufftComplex), cudaMemcpyDeviceToDevice );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot copy a memory to CUDA device" );  
+            if( !Cuda::cudaSafeCheck( cudaMemcpy( _data, data._data, _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
+                throw imageException( "Cannot copy a memory to CUDA device" );
         }
     }
 
     void ComplexData::_swap( ComplexData & data )
     {
-        std::swap( _data  , data._data );
-        std::swap( _width , data._width );
+        std::swap( _data, data._data );
+        std::swap( _width, data._width );
         std::swap( _height, data._height );
     }
 
@@ -249,7 +245,7 @@ namespace FFT_Cuda
     {
         _clean();
     }
-    
+
     void FFTExecutor::initialize( uint32_t width_, uint32_t height_ )
     {
         if( width_ == 0 || height_ == 0 )
@@ -257,7 +253,9 @@ namespace FFT_Cuda
 
         _clean();
 
-        cufftPlan2d( &_plan, width_, height_, CUFFT_C2C);
+        if( cufftPlan2d( &_plan, width_, height_, CUFFT_C2C ) != CUFFT_SUCCESS )
+            throw imageException( "Cannot create FFT plan on CUDA device" );
+
         _width  = width_;
         _height = height_;
     }
@@ -271,7 +269,7 @@ namespace FFT_Cuda
     {
         return _height;
     }
-    
+
     void FFTExecutor::directTransform( ComplexData & data )
     {
         directTransform( data, data );
@@ -282,9 +280,10 @@ namespace FFT_Cuda
         if( _plan == 0 || _width != in.width() || _height != in.height() || _width != out.width() || _height != out.height() )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
-        cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD);
+        if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
+            throw imageException( "Cannot execute direct FFT transform on CUDA device" );
     }
-    
+
     void FFTExecutor::inverseTransform( ComplexData & data )
     {
         inverseTransform( data, data );
@@ -295,21 +294,21 @@ namespace FFT_Cuda
         if( _plan == 0 || _width != in.width() || _height != in.height() || _width != out.width() || _height != out.height() )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
-        cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE);
+        if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE ) != CUFFT_SUCCESS )
+            throw imageException( "Cannot execute inverse FFT transform on CUDA device" );
     }
 
     void FFTExecutor::complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out ) const
     {
-         if( in1.width() != in2.width() || in1.height() != in2.height() || in1.width() != out.width() || in1.height() != out.height() ||
-             in1.width() == 0 || in1.height() == 0 )
+        if( in1.width() != in2.width() || in1.height() != in2.height() || in1.width() != out.width() || in1.height() != out.height() ||
+            in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         const uint32_t size = _width * _height;
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
-        complexMultiplicationCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        complexMultiplicationCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
+        Cuda::validateKernel();
     }
 
     void FFTExecutor::_clean()

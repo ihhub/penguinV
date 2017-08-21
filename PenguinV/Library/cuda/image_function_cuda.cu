@@ -181,11 +181,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         absoluteDifferenceCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
@@ -204,11 +203,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image BitwiseOr( const Image & in1, const Image & in2 )
@@ -227,11 +225,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image BitwiseXor( const Image & in1, const Image & in2 )
@@ -250,11 +247,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image ConvertToCuda( const Bitmap_Image::Image & in )
@@ -279,15 +275,13 @@ namespace Image_Function_Cuda
         {
             const uint32_t size = in.rowSize() * in.height();
 
-            cudaError_t error = cudaMemcpy( out.data(), in.data(), size * sizeof(uint8_t), cudaMemcpyHostToDevice );
-            if( error != cudaSuccess )
+            if( !Cuda::cudaSafeCheck( cudaMemcpy( out.data(), in.data(), size * sizeof(uint8_t), cudaMemcpyHostToDevice ) ) )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
         else
         {
-            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
-                                              in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice );
-            if( error != cudaSuccess )
+            if( !Cuda::cudaSafeCheck( cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
+                                                    in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice ) ) )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
     }
@@ -314,15 +308,13 @@ namespace Image_Function_Cuda
         {
             const uint32_t size = in.rowSize() * in.height();
 
-            cudaError_t error = cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost );
-            if( error != cudaSuccess )
+            if( !Cuda::cudaSafeCheck( cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost ) ) )
                 throw imageException( "Cannot copy a memory from CUDA device" );
         }
         else
         {
-            cudaError_t error = cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
-                                              in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost );
-            if( error != cudaSuccess )
+            if( !Cuda::cudaSafeCheck( cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
+                                                    in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost ) ) )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
     }
@@ -349,11 +341,10 @@ namespace Image_Function_Cuda
         }
 
         const uint32_t size = out.width() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, in.width(), in.colorCount() );
-
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image ConvertToRgb( const Image & in )
@@ -378,11 +369,10 @@ namespace Image_Function_Cuda
         }
 
         const uint32_t size = out.width() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         convertToRgbCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, in.width(), out.colorCount() );
-
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     void Copy( const Image & in, Image & out )
@@ -397,11 +387,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( image );
 
         const uint32_t size = image.rowSize() * image.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         fillCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), value, size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image GammaCorrection( const Image & in, double a, double gamma )
@@ -500,11 +489,10 @@ namespace Image_Function_Cuda
         Cuda_Types::Array< uint32_t > tableCuda( histogram );
 
         const uint32_t size = image.width() * image.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
-        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), size, &tableCuda );
-
-        ValidateLastError();
+        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( image.data(), size, tableCuda.data() );
+        Cuda::validateKernel();
 
         histogram = tableCuda.get();
     }
@@ -525,11 +513,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
@@ -554,11 +541,10 @@ namespace Image_Function_Cuda
         Cuda_Types::Array< uint8_t > tableCuda( table );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
-        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, &tableCuda );
-
-        ValidateLastError();
+        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, tableCuda.data() );
+        Cuda::validateKernel();
     }
 
     Image Maximum( const Image & in1, const Image & in2 )
@@ -577,11 +563,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image Minimum( const Image & in1, const Image & in2 )
@@ -600,11 +585,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
@@ -623,11 +607,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in1, in2, out );
 
         const uint32_t size = out.rowSize() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in1.data(), in2.data(), out.data(), size );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image Threshold( const Image & in, uint8_t threshold )
@@ -647,11 +630,10 @@ namespace Image_Function_Cuda
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const uint32_t size = out.width() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, threshold );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
@@ -671,10 +653,9 @@ namespace Image_Function_Cuda
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const uint32_t size = out.width() * out.height();
-        const KernelParameters kernel = getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
 
         thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>( in.data(), out.data(), size, minThreshold, maxThreshold );
-        
-        ValidateLastError();
+        Cuda::validateKernel();
     }
 }

@@ -2,24 +2,22 @@
 
 #include <stdint.h>
 
-struct KernelParameters
+namespace Cuda
 {
-    KernelParameters( uint32_t threadsPerBlock_, uint32_t blocksPerGrid_ );
+    bool isCudaSupported(); // returns true if there is any CUDA device in system
 
-    uint32_t threadsPerBlock;
-    uint32_t blocksPerGrid;
-};
+    void validateKernel(); // validates of last occured error in kernel function on device side
+    void cudaCheck( cudaError error ); // validates cudaError value and throws an except if the value is not cudaSuccess
+    bool cudaSafeCheck( cudaError error ); // validates cudaError and returns true if the error is cudaSuccess
 
-// Helper function which should return proper arguments for CUDA device functions
-KernelParameters getKernelParameters( uint32_t size );
+    struct KernelParameters
+    {
+        KernelParameters( uint32_t threadsPerBlock_, uint32_t blocksPerGrid_ );
 
-// Validation of last occured error in functions on host side
-void ValidateLastError();
+        uint32_t threadsPerBlock;
+        uint32_t blocksPerGrid;
+    };
 
-// Validates cudaError value and throws an except if the value is not cudaSuccess
-void cudaCheck( cudaError error );
-
-// Validates cudaError and returns true if the error is cudaSuccess
-bool cudaSafeCheck( cudaError error );
-
-bool IsCudaSupported(); // returns true if there is any CUDA device in system
+    // Helper function which returns proper arguments for CUDA device kernel functions
+    KernelParameters getKernelParameters( uint32_t size );
+}

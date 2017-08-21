@@ -19,56 +19,68 @@ namespace Cuda_Types
             : _data( NULL )
         {
             _allocate();
-        };
+        }
 
         Type( const TData & in )
             : _data( NULL )
         {
             _allocate();
             _copyFrom( in );
-        };
+        }
+
+        Type( const Type & in )
+            : _data( NULL )
+        {
+            _copy( in );
+        }
+
+        Type( Type && in )
+            : _data( NULL )
+        {
+            _swap( in );
+        }
 
         ~Type()
         {
             _free();
-        };
+        }
 
         Type & operator=( const Type & in )
         {
-            if( _data != NULL && in != NULL ) {
-                cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
-            }
-            else {
-                throw imageException( "Memory in CUDA device is not allocated" );
-            }
+            _copy( in );
 
             return (*this);
-        };
+        }
+
+        Type & operator=( Type && in )
+        {
+            _swap( in );
+
+            return (*this);
+        }
 
         Type & operator=( const TData & in )
         {
             _copyFrom( in );
 
             return (*this);
-        };
+        }
 
-        TData * operator & ()
+        TData * data()
         {
             return _data;
-        };
+        }
 
-        const TData * operator & () const
+        const TData * data() const
         {
             return _data;
-        };
+        }
 
         // Use this function if you want to retrieve a value from device to host
         TData get() const
         {
             return _copyTo();
-        };
+        }
     private:
         TData * _data;
 
@@ -78,14 +90,31 @@ namespace Cuda_Types
                 Cuda_Memory::MemoryAllocator::instance().free( _data );
                 _data = NULL;
             }
-        };
+        }
 
         void _allocate()
         {
             _free();
 
             Cuda_Memory::MemoryAllocator::instance().allocate( &_data );
-        };
+        }
+
+        void _copy( const Type & in )
+        {
+            if( _data != NULL && in._data != NULL ) {
+                cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
+                if( error != cudaSuccess )
+                    throw imageException( "Cannot copy a memory in CUDA device" );
+            }
+            else {
+                throw imageException( "Memory in CUDA device is not allocated" );
+            }
+        }
+
+        void _swap( Type & in )
+        {
+            std::swap( _data, in._data );
+        }
 
         void _copyFrom( const TData & in )
         {
@@ -97,7 +126,7 @@ namespace Cuda_Types
             else {
                 throw imageException( "Memory in CUDA device is not allocated" );
             }
-        };
+        }
 
         TData _copyTo() const
         {
@@ -113,7 +142,7 @@ namespace Cuda_Types
             }
 
             return out;
-        };
+        }
     };
 
     typedef Type <uint8_t > _cbool;
@@ -132,8 +161,7 @@ namespace Cuda_Types
             : _data( NULL )
             , _size( 0 )
         {
-            _allocate();
-        };
+        }
 
         Array( const std::vector <TData> & data )
             : _data( NULL )
@@ -141,26 +169,47 @@ namespace Cuda_Types
         {
             _allocate( data.size() );
             _copyFrom( data );
-        };
+        }
+
+        Array( size_t size )
+            : _data( NULL )
+            , _size( 0 )
+        {
+            _allocate( size );
+        }
+
+        Array ( const Array & in )
+            : _data( NULL )
+            , _size( 0 )
+        {
+            _copy( in );
+        }
+
+        Array ( Array && in )
+            : _data( NULL )
+            , _size( 0 )
+        {
+            _swap( in );
+        }
 
         ~Array()
         {
             _free();
-        };
+        }
 
         Array & operator=( const Array & in )
         {
-            if( _data != NULL && in != NULL ) {
-                cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
-            }
-            else {
-                throw imageException( "Memory in CUDA device is not allocated" );
-            }
+            _copy( in );
 
             return (*this);
-        };
+        }
+
+        Array & operator=( Array && in )
+        {
+            _swap( in );
+
+            return (*this);
+        }
 
         Array & operator=( const std::vector <TData> & data )
         {
@@ -168,23 +217,23 @@ namespace Cuda_Types
             _copyFrom( data );
 
             return (*this);
-        };
+        }
 
-        TData * operator & ()
+        TData * data()
         {
             return _data;
-        };
+        }
 
-        const TData * operator & () const
+        const TData * data() const
         {
             return _data;
-        };
+        }
 
         // Use this function if you want to retrieve a value from device to host
         std::vector <TData> get() const
         {
             return _copyTo();
-        };
+        }
 
         size_t size() const
         {
@@ -194,6 +243,11 @@ namespace Cuda_Types
         bool empty() const
         {
             return _data == NULL;
+        }
+
+        void resize( size_t size )
+        {
+            _allocate( size );
         }
     private:
         TData * _data;
@@ -205,7 +259,7 @@ namespace Cuda_Types
                 Cuda_Memory::MemoryAllocator::instance().free( _data );
                 _data = NULL;
             }
-        };
+        }
 
         void _allocate( size_t size )
         {
@@ -217,7 +271,27 @@ namespace Cuda_Types
 
                 _size = size;
             }
-        };
+        }
+
+        void _copy( const Array & in )
+        {
+            _allocate( in._size );
+
+            if( in._data != NULL ) {
+                cudaError_t error = cudaMemcpy( _data, in._data, _size * sizeof( TData ), cudaMemcpyDeviceToDevice );
+                if( error != cudaSuccess )
+                    throw imageException( "Cannot copy a memory in CUDA device" );
+            }
+            else {
+                throw imageException( "Memory in CUDA device is not allocated" );
+            }
+        }
+
+        void _swap( Array & in )
+        {
+            std::swap( _data, in._data );
+            std::swap( _size, in._size );
+        }
 
         void _copyFrom( const std::vector <TData> & data )
         {
@@ -226,7 +300,7 @@ namespace Cuda_Types
                 if( error != cudaSuccess )
                     throw imageException( "Cannot copy a memory in CUDA device" );
             }
-        };
+        }
 
         std::vector <TData> _copyTo() const
         {
@@ -239,6 +313,6 @@ namespace Cuda_Types
             }
 
             return out;
-        };
+        }
     };
 };

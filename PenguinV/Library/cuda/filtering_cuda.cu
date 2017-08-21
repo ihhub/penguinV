@@ -33,7 +33,7 @@ namespace Image_Function_Cuda
 
             executor.directTransform( image );
             executor.directTransform( filter );
-            
+
             executor.complexMultiplication( image, filter, image );
 
             executor.inverseTransform( image );
@@ -71,7 +71,7 @@ namespace Image_Function_Cuda
                 const float * endX = x + 2 * filterSize + 1;
 
                 for( int32_t posX = -static_cast<int32_t>(filterSize) ; x != endX; ++x, ++posX ) {
-                    *x = 1.0f / ( pi * doubleSigma ) * exp( -(posX * posX + posY * posY) / doubleSigma );
+                    *x = 1.0f / (pi * doubleSigma) * exp( -(posX * posX + posY * posY) / doubleSigma );
                     sum += *x;
                 }
             }
