@@ -2,11 +2,18 @@
 
 #include <vector>
 #include "../../Library/cuda/image_buffer_cuda.cuh"
+#include "../performance_test_helper.h"
 
 namespace Performance_Test
 {
-    namespace Cuda
+    namespace Cuda_Helper
     {
+        class TimerContainerCuda : public TimerContainer
+        {
+        public:
+            void stop();  // stop time measurement
+        };
+
         // Functions to generate images
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height );
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );

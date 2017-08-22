@@ -1,9 +1,17 @@
-#include "performance_test_helper_cuda.h"
+#include "performance_test_helper_cuda.cuh"
+#include "../../Library/cuda/cuda_helper.cuh"
 
 namespace Performance_Test
 {
-    namespace Cuda
+    namespace Cuda_Helper
     {
+        void TimerContainerCuda::stop()
+        {
+            Cuda::cudaCheck( cudaDeviceSynchronize() );
+
+            TimerContainer::stop();
+        }
+
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height )
         {
             return uniformImage( width, height, randomValue<uint8_t>( 256 ) );

@@ -159,7 +159,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="..\performance_test_framework.cpp" />
     <ClCompile Include="..\performance_test_helper.cpp" />
     <ClCompile Include="performance_tests_cuda.cpp" />
-    <ClCompile Include="performance_test_helper_cuda.cpp" />
+    <ClCompile Include="performance_test_helper_cuda.cu" />
     <ClCompile Include="performance_test_image_function_cuda.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +173,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\..\Library\thread_pool.h" />
     <ClInclude Include="..\performance_test_framework.h" />
     <ClInclude Include="..\performance_test_helper.h" />
-    <ClInclude Include="performance_test_helper_cuda.h" />
+    <ClInclude Include="performance_test_helper_cuda.cuh" />
     <ClInclude Include="performance_test_image_function_cuda.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
