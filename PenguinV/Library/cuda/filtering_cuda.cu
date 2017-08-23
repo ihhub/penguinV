@@ -43,7 +43,7 @@ namespace Image_Function_Cuda
 
         FFT_Cuda::ComplexData GetGaussianKernel( uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
         {
-            if( width < 3 || height < 3 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
+            if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
                 throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
 
             const uint32_t size = width * height;
