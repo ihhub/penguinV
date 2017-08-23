@@ -95,9 +95,9 @@ namespace Image_Function
             }
         }
 
-        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, float sigma )
+        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
         {
-            if( width < 3 || height < 3 || sigma < 0 )
+            if( width < 3 || height < 3 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
                 throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
 
             const uint32_t size = width * height;
@@ -106,27 +106,19 @@ namespace Image_Function
 
             std::fill( filter.begin(), filter.end(), 0.0f );
 
-            uint32_t filterSize = static_cast<uint32_t>(3 * sigma + 0.5);
-            if( (filterSize * 2 + 1) > width )
-                filterSize = (width  - 1) / 2;
-            if( (filterSize * 2 + 1) > height )
-                filterSize = (height - 1) / 2;
-            if( filterSize == 0 )
-                filterSize = 1;
-
             static const float pi = 3.1415926536f;
             const float doubleSigma = sigma * 2;
 
-            float * y = filter.data() + (height / 2 - filterSize) * width + width / 2 - filterSize;
-            const float * endY = y + (2 * filterSize + 1) * width;
+            float * y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
+            const float * endY = y + (2 * kernelSize + 1) * width;
 
             float sum = 0;
 
-            for( int32_t posY = -static_cast<int32_t>(filterSize) ; y != endY; y += width, ++posY ) {
+            for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
                 float * x = y;
-                const float * endX = x + 2 * filterSize + 1;
+                const float * endX = x + 2 * kernelSize + 1;
 
-                for( int32_t posX = -static_cast<int32_t>(filterSize) ; x != endX; ++x, ++posX ) {
+                for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
                     *x = 1.0f / ( pi * doubleSigma ) * exp( -(posX * posX + posY * posY) / doubleSigma );
                     sum += *x;
                 }
@@ -134,13 +126,13 @@ namespace Image_Function
 
             const float normalization = 1.0f / sum;
 
-            y = filter.data() + (height / 2 - filterSize) * width + width / 2 - filterSize;
+            y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
 
-            for( int32_t posY = -static_cast<int32_t>(filterSize) ; y != endY; y += width, ++posY ) {
+            for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
                 float * x = y;
-                const float * endX = x + 2 * filterSize + 1;
+                const float * endX = x + 2 * kernelSize + 1;
 
-                for( int32_t posX = -static_cast<int32_t>(filterSize) ; x != endX; ++x, ++posX ) {
+                for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
                     *x *= normalization;
                 }
             }

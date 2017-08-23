@@ -15,6 +15,6 @@ namespace Image_Function
         void  Median( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, uint32_t kernelSize );
 
-        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, float sigma );
+        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma );
     };
 };
