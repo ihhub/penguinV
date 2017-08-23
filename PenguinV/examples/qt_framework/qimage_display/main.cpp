@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QApplication>
+#include <QFileDialog>
 #include <QLabel>
 #include "../../../Library/blob_detection.h"
 #include "../../../Library/image_buffer.h"
@@ -15,8 +16,13 @@ int main( int argc, char *argv[] )
         // First of all we create QT application
         QApplication app( argc, argv );
 
+        // Then we retrieve a path for bitmap file
+        const QString & fileName = QFileDialog::getOpenFileName( NULL,
+                                                                 QObject::tr("Open Bitmap image"), "",
+                                                                 QObject::tr("Bitmap (*.bmp);;All Files (*)") );
+
         // Load a color image from storage
-        Bitmap_Image::Image original = Bitmap_Operation::Load( "qt-logo.bmp" );
+        Bitmap_Image::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
 
         if( original.colorCount() != Bitmap_Image::RGB || original.empty() ) {
             std::cout << "Looks like no image or it is not a color image" << std::endl;
@@ -74,7 +80,7 @@ int main( int argc, char *argv[] )
         showImage( window4, outputQt );
 
         std::cout << "Everything went fine." << std::endl;
-        
+
         return app.exec();
     }
     catch( imageException & ex ) {
