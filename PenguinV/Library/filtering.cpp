@@ -1,3 +1,4 @@
+#include <math.h>
 #include "filtering.h"
 #include "image_function.h"
 
@@ -95,6 +96,96 @@ namespace Image_Function
             }
         }
 
+        Image Sobel( const Image & in )
+        {
+            ParameterValidation( in );
+
+            Image out( in.width(), in.height() );
+
+            Sobel( in, 0, 0, out, 0, 0, out.width(), out.height() );
+
+            return out;
+        }
+
+        void Sobel( const Image & in, Image & out )
+        {
+            ParameterValidation( in, out );
+
+            Sobel( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        }
+
+        Image Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+        {
+            ParameterValidation( in, startXIn, startYIn, width, height );
+
+            Image out( width, height );
+
+            Sobel( in, startXIn, startYIn, out, 0, 0, width, height );
+
+            return out;
+        }
+
+        void Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+        {
+            ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            VerifyGrayScaleImage( in, out );
+
+            if( width < 3 || height < 3 )
+                throw imageException( "Input image is very small for Sobel filter to be applied" );
+
+            // Create the map of gradient values
+            const uint32_t gradientWidth  = width  - 2;
+            const uint32_t gradientHeight = height - 2;
+
+            const float multiplier = 255.0f / sqrtf( 2080800.0f ); // 2080800 is 2 * (255 * 4) * (255 * 4);
+
+            const uint32_t rowSizeIn  = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            const uint8_t * inY  = in.data()  + (startYIn + 1) * rowSizeIn + startXIn + 1;
+            uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+            const uint8_t * inYEnd = inY + gradientHeight * rowSizeIn;
+
+            // fill top row with zeros
+            memset( outY, 0, width );
+            outY += rowSizeOut;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+                // set first pixel in row to 0
+                *outY = 0;
+
+                uint8_t       * outX    = outY + 1;
+                const uint8_t * inX = inY;
+                const uint8_t * inXEnd = inX + gradientWidth;
+
+                for( ; inX != inXEnd; ++inX, ++outX ) {
+                    //      | +1  0 -1|
+                    // Gx = | +2  0 -2|
+                    //      | +1  0 -1|
+
+                    //      | +1 +2 +1|
+                    // Gy = |  0  0  0|
+                    //      | -1 -2 -1|
+
+                    const int32_t gX = *(inX - rowSizeIn - 1) + 2 * (*(inX - 1)) + *(inX + rowSizeIn - 1) -
+                        *(inX - rowSizeIn + 1) - 2 * (*(inX + 1)) - *(inX + rowSizeIn + 1);
+
+                    const int32_t gY = *(inX - rowSizeIn - 1) + 2 * (*(inX - rowSizeIn)) + *(inX - rowSizeIn + 1) -
+                        *(inX + rowSizeIn - 1) - 2 * (*(inX + rowSizeIn)) - *(inX + rowSizeIn + 1);
+
+                    *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY + gY) ) * multiplier + 0.5f);
+                }
+
+                // set last pixel in row to 0
+                *outX = 0;
+            }
+
+            // fill bottom row with zeros
+            memset( outY, 0, width );
+        }
+
         void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
         {
             if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
@@ -119,7 +210,7 @@ namespace Image_Function
                 const float * endX = x + 2 * kernelSize + 1;
 
                 for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
-                    *x = 1.0f / ( pi * doubleSigma ) * exp( -(posX * posX + posY * posY) / doubleSigma );
+                    *x = 1.0f / (pi * doubleSigma) * exp( -(posX * posX + posY * posY) / doubleSigma );
                     sum += *x;
                 }
             }

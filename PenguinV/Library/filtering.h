@@ -15,6 +15,13 @@ namespace Image_Function
         void  Median( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, uint32_t kernelSize );
 
+        // This filter returns image based on gradient magnitude in both X and Y directions
+        Image Sobel( const Image & in );
+        void  Sobel( const Image & in, Image & out );
+        Image Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        void  Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                     uint32_t width, uint32_t height );
+
         void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma );
     };
 };
