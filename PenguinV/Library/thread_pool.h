@@ -107,12 +107,7 @@ namespace Thread_Pool
     class ThreadPoolMonoid
     {
     public:
-        static ThreadPool & instance() // function returns a reference to global (static) thread pool
-        {
-            static ThreadPoolMonoid provider; // one and only monoid object
-
-            return provider._pool;
-        };
+        static ThreadPool & instance(); // function returns a reference to global (static) thread pool
 
         ThreadPoolMonoid & operator=( const ThreadPoolMonoid & ) = delete;
         ThreadPoolMonoid( const ThreadPoolMonoid & ) = delete;
