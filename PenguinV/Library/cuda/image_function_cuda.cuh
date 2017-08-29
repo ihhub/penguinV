@@ -36,7 +36,16 @@ namespace Image_Function_Cuda
 
     void  Copy( const Image & in, Image & out );
 
+    Image ExtractChannel( const Image & in, uint8_t channelId, cudaStream_t stream = Cuda::getCudaStream() );
+    void  ExtractChannel( const Image & in, Image & out, uint8_t channelId, cudaStream_t stream = Cuda::getCudaStream() );
+
     void  Fill( Image & image, uint8_t value, cudaStream_t stream = Cuda::getCudaStream() );
+
+    // Make sure that input parameters such as input and output images are not same image!
+    // horizontal flip: left-right --> right-left
+    // vertical flip: top-bottom --> bottom-top
+    Image Flip( const Image & in, bool horizontal, bool vertical, cudaStream_t stream = Cuda::getCudaStream() );
+    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical, cudaStream_t stream = Cuda::getCudaStream() );
 
     // Gamma correction works by formula:
     // output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0

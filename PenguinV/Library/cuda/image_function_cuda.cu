@@ -81,12 +81,39 @@ namespace
         }
     }
 
+    __global__ void extractChannelCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t size, uint8_t channelCount, uint8_t channelId )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            const uint32_t inX = id % width;
+            const uint32_t inY = id / width;
+
+            out[inY * width + inX] = in[(inY * width + inX) * channelCount + channelId];
+        }
+    }
+
     __global__ void fillCuda( uint8_t * data, uint8_t value, uint32_t size )
     {
         uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
 
         if( id < size ) {
             data[id] = value;
+        }
+    }
+
+    __global__ void flipCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint32_t size, bool horizontal, bool vertical )
+    {
+        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+
+        if( id < size ) {
+            const uint32_t inX = id % width;
+            const uint32_t inY = id / width;
+
+            const uint32_t outX = horizontal ? (width  - 1 - inX) : inX;
+            const uint32_t outY = vertical   ? (height - 1 - inY) : inY;
+
+            out[outY * width + outX] = in[id];
         }
     }
 
@@ -382,6 +409,32 @@ namespace Image_Function_Cuda
         out = in;
     }
 
+    Image ExtractChannel( const Image & in, uint8_t channelId, cudaStream_t stream )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        ExtractChannel( in, out, channelId );
+
+        return out;
+    }
+
+    void ExtractChannel( const Image & in, Image & out, uint8_t channelId, cudaStream_t stream )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( out );
+
+        if( channelId >= in.colorCount() )
+            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+
+        const uint32_t size = out.rowSize() * out.height();
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+
+        extractChannelCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.width(), size, in.colorCount(), channelId );
+        Cuda::validateKernel();
+    }
+
     void Fill( Image & image, uint8_t value, cudaStream_t stream )
     {
         Image_Function::ParameterValidation( image );
@@ -391,6 +444,34 @@ namespace Image_Function_Cuda
 
         fillCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( image.data(), value, size );
         Cuda::validateKernel();
+    }
+
+    Image Flip( const Image & in, bool horizontal, bool vertical, cudaStream_t stream )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out( in.width(), in.height() );
+
+        Flip( in, out, horizontal, vertical );
+
+        return out;
+    }
+
+    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical, cudaStream_t stream )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        if( !horizontal && !vertical ) {
+            Copy( in, out );
+        }
+        else {
+            const uint32_t size = out.rowSize() * out.height();
+            const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+
+            flipCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.width(), out.height(), size, horizontal, vertical );
+            Cuda::validateKernel();
+        }
     }
 
     Image GammaCorrection( const Image & in, double a, double gamma, cudaStream_t stream )
