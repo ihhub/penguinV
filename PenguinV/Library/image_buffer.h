@@ -94,7 +94,7 @@ namespace Template_Image
             clear();
         }
 
-        void resize( uint32_t width_, uint32_t height_ )
+        virtual void resize( uint32_t width_, uint32_t height_ )
         {
             if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
                 clear();
@@ -110,7 +110,7 @@ namespace Template_Image
             }
         }
 
-        void clear()
+        virtual void clear()
         {
             if( _data != nullptr ) {
                 delete[] _data;
@@ -132,7 +132,7 @@ namespace Template_Image
             return _data;
         }
 
-        void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        virtual void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
                 throw imageException( "Invalid image assignment parameters" );
