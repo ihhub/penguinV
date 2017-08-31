@@ -89,12 +89,12 @@ namespace Template_Image
             return (*this);
         }
 
-        ~ImageTemplate()
+        virtual ~ImageTemplate()
         {
             clear();
         }
 
-        virtual void resize( uint32_t width_, uint32_t height_ )
+        void resize( uint32_t width_, uint32_t height_ )
         {
             if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
                 clear();
@@ -106,14 +106,14 @@ namespace Template_Image
                 if( _rowSize % alignment() != 0 )
                     _rowSize = (_rowSize / alignment() + 1) * alignment();
 
-                _data = new TColorDepth[_height * _rowSize];
+                _data = _allocate( _height * _rowSize );
             }
         }
 
-        virtual void clear()
+        void clear()
         {
             if( _data != nullptr ) {
-                delete[] _data;
+                _deallocate( _data );
                 _data = nullptr;
             }
 
@@ -132,7 +132,7 @@ namespace Template_Image
             return _data;
         }
 
-        virtual void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
                 throw imageException( "Invalid image assignment parameters" );
@@ -230,7 +230,7 @@ namespace Template_Image
             _alignment  = image._alignment;
 
             if( image._data != nullptr ) {
-                _data = new TColorDepth[_height * _rowSize];
+                _data = _allocate( _height * _rowSize );
 
                 memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
             }
@@ -258,6 +258,17 @@ namespace Template_Image
 
             return false;
         }
+    protected:
+        virtual TColorDepth * _allocate( size_t size ) const
+        {
+            return new TColorDepth[size];
+        }
+
+        virtual void _deallocate( TColorDepth * data ) const
+        {
+            delete[] data;
+        }
+
     private:
         uint32_t _width;
         uint32_t _height;
@@ -332,7 +343,7 @@ namespace Bitmap_Image
             return (*this);
         }
 
-        ~Image()
+        virtual ~Image()
         {
         }
     };
