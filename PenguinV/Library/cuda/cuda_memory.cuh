@@ -25,27 +25,35 @@ namespace Cuda_Memory
         // we recommend to call this function only one time at the startup of an application
         // do not reallocate memory if some objects in your source code are allocated
         // through this allocator. Future access to such object's memory is unpredictable
-        // The size of memory for allocation must be equal to a number of power of 2
         void reserve( size_t size )
         {
-            if( size == 0 || (size & (size - 1)) != 0 )
-                throw imageException( "Memory size must be a number of power of 2" );
+            if( size == 0 )
+                throw imageException( "Memory size cannot be 0" );
 
             if( _data != nullptr && size == _size )
                 return;
 
             _allocate( size );
 
-            uint8_t levelCount = 1;
-            size_t value = 1;
+            size_t usedSize = 0;
 
-            while( value < size ) {
-                value *= 2;
-                ++levelCount;
-            }
+            while( size > 0 ) {
+                uint8_t levelCount = _getAllocationLevel( size );
+                size_t value = static_cast<size_t>(1) << levelCount;
 
-            _freeChunck.resize( levelCount );
-            _freeChunck.back().insert( 0 );
+                if( value > size ) {
+                    value >>= 1;
+                    --levelCount;
+                }
+
+                if( usedSize == 0 )
+                    _freeChunck.resize( levelCount + 1 );
+
+                _freeChunck[levelCount].insert( usedSize );
+
+                usedSize += value;
+                size -= value;
+            }            
         }
 
         // this function returns a pointer to an allocated memory
@@ -136,9 +144,8 @@ namespace Cuda_Memory
         void _allocate( size_t size )
         {
             if( _size != size && size > 0 ) {
-                if( !_allocatedChunck.empty() ) {
-                    throw imageException( "Cannot free a memory on device with CUDA support. Not all objects are deallocated from allocator." );
-                }
+                if( !_allocatedChunck.empty() )
+                    throw imageException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
@@ -172,7 +179,7 @@ namespace Cuda_Memory
             uint8_t level = 0;
 
             while( size < initialSize ) {
-                size *= 2;
+                size <<= 1;
                 ++level;
             }
 
@@ -199,7 +206,7 @@ namespace Cuda_Memory
             if( startLevel > from ) {
                 size_t memorySize = static_cast<size_t>(1) << (startLevel - 1);
 
-                for( ; startLevel > from; --startLevel, memorySize /= 2 ) {
+                for( ; startLevel > from; --startLevel, memorySize >>= 1 ) {
                     _freeChunck[startLevel - 1].insert( *_freeChunck[startLevel].begin() );
                     _freeChunck[startLevel - 1].insert( *_freeChunck[startLevel].begin() + memorySize );
                     _freeChunck[startLevel].erase( _freeChunck[startLevel].begin() );
@@ -215,7 +222,7 @@ namespace Cuda_Memory
             size_t memorySize = static_cast<size_t>(1) << from;
 
             for( std::vector < std::set < size_t > >::iterator level = _freeChunck.begin() + from; level < _freeChunck.end();
-                 ++level, memorySize *= 2 ) {
+                 ++level, memorySize <<= 1 ) {
 
                 std::set< size_t >::iterator pos = level->find( offset );
                 std::set< size_t >::iterator neighbour = pos;
