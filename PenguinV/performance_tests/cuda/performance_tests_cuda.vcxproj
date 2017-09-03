@@ -151,6 +151,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CudaCompile Include="..\..\Library\cuda\cuda_device.cu" />
     <CudaCompile Include="..\..\Library\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\Library\cuda\image_function_cuda.cu" />
   </ItemGroup>
@@ -163,6 +164,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="performance_test_image_function_cuda.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Library\cuda\cuda_device.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_types.cuh" />

@@ -9,16 +9,22 @@
 
 namespace Cuda_Memory
 {
-    // Singleton for memory allocation on devices with CUDA support
+    // Class for memory allocation on devices with CUDA support
     class MemoryAllocator
     {
     public:
-        // a function which returns a reference to singleton
-        static MemoryAllocator & instance()
+        MemoryAllocator( size_t availableSize )
+            : _data         ( nullptr )
+            , _size         ( 0 )
+            , _availableSize( availableSize )
         {
-            static MemoryAllocator allocator;
+            if( _availableSize == 0 )
+                throw imageException( "Available size cannot be 0" );
+        }
 
-            return allocator;
+        ~MemoryAllocator()
+        {
+            _free();
         }
 
         // this function allocates a chunk of memory on devices with CUDA support
@@ -29,6 +35,9 @@ namespace Cuda_Memory
         {
             if( size == 0 )
                 throw imageException( "Memory size cannot be 0" );
+
+            if( size > _availableSize )
+                throw imageException( "Memory size to be allocated is bigger than available size on CUDA device" );
 
             if( _data != nullptr && size == _size )
                 return;
@@ -120,16 +129,6 @@ namespace Cuda_Memory
                 throw imageException( "Cannot deallocate memory for CUDA device" );
         }
     private:
-        MemoryAllocator()
-            : _data( nullptr )
-        {
-        }
-
-        ~MemoryAllocator()
-        {
-            _free();
-        }
-
         size_t _size; // a size of memory allocated chunk
         void * _data; // a pointer to memory allocated chunk
 
@@ -139,6 +138,8 @@ namespace Cuda_Memory
         // first parameter is an offset from preallocated memory
         // second parameter is a power of 2 (level)
         std::map <size_t, uint8_t> _allocatedChunck;
+
+        size_t _availableSize; // maximum available memory size on CUDA device
 
         // the function for true memory allocation on devices with CUDA support
         void _allocate( size_t size )
@@ -252,5 +253,8 @@ namespace Cuda_Memory
                 return;
             }
         }
+
+        MemoryAllocator(const MemoryAllocator & ) {}
+        MemoryAllocator & operator=( const MemoryAllocator &  ) { return (*this); }
     };
 };

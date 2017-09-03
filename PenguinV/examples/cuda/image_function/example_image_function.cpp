@@ -3,7 +3,7 @@
 #include "../../../Library/image_buffer.h"
 #include "../../../Library/image_function.h"
 #include "../../../Library/FileOperation/bitmap.h"
-#include "../../../Library/cuda/cuda_memory.cuh"
+#include "../../../Library/cuda/cuda_device.cuh"
 #include "../../../Library/cuda/image_buffer_cuda.cuh"
 #include "../../../Library/cuda/image_function_cuda.cuh"
 
@@ -23,6 +23,12 @@ int main()
 
     try // <---- do not forget to put your code into try.. catch block!
     {
+        // First thing we should check whether the system contains CUDA device
+        if( !Cuda::isCudaSupported() ) {
+            std::cout << "CUDA device is not found in current system." << std::endl;
+            return 0;
+        }
+
         // CPU code
         cpuBased();
         // GPU code
@@ -72,7 +78,7 @@ void gpuBased()
 {
     // It is recommended to use preallocated buffers for GPU memory usage
     // So we preallocate 32 MB of GPU memory for our usage
-    Cuda_Memory::MemoryAllocator::instance().reserve( 32 * 1024 * 1024 );
+    Cuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)

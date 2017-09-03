@@ -5,7 +5,7 @@
 #include <cstring>
 #include <cuda_runtime.h>
 #include "../image_exception.h"
-#include "cuda_memory.cuh"
+#include "cuda_device.cuh"
 
 namespace Template_Image_Cuda
 {
@@ -86,14 +86,14 @@ namespace Template_Image_Cuda
                 _height = height_;
                 _rowSize = width() * colorCount();
 
-                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _rowSize * _height );
+                Cuda::MemoryManager::memory().allocate( &_data, _rowSize * _height );
             }
         }
 
         void clear()
         {
             if( _data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().free( _data );
+                Cuda::MemoryManager::memory().free( _data );
 
                 _data = NULL;
             }
@@ -176,7 +176,7 @@ namespace Template_Image_Cuda
             _rowSize    = image._rowSize; 
 
             if( image._data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().allocate( &_data, _height * _width );
+                Cuda::MemoryManager::memory().allocate( &_data, _height * _width );
 
                 cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )

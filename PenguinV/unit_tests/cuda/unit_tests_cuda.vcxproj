@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <CudaCompile Include="..\..\Library\cuda\cuda_device.cu" />
     <CudaCompile Include="..\..\Library\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\Library\cuda\image_function_cuda.cu" />
     <CudaCompile Include="unit_test_helper_cuda.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Library\cuda\cuda_device.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\Library\cuda\cuda_types.cuh" />

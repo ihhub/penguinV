@@ -4,7 +4,7 @@
 #include <cuda_runtime.h>
 #include <vector>
 #include "../image_exception.h"
-#include "cuda_memory.cuh"
+#include "cuda_device.cuh"
 
 namespace Cuda_Types
 {
@@ -87,7 +87,7 @@ namespace Cuda_Types
         void _free()
         {
             if( _data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().free( _data );
+                Cuda::MemoryManager::memory().free( _data );
                 _data = NULL;
             }
         }
@@ -96,7 +96,7 @@ namespace Cuda_Types
         {
             _free();
 
-            Cuda_Memory::MemoryAllocator::instance().allocate( &_data );
+            Cuda::MemoryManager::memory().allocate( &_data );
         }
 
         void _copy( const Type & in )
@@ -256,7 +256,7 @@ namespace Cuda_Types
         void _free()
         {
             if( _data != NULL ) {
-                Cuda_Memory::MemoryAllocator::instance().free( _data );
+                Cuda::MemoryManager::memory().free( _data );
                 _data = NULL;
             }
         }
@@ -267,7 +267,7 @@ namespace Cuda_Types
                 _free();
 
                 if( size != 0 )
-                    Cuda_Memory::MemoryAllocator::instance().allocate( &_data, size );
+                    Cuda::MemoryManager::memory().allocate( &_data, size );
 
                 _size = size;
             }
