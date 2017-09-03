@@ -415,7 +415,7 @@ namespace Image_Function_Cuda
 
         Image out( in.width(), in.height() );
 
-        ExtractChannel( in, out, channelId );
+        ExtractChannel( in, out, channelId, stream );
 
         return out;
     }
@@ -452,7 +452,7 @@ namespace Image_Function_Cuda
 
         Image out( in.width(), in.height() );
 
-        Flip( in, out, horizontal, vertical );
+        Flip( in, out, horizontal, vertical, stream );
 
         return out;
     }
