@@ -20,14 +20,17 @@ namespace
 
 namespace Cuda
 {
-    Cuda_Memory::MemoryAllocator & MemoryManager::memory()
+    namespace MemoryManager
     {
-        return CudaDeviceManager::instance().device( getDefaultDeviceId() ).allocator();
-    }
+        Cuda_Memory::MemoryAllocator & memory()
+        {
+            return CudaDeviceManager::instance().device( getDefaultDeviceId() ).allocator();
+        }
 
-    Cuda_Memory::MemoryAllocator & MemoryManager::memory( int deviceId )
-    {
-        return CudaDeviceManager::instance().device( deviceId ).allocator();
+        Cuda_Memory::MemoryAllocator & memory( int deviceId )
+        {
+            return CudaDeviceManager::instance().device( deviceId ).allocator();
+        }
     }
 
 

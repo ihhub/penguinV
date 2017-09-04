@@ -9,20 +9,15 @@ namespace Cuda
 {
     class CudaDeviceManager;
 
-    // This is a shortcut (facade) class to access memory allocator for CUDA devices
-    class MemoryManager
+    // This is a shortcut (facade) namespace to access memory allocator for CUDA devices
+    namespace MemoryManager
     {
-    public:
         // Returns memory allocator for current thread
         // By default it will return an allocator for device with ID = 0
-        static Cuda_Memory::MemoryAllocator & memory();
+        Cuda_Memory::MemoryAllocator & memory();
 
         // Returns memory allocator for specified device ID
-        static Cuda_Memory::MemoryAllocator & memory( int deviceId );
-
-    private:
-        MemoryManager() {}
-        ~MemoryManager() {}
+        Cuda_Memory::MemoryAllocator & memory( int deviceId );
     };
 
     // This class represents a single CUDA device (videocard) in a system
