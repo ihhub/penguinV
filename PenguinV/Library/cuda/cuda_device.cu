@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <assert.h>
 #include "../image_exception.h"
 #include "cuda_helper.cuh"
 #include "cuda_device.cuh"
@@ -16,6 +17,32 @@ namespace
     {
         return defaultDeviceId;
     }
+
+    // This class is a helper to remember and restore back
+    // previous device ID for current thread
+    class DeviceAutoRestorer
+    {
+    public:
+        DeviceAutoRestorer( int currentDeviceId )
+            : _currentDeviceId ( currentDeviceId )
+            , _previousDeviceId( getDefaultDeviceId() )
+        {
+            if( _currentDeviceId != _previousDeviceId )
+                Cuda::cudaCheck( cudaSetDevice( _currentDeviceId ) );
+        }
+
+        ~DeviceAutoRestorer()
+        {
+            if( _currentDeviceId != _previousDeviceId ) {
+                Cuda::cudaCheck( cudaSetDevice( _previousDeviceId ) );
+                setDefaultDeviceId( _previousDeviceId );
+            }
+        }
+
+    private:
+        int _currentDeviceId;
+        int _previousDeviceId;
+    };
 }
 
 namespace Cuda
@@ -43,7 +70,16 @@ namespace Cuda
 
         Cuda::cudaCheck( cudaGetDeviceProperties( &_deviceProperty, _deviceId ) );
 
-        _allocator = new Cuda_Memory::MemoryAllocator( _deviceProperty.totalGlobalMem );
+        DeviceAutoRestorer restorer( _deviceId );
+
+        size_t freeSpace  = 0;
+        size_t totalSpace = 0;
+
+        Cuda::cudaCheck( cudaMemGetInfo( &freeSpace, &totalSpace ) );
+
+        assert( totalSpace == _deviceProperty.totalGlobalMem );
+
+        _allocator = new Cuda_Memory::MemoryAllocator( freeSpace );
     }
 
     CudaDevice::CudaDevice( const CudaDevice & )

@@ -128,6 +128,12 @@ namespace Cuda_Memory
             if( error != cudaSuccess )
                 throw imageException( "Cannot deallocate memory for CUDA device" );
         }
+
+        // this function returns maximum availbale space which could be allocated by allocator
+        size_t availableSize() const
+        {
+            return _availableSize;
+        }
     private:
         size_t _size; // a size of memory allocated chunk
         void * _data; // a pointer to memory allocated chunk
