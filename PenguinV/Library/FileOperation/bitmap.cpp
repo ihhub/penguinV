@@ -85,6 +85,9 @@ namespace Bitmap_Operation
 
     struct BitmapDibHeader
     {
+        BitmapDibHeader() {}
+        virtual ~BitmapDibHeader() {}
+
         virtual void set( const std::vector < uint8_t > & ) = 0;
         virtual void get( std::vector < uint8_t > & )      = 0;
 
