@@ -12,14 +12,15 @@ namespace Cuda
 
     struct KernelParameters
     {
-        KernelParameters( uint32_t threadsPerBlock_, uint32_t blocksPerGrid_ );
+        KernelParameters( dim3 threadsPerBlock_, dim3 blocksPerGrid_ );
 
-        uint32_t threadsPerBlock;
-        uint32_t blocksPerGrid;
+        dim3 threadsPerBlock;
+        dim3 blocksPerGrid;
     };
 
     // Helper function which returns proper arguments for CUDA device kernel functions
     KernelParameters getKernelParameters( uint32_t size );
+    KernelParameters getKernelParameters( uint32_t width, uint32_t height );
 
     cudaStream_t getCudaStream();
 }
