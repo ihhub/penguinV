@@ -7,49 +7,57 @@
 namespace
 {
     // The list of CUDA device functions on device side
-    __global__ void absoluteDifferenceCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void absoluteDifferenceCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : in2[id] - in1[id];
         }
     }
 
-    __global__ void bitwiseAndCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseAndCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] & in2[id];
         }
     }
 
-    __global__ void bitwiseOrCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseOrCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] | in2[id];
         }
     }
 
-    __global__ void bitwiseXorCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void bitwiseXorCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] ^ in2[id];
         }
     }
 
-    __global__ void convertToGrayScaleCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint32_t width, uint8_t colorCount )
+    __global__ void convertToGrayScaleCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t colorCount )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
-            uint32_t x = id % width;
-            uint32_t y = id / width;
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
 
             uint32_t sum = 0;
 
@@ -64,13 +72,13 @@ namespace
         }
     }
 
-    __global__ void convertToRgbCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint32_t width, uint8_t colorCount )
+    __global__ void convertToRgbCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t colorCount )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
-            uint32_t x = id % width;
-            uint32_t y = id / width;
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
 
             uint8_t * data = out + (width * y + x) * colorCount;
 
@@ -81,16 +89,13 @@ namespace
         }
     }
 
-    __global__ void extractChannelCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t size, uint8_t channelCount, uint8_t channelId )
+    __global__ void extractChannelCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t channelCount, uint8_t channelId )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
-            const uint32_t inX = id % width;
-            const uint32_t inY = id / width;
-
-            out[inY * width + inX] = in[(inY * width + inX) * channelCount + channelId];
-        }
+        if( x < width && y < height )
+            out[y * width + x] = in[(y * width + x) * channelCount + channelId];
     }
 
     __global__ void fillCuda( uint8_t * data, uint8_t value, uint32_t size )
@@ -102,89 +107,103 @@ namespace
         }
     }
 
-    __global__ void flipCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint32_t size, bool horizontal, bool vertical )
+    __global__ void flipCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t inX = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t inY = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
-            const uint32_t inX = id % width;
-            const uint32_t inY = id / width;
-
+        if( inX < width && inY < height ) {
             const uint32_t outX = horizontal ? (width  - 1 - inX) : inX;
             const uint32_t outY = vertical   ? (height - 1 - inY) : inY;
 
-            out[outY * width + outX] = in[id];
+            out[outY * width + outX] = in[inY * width + inX];
         }
     }
 
-    __global__ void histogramCuda( const uint8_t * data, uint32_t size, uint32_t * histogram )
+    __global__ void histogramCuda( const uint8_t * data, uint32_t width, uint32_t height, uint32_t * histogram )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             atomicAdd( &histogram[data[id]], 1 );
         }
     }
 
-    __global__ void invertCuda( const uint8_t * in, uint8_t * out, uint32_t size )
+    __global__ void invertCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = ~in[id];
         }
     }
 
-    __global__ void lookupTableCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t * table )
+    __global__ void lookupTableCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t * table )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = table[in[id]];
         }
     }
 
-    __global__ void maximumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void maximumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+       const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] > in2[id] ? in1[id] : in2[id];
         }
     }
 
-    __global__ void minimumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void minimumCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] < in2[id] ? in1[id] : in2[id];
         }
     }
 
-    __global__ void subtractCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t size )
+    __global__ void subtractCuda( const uint8_t * in1, const uint8_t * in2, uint8_t * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;
         }
     }
 
-    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t threshold )
+    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t threshold )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in[id] < threshold ? 0 : 255;
         }
     }
 
-    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t size, uint8_t minThreshold, uint8_t maxThreshold )
+    __global__ void thresholdCuda( const uint8_t * in, uint8_t * out, uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id] = in[id] < minThreshold || in[id] > maxThreshold ? 0 : 255;
         }
     }
@@ -207,10 +226,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        absoluteDifferenceCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        absoluteDifferenceCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                             out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -229,10 +248,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        bitwiseAndCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                     out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -251,10 +270,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        bitwiseOrCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                    out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -273,10 +292,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        bitwiseXorCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                     out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -367,10 +386,10 @@ namespace Image_Function_Cuda
             return;
         }
 
-        const uint32_t size = out.width() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.width(), out.height() );
 
-        convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size, in.width(), in.colorCount() );
+        convertToGrayScaleCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(),
+                                                                                             in.width(), in.height(), in.colorCount() );
         Cuda::validateKernel();
     }
 
@@ -395,10 +414,10 @@ namespace Image_Function_Cuda
             return;
         }
 
-        const uint32_t size = out.width() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.width(), out.height() );
 
-        convertToRgbCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size, in.width(), out.colorCount() );
+        convertToRgbCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), in.width(),
+                                                                                       in.height(), out.colorCount() );
         Cuda::validateKernel();
     }
 
@@ -428,10 +447,10 @@ namespace Image_Function_Cuda
         if( channelId >= in.colorCount() )
             throw imageException( "Channel ID for color image is greater than channel count in input image" );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.width(), out.height() );
 
-        extractChannelCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.width(), size, in.colorCount(), channelId );
+        extractChannelCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.width(),
+                                                                                         out.height(), in.colorCount(), channelId );
         Cuda::validateKernel();
     }
 
@@ -466,10 +485,9 @@ namespace Image_Function_Cuda
             Copy( in, out );
         }
         else {
-            const uint32_t size = out.rowSize() * out.height();
-            const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+            const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-            flipCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.width(), out.height(), size, horizontal, vertical );
+            flipCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.rowSize(), out.height(), horizontal, vertical );
             Cuda::validateKernel();
         }
     }
@@ -569,10 +587,9 @@ namespace Image_Function_Cuda
 
         Cuda_Types::Array< uint32_t > tableCuda( histogram );
 
-        const uint32_t size = image.width() * image.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( image.rowSize(), image.height() );
 
-        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( image.data(), size, tableCuda.data() );
+        histogramCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( image.data(), image.rowSize(), image.height(), tableCuda.data() );
         Cuda::validateKernel();
 
         histogram = tableCuda.get();
@@ -593,10 +610,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size );
+        invertCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(),
+                                                                                 out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -621,10 +638,10 @@ namespace Image_Function_Cuda
 
         Cuda_Types::Array< uint8_t > tableCuda( table );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size, tableCuda.data() );
+        lookupTableCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(),
+                                                                                      out.rowSize(), out.height(), tableCuda.data() );
         Cuda::validateKernel();
     }
 
@@ -643,10 +660,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        maximumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                  out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -665,10 +682,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        minimumCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                  out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -687,10 +704,10 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in1, in2, out );
 
-        const uint32_t size = out.rowSize() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(), size );
+        subtractCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in1.data(), in2.data(), out.data(),
+                                                                                   out.rowSize(), out.height() );
         Cuda::validateKernel();
     }
 
@@ -710,10 +727,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        const uint32_t size = out.width() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size, threshold );
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(),
+                                                                                    out.rowSize(), out.height(), threshold );
         Cuda::validateKernel();
     }
 
@@ -733,10 +750,10 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        const uint32_t size = out.width() * out.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
+        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( out.rowSize(), out.height() );
 
-        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), size, minThreshold, maxThreshold );
+        thresholdCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock, 0, stream>>>( in.data(), out.data(), out.rowSize(),
+                                                                                    out.height(), minThreshold, maxThreshold );
         Cuda::validateKernel();
     }
 }

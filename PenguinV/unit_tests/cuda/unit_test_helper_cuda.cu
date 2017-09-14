@@ -2,29 +2,37 @@
 #include "../../Library/image_buffer.h"
 #include "../../Library/image_function.h"
 #include "../../Library/cuda/cuda_types.cuh"
+#include "../../Library/cuda/cuda_helper.cuh"
 #include "../../Library/cuda/image_function_cuda.cuh"
 #include "unit_test_helper_cuda.cuh"
 
 namespace
 {
     // This function must run with thread count as 1
-    __global__ void isEqualCuda( const uint8_t * image, uint8_t value, uint32_t size, uint32_t * differenceCount )
+    __global__ void isEqualCuda( const uint8_t * image, uint8_t value, uint32_t width, uint32_t height, uint32_t * differenceCount )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size )
+        if( x < width && y < height )
         {
-            if( image[id] != value )
+            const uint32_t id = y * width + x;
+
+            if( image[id] == value )
                 atomicAdd( differenceCount, 1 );
         }
     };
 
-    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, size_t valueCount, uint32_t size, uint32_t * differenceCount )
+    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, size_t valueCount, uint32_t width, uint32_t height,
+                                    uint32_t * differenceCount )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size )
+        if( x < width && y < height )
         {
+            const uint32_t id = y * width + x;
+
             bool equal = false;
 
             for( uint32_t i = 0; i < valueCount; ++i )
@@ -36,7 +44,7 @@ namespace
                 }
             }
 
-            if( !equal )
+            if( equal )
                 atomicAdd( differenceCount, 1 );
         }
     };
@@ -126,14 +134,17 @@ namespace Unit_Test
         {
             Cuda_Types::_cuint32_t differenceCount( 0 );
 
-            const uint32_t size = image.rowSize() * image.height();
+            const uint32_t rowSize = image.rowSize();
+            const uint32_t height = image.height();
 
-            isEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), value, size, differenceCount.data());
+            const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
+
+            isEqualCuda<<< kernel.blocksPerGrid, kernel.threadsPerBlock >>>( image.data(), value, rowSize, height, differenceCount.data() );
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
 
-            return differenceCount.get() == 0;
+            return differenceCount.get() == rowSize * height;
         }
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, const std::vector < uint8_t > & value )
@@ -141,14 +152,18 @@ namespace Unit_Test
             Cuda_Types::_cuint32_t differenceCount( 0 );
             Cuda_Types::Array<uint8_t> valueCuda( value );
 
-            const uint32_t size = image.rowSize() * image.height();
+            const uint32_t rowSize = image.rowSize();
+            const uint32_t height = image.height();
 
-            isAnyEqualCuda<<< (size + 255) / 256, 256 >>>(image.data(), valueCuda.data(), valueCuda.size(), size, differenceCount.data());
+            const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
+
+            isAnyEqualCuda<<< kernel.blocksPerGrid, kernel.threadsPerBlock >>>( image.data(), valueCuda.data(), valueCuda.size(), rowSize,
+                                                                                height, differenceCount.data() );
             cudaError_t error = cudaGetLastError();
             if( error != cudaSuccess )
                 throw imageException( "Failed to launch CUDA kernel" );
 
-            return differenceCount.get() == 0;
+            return differenceCount.get() == rowSize * height;
         }
     };
 };
