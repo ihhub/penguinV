@@ -300,7 +300,7 @@ namespace Image_Function
                 const float * endX = x + 2 * kernelSize + 1;
 
                 for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
-                    *x = 1.0f / (pi * doubleSigma) * exp( -(posX * posX + posY * posY) / doubleSigma );
+                    *x = 1.0f / (pi * doubleSigma) * expf( -(posX * posX + posY * posY) / doubleSigma );
                     sum += *x;
                 }
             }
