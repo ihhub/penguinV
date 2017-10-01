@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
-#include "../../Library/image_exception.h"
 #include "../../Library/cuda/image_buffer_cuda.cuh"
 
 // A bunch of functions to help writing unit tests

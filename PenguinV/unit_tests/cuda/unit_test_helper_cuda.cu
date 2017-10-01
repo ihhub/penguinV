@@ -1,5 +1,6 @@
 #include <cuda_runtime.h>
 #include "../../Library/image_buffer.h"
+#include "../../Library/image_exception.h"
 #include "../../Library/image_function.h"
 #include "../../Library/cuda/cuda_types.cuh"
 #include "../../Library/cuda/cuda_helper.cuh"

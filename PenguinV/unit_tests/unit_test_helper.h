@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <vector>
 #include "../Library/image_buffer.h"
-#include "../Library/image_exception.h"
 
 // A bunch of functions to help writing unit tests
 namespace Unit_Test

@@ -1,4 +1,5 @@
 #include "unit_test_helper.h"
+#include "../Library/image_exception.h"
 #include "../Library/image_function.h"
 
 namespace
