@@ -1,6 +1,9 @@
 penguinV
 ======
 
+[![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV)
+
+
 PenguinV is a simple and easy to use C++ image processing library. It is designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
 
 - compactness
