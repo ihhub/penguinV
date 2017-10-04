@@ -1,11 +1,13 @@
 #pragma once
 
+#include "../Library/penguinv/cpu_identification.h"
 #include "unit_test_framework.h"
 
 namespace Unit_Test
 {
     void addTests_Image_Function_Sse( UnitTestFramework & framework ); // function what adds all below tests to framework
 
+#ifdef PENGUINV_SSE_SET
     namespace Image_Function_Sse_Test
     {
         bool AbsoluteDifference2ParametersTest();
@@ -60,5 +62,6 @@ namespace Unit_Test
         bool ThresholdDouble4ParametersTest();
         bool ThresholdDouble7ParametersTest();
         bool ThresholdDouble10ParametersTest();
-    };
-};
+    }
+#endif
+}

@@ -1,6 +1,9 @@
+#include "image_function_sse.h"
+
+#ifdef PENGUINV_SSE_SET
+
 #include <emmintrin.h>
 #include "image_function.h"
-#include "image_function_sse.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
 namespace
@@ -940,4 +943,5 @@ namespace Image_Function_Sse
             }
         }
     }
-};
+}
+#endif

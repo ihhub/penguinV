@@ -4,60 +4,65 @@
 
 namespace Unit_Test
 {
+#ifndef PENGUINV_AVX_SET
+    void addTests_Image_Function_Avx( UnitTestFramework & ) {}
+#else
     void addTests_Image_Function_Avx( UnitTestFramework & framework )
     {
-        ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference11ParametersTest );
+        if( isAvxAvailable ) {
+            ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::AbsoluteDifference11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseAnd11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseOr11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::BitwiseXor11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Invert1ParameterTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Invert2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Invert5ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Invert8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Invert1ParameterTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Invert2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Invert5ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Invert8ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Maximum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Maximum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Maximum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Maximum11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Maximum2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Maximum3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Maximum8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Maximum11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Minimum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Minimum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Minimum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Minimum11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Minimum2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Minimum3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Minimum8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Minimum11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Subtract2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Subtract3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Subtract8ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Subtract11ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Subtract2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Subtract3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Subtract8ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Subtract11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Sum1ParameterTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Sum5ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Sum1ParameterTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Sum5ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::Threshold2ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Threshold3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Threshold6ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::Threshold9ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Threshold2ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Threshold3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Threshold6ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::Threshold9ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble3ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble4ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble7ParametersTest );
-        ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble10ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble3ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble4ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble7ParametersTest );
+            ADD_TEST( framework, Image_Function_Avx_Test::ThresholdDouble10ParametersTest );
+        }
     }
 
     namespace Image_Function_Avx_Test
@@ -889,5 +894,7 @@ namespace Unit_Test
 
             return true;
         }
-    };
-};
+    }
+#endif
+
+}

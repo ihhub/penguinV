@@ -1,6 +1,9 @@
+#include "image_function_neon.h"
+
+#ifdef PENGUINV_NEON_SET
+
 #include <arm_neon.h>
 #include "image_function.h"
-#include "image_function_neon.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
 namespace
@@ -843,4 +846,5 @@ namespace Image_Function_Neon
             }
         }
     }
-};
+}
+#endif

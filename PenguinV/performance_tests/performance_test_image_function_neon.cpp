@@ -4,57 +4,62 @@
 
 namespace Performance_Test
 {
+#ifndef PENGUINV_NEON_SET
+    void addTests_Image_Function_Neon( PerformanceTestFramework & ) {}
+#else
     void addTests_Image_Function_Neon( PerformanceTestFramework & framework )
     {
-        ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize2048 );
+        if( isNeonAvailable ) {
+            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifferenceSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAndSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOrSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXorSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::InvertSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::InvertSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::InvertSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::InvertSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::InvertSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::InvertSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::InvertSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::InvertSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MaximumSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::MinimumSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::SubtractSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdSize2048 );
 
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize256 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize512 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize1024 );
-        ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize2048 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize256 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize512 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize1024 );
+            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDoubleSize2048 );
+        }
     }
 
     namespace Image_Function_Neon_Test
@@ -750,5 +755,7 @@ namespace Performance_Test
 
             return timer.mean();
         }
-    };
-};
+    }
+#endif
+
+}

@@ -1,20 +1,23 @@
 #pragma once
 
-bool isSseSupported()
+struct CpuInformation
 {
-    return false;
-}
-
-bool isAvxSupported()
-{
-    return false;
-}
-
-bool isNeonSupported()
-{
-#ifdef __arm__
-    return true;
-#else
-    return false;
-#endif
-}
+    bool isSseSupported()
+    {
+        return false;
+    }
+    
+    bool isAvxSupported()
+    {
+        return false;
+    }
+    
+    bool isNeonSupported()
+    {
+        #ifdef __arm__
+            return true;
+        #else
+            return false;
+        #endif
+    }
+};

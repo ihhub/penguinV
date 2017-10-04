@@ -1,5 +1,8 @@
-#include <immintrin.h>
 #include "image_function_avx.h"
+
+#ifdef PENGUINV_AVX_SET
+
+#include <immintrin.h>
 #include "image_function_sse.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
@@ -993,4 +996,5 @@ namespace Image_Function_Avx
             }
         }
     }
-};
+}
+#endif

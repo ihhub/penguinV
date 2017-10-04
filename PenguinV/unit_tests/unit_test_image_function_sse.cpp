@@ -4,60 +4,65 @@
 
 namespace Unit_Test
 {
+#ifndef PENGUINV_SSE_SET
+    void addTests_Image_Function_Sse( UnitTestFramework & ) {}
+#else
     void addTests_Image_Function_Sse( UnitTestFramework & framework )
     {
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference11ParametersTest );
+        if( isSseAvailable ) {
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifference11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAnd11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOr11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXor11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Invert1ParameterTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Invert2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Invert5ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Invert8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Invert1ParameterTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Invert2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Invert5ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Invert8ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Maximum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Maximum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Maximum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Maximum11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Maximum2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Maximum3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Maximum8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Maximum11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Minimum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Minimum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Minimum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Minimum11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Minimum2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Minimum3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Minimum8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Minimum11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Subtract2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Subtract3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Subtract8ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Subtract11ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Subtract2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Subtract3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Subtract8ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Subtract11ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Sum1ParameterTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Sum5ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Sum1ParameterTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Sum5ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::Threshold2ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Threshold3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Threshold6ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::Threshold9ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Threshold2ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Threshold3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Threshold6ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::Threshold9ParametersTest );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble3ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble4ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble7ParametersTest );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble10ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble3ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble4ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble7ParametersTest );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDouble10ParametersTest );
+        }
     }
 
     namespace Image_Function_Sse_Test
@@ -889,5 +894,7 @@ namespace Unit_Test
 
             return true;
         }
-    };
-};
+    }
+#endif
+
+}

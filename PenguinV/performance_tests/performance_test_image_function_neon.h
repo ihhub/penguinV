@@ -1,11 +1,13 @@
 #pragma once
 
+#include "../Library/penguinv/cpu_identification.h"
 #include "performance_test_framework.h"
 
 namespace Performance_Test
 {
     void addTests_Image_Function_Neon( PerformanceTestFramework & framework ); // function what adds all below tests to framework
 
+#ifdef PENGUINV_NEON_SET
     namespace Image_Function_Neon_Test
     {
         std::pair < double, double > AbsoluteDifferenceSize256();
@@ -57,5 +59,6 @@ namespace Performance_Test
         std::pair < double, double > ThresholdDoubleSize512();
         std::pair < double, double > ThresholdDoubleSize1024();
         std::pair < double, double > ThresholdDoubleSize2048();
-    };
-};
+    }
+#endif
+}

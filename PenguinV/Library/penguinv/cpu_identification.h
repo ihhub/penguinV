@@ -44,11 +44,11 @@
 
 // Identify available technologies during runtime
 #ifdef PENGUINV_AVX_SET
-static const bool isAvxAvailable  = isAvxSupported();
+static const bool isAvxAvailable  = CpuInformation::isAvxSupported();
 #endif
 #ifdef PENGUINV_SSE_SET
-static const bool isSseAvailable  = isSseSupported();
+static const bool isSseAvailable  = CpuInformation::isSseSupported();
 #endif
 #ifdef PENGUINV_NEON_SET
-static const bool isNeonAvailable = isNeonSupported();
+static const bool isNeonAvailable = CpuInformation::isNeonSupported();
 #endif

@@ -4,62 +4,67 @@
 
 namespace Performance_Test
 {
+#ifndef PENGUINV_SSE_SET
+    void addTests_Image_Function_Sse( PerformanceTestFramework & ) {}
+#else
     void addTests_Image_Function_Sse( PerformanceTestFramework & framework )
     {
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize2048 );
+        if( isSseAvailable ) {
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::AbsoluteDifferenceSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseAndSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseOrSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::BitwiseXorSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::InvertSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::InvertSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::InvertSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::InvertSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::InvertSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::InvertSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::InvertSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::InvertSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MaximumSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::MinimumSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SubtractSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::SumSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SumSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SumSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::SumSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SumSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SumSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SumSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::SumSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdSize2048 );
 
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize256 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize512 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize1024 );
-        ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize2048 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize256 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize512 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize1024 );
+            ADD_TEST( framework, Image_Function_Sse_Test::ThresholdDoubleSize2048 );
+        }
     }
 
     namespace Image_Function_Sse_Test
@@ -823,5 +828,6 @@ namespace Performance_Test
 
             return timer.mean();
         }
-    };
-};
+    }
+#endif
+}

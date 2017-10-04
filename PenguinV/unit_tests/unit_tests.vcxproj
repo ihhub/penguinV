@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -28,23 +28,27 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -141,27 +145,49 @@
   <ItemGroup>
     <ClCompile Include="..\Library\blob_detection.cpp" />
     <ClCompile Include="..\Library\FileOperation\bitmap.cpp" />
+    <ClCompile Include="..\Library\function_pool.cpp" />
     <ClCompile Include="..\Library\image_function.cpp" />
+    <ClCompile Include="..\Library\image_function_avx.cpp" />
+    <ClCompile Include="..\Library\image_function_neon.cpp" />
+    <ClCompile Include="..\Library\image_function_sse.cpp" />
+    <ClCompile Include="..\Library\penguinv\penguinv.cpp" />
+    <ClCompile Include="..\Library\thread_pool.cpp" />
     <ClCompile Include="unit_tests.cpp" />
     <ClCompile Include="unit_test_bitmap.cpp" />
     <ClCompile Include="unit_test_blob_detection.cpp" />
     <ClCompile Include="unit_test_framework.cpp" />
+    <ClCompile Include="unit_test_function_pool.cpp" />
     <ClCompile Include="unit_test_helper.cpp" />
     <ClCompile Include="unit_test_image_buffer.cpp" />
     <ClCompile Include="unit_test_image_function.cpp" />
+    <ClCompile Include="unit_test_image_function_avx.cpp" />
+    <ClCompile Include="unit_test_image_function_neon.cpp" />
+    <ClCompile Include="unit_test_image_function_sse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Library\blob_detection.h" />
     <ClInclude Include="..\Library\FileOperation\bitmap.h" />
+    <ClInclude Include="..\Library\function_pool.h" />
     <ClInclude Include="..\Library\image_buffer.h" />
     <ClInclude Include="..\Library\image_exception.h" />
     <ClInclude Include="..\Library\image_function.h" />
+    <ClInclude Include="..\Library\image_function_avx.h" />
+    <ClInclude Include="..\Library\image_function_neon.h" />
+    <ClInclude Include="..\Library\image_function_sse.h" />
+    <ClInclude Include="..\Library\penguinv\cpu_identification.h" />
+    <ClInclude Include="..\Library\penguinv\cpu_id_windows.h" />
+    <ClInclude Include="..\Library\penguinv\penguinv.h" />
+    <ClInclude Include="..\Library\thread_pool.h" />
     <ClInclude Include="unit_test_bitmap.h" />
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_framework.h" />
+    <ClInclude Include="unit_test_function_pool.h" />
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />
     <ClInclude Include="unit_test_image_function.h" />
+    <ClInclude Include="unit_test_image_function_avx.h" />
+    <ClInclude Include="unit_test_image_function_neon.h" />
+    <ClInclude Include="unit_test_image_function_sse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
