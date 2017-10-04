@@ -2,17 +2,17 @@
 
 struct CpuInformation
 {
-    bool isSseSupported()
+    static bool isSseSupported()
     {
         return false;
     }
     
-    bool isAvxSupported()
+    static bool isAvxSupported()
     {
         return false;
     }
     
-    bool isNeonSupported()
+    static bool isNeonSupported()
     {
         #ifdef __arm__
             return true;
