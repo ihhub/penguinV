@@ -11,7 +11,6 @@ SRCS :=  \
 	$(LIB_DIR)/image_function_neon.cpp \
 	$(LIB_DIR)/image_function_sse.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
-	$(UNIT_TESTS_DIR)/unit_tests.cpp \
 	$(UNIT_TESTS_DIR)/unit_test_bitmap.cpp \
 	$(UNIT_TESTS_DIR)/unit_test_blob_detection.cpp \
 	$(UNIT_TESTS_DIR)/unit_test_framework.cpp \
@@ -21,12 +20,14 @@ SRCS :=  \
 	$(UNIT_TESTS_DIR)/unit_test_image_function.cpp \
 	$(UNIT_TESTS_DIR)/unit_test_image_function_avx.cpp \
 	$(UNIT_TESTS_DIR)/unit_test_image_function_neon.cpp \
-	$(UNIT_TESTS_DIR)/unit_test_image_function_sse.cpp
-TARGET := $(UNIT_TESTS_DIR)
+	$(UNIT_TESTS_DIR)/unit_test_image_function_sse.cpp \
+	$(UNIT_TESTS_DIR)/unit_tests.cpp
+TARGET := unit_tests
 
 CXX := g++
 LINKER := g++
-INCDIRS := -I$(PWD) -I$(LIB_DIR)
+INCLIBDIRS := -I$(PWD) -I$(LIB_DIR)
+INCUNITTESTDIRS := -I$(PWD) -I$(UNIT_TESTS_DIR)
 LIBS := -pthread
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 
 BUILD_DIR=build
@@ -43,16 +44,28 @@ $(TARGET): $(OBJFILES)
 	$(LINKER) $^ -o $@ $(LIBS)
 
 $(BIN)/%.o: ./%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLIBDIRS) -c $< -o $@
+	
+$(BIN)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) $(INCUNITTESTDIRS) -c $< -o $@
 
 $(BIN)/%.o: ./**/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLIBDIRS) -c $< -o $@
+
+$(BIN)/%.o: ./**/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCUNITTESTDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(LIB_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLIBDIRS) -c $< -o $@
+	
+$(BIN)/%.o: $(UNIT_TESTS_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCUNITTESTDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(LIB_DIR)/**/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLIBDIRS) -c $< -o $@
+	
+$(BIN)/%.o: $(UNIT_TESTS_DIR)/**/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCUNITTESTDIRS) -c $< -o $@
 
 run: $(TARGET)
 	@echo "Running unit tests ..."
