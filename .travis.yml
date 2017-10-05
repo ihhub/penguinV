@@ -1,0 +1,3 @@
+language: cpp
+before_install: cd PenguinV/tools
+script: make
