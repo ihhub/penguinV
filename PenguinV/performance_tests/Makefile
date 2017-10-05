@@ -7,6 +7,9 @@ SRCS :=  \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
+	$(LIB_DIR)/image_function_avx.cpp \
+	$(LIB_DIR)/image_function_neon.cpp \
+	$(LIB_DIR)/image_function_sse.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	performance_tests.cpp \
 	performance_test_blob_detection.cpp \
@@ -14,14 +17,17 @@ SRCS :=  \
 	performance_test_framework.cpp \
 	performance_test_function_pool.cpp \
 	performance_test_helper.cpp \
-	performance_test_image_function.cpp
+	performance_test_image_function.cpp \
+	performance_test_image_function_avx.cpp \
+	performance_test_image_function_neon.cpp \
+	performance_test_image_function_sse.cpp
 TARGET := performance_tests
 
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 LIBS := -pthread
-CXXFLAGS := -std=c++11 -Wall -O2
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))

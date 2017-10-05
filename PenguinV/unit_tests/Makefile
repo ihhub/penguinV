@@ -2,23 +2,33 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../Library
 SRCS :=  \
-	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/FileOperation/bitmap.cpp \
+	$(LIB_DIR)/penguinv/penguinv.cpp \
+	$(LIB_DIR)/blob_detection.cpp \
+	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
+	$(LIB_DIR)/image_function_avx.cpp \
+	$(LIB_DIR)/image_function_neon.cpp \
+	$(LIB_DIR)/image_function_sse.cpp \
+	$(LIB_DIR)/thread_pool.cpp \
 	unit_tests.cpp \
 	unit_test_bitmap.cpp \
 	unit_test_blob_detection.cpp \
 	unit_test_framework.cpp \
+	unit_test_function_pool.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
-	unit_test_image_function.cpp
+	unit_test_image_function.cpp \
+	unit_test_image_function_avx.cpp \
+	unit_test_image_function_neon.cpp \
+	unit_test_image_function_sse.cpp
 TARGET := unit_tests
 
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 LIBS := -pthread
-CXXFLAGS := -std=c++11 -Wall -O2
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))
