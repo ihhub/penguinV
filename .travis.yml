@@ -1,3 +1,18 @@
+sudo: required
+
 language: cpp
-before_install: cd PenguinV/tools
-script: make
+
+addons:
+  apt:
+    packages:
+      - libpng-dev
+
+os:
+  - linux
+  - osx
+
+script:
+  - cd PenguinV/script/travis
+  - make
+
+after_script: ./unit_tests

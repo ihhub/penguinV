@@ -28,7 +28,7 @@ CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 LIBS := -pthread
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 -march=native
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))

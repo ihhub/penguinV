@@ -1,8 +1,9 @@
-PWD := $(shell pwd)/..
+PWD := $(shell pwd)/../..
 LIB_DIR := $(PWD)/Library
 UNIT_TESTS_DIR := $(PWD)/unit_tests
 SRCS :=  \
 	$(LIB_DIR)/FileOperation/bitmap.cpp \
+	$(LIB_DIR)/FileOperation/png_file.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/function_pool.cpp \
@@ -28,8 +29,8 @@ CXX := g++
 LINKER := g++
 INCLIBDIRS := -I$(PWD) -I$(LIB_DIR)
 INCUNITTESTDIRS := -I$(PWD) -I$(UNIT_TESTS_DIR)
-LIBS := -pthread
-CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 
+LIBS := -pthread -lpng -lz
+CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 -march=native
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.cpp,%.o,$(SRCS))
