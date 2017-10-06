@@ -108,7 +108,7 @@ namespace
 #endif
         return table;
     }
-};
+}
 
 namespace penguinV
 {
@@ -117,4 +117,4 @@ namespace penguinV
         static FunctionTable table = initialize();
         return table;
     }
-};
+}

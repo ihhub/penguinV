@@ -337,4 +337,4 @@ namespace Thread_Pool
             ThreadPoolMonoid::instance().add( this, _taskCount );
         }
     }
-};
+}

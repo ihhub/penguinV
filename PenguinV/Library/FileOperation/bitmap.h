@@ -9,4 +9,4 @@ namespace Bitmap_Operation
     void Save( const std::string & path, const Bitmap_Image::Image & image );
     void Save( const std::string & path, const Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height );
-};
+}

@@ -9,5 +9,5 @@ namespace Unit_Test
     namespace Bitmap_Operation_Test
     {
         bool LoadSaveGrayScaleImage();
-    };
-};
+    }
+}

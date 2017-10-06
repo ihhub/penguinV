@@ -12,7 +12,7 @@ namespace Blob_Detection
             , checkMinimum( false ) // set to compare a value with minimum value
             , maximum     ( 0 )     // maximum value
             , checkMaximum( 0 )     // set to compare a value with maximum value
-        { };
+        { }
 
         Data minimum;
         bool checkMinimum;
@@ -89,13 +89,13 @@ namespace Blob_Detection
         Point()
             : x( 0 )
             , y( 0 )
-        { };
+        { }
 
         // this constructor is made to avoid 'Value' template restriction
         Point( double value )
             : x( value )
             , y( value )
-        { };
+        { }
 
         double x;
         double y;
@@ -108,7 +108,7 @@ namespace Blob_Detection
             , right ( 0 )
             , top   ( 0 )
             , bottom( 0 )
-        { };
+        { }
 
         // this constructor is made to avoid 'Value' template restriction
         Area( uint32_t value )
@@ -116,7 +116,7 @@ namespace Blob_Detection
             , right ( value )
             , top   ( value )
             , bottom( value )
-        { };
+        { }
 
         uint32_t left;
         uint32_t right;
@@ -130,7 +130,7 @@ namespace Blob_Detection
         Value()
             : value( 0 )
             , found( false )
-        { };
+        { }
 
         Data value;
         bool found;
@@ -231,4 +231,4 @@ namespace Blob_Detection
     protected:
         std::vector < BlobInfo > _blob;
     };
-};
+}

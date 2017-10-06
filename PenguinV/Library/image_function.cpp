@@ -1737,4 +1737,4 @@ namespace Image_Function
                 (*outX) = *(inY);
         }
     }
-};
+}

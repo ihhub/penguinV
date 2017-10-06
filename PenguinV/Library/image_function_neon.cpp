@@ -10,7 +10,7 @@ namespace
 {
     const uint32_t simdSize = 16u;
     typedef uint8x16_t simd;
-};
+}
 
 namespace Image_Function_Neon
 {

@@ -31,7 +31,7 @@ namespace Unit_Test
         return image1.height() == image2.height() && image1.width() == image2.width() &&
             image1.alignment() == image2.alignment() && image1.colorCount() == image2.colorCount()
             && image1.rowSize() == image2.rowSize();
-    };
+    }
 
     template <typename data>
     bool equalSize( const data & image, uint32_t width, uint32_t height, uint32_t rowSize, uint8_t colorCount,
@@ -41,7 +41,7 @@ namespace Unit_Test
                  image.colorCount() == colorCount && image.alignment() == alignment && image.rowSize() == 0) ||
                  (width == image.width() && height == image.height() && colorCount == image.colorCount() &&
                    alignment == image.alignment() && rowSize == image.rowSize());
-    };
+    }
 
     bool equalSize( const Bitmap_Image::Image & image, uint32_t width, uint32_t height );
 
@@ -49,14 +49,14 @@ namespace Unit_Test
     bool equalData( const Template_Image::ImageTemplate < data > & image1, const Template_Image::ImageTemplate < data > & image2 )
     {
         return memcmp( image1.data(), image2.data(), sizeof( data ) * image1.height() * image1.rowSize() ) == 0;
-    };
+    }
 
     template <typename data>
     bool isEmpty( const Template_Image::ImageTemplate < data > & image )
     {
         return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
             image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
-    };
+    }
 
     bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
     bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
@@ -94,7 +94,7 @@ namespace Unit_Test
             return 0;
         else
             return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
-    };
+    }
 
     template <typename data>
     data randomValue( data minimum, uint32_t maximum )
@@ -110,5 +110,5 @@ namespace Unit_Test
 
             return value;
         }
-    };
-};
+    }
+}

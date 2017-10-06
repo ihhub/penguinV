@@ -39,5 +39,5 @@ namespace Unit_Test
         bool AssignmentOperatorS64Test();
         bool AssignmentOperatorFTest();
         bool AssignmentOperatorDTest();
-    };
-};
+    }
+}

@@ -9,5 +9,5 @@ namespace Unit_Test
     namespace Blob_Detection_Test
     {
         bool Detect1Blob();
-    };
-};
+    }
+}

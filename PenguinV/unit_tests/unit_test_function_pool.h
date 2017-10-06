@@ -88,5 +88,5 @@ namespace Unit_Test
         bool ThresholdDouble4ParametersTest();
         bool ThresholdDouble7ParametersTest();
         bool ThresholdDouble10ParametersTest();
-    };
-};
+    }
+}

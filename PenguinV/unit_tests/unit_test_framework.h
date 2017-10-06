@@ -20,4 +20,4 @@ namespace Unit_Test
     private:
         std::map < testFunction, std::string > _unitTest; // container with pointer to functions and their names
     };
-};
+}

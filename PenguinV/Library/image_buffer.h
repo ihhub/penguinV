@@ -279,7 +279,7 @@ namespace Template_Image
 
         TColorDepth * _data;
     };
-};
+}
 
 namespace Bitmap_Image
 {
@@ -347,7 +347,7 @@ namespace Bitmap_Image
         {
         }
     };
-};
+}
 
 namespace Image_Function
 {
@@ -474,4 +474,4 @@ namespace Image_Function
             startX3 + width > image3.width() || startY3 + height > image3.height() )
             throw imageException( "Bad input parameters in image function" );
     }
-};
+}

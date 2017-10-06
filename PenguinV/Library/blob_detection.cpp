@@ -16,7 +16,7 @@ namespace
     };
 
     const double pi = 3.1415926536;
-};
+}
 
 namespace Blob_Detection
 {

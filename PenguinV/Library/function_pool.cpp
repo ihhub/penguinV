@@ -1404,4 +1404,4 @@ namespace Function_Pool
     {
         FunctionTask().Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
     }
-};
+}

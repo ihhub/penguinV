@@ -10,7 +10,7 @@ namespace
 {
     const uint32_t simdSize = 32u;
     typedef __m256i simd;
-};
+}
 
 namespace Image_Function_Avx
 {
@@ -407,11 +407,12 @@ namespace Image_Function_Avx
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        const char maskValue = 0xffu;
         const simd mask = _mm256_set_epi8(
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd * src1 = reinterpret_cast <const simd*> (inY);
@@ -810,21 +811,23 @@ namespace Image_Function_Avx
             const uint32_t totalSimdWidth = simdWidth * simdSize;
             const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+            const char maskValue = 0x80u;
             const simd mask = _mm256_set_epi8(
-                0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-                0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-                0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-                0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+                maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+                maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+                maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+                maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
+            const char compareValue = (threshold - 1) ^ 0x80u;
             const simd compare = _mm256_set_epi8(
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u,
-                (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u, (threshold - 1) ^ 0x80u );
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue,
+                compareValue, compareValue, compareValue, compareValue );
 
             for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
                 const simd * src1 = reinterpret_cast <const simd*> (inY);
@@ -911,38 +914,42 @@ namespace Image_Function_Avx
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        const char shiftMaskValue = 0x80u;
         const simd shiftMask = _mm256_set_epi8(
-            0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-            0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-            0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
-            0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
+            shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
+            shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
+            shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
+            shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue );
 
+        const char notMaskValue = 0xffu;
         const simd notMask = _mm256_set_epi8(
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
-            0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
+            notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue,
+            notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue,
+            notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue,
+            notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue, notMaskValue );
 
+        const char maxCompareValue = maxThreshold ^ 0x80u;
         const simd maxCompare = _mm256_set_epi8(
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u,
-            maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u, maxThreshold ^ 0x80u );
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
+            maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue );
 
         if( minThreshold > 0 ) {
+            const char minCompareValue = (minThreshold - 1) ^ 0x80u;
             const simd minCompare = _mm256_set_epi8(
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u,
-                (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u, (minThreshold - 1) ^ 0x80u );
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue,
+                minCompareValue, minCompareValue, minCompareValue, minCompareValue );
 
 
             for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {

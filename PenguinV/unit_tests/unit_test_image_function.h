@@ -118,5 +118,5 @@ namespace Unit_Test
         bool Transpose2ParametersTest();
         bool Transpose5ParametersTest();
         bool Transpose8ParametersTest();
-    };
-};
+    }
+}

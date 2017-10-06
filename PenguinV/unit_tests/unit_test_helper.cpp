@@ -7,13 +7,13 @@ namespace
     uint32_t randomWidth()
     {
         return Unit_Test::randomValue<uint32_t>( 1, 2048 );
-    };
+    }
 
     uint32_t randomHeight()
     {
         return Unit_Test::randomValue<uint32_t>( 1, 2048 );
-    };
-};
+    }
+}
 
 namespace Unit_Test
 {
@@ -326,4 +326,4 @@ namespace Unit_Test
     {
         return 1024u; // some magic number for loop. Higher value = higher chance to verify all possible situations
     }
-};
+}

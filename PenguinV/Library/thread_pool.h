@@ -130,4 +130,4 @@ namespace Thread_Pool
     protected:
         void _run( size_t taskCount );
     };
-};
+}

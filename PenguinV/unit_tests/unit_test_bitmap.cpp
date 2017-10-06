@@ -24,5 +24,5 @@ namespace Unit_Test
 
             return true;
         }
-    };
-};
+    }
+}

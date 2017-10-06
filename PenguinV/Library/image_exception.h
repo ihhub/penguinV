@@ -26,8 +26,9 @@ public:
 
     imageException( const imageException & ex )
         : std::exception( ex )
+        , _name         ( ex._name )
     {
-        _name = ex._name;
+        
     }
 
     virtual ~imageException()

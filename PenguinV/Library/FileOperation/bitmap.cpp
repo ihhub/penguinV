@@ -34,14 +34,14 @@ namespace Bitmap_Operation
     {
         value = *(reinterpret_cast<const valueType *>(data.data() + offset));
         offset += sizeof( valueType );
-    };
+    }
 
     template <typename valueType>
     void set_value( std::vector < uint8_t > & data, size_t & offset, const valueType & value )
     {
         memcpy( data.data() + offset, reinterpret_cast<const uint8_t *>(&value), sizeof( valueType ) );
         offset += sizeof( valueType );
-    };
+    }
 
     struct BitmapFileHeader
     {
@@ -52,7 +52,7 @@ namespace Bitmap_Operation
             , bfReserved2( 0 )      // not in use
             , bfOffBits  ( 0 )      // offset from beggining of file to image data
             , overallSize( 14 )     // real size of this structure for bitmap format
-        { };
+        { }
 
         uint16_t bfType;
         uint32_t bfSize;
@@ -70,7 +70,7 @@ namespace Bitmap_Operation
             get_value( data, offset, bfReserved1 );
             get_value( data, offset, bfReserved2 );
             get_value( data, offset, bfOffBits );
-        };
+        }
 
         void get( std::vector < uint8_t > & data )
         {
@@ -80,7 +80,7 @@ namespace Bitmap_Operation
             set_value( data, offset, bfReserved1 );
             set_value( data, offset, bfReserved2 );
             set_value( data, offset, bfOffBits );
-        };
+        }
     };
 
     struct BitmapDibHeader
@@ -89,7 +89,7 @@ namespace Bitmap_Operation
         virtual ~BitmapDibHeader() {}
 
         virtual void set( const std::vector < uint8_t > & ) = 0;
-        virtual void get( std::vector < uint8_t > & )      = 0;
+        virtual void get( std::vector < uint8_t > & )       = 0;
 
         virtual uint32_t width()      = 0;
         virtual uint32_t height()     = 0;
@@ -113,7 +113,7 @@ namespace Bitmap_Operation
             , bcPlanes   ( 1 )  // number of colour planes (always 1)
             , bcBitCount ( 0 )  // bits per pixel
             , overallSize( 12 ) // real size of this structure for bitmap format
-        { };
+        { }
 
         uint32_t bcSize;
         uint16_t bcWidth;
@@ -131,7 +131,7 @@ namespace Bitmap_Operation
             get_value( data, offset, bcHeight );
             get_value( data, offset, bcPlanes );
             get_value( data, offset, bcBitCount );
-        };
+        }
 
         void get( std::vector < uint8_t > & data )
         {
@@ -141,53 +141,53 @@ namespace Bitmap_Operation
             set_value( data, offset, bcHeight );
             set_value( data, offset, bcPlanes );
             set_value( data, offset, bcBitCount );
-        };
+        }
 
         virtual uint32_t width()
         {
             return bcWidth;
-        };
+        }
 
         virtual uint32_t height()
         {
             return bcHeight;
-        };
+        }
 
         virtual uint8_t colorCount()
         {
             return static_cast<uint8_t>(bcBitCount / 8u);
-        };
+        }
 
         virtual uint32_t size()
         {
             return overallSize;
-        };
+        }
 
         virtual void setWidth( uint32_t w )
         {
             bcWidth = static_cast<uint16_t>(w);
-        };
+        }
 
         virtual void setHeight( uint32_t h )
         {
             bcHeight = static_cast<uint16_t>(h);
-        };
+        }
 
         virtual void setColorCount( uint16_t c )
         {
             bcBitCount = c * 8u;
-        };
+        }
 
         virtual void setImageSize( uint32_t )
         {
-        };
+        }
 
         virtual bool validate( const BitmapFileHeader & header )
         {
             return !(bcBitCount == 8u || bcBitCount == 24u || bcBitCount == 32u) ||
                 bcWidth == 0 || bcHeight == 0 || bcSize != BitmapCoreHeader().bcSize ||
                 bcPlanes != BitmapCoreHeader().bcPlanes || header.bfOffBits < overallSize + header.overallSize;
-        };
+        }
     };
 
     struct BitmapInfoHeader : public BitmapDibHeader
@@ -205,7 +205,7 @@ namespace Bitmap_Operation
             , biClrUsed      ( 0 )  // Number of colours used
             , biClrImportant ( 0 )  // important colours
             , overallSize    ( 40 ) // real size of this structure for bitmap format
-        { };
+        { }
 
         uint32_t biSize;
         int32_t  biWidth;
@@ -235,7 +235,7 @@ namespace Bitmap_Operation
             get_value( data, offset, biYPelsPerMeter );
             get_value( data, offset, biClrUsed );
             get_value( data, offset, biClrImportant );
-        };
+        }
 
         void get( std::vector < uint8_t > & data )
         {
@@ -251,47 +251,47 @@ namespace Bitmap_Operation
             set_value( data, offset, biYPelsPerMeter );
             set_value( data, offset, biClrUsed );
             set_value( data, offset, biClrImportant );
-        };
+        }
 
         virtual uint32_t width()
         {
             return static_cast<uint32_t>(biWidth);
-        };
+        }
 
         virtual uint32_t height()
         {
             return static_cast<uint32_t>(biHeight);
-        };
+        }
 
         virtual uint8_t colorCount()
         {
             return static_cast<uint8_t>(biBitCount / 8u);
-        };
+        }
 
         virtual uint32_t size()
         {
             return overallSize;
-        };
+        }
 
         virtual void setWidth( uint32_t w )
         {
             biWidth = static_cast<int32_t>(w);
-        };
+        }
 
         virtual void setHeight( uint32_t h )
         {
             biHeight = static_cast<int32_t>(h);
-        };
+        }
 
         virtual void setColorCount( uint16_t c )
         {
             biBitCount = c * 8u;
-        };
+        }
 
         virtual void setImageSize( uint32_t s )
         {
             biSizeImage = s;
-        };
+        }
 
         virtual bool validate( const BitmapFileHeader & header )
         {
@@ -303,7 +303,7 @@ namespace Bitmap_Operation
                 biWidth <= 0 || biHeight <= 0 || biSize != BitmapInfoHeader().biSize ||
                 (biSizeImage != rowSize * static_cast<uint32_t>(biHeight) && biSizeImage != 0) ||
                 biPlanes != BitmapInfoHeader().biPlanes || header.bfOffBits < overallSize + header.overallSize;
-        };
+        }
     };
 
     BitmapDibHeader * getInfoHeader( uint32_t size )
@@ -316,7 +316,7 @@ namespace Bitmap_Operation
                 return new BitmapInfoHeader;
             default:
                 return nullptr;
-        };
+        }
     };
 
     Bitmap_Image::Image Load( const std::string & path )
