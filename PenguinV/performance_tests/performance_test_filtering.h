@@ -12,5 +12,5 @@ namespace Performance_Test
         std::pair < double, double > MedianFilterSize512();
         std::pair < double, double > MedianFilterSize1024();
         std::pair < double, double > MedianFilterSize2048();
-    };
-};
+    }
+}

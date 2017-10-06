@@ -271,4 +271,4 @@ namespace penguinV
     {
         functionTable().Transpose( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
-};
+}

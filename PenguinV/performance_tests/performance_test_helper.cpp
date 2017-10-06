@@ -67,15 +67,15 @@ namespace Performance_Test
 {
     TimerContainer::TimerContainer()
         : _startTime( std::chrono::high_resolution_clock::now() )
-    { };
+    { }
 
     TimerContainer::~TimerContainer()
-    { };
+    { }
 
     void TimerContainer::start()
     {
         _startTime = std::chrono::high_resolution_clock::now();
-    };
+    }
 
     void TimerContainer::stop()
     {
@@ -83,7 +83,7 @@ namespace Performance_Test
         std::chrono::duration < double > time = endTime - _startTime;
 
         _time.push_back( time.count() );
-    };
+    }
 
     std::pair < double, double > TimerContainer::mean()
     {
@@ -102,7 +102,7 @@ namespace Performance_Test
 
         // return results in milliseconds
         return std::pair<double, double>( 1000 * mean, 1000 * sigma );
-    };
+    }
 
     Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height )
     {
@@ -151,4 +151,4 @@ namespace Performance_Test
     {
         Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
     }
-};
+}

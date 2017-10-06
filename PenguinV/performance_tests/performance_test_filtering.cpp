@@ -86,4 +86,4 @@ namespace Performance_Test
             return timer.mean();
         }
     }
-};
+}

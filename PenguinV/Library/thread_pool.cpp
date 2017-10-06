@@ -89,7 +89,8 @@ namespace Thread_Pool
     }
 
     TaskProvider::TaskProvider( const TaskProvider & provider )
-        : _threadPool ( provider._threadPool )
+        : AbstractTaskProvider ( provider )
+        , _threadPool          ( provider._threadPool )
     {
     }
 
@@ -306,14 +307,15 @@ namespace Thread_Pool
         static ThreadPoolMonoid provider; // one and only monoid object
     
         return provider._pool;
-    };
+    }
 
 
     TaskProviderSingleton::TaskProviderSingleton()
     {
     }
 
-    TaskProviderSingleton::TaskProviderSingleton( const TaskProviderSingleton & )
+    TaskProviderSingleton::TaskProviderSingleton( const TaskProviderSingleton & provider )
+        : AbstractTaskProvider( provider )
     {
     }
 

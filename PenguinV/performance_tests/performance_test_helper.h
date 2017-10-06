@@ -43,7 +43,7 @@ namespace Performance_Test
             return 0;
         else
             return static_cast<data>(rand() % maximum);
-    };
+    }
 
     template <typename data>
     data randomValue( data minimum, int maximum )
@@ -59,5 +59,5 @@ namespace Performance_Test
 
             return value;
         }
-    };
-};
+    }
+}

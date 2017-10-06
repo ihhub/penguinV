@@ -275,7 +275,7 @@ namespace Unit_Test
                 Template_Image::ImageTemplate < uint8_t > image;
 
                 uint8_t fakeArray[1];
-                uint8_t fakeValue = rand() % 2;
+                uint8_t fakeValue = static_cast<uint8_t>(rand() % 2);
                 if( fakeValue == 1 )
                     fakeValue = 0;
 

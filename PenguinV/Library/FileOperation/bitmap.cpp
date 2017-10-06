@@ -317,7 +317,7 @@ namespace Bitmap_Operation
             default:
                 return nullptr;
         }
-    };
+    }
 
     Bitmap_Image::Image Load( const std::string & path )
     {

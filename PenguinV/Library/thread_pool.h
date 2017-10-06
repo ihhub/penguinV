@@ -123,7 +123,7 @@ namespace Thread_Pool
     {
     public:
         TaskProviderSingleton();
-        TaskProviderSingleton( const TaskProviderSingleton & );
+        TaskProviderSingleton( const TaskProviderSingleton & provider );
         virtual ~TaskProviderSingleton();
 
         TaskProviderSingleton & operator=( const TaskProviderSingleton & );

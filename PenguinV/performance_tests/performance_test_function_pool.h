@@ -86,5 +86,5 @@ namespace Performance_Test
         std::pair < double, double > ThresholdDoubleSize512();
         std::pair < double, double > ThresholdDoubleSize1024();
         std::pair < double, double > ThresholdDoubleSize2048();
-    };
-};
+    }
+}

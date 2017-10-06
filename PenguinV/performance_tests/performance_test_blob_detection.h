@@ -12,5 +12,5 @@ namespace Performance_Test
         std::pair < double, double > SolidImageSize512();
         std::pair < double, double > SolidImageSize1024();
         std::pair < double, double > SolidImageSize2048();
-    };
-};
+    }
+}

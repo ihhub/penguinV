@@ -42,4 +42,4 @@ namespace Performance_Test
             }
         }
     }
-};
+}
