@@ -61,7 +61,7 @@ namespace FFT
 
         _clean();
 
-        const uint32_t size = image.width() * image.height();
+        const size_t size = image.width() * image.height();
 
         _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size * sizeof(kiss_fft_cpx) ) );
 
@@ -69,7 +69,7 @@ namespace FFT
         _height = image.height();
 
         // Copy data from input image to FFT array
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         const uint8_t * inY  = image.data();
         kiss_fft_cpx  * out = _data;
@@ -110,15 +110,15 @@ namespace FFT
         Bitmap_Image::Image image( _width, _height, 1u, 1u );
         uint8_t * out = image.data();
 
-        const uint32_t size = _width * _height;
-        const uint32_t middleX = _width  / 2;
-        const uint32_t middleY = _height / 2;
+        const size_t size = _width * _height;
+        const size_t middleX = _width  / 2;
+        const size_t middleY = _height / 2;
 
-        for( uint32_t inY = 0; inY < _height; ++inY ) {
-            const uint32_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
+        for( size_t inY = 0; inY < _height; ++inY ) {
+            const size_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
 
-            for( uint32_t inX = 0; inX < _width; ++inX ) {
-                const uint32_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
+            for( size_t inX = 0; inX < _width; ++inX ) {
+                const size_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
                 out[outY * _width + outX] = static_cast<uint8_t>(_data[inY * _width + inX].r / size + 0.5);
             }
         }
@@ -126,12 +126,12 @@ namespace FFT
         return image;
     }
 
-    void ComplexData::resize( uint32_t width_, uint32_t height_ )
+    void ComplexData::resize( size_t width_, size_t height_ )
     {
         if( ( width_ != _width || height_ != _height ) && width_ != 0 && height_ != 0 ) {
             _clean();
 
-            const uint32_t size = width_ * height_;
+            const size_t size = width_ * height_;
 
             _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size * sizeof(kiss_fft_cpx) ) );
 
@@ -150,12 +150,12 @@ namespace FFT
         return _data;
     }
 
-    uint32_t ComplexData::width() const
+    size_t ComplexData::width() const
     {
         return _width;
     }
 
-    uint32_t ComplexData::height() const
+    size_t ComplexData::height() const
     {
         return _height;
     }
@@ -201,7 +201,7 @@ namespace FFT
     {
     }
 
-    FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
+    FFTExecutor::FFTExecutor( size_t width_, size_t height_ )
         : _planDirect  ( 0 )
         , _planInverse ( 0 )
         , _width       ( 0 )
@@ -215,7 +215,7 @@ namespace FFT
         _clean();
     }
 
-    void FFTExecutor::initialize( uint32_t width_, uint32_t height_ )
+    void FFTExecutor::initialize( size_t width_, size_t height_ )
     {
         if( width_ == 0 || height_ == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
@@ -230,12 +230,12 @@ namespace FFT
         _height = height_;
     }
 
-    uint32_t FFTExecutor::width() const
+    size_t FFTExecutor::width() const
     {
         return _width;
     }
 
-    uint32_t FFTExecutor::height() const
+    size_t FFTExecutor::height() const
     {
         return _height;
     }
@@ -276,7 +276,7 @@ namespace FFT
         // in2 = C + iD
         // out = in1 * (-in2) = (A + iB) * (-C - iD) = - A * C - i(B * C) - i(A * D) + B * D
 
-        const uint32_t size = in1.width() * in1.height();
+        const size_t size = in1.width() * in1.height();
 
         const kiss_fft_cpx * in1X = in1.data();
         const kiss_fft_cpx * in2X = in2.data();

@@ -57,7 +57,7 @@ public:
     AbstractTaskGiver()
     {
         // we use static variables to set correct ID
-        static uint32_t objectCounter = 0;
+        static size_t objectCounter = 0;
         _objectId = (++objectCounter);
     };
 
@@ -98,7 +98,7 @@ protected:
 private:
     std::vector < int > _repeatCount; // our spefic work to execute
     std::mutex _message;              // mutex just for synchronization of messages output
-    uint32_t _objectId;               // object ID needed to show for what object task is completed
+    size_t _objectId;               // object ID needed to show for what object task is completed
 };
 
 // Task giver class for example 1 inherited from TaskProvider

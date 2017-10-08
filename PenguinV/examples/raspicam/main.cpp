@@ -37,7 +37,7 @@ int main( int argc, char **argv )
         camera.grab();
 
         // Allocate memory
-        const uint32_t dataSize = camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB );
+        const size_t dataSize = camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB );
         uint8_t * data = new uint8_t[dataSize];
 
         // Extract the image in RGB format
@@ -119,10 +119,10 @@ void ExtractGreen( const Bitmap_Image::Image & red, const Bitmap_Image::Image & 
     Image_Function::ParameterValidation( red, green, blue );
     Image_Function::ParameterValidation( out, red );
 
-    uint32_t rowSizeIn1 = red.rowSize();
-    uint32_t rowSizeIn2 = green.rowSize();
-    uint32_t rowSizeIn3 = blue.rowSize();
-    uint32_t rowSizeOut = out.rowSize();
+    size_t rowSizeIn1 = red.rowSize();
+    size_t rowSizeIn2 = green.rowSize();
+    size_t rowSizeIn3 = blue.rowSize();
+    size_t rowSizeOut = out.rowSize();
 
     const uint8_t * in1Y = red.data();
     const uint8_t * in2Y = green.data();

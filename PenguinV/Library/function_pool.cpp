@@ -4,9 +4,9 @@
 
 namespace
 {
-    uint32_t threadCount()
+    size_t threadCount()
     {
-        uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
+        size_t count = static_cast<size_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
         if( count == 0 )
             throw imageException( "Thread Pool is not initialized." );
         return count;
@@ -17,15 +17,15 @@ namespace Function_Pool
 {
     struct AreaInfo
     {
-        AreaInfo( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
+        AreaInfo( size_t x, size_t y, size_t width_, size_t height_, size_t count )
         {
             _calculate( x, y, width_, height_, count );
         }
 
-        std::vector < uint32_t > startX; // start X position of image ROI
-        std::vector < uint32_t > startY; // start Y position of image ROI
-        std::vector < uint32_t > width;  // width of image ROI
-        std::vector < uint32_t > height; // height of image ROI
+        std::vector < size_t > startX; // start X position of image ROI
+        std::vector < size_t > startY; // start Y position of image ROI
+        std::vector < size_t > width;  // width of image ROI
+        std::vector < size_t > height; // height of image ROI
 
         size_t _size() const
         {
@@ -33,7 +33,7 @@ namespace Function_Pool
         }
 
         // this function makes a similar input data sorting like it is done in info parameter
-        void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ )
+        void _copy( const AreaInfo & info, size_t x, size_t y, size_t width_, size_t height_ )
         {
             if( info._size() > 0 ) {
                 bool yAxis = true;
@@ -45,25 +45,25 @@ namespace Function_Pool
                     }
                 }
 
-                _fill( x, y, width_, height_, static_cast<uint32_t>(info._size()), yAxis );
+                _fill( x, y, width_, height_, static_cast<size_t>(info._size()), yAxis );
             }
         }
     private:
-        static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of
+        static const size_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of
                                               // subsequent memory cells is much faster!
                                               // Change this value if you need to adjust to specific CPU. 16 bytes are set
                                               // for proper SSE/NEON support
 
         // this function will sort out all input data into arrays for multithreading execution
-        void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
+        void _calculate( size_t x, size_t y, size_t width_, size_t height_, size_t count )
         {
-            uint32_t maximumXTaskCount = width_ / cacheSize;
+            size_t maximumXTaskCount = width_ / cacheSize;
             if( maximumXTaskCount == 0 )
                 maximumXTaskCount = 1;
             if( maximumXTaskCount > count )
                 maximumXTaskCount = count;
 
-            uint32_t maximumYTaskCount = height_;
+            size_t maximumYTaskCount = height_;
             if( maximumYTaskCount > count )
                 maximumYTaskCount = count;
 
@@ -73,7 +73,7 @@ namespace Function_Pool
         }
 
         // this function fills all arrays by necessary values
-        void _fill( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count, bool yAxis )
+        void _fill( size_t x, size_t y, size_t width_, size_t height_, size_t count, bool yAxis )
         {
             startX.resize( count );
             startY.resize( count );
@@ -84,8 +84,8 @@ namespace Function_Pool
                 std::fill( startX.begin(), startX.end(), x );
                 std::fill( width.begin(), width.end(), width_ );
 
-                uint32_t remainValue = height_ % count;
-                uint32_t previousValue = y;
+                size_t remainValue = height_ % count;
+                size_t previousValue = y;
 
                 for( size_t i = 0; i < count; ++i ) {
                     height[i] = height_ / count;
@@ -101,8 +101,8 @@ namespace Function_Pool
                 std::fill( startY.begin(), startY.end(), y );
                 std::fill( height.begin(), height.end(), height_ );
 
-                uint32_t remainValue = width_ % count;
-                uint32_t previousValue = x;
+                size_t remainValue = width_ % count;
+                size_t previousValue = x;
 
                 for( size_t i = 0; i < count; ++i ) {
                     width[i] = width_ / count;
@@ -119,7 +119,7 @@ namespace Function_Pool
 
     struct InputImageInfo : public AreaInfo
     {
-        InputImageInfo( const Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
+        InputImageInfo( const Image & in, size_t x, size_t y, size_t width_, size_t height_, size_t count )
             : AreaInfo( x, y, width_, height_, count )
             , image( in )
         { }
@@ -129,7 +129,7 @@ namespace Function_Pool
 
     struct OutputImageInfo : public AreaInfo
     {
-        OutputImageInfo( Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
+        OutputImageInfo( Image & in, size_t x, size_t y, size_t width_, size_t height_, size_t count )
             : AreaInfo( x, y, width_, height_, count )
             , image( in )
         { }
@@ -159,9 +159,9 @@ namespace Function_Pool
     // This structure holds output data for some specific functions
     struct OutputInfo
     {
-        std::vector < std::vector < uint32_t > > histogram;  // for Histogram() function
-        std::vector < std::vector < uint32_t > > projection; // for ProjectionProfile() function
-        std::vector < uint32_t > sum;						 // for Sum() function
+        std::vector < std::vector < size_t > > histogram;  // for Histogram() function
+        std::vector < std::vector < size_t > > projection; // for ProjectionProfile() function
+        std::vector < size_t > sum;						 // for Sum() function
         std::vector < uint8_t > equality;                    // for IsEqual() function
 
         void resize( size_t count )
@@ -172,24 +172,24 @@ namespace Function_Pool
             equality.resize( count );
         }
 
-        void getHistogram( std::vector <uint32_t> & histogram_ )
+        void getHistogram( std::vector <size_t> & histogram_ )
         {
             _getArray( histogram, histogram_ );
         }
 
-        void getProjection( std::vector <uint32_t> & projection_ )
+        void getProjection( std::vector <size_t> & projection_ )
         {
             _getArray( projection, projection_ );
         }
 
-        uint32_t getSum()
+        size_t getSum()
         {
             if( sum.empty() )
                 throw imageException( "Output array is empty" );
 
-            uint32_t total = 0;
+            size_t total = 0;
 
-            for( std::vector < uint32_t >::const_iterator value = sum.begin(); value != sum.end(); ++value )
+            for( std::vector < size_t >::const_iterator value = sum.begin(); value != sum.end(); ++value )
                 total += *value;
 
             sum.clear(); // to guarantee that no one can use it second time
@@ -216,20 +216,20 @@ namespace Function_Pool
             return equal;
         }
     private:
-        void _getArray( std::vector < std::vector < uint32_t > > & input, std::vector < uint32_t > & output ) const
+        void _getArray( std::vector < std::vector < size_t > > & input, std::vector < size_t > & output ) const
         {
             if( input.empty() )
                 throw imageException( "Output array is empty" );
 
             output = input.front();
 
-            if( std::any_of( input.begin(), input.end(), [&output]( std::vector <uint32_t> & v ) { return v.size() != output.size(); } ) )
+            if( std::any_of( input.begin(), input.end(), [&output]( std::vector <size_t> & v ) { return v.size() != output.size(); } ) )
                 throw imageException( "Returned histograms are not the same size" );
 
             for( size_t i = 1; i < input.size(); ++i ) {
-                std::vector < uint32_t >::iterator       out = output.begin();
-                std::vector < uint32_t >::const_iterator in  = input[i].begin();
-                std::vector < uint32_t >::const_iterator end = input[i].end();
+                std::vector < size_t >::iterator       out = output.begin();
+                std::vector < size_t >::const_iterator in  = input[i].begin();
+                std::vector < size_t >::const_iterator end = input[i].end();
 
                 for( ; in != end; ++in, ++out )
                     *out += *in;
@@ -249,50 +249,50 @@ namespace Function_Pool
         virtual ~FunctionTask() {}
 
         // this is a list of image functions
-        void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                                 Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _AbsoluteDifference );
         }
 
-        void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                         Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                         Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _BitwiseAnd );
         }
 
-        void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                        Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                        Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _BitwiseOr );
         }
 
-        void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                         Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                         Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _BitwiseXor );
         }
 
-        void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                 uint32_t width, uint32_t height )
+        void ConvertToGrayScale( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                                 size_t width, size_t height )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _ConvertToGrayScale );
         }
 
-        void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                           uint32_t width, uint32_t height )
+        void ConvertToRgb( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                           size_t width, size_t height )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _ConvertToRgb );
         }
 
-        void  ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                              uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+        void  ExtractChannel( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut,
+                              size_t startYOut, size_t width, size_t height, uint8_t channelId )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -301,8 +301,8 @@ namespace Function_Pool
             _process( _ExtractChannel );
         }
 
-        void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                              uint32_t width, uint32_t height, double a, double gamma )
+        void GammaCorrection( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                              size_t width, size_t height, double a, double gamma )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -315,8 +315,8 @@ namespace Function_Pool
             _process( _GammaCorrection );
         }
 
-        void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                        std::vector < uint32_t > & histogram )
+        void Histogram( const Image & image, size_t x, size_t y, size_t width, size_t height,
+                        std::vector < size_t > & histogram )
         {
             _setup( image, x, y, width, height );
             _dataOut.resize( _infoIn1->_size() );
@@ -324,15 +324,15 @@ namespace Function_Pool
             _dataOut.getHistogram( histogram );
         }
 
-        void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                     uint32_t width, uint32_t height )
+        void Invert( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                     size_t width, size_t height )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _Invert );
         }
 
-        bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+        bool IsEqual( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, width, height );
             _dataOut.resize( _infoIn1->_size() );
@@ -340,8 +340,8 @@ namespace Function_Pool
             return _dataOut.isEqual();
         }
 
-        void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                          uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+        void LookupTable( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                          size_t width, size_t height, const std::vector < uint8_t > & table )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -350,29 +350,29 @@ namespace Function_Pool
             _process( _LookupTable );
         }
 
-        void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _Maximum );
         }
 
-        void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _Minimum );
         }
 
-        void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height )
+        void Normalize( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                        size_t width, size_t height )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _Normalize );
         }
 
-        void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                                std::vector < uint32_t > & projection )
+        void ProjectionProfile( const Image & image, size_t x, size_t y, size_t width, size_t height, bool horizontal,
+                                std::vector < size_t > & projection )
         {
             _setup( image, x, y, width, height );
             _dataOut.resize( _infoIn1->_size() );
@@ -381,28 +381,28 @@ namespace Function_Pool
             _dataOut.getProjection( projection );
         }
 
-        void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+        void Resize( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                     Image & out, size_t startXOut, size_t startYOut, size_t widthOut, size_t heightOut )
         {
             _setup( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
             _process( _Resize );
         }
 
-        void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                       uint32_t width, uint32_t height )
+        void RgbToBgr( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                       size_t width, size_t height )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _process( _RgbToBgr );
         }
 
-        void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                       Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             _setup( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
             _process( _Subtract );
         }
 
-        uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+        size_t Sum( const Image & image, size_t x, size_t y, size_t width, size_t height )
         {
             _setup( image, x, y, width, height );
             _dataOut.resize( _infoIn1->_size() );
@@ -410,16 +410,16 @@ namespace Function_Pool
             return _dataOut.getSum();
         }
 
-        void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height, uint8_t threshold )
+        void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                        size_t width, size_t height, uint8_t threshold )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             _dataIn.minThreshold = threshold;
             _process( _Threshold );
         }
 
-        void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+        void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                        size_t width, size_t height, uint8_t minThreshold, uint8_t maxThreshold )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
@@ -601,7 +601,7 @@ namespace Function_Pool
         OutputInfo _dataOut; // structure which holds some unique output values
 
         // functions for setting up all parameters needed for multithreading and to validate input parameters
-        void _setup( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+        void _setup( const Image & image, size_t x, size_t y, size_t width, size_t height )
         {
             Image_Function::ParameterValidation( image, x, y, width, height );
 
@@ -611,8 +611,8 @@ namespace Function_Pool
             _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x, y, width, height, threadCount() ) );
         }
 
-        void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+        void _setup( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     size_t width, size_t height )
         {
             Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -623,7 +623,7 @@ namespace Function_Pool
             _infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2, startY2, width, height, threadCount() ) );
         }
 
-        void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height )
+        void _setup( const Image & in, size_t inX, size_t inY, Image & out, size_t outX, size_t outY, size_t width, size_t height )
         {
             Image_Function::ParameterValidation( in, inX, inY, out, outX, outY, width, height );
 
@@ -634,8 +634,8 @@ namespace Function_Pool
             _infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, threadCount() ) );
         }
 
-        void _setup( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+        void _setup( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                     Image & out, size_t startXOut, size_t startYOut, size_t widthOut, size_t heightOut )
         {
             Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
             Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
@@ -650,8 +650,8 @@ namespace Function_Pool
             _infoIn1->_copy( *_infoOut, startXIn, startYIn, widthIn, heightIn );
         }
 
-        void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+        void _setup( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
         {
             Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
@@ -694,8 +694,8 @@ namespace Function_Pool
         AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    Image AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                              size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -706,8 +706,8 @@ namespace Function_Pool
         return out;
     }
 
-    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                             Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -730,8 +730,8 @@ namespace Function_Pool
         BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -742,8 +742,8 @@ namespace Function_Pool
         return out;
     }
 
-    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -766,8 +766,8 @@ namespace Function_Pool
         BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+    Image BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -778,8 +778,8 @@ namespace Function_Pool
         return out;
     }
 
-    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -802,8 +802,8 @@ namespace Function_Pool
         BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -814,8 +814,8 @@ namespace Function_Pool
         return out;
     }
 
-    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -838,7 +838,7 @@ namespace Function_Pool
         ConvertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToGrayScale( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -849,8 +849,8 @@ namespace Function_Pool
         return out;
     }
 
-    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                             uint32_t width, uint32_t height )
+    void ConvertToGrayScale( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                             size_t width, size_t height )
     {
         FunctionTask().ConvertToGrayScale( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
@@ -873,7 +873,7 @@ namespace Function_Pool
         ConvertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToRgb( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -884,8 +884,8 @@ namespace Function_Pool
         return out;
     }
 
-    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                       uint32_t width, uint32_t height )
+    void ConvertToRgb( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                       size_t width, size_t height )
     {
         FunctionTask().ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
@@ -908,7 +908,7 @@ namespace Function_Pool
         ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
     }
 
-    Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+    Image ExtractChannel( const Image & in, size_t x, size_t y, size_t width, size_t height, uint8_t channelId )
     {
         Image_Function::ParameterValidation( in, x, y, width, height );
 
@@ -919,8 +919,8 @@ namespace Function_Pool
         return out;
     }
 
-    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    void ExtractChannel( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut,
+                         size_t startYOut, size_t width, size_t height, uint8_t channelId )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
@@ -946,7 +946,7 @@ namespace Function_Pool
         GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
     }
 
-    Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+    Image GammaCorrection( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, double a, double gamma )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -957,38 +957,38 @@ namespace Function_Pool
         return out;
     }
 
-    void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                          uint32_t width, uint32_t height, double a, double gamma )
+    void GammaCorrection( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                          size_t width, size_t height, double a, double gamma )
     {
         FunctionTask().GammaCorrection( in, startXIn, startYIn, out, startXOut, startYOut, width, height, a, gamma );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image )
+    std::vector < size_t > Histogram( const Image & image )
     {
-        std::vector < uint32_t > histogram;
+        std::vector < size_t > histogram;
 
         Histogram( image, 0, 0, image.width(), image.height(), histogram );
 
         return histogram;
     }
 
-    void Histogram( const Image & image, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, std::vector < size_t > & histogram )
     {
         Histogram( image, 0, 0, image.width(), image.height(), histogram );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    std::vector < size_t > Histogram( const Image & image, size_t x, size_t y, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
 
-        std::vector < uint32_t > histogram;
+        std::vector < size_t > histogram;
 
         Histogram( image, x, y, width, height, histogram );
 
         return histogram;
     }
 
-    void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, size_t x, size_t y, size_t width, size_t height, std::vector < size_t > & histogram )
     {
         FunctionTask().Histogram( image, x, y, width, height, histogram );
     }
@@ -1011,7 +1011,7 @@ namespace Function_Pool
         Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Invert( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1022,8 +1022,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                 uint32_t width, uint32_t height )
+    void Invert( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                 size_t width, size_t height )
     {
         FunctionTask().Invert( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
@@ -1035,8 +1035,8 @@ namespace Function_Pool
         return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
 
-    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  uint32_t width, uint32_t height )
+    bool IsEqual( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  size_t width, size_t height )
     {
         return FunctionTask().IsEqual( in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
@@ -1059,7 +1059,7 @@ namespace Function_Pool
         LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
     }
 
-    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+    Image LookupTable( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height,
                        const std::vector < uint8_t > & table )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
@@ -1071,8 +1071,8 @@ namespace Function_Pool
         return out;
     }
 
-    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                      uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+    void LookupTable( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                      size_t width, size_t height, const std::vector < uint8_t > & table )
     {
         return FunctionTask().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, table );
     }
@@ -1095,8 +1095,8 @@ namespace Function_Pool
         Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -1107,8 +1107,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().Maximum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -1131,8 +1131,8 @@ namespace Function_Pool
         Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -1143,8 +1143,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().Minimum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
@@ -1167,7 +1167,7 @@ namespace Function_Pool
         Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Normalize( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1178,42 +1178,42 @@ namespace Function_Pool
         return out;
     }
 
-    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+    void Normalize( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height )
     {
         FunctionTask().Normalize( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
 
-    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    std::vector < size_t > ProjectionProfile( const Image & image, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector < size_t > projection;
 
         ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
 
         return projection;
     }
 
-    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < size_t > & projection )
     {
         ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
     }
 
-    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    std::vector < size_t > ProjectionProfile( const Image & image, size_t x, size_t y, size_t width, size_t height, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector < size_t > projection;
 
         ProjectionProfile( image, x, y, width, height, horizontal, projection );
 
         return projection;
     }
 
-    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                            std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, size_t x, size_t y, size_t width, size_t height, bool horizontal,
+                            std::vector < size_t > & projection )
     {
         FunctionTask().ProjectionProfile( image, x, y, width, height, horizontal, projection );
     }
 
-    Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
+    Image Resize( const Image & in, size_t widthOut, size_t heightOut )
     {
         Image_Function::ParameterValidation( in );
 
@@ -1232,8 +1232,8 @@ namespace Function_Pool
         Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, out.width(), out.height() );
     }
 
-    Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                  uint32_t widthOut, uint32_t heightOut )
+    Image Resize( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                  size_t widthOut, size_t heightOut )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
 
@@ -1244,8 +1244,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+    void Resize( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                 Image & out, size_t startXOut, size_t startYOut, size_t widthOut, size_t heightOut )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
         Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
@@ -1271,7 +1271,7 @@ namespace Function_Pool
         RgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image RgbToBgr( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1282,8 +1282,8 @@ namespace Function_Pool
         return out;
     }
 
-    void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                   uint32_t width, uint32_t height )
+    void RgbToBgr( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                   size_t width, size_t height )
     {
         FunctionTask().RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
@@ -1306,8 +1306,8 @@ namespace Function_Pool
         Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    uint32_t width, uint32_t height )
+    Image Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -1318,18 +1318,18 @@ namespace Function_Pool
         return out;
     }
 
-    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         FunctionTask().Subtract( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
     }
 
-    uint32_t Sum( const Image & image )
+    size_t Sum( const Image & image )
     {
         return Sum( image, 0, 0, image.width(), image.height() );
     }
 
-    uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    size_t Sum( const Image & image, size_t x, size_t y, size_t width, size_t height )
     {
         return FunctionTask().Sum( image, x, y, width, height );
     }
@@ -1352,7 +1352,7 @@ namespace Function_Pool
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t threshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1363,8 +1363,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t threshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t threshold )
     {
         FunctionTask().Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
     }
@@ -1387,7 +1387,7 @@ namespace Function_Pool
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
@@ -1399,8 +1399,8 @@ namespace Function_Pool
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         FunctionTask().Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
     }

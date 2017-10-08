@@ -20,32 +20,32 @@ namespace
 
 namespace Blob_Detection
 {
-    const std::vector < uint32_t > & BlobInfo::pointX() const
+    const std::vector < size_t > & BlobInfo::pointX() const
     {
         return _pointX;
     }
 
-    const std::vector < uint32_t > & BlobInfo::pointY() const
+    const std::vector < size_t > & BlobInfo::pointY() const
     {
         return _pointY;
     }
 
-    const std::vector < uint32_t > & BlobInfo::contourX() const
+    const std::vector < size_t > & BlobInfo::contourX() const
     {
         return _contourX;
     }
 
-    const std::vector < uint32_t > & BlobInfo::contourY() const
+    const std::vector < size_t > & BlobInfo::contourY() const
     {
         return _contourY;
     }
 
-    const std::vector < uint32_t > & BlobInfo::edgeX() const
+    const std::vector < size_t > & BlobInfo::edgeX() const
     {
         return _edgeX;
     }
 
-    const std::vector < uint32_t > & BlobInfo::edgeY() const
+    const std::vector < size_t > & BlobInfo::edgeY() const
     {
         return _edgeY;
     }
@@ -98,14 +98,14 @@ namespace Blob_Detection
         return _elongation.value;
     }
 
-    uint32_t BlobInfo::height()
+    size_t BlobInfo::height()
     {
         _getHeight();
 
         return _height.value;
     }
 
-    uint32_t BlobInfo::height() const
+    size_t BlobInfo::height() const
     {
         return _height.value;
     }
@@ -127,14 +127,14 @@ namespace Blob_Detection
         return _pointX.size();
     }
 
-    uint32_t BlobInfo::width()
+    size_t BlobInfo::width()
     {
         _getWidth();
 
         return _width.value;
     }
 
-    uint32_t BlobInfo::width() const
+    size_t BlobInfo::width() const
     {
         return _width.value;
     }
@@ -176,9 +176,9 @@ namespace Blob_Detection
 
             double difference = 0;
 
-            std::vector < uint32_t >::const_iterator x   = _contourX.begin();
-            std::vector < uint32_t >::const_iterator y   = _contourY.begin();
-            std::vector < uint32_t >::const_iterator end = _contourX.end();
+            std::vector < size_t >::const_iterator x   = _contourX.begin();
+            std::vector < size_t >::const_iterator y   = _contourY.begin();
+            std::vector < size_t >::const_iterator end = _contourX.end();
 
             for( ; x != end; ++x, ++y ) {
                 difference += fabs( sqrt( (*x - _center.value.x) * (*x - _center.value.x) +
@@ -195,21 +195,21 @@ namespace Blob_Detection
     {
         if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
+                std::vector < size_t >::const_iterator x   = _contourX.cbegin();
+                std::vector < size_t >::const_iterator y   = _contourY.cbegin();
+                std::vector < size_t >::const_iterator end = _contourX.cend();
 
-                uint32_t maximumDistance = 0;
+                size_t maximumDistance = 0;
 
                 Point startPoint, endPoint;
 
                 for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
+                    std::vector < size_t >::const_iterator xx = x + 1;
+                    std::vector < size_t >::const_iterator yy = y + 1;
 
                     for( ; xx != end; ++xx, ++yy ) {
 
-                        uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
+                        size_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
 
                         if( maximumDistance < distance ) {
                             maximumDistance = distance;
@@ -232,9 +232,9 @@ namespace Blob_Detection
 
                 std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
-                std::vector < uint32_t >::const_iterator xRotated   = _contourX.begin();
+                std::vector < size_t >::const_iterator xRotated   = _contourX.begin();
                 std::vector < double >::iterator yRotated           = contourYTemp.begin();
-                std::vector < uint32_t >::const_iterator endRotated = _contourX.end();
+                std::vector < size_t >::const_iterator endRotated = _contourX.end();
 
                 for( ; xRotated != endRotated; ++xRotated, ++yRotated )
                     (*yRotated) = (*xRotated - startPoint.x) * _sin + (*yRotated - startPoint.y) * _cos;
@@ -269,15 +269,15 @@ namespace Blob_Detection
     {
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
             if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
+                std::vector < size_t >::const_iterator x   = _contourX.cbegin();
+                std::vector < size_t >::const_iterator y   = _contourY.cbegin();
+                std::vector < size_t >::const_iterator end = _contourX.cend();
 
                 int32_t maximumDistance = 0;
 
                 for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
+                    std::vector < size_t >::const_iterator xx = x + 1;
+                    std::vector < size_t >::const_iterator yy = y + 1;
 
                     for( ; xx != end; ++xx, ++yy ) {
                         int32_t distance = static_cast<int32_t>(*x - *xx) * static_cast<int32_t>(*x - *xx) +
@@ -314,8 +314,8 @@ namespace Blob_Detection
         return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
     }
 
-    const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
-                                                          uint32_t height, BlobParameters parameter, uint8_t threshold )
+    const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, size_t x, size_t y, size_t width,
+                                                          size_t height, BlobParameters parameter, uint8_t threshold )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
@@ -327,12 +327,12 @@ namespace Blob_Detection
         // we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
         std::vector < uint8_t > imageMap( (width + 2) * (height + 2), EMPTY );
 
-        uint32_t rowSize = image.rowSize();
+        size_t rowSize = image.rowSize();
 
         const uint8_t * imageY    = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        const uint32_t mapWidth = width + 2;
+        const size_t mapWidth = width + 2;
 
         std::vector < uint8_t >::iterator mapValueX = imageMap.begin() + mapWidth + 1;
 
@@ -360,26 +360,26 @@ namespace Blob_Detection
 
                 BlobInfo & newBlob = foundBlob.back();
 
-                uint32_t relativePosition = static_cast<uint32_t>(mapValueX - imageMap.begin());
+                size_t relativePosition = static_cast<size_t>(mapValueX - imageMap.begin());
 
-                std::vector < uint32_t > & pointX = newBlob._pointX;
-                std::vector < uint32_t > & pointY = newBlob._pointY;
+                std::vector < size_t > & pointX = newBlob._pointX;
+                std::vector < size_t > & pointY = newBlob._pointY;
 
                 // we put extra shift [-1, -1] to point position because our map starts from [1, 1]
                 // not from [0, 0]
                 pointX.push_back( relativePosition % mapWidth + x - 1 );
                 pointY.push_back( relativePosition / mapWidth + y - 1 );
 
-                std::vector < uint32_t > & edgeX = newBlob._edgeX;
-                std::vector < uint32_t > & edgeY = newBlob._edgeY;
+                std::vector < size_t > & edgeX = newBlob._edgeX;
+                std::vector < size_t > & edgeY = newBlob._edgeY;
 
                 *mapValueX = FOUND;
 
                 size_t pointId = 0;
 
                 do {
-                    uint32_t xMap = pointX[pointId];
-                    uint32_t yMap = pointY[pointId++];
+                    size_t xMap = pointX[pointId];
+                    size_t yMap = pointY[pointId++];
 
                     uint8_t neighbourCount = 0;
 
@@ -474,8 +474,8 @@ namespace Blob_Detection
                 } while( pointId != pointX.size() );
 
                 // Now we can extract outer edge points or so called contour points
-                std::vector < uint32_t > & contourX = newBlob._contourX;
-                std::vector < uint32_t > & contourY = newBlob._contourY;
+                std::vector < size_t > & contourX = newBlob._contourX;
+                std::vector < size_t > & contourY = newBlob._contourY;
 
                 // we put extra shift [-1, -1] to point position because our map starts from [1, 1]
                 // not from [0, 0]
@@ -487,8 +487,8 @@ namespace Blob_Detection
                 *mapValueX = CONTOUR;
 
                 do {
-                    uint32_t xMap = contourX[pointId];
-                    uint32_t yMap = contourY[pointId++];
+                    size_t xMap = contourX[pointId];
+                    size_t yMap = contourY[pointId++];
 
                     uint8_t * position = imageMap.data() + (yMap + 1 - y) * mapWidth + (xMap + 1 - x);
 

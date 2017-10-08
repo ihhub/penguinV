@@ -14,11 +14,11 @@ namespace Unit_Test
     {
         bool Detect1Blob()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Bitmap_Image::Image image = blackImage();
 
-                uint32_t roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                size_t roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -30,7 +30,7 @@ namespace Unit_Test
 
                 detection.find( image );
 
-                uint32_t contour = roiWidth > 1 && roiHeight > 2 ? 2 * roiWidth + 2 * (roiHeight - 2) : roiWidth * roiHeight;
+                size_t contour = roiWidth > 1 && roiHeight > 2 ? 2 * roiWidth + 2 * (roiHeight - 2) : roiWidth * roiHeight;
 
                 if( detection().size() != 1 || detection()[0].width() != roiWidth ||
                     detection()[0].height() != roiHeight || detection()[0].size() != roiWidth * roiHeight ||

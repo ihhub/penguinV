@@ -57,10 +57,10 @@ namespace Blob_Detection
         Parameter < double   > circularity; // this parameter will be 1 if blob is ideal circle and will be less than 1 if it's not
                                             // closer this value to 1 --> blob shape is closer to circle
         Parameter < double   > elongation;  // some people call it inertia: ratio of the minor and major axes of a blob
-        Parameter < uint32_t > height;      // height, in pixels
+        Parameter < size_t > height;      // height, in pixels
         Parameter < double   > length;      // maximum distance between any of 2 pixels, in pixels
-        Parameter < uint32_t > size;        // overall size of blobs, in pixels
-        Parameter < uint32_t > width;       // width, in pixels
+        Parameter < size_t > size;        // overall size of blobs, in pixels
+        Parameter < size_t > width;       // width, in pixels
 
         // this function will be called in BlobInfo class before finding blobs
         void _verify()
@@ -111,17 +111,17 @@ namespace Blob_Detection
         { };
 
         // this constructor is made to avoid 'Value' template restriction
-        Area( uint32_t value )
+        Area( size_t value )
             : left  ( value )
             , right ( value )
             , top   ( value )
             , bottom( value )
         { };
 
-        uint32_t left;
-        uint32_t right;
-        uint32_t top;
-        uint32_t bottom;
+        size_t left;
+        size_t right;
+        size_t top;
+        size_t bottom;
     };
 
     template <typename Data>
@@ -145,12 +145,12 @@ namespace Blob_Detection
     public:
         friend class BlobDetection;
 
-        const std::vector < uint32_t > & pointX() const;   // returns an array what contains all blob's pixel X positions (unsorted)
-        const std::vector < uint32_t > & pointY() const;   // returns an array what contains all blob's pixel Y positions (unsorted)
-        const std::vector < uint32_t > & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
-        const std::vector < uint32_t > & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
-        const std::vector < uint32_t > & edgeX() const;    // returns an array what contains all blob's edge pixel X positions (unsorted)
-        const std::vector < uint32_t > & edgeY() const;    // returns an array what contains all blob's edge pixel Y positions (unsorted)
+        const std::vector < size_t > & pointX() const;   // returns an array what contains all blob's pixel X positions (unsorted)
+        const std::vector < size_t > & pointY() const;   // returns an array what contains all blob's pixel Y positions (unsorted)
+        const std::vector < size_t > & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
+        const std::vector < size_t > & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
+        const std::vector < size_t > & edgeX() const;    // returns an array what contains all blob's edge pixel X positions (unsorted)
+        const std::vector < size_t > & edgeY() const;    // returns an array what contains all blob's edge pixel Y positions (unsorted)
 
         // Each function has 2 overloaded forms:
         // - non-constant function check whether value was calculated, calculates it if neccessary and return value
@@ -163,30 +163,30 @@ namespace Blob_Detection
         double   circularity() const; // circularity of blob
         double   elongation();        // elongation of blob
         double   elongation() const;  // elongation of blob
-        uint32_t height();            // height of blob
-        uint32_t height() const;      // height of blob
+        size_t height();            // height of blob
+        size_t height() const;      // height of blob
         double   length();            // length of blob
         double   length() const;      // length of blob
         size_t   size() const;        // total number of pixels in blob
-        uint32_t width();             // width of blob
-        uint32_t width() const;       // width of blob
+        size_t width();             // width of blob
+        size_t width() const;       // width of blob
 
         bool isSolid() const;         // true if blob does not have inner edge points
     private:
-        std::vector < uint32_t > _pointX;
-        std::vector < uint32_t > _pointY;
-        std::vector < uint32_t > _contourX;
-        std::vector < uint32_t > _contourY;
-        std::vector < uint32_t > _edgeX;
-        std::vector < uint32_t > _edgeY;
+        std::vector < size_t > _pointX;
+        std::vector < size_t > _pointY;
+        std::vector < size_t > _contourX;
+        std::vector < size_t > _contourY;
+        std::vector < size_t > _edgeX;
+        std::vector < size_t > _edgeY;
 
         Value < Area   > _area;
         Value < Point  > _center;
         Value < double > _circularity;
         Value < double > _elongation;
-        Value <uint32_t> _height;
+        Value <size_t> _height;
         Value < double > _length;
-        Value <uint32_t> _width;
+        Value <size_t> _width;
 
         void _getArea();
         void _getCenter();
@@ -205,7 +205,7 @@ namespace Blob_Detection
         // and then all remain blobs would be removed if they are not fitting for width criterion
         const std::vector < BlobInfo > & find( const Bitmap_Image::Image & image, BlobParameters parameter = BlobParameters(),
                                                uint8_t threshold = 1 );
-        const std::vector < BlobInfo > & find( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+        const std::vector < BlobInfo > & find( const Bitmap_Image::Image & image, size_t x, size_t y, size_t width, size_t height,
                                                BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
 
         // Retrieve an array of all found blobs

@@ -20,7 +20,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 256, 256, randomValue<uint8_t>( 1, 256 ) );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 { // this we do to free resources of created object what is important for speed too
@@ -41,7 +41,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 512, 512, randomValue<uint8_t>( 1, 256 ) );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 { // this we do to free resources of created object what is important for speed too
@@ -62,7 +62,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 1024, 1024, randomValue<uint8_t>( 1, 256 ) );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 { // this we do to free resources of created object what is important for speed too
@@ -83,7 +83,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 2048, 2048, randomValue<uint8_t>( 1, 256 ) );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 { // this we do to free resources of created object what is important for speed too

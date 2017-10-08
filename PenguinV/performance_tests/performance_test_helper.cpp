@@ -104,12 +104,12 @@ namespace Performance_Test
         return std::pair<double, double>( 1000 * mean, 1000 * sigma );
     };
 
-    Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height )
+    Bitmap_Image::Image uniformImage( size_t width, size_t height )
     {
         return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
+    Bitmap_Image::Image uniformImage( size_t width, size_t height, uint8_t value )
     {
         Bitmap_Image::Image image( width, height );
 
@@ -118,12 +118,12 @@ namespace Performance_Test
         return image;
     }
 
-    Bitmap_Image::Image uniformColorImage( uint32_t width, uint32_t height )
+    Bitmap_Image::Image uniformColorImage( size_t width, size_t height )
     {
         return uniformColorImage( width, height, randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformColorImage( uint32_t width, uint32_t height, uint8_t value )
+    Bitmap_Image::Image uniformColorImage( size_t width, size_t height, uint8_t value )
     {
         Bitmap_Image::Image image( width, height, Bitmap_Image::RGB );
 
@@ -132,7 +132,7 @@ namespace Performance_Test
         return image;
     }
 
-    std::vector< Bitmap_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector< Bitmap_Image::Image > uniformImages( size_t count, size_t width, size_t height )
     {
         std::vector < Bitmap_Image::Image > image( count );
 
@@ -142,7 +142,7 @@ namespace Performance_Test
         return image;
     }
 
-    uint32_t runCount()
+    size_t runCount()
     {
         return 1024;
     }

@@ -17,12 +17,12 @@ namespace Unit_Test
     Bitmap_Image::Image whiteImage();
     Bitmap_Image::Image randomImage();
     Bitmap_Image::Image randomImage( const std::vector <uint8_t> & value );
-    std::vector < Bitmap_Image::Image > uniformImages( uint32_t images );
+    std::vector < Bitmap_Image::Image > uniformImages( size_t images );
     std::vector < Bitmap_Image::Image > uniformImages( std::vector < uint8_t > intensityValue );
 
     // Generate pixel intensity values
     uint8_t intensityValue();
-    std::vector < uint8_t > intensityArray( uint32_t size );
+    std::vector < uint8_t > intensityArray( size_t size );
 
     // Image size and ROI verification
     template <typename data>
@@ -34,7 +34,7 @@ namespace Unit_Test
     };
 
     template <typename data>
-    bool equalSize( const data & image, uint32_t width, uint32_t height, uint32_t rowSize, uint8_t colorCount,
+    bool equalSize( const data & image, size_t width, size_t height, size_t rowSize, uint8_t colorCount,
                     uint8_t alignment )
     {
         return ((width == 0 || height == 0) && image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
@@ -43,7 +43,7 @@ namespace Unit_Test
                    alignment == image.alignment() && rowSize == image.rowSize());
     };
 
-    bool equalSize( const Bitmap_Image::Image & image, uint32_t width, uint32_t height );
+    bool equalSize( const Bitmap_Image::Image & image, size_t width, size_t height );
 
     template <typename data>
     bool equalData( const Template_Image::ImageTemplate < data > & image1, const Template_Image::ImageTemplate < data > & image2 )
@@ -58,52 +58,52 @@ namespace Unit_Test
             image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
     };
 
-    bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const Bitmap_Image::Image & image, size_t x, size_t y, size_t width, size_t height, uint8_t value );
+    bool verifyImage( const Bitmap_Image::Image & image, size_t x, size_t y, size_t width, size_t height,
                       const std::vector < uint8_t > & value );
     bool verifyImage( const Bitmap_Image::Image & image, uint8_t value );
     bool verifyImage( const Bitmap_Image::Image & image, const std::vector < uint8_t > & value );
 
     // Fill image ROI with specific intensity
-    void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    void fillImage( Bitmap_Image::Image & image, size_t x, size_t y, size_t width, size_t height, uint8_t value );
+    void fillImage( Bitmap_Image::Image & image, size_t x, size_t y, size_t width, size_t height,
                     const std::vector < uint8_t > & value );
 
     // Generate and return ROI based on full image size
-    void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height );
-    void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
-                      uint32_t & width, uint32_t & height );
+    void generateRoi( const Bitmap_Image::Image & image, size_t & x, size_t & y, size_t & width, size_t & height );
+    void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < size_t > & x, std::vector < size_t > & y,
+                      size_t & width, size_t & height );
     // first element in pair structure is width, second - height
-    void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
-                      std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
+    void generateRoi( const std::vector < std::pair< size_t, size_t > > & imageSize, std::vector < size_t > & x,
+                      std::vector < size_t > & y, size_t & width, size_t & height );
 
-    void generateOffset( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
+    void generateOffset( const Bitmap_Image::Image & image, size_t & x, size_t & y, size_t width, size_t height );
 
-    std::pair <uint32_t, uint32_t> imageSize( const Bitmap_Image::Image & image );
+    std::pair <size_t, size_t> imageSize( const Bitmap_Image::Image & image );
 
     // Return calculated row size
-    uint32_t rowSize( uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1 );
+    size_t rowSize( size_t width, uint8_t colorCount = 1, uint8_t alignment = 1 );
 
-    uint32_t runCount(); // fixed value for all test loops
+    size_t runCount(); // fixed value for all test loops
 
     // Return random value for specific range or variable type
     template <typename data>
-    data randomValue( uint32_t maximum )
+    data randomValue( size_t maximum )
     {
         if( maximum <= 0 )
             return 0;
         else
-            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            return static_cast<data>(static_cast<size_t>(rand()) % maximum);
     };
 
     template <typename data>
-    data randomValue( data minimum, uint32_t maximum )
+    data randomValue( data minimum, size_t maximum )
     {
         if( maximum <= 0 ) {
             return 0;
         }
         else {
-            data value = static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            data value = static_cast<data>(static_cast<size_t>(rand()) % maximum);
 
             if( value < minimum )
                 value = minimum;

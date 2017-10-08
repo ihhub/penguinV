@@ -21,8 +21,8 @@ namespace Image_Function
         AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    Image AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                              size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -33,15 +33,15 @@ namespace Image_Function
         return out;
     }
 
-    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                             Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -63,14 +63,14 @@ namespace Image_Function
         }
     }
 
-    void Accumulate( const Image & image, std::vector < uint32_t > & result )
+    void Accumulate( const Image & image, std::vector < size_t > & result )
     {
         ParameterValidation( image );
 
         Accumulate( image, 0, 0, image.width(), image.height(), result );
     }
 
-    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+    void Accumulate( const Image & image, size_t x, size_t y, size_t width, size_t height, std::vector < size_t > & result )
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
@@ -78,11 +78,11 @@ namespace Image_Function
         if( result.size() != width * height )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         const uint8_t * imageY    = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
-        std::vector < uint32_t >::iterator v = result.begin();
+        std::vector < size_t >::iterator v = result.begin();
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
@@ -111,8 +111,8 @@ namespace Image_Function
         BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -123,15 +123,15 @@ namespace Image_Function
         return out;
     }
 
-    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -171,8 +171,8 @@ namespace Image_Function
         BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+    Image BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -183,15 +183,15 @@ namespace Image_Function
         return out;
     }
 
-    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -231,8 +231,8 @@ namespace Image_Function
         BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -243,15 +243,15 @@ namespace Image_Function
         return out;
     }
 
-    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -291,7 +291,7 @@ namespace Image_Function
         ConvertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToGrayScale( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -302,8 +302,8 @@ namespace Image_Function
         return out;
     }
 
-    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                             uint32_t width, uint32_t height )
+    void ConvertToGrayScale( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                             size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( out );
@@ -313,8 +313,8 @@ namespace Image_Function
             return;
         }
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t colorCount = RGB;
 
@@ -352,7 +352,7 @@ namespace Image_Function
         ConvertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToRgb( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -363,8 +363,8 @@ namespace Image_Function
         return out;
     }
 
-    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                       uint32_t width, uint32_t height )
+    void ConvertToRgb( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                       size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyColoredImage  ( out );
@@ -374,8 +374,8 @@ namespace Image_Function
             return;
         }
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t colorCount = RGB;
 
@@ -402,7 +402,7 @@ namespace Image_Function
         out = in;
     }
 
-    Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Copy( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -413,14 +413,14 @@ namespace Image_Function
         return out;
     }
 
-    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-               uint32_t width, uint32_t height )
+    void Copy( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+               size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         width = width * colorCount;
 
@@ -451,7 +451,7 @@ namespace Image_Function
         ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
     }
 
-    Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+    Image ExtractChannel( const Image & in, size_t x, size_t y, size_t width, size_t height, uint8_t channelId )
     {
         ParameterValidation( in, x, y, width, height );
 
@@ -462,8 +462,8 @@ namespace Image_Function
         return out;
     }
 
-    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    void ExtractChannel( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut,
+                         size_t startYOut, size_t width, size_t height, uint8_t channelId )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( out );
@@ -471,8 +471,8 @@ namespace Image_Function
         if( channelId >= in.colorCount() )
             throw imageException( "Channel ID for color image is greater than channel count in input image" );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t colorCount = in.colorCount();
 
@@ -497,12 +497,12 @@ namespace Image_Function
         image.fill( value );
     }
 
-    void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    void Fill( Image & image, size_t x, size_t y, size_t width, size_t height, uint8_t value )
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         uint8_t * imageY = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
@@ -529,7 +529,7 @@ namespace Image_Function
         Flip( in, 0, 0, out, 0, 0, out.width(), out.height(), horizontal, vertical );
     }
 
-    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+    Image Flip( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height,
                 bool horizontal, bool vertical )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
@@ -541,8 +541,8 @@ namespace Image_Function
         return out;
     }
 
-    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-               uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    void Flip( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+               size_t width, size_t height, bool horizontal, bool vertical )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
@@ -551,8 +551,8 @@ namespace Image_Function
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
-            const uint32_t rowSizeIn  = in.rowSize();
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeIn  = in.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             const uint8_t * inY    = in.data() + startYIn * rowSizeIn + startXIn;
             const uint8_t * inYEnd = inY + height * rowSizeIn;
@@ -608,7 +608,7 @@ namespace Image_Function
         GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
     }
 
-    Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+    Image GammaCorrection( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, double a, double gamma )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -619,8 +619,8 @@ namespace Image_Function
         return out;
     }
 
-    void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                          uint32_t width, uint32_t height, double a, double gamma )
+    void GammaCorrection( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                          size_t width, size_t height, double a, double gamma )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
@@ -641,7 +641,7 @@ namespace Image_Function
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
 
-    uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
+    uint8_t GetPixel( const Image & image, size_t x, size_t y )
     {
         if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
             throw imageException( "Position of point [x, y] is out of image" );
@@ -649,21 +649,21 @@ namespace Image_Function
         return *(image.data() + y * image.rowSize() + x);
     }
 
-    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
+    uint8_t GetThreshold( const std::vector < size_t > & histogram )
     {
         if( histogram.size() != 256 )
             throw imageException( "Histogram size is not 256" );
 
         // It is well-known Otsu's method to find threshold
-        uint32_t pixelCount = histogram[0] + histogram[1];
-        uint32_t sum = histogram[1];
+        size_t pixelCount = histogram[0] + histogram[1];
+        size_t sum = histogram[1];
         for( uint16_t i = 2; i < 256; ++i ) {
             sum = sum + i * histogram[i];
             pixelCount += histogram[i];
         }
 
-        uint32_t sumTemp = 0;
-        uint32_t pixelCountTemp = 0;
+        size_t sumTemp = 0;
+        size_t pixelCountTemp = 0;
 
         double maximumSigma = -1;
 
@@ -693,32 +693,32 @@ namespace Image_Function
         return threshold;
     }
 
-    std::vector < uint32_t > Histogram( const Image & image )
+    std::vector < size_t > Histogram( const Image & image )
     {
-        std::vector < uint32_t > histogram;
+        std::vector < size_t > histogram;
 
         Histogram( image, 0, 0, image.width(), image.height(), histogram );
 
         return histogram;
     }
 
-    void Histogram( const Image & image, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, std::vector < size_t > & histogram )
     {
         Histogram( image, 0, 0, image.width(), image.height(), histogram );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    std::vector < size_t > Histogram( const Image & image, size_t x, size_t y, size_t width, size_t height )
     {
         ParameterValidation( image, x, y, width, height );
 
-        std::vector < uint32_t > histogram;
+        std::vector < size_t > histogram;
 
         Histogram( image, x, y, width, height, histogram );
 
         return histogram;
     }
 
-    void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, size_t x, size_t y, size_t width, size_t height, std::vector < size_t > & histogram )
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
@@ -726,7 +726,7 @@ namespace Image_Function
         histogram.resize( 256u );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         const uint8_t * imageY = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
@@ -758,7 +758,7 @@ namespace Image_Function
         Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Invert( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -769,14 +769,14 @@ namespace Image_Function
         return out;
     }
 
-    void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                 uint32_t width, uint32_t height )
+    void Invert( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                 size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
@@ -803,14 +803,14 @@ namespace Image_Function
         return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
 
-    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  uint32_t width, uint32_t height )
+    bool IsEqual( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
         const uint8_t colorCount = CommonColorCount( in1, in2 );
-        const uint32_t rowSize1  = in1.rowSize();
-        const uint32_t rowSize2  = in2.rowSize();
+        const size_t rowSize1  = in1.rowSize();
+        const size_t rowSize2  = in2.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1 * rowSize1 + startX1 * colorCount;
         const uint8_t * in2Y = in2.data() + startY2 * rowSize2 + startX2 * colorCount;
@@ -851,7 +851,7 @@ namespace Image_Function
         LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
     }
 
-    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+    Image LookupTable( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height,
                        const std::vector < uint8_t > & table )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
@@ -863,8 +863,8 @@ namespace Image_Function
         return out;
     }
 
-    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                      uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+    void LookupTable( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                      size_t width, size_t height, const std::vector < uint8_t > & table )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
@@ -872,8 +872,8 @@ namespace Image_Function
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
@@ -909,8 +909,8 @@ namespace Image_Function
         Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -921,15 +921,15 @@ namespace Image_Function
         return out;
     }
 
-    void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -970,8 +970,8 @@ namespace Image_Function
         Merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
-                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height )
+    Image Merge( const Image & in1, size_t startXIn1, size_t startYIn1, const Image & in2, size_t startXIn2, size_t startYIn2,
+                 const Image & in3, size_t startXIn3, size_t startYIn3, size_t width, size_t height )
     {
         ParameterValidation( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
 
@@ -982,9 +982,9 @@ namespace Image_Function
         return out;
     }
 
-    void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
-                const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
-                uint32_t width, uint32_t height )
+    void Merge( const Image & in1, size_t startXIn1, size_t startYIn1, const Image & in2, size_t startXIn2, size_t startYIn2,
+                const Image & in3, size_t startXIn3, size_t startYIn3, Image & out, size_t startXOut, size_t startYOut,
+                size_t width, size_t height )
     {
         ParameterValidation( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
         ParameterValidation( out, startXOut, startYOut, width, height );
@@ -996,10 +996,10 @@ namespace Image_Function
         if( colorCount != out.colorCount() )
             throw imageException( "Color image is not 3-colored image" );
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeIn3 = in3.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeIn3 = in3.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         width = width * colorCount;
 
@@ -1044,8 +1044,8 @@ namespace Image_Function
         Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -1056,15 +1056,15 @@ namespace Image_Function
         return out;
     }
 
-    void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -1104,7 +1104,7 @@ namespace Image_Function
         Normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Normalize( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1115,13 +1115,13 @@ namespace Image_Function
         return out;
     }
 
-    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+    void Normalize( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
 
-        const uint32_t rowSizeIn = in.rowSize();
+        const size_t rowSizeIn = in.rowSize();
 
         const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn  + startXIn;
         const uint8_t * inYEnd = inY + height * rowSizeIn;
@@ -1158,31 +1158,31 @@ namespace Image_Function
         }
     }
 
-    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    std::vector < size_t > ProjectionProfile( const Image & image, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector < size_t > projection;
 
         ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
 
         return projection;
     }
 
-    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < size_t > & projection )
     {
         ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
     }
 
-    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    std::vector < size_t > ProjectionProfile( const Image & image, size_t x, size_t y, size_t width, size_t height, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector < size_t > projection;
 
         ProjectionProfile( image, x, y, width, height, horizontal, projection );
 
         return projection;
     }
 
-    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                            std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, size_t x, size_t y, size_t width, size_t height, bool horizontal,
+                            std::vector < size_t > & projection )
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
@@ -1190,13 +1190,13 @@ namespace Image_Function
         projection.resize( horizontal ? width : height );
         std::fill( projection.begin(), projection.end(), 0u );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         if( horizontal ) {
             const uint8_t * imageX = image.data() + y * rowSize + x;
             const uint8_t * imageXEnd = imageX + width;
 
-            std::vector < uint32_t > ::iterator data = projection.begin();
+            std::vector < size_t > ::iterator data = projection.begin();
 
             for( ; imageX != imageXEnd; ++imageX, ++data ) {
                 const uint8_t * imageY    = imageX;
@@ -1210,7 +1210,7 @@ namespace Image_Function
             const uint8_t * imageY = image.data() + y * rowSize + x;
             const uint8_t * imageYEnd = imageY + height * rowSize;
 
-            std::vector < uint32_t > ::iterator data = projection.begin();
+            std::vector < size_t > ::iterator data = projection.begin();
 
             for( ; imageY != imageYEnd; imageY += rowSize, ++data ) {
                 const uint8_t * imageX    = imageY;
@@ -1222,7 +1222,7 @@ namespace Image_Function
         }
     }
 
-    Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
+    Image Resize( const Image & in, size_t widthOut, size_t heightOut )
     {
         ParameterValidation( in );
 
@@ -1241,8 +1241,8 @@ namespace Image_Function
         Resize( in, 0, 0, in.width(), in.height(), out, 0, 0, out.width(), out.height() );
     }
 
-    Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                  uint32_t widthOut, uint32_t heightOut )
+    Image Resize( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                  size_t widthOut, size_t heightOut )
     {
         ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
 
@@ -1253,22 +1253,22 @@ namespace Image_Function
         return out;
     }
 
-    void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+    void Resize( const Image & in, size_t startXIn, size_t startYIn, size_t widthIn, size_t heightIn,
+                 Image & out, size_t startXOut, size_t startYOut, size_t widthOut, size_t heightOut )
     {
         ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
         ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
         VerifyGrayScaleImage( in, out );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
 
-        uint32_t idY = 0;
+        size_t idY = 0;
 
         for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
             const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
@@ -1276,7 +1276,7 @@ namespace Image_Function
 
             const uint8_t * outXEnd = outX + widthOut;
 
-            uint32_t idX = 0;
+            size_t idX = 0;
 
             for( ; outX != outXEnd; ++outX, ++idX )
                 (*outX) = *(inX + idX * widthIn / widthOut);
@@ -1301,7 +1301,7 @@ namespace Image_Function
         RgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image RgbToBgr( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1312,16 +1312,16 @@ namespace Image_Function
         return out;
     }
 
-    void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                   uint32_t width, uint32_t height )
+    void RgbToBgr( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                   size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyColoredImage( in, out );
 
         const uint8_t colorCount = RGB;
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         width = width * colorCount;
 
@@ -1352,11 +1352,11 @@ namespace Image_Function
         const double cosAngle = cos( angle );
         const double sinAngle = sin( angle );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
-        const uint32_t width  = in.width();
-        const uint32_t height = in.height();
+        const size_t width  = in.width();
+        const size_t height = in.height();
 
         const uint8_t * inY  = in.data();
         uint8_t       * outY = out.data();
@@ -1377,8 +1377,8 @@ namespace Image_Function
                     (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
                 }
                 else {
-                    uint32_t x = static_cast<uint32_t>(posX);
-                    uint32_t y = static_cast<uint32_t>(posY);
+                    size_t x = static_cast<size_t>(posX);
+                    size_t y = static_cast<size_t>(posY);
 
                     if( x >= width - 1 || y >= height - 1 ) {
                         (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
@@ -1402,7 +1402,7 @@ namespace Image_Function
         }
     }
 
-    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
+    void SetPixel( Image & image, size_t x, size_t y, uint8_t value )
     {
         if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
             throw imageException( "Position of point [x, y] is out of image" );
@@ -1410,20 +1410,20 @@ namespace Image_Function
         *(image.data() + y * image.rowSize() + x) = value;
     }
 
-    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
+    void SetPixel( Image & image, const std::vector < size_t > & X, const std::vector < size_t > & Y, uint8_t value )
     {
         if( image.empty() || X.empty() || X.size() != Y.size() || image.colorCount() != GRAY_SCALE )
             throw imageException( "Bad input parameters in image function" );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
         uint8_t * data = image.data();
 
-        std::vector < uint32_t >::const_iterator x   = X.begin();
-        std::vector < uint32_t >::const_iterator y   = Y.begin();
-        std::vector < uint32_t >::const_iterator end = X.end();
+        std::vector < size_t >::const_iterator x   = X.begin();
+        std::vector < size_t >::const_iterator y   = Y.begin();
+        std::vector < size_t >::const_iterator end = X.end();
 
-        const uint32_t width  = image.width();
-        const uint32_t height = image.height();
+        const size_t width  = image.width();
+        const size_t height = image.height();
 
         for( ; x != end; ++x, ++y ) {
             if( (*x) >= width || (*y) >= height )
@@ -1441,9 +1441,9 @@ namespace Image_Function
         Split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
     }
 
-    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
-                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
-                uint32_t width, uint32_t height )
+    void Split( const Image & in, size_t startXIn, size_t startYIn, Image & out1, size_t startXOut1, size_t startYOut1,
+                Image & out2, size_t startXOut2, size_t startYOut2, Image & out3, size_t startXOut3, size_t startYOut3,
+                size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
         ParameterValidation( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
@@ -1452,10 +1452,10 @@ namespace Image_Function
 
         const uint8_t colorCount = RGB;
 
-        const uint32_t rowSizeIn   = in.rowSize();
-        const uint32_t rowSizeOut1 = out1.rowSize();
-        const uint32_t rowSizeOut2 = out2.rowSize();
-        const uint32_t rowSizeOut3 = out3.rowSize();
+        const size_t rowSizeIn   = in.rowSize();
+        const size_t rowSizeOut1 = out1.rowSize();
+        const size_t rowSizeOut2 = out2.rowSize();
+        const size_t rowSizeOut3 = out3.rowSize();
 
         width = width * colorCount;
 
@@ -1500,8 +1500,8 @@ namespace Image_Function
         Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    uint32_t width, uint32_t height )
+    Image Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -1512,15 +1512,15 @@ namespace Image_Function
         return out;
     }
 
-    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSize1   = in1.rowSize();
+        const size_t rowSize2   = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
@@ -1542,22 +1542,22 @@ namespace Image_Function
         }
     }
 
-    uint32_t Sum( const Image & image )
+    size_t Sum( const Image & image )
     {
         return Sum( image, 0, 0, image.width(), image.height() );
     }
 
-    uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    size_t Sum( const Image & image, size_t x, size_t y, size_t width, size_t height )
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         const uint8_t * imageY    = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        uint32_t sum = 0;
+        size_t sum = 0;
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
@@ -1588,7 +1588,7 @@ namespace Image_Function
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t threshold )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1599,14 +1599,14 @@ namespace Image_Function
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t threshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t threshold )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
@@ -1642,7 +1642,7 @@ namespace Image_Function
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
@@ -1654,8 +1654,8 @@ namespace Image_Function
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
@@ -1663,8 +1663,8 @@ namespace Image_Function
         if( minThreshold > maxThreshold )
             throw imageException( "Minimum threshold value is bigger than maximum threshold value" );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
@@ -1701,7 +1701,7 @@ namespace Image_Function
         Transpose( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Transpose( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -1712,15 +1712,15 @@ namespace Image_Function
         return out;
     }
 
-    void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+    void Transpose( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height )
     {
         ParameterValidation( in, startXIn, startYIn, width, height );
         ParameterValidation( out, startXOut, startYOut, height, width );
         VerifyGrayScaleImage( in, out );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;

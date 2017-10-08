@@ -28,18 +28,18 @@ namespace FFT
         // This function returns normalized image with swapped quadrants
         Bitmap_Image::Image get() const;
 
-        void resize( uint32_t width_, uint32_t height_ );
+        void resize( size_t width_, size_t height_ );
 
         kiss_fft_cpx * data(); // returns a pointer to data
         const kiss_fft_cpx * data() const; // returns to data
-        uint32_t width() const; // width of array
-        uint32_t height() const; // height of array
+        size_t width() const; // width of array
+        size_t height() const; // height of array
         bool empty() const; // returns true is array is empty (unullocated)
 
     private:
         kiss_fft_cpx * _data;
-        uint32_t _width;
-        uint32_t _height;
+        size_t _width;
+        size_t _height;
 
         void _clean();
 
@@ -54,13 +54,13 @@ namespace FFT
     {
     public:
         FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( size_t width_, size_t height_ );
         ~FFTExecutor();
 
-        void initialize( uint32_t width_, uint32_t height_ );
+        void initialize( size_t width_, size_t height_ );
 
-        uint32_t width() const;
-        uint32_t height() const;
+        size_t width() const;
+        size_t height() const;
 
         // conversion from original domain of data to frequence domain
         void directTransform( ComplexData & data );
@@ -75,8 +75,8 @@ namespace FFT
     private:
         kiss_fftnd_cfg _planDirect;
         kiss_fftnd_cfg _planInverse;
-        uint32_t _width;
-        uint32_t _height;
+        size_t _width;
+        size_t _height;
 
         void _clean();
     };

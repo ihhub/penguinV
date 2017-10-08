@@ -5,7 +5,7 @@
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
 namespace
 {
-    const uint32_t simdSize = 16u;
+    const size_t simdSize = 16u;
     typedef __m128i simd;
 };
 
@@ -32,8 +32,8 @@ namespace Image_Function_Sse
         AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    Image AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                              size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -44,8 +44,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void AbsoluteDifference( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                             Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -59,9 +59,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -69,9 +69,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -117,8 +117,8 @@ namespace Image_Function_Sse
         BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -129,8 +129,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseAnd( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -144,9 +144,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -154,9 +154,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -199,8 +199,8 @@ namespace Image_Function_Sse
         BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+    Image BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -211,8 +211,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseOr( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -226,9 +226,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -236,9 +236,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -281,8 +281,8 @@ namespace Image_Function_Sse
         BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                      size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -293,8 +293,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseXor( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                     Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -308,9 +308,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -318,9 +318,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -363,7 +363,7 @@ namespace Image_Function_Sse
         Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Invert( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -374,8 +374,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                 uint32_t width, uint32_t height )
+    void Invert( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                 size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
 
@@ -389,17 +389,17 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         const simd mask = _mm_set_epi8( 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu,
                                         0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu, 0xffu );
@@ -443,8 +443,8 @@ namespace Image_Function_Sse
         Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -455,8 +455,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Maximum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -470,9 +470,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -480,9 +480,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -529,8 +529,8 @@ namespace Image_Function_Sse
         Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -541,8 +541,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Minimum( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                  Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -556,9 +556,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -566,9 +566,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -615,8 +615,8 @@ namespace Image_Function_Sse
         Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    uint32_t width, uint32_t height )
+    Image Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                    size_t width, size_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -627,8 +627,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Subtract( const Image & in1, size_t startX1, size_t startY1, const Image & in2, size_t startX2, size_t startY2,
+                   Image & out, size_t startXOut, size_t startYOut, size_t width, size_t height )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
 
@@ -642,9 +642,9 @@ namespace Image_Function_Sse
 
         width = width * colorCount;
 
-        const uint32_t rowSizeIn1 = in1.rowSize();
-        const uint32_t rowSizeIn2 = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn1 = in1.rowSize();
+        const size_t rowSizeIn2 = in2.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * in1Y = in1.data() + startY1   * rowSizeIn1 + startX1   * colorCount;
         const uint8_t * in2Y = in2.data() + startY2   * rowSizeIn2 + startX2   * colorCount;
@@ -652,9 +652,9 @@ namespace Image_Function_Sse
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
@@ -685,12 +685,12 @@ namespace Image_Function_Sse
         }
     }
 
-    uint32_t Sum( const Image & image )
+    size_t Sum( const Image & image )
     {
         return Sum( image, 0, 0, image.width(), image.height() );
     }
 
-    uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    size_t Sum( const Image & image, size_t x, size_t y, size_t width, size_t height )
     {
         // image width is less than 16 bytes so no use to utilize SSE :(
         if( width < simdSize ) {
@@ -700,16 +700,16 @@ namespace Image_Function_Sse
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
-        const uint32_t rowSize = image.rowSize();
+        const size_t rowSize = image.rowSize();
 
         const uint8_t * imageY    = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        uint32_t sum = 0;
+        size_t sum = 0;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         simd simdSum = _mm_setzero_si128();
         simd zero    = _mm_setzero_si128();
@@ -738,7 +738,7 @@ namespace Image_Function_Sse
             }
         }
 
-        uint32_t output[4] ={ 0 };
+        size_t output[4] ={ 0 };
 
         _mm_storeu_si128( reinterpret_cast <simd*>(output), simdSum );
 
@@ -763,7 +763,7 @@ namespace Image_Function_Sse
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t threshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -774,8 +774,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t threshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t threshold )
     {
         // image width is less than 16 bytes so no use to utilize SSE :(
         if( width < simdSize ) {
@@ -789,17 +789,17 @@ namespace Image_Function_Sse
         // SSE does not have command "great or equal to" so we have 2 situations:
         // when threshold value is 0 and it is not
         if( threshold > 0 ) {
-            const uint32_t rowSizeIn  = in.rowSize();
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeIn  = in.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
             uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
             const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-            const uint32_t simdWidth = width / simdSize;
-            const uint32_t totalSimdWidth = simdWidth * simdSize;
-            const uint32_t nonSimdWidth = width - totalSimdWidth;
+            const size_t simdWidth = width / simdSize;
+            const size_t totalSimdWidth = simdWidth * simdSize;
+            const size_t nonSimdWidth = width - totalSimdWidth;
 
             const simd mask = _mm_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
                                             0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );
@@ -831,7 +831,7 @@ namespace Image_Function_Sse
             }
         }
         else {
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
             const uint8_t * outYEnd = outY + height * rowSizeOut;
@@ -859,7 +859,7 @@ namespace Image_Function_Sse
         Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+    Image Threshold( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
@@ -871,8 +871,8 @@ namespace Image_Function_Sse
         return out;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         // image width is less than 16 bytes so no use to utilize SSE :(
         if( width < simdSize ) {
@@ -883,17 +883,17 @@ namespace Image_Function_Sse
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
+        const size_t rowSizeIn  = in.rowSize();
+        const size_t rowSizeOut = out.rowSize();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t simdWidth = width / simdSize;
-        const uint32_t totalSimdWidth = simdWidth * simdSize;
-        const uint32_t nonSimdWidth = width - totalSimdWidth;
+        const size_t simdWidth = width / simdSize;
+        const size_t totalSimdWidth = simdWidth * simdSize;
+        const size_t nonSimdWidth = width - totalSimdWidth;
 
         const simd shiftMask = _mm_set_epi8( 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u,
                                              0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u, 0x80u );

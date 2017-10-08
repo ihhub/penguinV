@@ -12,12 +12,12 @@ namespace Performance_Test
             TimerContainer::stop();
         }
 
-        Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height )
+        Bitmap_Image_Cuda::Image uniformImage( size_t width, size_t height )
         {
             return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
         }
 
-        Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
+        Bitmap_Image_Cuda::Image uniformImage( size_t width, size_t height, uint8_t value )
         {
             Bitmap_Image_Cuda::Image image( width, height );
 
@@ -26,7 +26,7 @@ namespace Performance_Test
             return image;
         }
 
-        std::vector< Bitmap_Image_Cuda::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+        std::vector< Bitmap_Image_Cuda::Image > uniformImages( size_t count, size_t width, size_t height )
         {
             std::vector < Bitmap_Image_Cuda::Image > image( count );
 

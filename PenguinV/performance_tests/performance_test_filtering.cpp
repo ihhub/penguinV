@@ -21,7 +21,7 @@ namespace Performance_Test
             Bitmap_Image::Image input = uniformImage( 256, 256, randomValue<uint8_t>( 1, 256 ) );
             Bitmap_Image::Image output( input.width(), input.height() );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Filtering::Median( input, output, 3 );
@@ -39,7 +39,7 @@ namespace Performance_Test
             Bitmap_Image::Image input = uniformImage( 512, 512, randomValue<uint8_t>( 1, 256 ) );
             Bitmap_Image::Image output( input.width(), input.height() );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Filtering::Median( input, output, 3 );
@@ -57,7 +57,7 @@ namespace Performance_Test
             Bitmap_Image::Image input = uniformImage( 1024, 1024, randomValue<uint8_t>( 1, 256 ) );
             Bitmap_Image::Image output( input.width(), input.height() );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Filtering::Median( input, output, 3 );
@@ -75,7 +75,7 @@ namespace Performance_Test
             Bitmap_Image::Image input = uniformImage( 2048, 2048, randomValue<uint8_t>( 1, 256 ) );
             Bitmap_Image::Image output( input.width(), input.height() );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Filtering::Median( input, output, 3 );

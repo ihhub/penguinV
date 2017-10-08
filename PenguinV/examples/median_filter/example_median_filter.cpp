@@ -22,10 +22,10 @@ int main()
         image.fill(128);
 
         // Generate some salt-and-pepper noise
-        for( uint32_t i = 0; i < 1000; ++i )
+        for( size_t i = 0; i < 1000; ++i )
         {
-            uint32_t x = static_cast<uint32_t>(rand()) % image.width();
-            uint32_t y = static_cast<uint32_t>(rand()) % image.height();
+            size_t x = static_cast<size_t>(rand()) % image.width();
+            size_t y = static_cast<size_t>(rand()) % image.height();
 
             Image_Function::SetPixel(image, x, y, ( ( i % 2 ) == 0 ) ? 0u : 255u );
         }

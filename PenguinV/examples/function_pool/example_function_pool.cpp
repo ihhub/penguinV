@@ -41,10 +41,10 @@ int main()
             // Then add some 'suspicious' objects on some random images
             if( rand() % 10 == 0 ) { // at least ~6 of 60 images would have objects
                 // generate random place of object, in our case is rectangle
-                uint32_t x      = static_cast<uint32_t>(rand()) % (image->width()  * 2 / 3);
-                uint32_t y      = static_cast<uint32_t>(rand()) % (image->height() * 2 / 3);
-                uint32_t width  = static_cast<uint32_t>(rand()) % (image->width()  - x);
-                uint32_t height = static_cast<uint32_t>(rand()) % (image->height() - y);
+                size_t x      = static_cast<size_t>(rand()) % (image->width()  * 2 / 3);
+                size_t y      = static_cast<size_t>(rand()) % (image->height() * 2 / 3);
+                size_t width  = static_cast<size_t>(rand()) % (image->width()  - x);
+                size_t height = static_cast<size_t>(rand()) % (image->height() - y);
 
                 // fill an area with some random value what is bigger than background value
                 Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>(rand() % 128) + 64 );

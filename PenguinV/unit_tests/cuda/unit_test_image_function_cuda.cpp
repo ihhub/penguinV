@@ -59,7 +59,7 @@ namespace Unit_Test
     {
         bool AbsoluteDifference2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -75,7 +75,7 @@ namespace Unit_Test
 
         bool AbsoluteDifference3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -90,7 +90,7 @@ namespace Unit_Test
 
         bool BitwiseAnd2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -105,7 +105,7 @@ namespace Unit_Test
 
         bool BitwiseAnd3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -120,7 +120,7 @@ namespace Unit_Test
 
         bool BitwiseOr2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -135,7 +135,7 @@ namespace Unit_Test
 
         bool BitwiseOr3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -150,7 +150,7 @@ namespace Unit_Test
 
         bool BitwiseXor2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -165,7 +165,7 @@ namespace Unit_Test
 
         bool BitwiseXor3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -180,7 +180,7 @@ namespace Unit_Test
 
         bool ConvertToGrayScale1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
                 Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
 
@@ -195,7 +195,7 @@ namespace Unit_Test
 
         bool ConvertToGrayScale2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
                 Bitmap_Image_Cuda::Image output( input.width(), input.height() );
@@ -213,7 +213,7 @@ namespace Unit_Test
 
         bool ConvertToRgb1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
 
@@ -228,7 +228,7 @@ namespace Unit_Test
 
         bool ConvertToRgb2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
                 Bitmap_Image_Cuda::Image output( input.width(), input.height(), Bitmap_Image_Cuda::RGB );
@@ -246,12 +246,12 @@ namespace Unit_Test
 
         bool GammaCorrection3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
 
@@ -272,12 +272,12 @@ namespace Unit_Test
 
         bool GammaCorrection4ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Image_Function_Cuda::GammaCorrection( input[0], input[1], a, gamma );
 
@@ -298,11 +298,11 @@ namespace Unit_Test
 
         bool Histogram1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
 
-                std::vector < uint32_t > histogram = Image_Function_Cuda::Histogram( image );
+                std::vector < size_t > histogram = Image_Function_Cuda::Histogram( image );
 
                 if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
                     std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
@@ -314,11 +314,11 @@ namespace Unit_Test
 
         bool Histogram2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
 
-                std::vector < uint32_t > histogram;
+                std::vector < size_t > histogram;
                 Image_Function_Cuda::Histogram( image, histogram );
 
                 if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
@@ -331,7 +331,7 @@ namespace Unit_Test
 
         bool Invert1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
 
@@ -346,7 +346,7 @@ namespace Unit_Test
 
         bool Invert2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -361,7 +361,7 @@ namespace Unit_Test
 
         bool LookupTable2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
 
@@ -386,7 +386,7 @@ namespace Unit_Test
 
         bool LookupTable3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
                 Bitmap_Image_Cuda::Image output( input.width(), input.height() );
@@ -414,7 +414,7 @@ namespace Unit_Test
 
         bool Maximum2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -430,7 +430,7 @@ namespace Unit_Test
 
         bool Maximum3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -445,7 +445,7 @@ namespace Unit_Test
 
         bool Minimum2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -461,7 +461,7 @@ namespace Unit_Test
 
         bool Minimum3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -476,7 +476,7 @@ namespace Unit_Test
 
         bool Subtract2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -492,7 +492,7 @@ namespace Unit_Test
 
         bool Subtract3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
                 std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
 
@@ -507,7 +507,7 @@ namespace Unit_Test
 
         bool Threshold2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
 
@@ -524,7 +524,7 @@ namespace Unit_Test
 
         bool Threshold3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 
@@ -541,7 +541,7 @@ namespace Unit_Test
 
         bool ThresholdDouble3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
 
@@ -559,7 +559,7 @@ namespace Unit_Test
 
         bool ThresholdDouble4ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
 

@@ -22,7 +22,7 @@ namespace Template_Image
         {
         }
 
-        ImageTemplate( uint32_t width_, uint32_t height_ )
+        ImageTemplate( size_t width_, size_t height_ )
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
@@ -33,7 +33,7 @@ namespace Template_Image
             resize( width_, height_ );
         }
 
-        ImageTemplate( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
+        ImageTemplate( size_t width_, size_t height_, uint8_t colorCount_ )
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
@@ -45,7 +45,7 @@ namespace Template_Image
             resize( width_, height_ );
         }
 
-        ImageTemplate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        ImageTemplate( size_t width_, size_t height_, uint8_t colorCount_, uint8_t alignment_ )
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
@@ -94,7 +94,7 @@ namespace Template_Image
             clear();
         }
 
-        void resize( uint32_t width_, uint32_t height_ )
+        void resize( size_t width_, size_t height_ )
         {
             if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
                 clear();
@@ -132,7 +132,7 @@ namespace Template_Image
             return _data;
         }
 
-        void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        void assign( TColorDepth * data_, size_t width_, size_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
                 throw imageException( "Invalid image assignment parameters" );
@@ -157,17 +157,17 @@ namespace Template_Image
             return _data == nullptr;
         }
 
-        uint32_t width() const
+        size_t width() const
         {
             return _width;
         }
 
-        uint32_t height() const
+        size_t height() const
         {
             return _height;
         }
 
-        uint32_t rowSize() const
+        size_t rowSize() const
         {
             return _rowSize;
         }
@@ -236,11 +236,11 @@ namespace Template_Image
             }
         }
 
-        bool mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        bool mutate( size_t width_, size_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( colorCount_ > 0 && alignment_ > 0 )
             {
-                uint32_t rowSize_ = width_ * colorCount_;
+                size_t rowSize_ = width_ * colorCount_;
                 if( rowSize_ % alignment_ != 0 )
                     rowSize_ = (rowSize_ / alignment_ + 1) * alignment_;
 
@@ -270,12 +270,12 @@ namespace Template_Image
         }
 
     private:
-        uint32_t _width;
-        uint32_t _height;
+        size_t _width;
+        size_t _height;
 
         uint8_t  _colorCount;
         uint8_t  _alignment;
-        uint32_t _rowSize;
+        size_t _rowSize;
 
         TColorDepth * _data;
     };
@@ -303,17 +303,17 @@ namespace Bitmap_Image
         {
         }
 
-        Image( uint32_t width_, uint32_t height_ )
+        Image( size_t width_, size_t height_ )
             : ImageTemplate( width_, height_, GRAY_SCALE, BITMAP_ALIGNMENT )
         {
         }
 
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
+        Image( size_t width_, size_t height_, uint8_t colorCount_ )
             : ImageTemplate( width_, height_, colorCount_, BITMAP_ALIGNMENT )
         {
         }
 
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        Image( size_t width_, size_t height_, uint8_t colorCount_, uint8_t alignment_ )
             : ImageTemplate( width_, height_, colorCount_, alignment_ )
         {
         }
@@ -444,16 +444,16 @@ namespace Image_Function
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    void ParameterValidation( const TImage & image, size_t startX, size_t startY, size_t width, size_t height )
     {
         if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
-                              const TImage & image2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    void ParameterValidation( const TImage & image1, size_t startX1, size_t startY1,
+                              const TImage & image2, size_t startX2, size_t startY2,
+                              size_t width, size_t height )
     {
         if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) || width == 0 || height == 0 ||
             startX1 + width > image1.width() || startY1 + height > image1.height() ||
@@ -462,10 +462,10 @@ namespace Image_Function
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
-                              const TImage & image2, uint32_t startX2, uint32_t startY2,
-                              const TImage & image3, uint32_t startX3, uint32_t startY3,
-                              uint32_t width, uint32_t height )
+    void ParameterValidation( const TImage & image1, size_t startX1, size_t startY1,
+                              const TImage & image2, size_t startX2, size_t startY2,
+                              const TImage & image3, size_t startX3, size_t startY3,
+                              size_t width, size_t height )
     {
         if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
             !IsCorrectColorCount( image3 ) || width == 0 || height == 0 ||

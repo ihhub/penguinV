@@ -47,9 +47,9 @@ namespace Unit_Test
 
         bool Constructor2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 2048 );
+                size_t height     = randomValue<size_t>( 2048 );
 
                 if( !equalSize( Template_Image::ImageTemplate < uint8_t >( width, height ), width, height, rowSize( width ), 1, 1 ) )
                     return false;
@@ -60,9 +60,9 @@ namespace Unit_Test
 
         bool Constructor3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 2048 );
+                size_t height     = randomValue<size_t>( 2048 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
 
                 if( !equalSize( Template_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
@@ -75,9 +75,9 @@ namespace Unit_Test
 
         bool Constructor4ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 2048 );
+                size_t height     = randomValue<size_t>( 2048 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -91,9 +91,9 @@ namespace Unit_Test
 
         bool CopyConstructorU8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -109,9 +109,9 @@ namespace Unit_Test
 
         bool CopyConstructorU16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -127,14 +127,14 @@ namespace Unit_Test
 
         bool CopyConstructorU32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint32_t > image_copy( image );
+                Template_Image::ImageTemplate < size_t > image( width, height, colorCount, alignment );
+                Template_Image::ImageTemplate < size_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -145,9 +145,9 @@ namespace Unit_Test
 
         bool CopyConstructorU64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -163,9 +163,9 @@ namespace Unit_Test
 
         bool CopyConstructorS8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -181,9 +181,9 @@ namespace Unit_Test
 
         bool CopyConstructorS16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -199,9 +199,9 @@ namespace Unit_Test
 
         bool CopyConstructorS32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -217,9 +217,9 @@ namespace Unit_Test
 
         bool CopyConstructorS64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -235,9 +235,9 @@ namespace Unit_Test
 
         bool CopyConstructorFTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -253,9 +253,9 @@ namespace Unit_Test
 
         bool CopyConstructorDTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -290,9 +290,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorU8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -310,9 +310,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorU16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -330,14 +330,14 @@ namespace Unit_Test
 
         bool AssignmentOperatorU32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint32_t > image_copy;
+                Template_Image::ImageTemplate < size_t > image( width, height, colorCount, alignment );
+                Template_Image::ImageTemplate < size_t > image_copy;
 
                 image_copy = image;
 
@@ -350,9 +350,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorU64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -370,9 +370,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorS8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -390,9 +390,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorS16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -410,9 +410,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorS32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -430,9 +430,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorS64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -450,9 +450,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorFTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
@@ -470,9 +470,9 @@ namespace Unit_Test
 
         bool AssignmentOperatorDTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
+            for( size_t i = 0; i < runCount(); ++i ) {
+                size_t width      = randomValue<size_t>( 1024 );
+                size_t height     = randomValue<size_t>( 1024 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 

@@ -109,7 +109,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
@@ -126,7 +126,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
@@ -143,7 +143,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
@@ -160,7 +160,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
@@ -177,7 +177,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseAnd( image[0], image[1], image[2] );
@@ -194,7 +194,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseAnd( image[0], image[1], image[2] );
@@ -211,7 +211,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseAnd( image[0], image[1], image[2] );
@@ -228,7 +228,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseAnd( image[0], image[1], image[2] );
@@ -245,7 +245,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseOr( image[0], image[1], image[2] );
@@ -262,7 +262,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseOr( image[0], image[1], image[2] );
@@ -279,7 +279,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseOr( image[0], image[1], image[2] );
@@ -296,7 +296,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseOr( image[0], image[1], image[2] );
@@ -313,7 +313,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseXor( image[0], image[1], image[2] );
@@ -330,7 +330,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseXor( image[0], image[1], image[2] );
@@ -347,7 +347,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseXor( image[0], image[1], image[2] );
@@ -364,7 +364,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::BitwiseXor( image[0], image[1], image[2] );
@@ -382,7 +382,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage     ( 256, 256 );
             Bitmap_Image::Image output = uniformColorImage( 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToRgb( input, output );
@@ -400,7 +400,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage     ( 512, 512 );
             Bitmap_Image::Image output = uniformColorImage( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToRgb( input, output );
@@ -418,7 +418,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage     ( 1024, 1024 );
             Bitmap_Image::Image output = uniformColorImage( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToRgb( input, output );
@@ -436,7 +436,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage     ( 2048, 2048 );
             Bitmap_Image::Image output = uniformColorImage( 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToRgb( input, output );
@@ -454,7 +454,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformColorImage( 256, 256 );
             Bitmap_Image::Image output = uniformImage     ( 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToGrayScale( input, output );
@@ -472,7 +472,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformColorImage( 512, 512 );
             Bitmap_Image::Image output = uniformImage     ( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToGrayScale( input, output );
@@ -490,7 +490,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformColorImage( 1024, 1024 );
             Bitmap_Image::Image output = uniformImage     ( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToGrayScale( input, output );
@@ -508,7 +508,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformColorImage( 2048, 2048 );
             Bitmap_Image::Image output = uniformImage     ( 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::ConvertToGrayScale( input, output );
@@ -526,7 +526,7 @@ namespace Performance_Test
             Bitmap_Image::Image image = uniformImage( 256, 256 );
             uint8_t value = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Fill( image, value );
@@ -544,7 +544,7 @@ namespace Performance_Test
             Bitmap_Image::Image image = uniformImage( 512, 512 );
             uint8_t value = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Fill( image, value );
@@ -562,7 +562,7 @@ namespace Performance_Test
             Bitmap_Image::Image image = uniformImage( 1024, 1024 );
             uint8_t value = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Fill( image, value );
@@ -580,7 +580,7 @@ namespace Performance_Test
             Bitmap_Image::Image image = uniformImage( 2048, 2048 );
             uint8_t value = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Fill( image, value );
@@ -597,10 +597,10 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 256, 256 );
 
-            double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            double a     = randomValue <size_t>( 100 ) / 100.0;
+            double gamma = randomValue <size_t>( 300 ) / 100.0;
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::GammaCorrection( image[0], image[1], a, gamma );
@@ -617,10 +617,10 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 512, 512 );
 
-            double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            double a     = randomValue <size_t>( 100 ) / 100.0;
+            double gamma = randomValue <size_t>( 300 ) / 100.0;
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::GammaCorrection( image[0], image[1], a, gamma );
@@ -637,10 +637,10 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 1024, 1024 );
 
-            double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            double a     = randomValue <size_t>( 100 ) / 100.0;
+            double gamma = randomValue <size_t>( 300 ) / 100.0;
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::GammaCorrection( image[0], image[1], a, gamma );
@@ -657,10 +657,10 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 2048, 2048 );
 
-            double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            double a     = randomValue <size_t>( 100 ) / 100.0;
+            double gamma = randomValue <size_t>( 300 ) / 100.0;
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::GammaCorrection( image[0], image[1], a, gamma );
@@ -677,7 +677,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Histogram( image );
@@ -694,7 +694,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Histogram( image );
@@ -711,7 +711,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Histogram( image );
@@ -728,7 +728,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Histogram( image );
@@ -745,7 +745,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Invert( image[0], image[1] );
@@ -762,7 +762,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Invert( image[0], image[1] );
@@ -779,7 +779,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Invert( image[0], image[1] );
@@ -796,7 +796,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Invert( image[0], image[1] );
@@ -815,7 +815,7 @@ namespace Performance_Test
 
             std::vector<uint8_t> table(256, 0);
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::LookupTable( image[0], image[1], table );
@@ -834,7 +834,7 @@ namespace Performance_Test
 
             std::vector<uint8_t> table(256, 0);
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::LookupTable( image[0], image[1], table );
@@ -853,7 +853,7 @@ namespace Performance_Test
 
             std::vector<uint8_t> table(256, 0);
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::LookupTable( image[0], image[1], table );
@@ -872,7 +872,7 @@ namespace Performance_Test
 
             std::vector<uint8_t> table(256, 0);
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::LookupTable( image[0], image[1], table );
@@ -889,7 +889,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Maximum( image[0], image[1], image[2] );
@@ -906,7 +906,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Maximum( image[0], image[1], image[2] );
@@ -923,7 +923,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Maximum( image[0], image[1], image[2] );
@@ -940,7 +940,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Maximum( image[0], image[1], image[2] );
@@ -957,7 +957,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Minimum( image[0], image[1], image[2] );
@@ -974,7 +974,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Minimum( image[0], image[1], image[2] );
@@ -991,7 +991,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Minimum( image[0], image[1], image[2] );
@@ -1008,7 +1008,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Minimum( image[0], image[1], image[2] );
@@ -1026,7 +1026,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 256, 256 );
             Bitmap_Image::Image output = uniformImage( 128, 128 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1044,7 +1044,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 256, 256 );
             Bitmap_Image::Image output = uniformImage( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1062,7 +1062,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 512, 512 );
             Bitmap_Image::Image output = uniformImage( 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1080,7 +1080,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 512, 512 );
             Bitmap_Image::Image output = uniformImage( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1098,7 +1098,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 1024, 1024 );
             Bitmap_Image::Image output = uniformImage( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1116,7 +1116,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 1024, 1024 );
             Bitmap_Image::Image output = uniformImage( 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1134,7 +1134,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 2048, 2048 );
             Bitmap_Image::Image output = uniformImage( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1152,7 +1152,7 @@ namespace Performance_Test
             Bitmap_Image::Image input  = uniformImage( 2048, 2048 );
             Bitmap_Image::Image output = uniformImage( 4096, 4096 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Resize( input, output );
@@ -1169,7 +1169,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Subtract( image[0], image[1], image[2] );
@@ -1186,7 +1186,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Subtract( image[0], image[1], image[2] );
@@ -1203,7 +1203,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Subtract( image[0], image[1], image[2] );
@@ -1220,7 +1220,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image::Image > image = uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Subtract( image[0], image[1], image[2] );
@@ -1237,7 +1237,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Sum( image );
@@ -1254,7 +1254,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Sum( image );
@@ -1271,7 +1271,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Sum( image );
@@ -1288,7 +1288,7 @@ namespace Performance_Test
 
             Bitmap_Image::Image image = uniformImage( 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Sum( image );
@@ -1306,7 +1306,7 @@ namespace Performance_Test
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 256, 256 );
             uint8_t threshold = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], threshold );
@@ -1324,7 +1324,7 @@ namespace Performance_Test
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 512, 512 );
             uint8_t threshold = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], threshold );
@@ -1342,7 +1342,7 @@ namespace Performance_Test
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 1024, 1024 );
             uint8_t threshold = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], threshold );
@@ -1360,7 +1360,7 @@ namespace Performance_Test
             std::vector < Bitmap_Image::Image > image = uniformImages( 2, 2048, 2048 );
             uint8_t threshold = randomValue<uint8_t>( 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], threshold );
@@ -1379,7 +1379,7 @@ namespace Performance_Test
             uint8_t minThreshold = randomValue<uint8_t>( 256 );
             uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], minThreshold, maxThreshold );
@@ -1398,7 +1398,7 @@ namespace Performance_Test
             uint8_t minThreshold = randomValue<uint8_t>( 256 );
             uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], minThreshold, maxThreshold );
@@ -1417,7 +1417,7 @@ namespace Performance_Test
             uint8_t minThreshold = randomValue<uint8_t>( 256 );
             uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], minThreshold, maxThreshold );
@@ -1436,7 +1436,7 @@ namespace Performance_Test
             uint8_t minThreshold = randomValue<uint8_t>( 256 );
             uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function::Threshold( image[0], image[1], minThreshold, maxThreshold );

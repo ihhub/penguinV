@@ -17,7 +17,7 @@ namespace Unit_Test
         Bitmap_Image_Cuda::Image uniformColorImage( uint8_t value );
         Bitmap_Image_Cuda::Image blackImage();
         Bitmap_Image_Cuda::Image whiteImage();
-        std::vector < Bitmap_Image_Cuda::Image > uniformImages( uint32_t images );
+        std::vector < Bitmap_Image_Cuda::Image > uniformImages( size_t images );
         std::vector < Bitmap_Image_Cuda::Image > uniformImages( std::vector < uint8_t > intensityValue );
 
         // Image size and ROI verification

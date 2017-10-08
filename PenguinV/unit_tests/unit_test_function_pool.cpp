@@ -94,7 +94,7 @@ namespace Unit_Test
     {
         bool AbsoluteDifference2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -112,7 +112,7 @@ namespace Unit_Test
 
         bool AbsoluteDifference3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -129,7 +129,7 @@ namespace Unit_Test
 
         bool AbsoluteDifference8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -138,8 +138,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -156,7 +156,7 @@ namespace Unit_Test
 
         bool AbsoluteDifference11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -165,8 +165,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -183,7 +183,7 @@ namespace Unit_Test
 
         bool BitwiseAnd2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -200,7 +200,7 @@ namespace Unit_Test
 
         bool BitwiseAnd3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -217,7 +217,7 @@ namespace Unit_Test
 
         bool BitwiseAnd8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -226,8 +226,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -243,7 +243,7 @@ namespace Unit_Test
 
         bool BitwiseAnd11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -252,8 +252,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -269,7 +269,7 @@ namespace Unit_Test
 
         bool BitwiseOr2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -286,7 +286,7 @@ namespace Unit_Test
 
         bool BitwiseOr3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -303,7 +303,7 @@ namespace Unit_Test
 
         bool BitwiseOr8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -312,8 +312,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -329,7 +329,7 @@ namespace Unit_Test
 
         bool BitwiseOr11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -338,8 +338,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -355,7 +355,7 @@ namespace Unit_Test
 
         bool BitwiseXor2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -372,7 +372,7 @@ namespace Unit_Test
 
         bool BitwiseXor3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -389,7 +389,7 @@ namespace Unit_Test
 
         bool BitwiseXor8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -398,8 +398,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -415,7 +415,7 @@ namespace Unit_Test
 
         bool BitwiseXor11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -424,8 +424,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -441,7 +441,7 @@ namespace Unit_Test
 
         bool ConvertToGrayScale1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
@@ -458,7 +458,7 @@ namespace Unit_Test
 
         bool ConvertToGrayScale2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input = uniformColorImage( intensity[0] );
                 Bitmap_Image::Image output( input.width(), input.height() );
@@ -476,13 +476,13 @@ namespace Unit_Test
 
         bool ConvertToGrayScale5ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
                 Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -497,20 +497,20 @@ namespace Unit_Test
 
         bool ConvertToGrayScale8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
                 Bitmap_Image::Image output = uniformImage     ( intensity[1] );
 
-                std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+                std::vector < std::pair <size_t, size_t> > size( 2 );
 
                 size[0] = imageSize( input );
                 size[1] = imageSize( output );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
@@ -525,7 +525,7 @@ namespace Unit_Test
 
         bool ConvertToRgb1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
@@ -542,7 +542,7 @@ namespace Unit_Test
 
         bool ConvertToRgb2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -562,13 +562,13 @@ namespace Unit_Test
 
         bool ConvertToRgb5ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
                 Bitmap_Image::Image input = uniformImage( intensity[0] );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -583,20 +583,20 @@ namespace Unit_Test
 
         bool ConvertToRgb8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
                 Bitmap_Image::Image output = uniformColorImage( intensity[1] );
 
-                std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+                std::vector < std::pair <size_t, size_t> > size( 2 );
 
                 size[0] = imageSize( input );
                 size[1] = imageSize( output );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
@@ -611,14 +611,14 @@ namespace Unit_Test
 
         bool GammaCorrection3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, a, gamma );
 
@@ -639,14 +639,14 @@ namespace Unit_Test
 
         bool GammaCorrection4ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Function_Pool::GammaCorrection( input[0], input[1], a, gamma );
 
@@ -667,18 +667,18 @@ namespace Unit_Test
 
         bool GammaCorrection7ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
@@ -699,7 +699,7 @@ namespace Unit_Test
 
         bool GammaCorrection10ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -708,13 +708,13 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-                double a     = randomValue <uint32_t>( 100 ) / 100.0;
-                double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+                double a     = randomValue <size_t>( 100 ) / 100.0;
+                double gamma = randomValue <size_t>( 300 ) / 100.0;
 
                 Function_Pool::GammaCorrection( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, a, gamma );
 
@@ -735,7 +735,7 @@ namespace Unit_Test
 
         bool Invert1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
@@ -752,7 +752,7 @@ namespace Unit_Test
 
         bool Invert2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -769,13 +769,13 @@ namespace Unit_Test
 
         bool Invert5ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -790,7 +790,7 @@ namespace Unit_Test
 
         bool Invert8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -799,8 +799,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -815,7 +815,7 @@ namespace Unit_Test
 
         bool IsEqual2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -830,7 +830,7 @@ namespace Unit_Test
 
         bool IsEqual8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -839,8 +839,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -854,7 +854,7 @@ namespace Unit_Test
 
         bool LookupTable2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -881,7 +881,7 @@ namespace Unit_Test
 
         bool LookupTable3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -911,13 +911,13 @@ namespace Unit_Test
 
         bool LookupTable6ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input = uniformImage();
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -944,17 +944,17 @@ namespace Unit_Test
 
         bool LookupTable9ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input  = uniformImage();
                 Bitmap_Image::Image output = uniformImage();
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
-                std::vector < std::pair < uint32_t, uint32_t > > size( 2 );
+                std::vector < std::pair < size_t, size_t > > size( 2 );
 
                 size[0] = imageSize( input );
                 size[1] = imageSize( output );
@@ -984,7 +984,7 @@ namespace Unit_Test
 
         bool Maximum2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1002,7 +1002,7 @@ namespace Unit_Test
 
         bool Maximum3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1019,7 +1019,7 @@ namespace Unit_Test
 
         bool Maximum8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1028,8 +1028,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1046,7 +1046,7 @@ namespace Unit_Test
 
         bool Maximum11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1055,8 +1055,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -1073,7 +1073,7 @@ namespace Unit_Test
 
         bool Minimum2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1091,7 +1091,7 @@ namespace Unit_Test
 
         bool Minimum3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1108,7 +1108,7 @@ namespace Unit_Test
 
         bool Minimum8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1117,8 +1117,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1135,7 +1135,7 @@ namespace Unit_Test
 
         bool Minimum11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1144,8 +1144,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -1162,14 +1162,14 @@ namespace Unit_Test
 
         bool Resize2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
-                uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
+                size_t outputWidth  = randomValue<size_t>( 1, 2048 );
+                size_t outputHeight = randomValue<size_t>( 1, 2048 );
 
                 Bitmap_Image::Image output = Function_Pool::Resize( input, outputWidth, outputHeight );
 
@@ -1182,7 +1182,7 @@ namespace Unit_Test
 
         bool Resize3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1200,16 +1200,16 @@ namespace Unit_Test
 
         bool Resize7ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
-                uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
+                size_t outputWidth  = randomValue<size_t>( 1, 2048 );
+                size_t outputHeight = randomValue<size_t>( 1, 2048 );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1224,14 +1224,14 @@ namespace Unit_Test
 
         bool Resize9ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image::Image input  = uniformImage( intensity[0] );
                 Bitmap_Image::Image output = uniformImage( intensity[1] );
 
-                std::vector < uint32_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
+                std::vector < size_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
 
                 generateRoi( input, roiX[0], roiY[0], roiWidth[0], roiHeight[0] );
                 generateRoi( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
@@ -1248,7 +1248,7 @@ namespace Unit_Test
 
         bool Subtract2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1266,7 +1266,7 @@ namespace Unit_Test
 
         bool Subtract3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1283,7 +1283,7 @@ namespace Unit_Test
 
         bool Subtract8ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1292,8 +1292,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1310,7 +1310,7 @@ namespace Unit_Test
 
         bool Subtract11ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -1319,8 +1319,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -1337,7 +1337,7 @@ namespace Unit_Test
 
         bool Sum1ParameterTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
@@ -1352,13 +1352,13 @@ namespace Unit_Test
 
         bool Sum5ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1371,7 +1371,7 @@ namespace Unit_Test
 
         bool Threshold2ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
@@ -1390,7 +1390,7 @@ namespace Unit_Test
 
         bool Threshold3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1409,13 +1409,13 @@ namespace Unit_Test
 
         bool Threshold6ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1432,7 +1432,7 @@ namespace Unit_Test
 
         bool Threshold9ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1441,8 +1441,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
@@ -1459,7 +1459,7 @@ namespace Unit_Test
 
         bool ThresholdDouble3ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
@@ -1479,7 +1479,7 @@ namespace Unit_Test
 
         bool ThresholdDouble4ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1499,13 +1499,13 @@ namespace Unit_Test
 
         bool ThresholdDouble7ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
                 Bitmap_Image::Image input = uniformImage( intensity );
 
-                uint32_t roiX, roiY, roiWidth, roiHeight;
+                size_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
@@ -1525,7 +1525,7 @@ namespace Unit_Test
 
         bool ThresholdDouble10ParametersTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1534,8 +1534,8 @@ namespace Unit_Test
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
 
-                std::vector < uint32_t > roiX, roiY;
-                uint32_t roiWidth, roiHeight;
+                std::vector < size_t > roiX, roiY;
+                size_t roiWidth, roiHeight;
 
                 generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 

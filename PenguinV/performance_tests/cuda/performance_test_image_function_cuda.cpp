@@ -56,7 +56,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
@@ -73,7 +73,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
@@ -90,7 +90,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
@@ -107,7 +107,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
@@ -124,7 +124,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
@@ -141,7 +141,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
@@ -158,7 +158,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
@@ -175,7 +175,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
@@ -192,7 +192,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
@@ -209,7 +209,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
@@ -226,7 +226,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
@@ -243,7 +243,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
@@ -260,7 +260,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
@@ -277,7 +277,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
@@ -294,7 +294,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
@@ -311,7 +311,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
@@ -328,7 +328,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Invert( image[0], image[1] );
@@ -345,7 +345,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Invert( image[0], image[1] );
@@ -362,7 +362,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Invert( image[0], image[1] );
@@ -379,7 +379,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Invert( image[0], image[1] );
@@ -396,7 +396,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
@@ -413,7 +413,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
@@ -430,7 +430,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
@@ -447,7 +447,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
@@ -464,7 +464,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
@@ -481,7 +481,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
@@ -498,7 +498,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
@@ -515,7 +515,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
@@ -532,7 +532,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 256, 256 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
@@ -549,7 +549,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 512, 512 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
@@ -566,7 +566,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 1024, 1024 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
@@ -583,7 +583,7 @@ namespace Performance_Test
 
             std::vector < Bitmap_Image_Cuda::Image > image = Cuda_Helper::uniformImages( 3, 2048, 2048 );
 
-            for( uint32_t i = 0; i < runCount(); ++i ) {
+            for( size_t i = 0; i < runCount(); ++i ) {
                 timer.start();
 
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );

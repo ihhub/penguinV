@@ -23,8 +23,8 @@ int main()
             return 0;
         }
 
-        const uint32_t width = 2048;
-        const uint32_t height = 2048;
+        const size_t width = 2048;
+        const size_t height = 2048;
 
         // We allocate image using normal CPU RAM allocation (no magic inside)
         Bitmap_Image::Image in1( width, height );
@@ -74,7 +74,7 @@ void measureTimingToCuda( Bitmap_Image::Image & in, Bitmap_Image_Cuda::Image & o
 
     Cuda::cudaCheck( cudaEventRecord(start, 0) );
 
-    const uint32_t size = out.rowSize() * out.height();
+    const size_t size = out.rowSize() * out.height();
 
     Cuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyHostToDevice) );
     Cuda::cudaCheck( cudaEventRecord(stop, 0) );
@@ -95,7 +95,7 @@ void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image &
 
     Cuda::cudaCheck( cudaEventRecord(start, 0) );
 
-    const uint32_t size = out.rowSize() * out.height();
+    const size_t size = out.rowSize() * out.height();
 
     Cuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyDeviceToHost) );
     Cuda::cudaCheck( cudaEventRecord(stop, 0) );

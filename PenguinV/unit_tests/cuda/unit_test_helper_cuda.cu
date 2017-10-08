@@ -10,33 +10,33 @@
 namespace
 {
     // This function must run with thread count as 1
-    __global__ void isEqualCuda( const uint8_t * image, uint8_t value, uint32_t width, uint32_t height, uint32_t * differenceCount )
+    __global__ void isEqualCuda( const uint8_t * image, uint8_t value, size_t width, size_t height, size_t * differenceCount )
     {
-        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
-        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+        const size_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const size_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if( x < width && y < height )
         {
-            const uint32_t id = y * width + x;
+            const size_t id = y * width + x;
 
             if( image[id] == value )
                 atomicAdd( differenceCount, 1 );
         }
     };
 
-    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, size_t valueCount, uint32_t width, uint32_t height,
-                                    uint32_t * differenceCount )
+    __global__ void isAnyEqualCuda( const uint8_t * image, uint8_t * value, size_t valueCount, size_t width, size_t height,
+                                    size_t * differenceCount )
     {
-        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
-        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+        const size_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const size_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if( x < width && y < height )
         {
-            const uint32_t id = y * width + x;
+            const size_t id = y * width + x;
 
             bool equal = false;
 
-            for( uint32_t i = 0; i < valueCount; ++i )
+            for( size_t i = 0; i < valueCount; ++i )
             {
                 if( image[id] == value[i] )
                 {
@@ -57,7 +57,7 @@ namespace Unit_Test
     {
         Bitmap_Image_Cuda::Image uniformImage( uint8_t value )
         {
-            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
+            Bitmap_Image_Cuda::Image image( randomValue<size_t>( 1, 2048 ), randomValue<size_t>( 1, 2048 ) );
 
             image.fill( value );
 
@@ -76,7 +76,7 @@ namespace Unit_Test
 
         Bitmap_Image_Cuda::Image uniformColorImage( uint8_t value )
         {
-            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), Bitmap_Image_Cuda::RGB );
+            Bitmap_Image_Cuda::Image image( randomValue<size_t>( 1, 2048 ), randomValue<size_t>( 1, 2048 ), Bitmap_Image_Cuda::RGB );
 
             image.fill( value );
 
@@ -93,7 +93,7 @@ namespace Unit_Test
             return uniformImage( 255u );
         }
 
-        std::vector < Bitmap_Image_Cuda::Image > uniformImages( uint32_t images )
+        std::vector < Bitmap_Image_Cuda::Image > uniformImages( size_t images )
         {
             if( images == 0 )
                 throw imageException( "Invalid parameter" );
@@ -133,10 +133,10 @@ namespace Unit_Test
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, uint8_t value )
         {
-            Cuda_Types::_cuint32_t differenceCount( 0 );
+            Cuda_Types::_csize_t differenceCount( 0 );
 
-            const uint32_t rowSize = image.rowSize();
-            const uint32_t height = image.height();
+            const size_t rowSize = image.rowSize();
+            const size_t height = image.height();
 
             const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
 
@@ -150,11 +150,11 @@ namespace Unit_Test
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, const std::vector < uint8_t > & value )
         {
-            Cuda_Types::_cuint32_t differenceCount( 0 );
+            Cuda_Types::_csize_t differenceCount( 0 );
             Cuda_Types::Array<uint8_t> valueCuda( value );
 
-            const uint32_t rowSize = image.rowSize();
-            const uint32_t height = image.height();
+            const size_t rowSize = image.rowSize();
+            const size_t height = image.height();
 
             const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
 

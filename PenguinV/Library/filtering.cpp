@@ -6,7 +6,7 @@ namespace Image_Function
 {
     namespace Filtering
     {
-        Image Median( const Image & in, uint32_t kernelSize )
+        Image Median( const Image & in, size_t kernelSize )
         {
             ParameterValidation( in );
 
@@ -17,14 +17,14 @@ namespace Image_Function
             return out;
         }
 
-        void Median( const Image & in, Image & out, uint32_t kernelSize )
+        void Median( const Image & in, Image & out, size_t kernelSize )
         {
             ParameterValidation( in, out );
 
             Median( in, 0, 0, out, 0, 0, out.width(), out.height(), kernelSize );
         }
 
-        Image Median( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint32_t kernelSize )
+        Image Median( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height, size_t kernelSize )
         {
             ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -35,8 +35,8 @@ namespace Image_Function
             return out;
         }
 
-        void Median( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                     uint32_t width, uint32_t height, uint32_t kernelSize )
+        void Median( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                     size_t width, size_t height, size_t kernelSize )
         {
             ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             VerifyGrayScaleImage( in, out );
@@ -58,8 +58,8 @@ namespace Image_Function
             std::vector < uint8_t > data( kernelSize * kernelSize );
             const size_t dataMedianPosition = data.size() / 2;
 
-            const uint32_t rowSizeIn  = in.rowSize();
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeIn  = in.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             const uint8_t * inY  = in.data()  + startYIn                     * rowSizeIn  + startXIn;
             uint8_t       * outY = out.data() + (startYOut + kernelSize / 2) * rowSizeOut + startXOut + kernelSize / 2;
@@ -114,7 +114,7 @@ namespace Image_Function
             Prewitt( in, 0, 0, out, 0, 0, out.width(), out.height() );
         }
 
-        Image Prewitt( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+        Image Prewitt( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
         {
             ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -125,8 +125,8 @@ namespace Image_Function
             return out;
         }
 
-        void Prewitt( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                      uint32_t width, uint32_t height )
+        void Prewitt( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                      size_t width, size_t height )
         {
             ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             VerifyGrayScaleImage( in, out );
@@ -135,13 +135,13 @@ namespace Image_Function
                 throw imageException( "Input image is very small for Sobel filter to be applied" );
 
             // Create the map of gradient values
-            const uint32_t gradientWidth  = width  - 2;
-            const uint32_t gradientHeight = height - 2;
+            const size_t gradientWidth  = width  - 2;
+            const size_t gradientHeight = height - 2;
 
             const float multiplier = 255.0f / sqrtf( 1170450.0f ); // 1170450 is 2 * (255 * 3) * (255 * 3);
 
-            const uint32_t rowSizeIn  = in.rowSize();
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeIn  = in.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             const uint8_t * inY  = in.data()  + (startYIn + 1) * rowSizeIn + startXIn + 1;
             uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
@@ -204,7 +204,7 @@ namespace Image_Function
             Sobel( in, 0, 0, out, 0, 0, out.width(), out.height() );
         }
 
-        Image Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+        Image Sobel( const Image & in, size_t startXIn, size_t startYIn, size_t width, size_t height )
         {
             ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -215,8 +215,8 @@ namespace Image_Function
             return out;
         }
 
-        void Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+        void Sobel( const Image & in, size_t startXIn, size_t startYIn, Image & out, size_t startXOut, size_t startYOut,
+                    size_t width, size_t height )
         {
             ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             VerifyGrayScaleImage( in, out );
@@ -225,13 +225,13 @@ namespace Image_Function
                 throw imageException( "Input image is very small for Sobel filter to be applied" );
 
             // Create the map of gradient values
-            const uint32_t gradientWidth  = width  - 2;
-            const uint32_t gradientHeight = height - 2;
+            const size_t gradientWidth  = width  - 2;
+            const size_t gradientHeight = height - 2;
 
             const float multiplier = 255.0f / sqrtf( 2080800.0f ); // 2080800 is 2 * (255 * 4) * (255 * 4);
 
-            const uint32_t rowSizeIn  = in.rowSize();
-            const uint32_t rowSizeOut = out.rowSize();
+            const size_t rowSizeIn  = in.rowSize();
+            const size_t rowSizeOut = out.rowSize();
 
             const uint8_t * inY  = in.data()  + (startYIn + 1) * rowSizeIn + startXIn + 1;
             uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
@@ -276,12 +276,12 @@ namespace Image_Function
             memset( outY, 0, width );
         }
 
-        void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
+        void GetGaussianKernel( std::vector<float> & filter, size_t width, size_t height, size_t kernelSize, float sigma )
         {
             if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
                 throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
 
-            const uint32_t size = width * height;
+            const size_t size = width * height;
 
             filter.resize( size );
 
