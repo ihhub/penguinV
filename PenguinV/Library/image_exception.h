@@ -15,13 +15,13 @@ class imageException : public std::exception
 public:
 
     imageException()
+        :  _name( "unknown image library exception" )
     {
-        _name = "unknown image library exception";
     }
 
     imageException( const char * message )
-    {
-        _name = message;
+        : _name( message )
+    {  
     }
 
     imageException( const imageException & ex )
