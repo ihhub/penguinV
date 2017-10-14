@@ -6,6 +6,7 @@ SRCS :=  \
 	$(LIB_DIR)/FileOperation/png_file.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
+	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_avx.cpp \
