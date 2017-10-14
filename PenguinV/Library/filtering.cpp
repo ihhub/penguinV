@@ -281,9 +281,7 @@ namespace Image_Function
             if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
                 throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
 
-            const uint32_t size = width * height;
-
-            filter.resize( size );
+            filter.resize( width * height );
 
             std::fill( filter.begin(), filter.end(), 0.0f );
 
@@ -318,5 +316,5 @@ namespace Image_Function
                 }
             }
         }
-    };
-};
+    }
+}

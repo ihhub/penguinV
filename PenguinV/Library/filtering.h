@@ -30,5 +30,5 @@ namespace Image_Function
                      uint32_t width, uint32_t height );
 
         void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma );
-    };
-};
+    }
+}
