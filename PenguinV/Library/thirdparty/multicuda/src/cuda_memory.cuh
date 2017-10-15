@@ -5,9 +5,9 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "../image_exception.h"
+#include "multicuda_exception.h"
 
-namespace Cuda_Memory
+namespace multiCuda
 {
     // Class for memory allocation on devices with CUDA support
     class MemoryAllocator
@@ -19,7 +19,7 @@ namespace Cuda_Memory
             , _availableSize( availableSize )
         {
             if( _availableSize == 0 )
-                throw imageException( "Available size cannot be 0" );
+                throw multiCudaException( "Available size cannot be 0" );
         }
 
         ~MemoryAllocator()
@@ -34,10 +34,10 @@ namespace Cuda_Memory
         void reserve( size_t size )
         {
             if( size == 0 )
-                throw imageException( "Memory size cannot be 0" );
+                throw multiCudaException( "Memory size cannot be 0" );
 
             if( size > _availableSize )
-                throw imageException( "Memory size to be allocated is bigger than available size on CUDA device" );
+                throw multiCudaException( "Memory size to be allocated is bigger than available size on CUDA device" );
 
             if( _data != nullptr && size == _size )
                 return;
@@ -88,11 +88,11 @@ namespace Cuda_Memory
             // if no space in preallocated memory just allocate as usual memory
             cudaError_t error = cudaMalloc( address, size );
             if( error != cudaSuccess )
-                throw imageException( "Cannot allocate a memory for CUDA device" );
+                throw multiCudaException( "Cannot allocate a memory for CUDA device" );
         }
 
         // returns true if memory allocator has enough space for specified size in bytes
-        bool isSpaceAvailable( size_t size = 1 )
+        bool isSpaceAvailable( size_t size = 1 ) const
         {
             if( _data != nullptr && size < _size ) {
                 const uint8_t level = _getAllocationLevel( size );
@@ -126,7 +126,7 @@ namespace Cuda_Memory
 
             cudaError_t error = cudaFree( address );
             if( error != cudaSuccess )
-                throw imageException( "Cannot deallocate memory for CUDA device" );
+                throw multiCudaException( "Cannot deallocate memory for CUDA device" );
         }
 
         // this function returns maximum availbale space which could be allocated by allocator
@@ -152,13 +152,13 @@ namespace Cuda_Memory
         {
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
-                    throw imageException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
+                    throw multiCudaException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
                 cudaError_t error = cudaMalloc( &_data, size );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot allocate a memory for CUDA device" );
+                    throw multiCudaException( "Cannot allocate a memory for CUDA device" );
 
                 _size = size;
             }
@@ -170,7 +170,7 @@ namespace Cuda_Memory
             if( _data != nullptr ) {
                 cudaError_t error = cudaFree( _data );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot deallocate memory for CUDA device" );
+                    throw multiCudaException( "Cannot deallocate memory for CUDA device" );
             }
 
             _freeChunck.clear();
@@ -261,6 +261,6 @@ namespace Cuda_Memory
         }
 
         MemoryAllocator(const MemoryAllocator & ) {}
-        MemoryAllocator & operator=( const MemoryAllocator &  ) { return (*this); }
+        MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
     };
-};
+}

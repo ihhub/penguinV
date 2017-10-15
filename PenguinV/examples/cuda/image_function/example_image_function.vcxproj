@@ -24,21 +24,22 @@
     <ClCompile Include="example_image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Library\cuda\cuda_device.cuh" />
-    <ClInclude Include="..\..\..\Library\cuda\cuda_helper.cuh" />
-    <ClInclude Include="..\..\..\Library\cuda\cuda_memory.cuh" />
-    <ClInclude Include="..\..\..\Library\cuda\cuda_types.cuh" />
     <ClInclude Include="..\..\..\Library\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\..\Library\cuda\image_function_cuda.cuh" />
     <ClInclude Include="..\..\..\Library\FileOperation\bitmap.h" />
     <ClInclude Include="..\..\..\Library\image_buffer.h" />
     <ClInclude Include="..\..\..\Library\image_exception.h" />
     <ClInclude Include="..\..\..\Library\image_function.h" />
+    <ClInclude Include="..\..\..\Library\thirdparty\multicuda\src\cuda_device.cuh" />
+    <ClInclude Include="..\..\..\Library\thirdparty\multicuda\src\cuda_helper.cuh" />
+    <ClInclude Include="..\..\..\Library\thirdparty\multicuda\src\cuda_memory.cuh" />
+    <ClInclude Include="..\..\..\Library\thirdparty\multicuda\src\cuda_types.cuh" />
+    <ClInclude Include="..\..\..\Library\thirdparty\multicuda\src\multicuda_exception.h" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="..\..\..\Library\cuda\cuda_device.cu" />
-    <CudaCompile Include="..\..\..\Library\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\..\Library\cuda\image_function_cuda.cu" />
+    <CudaCompile Include="..\..\..\Library\thirdparty\multicuda\src\cuda_device.cu" />
+    <CudaCompile Include="..\..\..\Library\thirdparty\multicuda\src\cuda_helper.cu" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3A5CCF6-A76C-4D39-9F12-67CFD1FEDD45}</ProjectGuid>

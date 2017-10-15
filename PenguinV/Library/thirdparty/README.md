@@ -3,3 +3,6 @@ This directory contains a list of third-party libraries which are required for c
    
 - KissFFT 1.3.0     
 Open source library for Fast Fourier Transform.
+
+- multiCUDA rev e862623
+Open source library for easy CUDA management.

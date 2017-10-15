@@ -3,7 +3,8 @@
 #include "../../../Library/image_buffer.h"
 #include "../../../Library/image_function.h"
 #include "../../../Library/FileOperation/bitmap.h"
-#include "../../../Library/cuda/cuda_device.cuh"
+#include "../../../Library/thirdparty/multicuda/src/cuda_device.cuh"
+#include "../../../Library/thirdparty/multicuda/src/cuda_helper.cuh"
 #include "../../../Library/cuda/image_buffer_cuda.cuh"
 #include "../../../Library/cuda/image_function_cuda.cuh"
 
@@ -24,7 +25,7 @@ int main()
     try // <---- do not forget to put your code into try.. catch block!
     {
         // First thing we should check whether the system contains CUDA device
-        if( !Cuda::isCudaSupported() ) {
+        if( !multiCuda::isCudaSupported() ) {
             std::cout << "CUDA device is not found in current system." << std::endl;
             return 0;
         }
@@ -34,9 +35,9 @@ int main()
         // GPU code
         gpuBased();
     }
-    catch( imageException & ex ) {
+    catch( const std::exception & ex ) {
         // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
+        std::cout << "Exception '" << ex.what() << "' raised. Do your black magic to recover..." << std::endl;
         // your magic code must be here to recover from bad things
         return 0;
     }
@@ -76,9 +77,11 @@ void cpuBased()
 
 void gpuBased()
 {
+    multiCuda::CudaDeviceManager::instance().initializeDevices();
+
     // It is recommended to use preallocated buffers for GPU memory usage
     // So we preallocate 32 MB of GPU memory for our usage
-    Cuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+    multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)

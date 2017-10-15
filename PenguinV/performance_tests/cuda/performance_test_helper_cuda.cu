@@ -1,5 +1,5 @@
 #include "performance_test_helper_cuda.cuh"
-#include "../../Library/cuda/cuda_helper.cuh"
+#include "../../Library/thirdparty/multicuda/src/cuda_helper.cuh"
 
 namespace Performance_Test
 {
@@ -7,7 +7,7 @@ namespace Performance_Test
     {
         void TimerContainerCuda::stop()
         {
-            Cuda::cudaCheck( cudaDeviceSynchronize() );
+            multiCuda::cudaCheck( cudaDeviceSynchronize() );
 
             TimerContainer::stop();
         }
@@ -35,5 +35,5 @@ namespace Performance_Test
 
             return image;
         }
-    };
-};
+    }
+}

@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <cuda_runtime.h>
 #include <vector>
-#include "../image_exception.h"
 #include "cuda_device.cuh"
+#include "multicuda_exception.h"
 
-namespace Cuda_Types
+namespace multiCuda
 {
     // This namespace contains template classes to simplify development on CUDA
 
@@ -31,6 +31,7 @@ namespace Cuda_Types
         Type( const Type & in )
             : _data( NULL )
         {
+            _allocate();
             _copy( in );
         }
 
@@ -87,7 +88,7 @@ namespace Cuda_Types
         void _free()
         {
             if( _data != NULL ) {
-                Cuda::MemoryManager::memory().free( _data );
+                MemoryManager::memory().free( _data );
                 _data = NULL;
             }
         }
@@ -96,7 +97,7 @@ namespace Cuda_Types
         {
             _free();
 
-            Cuda::MemoryManager::memory().allocate( &_data );
+            MemoryManager::memory().allocate( &_data );
         }
 
         void _copy( const Type & in )
@@ -104,10 +105,10 @@ namespace Cuda_Types
             if( _data != NULL && in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw multiCudaException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -121,10 +122,10 @@ namespace Cuda_Types
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, &in, sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw multiCudaException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -135,22 +136,15 @@ namespace Cuda_Types
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( &out, _data, sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw multiCudaException( "Memory in CUDA device is not allocated" );
             }
 
             return out;
         }
     };
-
-    typedef Type <uint8_t > _cbool;
-    typedef Type <uint8_t > _cuint8_t;
-    typedef Type <uint16_t> _cuint16_t;
-    typedef Type <uint32_t> _cuint32_t;
-    typedef Type <double  > _cdouble;
-    typedef Type <float   > _cfloat;
 
     // A class which contains an array of values of specific type
     template <typename TData>
@@ -256,7 +250,7 @@ namespace Cuda_Types
         void _free()
         {
             if( _data != NULL ) {
-                Cuda::MemoryManager::memory().free( _data );
+                MemoryManager::memory().free( _data );
                 _data = NULL;
             }
         }
@@ -267,7 +261,7 @@ namespace Cuda_Types
                 _free();
 
                 if( size != 0 )
-                    Cuda::MemoryManager::memory().allocate( &_data, size );
+                    MemoryManager::memory().allocate( &_data, size );
 
                 _size = size;
             }
@@ -280,10 +274,10 @@ namespace Cuda_Types
             if( in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, _size * sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw multiCudaException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -298,7 +292,7 @@ namespace Cuda_Types
             if( _data != NULL && _size == data.size() ) {
                 cudaError_t error = cudaMemcpy( _data, data.data(), _size * sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
         }
 
@@ -309,10 +303,10 @@ namespace Cuda_Types
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( out.data(), _data, _size * sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
             }
 
             return out;
         }
     };
-};
+}

@@ -47,5 +47,5 @@ namespace Performance_Test
         std::pair < double, double > SubtractSize512();
         std::pair < double, double > SubtractSize1024();
         std::pair < double, double > SubtractSize2048();
-    };
-};
+    }
+}

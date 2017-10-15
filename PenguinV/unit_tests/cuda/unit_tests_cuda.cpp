@@ -2,15 +2,22 @@
 #include <iostream>
 #include "unit_test_image_function_cuda.h"
 #include "../unit_test_framework.h"
-#include "../../Library/cuda/cuda_device.cuh"
+#include "../../Library/thirdparty/multicuda/src/cuda_device.cuh"
+#include "../../Library/thirdparty/multicuda/src/cuda_helper.cuh"
 
 int main()
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
+    if( !multiCuda::isCudaSupported() ) {
+        std::cout << "No CUDA devices in the system" << std::endl;
+        return 0;
+    }
+
+    multiCuda::CudaDeviceManager::instance().initializeDevices();
 
     // We preallocate memory (32 MB)
-    Cuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+    multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
     // We create a framework
     Unit_Test::UnitTestFramework framework;

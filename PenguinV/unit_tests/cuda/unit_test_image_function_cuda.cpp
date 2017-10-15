@@ -1,6 +1,5 @@
 #include <numeric>
 #include "../../Library/cuda/image_function_cuda.cuh"
-#include "../../Library/cuda/cuda_memory.cuh"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_cuda.cuh"
 #include "unit_test_image_function_cuda.h"
@@ -574,5 +573,5 @@ namespace Unit_Test
 
             return true;
         }
-    };
-};
+    }
+}

@@ -33,11 +33,11 @@ namespace Unit_Test
             }
             catch( imageException & ex ) {
                 failedFunctionId.push_back( test->second );
-                std::cout << "ERROR : library exception " << ex.what() << " raised" << std::endl;
+                std::cout << "ERROR : library exception '" << ex.what() << "' raised" << std::endl;
             }
             catch( std::exception & ex ) {
                 failedFunctionId.push_back( test->second );
-                std::cout << "ERROR : exception " << ex.what() << " raised" << std::endl;
+                std::cout << "ERROR : exception '" << ex.what() << "' raised" << std::endl;
             }
             catch( ... ) {
                 failedFunctionId.push_back( test->second );

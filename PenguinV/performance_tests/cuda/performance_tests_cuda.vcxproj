@@ -151,9 +151,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="..\..\Library\cuda\cuda_device.cu" />
-    <CudaCompile Include="..\..\Library\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\Library\cuda\image_function_cuda.cu" />
+    <CudaCompile Include="..\..\Library\thirdparty\multicuda\src\cuda_device.cu" />
+    <CudaCompile Include="..\..\Library\thirdparty\multicuda\src\cuda_helper.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Library\thread_pool.cpp" />
@@ -164,14 +164,15 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="performance_test_image_function_cuda.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Library\cuda\cuda_device.cuh" />
-    <ClInclude Include="..\..\Library\cuda\cuda_helper.cuh" />
-    <ClInclude Include="..\..\Library\cuda\cuda_memory.cuh" />
-    <ClInclude Include="..\..\Library\cuda\cuda_types.cuh" />
     <ClInclude Include="..\..\Library\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\Library\cuda\image_function_cuda.cuh" />
     <ClInclude Include="..\..\Library\image_buffer.h" />
     <ClInclude Include="..\..\Library\image_exception.h" />
+    <ClInclude Include="..\..\Library\thirdparty\multicuda\src\cuda_device.cuh" />
+    <ClInclude Include="..\..\Library\thirdparty\multicuda\src\cuda_helper.cuh" />
+    <ClInclude Include="..\..\Library\thirdparty\multicuda\src\cuda_memory.cuh" />
+    <ClInclude Include="..\..\Library\thirdparty\multicuda\src\cuda_types.cuh" />
+    <ClInclude Include="..\..\Library\thirdparty\multicuda\src\multicuda_exception.h" />
     <ClInclude Include="..\..\Library\thread_pool.h" />
     <ClInclude Include="..\performance_test_framework.h" />
     <ClInclude Include="..\performance_test_helper.h" />

@@ -1,13 +1,13 @@
 // Example application of showing of CUDA pinned memory speed advantage
 #include <iostream>
 #include "../../../Library/image_buffer.h"
-#include "../../../Library/cuda/cuda_memory.cuh"
+#include "../../../Library/thirdparty/multicuda/src/cuda_memory.cuh"
 #include "../../../Library/cuda/image_buffer_cuda.cuh"
 #include "../../../Library/cuda/image_buffer_cpu.cuh"
-#include "../../../Library/cuda/cuda_helper.cuh"
+#include "../../../Library/thirdparty/multicuda/src/cuda_helper.cuh"
 
-void measureTimingToCuda  ( Bitmap_Image::Image      & in, Bitmap_Image_Cuda::Image & out );
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image      & out );
+void measureTimingToCuda  ( Bitmap_Image::Image      & in, Bitmap_Image_Cuda::Image & out, const std::string & type );
+void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image      & out, const std::string & type );
 
 int main()
 {
@@ -18,10 +18,12 @@ int main()
     try // <---- do not forget to put your code into try.. catch block!
     {
         // First we check whether any CUDA device is in system
-        if( !Cuda::isCudaSupported() ) {
+        if( !multiCuda::isCudaSupported() ) {
             std::cout << "No CUDA devices found in the system" << std::endl;
             return 0;
         }
+
+        multiCuda::CudaDeviceManager::instance().initializeDevices();
 
         const uint32_t width = 2048;
         const uint32_t height = 2048;
@@ -41,15 +43,15 @@ int main()
         // First we will measure speed to copy image from CPU RAM to CUDA device memory
         // To avoid caching on CPU and give an advantage for normal CPU allocation
         // we run functions for CUDA pinned memory image
-        measureTimingToCuda( in2, out );
-        measureTimingToCuda( in1, out );
+        measureTimingToCuda( in2, out, "Pinned    " );
+        measureTimingToCuda( in1, out, "Non-pinned" );
 
-        measureTimingFromCuda( out, in2 );
-        measureTimingFromCuda( out, in1 );
+        measureTimingFromCuda( out, in2, "Pinned    " );
+        measureTimingFromCuda( out, in1, "Non-pinned" );
     }
-    catch( imageException & ex ) {
+    catch( const std::exception & ex ) {
         // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
+        std::cout << "Exception '" << ex.what() << "' raised. Do your black magic to recover..." << std::endl;
         // your magic code must be here to recover from bad things
         return 0;
     }
@@ -65,44 +67,44 @@ int main()
     return 0;
 }
 
-void measureTimingToCuda( Bitmap_Image::Image & in, Bitmap_Image_Cuda::Image & out )
+void measureTimingToCuda( Bitmap_Image::Image & in, Bitmap_Image_Cuda::Image & out, const std::string & type )
 {
     cudaEvent_t start, stop; 
 
-    Cuda::cudaCheck( cudaEventCreate(&start) );
-    Cuda::cudaCheck( cudaEventCreate(&stop) );
+    multiCuda::cudaCheck( cudaEventCreate(&start) );
+    multiCuda::cudaCheck( cudaEventCreate(&stop) );
 
-    Cuda::cudaCheck( cudaEventRecord(start, 0) );
+    multiCuda::cudaCheck( cudaEventRecord(start, 0) );
 
     const uint32_t size = out.rowSize() * out.height();
 
-    Cuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyHostToDevice) );
-    Cuda::cudaCheck( cudaEventRecord(stop, 0) );
-    Cuda::cudaCheck( cudaEventSynchronize(stop) );
+    multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyHostToDevice) );
+    multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
+    multiCuda::cudaCheck( cudaEventSynchronize(stop) );
     
     float time = 0;
-    Cuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
+    multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
 
-    std::cout << "Host to Device bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
+    std::cout << type << ": Host to Device bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
 }
 
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image & out )
+void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image & out, const std::string & type )
 {
     cudaEvent_t start, stop; 
 
-    Cuda::cudaCheck( cudaEventCreate(&start) );
-    Cuda::cudaCheck( cudaEventCreate(&stop) );
+    multiCuda::cudaCheck( cudaEventCreate(&start) );
+    multiCuda::cudaCheck( cudaEventCreate(&stop) );
 
-    Cuda::cudaCheck( cudaEventRecord(start, 0) );
+    multiCuda::cudaCheck( cudaEventRecord(start, 0) );
 
     const uint32_t size = out.rowSize() * out.height();
 
-    Cuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyDeviceToHost) );
-    Cuda::cudaCheck( cudaEventRecord(stop, 0) );
-    Cuda::cudaCheck( cudaEventSynchronize(stop) );
+    multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyDeviceToHost) );
+    multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
+    multiCuda::cudaCheck( cudaEventSynchronize(stop) );
     
     float time = 0;
-    Cuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
+    multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
 
-    std::cout << "Device to Host bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
+    std::cout << type << ": Device to Host bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
 }

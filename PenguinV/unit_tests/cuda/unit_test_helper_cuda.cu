@@ -2,8 +2,8 @@
 #include "../../Library/image_buffer.h"
 #include "../../Library/image_exception.h"
 #include "../../Library/image_function.h"
-#include "../../Library/cuda/cuda_types.cuh"
-#include "../../Library/cuda/cuda_helper.cuh"
+#include "../../Library/thirdparty/multicuda/src/cuda_types.cuh"
+#include "../../Library/thirdparty/multicuda/src/cuda_helper.cuh"
 #include "../../Library/cuda/image_function_cuda.cuh"
 #include "unit_test_helper_cuda.cuh"
 
@@ -133,36 +133,27 @@ namespace Unit_Test
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, uint8_t value )
         {
-            Cuda_Types::_cuint32_t differenceCount( 0 );
+            multiCuda::Type<uint32_t> differenceCount( 0 );
 
             const uint32_t rowSize = image.rowSize();
             const uint32_t height = image.height();
 
-            const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
-
-            isEqualCuda<<< kernel.blocksPerGrid, kernel.threadsPerBlock >>>( image.data(), value, rowSize, height, differenceCount.data() );
-            cudaError_t error = cudaGetLastError();
-            if( error != cudaSuccess )
-                throw imageException( "Failed to launch CUDA kernel" );
+            launchKernel2D( isEqualCuda, rowSize, height,
+                            image.data(), value, rowSize, height, differenceCount.data() );
 
             return differenceCount.get() == rowSize * height;
         }
 
         bool verifyImage( const Bitmap_Image_Cuda::Image & image, const std::vector < uint8_t > & value )
         {
-            Cuda_Types::_cuint32_t differenceCount( 0 );
-            Cuda_Types::Array<uint8_t> valueCuda( value );
+            multiCuda::Type<uint32_t> differenceCount( 0 );
+            multiCuda::Array<uint8_t> valueCuda( value );
 
             const uint32_t rowSize = image.rowSize();
             const uint32_t height = image.height();
 
-            const ::Cuda::KernelParameters kernel = ::Cuda::getKernelParameters( rowSize, height );
-
-            isAnyEqualCuda<<< kernel.blocksPerGrid, kernel.threadsPerBlock >>>( image.data(), valueCuda.data(), valueCuda.size(), rowSize,
-                                                                                height, differenceCount.data() );
-            cudaError_t error = cudaGetLastError();
-            if( error != cudaSuccess )
-                throw imageException( "Failed to launch CUDA kernel" );
+            launchKernel2D( isAnyEqualCuda, rowSize, height,
+                            image.data(), valueCuda.data(), valueCuda.size(), rowSize, height, differenceCount.data() );
 
             return differenceCount.get() == rowSize * height;
         }

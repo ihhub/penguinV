@@ -43,6 +43,6 @@ namespace Performance_Test
 
                 return value;
             }
-        };
-    };
-};
+        }
+    }
+}
