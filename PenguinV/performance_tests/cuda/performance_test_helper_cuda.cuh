@@ -8,10 +8,18 @@ namespace Performance_Test
 {
     namespace Cuda_Helper
     {
-        class TimerContainerCuda : public TimerContainer
+        class TimerContainerCuda : public BaseTimerContainer
         {
         public:
+            TimerContainerCuda();
+            ~TimerContainerCuda();
+
+            void start(); // start time measurement
             void stop();  // stop time measurement
+
+        private:
+            cudaEvent_t _startEvent;
+            cudaEvent_t _stopEvent;
         };
 
         // Functions to generate images

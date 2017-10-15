@@ -9,7 +9,20 @@
 namespace Performance_Test
 {
     // A class to measure time of individual test
-    class TimerContainer
+    class BaseTimerContainer
+    {
+    public:
+        BaseTimerContainer();
+        ~BaseTimerContainer();
+
+        std::pair < double, double > mean(); // returns mean and sigma values
+    protected:
+        void push(double value);
+    private:
+        std::list < double > _time;
+    };
+
+    class TimerContainer : public BaseTimerContainer
     {
     public:
         TimerContainer();
@@ -17,11 +30,8 @@ namespace Performance_Test
 
         void start(); // start time measurement
         void stop();  // stop time measurement
-
-        std::pair < double, double > mean(); // returns mean and sigma values
     private:
         std::chrono::time_point < std::chrono::high_resolution_clock > _startTime;
-        std::list < double > _time;
     };
 
     // Functions to generate images

@@ -5,11 +5,33 @@ namespace Performance_Test
 {
     namespace Cuda_Helper
     {
+        TimerContainerCuda::TimerContainerCuda()
+        {
+            multiCuda::cudaCheck( cudaEventCreate( &_startEvent ) );
+            multiCuda::cudaCheck( cudaEventCreate( &_stopEvent  ) );
+        }
+
+        TimerContainerCuda::~TimerContainerCuda()
+        {
+            multiCuda::cudaCheck( cudaEventDestroy( _startEvent ) );
+            multiCuda::cudaCheck( cudaEventDestroy( _stopEvent  ) );
+        }
+
+        void TimerContainerCuda::start()
+        {
+            multiCuda::cudaCheck( cudaEventRecord( _startEvent, 0 ) );
+        }
+
         void TimerContainerCuda::stop()
         {
-            multiCuda::cudaCheck( cudaDeviceSynchronize() );
+            multiCuda::cudaCheck( cudaEventRecord( _stopEvent, 0 ) );
+            multiCuda::cudaCheck( cudaEventSynchronize( _stopEvent ) );
 
-            TimerContainer::stop();
+            float time = 0.0f;
+
+            multiCuda::cudaCheck( cudaEventElapsedTime( &time, _startEvent, _stopEvent ) );
+
+            push( time );
         }
 
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height )

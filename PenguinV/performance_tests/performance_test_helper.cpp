@@ -60,11 +60,43 @@ namespace
 
             } while( removed || data.size() < 2 );
         }
-    };
-};
+    }
+}
 
 namespace Performance_Test
 {
+    BaseTimerContainer::BaseTimerContainer()
+    { }
+
+    BaseTimerContainer::~BaseTimerContainer()
+    { }
+
+    std::pair < double, double > BaseTimerContainer::mean()
+    {
+        if( _time.empty() )
+            throw imageException( "Cannot find mean value of empty array" );
+
+        // We remove first value because it is on 'cold' cache
+        _time.pop_front();
+
+        // Remove all values what are out of +/- 6 sigma range
+        std::vector < double > time ( _time.begin(), _time.end() );
+
+        double mean  = 0.0;
+        double sigma = 0.0;
+
+        getDistribution( time, mean, sigma );
+
+        // return results in milliseconds
+        return std::pair<double, double>(  mean, sigma );
+    }
+
+    void BaseTimerContainer::push(double value)
+    {
+        _time.push_back( value );
+    }
+
+
     TimerContainer::TimerContainer()
         : _startTime( std::chrono::high_resolution_clock::now() )
     { }
@@ -82,26 +114,7 @@ namespace Performance_Test
         std::chrono::time_point < std::chrono::high_resolution_clock > endTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration < double > time = endTime - _startTime;
 
-        _time.push_back( time.count() );
-    }
-
-    std::pair < double, double > TimerContainer::mean()
-    {
-        if( _time.empty() )
-            throw imageException( "Cannot find mean value of empty array" );
-
-        // We remove first value because it is on 'cold' cache
-        _time.pop_front();
-
-        // Remove all values what are out of +/- 6 sigma range
-        std::vector < double > time ( _time.begin(), _time.end() );
-
-        double mean = 0, sigma = 0;
-
-        getDistribution( time, mean, sigma );
-
-        // return results in milliseconds
-        return std::pair<double, double>( 1000 * mean, 1000 * sigma );
+        push( time.count() * 1000.0 ); // original value is in microseconds
     }
 
     Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height )
