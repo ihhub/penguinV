@@ -2,7 +2,7 @@
 
 #include <cufft.h>
 #include <stdint.h>
-#include "cuda_types.cuh"
+#include "../thirdparty/multicuda/src/cuda_types.cuh"
 #include "image_buffer_cuda.cuh"
 
 namespace FFT_Cuda
@@ -26,7 +26,7 @@ namespace FFT_Cuda
         ~ComplexData();
 
         void set( const Bitmap_Image_Cuda::Image & image );
-        void set( const Cuda_Types::Array<float> & data );
+        void set( const multiCuda::Array<float> & data );
 
         // This function returns normalized image with swapped quadrants
         Bitmap_Image_Cuda::Image get() const;

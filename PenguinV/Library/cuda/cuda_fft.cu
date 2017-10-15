@@ -1,37 +1,41 @@
 #include <cuda_runtime.h>
 #include "cuda_fft.cuh"
-#include "cuda_helper.cuh"
+#include "../thirdparty/multicuda/src/cuda_helper.cuh"
 #include "../image_exception.h"
 
 namespace
 {
-    __global__ void copyFromImageCuda( const uint8_t * in, cufftComplex * out, uint32_t size )
+    __global__ void copyFromImageCuda( const uint8_t * in, cufftComplex * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id].x = in[id];
             out[id].y = 0;
         }
     }
 
-    __global__ void copyFromFloatCuda( const float * in, cufftComplex * out, uint32_t size )
+    __global__ void copyFromFloatCuda( const float * in, cufftComplex * out, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id].x = in[id];
             out[id].y = 0;
         }
     }
 
-    __global__ void copyToImageCuda( const cufftComplex * in, uint8_t * out, uint32_t size, uint32_t width, uint32_t height )
+    __global__ void copyToImageCuda( const cufftComplex * in, uint8_t * out, float size, uint32_t width, uint32_t height )
     {
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t inX = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t inY = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
-            const uint32_t inX = id % width;
-            const uint32_t inY = id / width;
+        if( inX < width && inY < height ) {
+            const uint32_t id = inY * width + inX;
 
             const uint32_t middleX = width / 2;
             const uint32_t middleY = height / 2;
@@ -43,15 +47,17 @@ namespace
         }
     }
 
-    __global__ void complexMultiplicationCuda( const cufftComplex * in1, const cufftComplex * in2, cufftComplex * out, uint32_t size )
+    __global__ void complexMultiplicationCuda( const cufftComplex * in1, const cufftComplex * in2, cufftComplex * out, uint32_t width, uint32_t height )
     {
         // in1 = A + iB
         // in2 = C + iD
         // out = in1 * (-in2) = (A + iB) * (-C - iD) = - A * C - i(B * C) - i(A * D) + B * D
 
-        uint32_t id = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
-        if( id < size ) {
+        if( x < width && y < height ) {
+            const uint32_t id = y * width + x;
             out[id].x = in1[id].x * in2[id].x - in1[id].y * in2[id].y;
             out[id].y = in1[id].x * in2[id].y + in1[id].y * in2[id].x;
         }
@@ -117,28 +123,22 @@ namespace FFT_Cuda
 
         _clean();
 
-        const uint32_t size = image.width() * image.height();
-
-        Cuda::cudaCheck( cudaMalloc( &_data, size * sizeof( cufftComplex ) ) );
+        multiCuda::cudaCheck( cudaMalloc( &_data, (image.width() * image.height()) * sizeof( cufftComplex ) ) );
 
         _width  = image.width();
         _height = image.height();
 
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
-
-        copyFromImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(image.data(), _data, size);
-        Cuda::validateKernel();
+        launchKernel2D( copyFromImageCuda, _width, _height,
+                        image.data(), _data, _width, _height );
     }
 
-    void ComplexData::set( const Cuda_Types::Array<float> & data )
+    void ComplexData::set( const multiCuda::Array<float> & data )
     {
         if( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
 
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( static_cast<uint32_t>(data.size()) );
-
-        copyFromFloatCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(data.data(), _data, static_cast<uint32_t>(data.size()));
-        Cuda::validateKernel();
+        launchKernel2D( copyFromFloatCuda, _width, _height,
+                        data.data(), _data, _width, _height );
     }
 
     Bitmap_Image_Cuda::Image ComplexData::get() const
@@ -147,12 +147,11 @@ namespace FFT_Cuda
             return Bitmap_Image_Cuda::Image();
 
         Bitmap_Image_Cuda::Image image( _width, _height );
+        
+        const float size = static_cast<float>(image.width() * image.height());
 
-        const uint32_t size = image.width() * image.height();
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
-
-        copyToImageCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(_data, image.data(), size, _width, _height);
-        Cuda::validateKernel();
+        launchKernel2D( copyToImageCuda, _width, _height,
+                        _data, image.data(), size, _width, _height );
 
         return image;
     }
@@ -162,9 +161,7 @@ namespace FFT_Cuda
         if( (width_ != _width || height_ != _height) && width_ != 0 && height_ != 0 ) {
             _clean();
 
-            const uint32_t size = width_ * height_;
-
-            Cuda::cudaCheck( cudaMalloc( &_data, size * sizeof( cufftComplex ) ) );
+            multiCuda::cudaCheck( cudaMalloc( &_data, (width_ * height_) * sizeof( cufftComplex ) ) );
 
             _width  = width_;
             _height = height_;
@@ -214,7 +211,7 @@ namespace FFT_Cuda
         resize( data._width, data._height );
 
         if( !empty() ) {
-            if( !Cuda::cudaSafeCheck( cudaMemcpy( _data, data._data, _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
+            if( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data._data, _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
                 throw imageException( "Cannot copy a memory to CUDA device" );
         }
     }
@@ -304,11 +301,8 @@ namespace FFT_Cuda
             in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
-        const uint32_t size = _width * _height;
-        const Cuda::KernelParameters kernel = Cuda::getKernelParameters( size );
-
-        complexMultiplicationCuda<<<kernel.blocksPerGrid, kernel.threadsPerBlock>>>(in1.data(), in2.data(), out.data(), size);
-        Cuda::validateKernel();
+        launchKernel2D( complexMultiplicationCuda, _width, _height,
+                        in1.data(), in2.data(), out.data(), _width, _height );
     }
 
     void FFTExecutor::_clean()

@@ -81,7 +81,7 @@ namespace Image_Function_Cuda
                 }
             }
 
-            Cuda_Types::Array<float> cudaData( data );
+            multiCuda::Array<float> cudaData( data );
 
             FFT_Cuda::ComplexData complexData;
             complexData.resize( width, height );
