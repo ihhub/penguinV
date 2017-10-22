@@ -1,6 +1,121 @@
 #include <cmath>
 #include "image_function.h"
 
+namespace
+{
+    void Dilate( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::VerifyGrayScaleImage( image );
+
+        if( dilationX == 0u && dilationY == 0u )
+            return;
+
+        if( dilationX > width / 2 )
+            dilationX = width / 2;
+        if( dilationY > height / 2 )
+            dilationY = height / 2;        
+
+        if( dilationX > 0u ) {
+            const int32_t dilateX = static_cast<int32_t>(dilationX);
+
+            uint8_t ** startPos = new uint8_t *[width];
+            uint8_t ** endPos   = new uint8_t *[width];
+
+            const uint32_t rowSize = image.rowSize();
+            uint8_t * imageY    = image.data() + y * rowSize + x;
+            uint8_t * imageYEnd = imageY + height * rowSize;
+
+            for( ; imageY != imageYEnd; imageY += rowSize ) {
+                uint32_t pairCount = 0u;
+
+                uint8_t previousValue = *imageY;
+
+                uint8_t * imageXStart = imageY;
+                uint8_t * imageX      = imageXStart + 1;
+                uint8_t * imageXEnd   = imageXStart + width;
+
+                for( ; imageX != imageXEnd; ++imageX ) {
+                    if( (*imageX) != previousValue ) {
+                        if( imageX - imageXStart < dilateX )
+                            startPos[pairCount] = imageXStart;
+                        else
+                            startPos[pairCount] = imageX - dilateX;
+
+                        if( imageXEnd - imageX < dilateX )
+                            endPos[pairCount] = imageXEnd;
+                        else
+                            endPos[pairCount] = imageX + dilateX;
+
+                        previousValue = 0xFFu ^ previousValue;
+                        ++pairCount;
+                    }
+                }
+
+                for( uint32_t i = 0u; i < pairCount; ++i ) {
+                    imageX    = startPos[i];
+                    imageXEnd = endPos[i];
+
+                    for( ; imageX != imageXEnd; ++imageX )
+                        (*imageX) = value;
+                }
+            }
+
+            delete[] startPos;
+            delete[] endPos;
+        }
+
+        if( dilationY > 0u ) {
+            uint8_t ** startPos = new uint8_t *[height];
+            uint8_t ** endPos   = new uint8_t *[height];
+
+            const uint32_t rowSize = image.rowSize();
+            uint8_t * imageX    = image.data() + y * rowSize + x;
+            uint8_t * imageXEnd = imageX + width;
+
+            for( ; imageX != imageXEnd; ++imageX ) {
+                uint32_t pairCount = 0u;
+
+                uint8_t previousValue = *imageX;
+
+                uint8_t * imageYStart = imageX;
+                uint8_t * imageY      = imageYStart + rowSize;
+                uint8_t * imageYEnd   = imageYStart + height * rowSize;
+
+                for( ; imageY != imageYEnd; imageY += rowSize ) {
+                    if( (*imageY) != previousValue ) {
+                        const uint32_t rowId = static_cast<uint32_t>(imageY - imageYStart) / rowSize;
+
+                        if( rowId < dilationY )
+                            startPos[pairCount] = imageYStart;
+                        else
+                            startPos[pairCount] = imageY - dilationY * rowSize;
+
+                        if( height - rowId < dilationY )
+                            endPos[pairCount] = imageYEnd;
+                        else
+                            endPos[pairCount] = imageY + dilationY * rowSize;
+
+                        previousValue = 0xFFu ^ previousValue;
+                        ++pairCount;
+                    }
+                }
+
+                for( uint32_t i = 0u; i < pairCount; ++i ) {
+                    imageY    = startPos[i];
+                    imageYEnd = endPos[i];
+
+                    for( ; imageY != imageYEnd; imageY += rowSize )
+                        (*imageY) = value;
+                }
+            }
+
+            delete[] startPos;
+            delete[] endPos;
+        }
+    }
+}
+
 namespace Image_Function
 {
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
@@ -92,6 +207,31 @@ namespace Image_Function
                 *v += (*imageX);
         }
     }
+
+    void BinaryDilate( Image & image, uint32_t dilationX, uint32_t dilationY )
+    {
+        ParameterValidation( image );
+
+        BinaryDilate( image, 0, 0, image.width(), image.height(), dilationX, dilationY );
+    }
+
+    void BinaryDilate( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY )
+    {
+        Dilate( image, x, y, width, height, dilationX, dilationY, 255u );
+    }
+
+    void BinaryErode( Image & image, uint32_t erosionX, uint32_t erosionY )
+    {
+        ParameterValidation( image );
+
+        BinaryErode( image, 0, 0, image.width(), image.height(), erosionX, erosionY );
+    }
+    
+    void BinaryErode( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t erosionX, uint32_t erosionY )
+    {
+        Dilate( image, x, y, width, height, erosionX, erosionY, 0u );
+    }
+    
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
@@ -794,6 +934,30 @@ namespace Image_Function
             for( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = ~(*inX);
         }
+    }
+
+    bool IsBinary( const Image & image )
+    {
+        ParameterValidation( image );
+
+        return IsBinary( image, 0u, 0u, image.width(), image.height() );
+    }
+
+    bool IsBinary( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( image, startX, startY, width, height );
+        VerifyGrayScaleImage( image );
+
+        const std::vector< uint32_t > histogram = Histogram( image, startX, startY, width, height );
+
+        size_t counter = 0u;
+
+        for( std::vector< uint32_t >::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
+            if( (*value) > 0u )
+                ++counter;
+        }
+
+        return (counter < 3u);
     }
 
     bool IsEqual( const Image & in1, const Image & in2 )

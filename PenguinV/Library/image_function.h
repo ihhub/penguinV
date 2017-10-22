@@ -15,6 +15,12 @@ namespace Image_Function
     void Accumulate( const Image & image, std::vector < uint32_t > & result );
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result );
 
+    void BinaryDilate( Image & image, uint32_t dilationX, uint32_t dilationY );
+    void BinaryDilate( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY );
+
+    void BinaryErode( Image & image, uint32_t erosionX, uint32_t erosionY );
+    void BinaryErode( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t erosionX, uint32_t erosionY );
+
     Image BitwiseAnd( const Image & in1, const Image & in2 );
     void  BitwiseAnd( const Image & in1, const Image & in2, Image & out );
     Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -97,6 +103,9 @@ namespace Image_Function
     Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
     void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                   uint32_t width, uint32_t height );
+
+    bool IsBinary( const Image & image );
+    bool IsBinary( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height );
 
     bool IsEqual( const Image & in1, const Image & in2 );
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
