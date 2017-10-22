@@ -11,7 +11,7 @@ namespace Blob_Detection
             : minimum     ( 0 )     // minimum value
             , checkMinimum( false ) // set to compare a value with minimum value
             , maximum     ( 0 )     // maximum value
-            , checkMaximum( 0 )     // set to compare a value with maximum value
+            , checkMaximum( false ) // set to compare a value with maximum value
         { }
 
         Data minimum;
@@ -22,10 +22,8 @@ namespace Blob_Detection
 
         void verify()
         {
-            if( minimum > maximum ) {
+            if( checkMaximum && checkMinimum && (minimum > maximum) )
                 std::swap( minimum, maximum );
-                std::swap( checkMinimum, checkMaximum );
-            }
         }
 
         void set( Data min, Data max )
