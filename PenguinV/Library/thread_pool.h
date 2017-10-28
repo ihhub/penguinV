@@ -51,7 +51,7 @@ namespace Thread_Pool
     {
     public:
         TaskProvider();
-        TaskProvider( ThreadPool * pool );
+        explicit TaskProvider( ThreadPool * pool );
         TaskProvider( const TaskProvider & provider );
         virtual ~TaskProvider();
 
@@ -70,7 +70,7 @@ namespace Thread_Pool
     {
     public:
         ThreadPool() { };
-        ThreadPool( size_t threads );
+        explicit ThreadPool( size_t threads );
         ThreadPool & operator=( const ThreadPool & ) = delete;
         ThreadPool( const ThreadPool & ) = delete;
         ~ThreadPool();

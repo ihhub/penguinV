@@ -19,7 +19,7 @@ public:
     {
     }
 
-    imageException( const char * message )
+    explicit imageException( const char * message )
         : _name( message )
     {  
     }

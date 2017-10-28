@@ -298,7 +298,7 @@ namespace Bitmap_Image
         {
         }
 
-        Image( uint8_t colorCount_ )
+        explicit Image( uint8_t colorCount_ )
             : ImageTemplate( 0, 0, colorCount_, BITMAP_ALIGNMENT )
         {
         }

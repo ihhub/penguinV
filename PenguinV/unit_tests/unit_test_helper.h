@@ -90,7 +90,7 @@ namespace Unit_Test
     template <typename data>
     data randomValue( uint32_t maximum )
     {
-        if( maximum <= 0 )
+        if( maximum == 0 )
             return 0;
         else
             return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
@@ -99,7 +99,7 @@ namespace Unit_Test
     template <typename data>
     data randomValue( data minimum, uint32_t maximum )
     {
-        if( maximum <= 0 ) {
+        if( maximum == 0 ) {
             return 0;
         }
         else {

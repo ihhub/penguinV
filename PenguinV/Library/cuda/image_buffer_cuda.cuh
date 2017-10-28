@@ -208,7 +208,7 @@ namespace Bitmap_Image_Cuda
         {
         }
 
-        Image( uint8_t colorCount_ )
+        explicit Image( uint8_t colorCount_ )
             : ImageTemplateCuda( 0, 0, colorCount_ )
         {
         }

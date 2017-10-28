@@ -12,7 +12,7 @@ namespace Bitmap_Image_Cuda_Cpu
         {
         }
 
-        Image( uint8_t colorCount_ )
+        explicit Image( uint8_t colorCount_ )
         {
             setColorCount( colorCount_ );
         }

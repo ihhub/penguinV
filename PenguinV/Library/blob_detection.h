@@ -90,7 +90,7 @@ namespace Blob_Detection
         { }
 
         // this constructor is made to avoid 'Value' template restriction
-        Point( double value )
+        explicit Point( double value )
             : x( value )
             , y( value )
         { }
@@ -109,7 +109,7 @@ namespace Blob_Detection
         { }
 
         // this constructor is made to avoid 'Value' template restriction
-        Area( uint32_t value )
+        explicit Area( uint32_t value )
             : left  ( value )
             , right ( value )
             , top   ( value )
