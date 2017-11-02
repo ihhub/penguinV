@@ -175,7 +175,7 @@ namespace Bitmap_Operation
 
         virtual void setColorCount( uint16_t c )
         {
-            bcBitCount = c << 3;
+            bcBitCount = static_cast<uint16_t>(c * 8u);
         }
 
         virtual void setImageSize( uint32_t )
@@ -285,7 +285,7 @@ namespace Bitmap_Operation
 
         virtual void setColorCount( uint16_t c )
         {
-            biBitCount = c << 3;
+            biBitCount = static_cast<uint16_t>(c * 8u);
         }
 
         virtual void setImageSize( uint32_t s )
