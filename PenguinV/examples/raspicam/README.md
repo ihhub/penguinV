@@ -1,4 +1,4 @@
-#How to compile    
+# How to compile    
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash

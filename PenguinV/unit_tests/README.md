@@ -1,7 +1,7 @@
-#Description    
+# Description    
 This directory contains a project to run unit tests on overall library. It should be run once after any changes.
 
-#How to compile    
+# How to compile    
 - Microsoft Visual Studio    
 Open unit_tests.vcxproj file in this directory to create solution for your Visual Studio version. This project was created under Visual Studio 2010.
 

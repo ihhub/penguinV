@@ -1,4 +1,4 @@
-#How to compile    
+# How to compile    
 - Microsoft Visual Studio    
 Open example_image_function.vcxproj file in this directory to create solution for your Visual Studio version. Remember that minimum version of VS for this example is 2010.
 
