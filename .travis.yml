@@ -12,7 +12,7 @@ os:
   - osx
 
 script:
-  - cd PenguinV/script/travis
+  - cd script/travis
   - make
 
 after_script: ./unit_tests

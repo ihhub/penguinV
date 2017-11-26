@@ -41,7 +41,7 @@ Almost all basic functions support multithreading. Please refer to **Function_Po
 
 CUDA support
 ---------------------------
-All source code related to CUDA is located in separate directory named as **cuda**. Read full description about CUDA support in **README** file in specified directory.
+All source code related to CUDA is located in separate directory named as **cuda**. Read full description about CUDA support in **README** file in the directory.
 
 License
 ---------------------------
@@ -49,4 +49,4 @@ This project is under 3-clause BSD License. Please refer to file **LICENSE** for
 
 API description
 ---------------------------
-Please refer to file **API_description.md** for full description of API.
+Please refer to file **API_description.md** in **doc** directory for full description of API.
