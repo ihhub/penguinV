@@ -10,13 +10,13 @@ PenguinV is a simple and easy to use C++ image processing library. It is designe
 - compactness
 - multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
 - exception-based code
-- optional GPU (CUDA) and SIMD (SSE, AVX, NEON) support
+- optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
 - cross-platform
 - functions can perform processing on separate image parts (no need to make a copy of image for area on what you want to do something, just set area parameters)
 - user-defined image types support (you can create your own image types and image functions [See API description, ImageTemplate class])
 
 At the current stage of development library does not have some features but we are intending to introduce them very soon:
-- better support of CUDA
+- better support of CUDA and OpenCL
 - more basic functions and their implementations by SSE, AVX, NEON
 - color space conversions
 
@@ -39,9 +39,9 @@ Multithreading support
 Every non empty image can be divided into multiple parts or areas (in scientific terms ROI - region of interest). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intersecting by each other.    
 Almost all basic functions support multithreading. Please refer to **Function_Pool** namespace and function_pool example.
 
-CUDA support
+GPU support
 ---------------------------
-All source code related to CUDA is located in separate directory named as **cuda**. Read full description about CUDA support in **README** file in the directory.
+All source code related to CUDA or OpenCL is located in separate directory named as **cuda** and **opencl** respectively. Read full description about CUDA or OpenCL support in **README** file in the directory.
 
 License
 ---------------------------

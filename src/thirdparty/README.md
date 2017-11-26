@@ -6,3 +6,6 @@ Open source library for Fast Fourier Transform.
 
 - multiCUDA rev e862623
 Open source library for easy CUDA management.
+
+- multiCL rev bf87cc4
+Open source library for easy OpenCL management.
