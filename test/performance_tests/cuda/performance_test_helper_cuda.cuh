@@ -27,6 +27,9 @@ namespace Performance_Test
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
         std::vector< Bitmap_Image_Cuda::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
 
+        void setCudaThreadCount( uint32_t threadCount );
+        uint32_t getMaximumCudaThreadCount();
+
         // Return random value for specific range or variable type
         template <typename data>
         data randomValue( int maximum )

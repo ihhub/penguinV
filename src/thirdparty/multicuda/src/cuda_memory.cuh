@@ -13,7 +13,7 @@ namespace multiCuda
     class MemoryAllocator
     {
     public:
-        MemoryAllocator( size_t availableSize )
+        explicit MemoryAllocator( size_t availableSize )
             : _data         ( nullptr )
             , _size         ( 0 )
             , _availableSize( availableSize )
@@ -135,12 +135,12 @@ namespace multiCuda
             return _availableSize;
         }
     private:
-        size_t _size; // a size of memory allocated chunk
         void * _data; // a pointer to memory allocated chunk
+        size_t _size; // a size of memory allocated chunk
 
         // an array which holds an information about free memory in preallocated memory chunck
         std::vector < std::set < size_t > > _freeChunck;
-        // an array which holds an information about allocated memory in preallocated memory chunck
+        // a map which holds an information about allocated memory in preallocated memory chunck
         // first parameter is an offset from preallocated memory
         // second parameter is a power of 2 (level)
         std::map <size_t, uint8_t> _allocatedChunck;

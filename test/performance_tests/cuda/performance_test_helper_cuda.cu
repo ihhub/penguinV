@@ -19,12 +19,12 @@ namespace Performance_Test
 
         void TimerContainerCuda::start()
         {
-            multiCuda::cudaCheck( cudaEventRecord( _startEvent, 0 ) );
+            multiCuda::cudaCheck( cudaEventRecord( _startEvent, multiCuda::getCudaStream() ) );
         }
 
         void TimerContainerCuda::stop()
         {
-            multiCuda::cudaCheck( cudaEventRecord( _stopEvent, 0 ) );
+            multiCuda::cudaCheck( cudaEventRecord( _stopEvent, multiCuda::getCudaStream() ) );
             multiCuda::cudaCheck( cudaEventSynchronize( _stopEvent ) );
 
             float time = 0.0f;
@@ -56,6 +56,16 @@ namespace Performance_Test
                 *im = uniformImage( width, height );
 
             return image;
+        }
+
+        void setCudaThreadCount( uint32_t threadCount )
+        {
+            multiCuda::CudaDeviceManager::instance().device().setThreadsPerBlock( threadCount );
+        }
+
+        uint32_t getMaximumCudaThreadCount()
+        {
+            return multiCuda::CudaDeviceManager::instance().device().maximumThreadsPerBlock();
         }
     }
 }

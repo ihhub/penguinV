@@ -141,6 +141,11 @@ namespace multiCuda
         return static_cast<uint32_t>(_deviceProperty.maxThreadsPerBlock);
     }
 
+    uint32_t CudaDevice::maximumThreadsPerBlock() const
+    {
+        return static_cast<uint32_t>(_backupDeviceProperty.maxThreadsPerBlock);
+    }
+
     dim3 CudaDevice::blockDimension() const
     {
         return dim3( static_cast<uint32_t>(_deviceProperty.maxThreadsDim[0]),

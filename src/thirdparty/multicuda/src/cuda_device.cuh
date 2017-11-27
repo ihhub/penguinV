@@ -37,7 +37,8 @@ namespace multiCuda
         size_t totalMemorySize() const; // total available memory in bytes
         std::string computeCapability() const; // compute capability or version of supported computations
         size_t sharedMemoryPerBlock() const; // maximum supported shared memory in bytes per block
-        uint32_t threadsPerBlock() const; // maximum available number of threads per block
+        uint32_t threadsPerBlock() const; // current number of threads per block
+        uint32_t maximumThreadsPerBlock() const; // maximum available number of threads per block
         dim3 blockDimension() const; // maximum number of threads per block
         dim3 dimensionSize() const; // maximum supported dimension size of block's grid
         int dmaEngineCount() const; // supported DMA engines count to execute copy operations concurrently with kernel execution

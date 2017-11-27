@@ -18,7 +18,7 @@ public:
     {
     }
 
-    multiCudaException( const char * message )
+    explicit multiCudaException( const char * message )
         : _name( message )
     {
     }
