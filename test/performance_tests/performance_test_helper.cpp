@@ -155,6 +155,16 @@ namespace Performance_Test
         return image;
     }
 
+    std::vector< Bitmap_Image::Image > uniformColorImages( uint32_t count, uint32_t width, uint32_t height )
+    {
+        std::vector < Bitmap_Image::Image > image( count );
+
+        for( std::vector< Bitmap_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
+            *im = uniformColorImage( width, height );
+
+        return image;
+    }
+
     uint32_t runCount()
     {
         return 1024;
