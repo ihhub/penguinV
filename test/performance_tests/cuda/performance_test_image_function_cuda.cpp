@@ -304,7 +304,6 @@ namespace Performance_Test
         ADD_TEST_FUNCTION( framework, BitwiseAnd         )
         ADD_TEST_FUNCTION( framework, BitwiseOr          )
         ADD_TEST_FUNCTION( framework, BitwiseXor         )
-        ADD_TEST_FUNCTION( framework, BitwiseXor         )
         ADD_TEST_FUNCTION( framework, Flip               )
         ADD_TEST_FUNCTION( framework, Histogram          )
         ADD_TEST_FUNCTION( framework, Invert             )
