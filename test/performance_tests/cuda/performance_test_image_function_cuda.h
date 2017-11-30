@@ -4,5 +4,5 @@
 
 namespace Performance_Test
 {
-    void addTests_Image_Function_Cuda( PerformanceTestFramework & framework ); // function what adds all below tests to framework
+    void addTests_Image_Function_Cuda( PerformanceTestFramework & framework );
 }

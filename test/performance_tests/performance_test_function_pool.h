@@ -4,5 +4,5 @@
 
 namespace Performance_Test
 {
-    void addTests_Function_Pool( PerformanceTestFramework & framework ); // function what adds all below tests to framework
+    void addTests_Function_Pool( PerformanceTestFramework & framework );
 }

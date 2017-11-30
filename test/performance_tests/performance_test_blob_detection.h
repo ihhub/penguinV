@@ -4,5 +4,5 @@
 
 namespace Performance_Test
 {
-    void addTests_Blob_Detection( PerformanceTestFramework & framework ); // function what adds all below tests to framework
+    void addTests_Blob_Detection( PerformanceTestFramework & framework );
 }
