@@ -4,39 +4,7 @@
 
 namespace Unit_Test
 {
-    void addTests_Image_Buffer( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, Template_Image_Test::EmptyConstructorTest );
-        ADD_TEST( framework, Template_Image_Test::Constructor2ParametersTest );
-        ADD_TEST( framework, Template_Image_Test::Constructor3ParametersTest );
-        ADD_TEST( framework, Template_Image_Test::Constructor4ParametersTest );
-
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorU8Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorU16Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorU32Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorU64Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorS8Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorS16Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorS32Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorS64Test );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorFTest );
-        ADD_TEST( framework, Template_Image_Test::CopyConstructorDTest );
-
-        ADD_TEST( framework, Template_Image_Test::NullAssignmentTest );
-
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorU8Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorU16Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorU32Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorU64Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorS8Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorS16Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorS32Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorS64Test );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorFTest );
-        ADD_TEST( framework, Template_Image_Test::AssignmentOperatorDTest );
-    }
-
-    namespace Template_Image_Test
+    namespace template_image
     {
         bool EmptyConstructorTest()
         {
@@ -487,5 +455,37 @@ namespace Unit_Test
 
             return true;
         }
+    }
+
+    void addTests_Image_Buffer( UnitTestFramework & framework )
+    {
+        ADD_TEST( framework, template_image::EmptyConstructorTest );
+        ADD_TEST( framework, template_image::Constructor2ParametersTest );
+        ADD_TEST( framework, template_image::Constructor3ParametersTest );
+        ADD_TEST( framework, template_image::Constructor4ParametersTest );
+
+        ADD_TEST( framework, template_image::CopyConstructorU8Test );
+        ADD_TEST( framework, template_image::CopyConstructorU16Test );
+        ADD_TEST( framework, template_image::CopyConstructorU32Test );
+        ADD_TEST( framework, template_image::CopyConstructorU64Test );
+        ADD_TEST( framework, template_image::CopyConstructorS8Test );
+        ADD_TEST( framework, template_image::CopyConstructorS16Test );
+        ADD_TEST( framework, template_image::CopyConstructorS32Test );
+        ADD_TEST( framework, template_image::CopyConstructorS64Test );
+        ADD_TEST( framework, template_image::CopyConstructorFTest );
+        ADD_TEST( framework, template_image::CopyConstructorDTest );
+
+        ADD_TEST( framework, template_image::NullAssignmentTest );
+
+        ADD_TEST( framework, template_image::AssignmentOperatorU8Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorU16Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorU32Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorU64Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorS8Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorS16Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorS32Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorS64Test );
+        ADD_TEST( framework, template_image::AssignmentOperatorFTest );
+        ADD_TEST( framework, template_image::AssignmentOperatorDTest );
     }
 }

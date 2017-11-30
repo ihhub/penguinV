@@ -1,68 +1,12 @@
 #include "../../src/image_function_neon.h"
+#include "../../src/penguinv/cpu_identification.h"
 #include "unit_test_image_function_neon.h"
 #include "unit_test_helper.h"
 
 namespace Unit_Test
 {
-#ifndef PENGUINV_NEON_SET
-    void addTests_Image_Function_Neon( UnitTestFramework & ) {}
-#else
-    void addTests_Image_Function_Neon( UnitTestFramework & framework )
-    {
-        if( isNeonAvailable ) {
-            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifference2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifference3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifference8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::AbsoluteDifference11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAnd2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAnd3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAnd8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseAnd11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseOr11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::BitwiseXor11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::Invert1ParameterTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Invert2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Invert5ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Invert8ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::Maximum2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Maximum3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Maximum8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Maximum11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::Minimum2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Minimum3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Minimum8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Minimum11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::Subtract2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Subtract3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Subtract8ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Subtract11ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::Threshold2ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Threshold3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Threshold6ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::Threshold9ParametersTest );
-
-            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble3ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble4ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble7ParametersTest );
-            ADD_TEST( framework, Image_Function_Neon_Test::ThresholdDouble10ParametersTest );
-        }
-    }
-
-    namespace Image_Function_Neon_Test
+#ifdef PENGUINV_NEON_SET
+    namespace image_function_neon
     {
         bool AbsoluteDifference2ParametersTest()
         {
@@ -862,6 +806,64 @@ namespace Unit_Test
             return true;
         }
     }
+
+    void addTests_Image_Function_Neon( UnitTestFramework & framework )
+    {
+        if( isNeonAvailable ) {
+            ADD_TEST( framework, image_function_neon::AbsoluteDifference2ParametersTest );
+            ADD_TEST( framework, image_function_neon::AbsoluteDifference3ParametersTest );
+            ADD_TEST( framework, image_function_neon::AbsoluteDifference8ParametersTest );
+            ADD_TEST( framework, image_function_neon::AbsoluteDifference11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::BitwiseAnd2ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseAnd3ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseAnd8ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseAnd11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::BitwiseOr2ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseOr3ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseOr8ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseOr11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::BitwiseXor2ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseXor3ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseXor8ParametersTest );
+            ADD_TEST( framework, image_function_neon::BitwiseXor11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::Invert1ParameterTest );
+            ADD_TEST( framework, image_function_neon::Invert2ParametersTest );
+            ADD_TEST( framework, image_function_neon::Invert5ParametersTest );
+            ADD_TEST( framework, image_function_neon::Invert8ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::Maximum2ParametersTest );
+            ADD_TEST( framework, image_function_neon::Maximum3ParametersTest );
+            ADD_TEST( framework, image_function_neon::Maximum8ParametersTest );
+            ADD_TEST( framework, image_function_neon::Maximum11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::Minimum2ParametersTest );
+            ADD_TEST( framework, image_function_neon::Minimum3ParametersTest );
+            ADD_TEST( framework, image_function_neon::Minimum8ParametersTest );
+            ADD_TEST( framework, image_function_neon::Minimum11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::Subtract2ParametersTest );
+            ADD_TEST( framework, image_function_neon::Subtract3ParametersTest );
+            ADD_TEST( framework, image_function_neon::Subtract8ParametersTest );
+            ADD_TEST( framework, image_function_neon::Subtract11ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::Threshold2ParametersTest );
+            ADD_TEST( framework, image_function_neon::Threshold3ParametersTest );
+            ADD_TEST( framework, image_function_neon::Threshold6ParametersTest );
+            ADD_TEST( framework, image_function_neon::Threshold9ParametersTest );
+
+            ADD_TEST( framework, image_function_neon::ThresholdDouble3ParametersTest );
+            ADD_TEST( framework, image_function_neon::ThresholdDouble4ParametersTest );
+            ADD_TEST( framework, image_function_neon::ThresholdDouble7ParametersTest );
+            ADD_TEST( framework, image_function_neon::ThresholdDouble10ParametersTest );
+        }
+    }
+
+#else
+    void addTests_Image_Function_Neon( UnitTestFramework & ) {}
 #endif
 
 }

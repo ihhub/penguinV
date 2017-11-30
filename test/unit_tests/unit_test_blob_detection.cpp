@@ -5,12 +5,7 @@
 
 namespace Unit_Test
 {
-    void addTests_Blob_Detection( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, Blob_Detection_Test::Detect1Blob );
-    }
-
-    namespace Blob_Detection_Test
+    namespace blob_detection
     {
         bool Detect1Blob()
         {
@@ -41,5 +36,10 @@ namespace Unit_Test
 
             return true;
         }
+    }
+
+    void addTests_Blob_Detection( UnitTestFramework & framework )
+    {
+        ADD_TEST( framework, blob_detection::Detect1Blob );
     }
 }

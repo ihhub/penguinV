@@ -6,91 +6,7 @@
 
 namespace Unit_Test
 {
-    void addTests_Function_Pool( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, Function_Pool_Test::AbsoluteDifference2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::AbsoluteDifference3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::AbsoluteDifference8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::AbsoluteDifference11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::BitwiseAnd2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseAnd3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseAnd8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseAnd11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::BitwiseOr2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseOr3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseOr8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseOr11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::BitwiseXor2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseXor3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseXor8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::BitwiseXor11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale1ParameterTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale5ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToGrayScale8ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::ConvertToRgb1ParameterTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToRgb2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToRgb5ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ConvertToRgb8ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::GammaCorrection3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::GammaCorrection4ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::GammaCorrection7ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::GammaCorrection10ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Invert1ParameterTest );
-        ADD_TEST( framework, Function_Pool_Test::Invert2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Invert5ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Invert8ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::IsEqual2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::IsEqual8ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::LookupTable2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::LookupTable3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::LookupTable6ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::LookupTable9ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Maximum2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Maximum3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Maximum8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Maximum11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Minimum2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Minimum3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Minimum8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Minimum11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Resize2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Resize3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Resize7ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Resize9ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Subtract2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Subtract3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Subtract8ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Subtract11ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Sum1ParameterTest );
-        ADD_TEST( framework, Function_Pool_Test::Sum5ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::Threshold2ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Threshold3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Threshold6ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::Threshold9ParametersTest );
-
-        ADD_TEST( framework, Function_Pool_Test::ThresholdDouble3ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ThresholdDouble4ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ThresholdDouble7ParametersTest );
-        ADD_TEST( framework, Function_Pool_Test::ThresholdDouble10ParametersTest );
-    }
-
-    namespace Function_Pool_Test
+    namespace function_pool
     {
         bool AbsoluteDifference2ParametersTest()
         {
@@ -1552,5 +1468,89 @@ namespace Unit_Test
 
             return true;
         }
+    }
+
+    void addTests_Function_Pool( UnitTestFramework & framework )
+    {
+        ADD_TEST( framework, function_pool::AbsoluteDifference2ParametersTest );
+        ADD_TEST( framework, function_pool::AbsoluteDifference3ParametersTest );
+        ADD_TEST( framework, function_pool::AbsoluteDifference8ParametersTest );
+        ADD_TEST( framework, function_pool::AbsoluteDifference11ParametersTest );
+
+        ADD_TEST( framework, function_pool::BitwiseAnd2ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseAnd3ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseAnd8ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseAnd11ParametersTest );
+
+        ADD_TEST( framework, function_pool::BitwiseOr2ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseOr3ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseOr8ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseOr11ParametersTest );
+
+        ADD_TEST( framework, function_pool::BitwiseXor2ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseXor3ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseXor8ParametersTest );
+        ADD_TEST( framework, function_pool::BitwiseXor11ParametersTest );
+
+        ADD_TEST( framework, function_pool::ConvertToGrayScale1ParameterTest );
+        ADD_TEST( framework, function_pool::ConvertToGrayScale2ParametersTest );
+        ADD_TEST( framework, function_pool::ConvertToGrayScale5ParametersTest );
+        ADD_TEST( framework, function_pool::ConvertToGrayScale8ParametersTest );
+
+        ADD_TEST( framework, function_pool::ConvertToRgb1ParameterTest );
+        ADD_TEST( framework, function_pool::ConvertToRgb2ParametersTest );
+        ADD_TEST( framework, function_pool::ConvertToRgb5ParametersTest );
+        ADD_TEST( framework, function_pool::ConvertToRgb8ParametersTest );
+
+        ADD_TEST( framework, function_pool::GammaCorrection3ParametersTest );
+        ADD_TEST( framework, function_pool::GammaCorrection4ParametersTest );
+        ADD_TEST( framework, function_pool::GammaCorrection7ParametersTest );
+        ADD_TEST( framework, function_pool::GammaCorrection10ParametersTest );
+
+        ADD_TEST( framework, function_pool::Invert1ParameterTest );
+        ADD_TEST( framework, function_pool::Invert2ParametersTest );
+        ADD_TEST( framework, function_pool::Invert5ParametersTest );
+        ADD_TEST( framework, function_pool::Invert8ParametersTest );
+
+        ADD_TEST( framework, function_pool::IsEqual2ParametersTest );
+        ADD_TEST( framework, function_pool::IsEqual8ParametersTest );
+
+        ADD_TEST( framework, function_pool::LookupTable2ParametersTest );
+        ADD_TEST( framework, function_pool::LookupTable3ParametersTest );
+        ADD_TEST( framework, function_pool::LookupTable6ParametersTest );
+        ADD_TEST( framework, function_pool::LookupTable9ParametersTest );
+
+        ADD_TEST( framework, function_pool::Maximum2ParametersTest );
+        ADD_TEST( framework, function_pool::Maximum3ParametersTest );
+        ADD_TEST( framework, function_pool::Maximum8ParametersTest );
+        ADD_TEST( framework, function_pool::Maximum11ParametersTest );
+
+        ADD_TEST( framework, function_pool::Minimum2ParametersTest );
+        ADD_TEST( framework, function_pool::Minimum3ParametersTest );
+        ADD_TEST( framework, function_pool::Minimum8ParametersTest );
+        ADD_TEST( framework, function_pool::Minimum11ParametersTest );
+
+        ADD_TEST( framework, function_pool::Resize2ParametersTest );
+        ADD_TEST( framework, function_pool::Resize3ParametersTest );
+        ADD_TEST( framework, function_pool::Resize7ParametersTest );
+        ADD_TEST( framework, function_pool::Resize9ParametersTest );
+
+        ADD_TEST( framework, function_pool::Subtract2ParametersTest );
+        ADD_TEST( framework, function_pool::Subtract3ParametersTest );
+        ADD_TEST( framework, function_pool::Subtract8ParametersTest );
+        ADD_TEST( framework, function_pool::Subtract11ParametersTest );
+
+        ADD_TEST( framework, function_pool::Sum1ParameterTest );
+        ADD_TEST( framework, function_pool::Sum5ParametersTest );
+
+        ADD_TEST( framework, function_pool::Threshold2ParametersTest );
+        ADD_TEST( framework, function_pool::Threshold3ParametersTest );
+        ADD_TEST( framework, function_pool::Threshold6ParametersTest );
+        ADD_TEST( framework, function_pool::Threshold9ParametersTest );
+
+        ADD_TEST( framework, function_pool::ThresholdDouble3ParametersTest );
+        ADD_TEST( framework, function_pool::ThresholdDouble4ParametersTest );
+        ADD_TEST( framework, function_pool::ThresholdDouble7ParametersTest );
+        ADD_TEST( framework, function_pool::ThresholdDouble10ParametersTest );
     }
 }

@@ -6,121 +6,7 @@
 
 namespace Unit_Test
 {
-    void addTests_Image_Function( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, Image_Function_Test::AbsoluteDifference2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::AbsoluteDifference3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::AbsoluteDifference8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::AbsoluteDifference11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Accumulate2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Accumulate6ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::BitwiseAnd2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseAnd3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseAnd8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseAnd11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::BitwiseOr2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseOr3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseOr8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseOr11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::BitwiseXor2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseXor3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseXor8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::BitwiseXor11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToGrayScale8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::ConvertToRgb1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToRgb2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToRgb5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ConvertToRgb8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Copy2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Copy5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Copy8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Fill2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Fill6ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::GammaCorrection3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::GammaCorrection4ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::GammaCorrection7ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::GammaCorrection10ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Histogram1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::Histogram2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Histogram4ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Histogram5ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Invert1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::Invert2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Invert5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Invert8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::IsEqual2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::IsEqual8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::LookupTable2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::LookupTable3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::LookupTable6ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::LookupTable9ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Maximum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Maximum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Maximum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Maximum11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Minimum2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Minimum3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Minimum8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Minimum11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Normalize1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::Normalize2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Normalize5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Normalize8ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::ProjectionProfile2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ProjectionProfile3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ProjectionProfile6ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ProjectionProfile7ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Resize2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Resize3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Resize7ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Resize9ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Subtract2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Subtract3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Subtract8ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Subtract11ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Sum1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::Sum5ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Threshold2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Threshold3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Threshold6ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Threshold9ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::ThresholdDouble3ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ThresholdDouble4ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ThresholdDouble7ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::ThresholdDouble10ParametersTest );
-
-        ADD_TEST( framework, Image_Function_Test::Transpose1ParameterTest );
-        ADD_TEST( framework, Image_Function_Test::Transpose2ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Transpose5ParametersTest );
-        ADD_TEST( framework, Image_Function_Test::Transpose8ParametersTest );
-    }
-
-    namespace Image_Function_Test
+    namespace image_function
     {
         bool AbsoluteDifference2ParametersTest()
         {
@@ -1965,5 +1851,119 @@ namespace Unit_Test
 
             return true;
         }
+    }
+
+    void addTests_Image_Function( UnitTestFramework & framework )
+    {
+        ADD_TEST( framework, image_function::AbsoluteDifference2ParametersTest );
+        ADD_TEST( framework, image_function::AbsoluteDifference3ParametersTest );
+        ADD_TEST( framework, image_function::AbsoluteDifference8ParametersTest );
+        ADD_TEST( framework, image_function::AbsoluteDifference11ParametersTest );
+
+        ADD_TEST( framework, image_function::Accumulate2ParametersTest );
+        ADD_TEST( framework, image_function::Accumulate6ParametersTest );
+
+        ADD_TEST( framework, image_function::BitwiseAnd2ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseAnd3ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseAnd8ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseAnd11ParametersTest );
+
+        ADD_TEST( framework, image_function::BitwiseOr2ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseOr3ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseOr8ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseOr11ParametersTest );
+
+        ADD_TEST( framework, image_function::BitwiseXor2ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseXor3ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseXor8ParametersTest );
+        ADD_TEST( framework, image_function::BitwiseXor11ParametersTest );
+
+        ADD_TEST( framework, image_function::ConvertToGrayScale1ParameterTest );
+        ADD_TEST( framework, image_function::ConvertToGrayScale2ParametersTest );
+        ADD_TEST( framework, image_function::ConvertToGrayScale5ParametersTest );
+        ADD_TEST( framework, image_function::ConvertToGrayScale8ParametersTest );
+
+        ADD_TEST( framework, image_function::ConvertToRgb1ParameterTest );
+        ADD_TEST( framework, image_function::ConvertToRgb2ParametersTest );
+        ADD_TEST( framework, image_function::ConvertToRgb5ParametersTest );
+        ADD_TEST( framework, image_function::ConvertToRgb8ParametersTest );
+
+        ADD_TEST( framework, image_function::Copy2ParametersTest );
+        ADD_TEST( framework, image_function::Copy5ParametersTest );
+        ADD_TEST( framework, image_function::Copy8ParametersTest );
+
+        ADD_TEST( framework, image_function::Fill2ParametersTest );
+        ADD_TEST( framework, image_function::Fill6ParametersTest );
+
+        ADD_TEST( framework, image_function::GammaCorrection3ParametersTest );
+        ADD_TEST( framework, image_function::GammaCorrection4ParametersTest );
+        ADD_TEST( framework, image_function::GammaCorrection7ParametersTest );
+        ADD_TEST( framework, image_function::GammaCorrection10ParametersTest );
+
+        ADD_TEST( framework, image_function::Histogram1ParameterTest );
+        ADD_TEST( framework, image_function::Histogram2ParametersTest );
+        ADD_TEST( framework, image_function::Histogram4ParametersTest );
+        ADD_TEST( framework, image_function::Histogram5ParametersTest );
+
+        ADD_TEST( framework, image_function::Invert1ParameterTest );
+        ADD_TEST( framework, image_function::Invert2ParametersTest );
+        ADD_TEST( framework, image_function::Invert5ParametersTest );
+        ADD_TEST( framework, image_function::Invert8ParametersTest );
+
+        ADD_TEST( framework, image_function::IsEqual2ParametersTest );
+        ADD_TEST( framework, image_function::IsEqual8ParametersTest );
+
+        ADD_TEST( framework, image_function::LookupTable2ParametersTest );
+        ADD_TEST( framework, image_function::LookupTable3ParametersTest );
+        ADD_TEST( framework, image_function::LookupTable6ParametersTest );
+        ADD_TEST( framework, image_function::LookupTable9ParametersTest );
+
+        ADD_TEST( framework, image_function::Maximum2ParametersTest );
+        ADD_TEST( framework, image_function::Maximum3ParametersTest );
+        ADD_TEST( framework, image_function::Maximum8ParametersTest );
+        ADD_TEST( framework, image_function::Maximum11ParametersTest );
+
+        ADD_TEST( framework, image_function::Minimum2ParametersTest );
+        ADD_TEST( framework, image_function::Minimum3ParametersTest );
+        ADD_TEST( framework, image_function::Minimum8ParametersTest );
+        ADD_TEST( framework, image_function::Minimum11ParametersTest );
+
+        ADD_TEST( framework, image_function::Normalize1ParameterTest );
+        ADD_TEST( framework, image_function::Normalize2ParametersTest );
+        ADD_TEST( framework, image_function::Normalize5ParametersTest );
+        ADD_TEST( framework, image_function::Normalize8ParametersTest );
+
+        ADD_TEST( framework, image_function::ProjectionProfile2ParametersTest );
+        ADD_TEST( framework, image_function::ProjectionProfile3ParametersTest );
+        ADD_TEST( framework, image_function::ProjectionProfile6ParametersTest );
+        ADD_TEST( framework, image_function::ProjectionProfile7ParametersTest );
+
+        ADD_TEST( framework, image_function::Resize2ParametersTest );
+        ADD_TEST( framework, image_function::Resize3ParametersTest );
+        ADD_TEST( framework, image_function::Resize7ParametersTest );
+        ADD_TEST( framework, image_function::Resize9ParametersTest );
+
+        ADD_TEST( framework, image_function::Subtract2ParametersTest );
+        ADD_TEST( framework, image_function::Subtract3ParametersTest );
+        ADD_TEST( framework, image_function::Subtract8ParametersTest );
+        ADD_TEST( framework, image_function::Subtract11ParametersTest );
+
+        ADD_TEST( framework, image_function::Sum1ParameterTest );
+        ADD_TEST( framework, image_function::Sum5ParametersTest );
+
+        ADD_TEST( framework, image_function::Threshold2ParametersTest );
+        ADD_TEST( framework, image_function::Threshold3ParametersTest );
+        ADD_TEST( framework, image_function::Threshold6ParametersTest );
+        ADD_TEST( framework, image_function::Threshold9ParametersTest );
+
+        ADD_TEST( framework, image_function::ThresholdDouble3ParametersTest );
+        ADD_TEST( framework, image_function::ThresholdDouble4ParametersTest );
+        ADD_TEST( framework, image_function::ThresholdDouble7ParametersTest );
+        ADD_TEST( framework, image_function::ThresholdDouble10ParametersTest );
+
+        ADD_TEST( framework, image_function::Transpose1ParameterTest );
+        ADD_TEST( framework, image_function::Transpose2ParametersTest );
+        ADD_TEST( framework, image_function::Transpose5ParametersTest );
+        ADD_TEST( framework, image_function::Transpose8ParametersTest );
     }
 }
