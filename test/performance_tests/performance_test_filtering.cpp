@@ -4,7 +4,7 @@
 
 namespace
 {
-    std::pair < double, double > MedianFilter( uint32_t size )
+    std::pair < double, double > MedianFilter3x3( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
 
@@ -15,6 +15,42 @@ namespace
             timer.start();
 
             Image_Function::Filtering::Median( input, output, 3 );
+
+            timer.stop();
+        }
+
+        return timer.mean();
+    }
+
+    std::pair < double, double > PrewittFilter( uint32_t size )
+    {
+        Performance_Test::TimerContainer timer;
+
+        Bitmap_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
+        Bitmap_Image::Image output( input.width(), input.height() );
+
+        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
+            timer.start();
+
+            Image_Function::Filtering::Prewitt( input, output );
+
+            timer.stop();
+        }
+
+        return timer.mean();
+    }
+
+    std::pair < double, double > SobelFilter( uint32_t size )
+    {
+        Performance_Test::TimerContainer timer;
+
+        Bitmap_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
+        Bitmap_Image::Image output( input.width(), input.height() );
+
+        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
+            timer.start();
+
+            Image_Function::Filtering::Sobel( input, output );
 
             timer.stop();
         }
@@ -42,7 +78,9 @@ DECLARE_FUNCTION( function, size4 )
 
 namespace filtering
 {
-    SET_FUNCTION( MedianFilter )
+    SET_FUNCTION( MedianFilter3x3 )
+    SET_FUNCTION( PrewittFilter   )
+    SET_FUNCTION( SobelFilter     )
 }
 
 #define ADD_FUNCTIONS( framework, function, size1, size2, size3, size4 )               \
@@ -57,6 +95,8 @@ namespace Performance_Test
 {
     void addTests_Filtering( PerformanceTestFramework & framework )
     {
-        ADD_TEST_FUNCTION( framework, MedianFilter )
+        ADD_TEST_FUNCTION( framework, MedianFilter3x3 )
+        ADD_TEST_FUNCTION( framework, PrewittFilter   )
+        ADD_TEST_FUNCTION( framework, SobelFilter     )
     }
 }
