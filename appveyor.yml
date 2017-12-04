@@ -1,0 +1,30 @@
+# version format
+version: 1.0.{build}
+
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+# build configuration, i.e. Debug, Release, etc.
+configuration: Release
+
+platform:
+  - x64
+  - x86
+
+# clone directory
+clone_folder: C:\projects\penguinv
+
+# scripts to run before build
+before_build:
+  - cmd: cd C:\projects\penguinv\test
+
+build_script:
+  - msbuild unit_tests\unit_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+  - msbuild performance_tests\performance_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+
+before_test:
+  - cd unit_tests
+  - if "%platform%" == "x64" cd x64
+
+test_script:
+  - cmd: Release\unit_tests.exe
