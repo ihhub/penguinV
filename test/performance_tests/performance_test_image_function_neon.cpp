@@ -181,25 +181,18 @@ namespace
 }
 #endif
 
-// Function naming: function_name_(image_size)
-#define CONVERT_PARAMETER( parameter ) _##parameter
-
-#define DECLARE_FUNCTION( function, size )                                        \
-std::pair < double, double > CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)() \
-{                                                                                 \
-    return function( size );                                                      \
+// Function naming: _functionName_imageSize
+#define SET_FUNCTION( function )                                      \
+namespace neon_##function                                             \
+{                                                                     \
+    std::pair < double, double > _256 () { return function( 256  ); } \
+    std::pair < double, double > _512 () { return function( 512  ); } \
+    std::pair < double, double > _1024() { return function( 1024 ); } \
+    std::pair < double, double > _2048() { return function( 2048 ); } \
 }
 
-#define DECLARE_FUNCTIONS( function, size1, size2, size3, size4 ) \
-DECLARE_FUNCTION( function, size1 )                               \
-DECLARE_FUNCTION( function, size2 )                               \
-DECLARE_FUNCTION( function, size3 )                               \
-DECLARE_FUNCTION( function, size4 )
-
-#define SET_FUNCTION( function ) DECLARE_FUNCTIONS( function, 256, 512, 1024, 2048 );
-
 #ifdef PENGUINV_NEON_SET
-namespace neon
+namespace
 {
     SET_FUNCTION( AbsoluteDifference )
     SET_FUNCTION( BitwiseAnd         )
@@ -214,13 +207,11 @@ namespace neon
 }
 #endif
 
-#define ADD_FUNCTIONS( framework, function, size1, size2, size3, size4 )         \
-ADD_TEST( framework, neon::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size1) ); \
-ADD_TEST( framework, neon::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size2) ); \
-ADD_TEST( framework, neon::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size3) ); \
-ADD_TEST( framework, neon::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size4) );
-
-#define ADD_TEST_FUNCTION( framework, function ) ADD_FUNCTIONS( framework, function, 256, 512, 1024, 2048 )
+#define ADD_TEST_FUNCTION( framework, function ) \
+ADD_TEST( framework, neon_##function::_256 );    \
+ADD_TEST( framework, neon_##function::_512 );    \
+ADD_TEST( framework, neon_##function::_1024 );   \
+ADD_TEST( framework, neon_##function::_2048 );
 
 namespace Performance_Test
 {
