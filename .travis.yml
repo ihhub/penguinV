@@ -12,7 +12,7 @@ os:
   - osx
 
 script:
-  - cd tests/performance_tests
+  - cd test/performance_tests
   - make
   - ../unit_tests
   - make
