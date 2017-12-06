@@ -36,9 +36,9 @@ namespace
                 sigma = sqrt( (sumSquare / (data.size()) - mean * mean) * (data.size()) / (data.size() - 1) );
 
                 double maximumValue = 0;
-                std::vector < double >::const_iterator maximumPosition = data.begin();
+                std::vector < double >::iterator maximumPosition = data.begin();
 
-                for( std::vector < double >::const_iterator v = data.begin(); v != data.end(); ++v ) {
+                for( std::vector < double >::iterator v = data.begin(); v != data.end(); ++v ) {
                     double value = fabs( (*v) - mean );
 
                     if( maximumValue < value ) {

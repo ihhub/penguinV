@@ -14,7 +14,7 @@ os:
 script:
   - cd test/performance_tests
   - make
-  - ../unit_tests
+  - cd ../unit_tests
   - make
 
 after_script: ./unit_tests
