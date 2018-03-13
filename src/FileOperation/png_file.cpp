@@ -6,7 +6,6 @@
     #include <png.h>
 #endif
 
-#include <vector>
 #include "png_file.h"
 #include "../image_exception.h"
 

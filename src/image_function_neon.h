@@ -4,7 +4,6 @@
 
 #ifdef PENGUINV_NEON_SET
 
-#include <vector>
 #include "image_buffer.h"
 
 // Utilize these image functions only if your CPU is ARM with NEON intructions support!!!
