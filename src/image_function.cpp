@@ -1434,16 +1434,21 @@ namespace Image_Function
 
         uint32_t idY = 0;
 
+        // Precalculation of X position
+        std::vector < uint32_t > positionX( widthOut );
+        for( uint32_t x = 0; x < widthOut; ++x )
+            positionX[x] = x * widthIn / widthOut;
+
         for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
             const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + widthOut;
 
-            uint32_t idX = 0;
+            const uint32_t * idX = positionX.data();
 
             for( ; outX != outXEnd; ++outX, ++idX )
-                (*outX) = *(inX + idX * widthIn / widthOut);
+                (*outX) = *(inX + (*idX));
         }
     }
 
