@@ -10,4 +10,4 @@ CUDA is a GPGPU technology from NVidia, which allows to perform computations wit
 
 API description
 ---------------------------
-Please refer to file **API_description.md** for full description of API.
+Please refer to file **API_description.md** which located in ```doc/cuda``` directory for full description of API.
