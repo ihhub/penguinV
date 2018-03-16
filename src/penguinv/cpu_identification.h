@@ -65,7 +65,7 @@
 
 #ifdef PENGUINV_AVX_SET
     #ifndef PENGUINV_SSE_SET
-        #error "Non of available processor cannot support only AVX without SSE support. Please check SIMD instruction set verification code"
+        #error "None of existing processors can support AVX but not SSE. Please check SIMD instruction set verification code"
     #endif
 #endif
 
