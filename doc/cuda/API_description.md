@@ -306,7 +306,125 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **Copy** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	void Copy(
+		const Image & in,
+		Image & out
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Copies image data from input to out image.
 	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **ExtractChannel** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	Image ExtractChannel(
+		const Image & in,
+		uint8_t channelId
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Extracts one channel image from color image and returns a gray-scale image with the same size as a result.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void  ExtractChannel(
+		const Image & in,
+		Image & out,
+		uint8_t channelId
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Extracts one channel image from color image and put result into a gray-scale image with the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image    
+	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **Fill** [_Namespaces: **Image_Function_Cuda**_]
+	
+	##### Syntax:
+	```cpp
+	void Fill(
+		Image & image,
+		uint8_t value
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Sets in all pixels of an image a specified value.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image      
+	&nbsp;&nbsp;&nbsp;&nbsp;value - value to set    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **Flip** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	Image Flip(
+		const Image & in,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips image in one or both directions and returns result image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Flip(
+		const Image & in,
+		Image & out,
+		bool horizontal,
+		bool vertical
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Flips image in one or both directions and puts result into second image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which in a result of image flipping. Height and width of result image are the same as of input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - specificator to set flip relatively to Y axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
 - **GammaCorrection** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
@@ -348,7 +466,58 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **GetThreshold** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	uint8_t GetThreshold(
+		const std::vector < uint32_t > & histogram
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Returns optimal threshold value between background and foreground.
 	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image histogram    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception imageException is raised.
+
+- **Histogram** [_Namespaces: **Image_Function_Cuda**_]
+
+	##### Syntax:
+	```cpp
+	std::vector < uint32_t > Histogram(
+		const Image & image
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a histogram of pixel intensities of image and return an array what is a histogram with fixed size of 256 elements.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;array as a histogram of pixel intensities. If the function fails exception imageException is raised.
+		
+	##### Syntax:
+	```cpp
+	void Histogram(
+		const Image & image,
+		std::vector < uint32_t > & histogram
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Calculates a histogram of pixel intensities of image and stores result into output array with fixed size of 256 elements. No requirement that an array (vector) must be resized before calling this function.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;histogram - an array what is histogram of pixel intensities    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
 - **Invert** [_Namespaces: **Image_Function_Cuda**_]
 
 	##### Syntax:
