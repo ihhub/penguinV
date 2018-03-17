@@ -3,6 +3,7 @@
 #include <vector>
 #include "bitmap.h"
 #include "../image_exception.h"
+#include "../parameter_validation.h"
 
 namespace Bitmap_Operation
 {

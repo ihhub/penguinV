@@ -1,6 +1,7 @@
 #include <math.h>
 #include "filtering.h"
 #include "image_function.h"
+#include "parameter_validation.h"
 
 namespace Image_Function
 {

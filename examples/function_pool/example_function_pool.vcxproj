@@ -158,6 +158,7 @@
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\image_function_avx.h" />
     <ClInclude Include="..\..\src\image_function_sse.h" />
+	<ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />

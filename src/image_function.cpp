@@ -1,5 +1,6 @@
 #include <cmath>
 #include "image_function.h"
+#include "parameter_validation.h"
 
 namespace
 {

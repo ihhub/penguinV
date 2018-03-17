@@ -8,6 +8,7 @@
 
 #include "png_file.h"
 #include "../image_exception.h"
+#include "../parameter_validation.h"
 
 namespace Png_Operation
 {

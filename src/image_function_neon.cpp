@@ -1,4 +1,5 @@
 #include "image_function_neon.h"
+#include "parameter_validation.h"
 
 #ifdef PENGUINV_NEON_SET
 

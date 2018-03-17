@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\..\src\cuda\image_function_cuda.cuh" />
     <ClInclude Include="..\..\..\src\image_function.h" />
+    <ClInclude Include="..\..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cuh" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_memory.cuh" />

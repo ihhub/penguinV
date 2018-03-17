@@ -3,6 +3,7 @@
 #include "filtering_cuda.cuh"
 #include "../image_buffer.h"
 #include "../image_exception.h"
+#include "../parameter_validation.h"
 
 namespace Image_Function_Cuda
 {

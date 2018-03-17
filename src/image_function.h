@@ -5,6 +5,8 @@
 
 namespace Image_Function
 {
+    using namespace Bitmap_Image;
+
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
     Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

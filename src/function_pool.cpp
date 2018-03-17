@@ -1,4 +1,5 @@
 #include "function_pool.h"
+#include "parameter_validation.h"
 #include "thread_pool.h"
 #include "penguinv/penguinv.h"
 

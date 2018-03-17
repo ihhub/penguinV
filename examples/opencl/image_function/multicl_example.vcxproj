@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\FileOperation\bitmap.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
+	<ClInclude Include="..\..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\..\src\opencl\image_buffer_opencl.h" />
     <ClInclude Include="..\..\..\src\opencl\image_function_opencl.h" />
     <ClInclude Include="..\..\..\src\thirdparty\multicl\src\opencl_device.h" />

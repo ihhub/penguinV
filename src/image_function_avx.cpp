@@ -1,4 +1,5 @@
 #include "image_function_avx.h"
+#include "parameter_validation.h"
 
 #ifdef PENGUINV_AVX_SET
 

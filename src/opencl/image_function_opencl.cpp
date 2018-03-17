@@ -2,6 +2,7 @@
 #include "../thirdparty/multicl/src/opencl_device.h"
 #include "../thirdparty/multicl/src/opencl_helper.h"
 #include "image_function_opencl.h"
+#include "../parameter_validation.h"
 
 namespace
 {

@@ -6,6 +6,7 @@
 #include <raspicam/raspicam.h>
 #include "../../src/image_function.h"
 #include "../../src/blob_detection.h"
+#include "../../src/parameter_validation.h"
 
 void ExtractGreen( const Bitmap_Image::Image & red, const Bitmap_Image::Image & green,
                    const Bitmap_Image::Image & blue, Bitmap_Image::Image & out, double coeff );

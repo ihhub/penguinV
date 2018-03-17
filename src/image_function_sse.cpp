@@ -1,4 +1,5 @@
 #include "image_function_sse.h"
+#include "parameter_validation.h"
 
 #ifdef PENGUINV_SSE_SET
 

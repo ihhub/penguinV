@@ -3,6 +3,7 @@
 #include <numeric>
 #include <queue>
 #include "blob_detection.h"
+#include "parameter_validation.h"
 
 namespace
 {

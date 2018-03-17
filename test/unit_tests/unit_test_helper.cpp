@@ -1,6 +1,7 @@
 #include "unit_test_helper.h"
 #include "../../src/image_exception.h"
 #include "../../src/image_function.h"
+#include "../../src/parameter_validation.h"
 
 namespace
 {
