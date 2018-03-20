@@ -36,6 +36,9 @@ Contains basic functions for image processing for CPUs with ***NEON*** support.
 **Image_Function_Sse**    
 Contains basic functions for image processing for CPUs with ***SSE 2*** support.    
 
+**Image_Function_Cuda**    
+Contains basic functions for image processing on GPU using ***CUDA***.    
+
 **Template_Image**    
 Includes only one template class ***ImageTemplate*** which is the main class for image buffer classes.    
 
@@ -51,7 +54,7 @@ Contains classes for multithreading using thread pool:
 
 All images in function parameter list must have width and height greater than 0 otherwise an exception imageException is raised.
 
-- **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -197,7 +200,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
-- **BitwiseAnd** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **BitwiseAnd** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -299,7 +302,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 
-- **BitwiseOr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **BitwiseOr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -401,7 +404,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
-- **BitwiseXor** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **BitwiseXor** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -543,7 +546,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
 	
-- **ConvertToGrayScale** [_Namespaces: **Function_Pool, Image_Function**_]
+- **ConvertToGrayScale** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 	
 	##### Syntax:
 	```cpp
@@ -629,7 +632,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function**_]
+- **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -715,7 +718,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **Copy** [_Namespaces: **Image_Function**_]
+- **Copy** [_Namespaces: **Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -786,7 +789,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ExtractChannel** [_Namespaces: **Function_Pool, Image_Function**_]
+- **ExtractChannel** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -880,7 +883,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Fill** [_Namespaces: **Image_Function**_]
+- **Fill** [_Namespaces: **Image_Function, Image_Function_Cuda**_]
 	
 	##### Syntax:
 	```cpp
@@ -924,7 +927,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Flip** [_Namespaces: **Image_Function**_]
+- **Flip** [_Namespaces: **Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1026,7 +1029,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **GammaCorrection** [_Namespaces: **Function_Pool, Image_Function**_]
+- **GammaCorrection** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1149,7 +1152,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;pixel intensity value. If the function fails exception imageException is raised.
 
-- **GetThreshold** [_Namespaces: **Image_Function**_]
+- **GetThreshold** [_Namespaces: **Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1166,7 +1169,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception imageException is raised.
 		
-- **Histogram** [_Namespaces: **Function_Pool, Image_Function**_]
+- **Histogram** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1248,7 +1251,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **Invert** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse**_]
+- **Invert** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1434,7 +1437,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **LookupTable** [_Namespaces: **Function_Pool, Image_Function**_]
+- **LookupTable** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1528,7 +1531,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Maximum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **Maximum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -1842,7 +1845,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Minimum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **Minimum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -2632,7 +2635,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Subtract** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **Subtract** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
@@ -2774,7 +2777,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
 	
-- **Threshold** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse**_]
+- **Threshold** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Avx, Image_Function_Neon, Image_Function_Sse, Image_Function_Cuda**_]
 
 	##### Syntax:
 	```cpp
