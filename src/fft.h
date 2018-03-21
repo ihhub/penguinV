@@ -6,7 +6,7 @@
 
 namespace FFT
 {
-    // This class store complex ([Re, Im]) data in GPU memory
+    // This class store complex ([real, imaginary]) data in CPU memory
     // It is used for Fast Fourier Transform
     class ComplexData
     {
@@ -31,7 +31,7 @@ namespace FFT
         void resize( uint32_t width_, uint32_t height_ );
 
         kiss_fft_cpx * data(); // returns a pointer to data
-        const kiss_fft_cpx * data() const; // returns to data
+        const kiss_fft_cpx * data() const;
         uint32_t width() const; // width of array
         uint32_t height() const; // height of array
         bool empty() const; // returns true is array is empty (unullocated)
@@ -47,9 +47,9 @@ namespace FFT
         void _swap( ComplexData & data );
     };
 
-    // The class for FFT commands execution like:
-    // conversion from original domain of data to frequence domain and vice versa,
-    // complex multiplication in frequency domain (convolution)
+    // The class for FFT command execution:
+    // - conversion from original domain of data to frequency domain and vice versa
+    // - complex multiplication in frequency domain (convolution)
     class FFTExecutor
     {
     public:
