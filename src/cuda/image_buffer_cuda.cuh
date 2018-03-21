@@ -192,7 +192,7 @@ namespace Template_Image_Cuda
 
         TColorDepth * _data;
     };
-};
+}
 
 namespace Bitmap_Image_Cuda
 {
@@ -252,4 +252,4 @@ namespace Bitmap_Image_Cuda
         {
         }
     };
-};
+}
