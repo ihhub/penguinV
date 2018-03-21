@@ -8,23 +8,21 @@ penguinV
 PenguinV is a simple and easy to use C++ image processing library. It is designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
 
 - compactness
-- multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
-- exception-based code
 - optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
 - cross-platform
-- functions can perform processing on separate image parts (no need to make a copy of image for area on what you want to do something, just set area parameters)
+- functions can perform processing on separate part (region of interest) of images
+- multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
 - user-defined image types support (you can create your own image types and image functions [See API description, ImageTemplate class])
 
 At the current stage of development library does not have some features but we are intending to introduce them very soon:
-- better support of CUDA and OpenCL
-- more basic functions and their implementations by SSE, AVX, NEON
-- color space conversions
+- better support of CUDA, OpenCL, SSE, AVX, NEON
+- experimental heterogeneous system architecture
 
 The library does **NOT** have it's own image displaying code but you can refer to QT example.
 
 Requirements
 ---------------------------
-To compile the source code your compiler must support at least **C++ 11** version. Minimum required version of Microsoft Visual Studio [without AVX 2.0 support and thread pool] is VS 2010.
+To compile the source code your compiler must support at least **C++ 11** version.
 
 How to install
 ---------------------------
