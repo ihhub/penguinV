@@ -7,14 +7,23 @@ addons:
     packages:
       - libpng-dev
 
-os:
-  - linux
-  - osx
+matrix:
+  include:
+    - os: linux
+      env: CUDA=8.0.61-1
+    - os: osx
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
 
 script:
   - cd test/performance_tests
   - make
   - cd ../unit_tests
   - make
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd cuda; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
 
 after_script: ./unit_tests
+
