@@ -620,6 +620,189 @@ namespace Unit_Test
             return true;
         }
 
+        bool Flip3ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+                const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const uint32_t xCorrection = input.width() % 2;
+                const uint32_t yCorrection = input.height() % 2;
+
+                if (verticalFlip)
+                {
+                    if (input.height() > 1)
+                        Image_Function::Fill(input, 0, 0, input.width(), input.height() / 2, intensity[1]);
+                }
+                else if (horizontalFlip)
+                {
+                    if (input.width() > 1)
+                        Image_Function::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
+                }
+
+                Bitmap_Image::Image output = Image_Function::Flip( input, horizontalFlip, verticalFlip );
+
+                if( !equalSize( output, input.width(), input.height() ))
+                    return false;
+
+                if (verticalFlip) {
+                    if( !verifyImage( output, 0, 0, input.width(), input.height() / 2 + yCorrection, intensity[0] ) )
+                        return false;
+                    if((input.height() > 1) && !verifyImage( output, 0, input.height() / 2 + yCorrection, input.width(), input.height() / 2, intensity[1] ) )
+                        return false;
+                }
+                else {
+                    if( !verifyImage( output, 0, 0, input.width() / 2 + xCorrection, input.height(), intensity[0] ) )
+                        return false;
+                    if((input.width() > 1) && !verifyImage( output, input.width() / 2 + xCorrection, 0, input.width() / 2, input.height(), intensity[horizontalFlip ? 1 : 0] ) )
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool Flip4ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                uint8_t intensityFill = intensityValue();
+                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+
+                const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const uint32_t xCorrection = input[0].width() % 2;
+                const uint32_t yCorrection = input[0].height() % 2;
+
+                if (verticalFlip)
+                {
+                    if (input[0].height() > 1)
+                        Image_Function::Fill(input[0], 0, 0, input[0].width(), input[0].height() / 2, intensityFill);
+                }
+                else if (horizontalFlip)
+                {
+                    if (input[0].width() > 1)
+                        Image_Function::Fill(input[0], 0, 0, input[0].width() / 2, input[0].height(), intensityFill);
+                }
+
+                Image_Function::Flip( input[0], input[1], horizontalFlip, verticalFlip );
+
+                if (verticalFlip) {
+                    if( !verifyImage( input[1], 0, 0, input[1].width(), input[1].height() / 2 + yCorrection, intensity[0] ) )
+                        return false;
+                    if((input[0].height() > 1) && !verifyImage( input[1], 0, input[1].height() / 2 + yCorrection, input[1].width(), input[1].height() / 2, intensityFill ) )
+                        return false;
+                }
+                else {
+                    if( !verifyImage( input[1], 0, 0, input[1].width() / 2 + xCorrection, input[1].height(), intensity[0] ) )
+                        return false;
+                    if((input[0].width() > 1) && !verifyImage( input[1], input[1].width() / 2 + xCorrection, 0, input[1].width() / 2, input[1].height(), horizontalFlip ? intensityFill : intensity[0] ) )
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool Flip7ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image input = uniformImage( intensity[0] );
+
+                uint32_t roiX, roiY, roiWidth, roiHeight;
+                generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+                const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const uint32_t xCorrection = roiWidth % 2;
+                const uint32_t yCorrection = roiHeight % 2;
+
+                if (verticalFlip)
+                {
+                    if (roiHeight > 1)
+                        Image_Function::Fill(input, roiX, roiY, roiWidth, roiHeight / 2, intensity[1]);
+                }
+                else if (horizontalFlip)
+                {
+                    if (roiWidth > 1)
+                        Image_Function::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
+                }
+
+                Bitmap_Image::Image output = Image_Function::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
+
+                if( !equalSize( output, roiWidth, roiHeight ))
+                    return false;
+
+                if (verticalFlip) {
+                    if( !verifyImage( output, 0, 0, roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
+                        return false;
+                    if((roiHeight > 1) && !verifyImage( output, 0, roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensity[1] ) )
+                        return false;
+                }
+                else {
+                    if( !verifyImage( output, 0, 0, roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
+                        return false;
+                    if((roiWidth > 1) && !verifyImage( output, roiWidth / 2 + xCorrection, 0, roiWidth / 2, roiHeight, intensity[horizontalFlip ? 1 : 0] ) )
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool Flip10ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                uint8_t intensityFill = intensityValue();
+                std::vector < Bitmap_Image::Image > image;
+
+                std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
+                { image.push_back( uniformImage( value ) ); } );
+
+                std::vector < uint32_t > roiX, roiY;
+                uint32_t roiWidth, roiHeight;
+
+                generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+                const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+                const uint32_t xCorrection = roiWidth % 2;
+                const uint32_t yCorrection = roiHeight % 2;
+
+                if (verticalFlip)
+                {
+                    if (roiHeight > 1)
+                        Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth, roiHeight / 2, intensityFill);
+                }
+                else if (horizontalFlip)
+                {
+                    if (roiWidth > 1)
+                        Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth / 2, roiHeight, intensityFill);
+                }
+
+                Image_Function::Flip( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, horizontalFlip, verticalFlip );
+
+                if (verticalFlip) {
+                    if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
+                        return false;
+                    if((roiHeight > 1) && !verifyImage( image[1], roiX[1], roiY[1] + roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensityFill ) )
+                        return false;
+                }
+                else {
+                    if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
+                        return false;
+                    if( (roiWidth > 1) && !verifyImage( image[1], roiX[1] + roiWidth / 2 + xCorrection, roiY[1], roiWidth / 2, roiHeight, horizontalFlip ? intensityFill : intensity[0] ) )
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         bool GammaCorrection3ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -1894,6 +2077,11 @@ namespace Unit_Test
 
         ADD_TEST( framework, image_function::Fill2ParametersTest );
         ADD_TEST( framework, image_function::Fill6ParametersTest );
+
+        ADD_TEST( framework, image_function::Flip3ParametersTest );
+        ADD_TEST( framework, image_function::Flip4ParametersTest );
+        ADD_TEST( framework, image_function::Flip7ParametersTest );
+        ADD_TEST( framework, image_function::Flip10ParametersTest );
 
         ADD_TEST( framework, image_function::GammaCorrection3ParametersTest );
         ADD_TEST( framework, image_function::GammaCorrection4ParametersTest );
