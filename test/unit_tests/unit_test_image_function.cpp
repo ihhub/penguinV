@@ -919,6 +919,24 @@ namespace Unit_Test
             return true;
         }
 
+        bool GetThreshold1ParameterTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                while (intensity[0] == intensity[1])
+                    intensity = intensityArray( 2 );
+
+                std::vector< uint32_t > histogram( 256u, 0);
+                ++histogram[intensity[0]];
+                ++histogram[intensity[1]];
+
+                if( Image_Function::GetThreshold(histogram) != std::min(intensity[0], intensity[1]) )
+                    return false;
+            }
+
+            return true;
+        }
+
         bool Histogram1ParameterTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -1676,6 +1694,47 @@ namespace Unit_Test
             return true;
         }
 
+        bool SetPixel4ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image image  = uniformImage( intensity[0] );
+                const uint32_t x = randomValue<uint32_t>( 0, image.width() );
+                const uint32_t y = randomValue<uint32_t>( 0, image.height() );
+
+                Image_Function::SetPixel( image, x, y, intensity[1] );
+
+                if( !verifyImage( image, x, y, 1, 1, intensity[1] ) )
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool SetPixelArray4ParametersTest()
+        {
+            for( uint32_t i = 0; i < runCount(); ++i ) {
+                std::vector < uint8_t > intensity = intensityArray( 2 );
+                Bitmap_Image::Image image  = uniformImage( intensity[0] );
+                std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
+                std::vector< uint32_t > Y( X.size() );
+                
+                for (size_t j = 0; j < X.size(); j++) {
+                    X[j] = randomValue<uint32_t>( 0, image.width() );
+                    Y[j] = randomValue<uint32_t>( 0, image.height() );
+                }
+
+                Image_Function::SetPixel( image, X, Y, intensity[1] );
+
+                for (size_t j = 0; j < X.size(); j++) {
+                    if( !verifyImage( image, X[j], Y[j], 1, 1, intensity[1] ) )
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
         bool Subtract2ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
@@ -2088,6 +2147,8 @@ namespace Unit_Test
         ADD_TEST( framework, image_function::GammaCorrection7ParametersTest );
         ADD_TEST( framework, image_function::GammaCorrection10ParametersTest );
 
+        ADD_TEST( framework, image_function::GetThreshold1ParameterTest );
+
         ADD_TEST( framework, image_function::Histogram1ParameterTest );
         ADD_TEST( framework, image_function::Histogram2ParametersTest );
         ADD_TEST( framework, image_function::Histogram4ParametersTest );
@@ -2130,6 +2191,9 @@ namespace Unit_Test
         ADD_TEST( framework, image_function::Resize3ParametersTest );
         ADD_TEST( framework, image_function::Resize7ParametersTest );
         ADD_TEST( framework, image_function::Resize9ParametersTest );
+
+        ADD_TEST( framework, image_function::SetPixel4ParametersTest );
+        ADD_TEST( framework, image_function::SetPixelArray4ParametersTest );
 
         ADD_TEST( framework, image_function::Subtract2ParametersTest );
         ADD_TEST( framework, image_function::Subtract3ParametersTest );
