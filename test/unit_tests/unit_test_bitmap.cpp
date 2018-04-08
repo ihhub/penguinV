@@ -14,8 +14,8 @@ namespace Unit_Test
 
             PenguinV_Image::Image loaded = Bitmap_Operation::Load( "white.bmp" );
 
-            if( original.height() != loaded.height() && original.width() != loaded.width() && original.alignment() != loaded.alignment() &&
-                original.colorCount() == loaded.colorCount() || !verifyImage( loaded, 255u ) )
+            if( original.height() != loaded.height() || original.width() != loaded.width() ||
+                original.colorCount() != loaded.colorCount() || !verifyImage( loaded, 255u ) )
                 return false;
 
             return true;
