@@ -5,7 +5,7 @@
 
 namespace Bitmap_Image_Cuda_Cpu
 {
-    class Image : public Bitmap_Image::Image
+    class Image : public PenguinV_Image::Image
     {
     public:
         Image()
@@ -47,7 +47,7 @@ namespace Bitmap_Image_Cuda_Cpu
 
         Image & operator=( const Image & image )
         {
-            Bitmap_Image::Image::operator=( image );
+            PenguinV_Image::Image::operator=( image );
 
             return (*this);
         }

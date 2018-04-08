@@ -47,14 +47,14 @@ void method1()
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
+    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
+    if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
@@ -69,14 +69,14 @@ void method2()
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    Bitmap_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
+    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if( image.colorCount() != Bitmap_Image::GRAY_SCALE )
+    if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold and directly save result in file

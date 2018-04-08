@@ -1,10 +1,10 @@
 #include "image_function_neon.h"
-#include "parameter_validation.h"
 
 #ifdef PENGUINV_NEON_SET
 
 #include <arm_neon.h>
 #include "image_function.h"
+#include "parameter_validation.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
 namespace
@@ -17,32 +17,18 @@ namespace Image_Function_Neon
 {
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2 );
     }
 
     void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2, out );
     }
 
     Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                               uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -99,32 +85,18 @@ namespace Image_Function_Neon
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
     }
 
     void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2, out );
     }
 
     Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -181,32 +153,18 @@ namespace Image_Function_Neon
 
     Image BitwiseOr( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2 );
     }
 
     void BitwiseOr( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2, out );
     }
 
     Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -263,32 +221,18 @@ namespace Image_Function_Neon
 
     Image BitwiseXor( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2 );
     }
 
     void BitwiseXor( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2, out );
     }
 
     Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -345,31 +289,17 @@ namespace Image_Function_Neon
 
     Image Invert( const Image & in )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in );
     }
 
     void Invert( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Invert( Invert, in, out );
     }
 
     Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Invert( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in, startXIn, startYIn, width, height );
     }
 
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -422,32 +352,18 @@ namespace Image_Function_Neon
 
     Image Maximum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, in2 );
     }
 
     void Maximum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Maximum( Maximum, in1, in2, out );
     }
 
     Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -508,32 +424,18 @@ namespace Image_Function_Neon
 
     Image Minimum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, in2 );
     }
 
     void Minimum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Minimum( Minimum, in1, in2, out );
     }
 
     Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -594,32 +496,18 @@ namespace Image_Function_Neon
 
     Image Subtract( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, in2 );
     }
 
     void Subtract( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Subtract( Subtract, in1, in2, out );
     }
 
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -682,31 +570,17 @@ namespace Image_Function_Neon
 
     Image Threshold( const Image & in, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, threshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, threshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, threshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -761,32 +635,18 @@ namespace Image_Function_Neon
 
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, minThreshold, maxThreshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,

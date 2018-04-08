@@ -447,7 +447,7 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
-    Image ConvertToCuda( const Bitmap_Image::Image & in )
+    Image ConvertToCuda( const PenguinV_Image::Image & in )
     {
         Image out( in.width(), in.height(), in.colorCount() );
 
@@ -456,7 +456,7 @@ namespace Image_Function_Cuda
         return out;
     }
 
-    void ConvertToCuda( const Bitmap_Image::Image & in, Image & out )
+    void ConvertToCuda( const PenguinV_Image::Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -480,16 +480,16 @@ namespace Image_Function_Cuda
         }
     }
 
-    Bitmap_Image::Image ConvertFromCuda( const Image & in )
+    PenguinV_Image::Image ConvertFromCuda( const Image & in )
     {
-        Bitmap_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
+        PenguinV_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
 
         ConvertFromCuda( in, out );
 
         return out;
     }
 
-    void ConvertFromCuda( const Image & in, Bitmap_Image::Image & out )
+    void ConvertFromCuda( const Image & in, PenguinV_Image::Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );

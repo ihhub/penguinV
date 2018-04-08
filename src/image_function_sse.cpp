@@ -1,10 +1,11 @@
 #include "image_function_sse.h"
-#include "parameter_validation.h"
 
 #ifdef PENGUINV_SSE_SET
 
 #include <emmintrin.h>
 #include "image_function.h"
+#include "image_function_helper.h"
+#include "parameter_validation.h"
 
 // This unnamed namespace contains all necessary information to reduce bugs in SIMD function writing
 namespace
@@ -20,32 +21,18 @@ namespace Image_Function_Sse
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2 );
     }
 
     void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2, out );
     }
 
     Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                               uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -105,32 +92,18 @@ namespace Image_Function_Sse
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
     }
 
     void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2, out );
     }
 
     Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -187,32 +160,18 @@ namespace Image_Function_Sse
 
     Image BitwiseOr( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2 );
     }
 
     void BitwiseOr( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2, out );
     }
 
     Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -269,32 +228,18 @@ namespace Image_Function_Sse
 
     Image BitwiseXor( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2 );
     }
 
     void BitwiseXor( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2, out );
     }
 
     Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -351,31 +296,17 @@ namespace Image_Function_Sse
 
     Image Invert( const Image & in )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in );
     }
 
     void Invert( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Invert( Invert, in, out );
     }
 
     Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Invert( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in, startXIn, startYIn, width, height );
     }
 
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -405,7 +336,7 @@ namespace Image_Function_Sse
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-        const char maskValue = 0xffu;
+        const char maskValue = static_cast<char>(0xffu);
         const simd mask = _mm_set_epi8( maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                                         maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
@@ -432,32 +363,18 @@ namespace Image_Function_Sse
 
     Image Maximum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, in2 );
     }
 
     void Maximum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Maximum( Maximum, in1, in2, out );
     }
 
     Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -518,32 +435,18 @@ namespace Image_Function_Sse
 
     Image Minimum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, in2 );
     }
 
     void Minimum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Minimum( Minimum, in1, in2, out );
     }
 
     Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -604,32 +507,18 @@ namespace Image_Function_Sse
 
     Image Subtract( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, in2 );
     }
 
     void Subtract( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Subtract( Subtract, in1, in2, out );
     }
 
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -752,31 +641,17 @@ namespace Image_Function_Sse
 
     Image Threshold( const Image & in, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, threshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, threshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, threshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -806,11 +681,11 @@ namespace Image_Function_Sse
             const uint32_t totalSimdWidth = simdWidth * simdSize;
             const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-            const char maskValue = 0x80u;
+            const char maskValue = static_cast<char>(0x80u);
             const simd mask = _mm_set_epi8( maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                                             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = (threshold - 1) ^ 0x80u;
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
             const simd compare = _mm_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -850,32 +725,18 @@ namespace Image_Function_Sse
 
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, minThreshold, maxThreshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -902,26 +763,26 @@ namespace Image_Function_Sse
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-        const char shiftMaskValue = 0x80u;
+        const char shiftMaskValue = static_cast<char>(0x80u);
         const simd shiftMask = _mm_set_epi8( shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
                                              shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
                                              shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue,
                                              shiftMaskValue, shiftMaskValue, shiftMaskValue, shiftMaskValue );
 
-        const char notMaskValue = 0xffu;
+        const char notMaskValue = static_cast<char>(0xffu);
         const simd notMask = _mm_set_epi8( notMaskValue, notMaskValue, notMaskValue, notMaskValue,
                                            notMaskValue, notMaskValue, notMaskValue, notMaskValue,
                                            notMaskValue, notMaskValue, notMaskValue, notMaskValue,
                                            notMaskValue, notMaskValue, notMaskValue, notMaskValue );
 
-        const char minCompareValue = minThreshold ^ 0x80u;
+        const char minCompareValue = static_cast<char>(minThreshold ^ 0x80u);
         const simd minCompare = _mm_set_epi8(
             minCompareValue, minCompareValue, minCompareValue, minCompareValue,
             minCompareValue, minCompareValue, minCompareValue, minCompareValue,
             minCompareValue, minCompareValue, minCompareValue, minCompareValue,
             minCompareValue, minCompareValue, minCompareValue, minCompareValue );
 
-        const char maxCompareValue = maxThreshold ^ 0x80u;
+        const char maxCompareValue = static_cast<char>(maxThreshold ^ 0x80u);
         const simd maxCompare = _mm_set_epi8(
             maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,
             maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue,

@@ -22,10 +22,10 @@ namespace Image_Function_OpenCL
 
     // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
     // or (width * color count) will be equal to row size
-    Image ConvertToOpenCL( const Bitmap_Image::Image & in );
-    void  ConvertToOpenCL( const Bitmap_Image::Image & in, Image & out );
-    Bitmap_Image::Image ConvertFromOpenCL( const Image & in );
-    void                ConvertFromOpenCL( const Image & in, Bitmap_Image::Image & out );
+    Image ConvertToOpenCL( const PenguinV_Image::Image & in );
+    void  ConvertToOpenCL( const PenguinV_Image::Image & in, Image & out );
+    PenguinV_Image::Image ConvertFromOpenCL( const Image & in );
+    void                ConvertFromOpenCL( const Image & in, PenguinV_Image::Image & out );
 
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );
@@ -85,4 +85,4 @@ namespace Image_Function_OpenCL
         // otherwise set pixel intensity on output image as 255
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold );
     void  Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
-};
+}

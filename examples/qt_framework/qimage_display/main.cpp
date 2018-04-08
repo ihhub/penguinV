@@ -22,9 +22,9 @@ int main( int argc, char *argv[] )
                                                                  QObject::tr("Bitmap (*.bmp);;All Files (*)") );
 
         // Load a color image from storage
-        Bitmap_Image::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
+        PenguinV_Image::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
 
-        if( original.colorCount() != Bitmap_Image::RGB || original.empty() ) {
+        if( original.colorCount() != PenguinV_Image::RGB || original.empty() ) {
             std::cout << "Looks like no image or it is not a color image" << std::endl;
             return 0;
         }
@@ -37,7 +37,7 @@ int main( int argc, char *argv[] )
         showImage( window1, originalQt );
 
         // Because our logo is green-white so we extract red channel to make green areas be as black on gray-scale image
-        Bitmap_Image::Image red = Image_Function::ExtractChannel( original, 0 );
+        PenguinV_Image::Image red = Image_Function::ExtractChannel( original, 0 );
 
         // Convert image into QImage format
         QImage redQt( red.data(), red.width(), red.height(), red.rowSize(), QImage::Format_Grayscale8 );
@@ -49,7 +49,7 @@ int main( int argc, char *argv[] )
         // We theshold image for proper blob detection
         // Remark: actually we can pass the threshold to blob detection function so we can skip this step
         // But we made this just to show how it works
-        Bitmap_Image::Image thresholded = Image_Function::Threshold( red, Image_Function::GetThreshold( Image_Function::Histogram( red ) ) );
+        PenguinV_Image::Image thresholded = Image_Function::Threshold( red, Image_Function::GetThreshold( Image_Function::Histogram( red ) ) );
 
         // Convert image into QImage format
         QImage thresholdedQt( thresholded.data(), thresholded.width(), thresholded.height(), thresholded.rowSize(), QImage::Format_Grayscale8 );
@@ -63,7 +63,7 @@ int main( int argc, char *argv[] )
         detection.find( thresholded );
 
         // Create an ouput image
-        Bitmap_Image::Image output( thresholded.width(), thresholded.height() );
+        PenguinV_Image::Image output( thresholded.width(), thresholded.height() );
         output.fill( 0 );
 
         // Sort blobs by size and do NOT draw an edge of biggest blob what is actually white backgroud

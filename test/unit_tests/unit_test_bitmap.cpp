@@ -8,13 +8,14 @@ namespace Unit_Test
     {
         bool LoadSaveGrayScaleImage()
         {
-            Bitmap_Image::Image original = whiteImage();
+            PenguinV_Image::Image original = whiteImage();
 
             Bitmap_Operation::Save( "white.bmp", original );
 
-            Bitmap_Image::Image loaded = Bitmap_Operation::Load( "white.bmp" );
+            PenguinV_Image::Image loaded = Bitmap_Operation::Load( "white.bmp" );
 
-            if( !equalSize( original, loaded ) || !verifyImage( loaded, 255u ) )
+            if( original.height() != loaded.height() && original.width() != loaded.width() && original.alignment() != loaded.alignment() &&
+                original.colorCount() == loaded.colorCount() || !verifyImage( loaded, 255u ) )
                 return false;
 
             return true;

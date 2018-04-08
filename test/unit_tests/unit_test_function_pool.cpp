@@ -14,9 +14,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::AbsoluteDifference( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::AbsoluteDifference( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
@@ -32,7 +32,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -49,7 +49,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -59,7 +59,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::AbsoluteDifference(
+                PenguinV_Image::Image output = Function_Pool::AbsoluteDifference(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -76,7 +76,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -103,9 +103,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseAnd( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::BitwiseAnd( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] & intensity[1] ) )
                     return false;
@@ -120,7 +120,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -137,7 +137,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -147,7 +147,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseAnd(
+                PenguinV_Image::Image output = Function_Pool::BitwiseAnd(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] & intensity[1] ) )
@@ -163,7 +163,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -189,9 +189,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseOr( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::BitwiseOr( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] | intensity[1] ) )
                     return false;
@@ -206,7 +206,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::BitwiseOr( image[0], image[1], image[2] );
 
@@ -223,7 +223,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -233,7 +233,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseOr(
+                PenguinV_Image::Image output = Function_Pool::BitwiseOr(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] | intensity[1] ) )
@@ -249,7 +249,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -275,9 +275,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseXor( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::BitwiseXor( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
                     return false;
@@ -292,7 +292,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::BitwiseXor( image[0], image[1], image[2] );
 
@@ -309,7 +309,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -319,7 +319,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::BitwiseXor(
+                PenguinV_Image::Image output = Function_Pool::BitwiseXor(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
@@ -335,7 +335,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -361,9 +361,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
 
-                Bitmap_Image::Image output = Function_Pool::ConvertToGrayScale( input );
+                PenguinV_Image::Image output = Function_Pool::ConvertToGrayScale( input );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -376,8 +376,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformColorImage( intensity[0] );
-                Bitmap_Image::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensity[1] );
 
@@ -396,13 +396,13 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Function_Pool::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -417,8 +417,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage     ( intensity[1] );
+                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage     ( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -445,9 +445,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
-                Bitmap_Image::Image output = Function_Pool::ConvertToRgb( input );
+                PenguinV_Image::Image output = Function_Pool::ConvertToRgb( input );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -462,8 +462,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
-                Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image output( input.width(), input.height(), PenguinV_Image::RGB );
 
                 output.fill( intensity[1] );
 
@@ -482,13 +482,13 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Function_Pool::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -503,8 +503,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
-                Bitmap_Image::Image output = uniformColorImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage     ( intensity[0] );
+                PenguinV_Image::Image output = uniformColorImage( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -531,12 +531,12 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-                Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, a, gamma );
+                PenguinV_Image::Image output = Function_Pool::GammaCorrection( input, a, gamma );
 
                 double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
                 uint8_t corrected = 0;
@@ -559,7 +559,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -587,7 +587,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -596,7 +596,7 @@ namespace Unit_Test
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-                Bitmap_Image::Image output = Function_Pool::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
+                PenguinV_Image::Image output = Function_Pool::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
                 double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
                 uint8_t corrected = 0;
@@ -619,7 +619,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -655,9 +655,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::Invert( input );
+                PenguinV_Image::Image output = Function_Pool::Invert( input );
 
                 if( !verifyImage( output, ~intensity ) )
                     return false;
@@ -672,7 +672,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 Function_Pool::Invert( input[0], input[1] );
 
@@ -689,13 +689,13 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::Invert( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Function_Pool::Invert( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensity ) )
                     return false;
@@ -710,7 +710,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -735,7 +735,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 if( (intensity[0] == intensity[1]) != (Function_Pool::IsEqual( input[0], input[1] )) )
                     return false;
@@ -750,7 +750,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -774,14 +774,14 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = randomImage( intensity );
+                PenguinV_Image::Image input = randomImage( intensity );
 
                 std::vector < uint8_t > lookupTable( 256, 0 );
 
                 lookupTable[intensity[0]] = intensityValue();
                 lookupTable[intensity[1]] = intensityValue();
 
-                Bitmap_Image::Image output = Function_Pool::LookupTable( input, lookupTable );
+                PenguinV_Image::Image output = Function_Pool::LookupTable( input, lookupTable );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -801,8 +801,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = randomImage( intensity );
-                Bitmap_Image::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input  = randomImage( intensity );
+                PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensityValue() );
 
@@ -831,7 +831,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage();
+                PenguinV_Image::Image input = uniformImage();
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -844,7 +844,7 @@ namespace Unit_Test
                 lookupTable[intensity[0]] = intensityValue();
                 lookupTable[intensity[1]] = intensityValue();
 
-                Bitmap_Image::Image output = Function_Pool::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
+                PenguinV_Image::Image output = Function_Pool::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -864,8 +864,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage();
-                Bitmap_Image::Image output = uniformImage();
+                PenguinV_Image::Image input  = uniformImage();
+                PenguinV_Image::Image output = uniformImage();
 
                 std::vector < uint32_t > roiX, roiY;
                 uint32_t roiWidth, roiHeight;
@@ -904,9 +904,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::Maximum( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::Maximum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
@@ -922,7 +922,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::Maximum( image[0], image[1], image[2] );
 
@@ -939,7 +939,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -949,7 +949,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::Maximum(
+                PenguinV_Image::Image output = Function_Pool::Maximum(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -966,7 +966,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -993,9 +993,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::Minimum( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::Minimum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
@@ -1011,7 +1011,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::Minimum( image[0], image[1], image[2] );
 
@@ -1028,7 +1028,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -1038,7 +1038,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::Minimum(
+                PenguinV_Image::Image output = Function_Pool::Minimum(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1055,7 +1055,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1082,12 +1082,12 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
                 uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
 
-                Bitmap_Image::Image output = Function_Pool::Resize( input, outputWidth, outputHeight );
+                PenguinV_Image::Image output = Function_Pool::Resize( input, outputWidth, outputHeight );
 
                 if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
                     return false;
@@ -1102,8 +1102,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage( intensity[1] );
 
                 Function_Pool::Resize( input, output );
 
@@ -1120,7 +1120,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
                 uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
@@ -1129,7 +1129,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
+                PenguinV_Image::Image output = Function_Pool::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
 
                 if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
                     return false;
@@ -1144,8 +1144,8 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage( intensity[1] );
 
                 std::vector < uint32_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
 
@@ -1168,9 +1168,9 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Function_Pool::Subtract( input[0], input[1] );
+                PenguinV_Image::Image output = Function_Pool::Subtract( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
@@ -1186,7 +1186,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Function_Pool::Subtract( image[0], image[1], image[2] );
 
@@ -1203,7 +1203,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -1213,7 +1213,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Function_Pool::Subtract(
+                PenguinV_Image::Image output = Function_Pool::Subtract(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1230,7 +1230,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1257,7 +1257,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 if( Function_Pool::Sum( input ) != input.width() * input.height() * intensity )
                     return false;
@@ -1272,7 +1272,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1291,11 +1291,11 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
-                Bitmap_Image::Image output = Function_Pool::Threshold( input, threshold );
+                PenguinV_Image::Image output = Function_Pool::Threshold( input, threshold );
 
                 if( !verifyImage( output, intensity < threshold ? 0 : 255 ) )
                     return false;
@@ -1310,7 +1310,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -1329,7 +1329,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1337,7 +1337,7 @@ namespace Unit_Test
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
-                Bitmap_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
+                PenguinV_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity < threshold ? 0 : 255 ) )
                     return false;
@@ -1352,7 +1352,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1379,12 +1379,12 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-                Bitmap_Image::Image output = Function_Pool::Threshold( input, minThreshold, maxThreshold );
+                PenguinV_Image::Image output = Function_Pool::Threshold( input, minThreshold, maxThreshold );
 
                 if( !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
                     return false;
@@ -1399,7 +1399,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
@@ -1419,7 +1419,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1428,7 +1428,7 @@ namespace Unit_Test
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-                Bitmap_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold,
+                PenguinV_Image::Image output = Function_Pool::Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold,
                                                                        maxThreshold );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1445,7 +1445,7 @@ namespace Unit_Test
                 Thread_Pool::ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
 
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );

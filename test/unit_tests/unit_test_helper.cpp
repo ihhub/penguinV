@@ -18,47 +18,47 @@ namespace
 
 namespace Unit_Test
 {
-    Bitmap_Image::Image uniformImage()
+    PenguinV_Image::Image uniformImage()
     {
         return uniformImage( randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformImage( uint8_t value )
+    PenguinV_Image::Image uniformImage( uint8_t value )
     {
-        Bitmap_Image::Image image( randomWidth(), randomHeight() );
+        PenguinV_Image::Image image( randomWidth(), randomHeight() );
 
         image.fill( value );
 
         return image;
     }
 
-    Bitmap_Image::Image uniformColorImage()
+    PenguinV_Image::Image uniformColorImage()
     {
         return uniformColorImage( randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformColorImage( uint8_t value )
+    PenguinV_Image::Image uniformColorImage( uint8_t value )
     {
-        Bitmap_Image::Image image( randomWidth(), randomHeight(), Bitmap_Image::RGB );
+        PenguinV_Image::Image image( randomWidth(), randomHeight(), PenguinV_Image::RGB );
 
         image.fill( value );
 
         return image;
     }
 
-    Bitmap_Image::Image blackImage()
+    PenguinV_Image::Image blackImage()
     {
         return uniformImage( 0u );
     }
 
-    Bitmap_Image::Image whiteImage()
+    PenguinV_Image::Image whiteImage()
     {
         return uniformImage( 255u );
     }
 
-    Bitmap_Image::Image randomImage()
+    PenguinV_Image::Image randomImage()
     {
-        Bitmap_Image::Image image( randomWidth(), randomHeight() );
+        PenguinV_Image::Image image( randomWidth(), randomHeight() );
 
         uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();
@@ -74,12 +74,12 @@ namespace Unit_Test
         return image;
     }
 
-    Bitmap_Image::Image randomImage( const std::vector <uint8_t> & value )
+    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value )
     {
         if( value.empty() )
             return randomImage();
 
-        Bitmap_Image::Image image( randomWidth(), randomHeight() );
+        PenguinV_Image::Image image( randomWidth(), randomHeight() );
 
         uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();
@@ -100,12 +100,12 @@ namespace Unit_Test
         return image;
     }
 
-    std::vector < Bitmap_Image::Image > uniformImages( uint32_t images )
+    std::vector < PenguinV_Image::Image > uniformImages( uint32_t images )
     {
         if( images == 0 )
             throw imageException( "Invalid parameter" );
 
-        std::vector < Bitmap_Image::Image > image;
+        std::vector < PenguinV_Image::Image > image;
 
         image.push_back( uniformImage() );
 
@@ -139,12 +139,12 @@ namespace Unit_Test
         return generateArray<uint8_t>( size, 256u );
     }
 
-    std::vector < Bitmap_Image::Image > uniformImages( std::vector < uint8_t > intensityValue )
+    std::vector < PenguinV_Image::Image > uniformImages( std::vector < uint8_t > intensityValue )
     {
         if( intensityValue.size() == 0 )
             throw imageException( "Invalid parameter" );
 
-        std::vector < Bitmap_Image::Image > image;
+        std::vector < PenguinV_Image::Image > image;
 
         image.push_back( uniformImage( intensityValue[0] ) );
 
@@ -158,12 +158,12 @@ namespace Unit_Test
         return image;
     }
 
-    bool equalSize( const Bitmap_Image::Image & image, uint32_t width, uint32_t height )
+    bool equalSize( const PenguinV_Image::Image & image, uint32_t width, uint32_t height )
     {
         return image.width() == width && image.height() == height && !image.empty();
     }
 
-    bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
@@ -184,7 +184,7 @@ namespace Unit_Test
         return true;
     }
 
-    bool verifyImage( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint8_t > & value )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
@@ -215,22 +215,22 @@ namespace Unit_Test
         return true;
     }
 
-    bool verifyImage( const Bitmap_Image::Image & image, uint8_t value )
+    bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    bool verifyImage( const Bitmap_Image::Image & image, const std::vector < uint8_t > & value )
+    bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         Image_Function::Fill( image, x, y, width, height, value );
     }
 
-    void fillImage( Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                     const std::vector < uint8_t > & value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
@@ -252,7 +252,7 @@ namespace Unit_Test
         }
     }
 
-    void generateRoi( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
+    void generateRoi( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
     {
         width  = randomValue<uint32_t>( 1, image.width()  + 1 );
         height = randomValue<uint32_t>( 1, image.height() + 1 );
@@ -261,7 +261,7 @@ namespace Unit_Test
         y = randomValue<uint32_t>( image.height() - height );
     }
 
-    void generateRoi( const std::vector < Bitmap_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
+    void generateRoi( const std::vector < PenguinV_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
                       uint32_t & width, uint32_t & height )
     {
         std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );
@@ -303,13 +303,13 @@ namespace Unit_Test
         }
     }
 
-    void generateOffset( const Bitmap_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
+    void generateOffset( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
     {
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );
     }
 
-    std::pair <uint32_t, uint32_t> imageSize( const Bitmap_Image::Image & image )
+    std::pair <uint32_t, uint32_t> imageSize( const PenguinV_Image::Image & image )
     {
         return std::pair <uint32_t, uint32_t>( image.width(), image.height() );
     }

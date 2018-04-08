@@ -200,56 +200,5 @@ namespace Bitmap_Image_Cuda
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
 
-    class Image : public Template_Image_Cuda::ImageTemplateCuda <uint8_t>
-    {
-    public:
-        Image()
-            : ImageTemplateCuda( 0, 0, GRAY_SCALE )
-        {
-        }
-
-        explicit Image( uint8_t colorCount_ )
-            : ImageTemplateCuda( 0, 0, colorCount_ )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_ )
-            : ImageTemplateCuda( width_, height_, GRAY_SCALE )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : ImageTemplateCuda( width_, height_, colorCount_ )
-        {
-        }
-
-        Image( const Image & image )
-            : ImageTemplateCuda( image )
-        {
-        }
-
-        Image( Image && image )
-            : ImageTemplateCuda( 0, 0, GRAY_SCALE )
-        {
-            swap( image );
-        }
-
-        Image & operator=( const Image & image )
-        {
-            ImageTemplateCuda::operator=( image );
-
-            return (*this);
-        }
-
-        Image & operator=( Image && image )
-        {
-            swap( image );
-
-            return (*this);
-        }
-
-        ~Image()
-        {
-        }
-    };
+    typedef Template_Image_Cuda::ImageTemplateCuda <uint8_t> Image;
 }

@@ -9,173 +9,173 @@ namespace
     std::pair < double, double > AbsoluteDifference( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::AbsoluteDifference( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > BitwiseAnd( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::BitwiseAnd( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > BitwiseOr( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::BitwiseOr( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > BitwiseXor( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::BitwiseXor( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > Invert( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Invert( image[0], image[1] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > Maximum( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Maximum( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > Minimum( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Minimum( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
- 
+
     std::pair < double, double > Subtract( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
-    
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Subtract( image[0], image[1], image[2] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > Threshold( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
-    
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Threshold( image[0], image[1], threshold );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
     std::pair < double, double > ThresholdDouble( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
-    
-        std::vector < Bitmap_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
+
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
         uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
-    
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Image_Function_Neon::Threshold( image[0], image[1], minThreshold, maxThreshold );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 }

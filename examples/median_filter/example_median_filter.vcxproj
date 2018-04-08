@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\image_function_helper.cpp" />
     <ClCompile Include="example_median_filter.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
@@ -150,7 +151,8 @@
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
-	<ClInclude Include="..\..\src\parameter_validation.h" />
+    <ClInclude Include="..\..\src\image_function_helper.h" />
+    <ClInclude Include="..\..\src\parameter_validation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

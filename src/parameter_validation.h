@@ -3,7 +3,7 @@
 
 namespace Image_Function
 {
-    using namespace Bitmap_Image;
+    using namespace PenguinV_Image;
 
     template <typename TImage>
     uint8_t CommonColorCount( const TImage & image1, const TImage & image2 )

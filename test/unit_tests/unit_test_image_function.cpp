@@ -12,9 +12,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::AbsoluteDifference( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::AbsoluteDifference( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
@@ -28,7 +28,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -43,7 +43,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -53,7 +53,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::AbsoluteDifference(
+                PenguinV_Image::Image output = Image_Function::AbsoluteDifference(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -68,7 +68,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -93,11 +93,11 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
 
-                for( std::vector < Bitmap_Image::Image >::const_iterator image = input.begin(); image != input.end(); ++image ) {
+                for( std::vector < PenguinV_Image::Image >::const_iterator image = input.begin(); image != input.end(); ++image ) {
                     Image_Function::Accumulate( *image, result );
                 }
 
@@ -114,7 +114,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -143,9 +143,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseAnd( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::BitwiseAnd( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] & intensity[1] ) )
                     return false;
@@ -158,7 +158,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -173,7 +173,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -183,7 +183,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseAnd(
+                PenguinV_Image::Image output = Image_Function::BitwiseAnd(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] & intensity[1] ) )
@@ -197,7 +197,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -221,9 +221,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseOr( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::BitwiseOr( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] | intensity[1] ) )
                     return false;
@@ -236,7 +236,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::BitwiseOr( image[0], image[1], image[2] );
 
@@ -251,7 +251,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -261,7 +261,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseOr(
+                PenguinV_Image::Image output = Image_Function::BitwiseOr(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] | intensity[1] ) )
@@ -275,7 +275,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -299,9 +299,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseXor( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::BitwiseXor( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
                     return false;
@@ -314,7 +314,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::BitwiseXor( image[0], image[1], image[2] );
 
@@ -329,7 +329,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -339,7 +339,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::BitwiseXor(
+                PenguinV_Image::Image output = Image_Function::BitwiseXor(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
@@ -353,7 +353,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -377,9 +377,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
 
-                Bitmap_Image::Image output = Image_Function::ConvertToGrayScale( input );
+                PenguinV_Image::Image output = Image_Function::ConvertToGrayScale( input );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -392,8 +392,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformColorImage( intensity[0] );
-                Bitmap_Image::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensity[1] );
 
@@ -410,13 +410,13 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -429,8 +429,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformColorImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage     ( intensity[1] );
+                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage     ( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -455,9 +455,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
-                Bitmap_Image::Image output = Image_Function::ConvertToRgb( input );
+                PenguinV_Image::Image output = Image_Function::ConvertToRgb( input );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -470,8 +470,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
-                Bitmap_Image::Image output( input.width(), input.height(), Bitmap_Image::RGB );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image output( input.width(), input.height(), PenguinV_Image::RGB );
 
                 output.fill( intensity[1] );
 
@@ -488,13 +488,13 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !verifyImage( output, intensity[0] ) )
                     return false;
@@ -507,8 +507,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage     ( intensity[0] );
-                Bitmap_Image::Image output = uniformColorImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage     ( intensity[0] );
+                PenguinV_Image::Image output = uniformColorImage( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -533,7 +533,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 Image_Function::Copy( input[0], input[1] );
 
@@ -548,13 +548,13 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Copy( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::Copy( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity ) )
                     return false;
@@ -567,7 +567,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -590,7 +590,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image image = uniformImage( intensity[0] );
+                PenguinV_Image::Image image = uniformImage( intensity[0] );
 
                 Image_Function::Fill( image, intensity[1] );
 
@@ -605,7 +605,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image image = uniformImage( intensity[0] );
+                PenguinV_Image::Image image = uniformImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -624,7 +624,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
                 const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
                 const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -642,7 +642,7 @@ namespace Unit_Test
                         Image_Function::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
                 }
 
-                Bitmap_Image::Image output = Image_Function::Flip( input, horizontalFlip, verticalFlip );
+                PenguinV_Image::Image output = Image_Function::Flip( input, horizontalFlip, verticalFlip );
 
                 if( !equalSize( output, input.width(), input.height() ))
                     return false;
@@ -669,7 +669,7 @@ namespace Unit_Test
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 uint8_t intensityFill = intensityValue();
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
                 const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -710,7 +710,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage( intensity[0] );
+                PenguinV_Image::Image input = uniformImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -731,7 +731,7 @@ namespace Unit_Test
                         Image_Function::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
                 }
 
-                Bitmap_Image::Image output = Image_Function::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
+                PenguinV_Image::Image output = Image_Function::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
 
                 if( !equalSize( output, roiWidth, roiHeight ))
                     return false;
@@ -758,7 +758,7 @@ namespace Unit_Test
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 uint8_t intensityFill = intensityValue();
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -807,12 +807,12 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-                Bitmap_Image::Image output = Image_Function::GammaCorrection( input, a, gamma );
+                PenguinV_Image::Image output = Image_Function::GammaCorrection( input, a, gamma );
 
                 double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
                 uint8_t corrected = 0;
@@ -833,7 +833,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -859,7 +859,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -868,7 +868,7 @@ namespace Unit_Test
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-                Bitmap_Image::Image output = Image_Function::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
+                PenguinV_Image::Image output = Image_Function::GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
                 double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
                 uint8_t corrected = 0;
@@ -889,7 +889,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -941,7 +941,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 std::vector < uint32_t > histogram = Image_Function::Histogram( image );
 
@@ -957,7 +957,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 std::vector < uint32_t > histogram;
                 Image_Function::Histogram( image, histogram );
@@ -974,7 +974,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -994,7 +994,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1015,9 +1015,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Invert( input );
+                PenguinV_Image::Image output = Image_Function::Invert( input );
 
                 if( !verifyImage( output, ~intensity ) )
                     return false;
@@ -1030,7 +1030,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 Image_Function::Invert( input[0], input[1] );
 
@@ -1045,13 +1045,13 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Invert( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::Invert( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensity ) )
                     return false;
@@ -1064,7 +1064,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1087,7 +1087,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 if( (intensity[0] == intensity[1]) != (Image_Function::IsEqual( input[0], input[1] )) )
                     return false;
@@ -1100,7 +1100,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1122,14 +1122,14 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = randomImage( intensity );
+                PenguinV_Image::Image input = randomImage( intensity );
 
                 std::vector < uint8_t > lookupTable( 256, 0 );
 
                 lookupTable[intensity[0]] = intensityValue();
                 lookupTable[intensity[1]] = intensityValue();
 
-                Bitmap_Image::Image output = Image_Function::LookupTable( input, lookupTable );
+                PenguinV_Image::Image output = Image_Function::LookupTable( input, lookupTable );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -1147,8 +1147,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = randomImage( intensity );
-                Bitmap_Image::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input  = randomImage( intensity );
+                PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensityValue() );
 
@@ -1175,7 +1175,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage();
+                PenguinV_Image::Image input = uniformImage();
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1188,7 +1188,7 @@ namespace Unit_Test
                 lookupTable[intensity[0]] = intensityValue();
                 lookupTable[intensity[1]] = intensityValue();
 
-                Bitmap_Image::Image output = Image_Function::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
+                PenguinV_Image::Image output = Image_Function::LookupTable( input, roiX, roiY, roiWidth, roiHeight, lookupTable );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -1206,8 +1206,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage();
-                Bitmap_Image::Image output = uniformImage();
+                PenguinV_Image::Image input  = uniformImage();
+                PenguinV_Image::Image output = uniformImage();
 
                 std::vector < uint32_t > roiX, roiY;
                 uint32_t roiWidth, roiHeight;
@@ -1244,9 +1244,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Maximum( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::Maximum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
@@ -1260,7 +1260,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::Maximum( image[0], image[1], image[2] );
 
@@ -1275,7 +1275,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -1285,7 +1285,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Maximum(
+                PenguinV_Image::Image output = Image_Function::Maximum(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1300,7 +1300,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1325,9 +1325,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Minimum( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::Minimum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
@@ -1341,7 +1341,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::Minimum( image[0], image[1], image[2] );
 
@@ -1356,7 +1356,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -1366,7 +1366,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Minimum(
+                PenguinV_Image::Image output = Image_Function::Minimum(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1381,7 +1381,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1406,9 +1406,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = randomImage( intensity );
+                PenguinV_Image::Image input = randomImage( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Normalize( input );
+                PenguinV_Image::Image output = Image_Function::Normalize( input );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -1431,8 +1431,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = randomImage( intensity );
-                Bitmap_Image::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input  = randomImage( intensity );
+                PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensityValue() );
 
@@ -1459,7 +1459,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input = uniformImage();
+                PenguinV_Image::Image input = uniformImage();
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1467,7 +1467,7 @@ namespace Unit_Test
 
                 fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
 
-                Bitmap_Image::Image output = Image_Function::Normalize( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::Normalize( input, roiX, roiY, roiWidth, roiHeight );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -1490,8 +1490,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage();
-                Bitmap_Image::Image output = uniformImage();
+                PenguinV_Image::Image input  = uniformImage();
+                PenguinV_Image::Image output = uniformImage();
 
                 std::vector < uint32_t > roiX, roiY;
                 uint32_t roiWidth, roiHeight;
@@ -1528,7 +1528,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 bool horizontal = (i % 2 == 0);
 
@@ -1548,7 +1548,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 bool horizontal = (i % 2 == 0);
 
@@ -1570,7 +1570,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1594,7 +1594,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image image = uniformImage( intensity );
+                PenguinV_Image::Image image = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1620,12 +1620,12 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
                 uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
 
-                Bitmap_Image::Image output = Image_Function::Resize( input, outputWidth, outputHeight );
+                PenguinV_Image::Image output = Image_Function::Resize( input, outputWidth, outputHeight );
 
                 if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
                     return false;
@@ -1638,8 +1638,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage( intensity[1] );
 
                 Image_Function::Resize( input, output );
 
@@ -1654,7 +1654,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
                 uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
@@ -1663,7 +1663,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
+                PenguinV_Image::Image output = Image_Function::Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
 
                 if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
                     return false;
@@ -1676,8 +1676,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage( intensity[1] );
 
                 std::vector < uint32_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
 
@@ -1698,7 +1698,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image image  = uniformImage( intensity[0] );
+                PenguinV_Image::Image image  = uniformImage( intensity[0] );
                 const uint32_t x = randomValue<uint32_t>( 0, image.width() );
                 const uint32_t y = randomValue<uint32_t>( 0, image.height() );
 
@@ -1715,7 +1715,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image image  = uniformImage( intensity[0] );
+                PenguinV_Image::Image image  = uniformImage( intensity[0] );
                 std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
                 std::vector< uint32_t > Y( X.size() );
                 
@@ -1739,9 +1739,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Subtract( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function::Subtract( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
@@ -1755,7 +1755,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
                 Image_Function::Subtract( image[0], image[1], image[2] );
 
@@ -1770,7 +1770,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input;
+                std::vector < PenguinV_Image::Image > input;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { input.push_back( uniformImage( value ) ); } );
@@ -1780,7 +1780,7 @@ namespace Unit_Test
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Subtract(
+                PenguinV_Image::Image output = Image_Function::Subtract(
                     input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1795,7 +1795,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1820,7 +1820,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 if( Image_Function::Sum( input ) != intensity * input.width() * input.height() )
                     return false;
@@ -1833,7 +1833,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1850,11 +1850,11 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
-                Bitmap_Image::Image output = Image_Function::Threshold( input, threshold );
+                PenguinV_Image::Image output = Image_Function::Threshold( input, threshold );
 
                 if( !verifyImage( output, intensity < threshold ? 0 : 255 ) )
                     return false;
@@ -1867,7 +1867,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -1884,7 +1884,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1892,7 +1892,7 @@ namespace Unit_Test
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
-                Bitmap_Image::Image output = Image_Function::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
+                PenguinV_Image::Image output = Image_Function::Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
                 if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity < threshold ? 0 : 255 ) )
                     return false;
@@ -1905,7 +1905,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -1930,12 +1930,12 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-                Bitmap_Image::Image output = Image_Function::Threshold( input, minThreshold, maxThreshold );
+                PenguinV_Image::Image output = Image_Function::Threshold( input, minThreshold, maxThreshold );
 
                 if( !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
                     return false;
@@ -1948,7 +1948,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > input = uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
@@ -1966,7 +1966,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -1975,7 +1975,7 @@ namespace Unit_Test
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-                Bitmap_Image::Image output = Image_Function::Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold,
+                PenguinV_Image::Image output = Image_Function::Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold,
                                                                         maxThreshold );
 
                 if( !equalSize( output, roiWidth, roiHeight ) ||
@@ -1990,7 +1990,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image::Image > image;
+                std::vector < PenguinV_Image::Image > image;
 
                 std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t & value )
                 { image.push_back( uniformImage( value ) ); } );
@@ -2018,9 +2018,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
-                Bitmap_Image::Image output = Image_Function::Transpose( input );
+                PenguinV_Image::Image output = Image_Function::Transpose( input );
 
                 if( !equalSize( output, input.height(), input.width() ) || !verifyImage( output, intensity ) )
                     return false;
@@ -2033,8 +2033,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output( input.height(), input.width() );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output( input.height(), input.width() );
 
                 output.fill( intensity[1] );
 
@@ -2051,13 +2051,13 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image::Image input = uniformImage( intensity );
+                PenguinV_Image::Image input = uniformImage( intensity );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
                 generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-                Bitmap_Image::Image output = Image_Function::Transpose( input, roiX, roiY, roiWidth, roiHeight );
+                PenguinV_Image::Image output = Image_Function::Transpose( input, roiX, roiY, roiWidth, roiHeight );
 
                 if( !equalSize( output, roiHeight, roiWidth ) || !verifyImage( output, intensity ) )
                     return false;
@@ -2070,8 +2070,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image::Image input  = uniformImage( intensity[0] );
-                Bitmap_Image::Image output = uniformImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 

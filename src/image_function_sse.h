@@ -16,7 +16,7 @@
 
 namespace Image_Function_Sse
 {
-    using namespace Bitmap_Image;
+    using namespace PenguinV_Image;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );

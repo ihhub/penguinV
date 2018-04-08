@@ -28,6 +28,7 @@
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\..\src\cuda\image_function_cuda.cuh" />
     <ClInclude Include="..\..\..\src\image_function.h" />
+    <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cuh" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cuh" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\image_function.cpp" />
+    <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\unit_test_framework.cpp" />
     <ClCompile Include="..\unit_test_helper.cpp" />
     <ClCompile Include="unit_tests_cuda.cpp" />

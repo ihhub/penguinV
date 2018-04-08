@@ -6,8 +6,8 @@
 #include "../../../src/cuda/image_buffer_cpu.cuh"
 #include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
 
-void measureTimingToCuda  ( Bitmap_Image::Image      & in, Bitmap_Image_Cuda::Image & out, const std::string & type );
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image      & out, const std::string & type );
+void measureTimingToCuda  ( PenguinV_Image::Image    & in, Bitmap_Image_Cuda::Image & out, const std::string & type );
+void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image    & out, const std::string & type );
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
         const uint32_t height = 2048;
 
         // We allocate image using normal CPU RAM allocation (no magic inside)
-        Bitmap_Image::Image in1( width, height );
+        PenguinV_Image::Image in1( width, height );
 
         // Then we allocate image using CUDA pinned memory...
         Bitmap_Image_Cuda_Cpu::Image in2( width, height );
@@ -67,7 +67,7 @@ int main()
     return 0;
 }
 
-void measureTimingToCuda( Bitmap_Image::Image & in, Bitmap_Image_Cuda::Image & out, const std::string & type )
+void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image & out, const std::string & type )
 {
     cudaEvent_t start, stop; 
 
@@ -88,7 +88,7 @@ void measureTimingToCuda( Bitmap_Image::Image & in, Bitmap_Image_Cuda::Image & o
     std::cout << type << ": Host to Device bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
 }
 
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, Bitmap_Image::Image & out, const std::string & type )
+void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image & out, const std::string & type )
 {
     cudaEvent_t start, stop; 
 

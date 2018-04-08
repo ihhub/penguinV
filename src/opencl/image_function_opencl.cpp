@@ -308,7 +308,7 @@ namespace Image_Function_OpenCL
         multiCL::launchKernel2D( kernel, out.rowSize(), out.height() );
     }
 
-    Image ConvertToOpenCL( const Bitmap_Image::Image & in )
+    Image ConvertToOpenCL( const PenguinV_Image::Image & in )
     {
         Image out( in.width(), in.height(), in.colorCount() );
 
@@ -317,7 +317,7 @@ namespace Image_Function_OpenCL
         return out;
     }
 
-    void ConvertToOpenCL( const Bitmap_Image::Image & in, Image & out )
+    void ConvertToOpenCL( const PenguinV_Image::Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -342,16 +342,16 @@ namespace Image_Function_OpenCL
         }
     }
 
-    Bitmap_Image::Image ConvertFromOpenCL( const Image & in )
+    PenguinV_Image::Image ConvertFromOpenCL( const Image & in )
     {
-        Bitmap_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
+        PenguinV_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
 
         ConvertFromOpenCL( in, out );
 
         return out;
     }
 
-    void ConvertFromOpenCL( const Image & in, Bitmap_Image::Image & out )
+    void ConvertFromOpenCL( const Image & in, PenguinV_Image::Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );

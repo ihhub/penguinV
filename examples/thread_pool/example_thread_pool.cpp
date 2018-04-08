@@ -59,26 +59,26 @@ public:
         // we use static variables to set correct ID
         static uint32_t objectCounter = 0;
         _objectId = (++objectCounter);
-    };
+    }
 
 protected:
     void completeTask( size_t taskId )
     {
         for( int count = 0; count < _repeatCount[taskId]; ++count ) {
             // This is just some random code for image processing to make your CPU busy
-            Bitmap_Image::Image image1( 1024, 1024 );
+            PenguinV_Image::Image image1( 1024, 1024 );
 
             image1.fill( 255 );
 
-            Bitmap_Image::Image image2 = Image_Function::Invert( image1 );
+            PenguinV_Image::Image image2 = Image_Function::Invert( image1 );
 
-            Bitmap_Image::Image image3 = Image_Function::Maximum( image1, image2 );
+            Image_Function::Maximum( image1, image2 );
         }
 
         _message.lock();
         std::cout << "Object " << _objectId << ": task #" << taskId << " completed." << std::endl;
         _message.unlock();
-    };
+    }
 
     size_t createTasks()
     {
@@ -93,7 +93,7 @@ protected:
         _message.unlock();
 
         return _repeatCount.size();
-    };
+    }
 
 private:
     std::vector < int > _repeatCount; // our spefic work to execute
@@ -110,7 +110,7 @@ public:
     {
     };
 
-    virtual ~TaskGiver1() { };
+    virtual ~TaskGiver1() { }
 
     void run()
     {
@@ -120,18 +120,18 @@ public:
         }
 
         _run( createTasks() );
-    };
+    }
 
     void wait()
     {
         _wait();
-    };
+    }
 
 protected:
     virtual void _task( size_t taskId )
     {
         completeTask( taskId );
-    };
+    }
 };
 
 // This is task giver class for example 2 inherited from TaskProviderSingleton
@@ -139,7 +139,7 @@ protected:
 class TaskGiver2 : public Thread_Pool::TaskProviderSingleton, public AbstractTaskGiver
 {
 public:
-    virtual ~TaskGiver2() { };
+    virtual ~TaskGiver2() { }
 
     void run()
     {
@@ -149,12 +149,12 @@ public:
         }
 
         _run( createTasks() );
-    };
+    }
 
     void wait()
     {
         _wait();
-    };
+    }
 
 protected:
     virtual void _task( size_t taskId )

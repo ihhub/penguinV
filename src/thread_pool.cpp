@@ -165,8 +165,8 @@ namespace Thread_Pool
         else if( threads < threadCount() ) {
             _taskInfo.lock();
 
-            std::fill( _exit.begin() + threads, _exit.end(), 1 );
-            std::fill( _run.begin() + threads, _run.end(), 1 );
+            std::fill( _exit.begin() + static_cast<std::vector < uint8_t >::difference_type>(threads), _exit.end(), 1 );
+            std::fill( _run.begin()  + static_cast<std::vector < uint8_t >::difference_type>(threads), _run.end(), 1 );
             _waiting.notify_all();
 
             _taskInfo.unlock();

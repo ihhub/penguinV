@@ -198,7 +198,7 @@ namespace Template_Image_OpenCL
 
         cl_mem _data;
     };
-};
+}
 
 namespace Bitmap_Image_OpenCL
 {
@@ -206,56 +206,5 @@ namespace Bitmap_Image_OpenCL
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
 
-    class Image : public Template_Image_OpenCL::ImageTemplateOpenCL <uint8_t>
-    {
-    public:
-        Image()
-            : ImageTemplateOpenCL( 0, 0, GRAY_SCALE )
-        {
-        }
-
-        explicit Image( uint8_t colorCount_ )
-            : ImageTemplateOpenCL( 0, 0, colorCount_ )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_ )
-            : ImageTemplateOpenCL( width_, height_, GRAY_SCALE )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : ImageTemplateOpenCL( width_, height_, colorCount_ )
-        {
-        }
-
-        Image( const Image & image )
-            : ImageTemplateOpenCL( image )
-        {
-        }
-
-        Image( Image && image )
-            : ImageTemplateOpenCL( 0, 0, GRAY_SCALE )
-        {
-            swap( image );
-        }
-
-        Image & operator=( const Image & image )
-        {
-            ImageTemplateOpenCL::operator=( image );
-
-            return (*this);
-        }
-
-        Image & operator=( Image && image )
-        {
-            swap( image );
-
-            return (*this);
-        }
-
-        ~Image()
-        {
-        }
-    };
-};
+    typedef Template_Image_OpenCL::ImageTemplateOpenCL <uint8_t> Image;
+}

@@ -69,7 +69,7 @@ namespace Thread_Pool
     class ThreadPool
     {
     public:
-        ThreadPool() { };
+        ThreadPool() { }
         explicit ThreadPool( size_t threads );
         ThreadPool & operator=( const ThreadPool & ) = delete;
         ThreadPool( const ThreadPool & ) = delete;
@@ -111,9 +111,9 @@ namespace Thread_Pool
 
         ThreadPoolMonoid & operator=( const ThreadPoolMonoid & ) = delete;
         ThreadPoolMonoid( const ThreadPoolMonoid & ) = delete;
-        ~ThreadPoolMonoid() { };
+        ~ThreadPoolMonoid() { }
     private:
-        ThreadPoolMonoid() { };
+        ThreadPoolMonoid() { }
 
         ThreadPool _pool; // one and only thread pool
     };

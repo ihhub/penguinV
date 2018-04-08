@@ -18,7 +18,7 @@ int main()
     try // <---- do not forget to put your code into try.. catch block!
     {
         // Create an uniform image with value 128
-        Bitmap_Image::Image image(1024, 1024);
+        PenguinV_Image::Image image(1024, 1024);
         image.fill(128);
 
         // Generate some salt-and-pepper noise
@@ -34,7 +34,7 @@ int main()
         Bitmap_Operation::Save( "original.bmp", image );
 
         // Create Image object which will contain filtered image
-        Bitmap_Image::Image filtered( image.width(), image.height() );
+        PenguinV_Image::Image filtered( image.width(), image.height() );
 
         // Filter it!
         Image_Function::Filtering::Median( image, filtered, 3 );

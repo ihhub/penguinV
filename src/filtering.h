@@ -7,7 +7,7 @@ namespace Image_Function
 {
     namespace Filtering
     {
-        using namespace Bitmap_Image;
+        using namespace PenguinV_Image;
 
         Image Median( const Image & in, uint32_t kernelSize );
         void  Median( const Image & in, Image & out, uint32_t kernelSize );

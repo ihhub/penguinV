@@ -10,7 +10,7 @@ namespace Unit_Test
         bool Detect1Blob()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                Bitmap_Image::Image image = blackImage();
+                PenguinV_Image::Image image = blackImage();
 
                 uint32_t roiX, roiY;
                 uint32_t roiWidth, roiHeight;

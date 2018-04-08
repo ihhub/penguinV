@@ -3,7 +3,6 @@
 #include <numeric>
 #include <vector>
 #include "performance_test_helper.h"
-#include "../../src/thread_pool.h"
 #include "../../src/image_exception.h"
 
 namespace
@@ -29,8 +28,10 @@ namespace
 
             bool removed = false;
 
+            const size_t sizeLimit = data.size() * 3 / 4;
+
             do {
-                // The function removes 'biggest' element from an array is case
+                // The function removes 'biggest' element from an array in case
                 // if a difference between a value and mean is more than 6 sigma
                 mean  = sum / data.size();
                 sigma = sqrt( (sumSquare / (data.size()) - mean * mean) * (data.size()) / (data.size() - 1) );
@@ -58,7 +59,7 @@ namespace
                     removed = false;
                 }
 
-            } while( removed || data.size() < 2 );
+            } while( removed && (data.size() > sizeLimit) );
         }
     }
 }
@@ -117,49 +118,49 @@ namespace Performance_Test
         push( time.count() * 1000.0 ); // original value is in microseconds
     }
 
-    Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height )
+    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
     {
         return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
+    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        Bitmap_Image::Image image( width, height );
+        PenguinV_Image::Image image( width, height );
 
         image.fill( value );
 
         return image;
     }
 
-    Bitmap_Image::Image uniformColorImage( uint32_t width, uint32_t height )
+    PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height )
     {
         return uniformColorImage( width, height, randomValue<uint8_t>( 256 ) );
     }
 
-    Bitmap_Image::Image uniformColorImage( uint32_t width, uint32_t height, uint8_t value )
+    PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        Bitmap_Image::Image image( width, height, Bitmap_Image::RGB );
+        PenguinV_Image::Image image( width, height, PenguinV_Image::RGB );
 
         image.fill( value );
 
         return image;
     }
 
-    std::vector< Bitmap_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
     {
-        std::vector < Bitmap_Image::Image > image( count );
+        std::vector < PenguinV_Image::Image > image( count );
 
-        for( std::vector< Bitmap_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
+        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformImage( width, height );
 
         return image;
     }
 
-    std::vector< Bitmap_Image::Image > uniformColorImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector< PenguinV_Image::Image > uniformColorImages( uint32_t count, uint32_t width, uint32_t height )
     {
-        std::vector < Bitmap_Image::Image > image( count );
+        std::vector < PenguinV_Image::Image > image( count );
 
-        for( std::vector< Bitmap_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
+        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformColorImage( width, height );
 
         return image;
@@ -168,10 +169,5 @@ namespace Performance_Test
     uint32_t runCount()
     {
         return 1024;
-    }
-
-    void setFunctionPoolThreadCount()
-    {
-        Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
     }
 }

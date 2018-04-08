@@ -7,6 +7,7 @@ SRCS :=  \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
+	$(LIB_DIR)/image_function_helper.cpp \
 	$(LIB_DIR)/image_function_avx.cpp \
 	$(LIB_DIR)/image_function_neon.cpp \
 	$(LIB_DIR)/image_function_sse.cpp \

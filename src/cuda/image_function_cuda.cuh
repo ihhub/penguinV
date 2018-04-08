@@ -38,10 +38,10 @@ namespace Image_Function_Cuda
 
     // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
     // or (width * color count) will be equal to row size
-    Image ConvertToCuda( const Bitmap_Image::Image & in );
-    void  ConvertToCuda( const Bitmap_Image::Image & in, Image & out );
-    Bitmap_Image::Image ConvertFromCuda( const Image & in );
-    void                ConvertFromCuda( const Image & in, Bitmap_Image::Image & out );
+    Image ConvertToCuda( const PenguinV_Image::Image & in );
+    void  ConvertToCuda( const PenguinV_Image::Image & in, Image & out );
+    PenguinV_Image::Image ConvertFromCuda( const Image & in );
+    void                  ConvertFromCuda( const Image & in, PenguinV_Image::Image & out );
 
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );

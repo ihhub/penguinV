@@ -310,12 +310,12 @@ namespace Blob_Detection
     }
 
 
-    const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, BlobParameters parameter, uint8_t threshold )
+    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, BlobParameters parameter, uint8_t threshold )
     {
         return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
     }
 
-    const std::vector < BlobInfo > & BlobDetection::find( const Bitmap_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
+    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
                                                           uint32_t height, BlobParameters parameter, uint8_t threshold )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );

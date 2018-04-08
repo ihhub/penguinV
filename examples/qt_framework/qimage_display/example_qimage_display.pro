@@ -20,4 +20,5 @@ TEMPLATE = app
 SOURCES += main.cpp
 SOURCES += ../../../src/FileOperation/bitmap.cpp
 SOURCES += ../../../src/image_function.cpp
+SOURCES += ../../../src/image_function_helper.cpp
 SOURCES += ../../../src/blob_detection.cpp

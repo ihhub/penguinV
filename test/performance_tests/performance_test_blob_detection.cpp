@@ -8,7 +8,7 @@ namespace
     {
         Performance_Test::TimerContainer timer;
 
-        Bitmap_Image::Image image = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image image = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();

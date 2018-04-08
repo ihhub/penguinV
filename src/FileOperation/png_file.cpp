@@ -12,7 +12,7 @@
 
 namespace Png_Operation
 {
-    Bitmap_Image::Image Load( const std::string & path )
+    PenguinV_Image::Image Load( const std::string & path )
     {
         if( path.empty() )
             throw imageException( "Incorrect file path for image file loading" );
@@ -23,11 +23,11 @@ namespace Png_Operation
 
         png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
         if( !png )
-            return Bitmap_Image::Image();
+            return PenguinV_Image::Image();
 
         png_infop info = png_create_info_struct( png );
         if( !info )
-            return Bitmap_Image::Image();
+            return PenguinV_Image::Image();
 
         png_init_io( png, file );
         png_read_info( png, info );
@@ -68,7 +68,7 @@ namespace Png_Operation
 
         png_read_image( png, row_pointers );
 
-        Bitmap_Image::Image image( width, height, Bitmap_Image::RGB );
+        PenguinV_Image::Image image( width, height, PenguinV_Image::RGB );
 
         uint8_t * outY = image.data();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
@@ -92,17 +92,17 @@ namespace Png_Operation
         return image;
     }
 
-    void Load( const std::string & path, Bitmap_Image::Image & raw )
+    void Load( const std::string & path, PenguinV_Image::Image & raw )
     {
         raw = Load( path );
     }
 
-    void Save( const std::string & path, const Bitmap_Image::Image & image )
+    void Save( const std::string & path, const PenguinV_Image::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const Bitmap_Image::Image & image, uint32_t startX, uint32_t startY,
+    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( image, startX, startY, width, height );
@@ -134,7 +134,7 @@ namespace Png_Operation
         for( uint32_t y = 0; y < height; ++y )
             row_pointers[y] = reinterpret_cast<uint8_t*>( malloc( rowByteCount ) );
 
-        const bool grayScaleImage = image.colorCount() == Bitmap_Image::GRAY_SCALE;
+        const bool grayScaleImage = image.colorCount() == PenguinV_Image::GRAY_SCALE;
 
         const uint8_t * outY = image.data() + startY * image.rowSize() + startX * image.colorCount();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {

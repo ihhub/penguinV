@@ -5,6 +5,7 @@ SRCS :=  \
 	$(OPENCL_LIB_DIR)/opencl_device.cpp \
 	$(OPENCL_LIB_DIR)/opencl_helper.cpp \
 	$(MAIN_LIB_DIR)/image_function.cpp \
+	$(MAIN_LIB_DIR)/image_function_helper.cpp \
 	$(MAIN_LIB_DIR)/FileOperation/bitmap.cpp \
 	$(MAIN_LIB_DIR)/opencl/image_function_opencl.cpp \
 	main.cpp

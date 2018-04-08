@@ -281,70 +281,11 @@ namespace Template_Image
     };
 }
 
-namespace Bitmap_Image
+namespace PenguinV_Image
 {
-    const static uint8_t BITMAP_ALIGNMENT = 4u; // this is default alignment of Bitmap images
-                                                // you can change it for your purposes
-
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
 
-    class Image : public Template_Image::ImageTemplate <uint8_t>
-    {
-    public:
-        Image()
-            : ImageTemplate( 0, 0, GRAY_SCALE, BITMAP_ALIGNMENT )
-        {
-        }
-
-        explicit Image( uint8_t colorCount_ )
-            : ImageTemplate( 0, 0, colorCount_, BITMAP_ALIGNMENT )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_ )
-            : ImageTemplate( width_, height_, GRAY_SCALE, BITMAP_ALIGNMENT )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : ImageTemplate( width_, height_, colorCount_, BITMAP_ALIGNMENT )
-        {
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
-            : ImageTemplate( width_, height_, colorCount_, alignment_ )
-        {
-        }
-
-        Image( const Image & image )
-            : ImageTemplate( image )
-        {
-        }
-
-        Image( Image && image )
-            : ImageTemplate( 0, 0, GRAY_SCALE, BITMAP_ALIGNMENT )
-        {
-            swap( image );
-        }
-
-        Image & operator=( const Image & image )
-        {
-            ImageTemplate::operator=( image );
-
-            return (*this);
-        }
-
-        Image & operator=( Image && image )
-        {
-            swap( image );
-
-            return (*this);
-        }
-
-        virtual ~Image()
-        {
-        }
-    };
+    typedef Template_Image::ImageTemplate <uint8_t> Image;
 }
