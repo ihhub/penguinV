@@ -11,40 +11,34 @@ namespace Bitmap_Image_Cuda
     {
     public:
         ImageTemplateCuda()
-            : PenguinV_Image::ImageTemplate<TColorDepth>()
         { }
 
         ImageTemplateCuda( uint32_t width_, uint32_t height_ )
-            : PenguinV_Image::ImageTemplate<TColorDepth>()
         {
-            resize( width_, height_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::resize( width_, height_ );
         }
 
         ImageTemplateCuda( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : PenguinV_Image::ImageTemplate<TColorDepth>()
         {
-            setColorCount( colorCount_ );
-            resize( width_, height_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::resize( width_, height_ );
         }
 
         ImageTemplateCuda( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
-            : PenguinV_Image::ImageTemplate<TColorDepth>( width_, height_, colorCount_, alignment_ )
         {
-            setColorCount( colorCount_ );
-            setAlignment( alignment_ );
-            resize( width_, height_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::setAlignment( alignment_ );
+            PenguinV_Image::ImageTemplate<TColorDepth>::resize( width_, height_ );
         }
 
-        ImageTemplateCuda( const ImageTemplate & image )
-            : PenguinV_Image::ImageTemplate<TColorDepth>()
+        ImageTemplateCuda( const ImageTemplateCuda & image )
         {
             PenguinV_Image::ImageTemplate<TColorDepth>::operator=( image );
         }
 
         ImageTemplateCuda( ImageTemplateCuda && image )
-            : ImageTemplate<TColorDepth>()
         {
-            swap( image );
+            PenguinV_Image::ImageTemplate<TColorDepth>::swap( image );
         }
 
         ImageTemplateCuda & operator=( const ImageTemplateCuda & image )
@@ -56,14 +50,14 @@ namespace Bitmap_Image_Cuda
 
         ImageTemplateCuda & operator=( ImageTemplateCuda && image )
         {
-            swap( image );
+            PenguinV_Image::ImageTemplate<TColorDepth>::swap( image );
 
             return (*this);
         }
 
         virtual ~ImageTemplateCuda()
         {
-            clear();
+            PenguinV_Image::ImageTemplate<TColorDepth>::clear();
         }
     protected:
         virtual TColorDepth * _allocate( size_t size ) const
