@@ -176,14 +176,18 @@ namespace Image_Function
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
 
-        if( result.size() != width * height )
+        const uint8_t colorCount  = image.colorCount();
+
+        if( result.size() != width * height * colorCount )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
 
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * imageY    = image.data() + y * rowSize + x;
+        const uint8_t * imageY    = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
         std::vector < uint32_t >::iterator v = result.begin();
+
+        width = width * colorCount;
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
@@ -422,7 +426,7 @@ namespace Image_Function
                        uint32_t width, uint32_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        VerifyColoredImage  ( out );
+        VerifyRGBImage     ( out );
 
         if( in.colorCount() == RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -951,10 +955,10 @@ namespace Image_Function
                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
-        ParameterValidation( out, startXOut, startYOut, width, height );
+        ParameterValidation ( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
+        ParameterValidation ( out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in1, in2, in3 );
-        VerifyColoredImage  ( out );
+        VerifyRGBImage      ( out );
 
         const uint8_t colorCount = RGB;
 
@@ -1221,7 +1225,7 @@ namespace Image_Function
                    uint32_t width, uint32_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        VerifyColoredImage( in, out );
+        VerifyRGBImage     ( in, out );
 
         const uint8_t colorCount = RGB;
 
@@ -1350,9 +1354,9 @@ namespace Image_Function
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-        ParameterValidation( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
-        VerifyColoredImage  ( in );
+        ParameterValidation ( in, startXIn, startYIn, width, height );
+        ParameterValidation ( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        VerifyRGBImage      ( in );
         VerifyGrayScaleImage( out1, out2, out3 );
 
         const uint8_t colorCount = RGB;

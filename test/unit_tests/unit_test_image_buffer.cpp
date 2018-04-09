@@ -8,7 +8,7 @@ namespace Unit_Test
     {
         bool EmptyConstructorTest()
         {
-            Template_Image::ImageTemplate < uint8_t > image;
+            PenguinV_Image::ImageTemplate < uint8_t > image;
 
             return isEmpty( image );
         }
@@ -19,7 +19,7 @@ namespace Unit_Test
                 uint32_t width      = randomValue<uint32_t>( 2048 );
                 uint32_t height     = randomValue<uint32_t>( 2048 );
 
-                if( !equalSize( Template_Image::ImageTemplate < uint8_t >( width, height ), width, height, rowSize( width ), 1, 1 ) )
+                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height ), width, height, rowSize( width ), 1, 1 ) )
                     return false;
             }
 
@@ -33,7 +33,7 @@ namespace Unit_Test
                 uint32_t height     = randomValue<uint32_t>( 2048 );
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
 
-                if( !equalSize( Template_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
+                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
                                 rowSize( width, colorCount ), colorCount, 1 ) )
                     return false;
             }
@@ -49,7 +49,7 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                if( !equalSize( Template_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
+                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
                                 rowSize( width, colorCount, alignment ), colorCount, alignment ) )
                     return false;
             }
@@ -65,8 +65,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint8_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint8_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -83,8 +83,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint16_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint16_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -101,8 +101,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint32_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint32_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -119,8 +119,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint64_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint64_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -137,8 +137,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int8_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int8_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -155,8 +155,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int16_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int16_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -173,8 +173,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int32_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int32_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -191,8 +191,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int64_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int64_t > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -209,8 +209,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < float > image_copy( image );
+                PenguinV_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < float > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -227,8 +227,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < double > image_copy( image );
+                PenguinV_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < double > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
@@ -240,7 +240,7 @@ namespace Unit_Test
         bool NullAssignmentTest()
         {
             try {
-                Template_Image::ImageTemplate < uint8_t > image;
+                PenguinV_Image::ImageTemplate < uint8_t > image;
 
                 uint8_t fakeArray[1];
                 uint8_t fakeValue = static_cast<uint8_t>(rand() % 2);
@@ -264,8 +264,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint8_t > image_copy;
+                PenguinV_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint8_t > image_copy;
 
                 image_copy = image;
 
@@ -284,8 +284,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint16_t > image_copy;
+                PenguinV_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint16_t > image_copy;
 
                 image_copy = image;
 
@@ -304,8 +304,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint32_t > image_copy;
+                PenguinV_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint32_t > image_copy;
 
                 image_copy = image;
 
@@ -324,8 +324,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < uint64_t > image_copy;
+                PenguinV_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < uint64_t > image_copy;
 
                 image_copy = image;
 
@@ -344,8 +344,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int8_t > image_copy;
+                PenguinV_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int8_t > image_copy;
 
                 image_copy = image;
 
@@ -364,8 +364,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int16_t > image_copy;
+                PenguinV_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int16_t > image_copy;
 
                 image_copy = image;
 
@@ -384,8 +384,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int32_t > image_copy;
+                PenguinV_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int32_t > image_copy;
 
                 image_copy = image;
 
@@ -404,8 +404,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < int64_t > image_copy;
+                PenguinV_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < int64_t > image_copy;
 
                 image_copy = image;
 
@@ -424,8 +424,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < float > image_copy;
+                PenguinV_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < float > image_copy;
 
                 image_copy = image;
 
@@ -444,8 +444,8 @@ namespace Unit_Test
                 uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
                 uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                Template_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
-                Template_Image::ImageTemplate < double > image_copy;
+                PenguinV_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < double > image_copy;
 
                 image_copy = image;
 

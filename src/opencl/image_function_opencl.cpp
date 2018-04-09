@@ -418,7 +418,7 @@ namespace Image_Function_OpenCL
     void  ConvertToRgb( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in, out );
-        Image_Function::VerifyColoredImage( out );
+        Image_Function::VerifyRGBImage( out );
 
         if( in.colorCount() == RGB ) {
             Copy( in, out );

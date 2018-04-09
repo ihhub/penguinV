@@ -12,7 +12,7 @@
 #include "../image_exception.h"
 #include "../thirdparty/multicl/src/opencl_device.h"
 
-namespace Template_Image_OpenCL
+namespace Bitmap_Image_OpenCL
 {
     template <typename TColorDepth>
     class ImageTemplateOpenCL
@@ -198,13 +198,10 @@ namespace Template_Image_OpenCL
 
         cl_mem _data;
     };
-}
 
-namespace Bitmap_Image_OpenCL
-{
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
 
-    typedef Template_Image_OpenCL::ImageTemplateOpenCL <uint8_t> Image;
+    typedef ImageTemplateOpenCL <uint8_t> Image;
 }

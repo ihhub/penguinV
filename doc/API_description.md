@@ -1,9 +1,10 @@
 # API description
 
 ## Namespaces
-**Bitmap_Image**    
+**PenguinV_Image**    
 Declares a class for BITMAP images:
-- ***Image*** - a bitmap image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).   
+- ***Image*** - 8-bit image with default number of color channels as 1 (gray-scale image).   
+- ***ImageTemplate*** - main class for image buffer classes.   
 
 **Bitmap_Operation**    
 Contains functions to load and save BITMAP images.  
@@ -38,9 +39,6 @@ Contains basic functions for image processing for CPUs with ***SSE 2*** support.
 
 **Image_Function_Cuda**    
 Contains basic functions for image processing on GPU using ***CUDA***.    
-
-**Template_Image**    
-Includes only one template class ***ImageTemplate*** which is the main class for image buffer classes.    
 
 **Thread_Pool**    
 Contains classes for multithreading using thread pool:

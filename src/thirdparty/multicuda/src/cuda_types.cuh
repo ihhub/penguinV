@@ -97,7 +97,7 @@ namespace multiCuda
         {
             _free();
 
-            MemoryManager::memory().allocate( &_data );
+            _data = MemoryManager::memory().allocate<TData>();
         }
 
         void _copy( const Type & in )
@@ -261,7 +261,7 @@ namespace multiCuda
                 _free();
 
                 if( size != 0 )
-                    MemoryManager::memory().allocate( &_data, size );
+                    _data = MemoryManager::memory().allocate<TData>( size );
 
                 _size = size;
             }

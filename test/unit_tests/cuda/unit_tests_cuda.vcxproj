@@ -27,6 +27,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\..\src\cuda\image_function_cuda.cuh" />
+    <ClInclude Include="..\..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
     <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\parameter_validation.h" />

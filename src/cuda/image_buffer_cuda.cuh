@@ -1,66 +1,55 @@
 #pragma once
 
-#include <algorithm>
-#include <cstdint>
-#include <cstring>
 #include <cuda_runtime.h>
-#include "../image_exception.h"
+#include "../image_buffer.h"
 #include "../thirdparty/multicuda/src/cuda_device.cuh"
 
-namespace Template_Image_Cuda
+namespace Bitmap_Image_Cuda
 {
     template <typename TColorDepth>
-    class ImageTemplateCuda
+    class ImageTemplateCuda : public PenguinV_Image::ImageTemplate<TColorDepth>
     {
     public:
         ImageTemplateCuda()
-            : _width     ( 0 )    // width of image
-            , _height    ( 0 )    // height of image
-            , _colorCount( 1 )    // number of colors per pixel
-            , _rowSize   ( 0 )    // size of single row on image which is equal to width * colorCount
-            , _data      ( NULL ) // an array what store image information (pixel data)
-        {
-        }
+            : ImageTemplate<TColorDepth>()
+        { }
 
         ImageTemplateCuda( uint32_t width_, uint32_t height_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( NULL )
+            : ImageTemplate<TColorDepth>()
         {
             resize( width_, height_ );
         }
 
         ImageTemplateCuda( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( NULL )
+            : ImageTemplate<TColorDepth>()
         {
             setColorCount( colorCount_ );
             resize( width_, height_ );
         }
 
-        ImageTemplateCuda( const ImageTemplateCuda & image )
-            : _data      ( NULL )
+        ImageTemplateCuda( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+            : ImageTemplate<TColorDepth>( width_, height_, colorCount_, alignment_ )
         {
-            copy( image );
+            setColorCount( colorCount_ );
+            setAlignment( alignment_ );
+            resize( width_, height_ );
+        }
+
+        ImageTemplateCuda( const ImageTemplate & image )
+            : ImageTemplate<TColorDepth>()
+        {
+            ImageTemplate<TColorDepth>::operator=( image );
         }
 
         ImageTemplateCuda( ImageTemplateCuda && image )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _data      ( NULL )
+            : ImageTemplate<TColorDepth>()
         {
             swap( image );
         }
 
         ImageTemplateCuda & operator=( const ImageTemplateCuda & image )
         {
-            copy( image );
+            ImageTemplate<TColorDepth>::operator=( image );
 
             return (*this);
         }
@@ -72,133 +61,39 @@ namespace Template_Image_Cuda
             return (*this);
         }
 
-        ~ImageTemplateCuda()
+        virtual ~ImageTemplateCuda()
         {
             clear();
         }
-
-        void resize( uint32_t width_, uint32_t height_ )
+    protected:
+        virtual TColorDepth * _allocate( size_t size ) const
         {
-            if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
-                clear();
-
-                _width  = width_;
-                _height = height_;
-                _rowSize = width() * colorCount();
-
-                multiCuda::MemoryManager::memory().allocate( &_data, _rowSize * _height );
-            }
+            return multiCuda::MemoryManager::memory().allocate<TColorDepth>( size );
         }
 
-        void clear()
+        virtual void _deallocate( TColorDepth * data ) const
         {
-            if( _data != NULL ) {
-                multiCuda::MemoryManager::memory().free( _data );
-
-                _data = NULL;
-            }
-
-            _width  = 0;
-            _height = 0;
+            multiCuda::MemoryManager::memory().free( data );
         }
 
-        TColorDepth * data()
+        virtual void _copy( TColorDepth * out, TColorDepth * in, size_t size )
         {
-            return _data;
+            cudaError error = cudaMemcpy( in, out, size, cudaMemcpyDeviceToDevice );
+            if( error != cudaSuccess )
+                throw imageException( "Cannot copy a memory in CUDA device" );
         }
 
-        const TColorDepth * data() const
+        virtual void _set( TColorDepth * data, TColorDepth value, size_t size )
         {
-            return _data;
-        }
-
-        bool empty() const
-        {
-            return _data == NULL;
-        }
-
-        uint32_t width() const
-        {
-            return _width;
-        }
-
-        uint32_t height() const
-        {
-            return _height;
-        }
-
-        uint32_t rowSize() const
-        {
-            return _rowSize;
-        }
-
-        uint8_t colorCount() const
-        {
-            return _colorCount;
-        }
-
-        void setColorCount( uint8_t colorCount_ )
-        {
-            if( colorCount_ > 0 && _colorCount != colorCount_ ) {
-                clear();
-                _colorCount = colorCount_;
-            }
-        }
-
-        void fill( TColorDepth value )
-        {
-            if( empty() )
-                return;
-
-            cudaError_t error = cudaMemset( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
+            cudaError_t error = cudaMemset( data, value, size );
             if( error != cudaSuccess )
                 throw imageException( "Cannot fill a memory for CUDA device" );
         }
-
-        void swap( ImageTemplateCuda & image )
-        {
-            std::swap( _width, image._width );
-            std::swap( _height, image._height );
-
-            std::swap( _colorCount, image._colorCount );
-            std::swap( _rowSize   , image._rowSize );
-
-            std::swap( _data, image._data );
-        }
-
-        void copy( const ImageTemplateCuda & image )
-        {
-            clear();
-
-            _width  = image._width;
-            _height = image._height;
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize; 
-
-            if( image._data != NULL ) {
-                multiCuda::MemoryManager::memory().allocate( &_data, _height * _width );
-
-                cudaError error = cudaMemcpy( _data, image._data, _height * _width * sizeof( TColorDepth ), cudaMemcpyDeviceToDevice );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
-            }
-        }
-
-    private:
-        uint32_t _width;
-        uint32_t _height;
-        uint8_t  _colorCount;
-        uint32_t _rowSize;
-
-        TColorDepth * _data;
     };
-}
 
-namespace Bitmap_Image_Cuda
-{
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
 
-    typedef Template_Image_Cuda::ImageTemplateCuda <uint8_t> Image;
+    typedef ImageTemplateCuda <uint8_t> Image;
 }

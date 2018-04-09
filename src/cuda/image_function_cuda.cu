@@ -598,7 +598,7 @@ namespace Image_Function_Cuda
                        uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyColoredImage  ( out );
+        Image_Function::VerifyRGBImage     ( out );
 
         if ( in.colorCount() == RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );

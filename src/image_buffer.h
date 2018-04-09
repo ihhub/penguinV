@@ -5,7 +5,7 @@
 #include <cstring>
 #include "image_exception.h"
 
-namespace Template_Image
+namespace PenguinV_Image
 {
     template <typename TColorDepth>
     class ImageTemplate
@@ -203,7 +203,7 @@ namespace Template_Image
             if( empty() )
                 return;
 
-            memset( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
+            _set( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
         }
 
         void swap( ImageTemplate & image )
@@ -232,7 +232,7 @@ namespace Template_Image
             if( image._data != nullptr ) {
                 _data = _allocate( _height * _rowSize );
 
-                memcpy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
+                _copy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
             }
         }
 
@@ -269,6 +269,16 @@ namespace Template_Image
             delete[] data;
         }
 
+        virtual void _copy( TColorDepth * out, TColorDepth * in, size_t size )
+        {
+            memcpy( out, in, size );
+        }
+
+        virtual void _set( TColorDepth * data, TColorDepth value, size_t size )
+        {
+            memset( data, static_cast<int>(value), size );
+        }
+
     private:
         uint32_t _width;
         uint32_t _height;
@@ -279,13 +289,10 @@ namespace Template_Image
 
         TColorDepth * _data;
     };
-}
 
-namespace PenguinV_Image
-{
+    typedef ImageTemplate <uint8_t> Image;
+
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
-
-    typedef Template_Image::ImageTemplate <uint8_t> Image;
 }

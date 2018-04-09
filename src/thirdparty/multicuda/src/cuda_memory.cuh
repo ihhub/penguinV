@@ -70,7 +70,7 @@ namespace multiCuda
         // so the function just assigns a pointer to preallocated memory
         // otherwise the function will allocate a new chuck of memory just for this pointer
         template <typename _DataType>
-        void allocate( _DataType** address, size_t size = 1 )
+        _DataType* allocate( size_t size = 1 )
         {
             size = size * sizeof( _DataType );
 
@@ -78,17 +78,20 @@ namespace multiCuda
                 const uint8_t level = _getAllocationLevel( size );
 
                 if( _split( level ) ) {
-                    *address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
+                    _DataType* address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
                     _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
                     _freeChunck[level].erase( _freeChunck[level].begin() );
-                    return;
+                    return address;
                 }
             }
 
             // if no space in preallocated memory just allocate as usual memory
-            cudaError_t error = cudaMalloc( address, size );
+            _DataType* address = nullptr;
+            cudaError_t error = cudaMalloc( &address, size );
             if( error != cudaSuccess )
                 throw multiCudaException( "Cannot allocate a memory for CUDA device" );
+
+            return address;
         }
 
         // returns true if memory allocator has enough space for specified size in bytes
