@@ -19,7 +19,6 @@ namespace Performance_Test
 
         for( std::map < testFunction, std::string >::const_iterator test = _performanceTest.begin();
              test != _performanceTest.end(); ++test, ++testId ) {
-
             std::cout << "["<< testId << "/" << _performanceTest.size() << "] " << test->second << "... " << std::flush;
 
             try {

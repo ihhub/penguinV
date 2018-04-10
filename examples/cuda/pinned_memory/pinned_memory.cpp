@@ -69,7 +69,7 @@ int main()
 
 void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image & out, const std::string & type )
 {
-    cudaEvent_t start, stop; 
+    cudaEvent_t start, stop;
 
     multiCuda::cudaCheck( cudaEventCreate(&start) );
     multiCuda::cudaCheck( cudaEventCreate(&stop) );
@@ -81,7 +81,7 @@ void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image &
     multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyHostToDevice) );
     multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
     multiCuda::cudaCheck( cudaEventSynchronize(stop) );
-    
+
     float time = 0;
     multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
 
@@ -90,7 +90,7 @@ void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image &
 
 void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image & out, const std::string & type )
 {
-    cudaEvent_t start, stop; 
+    cudaEvent_t start, stop;
 
     multiCuda::cudaCheck( cudaEventCreate(&start) );
     multiCuda::cudaCheck( cudaEventCreate(&stop) );
@@ -102,7 +102,7 @@ void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image
     multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyDeviceToHost) );
     multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
     multiCuda::cudaCheck( cudaEventSynchronize(stop) );
-    
+
     float time = 0;
     multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
 

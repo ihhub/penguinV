@@ -397,7 +397,6 @@ namespace multiCL
         for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
             uint32_t deviceCount = 0u;
             if( openCLSafeCheck( clGetDeviceIDs( *platform, CL_DEVICE_TYPE_GPU, 0, NULL, &deviceCount ) ) ) {
-
                 _supportedDeviceId.resize( supportedDeviceCount + deviceCount );
 
                 if( !openCLSafeCheck( clGetDeviceIDs( *platform, CL_DEVICE_TYPE_GPU, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {

@@ -23,7 +23,6 @@ int main()
             << "----------" << std::endl;
 
         example2();
-
     }
     catch( imageException & ex ) {
         // uh-oh, something went wrong!

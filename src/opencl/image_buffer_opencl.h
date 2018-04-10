@@ -179,7 +179,7 @@ namespace Bitmap_Image_OpenCL
             _width  = image._width;
             _height = image._height;
             _colorCount = image._colorCount;
-            _rowSize    = image._rowSize; 
+            _rowSize    = image._rowSize;
 
             if( image._data != NULL ) {
                 _data = multiCL::MemoryManager::memory().allocate<TColorDepth>( _rowSize * _width );

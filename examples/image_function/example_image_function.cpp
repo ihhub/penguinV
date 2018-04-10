@@ -53,7 +53,6 @@ int main()
 
         // Forth way to do
         example4( imageIn1, imageIn2, imageOut );
-
     }
     catch( const imageException & ex ) {
         // uh-oh, something went wrong!
@@ -117,7 +116,6 @@ void example1( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
                           128,        // width of copying area
                           128         // height of copying area
     );
-
 }
 
 void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
@@ -161,7 +159,6 @@ void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
                           128,        // width of copying area
                           128         // height of copying area
     );
-
 }
 
 void example3( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
@@ -187,7 +184,6 @@ void example3( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
                           128,        // width of copying area
                           128         // height of copying area
     );
-
 }
 
 void example4( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
@@ -204,6 +200,5 @@ void example4( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
                                128,      // width of the area
                                128       // height of the area
     );
-
     // And that's all
 }

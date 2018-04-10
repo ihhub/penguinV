@@ -58,28 +58,27 @@ namespace multiCL
     bool isOpenCLSupported()
     {
         cl_uint platformCount = 0u;
-        
+
         if( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) )
             return false;
-        
+
         if( platformCount == 0u )
             return false;
-        
+
         std::vector <cl_platform_id> platform( platformCount );
         if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) )
             return false;
-        
+
         for( std::vector<cl_platform_id>::const_iterator singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
-            
             cl_uint deviceCount = 0u;
-            
+
             if( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, CL_DEVICE_TYPE_GPU, 0, NULL, &deviceCount ) ) )
                 return false;
-            
+
             if( deviceCount > 0u )
                 return true;
         }
-        
+
         return false;
     }
 

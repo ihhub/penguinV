@@ -546,7 +546,6 @@ namespace Blob_Detection
                         contourY.push_back( yMap + 1 );
                         *(position) = CONTOUR;
                     }
-
                 } while( pointId != contourX.size() );
             }
         }

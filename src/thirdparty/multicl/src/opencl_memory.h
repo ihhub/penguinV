@@ -68,7 +68,7 @@ namespace multiCL
 
                 usedSize += value;
                 size -= value;
-            }            
+            }
         }
 
         // this function returns a memory structure pointer to an allocated memory
@@ -249,7 +249,6 @@ namespace multiCL
 
             for( std::vector < std::set < size_t > >::iterator level = _freeChunck.begin() + from; level < _freeChunck.end();
                  ++level, memorySize <<= 1 ) {
-
                 std::set< size_t >::iterator pos = level->find( offset );
                 std::set< size_t >::iterator neighbour = pos;
                 ++neighbour;
