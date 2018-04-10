@@ -58,7 +58,6 @@ namespace
                 else {
                     removed = false;
                 }
-
             } while( removed && (data.size() > sizeLimit) );
         }
     }

@@ -55,7 +55,7 @@ namespace Bitmap_Image_Cuda_Cpu
         Image & operator=( Image && image )
         {
             swap( image );
-        
+
             return (*this);
         }
 

@@ -305,7 +305,7 @@ namespace Thread_Pool
     ThreadPool & ThreadPoolMonoid::instance()
     {
         static ThreadPoolMonoid provider; // one and only monoid object
-    
+
         return provider._pool;
     }
 

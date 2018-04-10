@@ -363,7 +363,7 @@ namespace Bitmap_Operation
 
         get_value( data, dibHeaderOffset, dibHeaderSize );
 
-        // create proper dib header 
+        // create proper dib header
         std::unique_ptr <BitmapDibHeader> info( getInfoHeader( dibHeaderSize ) );
 
         if( info.get() == nullptr )

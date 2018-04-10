@@ -13,7 +13,6 @@
 class imageException : public std::exception
 {
 public:
-
     imageException()
         :  _name( "unknown image library exception" )
     {
@@ -21,14 +20,13 @@ public:
 
     explicit imageException( const char * message )
         : _name( message )
-    {  
+    {
     }
 
     imageException( const imageException & ex )
         : std::exception( ex )
         , _name         ( ex._name )
     {
-        
     }
 
     virtual ~imageException()

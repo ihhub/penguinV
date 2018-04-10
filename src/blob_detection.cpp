@@ -209,7 +209,6 @@ namespace Blob_Detection
                     std::vector < uint32_t >::const_iterator yy = y + 1;
 
                     for( ; xx != end; ++xx, ++yy ) {
-
                         uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
 
                         if( maximumDistance < distance ) {
@@ -471,7 +470,6 @@ namespace Blob_Detection
                         edgeY.push_back( yMap );
                         *(position - 1 - mapWidth) = EDGE;
                     }
-
                 } while( pointId != pointX.size() );
 
                 // Now we can extract outer edge points or so called contour points

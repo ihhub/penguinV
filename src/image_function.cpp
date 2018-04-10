@@ -16,7 +16,7 @@ namespace
         if( dilationX > width / 2 )
             dilationX = width / 2;
         if( dilationY > height / 2 )
-            dilationY = height / 2;        
+            dilationY = height / 2;
 
         if( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);

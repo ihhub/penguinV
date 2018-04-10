@@ -18,7 +18,6 @@ namespace Unit_Test
         size_t testId = 1;
 
         for( std::map < testFunction, std::string >::const_iterator test = _unitTest.begin(); test != _unitTest.end(); ++test, ++testId ) {
-
             std::cout << "["<< testId << "/" << _unitTest.size() << "] " << test->second << "... " << std::flush;
 
             try {

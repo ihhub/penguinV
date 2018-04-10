@@ -40,7 +40,7 @@
         #define PENGUINV_NEON_SET
     #elif __SSE2__
         #define PENGUINV_SSE_SET
-    
+
         #ifdef __AVX2__
             #define PENGUINV_AVX_SET
         #endif
@@ -56,7 +56,7 @@
     #ifdef PENGUINV_SSE_SET
         #error "NEON and SSE cannot be supported on a single CPU. Please check SIMD instruction set verification code"
     #endif
-    
+
     #ifdef PENGUINV_AVX_SET
         #error "NEON and AVX cannot be supported on a single CPU. Please check SIMD instruction set verification code"
     #endif

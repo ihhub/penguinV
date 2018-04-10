@@ -1718,7 +1718,7 @@ namespace Unit_Test
                 PenguinV_Image::Image image  = uniformImage( intensity[0] );
                 std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
                 std::vector< uint32_t > Y( X.size() );
-                
+
                 for (size_t j = 0; j < X.size(); j++) {
                     X[j] = randomValue<uint32_t>( 0, image.width() );
                     Y[j] = randomValue<uint32_t>( 0, image.height() );

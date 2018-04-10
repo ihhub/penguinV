@@ -630,7 +630,6 @@ namespace Image_Function_Neon
                     (*outX) = (*inX) < threshold ? 0 : 255;
             }
         }
-
     }
 
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )

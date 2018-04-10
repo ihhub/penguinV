@@ -89,7 +89,7 @@ namespace
 
         PenguinV_Image::Image input  = Performance_Test::uniformImage     ( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformColorImage( size, size );
-    
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
@@ -100,7 +100,7 @@ namespace
 
         return timer.mean();
     }
- 
+
     std::pair < double, double > ConvertToGrayscale( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
@@ -237,17 +237,17 @@ namespace
     {
         Performance_Test::TimerContainer timer;
         setFunctionPoolThreadCount();
-    
+
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformColorImages( 2, size, size );
-    
+
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
-    
+
             Function_Pool::RgbToBgr( image[0], image[1] );
-    
+
             timer.stop();
         }
-    
+
         return timer.mean();
     }
 
