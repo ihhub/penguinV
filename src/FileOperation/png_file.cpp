@@ -138,7 +138,6 @@ namespace Png_Operation
 
         const uint8_t * outY = image.data() + startY * image.rowSize() + startX * image.colorCount();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
-
             uint8_t * column = row_pointers[y];
             const uint8_t * outX = outY;
 
