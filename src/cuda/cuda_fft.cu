@@ -147,7 +147,7 @@ namespace FFT_Cuda
             return Bitmap_Image_Cuda::Image();
 
         Bitmap_Image_Cuda::Image image( _width, _height );
-        
+
         const float size = static_cast<float>(image.width() * image.height());
 
         launchKernel2D( copyToImageCuda, _width, _height,

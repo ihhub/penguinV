@@ -28,17 +28,17 @@ extern "C" {
 # define kiss_fft_scalar __m128
 #define KISS_FFT_MALLOC(nbytes) _mm_malloc(nbytes,16)
 #define KISS_FFT_FREE _mm_free
-#else	
+#else
 #define KISS_FFT_MALLOC malloc
 #define KISS_FFT_FREE free
-#endif	
+#endif
 
 
 #ifdef FIXED_POINT
-#include <sys/types.h>	
+#include <sys/types.h>
 # if (FIXED_POINT == 32)
 #  define kiss_fft_scalar int32_t
-# else	
+# else
 #  define kiss_fft_scalar int16_t
 # endif
 #else
@@ -78,7 +78,7 @@ typedef struct kiss_fft_state* kiss_fft_cfg;
  *      buffer size in *lenmem.
  * */
 
-kiss_fft_cfg kiss_fft_alloc(int nfft,int inverse_fft,void * mem,size_t * lenmem); 
+kiss_fft_cfg kiss_fft_alloc(int nfft,int inverse_fft,void * mem,size_t * lenmem);
 
 /*
  * kiss_fft(cfg,in_out_buf)
@@ -106,7 +106,7 @@ void kiss_fft_stride(kiss_fft_cfg cfg,const kiss_fft_cpx *fin,kiss_fft_cpx *fout
  your compiler output to call this before you exit.
 */
 //void kiss_fft_cleanup(void);
-	
+
 
 /*
  * Returns the smallest integer k, such that k>=n and k has only "fast" factors (2,3,5)

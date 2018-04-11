@@ -644,7 +644,7 @@ namespace Image_Function_OpenCL
 
         return out;
     }
-    
+
     void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
     {
         Image_Function::ParameterValidation( in, out );

@@ -18,8 +18,8 @@ struct traits
 
     void prepare(
             std::vector< std::complex<T_scalar> > & dst,
-            int nfft,bool inverse, 
-            std::vector<int> & stageRadix, 
+            int nfft,bool inverse,
+            std::vector<int> & stageRadix,
             std::vector<int> & stageRemainder )
     {
         _twiddles.resize(nfft);
@@ -54,7 +54,7 @@ struct traits
 }
 
 template <typename T_Scalar,
-         typename T_traits=kissfft_utils::traits<T_Scalar> 
+         typename T_traits=kissfft_utils::traits<T_Scalar>
          >
 class kissfft
 {
@@ -63,7 +63,7 @@ class kissfft
         typedef typename traits_type::scalar_type scalar_type;
         typedef typename traits_type::cpx_type cpx_type;
 
-        kissfft(int nfft,bool inverse,const traits_type & traits=traits_type() ) 
+        kissfft(int nfft,bool inverse,const traits_type & traits=traits_type() )
             :_nfft(nfft),_inverse(inverse),_traits(traits)
         {
             _traits.prepare(_twiddles, _nfft,_inverse ,_stageRadix, _stageRemainder);
@@ -91,7 +91,7 @@ class kissfft
                 do{
                     // recursive call:
                     // DFT of size m*p performed by doing
-                    // p instances of smaller DFTs of size m, 
+                    // p instances of smaller DFTs of size m,
                     // each one takes a decimated version of the input
                     kf_work(stage+1, Fout , f, fstride*p,in_stride);
                     f += fstride*in_stride;
@@ -100,7 +100,7 @@ class kissfft
 
             Fout=Fout_beg;
 
-            // recombine the p smaller DFTs 
+            // recombine the p smaller DFTs
             switch (p) {
                 case 2: kf_bfly2(Fout,fstride,m); break;
                 case 3: kf_bfly3(Fout,fstride,m); break;
@@ -226,15 +226,15 @@ class kissfft
                         S_MUL(scratch[7].imag(),ya.real()) + S_MUL(scratch[8].imag(),yb.real())
                         );
 
-                scratch[6] =  cpx_type( 
+                scratch[6] =  cpx_type(
                         S_MUL(scratch[10].imag(),ya.imag()) + S_MUL(scratch[9].imag(),yb.imag()),
-                        -S_MUL(scratch[10].real(),ya.imag()) - S_MUL(scratch[9].real(),yb.imag()) 
+                        -S_MUL(scratch[10].real(),ya.imag()) - S_MUL(scratch[9].real(),yb.imag())
                         );
 
                 C_SUB(*Fout1,scratch[5],scratch[6]);
                 C_ADD(*Fout4,scratch[5],scratch[6]);
 
-                scratch[11] = scratch[0] + 
+                scratch[11] = scratch[0] +
                     cpx_type(
                             S_MUL(scratch[7].real(),yb.real()) + S_MUL(scratch[8].real(),ya.real()),
                             S_MUL(scratch[7].imag(),yb.real()) + S_MUL(scratch[8].imag(),ya.real())
