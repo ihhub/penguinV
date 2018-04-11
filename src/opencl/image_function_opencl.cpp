@@ -3,6 +3,7 @@
 #include "../thirdparty/multicl/src/opencl_helper.h"
 #include "image_function_opencl.h"
 #include "../parameter_validation.h"
+#include "../image_function_helper.h"
 
 namespace
 {
@@ -415,7 +416,7 @@ namespace Image_Function_OpenCL
         return out;
     }
 
-    void  ConvertToRgb( const Image & in, Image & out )
+    void ConvertToRgb( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyRGBImage( out );
@@ -489,7 +490,7 @@ namespace Image_Function_OpenCL
         return out;
     }
 
-    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
     {
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
@@ -541,43 +542,7 @@ namespace Image_Function_OpenCL
 
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
     {
-        if( histogram.size() != 256 )
-            throw imageException( "Histogram size is not 256" );
-
-        // It is well-known Otsu's method to find threshold
-        uint32_t pixelCount = histogram[0] + histogram[1];
-        uint32_t sum = histogram[1];
-        for( uint16_t i = 2; i < 256; ++i ) {
-            sum = sum + i * histogram[i];
-            pixelCount += histogram[i];
-        }
-
-        uint32_t sumTemp = 0;
-        uint32_t pixelCountTemp = 0;
-
-        double maximumSigma = -1;
-
-        uint8_t threshold = 0;
-
-        for( uint16_t i = 0; i < 256; ++i ) {
-            pixelCountTemp += histogram[i];
-
-            if( pixelCountTemp > 0 && pixelCountTemp != pixelCount ) {
-                sumTemp += i * histogram[i];
-
-                double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
-                double a  = static_cast<double>(sumTemp) / pixelCountTemp -
-                    static_cast<double>(sum - sumTemp) / (pixelCount - pixelCountTemp);
-                double sigma = w1 * (1 - w1) * a * a;
-
-                if( sigma > maximumSigma ) {
-                    maximumSigma = sigma;
-                    threshold = static_cast <uint8_t>(i);
-                }
-            }
-        }
-
-        return threshold;
+        return Image_Function_Helper::GetThreshold( histogram );
     }
 
     std::vector < uint32_t > Histogram( const Image & image )
