@@ -176,7 +176,7 @@ namespace Image_Function
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
 
-        const uint8_t colorCount  = image.colorCount();
+        const uint8_t colorCount = image.colorCount();
 
         if( result.size() != width * height * colorCount )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
@@ -539,12 +539,14 @@ namespace Image_Function
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         ParameterValidation( image, x, y, width, height );
-        VerifyGrayScaleImage( image );
 
+        const uint8_t colorCount = image.colorCount();
         const uint32_t rowSize = image.rowSize();
 
-        uint8_t * imageY = image.data() + y * rowSize + x;
+        uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        width = width * colorCount;
 
         for( ; imageY != imageYEnd; imageY += rowSize )
             memset( imageY, value, sizeof( uint8_t ) * width );
@@ -634,7 +636,6 @@ namespace Image_Function
                           uint32_t width, uint32_t height, double a, double gamma )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        VerifyGrayScaleImage( in, out );
 
         if( a < 0 || gamma < 0 )
             throw imageException( "Gamma correction parameters are invalid" );
@@ -662,46 +663,7 @@ namespace Image_Function
 
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
     {
-        if( histogram.size() != 256 )
-            throw imageException( "Histogram size is not 256" );
-
-        // It is well-known Otsu's method to find threshold
-        uint32_t pixelCount = histogram[0] + histogram[1];
-        uint32_t sum = histogram[1];
-        for( uint16_t i = 2; i < 256; ++i ) {
-            sum = sum + i * histogram[i];
-            pixelCount += histogram[i];
-        }
-
-        uint32_t sumTemp = 0;
-        uint32_t pixelCountTemp = 0;
-
-        double maximumSigma = -1;
-
-        uint8_t threshold = 0;
-
-        for( uint16_t i = 0; i < 256; ++i ) {
-            pixelCountTemp += histogram[i];
-
-            if( pixelCountTemp == pixelCount )
-                break;
-
-            if( pixelCountTemp > 0 ) {
-                sumTemp += i * histogram[i];
-
-                const double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
-                const double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
-                                  static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
-                const double sigma = w1 * (1 - w1) * a * a;
-
-                if( sigma > maximumSigma ) {
-                    maximumSigma = sigma;
-                    threshold = static_cast <uint8_t>(i);
-                }
-            }
-        }
-
-        return threshold;
+        return Image_Function_Helper::GetThreshold( histogram );
     }
 
     std::vector < uint32_t > Histogram( const Image & image )
@@ -864,18 +826,20 @@ namespace Image_Function
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        VerifyGrayScaleImage( in, out );
 
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
+        const uint8_t colorCount  = CommonColorCount( in, out );
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
@@ -1060,19 +1024,21 @@ namespace Image_Function
                     uint32_t width, uint32_t height )
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        VerifyGrayScaleImage( in, out );
 
+        const uint8_t colorCount = CommonColorCount( in, out );
         const uint32_t rowSizeIn = in.rowSize();
 
-        const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn + startXIn * colorCount;
         const uint8_t * inYEnd = inY + height * rowSizeIn;
 
         uint8_t minimum = 255;
         uint8_t maximum = 0;
 
+        const uint32_t realWidth = width * colorCount;
+
         for( ; inY != inYEnd; inY += rowSizeIn ) {
             const uint8_t * inX = inY;
-            const uint8_t * inXEnd = inX + width;
+            const uint8_t * inXEnd = inX + realWidth;
 
             for( ; inX != inXEnd; ++inX ) {
                 if( minimum > (*inX) )
@@ -1118,15 +1084,18 @@ namespace Image_Function
                             std::vector < uint32_t > & projection )
     {
         ParameterValidation( image, x, y, width, height );
-        VerifyGrayScaleImage( image );
 
-        projection.resize( horizontal ? width : height );
+        const uint8_t colorCount = image.colorCount();
+
+        projection.resize( horizontal ? width * colorCount : height );
         std::fill( projection.begin(), projection.end(), 0u );
 
         const uint32_t rowSize = image.rowSize();
 
+        width = width * colorCount;
+
         if( horizontal ) {
-            const uint8_t * imageX = image.data() + y * rowSize + x;
+            const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
             const uint8_t * imageXEnd = imageX + width;
 
             std::vector < uint32_t > ::iterator data = projection.begin();
@@ -1140,7 +1109,7 @@ namespace Image_Function
             }
         }
         else {
-            const uint8_t * imageY = image.data() + y * rowSize + x;
+            const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
             const uint8_t * imageYEnd = imageY + height * rowSize;
 
             std::vector < uint32_t > ::iterator data = projection.begin();

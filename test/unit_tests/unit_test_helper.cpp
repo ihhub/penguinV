@@ -5,14 +5,18 @@
 
 namespace
 {
-    uint32_t randomWidth()
+    uint32_t randomSize()
     {
         return Unit_Test::randomValue<uint32_t>( 1, 2048 );
     }
 
-    uint32_t randomHeight()
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
     {
-        return Unit_Test::randomValue<uint32_t>( 1, 2048 );
+        PenguinV_Image::Image image( width, height, colorCount );
+
+        image.fill( value );
+
+        return image;
     }
 }
 
@@ -25,11 +29,7 @@ namespace Unit_Test
 
     PenguinV_Image::Image uniformImage( uint8_t value )
     {
-        PenguinV_Image::Image image( randomWidth(), randomHeight() );
-
-        image.fill( value );
-
-        return image;
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value );
     }
 
     PenguinV_Image::Image uniformColorImage()
@@ -39,11 +39,7 @@ namespace Unit_Test
 
     PenguinV_Image::Image uniformColorImage( uint8_t value )
     {
-        PenguinV_Image::Image image( randomWidth(), randomHeight(), PenguinV_Image::RGB );
-
-        image.fill( value );
-
-        return image;
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value );
     }
 
     PenguinV_Image::Image blackImage()
@@ -58,7 +54,7 @@ namespace Unit_Test
 
     PenguinV_Image::Image randomImage()
     {
-        PenguinV_Image::Image image( randomWidth(), randomHeight() );
+        PenguinV_Image::Image image( randomSize(), randomSize() );
 
         uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();
@@ -79,7 +75,7 @@ namespace Unit_Test
         if( value.empty() )
             return randomImage();
 
-        PenguinV_Image::Image image( randomWidth(), randomHeight() );
+        PenguinV_Image::Image image( randomSize(), randomSize() );
 
         uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();

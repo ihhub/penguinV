@@ -316,6 +316,50 @@ namespace Image_Function_Helper
         return out;
     }
 
+    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
+    {
+        if( histogram.size() != 256 )
+            throw imageException( "Histogram size is not 256" );
+
+        // It is well-known Otsu's method to find threshold
+        uint32_t pixelCount = histogram[0] + histogram[1];
+        uint32_t sum = histogram[1];
+        for( uint16_t i = 2; i < 256; ++i ) {
+            sum = sum + i * histogram[i];
+            pixelCount += histogram[i];
+        }
+
+        uint32_t sumTemp = 0;
+        uint32_t pixelCountTemp = 0;
+
+        double maximumSigma = -1;
+
+        uint8_t threshold = 0;
+
+        for( uint16_t i = 0; i < 256; ++i ) {
+            pixelCountTemp += histogram[i];
+
+            if( pixelCountTemp == pixelCount )
+                break;
+
+            if( pixelCountTemp > 0 ) {
+                sumTemp += i * histogram[i];
+
+                const double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
+                const double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
+                                  static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
+                const double sigma = w1 * (1 - w1) * a * a;
+
+                if( sigma > maximumSigma ) {
+                    maximumSigma = sigma;
+                    threshold = static_cast <uint8_t>(i);
+                }
+            }
+        }
+
+        return threshold;
+    }
+
     std::vector < uint32_t > Histogram( FunctionTable::Histogram histogram,
                                         const Image & image )
     {

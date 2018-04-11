@@ -61,6 +61,15 @@ namespace
             } while( removed && (data.size() > sizeLimit) );
         }
     }
+
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
+    {
+        PenguinV_Image::Image image( width, height, colorCount );
+
+        image.fill( value );
+
+        return image;
+    }
 }
 
 namespace Performance_Test
@@ -124,11 +133,7 @@ namespace Performance_Test
 
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        PenguinV_Image::Image image( width, height );
-
-        image.fill( value );
-
-        return image;
+        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value);
     }
 
     PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height )
@@ -138,11 +143,7 @@ namespace Performance_Test
 
     PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        PenguinV_Image::Image image( width, height, PenguinV_Image::RGB );
-
-        image.fill( value );
-
-        return image;
+        return generateImage( width, height, PenguinV_Image::RGB, value);
     }
 
     std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )

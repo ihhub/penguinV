@@ -6,10 +6,8 @@
 #ifdef PENGUINV_NEON_SET
 namespace
 {
-    std::pair < double, double > AbsoluteDifference( uint32_t size )
+    void AbsoluteDifference( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -19,14 +17,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseAnd( uint32_t size )
+    void BitwiseAnd( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -36,14 +30,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseOr( uint32_t size )
+    void BitwiseOr( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -53,14 +43,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseXor( uint32_t size )
+    void BitwiseXor( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -70,14 +56,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Invert( uint32_t size )
+    void Invert( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -87,14 +69,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Maximum( uint32_t size )
+    void Maximum( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -104,14 +82,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Minimum( uint32_t size )
+    void Minimum( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -121,14 +95,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Subtract( uint32_t size )
+    void Subtract( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -138,14 +108,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Threshold( uint32_t size )
+    void Threshold( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
 
@@ -156,14 +122,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ThresholdDouble( uint32_t size )
+    void ThresholdDouble( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
         uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
@@ -175,20 +137,24 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 }
 #endif
 
 // Function naming: _functionName_imageSize
-#define SET_FUNCTION( function )                                      \
-namespace neon_##function                                             \
-{                                                                     \
-    std::pair < double, double > _256 () { return function( 256  ); } \
-    std::pair < double, double > _512 () { return function( 512  ); } \
-    std::pair < double, double > _1024() { return function( 1024 ); } \
-    std::pair < double, double > _2048() { return function( 2048 ); } \
+#define SET_FUNCTION( function )                                     \
+namespace neon_##function                                            \
+{                                                                    \
+    std::pair < double, double > runTest( uint32_t size )            \
+    {                                                                \
+        Performance_Test::TimerContainer timer;                      \
+        function( timer, size  );                                    \
+        return timer.mean();                                         \
+    }                                                                \
+    std::pair < double, double > _256 () { return runTest( 256  ); } \
+    std::pair < double, double > _512 () { return runTest( 512  ); } \
+    std::pair < double, double > _1024() { return runTest( 1024 ); } \
+    std::pair < double, double > _2048() { return runTest( 2048 ); } \
 }
 
 #ifdef PENGUINV_NEON_SET

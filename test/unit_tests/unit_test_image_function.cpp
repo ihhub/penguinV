@@ -459,7 +459,7 @@ namespace Unit_Test
 
                 PenguinV_Image::Image output = Image_Function::ConvertToRgb( input );
 
-                if( !verifyImage( output, intensity[0] ) )
+                if( output.colorCount() != PenguinV_Image::RGB || !verifyImage( output, intensity[0] ) )
                     return false;
             }
 
@@ -496,7 +496,7 @@ namespace Unit_Test
 
                 PenguinV_Image::Image output = Image_Function::ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
 
-                if( !verifyImage( output, intensity[0] ) )
+                if( output.colorCount() != PenguinV_Image::RGB || !verifyImage( output, intensity[0] ) )
                     return false;
             }
 

@@ -39,7 +39,6 @@ namespace
         table.Flip               = &Image_Function::Flip;
         table.GammaCorrection    = &Image_Function::GammaCorrection;
         table.GetPixel           = &Image_Function::GetPixel;
-        table.GetThreshold       = &Image_Function::GetThreshold;
         table.Histogram          = &Image_Function::Histogram;
         table.Invert             = &Image_Function::Invert;
         table.IsEqual            = &Image_Function::IsEqual;

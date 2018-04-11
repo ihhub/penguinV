@@ -24,7 +24,6 @@ namespace penguinV
         Image_Function_Helper::FunctionTable::Flip Flip;
         Image_Function_Helper::FunctionTable::GammaCorrection GammaCorrection;
         Image_Function_Helper::FunctionTable::GetPixel GetPixel;
-        Image_Function_Helper::FunctionTable::GetThreshold GetThreshold;
         Image_Function_Helper::FunctionTable::Histogram Histogram;
         Image_Function_Helper::FunctionTable::Invert Invert;
         Image_Function_Helper::FunctionTable::IsEqual IsEqual;
@@ -127,7 +126,7 @@ namespace penguinV
 
     inline uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
     {
-        return functionTable().GetThreshold( histogram );
+        return Image_Function_Helper::GetThreshold( histogram );
     }
 
     inline void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,

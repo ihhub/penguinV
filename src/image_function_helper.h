@@ -31,7 +31,6 @@ namespace Image_Function_Helper
         typedef void ( *GammaCorrection )  (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                             uint32_t width, uint32_t height, double a, double gamma);
         typedef uint8_t ( *GetPixel )      (const Image & image, uint32_t x, uint32_t y);
-        typedef uint8_t ( *GetThreshold )  (const std::vector < uint32_t > & histogram);
         typedef void ( *Histogram )        (const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                             std::vector < uint32_t > & histogram);
         typedef void ( *Invert )           (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -162,6 +161,8 @@ namespace Image_Function_Helper
 
     Image GammaCorrection( FunctionTable::GammaCorrection gammaCorrection,
                            const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
+
+    uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
     std::vector < uint32_t > Histogram( FunctionTable::Histogram histogram,
                                         const Image & image );

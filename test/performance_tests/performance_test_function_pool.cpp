@@ -5,16 +5,8 @@
 
 namespace
 {
-    void setFunctionPoolThreadCount()
+    void AbsoluteDifference( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
-    }
-
-    std::pair < double, double > AbsoluteDifference( uint32_t size )
-    {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -24,15 +16,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseAnd( uint32_t size )
+    void BitwiseAnd( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -42,15 +29,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseOr( uint32_t size )
+    void BitwiseOr( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -60,15 +42,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseXor( uint32_t size )
+    void BitwiseXor( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -78,15 +55,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ConvertToColor( uint32_t size )
+    void ConvertToColor( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image input  = Performance_Test::uniformImage     ( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformColorImage( size, size );
 
@@ -97,15 +69,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ConvertToGrayscale( uint32_t size )
+    void ConvertToGrayscale( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image input  = Performance_Test::uniformColorImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage     ( size, size );
 
@@ -116,15 +83,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > GammaCorrection( uint32_t size )
+    void GammaCorrection( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
         double a     = Performance_Test::randomValue <uint32_t>( 100 ) / 100.0;
@@ -137,15 +99,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Histogram( uint32_t size )
+    void Histogram( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -155,15 +112,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Invert( uint32_t size )
+    void Invert( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -173,15 +125,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > LookupTable( uint32_t size )
+    void LookupTable( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
         std::vector<uint8_t> table(256, 0);
@@ -193,15 +140,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Maximum( uint32_t size )
+    void Maximum( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -211,15 +153,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Minimum( uint32_t size )
+    void Minimum( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -229,15 +166,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > RgbToBgr( uint32_t size )
+    void RgbToBgr( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformColorImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -247,15 +179,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ResizeDown( uint32_t size )
+    void ResizeDown( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image input  = Performance_Test::uniformImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage( size / 2, size / 2 );
 
@@ -266,15 +193,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ResizeUp( uint32_t size )
+    void ResizeUp( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image input  = Performance_Test::uniformImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage( size * 2, size * 2 );
 
@@ -285,15 +207,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Subtract( uint32_t size )
+    void Subtract( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -303,15 +220,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Sum( uint32_t size )
+    void Sum( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -321,15 +233,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Threshold( uint32_t size )
+    void Threshold( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
 
@@ -340,15 +247,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ThresholdDouble( uint32_t size )
+    void ThresholdDouble( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        Performance_Test::TimerContainer timer;
-        setFunctionPoolThreadCount();
-
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
         uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
@@ -360,19 +262,24 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 }
 
 // Function naming: _functionName_imageSize
-#define SET_FUNCTION( function )                                      \
-namespace function_pool_##function                                    \
-{                                                                     \
-    std::pair < double, double > _256 () { return function( 256  ); } \
-    std::pair < double, double > _512 () { return function( 512  ); } \
-    std::pair < double, double > _1024() { return function( 1024 ); } \
-    std::pair < double, double > _2048() { return function( 2048 ); } \
+#define SET_FUNCTION( function )                                     \
+namespace function_pool_##function                                   \
+{                                                                    \
+    std::pair < double, double > runTest( uint32_t size )            \
+    {                                                                \
+        Performance_Test::TimerContainer timer;                      \
+        Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );       \
+        function( timer, size  );                                    \
+        return timer.mean();                                         \
+    }                                                                \
+    std::pair < double, double > _256 () { return runTest( 256  ); } \
+    std::pair < double, double > _512 () { return runTest( 512  ); } \
+    std::pair < double, double > _1024() { return runTest( 1024 ); } \
+    std::pair < double, double > _2048() { return runTest( 2048 ); } \
 }
 
 namespace

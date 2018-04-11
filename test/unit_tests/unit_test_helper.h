@@ -1,6 +1,5 @@
 #pragma once
 
-#include <algorithm>
 #include <cstdlib>
 #include <vector>
 #include "../../src/image_buffer.h"
@@ -55,7 +54,7 @@ namespace Unit_Test
     bool isEmpty( const PenguinV_Image::ImageTemplate < data > & image )
     {
         return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
-            image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
+               image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
     }
 
     bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
