@@ -126,6 +126,13 @@ namespace Performance_Test
         push( time.count() * 1000.0 ); // original value is in microseconds
     }
 
+    std::pair < double, double > runPerformanceTest(performanceFunction function, uint32_t size )
+    {
+        Performance_Test::TimerContainer timer;
+        function( timer, size  );
+        return timer.mean();
+    }
+
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
     {
         return uniformImage( width, height, randomValue<uint8_t>( 256 ) );

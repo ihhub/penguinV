@@ -22,13 +22,13 @@ namespace Performance_Test
             cudaEvent_t _stopEvent;
         };
 
+        typedef void(*performanceFunctionCuda)( TimerContainerCuda &, uint32_t);
+        std::pair < double, double > runPerformanceTestCuda( performanceFunctionCuda function, uint32_t size, uint32_t threadCountDivider );
+
         // Functions to generate images
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height );
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
         std::vector< Bitmap_Image_Cuda::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
-
-        void setCudaThreadCount( uint32_t threadCount );
-        uint32_t getMaximumCudaThreadCount();
 
         // Return random value for specific range or variable type
         template <typename data>

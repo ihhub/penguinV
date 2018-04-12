@@ -34,6 +34,9 @@ namespace Performance_Test
         std::chrono::time_point < std::chrono::high_resolution_clock > _startTime;
     };
 
+    typedef void(*performanceFunction)( TimerContainer &, uint32_t);
+    std::pair < double, double > runPerformanceTest(performanceFunction function, uint32_t size );
+
     // Functions to generate images
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height );
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );

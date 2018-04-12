@@ -155,19 +155,13 @@ namespace
 #endif
 
 // Function naming: _functionName_imageSize
-#define SET_FUNCTION( function )                                      \
-namespace avx_##function                                              \
-{                                                                     \
-    std::pair < double, double > runTest( uint32_t size )            \
-    {                                                                \
-        Performance_Test::TimerContainer timer;                      \
-        function( timer, size  );                                    \
-        return timer.mean();                                         \
-    }                                                                \
-    std::pair < double, double > _256 () { return runTest( 256  ); } \
-    std::pair < double, double > _512 () { return runTest( 512  ); } \
-    std::pair < double, double > _1024() { return runTest( 1024 ); } \
-    std::pair < double, double > _2048() { return runTest( 2048 ); } \
+#define SET_FUNCTION( function )                                                                            \
+namespace avx_##function                                                                                    \
+{                                                                                                           \
+    std::pair < double, double > _256 () { return Performance_Test::runPerformanceTest( function,  256 ); } \
+    std::pair < double, double > _512 () { return Performance_Test::runPerformanceTest( function,  512 ); } \
+    std::pair < double, double > _1024() { return Performance_Test::runPerformanceTest( function, 1024 ); } \
+    std::pair < double, double > _2048() { return Performance_Test::runPerformanceTest( function, 2048 ); } \
 }
 
 #ifdef PENGUINV_AVX_SET

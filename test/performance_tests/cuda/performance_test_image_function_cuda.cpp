@@ -5,11 +5,8 @@
 
 namespace
 {
-    std::pair < double, double > AbsoluteDifference( uint32_t size, uint32_t threadCount )
+    void AbsoluteDifference( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -19,15 +16,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseAnd( uint32_t size, uint32_t threadCount )
+    void BitwiseAnd( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -37,15 +29,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseOr( uint32_t size, uint32_t threadCount )
+    void BitwiseOr( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -55,15 +42,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > BitwiseXor( uint32_t size, uint32_t threadCount )
+    void BitwiseXor( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -73,15 +55,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Flip( uint32_t size, uint32_t threadCount )
+    void Flip( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -91,15 +68,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Histogram( uint32_t size, uint32_t threadCount )
+    void Histogram( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 1, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -109,15 +81,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Invert( uint32_t size, uint32_t threadCount )
+    void Invert( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -127,15 +94,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > LookupTable( uint32_t size, uint32_t threadCount )
+    void LookupTable( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
         const std::vector<uint8_t> table( 256, 0);
 
@@ -147,15 +109,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Maximum( uint32_t size, uint32_t threadCount )
+    void Maximum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -165,15 +122,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Minimum( uint32_t size, uint32_t threadCount )
+    void Minimum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -183,15 +135,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Subtract( uint32_t size, uint32_t threadCount )
+    void Subtract( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -201,15 +148,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > Threshold( uint32_t size, uint32_t threadCount )
+    void Threshold( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -219,15 +161,10 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 
-    std::pair < double, double > ThresholdDouble( uint32_t size, uint32_t threadCount )
+    void ThresholdDouble( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        Performance_Test::Cuda_Helper::setCudaThreadCount( threadCount );
-        Performance_Test::Cuda_Helper::TimerContainerCuda timer;
-
         std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
@@ -237,8 +174,6 @@ namespace
 
             timer.stop();
         }
-
-        return timer.mean();
     }
 }
 
@@ -248,7 +183,7 @@ namespace
 #define DECLARE_FUNCTION( function, size, divider )                                                         \
 std::pair < double, double > CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider)() \
 {                                                                                                           \
-    return function( size, Performance_Test::Cuda_Helper::getMaximumCudaThreadCount() / divider );          \
+    return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, size, divider );                \
 }
 
 #define DECLARE_FUNCTIONS_FIXED_SIZE( function, size, divider1, divider2, divider3, divider4 ) \

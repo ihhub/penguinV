@@ -1,6 +1,19 @@
 #include "performance_test_helper_cuda.cuh"
 #include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
 
+namespace
+{
+    void setCudaThreadCount( uint32_t threadCount )
+    {
+        multiCuda::CudaDeviceManager::instance().device().setThreadsPerBlock( threadCount );
+    }
+
+    uint32_t getMaximumCudaThreadCount()
+    {
+        return multiCuda::CudaDeviceManager::instance().device().maximumThreadsPerBlock();
+    }
+}
+
 namespace Performance_Test
 {
     namespace Cuda_Helper
@@ -34,6 +47,14 @@ namespace Performance_Test
             push( time );
         }
 
+        std::pair < double, double > runPerformanceTestCuda( performanceFunctionCuda function, uint32_t size, uint32_t threadCountDivider )
+        {
+            setCudaThreadCount( getMaximumCudaThreadCount() / threadCountDivider );
+            TimerContainerCuda timer;
+            function(timer, size);
+            return timer.mean();
+        }
+
         Bitmap_Image_Cuda::Image uniformImage( uint32_t width, uint32_t height )
         {
             return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
@@ -56,16 +77,6 @@ namespace Performance_Test
                 *im = uniformImage( width, height );
 
             return image;
-        }
-
-        void setCudaThreadCount( uint32_t threadCount )
-        {
-            multiCuda::CudaDeviceManager::instance().device().setThreadsPerBlock( threadCount );
-        }
-
-        uint32_t getMaximumCudaThreadCount()
-        {
-            return multiCuda::CudaDeviceManager::instance().device().maximumThreadsPerBlock();
         }
     }
 }
