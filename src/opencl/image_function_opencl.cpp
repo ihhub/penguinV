@@ -2,216 +2,215 @@
 #include "../thirdparty/multicl/src/opencl_device.h"
 #include "../thirdparty/multicl/src/opencl_helper.h"
 #include "image_function_opencl.h"
-#include "../parameter_validation.h"
 #include "../image_function_helper.h"
+#include "../parameter_validation.h"
 
 namespace
 {
-    const std::string programCode =
-        "// OpenCL kernels for PenguinV library                                                                                                                                                             \n"
-        "#pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable                                                                                                                                 \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void absoluteDifferenceOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )            \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : in2[id] - in1[id];                                                                                                                       \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void bitwiseAndOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                    \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] & in2[id];                                                                                                                                                               \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void bitwiseOrOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                     \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] | in2[id];                                                                                                                                                               \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void bitwiseXorOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                    \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] ^ in2[id];                                                                                                                                                               \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void convertToGrayScaleOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char colorCount )                       \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "                                                                                                                                                                                                   \n"
-        "        unsigned int sum = 0;                                                                                                                                                                      \n"
-        "                                                                                                                                                                                                   \n"
-        "        __global const unsigned char * data = in + (width * y + x) * colorCount;                                                                                                                   \n"
-        "                                                                                                                                                                                                   \n"
-        "        for( unsigned char i = 0; i < colorCount; ++i, ++data )                                                                                                                                    \n"
-        "        {                                                                                                                                                                                          \n"
-        "            sum += (*data);                                                                                                                                                                        \n"
-        "        }                                                                                                                                                                                          \n"
-        "                                                                                                                                                                                                   \n"
-        "        out[id] = sum / colorCount;                                                                                                                                                                \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void convertToRgbOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char colorCount )                             \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "                                                                                                                                                                                                   \n"
-        "        __global unsigned char * data = out + (width * y + x) * colorCount;                                                                                                                        \n"
-        "                                                                                                                                                                                                   \n"
-        "        for( unsigned char i = 0; i < colorCount; ++i, ++data )                                                                                                                                    \n"
-        "        {                                                                                                                                                                                          \n"
-        "            (*data) = in[id];                                                                                                                                                                      \n"
-        "        }                                                                                                                                                                                          \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void extractChannelOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char channelCount, unsigned char channelId )\n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height )                                                                                                                                                                  \n"
-        "        out[y * width + x] = in[(y * width + x) * channelCount + channelId];                                                                                                                       \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void fillOpenCL( __global unsigned char * data, unsigned char value, unsigned int size )                                                                                                  \n"
-        "{                                                                                                                                                                                                  \n"
-        "    size_t id = get_global_id(0);                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( id < size ) {                                                                                                                                                                              \n"
-        "        data[id] = value;                                                                                                                                                                          \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void flipOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char horizontal, unsigned char vertical )             \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t inX = get_global_id(0);                                                                                                                                                           \n"
-        "    const size_t inY = get_global_id(1);                                                                                                                                                           \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( inX < width && inY < height ) {                                                                                                                                                            \n"
-        "        const size_t outX = (horizontal != 0) ? (width  - 1 - inX) : inX;                                                                                                                          \n"
-        "        const size_t outY = (vertical != 0)   ? (height - 1 - inY) : inY;                                                                                                                          \n"
-        "                                                                                                                                                                                                   \n"
-        "        out[outY * width + outX] = in[inY * width + inX];                                                                                                                                          \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void histogramOpenCL( __global const unsigned char * data, unsigned int width, unsigned int height, volatile __global unsigned int * histogram )                                          \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        atomic_add( &histogram[data[id]], 1 );                                                                                                                                                     \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void invertOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height )                                                             \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = ~in[id];                                                                                                                                                                         \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void lookupTableOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, __global unsigned char * table )                        \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = table[in[id]];                                                                                                                                                                   \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void maximumOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                       \n"
-        "{                                                                                                                                                                                                  \n"
-        "   const size_t x = get_global_id(0);                                                                                                                                                              \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] > in2[id] ? in1[id] : in2[id];                                                                                                                                           \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void minimumOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                       \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] < in2[id] ? in1[id] : in2[id];                                                                                                                                           \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void subtractOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )                      \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;                                                                                                                                       \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void thresholdOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char threshold )                                 \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in[id] < threshold ? 0 : 255;                                                                                                                                                    \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "                                                                                                                                                                                                   \n"
-        "__kernel void thresholdOpenCL2( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char minThreshold, unsigned char maxThreshold ) \n"
-        "{                                                                                                                                                                                                  \n"
-        "    const size_t x = get_global_id(0);                                                                                                                                                             \n"
-        "    const size_t y = get_global_id(1);                                                                                                                                                             \n"
-        "                                                                                                                                                                                                   \n"
-        "    if( x < width && y < height ) {                                                                                                                                                                \n"
-        "        const size_t id = y * width + x;                                                                                                                                                           \n"
-        "        out[id] = in[id] < minThreshold || in[id] > maxThreshold ? 0 : 255;                                                                                                                        \n"
-        "    }                                                                                                                                                                                              \n"
-        "}                                                                                                                                                                                                  \n"
-        "";
+    const std::string programCode = R"(
+        // OpenCL kernels for PenguinV library
+        #pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable
+
+        __kernel void absoluteDifferenceOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : in2[id] - in1[id];
+            }
+        }
+
+        __kernel void bitwiseAndOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] & in2[id];
+            }
+        }
+
+        __kernel void bitwiseOrOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] | in2[id];
+            }
+        }
+
+        __kernel void bitwiseXorOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] ^ in2[id];
+            }
+        }
+
+        __kernel void convertToGrayScaleOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char colorCount )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+
+                unsigned int sum = 0;
+                __global const unsigned char * data = in + (width * y + x) * colorCount;
+
+                for( unsigned char i = 0; i < colorCount; ++i, ++data )
+                {
+                    sum += (*data);
+                }
+
+                out[id] = sum / colorCount;
+            }
+        }
+
+        __kernel void convertToRgbOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char colorCount )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+
+                __global unsigned char * data = out + (width * y + x) * colorCount;
+
+                for( unsigned char i = 0; i < colorCount; ++i, ++data )
+                {
+                    (*data) = in[id];
+                }
+            }
+        }
+
+        __kernel void extractChannelOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char channelCount, unsigned char channelId )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height )
+                out[y * width + x] = in[(y * width + x) * channelCount + channelId];
+        }
+
+        __kernel void fillOpenCL( __global unsigned char * data, unsigned char value, unsigned int size )
+        {
+            size_t id = get_global_id(0);
+
+            if( id < size ) {
+                data[id] = value;
+            }
+        }
+
+        __kernel void flipOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char horizontal, unsigned char vertical )
+        {
+            const size_t inX = get_global_id(0);
+            const size_t inY = get_global_id(1);
+
+            if( inX < width && inY < height ) {
+                const size_t outX = (horizontal != 0) ? (width  - 1 - inX) : inX;
+                const size_t outY = (vertical != 0)   ? (height - 1 - inY) : inY;
+
+                out[outY * width + outX] = in[inY * width + inX];
+            }
+        }
+
+        __kernel void histogramOpenCL( __global const unsigned char * data, unsigned int width, unsigned int height, volatile __global unsigned int * histogram )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                atomic_add( &histogram[data[id]], 1 );
+            }
+        }
+
+        __kernel void invertOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = ~in[id];
+            }
+        }
+
+        __kernel void lookupTableOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, __global unsigned char * table )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = table[in[id]];
+            }
+        }
+
+        __kernel void maximumOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+           const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] > in2[id] ? in1[id] : in2[id];
+            }
+        }
+
+        __kernel void minimumOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] < in2[id] ? in1[id] : in2[id];
+            }
+        }
+
+        __kernel void subtractOpenCL( __global const unsigned char * in1, __global const unsigned char * in2, __global unsigned char * out, unsigned int width, unsigned int height )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in1[id] > in2[id] ? in1[id] - in2[id] : 0;
+            }
+        }
+
+        __kernel void thresholdOpenCL( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char threshold )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in[id] < threshold ? 0 : 255;
+            }
+        }
+
+        __kernel void thresholdOpenCL2( __global const unsigned char * in, __global unsigned char * out, unsigned int width, unsigned int height, unsigned char minThreshold, unsigned char maxThreshold )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = y * width + x;
+                out[id] = in[id] < minThreshold || in[id] > maxThreshold ? 0 : 255;
+            }
+        }
+        )";
 
     multiCL::OpenCLProgram GetProgram()
     {
