@@ -16,7 +16,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::AbsoluteDifference( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) ||
+                if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
                     return false;
             }
@@ -47,7 +47,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseAnd( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] & intensity[1] ) )
+                if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] & intensity[1] ) )
                     return false;
             }
 
@@ -77,7 +77,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseOr( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] | intensity[1] ) )
+                if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] | intensity[1] ) )
                     return false;
             }
 
@@ -107,7 +107,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseXor( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] ^ intensity[1] ) )
+                if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] ^ intensity[1] ) )
                     return false;
             }
 
@@ -288,7 +288,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Invert( input );
 
-                if( !Cuda::equalSize( input, output ) || !Cuda::verifyImage( output, ~intensity ) )
+                if( !equalSize( input, output ) || !Cuda::verifyImage( output, ~intensity ) )
                     return false;
             }
 
@@ -371,7 +371,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Maximum( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) ||
+                if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
                     return false;
             }
@@ -402,7 +402,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Minimum( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) ||
+                if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
                     return false;
             }
@@ -433,7 +433,7 @@ namespace Unit_Test
 
                 Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Subtract( input[0], input[1] );
 
-                if( !Cuda::equalSize( input[0], output ) ||
+                if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
                     return false;
             }

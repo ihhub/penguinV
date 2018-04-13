@@ -5,6 +5,7 @@
 #include "../../../src/thirdparty/multicuda/src/cuda_types.cuh"
 #include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
 #include "../../../src/cuda/image_function_cuda.cuh"
+#include "../unit_test_helper.h"
 #include "unit_test_helper_cuda.cuh"
 
 namespace
@@ -49,6 +50,15 @@ namespace
                 atomicAdd( differenceCount, 1 );
         }
     };
+
+    Bitmap_Image_Cuda::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
+    {
+        Bitmap_Image_Cuda::Image image( width, height, colorCount );
+
+        image.fill( value );
+
+        return image;
+    }
 };
 
 namespace Unit_Test
@@ -57,11 +67,7 @@ namespace Unit_Test
     {
         Bitmap_Image_Cuda::Image uniformImage( uint8_t value )
         {
-            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ) );
-
-            image.fill( value );
-
-            return image;
+            return generateImage( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::GRAY_SCALE, value );
         }
 
         Bitmap_Image_Cuda::Image uniformImage()
@@ -76,11 +82,7 @@ namespace Unit_Test
 
         Bitmap_Image_Cuda::Image uniformColorImage( uint8_t value )
         {
-            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::RGB );
-
-            image.fill( value );
-
-            return image;
+            return generateImage( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::RGB, value );
         }
 
         Bitmap_Image_Cuda::Image blackImage()
@@ -157,5 +159,5 @@ namespace Unit_Test
 
             return differenceCount.get() == rowSize * height;
         }
-    };
-};
+    }
+}
