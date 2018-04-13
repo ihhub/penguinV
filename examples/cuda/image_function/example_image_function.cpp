@@ -99,7 +99,7 @@ void gpuBased()
     Bitmap_Image_Cuda::Image imageCuda = Image_Function_Cuda::ConvertToCuda( image );
 
     // Convert to gray-scale image if it's not
-    if( imageCuda.colorCount() != Bitmap_Image_Cuda::GRAY_SCALE )
+    if( imageCuda.colorCount() != PenguinV_Image::GRAY_SCALE )
         imageCuda = Image_Function_Cuda::ConvertToGrayScale( imageCuda );
 
     // Threshold image with calculated optimal threshold

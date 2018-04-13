@@ -182,7 +182,7 @@ namespace Unit_Test
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
                 Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
-                Bitmap_Image_Cuda::Image output( input.width(), input.height(), Bitmap_Image_Cuda::RGB );
+                Bitmap_Image_Cuda::Image output( input.width(), input.height(), PenguinV_Image::RGB );
 
                 output.fill( intensity[1] );
 

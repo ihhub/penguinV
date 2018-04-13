@@ -8,27 +8,7 @@ namespace Bitmap_Image_Cuda_Cpu
     class Image : public PenguinV_Image::Image
     {
     public:
-        Image()
-        {
-        }
-
-        explicit Image( uint8_t colorCount_ )
-        {
-            setColorCount( colorCount_ );
-        }
-
-        Image( uint32_t width_, uint32_t height_ )
-        {
-            resize( width_, height_ );
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-        {
-            setColorCount( colorCount_ );
-            resize( width_, height_ );
-        }
-
-        Image( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
+        Image( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
             setColorCount( colorCount_ );
             setAlignment( alignment_ );

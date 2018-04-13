@@ -18,31 +18,12 @@ namespace Bitmap_Image_OpenCL
     class ImageTemplateOpenCL
     {
     public:
-        ImageTemplateOpenCL()
+        ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u )
             : _width     ( 0 )    // width of image
             , _height    ( 0 )    // height of image
             , _colorCount( 1 )    // number of colors per pixel
             , _rowSize   ( 0 )    // size of single row on image which is equal to width * colorCount
             , _data      ( NULL ) // an array what store image information (pixel data)
-        {
-        }
-
-        ImageTemplateOpenCL( uint32_t width_, uint32_t height_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( NULL )
-        {
-            resize( width_, height_ );
-        }
-
-        ImageTemplateOpenCL( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( NULL )
         {
             setColorCount( colorCount_ );
             resize( width_, height_ );

@@ -549,7 +549,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if ( in.colorCount() == GRAY_SCALE ) {
+        if ( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -570,7 +570,7 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height(), RGB );
+        Image out( in.width(), in.height(), PenguinV_Image::RGB );
 
         ConvertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -588,7 +588,7 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height, RGB );
+        Image out( width, height, PenguinV_Image::RGB );
 
         ConvertToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -601,7 +601,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
 
-        if ( in.colorCount() == RGB ) {
+        if ( in.colorCount() == PenguinV_Image::RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }

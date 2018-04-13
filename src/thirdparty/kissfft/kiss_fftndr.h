@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 typedef struct kiss_fftndr_state *kiss_fftndr_cfg;
 
 

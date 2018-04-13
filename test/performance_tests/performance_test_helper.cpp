@@ -175,6 +175,6 @@ namespace Performance_Test
 
     uint32_t runCount()
     {
-        return 1024;
+        return 128;
     }
 }

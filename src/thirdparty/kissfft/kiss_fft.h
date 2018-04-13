@@ -118,7 +118,7 @@ int kiss_fft_next_fast_size(int n);
         (kiss_fft_next_fast_size( ((n)+1)>>1)<<1)
 
 #ifdef __cplusplus
-} 
+}
 #endif
 
 #endif

@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-    
+
 /* 
  
  Real optimized version can save about 45% cpu time vs. complex fft of a real seq.

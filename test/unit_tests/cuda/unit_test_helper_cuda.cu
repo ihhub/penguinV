@@ -76,7 +76,7 @@ namespace Unit_Test
 
         Bitmap_Image_Cuda::Image uniformColorImage( uint8_t value )
         {
-            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), Bitmap_Image_Cuda::RGB );
+            Bitmap_Image_Cuda::Image image( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::RGB );
 
             image.fill( value );
 

@@ -11,7 +11,7 @@ namespace PenguinV_Image
     class ImageTemplate
     {
     public:
-        ImageTemplate()
+        ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
             : _width     ( 0 )       // width of image
             , _height    ( 0 )       // height of image
             , _colorCount( 1 )       // number of colors per pixel
@@ -19,39 +19,6 @@ namespace PenguinV_Image
                                      // for example for Bitmap it must be a multiple of 4
             , _rowSize   ( 0 )       // size of single row on image, usually it is equal to width
             , _data      ( nullptr ) // an array what store image information (pixel data)
-        {
-        }
-
-        ImageTemplate( uint32_t width_, uint32_t height_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _alignment ( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( nullptr )
-        {
-            resize( width_, height_ );
-        }
-
-        ImageTemplate( uint32_t width_, uint32_t height_, uint8_t colorCount_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _alignment ( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( nullptr )
-        {
-            setColorCount( colorCount_ );
-            resize( width_, height_ );
-        }
-
-        ImageTemplate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _alignment ( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( nullptr )
         {
             setColorCount( colorCount_ );
             setAlignment( alignment_ );

@@ -48,7 +48,7 @@ struct kiss_fft_state{
 #define SAMP_MAX 2147483647
 #else
 # define FRACBITS 15
-# define SAMPPROD int32_t 
+# define SAMPPROD int32_t
 #define SAMP_MAX 32767
 #endif
 

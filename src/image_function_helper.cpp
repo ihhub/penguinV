@@ -652,7 +652,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height(), 3u );
+        Image out( in.width(), in.height(), PenguinV_Image::RGB );
 
         rgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
@@ -672,7 +672,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height, 3u );
+        Image out( width, height, PenguinV_Image::RGB );
 
         rgbToBgr( in, startXIn, startYIn, out, 0, 0, width, height );
 
