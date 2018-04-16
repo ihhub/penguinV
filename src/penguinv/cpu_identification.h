@@ -20,7 +20,7 @@
     #endif
 #elif __APPLE__ // MacOS
 
-#include "cpu_id_macos.h"
+#include "cpu_id_unix.h"
 
     #ifdef __arm__
         #define PENGUINV_NEON_SET
@@ -34,7 +34,7 @@
 
 #elif __linux__ // Linux
 
-#include "cpu_id_linux.h"
+#include "cpu_id_unix.h"
 
     #ifdef __arm__
         #define PENGUINV_NEON_SET
