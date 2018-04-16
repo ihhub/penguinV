@@ -1,5 +1,5 @@
-#include "unit_test_image_buffer.h"
 #include "unit_test_helper.h"
+#include "unit_test_image_buffer.h"
 #include "../../src/image_function.h"
 
 namespace Unit_Test
@@ -16,8 +16,8 @@ namespace Unit_Test
         bool Constructor2ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
+                const uint32_t width      = randomValue<uint32_t>( 2048 );
+                const uint32_t height     = randomValue<uint32_t>( 2048 );
 
                 if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height ), width, height, rowSize( width ), 1, 1 ) )
                     return false;
@@ -29,9 +29,9 @@ namespace Unit_Test
         bool Constructor3ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
+                const uint32_t width      = randomValue<uint32_t>( 2048 );
+                const uint32_t height     = randomValue<uint32_t>( 2048 );
+                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
 
                 if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
                                 rowSize( width, colorCount ), colorCount, 1 ) )
@@ -44,10 +44,10 @@ namespace Unit_Test
         bool Constructor4ParametersTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 2048 );
-                uint32_t height     = randomValue<uint32_t>( 2048 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
+                const uint32_t width      = randomValue<uint32_t>( 2048 );
+                const uint32_t height     = randomValue<uint32_t>( 2048 );
+                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
+                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
                 if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
                                 rowSize( width, colorCount, alignment ), colorCount, alignment ) )
@@ -57,184 +57,73 @@ namespace Unit_Test
             return true;
         }
 
-        bool CopyConstructorU8Test()
+        template <typename _Type>
+        bool CopyConstructorTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
+                const uint32_t width      = randomValue<uint32_t>( 1024 );
+                const uint32_t height     = randomValue<uint32_t>( 1024 );
+                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
+                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                PenguinV_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint8_t > image_copy( image );
+                PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < _Type > image_copy( image );
 
                 if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
                     return false;
             }
 
             return true;
+        }
+
+        bool CopyConstructorU8Test()
+        {
+            return CopyConstructorTest < uint8_t > ();
         }
 
         bool CopyConstructorU16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint16_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < uint16_t > ();
         }
 
         bool CopyConstructorU32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint32_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < uint32_t > ();
         }
 
         bool CopyConstructorU64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint64_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < uint64_t > ();
         }
 
         bool CopyConstructorS8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int8_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < int8_t > ();
         }
 
         bool CopyConstructorS16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int16_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < int16_t > ();
         }
 
         bool CopyConstructorS32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int32_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < int32_t > ();
         }
 
         bool CopyConstructorS64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int64_t > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < int64_t > ();
         }
 
         bool CopyConstructorFTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < float > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < float > ();
         }
 
         bool CopyConstructorDTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < double > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return CopyConstructorTest < double > ();
         }
 
         bool NullAssignmentTest()
@@ -256,16 +145,17 @@ namespace Unit_Test
             return false;
         }
 
-        bool AssignmentOperatorU8Test()
+        template <typename _Type>
+        bool AssignmentOperatorTest()
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
+                const uint32_t width      = randomValue<uint32_t>( 1024 );
+                const uint32_t height     = randomValue<uint32_t>( 1024 );
+                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
+                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
 
-                PenguinV_Image::ImageTemplate < uint8_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint8_t > image_copy;
+                PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+                PenguinV_Image::ImageTemplate < _Type > image_copy;
 
                 image_copy = image;
 
@@ -274,186 +164,56 @@ namespace Unit_Test
             }
 
             return true;
+        }
+
+        bool AssignmentOperatorU8Test()
+        {
+            return AssignmentOperatorTest < uint8_t > ();
         }
 
         bool AssignmentOperatorU16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint16_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint16_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < uint16_t > ();
         }
 
         bool AssignmentOperatorU32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint32_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint32_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < uint32_t > ();
         }
 
         bool AssignmentOperatorU64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < uint64_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < uint64_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < uint64_t > ();
         }
 
         bool AssignmentOperatorS8Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int8_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int8_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < int8_t > ();
         }
 
         bool AssignmentOperatorS16Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int16_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int16_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < int16_t > ();
         }
 
         bool AssignmentOperatorS32Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int32_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int32_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < int32_t > ();
         }
 
         bool AssignmentOperatorS64Test()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < int64_t > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < int64_t > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < int64_t > ();
         }
 
         bool AssignmentOperatorFTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < float > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < float > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < float > ();
         }
 
         bool AssignmentOperatorDTest()
         {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                uint32_t width      = randomValue<uint32_t>( 1024 );
-                uint32_t height     = randomValue<uint32_t>( 1024 );
-                uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < double > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < double > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
+            return AssignmentOperatorTest < double > ();
         }
     }
 
