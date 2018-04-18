@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include "../image_buffer.h"
 #include "image_buffer_cuda.cuh"
 
 namespace Image_Function_Cuda

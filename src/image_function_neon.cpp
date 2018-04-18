@@ -651,7 +651,7 @@ namespace Image_Function_Neon
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        // image width is less than 16 bytes so no use to utilize NEOD :(
+        // image width is less than 16 bytes so no use to utilize NEON :(
         if( width < simdSize ) {
             Image_Function::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
             return;

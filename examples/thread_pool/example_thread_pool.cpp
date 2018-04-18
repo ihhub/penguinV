@@ -107,7 +107,7 @@ public:
     TaskGiver1( Thread_Pool::ThreadPool * pool )
         : TaskProvider( pool )
     {
-    };
+    }
 
     virtual ~TaskGiver1() { }
 
@@ -159,7 +159,7 @@ protected:
     virtual void _task( size_t taskId )
     {
         completeTask( taskId );
-    };
+    }
 };
 
 void example1()
