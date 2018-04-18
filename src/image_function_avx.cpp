@@ -49,7 +49,6 @@ namespace Image_Function_Avx
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in1, in2, out );
 
         width = width * colorCount;
 
