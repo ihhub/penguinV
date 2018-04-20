@@ -7,7 +7,7 @@ namespace
 {
     void AbsoluteDifference( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -20,7 +20,7 @@ namespace
 
     void BitwiseAnd( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -33,7 +33,7 @@ namespace
 
     void BitwiseOr( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -46,7 +46,7 @@ namespace
 
     void BitwiseXor( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -59,7 +59,7 @@ namespace
 
     void Flip( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -72,7 +72,7 @@ namespace
 
     void Histogram( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 1, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 1, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -85,7 +85,7 @@ namespace
 
     void Invert( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -98,7 +98,7 @@ namespace
 
     void LookupTable( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
         const std::vector<uint8_t> table( 256, 0);
 
 
@@ -113,7 +113,7 @@ namespace
 
     void Maximum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -126,7 +126,7 @@ namespace
 
     void Minimum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -139,7 +139,7 @@ namespace
 
     void Subtract( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -152,7 +152,7 @@ namespace
 
     void Threshold( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -165,7 +165,7 @@ namespace
 
     void ThresholdDouble( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
-        std::vector < Bitmap_Image_Cuda::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -178,29 +178,28 @@ namespace
 }
 
 // Function naming: function_name_(image_size)_(divider_of_maximim_thread_count)
-#define CONVERT_PARAMETER( parameter ) _##parameter
-
-#define DECLARE_FUNCTION( function, size, divider )                                                         \
-std::pair < double, double > CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider)() \
-{                                                                                                           \
-    return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, size, divider );                \
+#define SET_FUNCTION( function )                                                                                                  \
+namespace cuda_##function                                                                                                         \
+{                                                                                                                                 \
+    std::pair < double, double >  _256_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 1 ); } \
+    std::pair < double, double >  _512_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 1 ); } \
+    std::pair < double, double > _1024_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 1 ); } \
+    std::pair < double, double > _2048_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 1 ); } \
+    std::pair < double, double >  _256_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 2 ); } \
+    std::pair < double, double >  _512_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 2 ); } \
+    std::pair < double, double > _1024_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 2 ); } \
+    std::pair < double, double > _2048_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 2 ); } \
+    std::pair < double, double >  _256_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 4 ); } \
+    std::pair < double, double >  _512_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 4 ); } \
+    std::pair < double, double > _1024_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 4 ); } \
+    std::pair < double, double > _2048_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 4 ); } \
+    std::pair < double, double >  _256_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 8 ); } \
+    std::pair < double, double >  _512_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 8 ); } \
+    std::pair < double, double > _1024_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 8 ); } \
+    std::pair < double, double > _2048_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 8 ); } \
 }
 
-#define DECLARE_FUNCTIONS_FIXED_SIZE( function, size, divider1, divider2, divider3, divider4 ) \
-DECLARE_FUNCTION( function, size, divider1 )                                                   \
-DECLARE_FUNCTION( function, size, divider2 )                                                   \
-DECLARE_FUNCTION( function, size, divider3 )                                                   \
-DECLARE_FUNCTION( function, size, divider4 )
-
-#define DECLARE_FUNCTIONS( function, size1, size2, size3, size4, divider1, divider2, divider3, divider4 ) \
-DECLARE_FUNCTIONS_FIXED_SIZE( function, size1, divider1, divider2, divider3, divider4 )                   \
-DECLARE_FUNCTIONS_FIXED_SIZE( function, size2, divider1, divider2, divider3, divider4 )                   \
-DECLARE_FUNCTIONS_FIXED_SIZE( function, size3, divider1, divider2, divider3, divider4 )                   \
-DECLARE_FUNCTIONS_FIXED_SIZE( function, size4, divider1, divider2, divider3, divider4 )
-
-#define SET_FUNCTION( function ) DECLARE_FUNCTIONS( function, 256, 512, 1024, 2048, 1, 2, 4, 8 );
-
- namespace cuda
+ namespace
  {
     SET_FUNCTION( AbsoluteDifference )
     SET_FUNCTION( BitwiseAnd         )
@@ -217,19 +216,23 @@ DECLARE_FUNCTIONS_FIXED_SIZE( function, size4, divider1, divider2, divider3, div
     SET_FUNCTION( ThresholdDouble    )
  }
 
-#define ADD_TEST_FUNCTIONS_FIXED_SIZE( framework, function, size, divider1, divider2, divider3, divider4 )  \
-ADD_TEST( framework, cuda::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider1) ); \
-ADD_TEST( framework, cuda::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider2) ); \
-ADD_TEST( framework, cuda::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider3) ); \
-ADD_TEST( framework, cuda::CONVERT_PARAMETER(function)CONVERT_PARAMETER(size)CONVERT_PARAMETER(divider4) );
-
-#define ADD_FUNCTIONS( framework, function, size1, size2, size3, size4, divider1, divider2, divider3, divider4 ) \
-ADD_TEST_FUNCTIONS_FIXED_SIZE( framework, function, size1, divider1, divider2, divider3, divider4 )              \
-ADD_TEST_FUNCTIONS_FIXED_SIZE( framework, function, size2, divider1, divider2, divider3, divider4 )              \
-ADD_TEST_FUNCTIONS_FIXED_SIZE( framework, function, size3, divider1, divider2, divider3, divider4 )              \
-ADD_TEST_FUNCTIONS_FIXED_SIZE( framework, function, size4, divider1, divider2, divider3, divider4 )
-
-#define ADD_TEST_FUNCTION( framework, function ) ADD_FUNCTIONS( framework, function, 256, 512, 1024, 2048, 1, 2, 4, 8 )
+#define ADD_TEST_FUNCTION( framework, function ) \
+ADD_TEST( framework, cuda_##function:: _256_1 ); \
+ADD_TEST( framework, cuda_##function:: _512_1 ); \
+ADD_TEST( framework, cuda_##function::_1024_1 ); \
+ADD_TEST( framework, cuda_##function::_2048_1 ); \
+ADD_TEST( framework, cuda_##function:: _256_2 ); \
+ADD_TEST( framework, cuda_##function:: _512_2 ); \
+ADD_TEST( framework, cuda_##function::_1024_2 ); \
+ADD_TEST( framework, cuda_##function::_2048_2 ); \
+ADD_TEST( framework, cuda_##function:: _256_4 ); \
+ADD_TEST( framework, cuda_##function:: _512_4 ); \
+ADD_TEST( framework, cuda_##function::_1024_4 ); \
+ADD_TEST( framework, cuda_##function::_2048_4 ); \
+ADD_TEST( framework, cuda_##function:: _256_8 ); \
+ADD_TEST( framework, cuda_##function:: _512_8 ); \
+ADD_TEST( framework, cuda_##function::_1024_8 ); \
+ADD_TEST( framework, cuda_##function::_2048_8 );
 
 namespace Performance_Test
 {

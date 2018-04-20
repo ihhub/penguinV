@@ -250,32 +250,18 @@ namespace Image_Function_Cuda
 {
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2 );
     }
 
     void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        AbsoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2, out );
     }
 
     Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                               uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -300,32 +286,18 @@ namespace Image_Function_Cuda
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
     }
 
     void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2, out );
     }
 
     Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -350,32 +322,18 @@ namespace Image_Function_Cuda
 
     Image BitwiseOr( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2 );
     }
 
     void BitwiseOr( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2, out );
     }
 
     Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -400,32 +358,18 @@ namespace Image_Function_Cuda
 
     Image BitwiseXor( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2 );
     }
 
     void BitwiseXor( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        BitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2, out );
     }
 
     Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -448,16 +392,16 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
-    Image ConvertToCuda( const PenguinV_Image::Image & in )
+    ImageCuda ConvertToCuda( const Image & in )
     {
-        Image out( in.width(), in.height(), in.colorCount() );
+        ImageCuda out( in.width(), in.height(), in.colorCount() );
 
         ConvertToCuda( in, out );
 
         return out;
     }
 
-    void ConvertToCuda( const PenguinV_Image::Image & in, Image & out )
+    void ConvertToCuda( const Image & in, ImageCuda & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -481,16 +425,16 @@ namespace Image_Function_Cuda
         }
     }
 
-    PenguinV_Image::Image ConvertFromCuda( const Image & in )
+    Image ConvertFromCuda( const Image & in )
     {
-        PenguinV_Image::Image out( in.width(), in.height(), in.colorCount(), 1u );
+        Image out( in.width(), in.height(), in.colorCount(), 1u );
 
         ConvertFromCuda( in, out );
 
         return out;
     }
 
-    void ConvertFromCuda( const Image & in, PenguinV_Image::Image & out )
+    void ConvertFromCuda(const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -516,31 +460,17 @@ namespace Image_Function_Cuda
 
     Image ConvertToGrayScale( const Image & in )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        ConvertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in );
     }
 
     void ConvertToGrayScale( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        ConvertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, out );
     }
 
     Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        ConvertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, startXIn, startYIn, width, height );
     }
 
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -568,31 +498,17 @@ namespace Image_Function_Cuda
 
     Image ConvertToRgb( const Image & in )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height(), PenguinV_Image::RGB );
-
-        ConvertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in );
     }
 
     void ConvertToRgb( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        ConvertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, out );
     }
 
     Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height, PenguinV_Image::RGB );
-
-        ConvertToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, startXIn, startYIn, width, height );
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -627,13 +543,7 @@ namespace Image_Function_Cuda
 
     Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Copy( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::Copy( Copy, in, startXIn, startYIn, width, height );
     }
 
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -656,31 +566,17 @@ namespace Image_Function_Cuda
 
     Image ExtractChannel( const Image & in, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
-
-        return out;
+        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, channelId );
     }
 
     void ExtractChannel( const Image & in, Image & out, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        ExtractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
+        Image_Function_Helper::ExtractChannel( ExtractChannel, in, out, channelId );
     }
 
     Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in, x, y, width, height );
-
-        Image out( width, height );
-
-        ExtractChannel( in, x, y, out, 0, 0, width, height, channelId );
-
-        return out;
+        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, x, y, width, height, channelId );
     }
 
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
@@ -749,31 +645,17 @@ namespace Image_Function_Cuda
 
     Image GammaCorrection( const Image & in, double a, double gamma )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
-
-        return out;
+        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, a, gamma );
     }
 
     void GammaCorrection( const Image & in, Image & out, double a, double gamma )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        GammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
+        Image_Function_Helper::GammaCorrection( GammaCorrection, in, out, a, gamma );
     }
 
     Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        GammaCorrection( in, startXIn, startYIn, out, 0, 0, width, height, a, gamma );
-
-        return out;
+        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, startXIn, startYIn, width, height, a, gamma );
     }
 
     void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -805,27 +687,17 @@ namespace Image_Function_Cuda
 
     std::vector < uint32_t > Histogram( const Image & image )
     {
-        std::vector < uint32_t > histogram;
-
-        Histogram( image, 0, 0, image.width(), image.height(), histogram );
-
-        return histogram;
+        return Image_Function_Helper::Histogram( Histogram, image );
     }
 
     void Histogram( const Image & image, std::vector < uint32_t > & histogram )
     {
-        Histogram( image, 0, 0, image.width(), image.height(), histogram );
+        Image_Function_Helper::Histogram( Histogram, image, histogram );
     }
 
     std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-
-        std::vector < uint32_t > histogram;
-
-        Histogram( image, x, y, width, height, histogram );
-
-        return histogram;
+        return Image_Function_Helper::Histogram( Histogram, image, x, y, width, height );
     }
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
@@ -850,31 +722,17 @@ namespace Image_Function_Cuda
 
     Image Invert( const Image & in )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in );
     }
 
     void Invert( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Invert( Invert, in, out );
     }
 
     Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Invert( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
+        return Image_Function_Helper::Invert( Invert, in, startXIn, startYIn, width, height );
     }
 
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -897,32 +755,18 @@ namespace Image_Function_Cuda
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
-
-        return out;
+        return Image_Function_Helper::LookupTable( LookupTable, in, table );
     }
 
     void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        LookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
+        Image_Function_Helper::LookupTable( LookupTable, in, out, table );
     }
 
     Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
                        const std::vector < uint8_t > & table )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        LookupTable( in, startXIn, startYIn, out, 0, 0, width, height, table );
-
-        return out;
+        return Image_Function_Helper::LookupTable( LookupTable, in, startXIn, startYIn, width, height, table );
     }
 
     void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -948,32 +792,18 @@ namespace Image_Function_Cuda
 
     Image Maximum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, in2 );
     }
 
     void Maximum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Maximum( Maximum, in1, in2, out );
     }
 
     Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Maximum( Maximum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -998,32 +828,18 @@ namespace Image_Function_Cuda
 
     Image Minimum( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, in2 );
     }
 
     void Minimum( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Minimum( Minimum, in1, in2, out );
     }
 
     Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Minimum( Minimum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -1048,32 +864,18 @@ namespace Image_Function_Cuda
 
     Image Subtract( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
-
-        Image out( in1.width(), in1.height() );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, in2 );
     }
 
     void Subtract( const Image & in1, const Image & in2, Image & out )
     {
-        Image_Function::ParameterValidation( in1, in2, out );
-
-        Subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
+        Image_Function_Helper::Subtract( Subtract, in1, in2, out );
     }
 
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-        Image out( width, height );
-
-        Subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
-
-        return out;
+        return Image_Function_Helper::Subtract( Subtract, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -1098,31 +900,17 @@ namespace Image_Function_Cuda
 
     Image Threshold( const Image & in, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, threshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), threshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, threshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, threshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, threshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -1143,32 +931,18 @@ namespace Image_Function_Cuda
 
     Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out( in.width(), in.height() );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, out );
-
-        Threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
+        Image_Function_Helper::Threshold( Threshold, in, out, minThreshold, maxThreshold );
     }
 
     Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
                      uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out( width, height );
-
-        Threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
-
-        return out;
+        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,

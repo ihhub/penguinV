@@ -13,7 +13,7 @@ namespace Image_Function_Cuda
         {
             Image_Function::ParameterValidation( in );
 
-            Image out( in.width(), in.height() );
+            ImageCuda out( in.width(), in.height() );
 
             Gaussian( in, out, kernelSize, sigma );
 

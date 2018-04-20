@@ -3,11 +3,10 @@
 #include "../../../src/image_buffer.h"
 #include "../../../src/thirdparty/multicuda/src/cuda_memory.cuh"
 #include "../../../src/cuda/image_buffer_cuda.cuh"
-#include "../../../src/cuda/image_buffer_cpu.cuh"
+#include "../../../src/cuda/image_buffer_cuda_pinned.cuh"
 #include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
 
-void measureTimingToCuda  ( PenguinV_Image::Image    & in, Bitmap_Image_Cuda::Image & out, const std::string & type );
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image    & out, const std::string & type );
+void measureTiming( PenguinV_Image::Image & in, PenguinV_Image::Image & out, const std::string & type, bool hostToDevice );
 
 int main()
 {
@@ -32,22 +31,22 @@ int main()
         PenguinV_Image::Image in1( width, height );
 
         // Then we allocate image using CUDA pinned memory...
-        Bitmap_Image_Cuda_Cpu::Image in2( width, height );
+        PenguinV_Image::ImageCudaPinned in2( width, height );
 
         // Do you see the diffrence in programming syntax? No difference :)
         // And you can use this image in normal image operations as well
 
         // Now we allocate image on CUDA device
-        Bitmap_Image_Cuda::Image out( width, height );
+        PenguinV_Image::ImageCuda out( width, height );
 
         // First we will measure speed to copy image from CPU RAM to CUDA device memory
         // To avoid caching on CPU and give an advantage for normal CPU allocation
         // we run functions for CUDA pinned memory image
-        measureTimingToCuda( in2, out, "Pinned    " );
-        measureTimingToCuda( in1, out, "Non-pinned" );
+        measureTiming( in2, out, "Pinned    ", true );
+        measureTiming( in1, out, "Non-pinned", true );
 
-        measureTimingFromCuda( out, in2, "Pinned    " );
-        measureTimingFromCuda( out, in1, "Non-pinned" );
+        measureTiming( out, in2, "Pinned    ", false );
+        measureTiming( out, in1, "Non-pinned", false );
     }
     catch( const std::exception & ex ) {
         // uh-oh, something went wrong!
@@ -67,7 +66,7 @@ int main()
     return 0;
 }
 
-void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image & out, const std::string & type )
+void measureTiming( PenguinV_Image::Image & in, PenguinV_Image::Image & out, const std::string & type, bool hostToDevice )
 {
     cudaEvent_t start, stop;
 
@@ -78,33 +77,12 @@ void measureTimingToCuda( PenguinV_Image::Image & in, Bitmap_Image_Cuda::Image &
 
     const uint32_t size = out.rowSize() * out.height();
 
-    multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyHostToDevice) );
+    multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, hostToDevice ? cudaMemcpyHostToDevice : cudaMemcpyDeviceToHost) );
     multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
     multiCuda::cudaCheck( cudaEventSynchronize(stop) );
 
     float time = 0;
     multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
 
-    std::cout << type << ": Host to Device bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
-}
-
-void measureTimingFromCuda( Bitmap_Image_Cuda::Image & in, PenguinV_Image::Image & out, const std::string & type )
-{
-    cudaEvent_t start, stop;
-
-    multiCuda::cudaCheck( cudaEventCreate(&start) );
-    multiCuda::cudaCheck( cudaEventCreate(&stop) );
-
-    multiCuda::cudaCheck( cudaEventRecord(start, 0) );
-
-    const uint32_t size = out.rowSize() * out.height();
-
-    multiCuda::cudaCheck( cudaMemcpy(out.data(), in.data(), size, cudaMemcpyDeviceToHost) );
-    multiCuda::cudaCheck( cudaEventRecord(stop, 0) );
-    multiCuda::cudaCheck( cudaEventSynchronize(stop) );
-
-    float time = 0;
-    multiCuda::cudaCheck( cudaEventElapsedTime(&time, start, stop) );
-
-    std::cout << type << ": Device to Host bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
+    std::cout << type << (hostToDevice ? ": Host to Device" : ": Device to Host" ) << " bandwidth (GB/s): " << size * 1e-6 / time << std::endl;
 }

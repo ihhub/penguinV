@@ -3,11 +3,16 @@
 #include "performance_test_image_function_cuda.h"
 #include "../performance_test_framework.h"
 #include "../../../src/thirdparty/multicuda/src/cuda_device.cuh"
+#include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
 
 int main()
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
+    if( !multiCuda::isCudaSupported() ) {
+        std::cout << "No CUDA devices in the system" << std::endl;
+        return 0;
+    }
 
     multiCuda::CudaDeviceManager::instance().initializeDevices();
 

@@ -5,7 +5,7 @@
 
 namespace Image_Function_Cuda
 {
-    using namespace Bitmap_Image_Cuda;
+    using namespace PenguinV_Image;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
@@ -37,10 +37,10 @@ namespace Image_Function_Cuda
 
     // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
     // or (width * color count) will be equal to row size
-    Image ConvertToCuda( const PenguinV_Image::Image & in );
-    void  ConvertToCuda( const PenguinV_Image::Image & in, Image & out );
-    PenguinV_Image::Image ConvertFromCuda( const Image & in );
-    void                  ConvertFromCuda( const Image & in, PenguinV_Image::Image & out );
+    ImageCuda ConvertToCuda( const Image & in );
+    void  ConvertToCuda( const Image & in, ImageCuda & out );
+    Image ConvertFromCuda( const Image & in );
+    void  ConvertFromCuda( const Image & in, Image & out );
 
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );

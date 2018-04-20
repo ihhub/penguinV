@@ -8,7 +8,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         absoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -29,7 +29,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         absoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -49,7 +49,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         bitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -70,7 +70,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         bitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -82,7 +82,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         bitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -103,7 +103,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         bitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -115,7 +115,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         bitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -136,7 +136,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         bitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -148,7 +148,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         convertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -168,7 +168,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         convertToGrayScale( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -180,7 +180,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height(), RGB );
+        Image out = in.generate( in.width(), in.height(), RGB );
 
         convertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -200,7 +200,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height, RGB );
+        Image out = in.generate( width, height, RGB );
 
         convertToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -212,7 +212,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         copy( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -224,7 +224,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         extractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
 
@@ -244,7 +244,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, x, y, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         extractChannel( in, x, y, out, 0, 0, width, height, channelId );
 
@@ -256,7 +256,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         flip( in, 0, 0, out, 0, 0, out.width(), out.height(), horizontal, vertical );
 
@@ -277,7 +277,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         flip( in, startXIn, startYIn, out, 0, 0, width, height, horizontal, vertical );
 
@@ -289,7 +289,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         gammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
 
@@ -309,7 +309,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         gammaCorrection( in, startXIn, startYIn, out, 0, 0, width, height, a, gamma );
 
@@ -395,7 +395,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -415,7 +415,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         invert( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -427,7 +427,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         lookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
 
@@ -448,7 +448,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         lookupTable( in, startXIn, startYIn, out, 0, 0, width, height, table );
 
@@ -460,7 +460,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -481,7 +481,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -493,7 +493,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2, in3 );
 
-        Image out( in1.width(), in1.height(), RGB );
+        Image out = in1.generate( in1.width(), in1.height(), RGB );
 
         merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -515,7 +515,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
 
-        Image out( width, height, RGB );
+        Image out = in1.generate( width, height, RGB );
 
         merge( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, out, 0, 0, width, height );
 
@@ -527,7 +527,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -548,7 +548,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -560,7 +560,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -580,7 +580,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         normalize( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -618,7 +618,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( widthOut, heightOut );
+        Image out = in.generate( widthOut, heightOut );
 
         resize( in, 0, 0, in.width(), in.height(), out, 0, 0, widthOut, heightOut );
 
@@ -640,7 +640,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
 
-        Image out( widthOut, heightOut );
+        Image out = in.generate( widthOut, heightOut );
 
         resize( in, startXIn, startYIn, widthIn, heightIn, out, 0, 0, widthOut, heightOut );
 
@@ -652,7 +652,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height(), PenguinV_Image::RGB );
+        Image out = in.generate( in.width(), in.height(), PenguinV_Image::RGB );
 
         rgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
@@ -672,7 +672,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height, PenguinV_Image::RGB );
+        Image out = in.generate( width, height, PenguinV_Image::RGB );
 
         rgbToBgr( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -684,7 +684,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height() );
 
         subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -705,7 +705,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out( width, height );
+        Image out = in1.generate( width, height );
 
         subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -717,7 +717,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), thresholdValue );
 
@@ -737,7 +737,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         threshold( in, startXIn, startYIn, out, 0, 0, width, height, thresholdValue );
 
@@ -749,7 +749,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height() );
 
         threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
 
@@ -770,7 +770,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( width, height );
+        Image out = in.generate( width, height );
 
         threshold( in, startXIn, startYIn, out, 0, 0, width, height, minThreshold, maxThreshold );
 
@@ -782,7 +782,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.height(), in.width() );
+        Image out = in.generate( in.height(), in.width() );
 
         transpose( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
@@ -803,7 +803,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out( height, width );
+        Image out = in.generate( height, width );
 
         transpose( in, startXIn, startYIn, out, 0, 0, width, height );
 

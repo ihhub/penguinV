@@ -7,15 +7,13 @@
 
 namespace FFT_Cuda
 {
-    using namespace Bitmap_Image_Cuda;
-
     // This class store complex ([Re, Im]) data in GPU memory
     // It is used for Fast Fourier Transform
     class ComplexData
     {
     public:
         ComplexData();
-        ComplexData( const Bitmap_Image_Cuda::Image & image );
+        ComplexData( const PenguinV_Image::Image & image );
 
         ComplexData( const ComplexData & data );
         ComplexData( ComplexData && data );
@@ -25,11 +23,11 @@ namespace FFT_Cuda
 
         ~ComplexData();
 
-        void set( const Bitmap_Image_Cuda::Image & image );
+        void set( const PenguinV_Image::Image & image );
         void set( const multiCuda::Array<float> & data );
 
         // This function returns normalized image with swapped quadrants
-        Bitmap_Image_Cuda::Image get() const;
+        PenguinV_Image::Image get() const;
 
         void resize( uint32_t width_, uint32_t height_ );
 

@@ -154,8 +154,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="pinned_memory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\cuda\image_buffer_cpu.cuh" />
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda_pinned.cuh" />
     <ClInclude Include="..\..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cuh" />
     <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cuh" />

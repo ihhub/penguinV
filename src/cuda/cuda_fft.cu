@@ -73,7 +73,7 @@ namespace FFT_Cuda
     {
     }
 
-    ComplexData::ComplexData( const Bitmap_Image_Cuda::Image & image )
+    ComplexData::ComplexData( const PenguinV_Image::Image & image )
         : _data  ( NULL )
         , _width ( 0 )
         , _height( 0 )
@@ -116,7 +116,7 @@ namespace FFT_Cuda
         _clean();
     }
 
-    void ComplexData::set( const Bitmap_Image_Cuda::Image & image )
+    void ComplexData::set( const PenguinV_Image::Image & image )
     {
         if( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
@@ -141,12 +141,12 @@ namespace FFT_Cuda
                         data.data(), _data, _width, _height );
     }
 
-    Bitmap_Image_Cuda::Image ComplexData::get() const
+    PenguinV_Image::Image ComplexData::get() const
     {
         if( empty() )
-            return Bitmap_Image_Cuda::Image();
+            return PenguinV_Image::Image();
 
-        Bitmap_Image_Cuda::Image image( _width, _height );
+        PenguinV_Image::Image image( _width, _height );
 
         const float size = static_cast<float>(image.width() * image.height());
 

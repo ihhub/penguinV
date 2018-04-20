@@ -4,66 +4,62 @@
 #include "../image_buffer.h"
 #include "../thirdparty/multicuda/src/cuda_device.cuh"
 
-namespace Bitmap_Image_Cuda
+namespace PenguinV_Image
 {
     template <typename TColorDepth>
-    class ImageTemplateCuda : public PenguinV_Image::ImageTemplate<TColorDepth>
+    class ImageTemplateCuda : public ImageTemplate<TColorDepth>
     {
     public:
         ImageTemplateCuda( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
-            PenguinV_Image::ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
-            PenguinV_Image::ImageTemplate<TColorDepth>::setAlignment( alignment_ );
-            PenguinV_Image::ImageTemplate<TColorDepth>::resize( width_, height_ );
+            ImageTemplate<TColorDepth>::_setType( 1, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
+            ImageTemplate<TColorDepth>::setAlignment( alignment_ );
+            ImageTemplate<TColorDepth>::resize( width_, height_ );
         }
 
         ImageTemplateCuda( const ImageTemplateCuda & image )
         {
-            PenguinV_Image::ImageTemplate<TColorDepth>::operator=( image );
+            ImageTemplate<TColorDepth>::operator=( image );
         }
 
         ImageTemplateCuda( ImageTemplateCuda && image )
         {
-            PenguinV_Image::ImageTemplate<TColorDepth>::swap( image );
+            ImageTemplate<TColorDepth>::swap( image );
         }
 
         ImageTemplateCuda & operator=( const ImageTemplateCuda & image )
         {
-            PenguinV_Image::ImageTemplate<TColorDepth>::operator=( image );
+            ImageTemplate<TColorDepth>::operator=( image );
 
             return (*this);
         }
 
         ImageTemplateCuda & operator=( ImageTemplateCuda && image )
         {
-            PenguinV_Image::ImageTemplate<TColorDepth>::swap( image );
+            ImageTemplate<TColorDepth>::swap( image );
 
             return (*this);
         }
-
-        virtual ~ImageTemplateCuda()
-        {
-            PenguinV_Image::ImageTemplate<TColorDepth>::clear();
-        }
-    protected:
-        virtual TColorDepth * _allocate( size_t size ) const
+    private:
+        static TColorDepth * _allocateMemory( size_t size )
         {
             return multiCuda::MemoryManager::memory().allocate<TColorDepth>( size );
         }
 
-        virtual void _deallocate( TColorDepth * data ) const
+        static void _deallocateMemory( TColorDepth * data )
         {
             multiCuda::MemoryManager::memory().free( data );
         }
 
-        virtual void _copy( TColorDepth * out, TColorDepth * in, size_t size )
+        static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
         {
             cudaError error = cudaMemcpy( in, out, size, cudaMemcpyDeviceToDevice );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory in CUDA device" );
         }
 
-        virtual void _set( TColorDepth * data, TColorDepth value, size_t size )
+        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
             cudaError_t error = cudaMemset( data, value, size );
             if( error != cudaSuccess )
@@ -71,5 +67,5 @@ namespace Bitmap_Image_Cuda
         }
     };
 
-    typedef ImageTemplateCuda <uint8_t> Image;
+    typedef PenguinV_Image::ImageTemplateCuda <uint8_t> ImageCuda;
 }

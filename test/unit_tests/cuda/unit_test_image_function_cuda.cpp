@@ -1,3 +1,4 @@
+#include <cmath>
 #include <numeric>
 #include "../../../src/cuda/image_function_cuda.cuh"
 #include "../unit_test_helper.h"
@@ -12,9 +13,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::AbsoluteDifference( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::AbsoluteDifference( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
@@ -28,7 +29,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -43,9 +44,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseAnd( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::BitwiseAnd( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] & intensity[1] ) )
                     return false;
@@ -58,7 +59,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -73,9 +74,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseOr( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::BitwiseOr( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] | intensity[1] ) )
                     return false;
@@ -88,7 +89,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
 
@@ -103,9 +104,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::BitwiseXor( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::BitwiseXor( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] ^ intensity[1] ) )
                     return false;
@@ -118,7 +119,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
 
@@ -133,9 +134,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = Cuda::uniformColorImage( intensity[0] );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
+                PenguinV_Image::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
 
                 if( !Cuda::verifyImage( output, intensity[0] ) )
                     return false;
@@ -148,8 +149,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image_Cuda::Image input = Cuda::uniformColorImage( intensity[0] );
-                Bitmap_Image_Cuda::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input = Cuda::uniformColorImage( intensity[0] );
+                PenguinV_Image::ImageCuda output( input.width(), input.height() );
 
                 output.fill( intensity[1] );
 
@@ -166,9 +167,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity[0] );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::ConvertToRgb( input );
+                PenguinV_Image::Image output = Image_Function_Cuda::ConvertToRgb( input );
 
                 if( !Cuda::verifyImage( output, intensity[0] ) )
                     return false;
@@ -181,8 +182,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity[0] );
-                Bitmap_Image_Cuda::Image output( input.width(), input.height(), PenguinV_Image::RGB );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity[0] );
+                PenguinV_Image::ImageCuda output( input.width(), input.height(), PenguinV_Image::RGB );
 
                 output.fill( intensity[1] );
 
@@ -199,12 +200,12 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
+                PenguinV_Image::Image output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
 
                 double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
                 uint8_t corrected = 0;
@@ -225,7 +226,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
                 double a     = randomValue <uint32_t>( 100 ) / 100.0;
                 double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -251,7 +252,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image image = Cuda::uniformImage( intensity );
 
                 std::vector < uint32_t > histogram = Image_Function_Cuda::Histogram( image );
 
@@ -267,7 +268,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image image = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image image = Cuda::uniformImage( intensity );
 
                 std::vector < uint32_t > histogram;
                 Image_Function_Cuda::Histogram( image, histogram );
@@ -284,9 +285,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Invert( input );
+                PenguinV_Image::Image output = Image_Function_Cuda::Invert( input );
 
                 if( !equalSize( input, output ) || !Cuda::verifyImage( output, ~intensity ) )
                     return false;
@@ -299,7 +300,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::Invert( input[0], input[1] );
 
@@ -314,14 +315,14 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+                PenguinV_Image::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
 
                 std::vector < uint8_t > lookupTable( 256, 0 );
 
                 lookupTable[intensity[0]] = intensityValue();
                 lookupTable[intensity[1]] = intensityValue();
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::LookupTable( input, lookupTable );
+                PenguinV_Image::Image output = Image_Function_Cuda::LookupTable( input, lookupTable );
 
                 std::vector < uint8_t > normalized( 2 );
 
@@ -339,8 +340,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                Bitmap_Image_Cuda::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
-                Bitmap_Image_Cuda::Image output( input.width(), input.height() );
+                PenguinV_Image::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+                PenguinV_Image::ImageCuda output( input.width(), input.height() );
 
                 output.fill( intensityValue() );
 
@@ -367,9 +368,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Maximum( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::Maximum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
@@ -383,7 +384,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
 
@@ -398,9 +399,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Minimum( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::Minimum( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
@@ -414,7 +415,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
 
@@ -429,9 +430,9 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Subtract( input[0], input[1] );
+                PenguinV_Image::Image output = Image_Function_Cuda::Subtract( input[0], input[1] );
 
                 if( !equalSize( input[0], output ) ||
                     !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
@@ -445,7 +446,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 3 );
-                std::vector < Bitmap_Image_Cuda::Image > image = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > image = Cuda::uniformImages( intensity );
 
                 Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
 
@@ -460,7 +461,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -477,7 +478,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
                 uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -494,12 +495,12 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 uint8_t intensity = intensityValue();
-                Bitmap_Image_Cuda::Image input = Cuda::uniformImage( intensity );
+                PenguinV_Image::Image input = Cuda::uniformImage( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-                Bitmap_Image_Cuda::Image output = Image_Function_Cuda::Threshold( input, minThreshold, maxThreshold );
+                PenguinV_Image::Image output = Image_Function_Cuda::Threshold( input, minThreshold, maxThreshold );
 
                 if( !Cuda::verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
                     return false;
@@ -512,7 +513,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                std::vector < Bitmap_Image_Cuda::Image > input = Cuda::uniformImages( intensity );
+                std::vector < PenguinV_Image::Image > input = Cuda::uniformImages( intensity );
 
                 uint8_t minThreshold = randomValue <uint8_t>( 255 );
                 uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );

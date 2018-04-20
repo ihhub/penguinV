@@ -86,25 +86,19 @@ void gpuBased()
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
+    PenguinV_Image::Image image = Image_Function_Cuda::ConvertToCuda( Bitmap_Operation::Load( "mercury.bmp" ) );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
-    // We try to mutate the image to make alignment equal to 1
-    image.mutate( image.width(), image.height(), image.colorCount(), 1u );
-
-    // Copy image from GPU space to GPU space
-    Bitmap_Image_Cuda::Image imageCuda = Image_Function_Cuda::ConvertToCuda( image );
-
     // Convert to gray-scale image if it's not
-    if( imageCuda.colorCount() != PenguinV_Image::GRAY_SCALE )
-        imageCuda = Image_Function_Cuda::ConvertToGrayScale( imageCuda );
+    if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        image = Image_Function_Cuda::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
-    imageCuda = Image_Function_Cuda::Threshold( imageCuda, Image_Function_Cuda::GetThreshold( Image_Function_Cuda::Histogram( imageCuda ) ) );
+    image = Image_Function_Cuda::Threshold( image, Image_Function_Cuda::GetThreshold( Image_Function_Cuda::Histogram( image ) ) );
 
     // Save result
-    Bitmap_Operation::Save( "result2.bmp", Image_Function_Cuda::ConvertFromCuda( imageCuda ) );
+    Bitmap_Operation::Save( "result2.bmp", Image_Function_Cuda::ConvertFromCuda( image ) );
 }
