@@ -56,7 +56,7 @@ namespace
         PenguinV_Image::ImageCuda image( width, height, colorCount );
 
         image.fill( value );
-        
+
         PenguinV_Image::Image imageOut;
         imageOut.swap( image );
 

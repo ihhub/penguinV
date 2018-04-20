@@ -65,7 +65,7 @@ namespace Performance_Test
             PenguinV_Image::ImageCuda image( width, height );
 
             image.fill( value );
-            
+
             PenguinV_Image::Image imageOut;
             imageOut.swap( image );
 

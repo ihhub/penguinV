@@ -285,7 +285,7 @@ namespace PenguinV_Image
         {
             FunctionFacade::instance().set( _type )( data, value, size );
         }
-    
+
         static TColorDepth * _allocateMemory( size_t size )
         {
             return new TColorDepth[size];
