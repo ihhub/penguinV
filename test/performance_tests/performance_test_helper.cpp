@@ -143,12 +143,12 @@ namespace Performance_Test
         return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value);
     }
 
-    PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height )
+    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height )
     {
-        return uniformColorImage( width, height, randomValue<uint8_t>( 256 ) );
+        return uniformRGBImage( width, height, randomValue<uint8_t>( 256 ) );
     }
 
-    PenguinV_Image::Image uniformColorImage( uint32_t width, uint32_t height, uint8_t value )
+    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
     {
         return generateImage( width, height, PenguinV_Image::RGB, value);
     }
@@ -163,12 +163,12 @@ namespace Performance_Test
         return image;
     }
 
-    std::vector< PenguinV_Image::Image > uniformColorImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector< PenguinV_Image::Image > uniformRGBImages( uint32_t count, uint32_t width, uint32_t height )
     {
         std::vector < PenguinV_Image::Image > image( count );
 
         for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
-            *im = uniformColorImage( width, height );
+            *im = uniformRGBImage( width, height );
 
         return image;
     }

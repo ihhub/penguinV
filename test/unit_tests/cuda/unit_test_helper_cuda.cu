@@ -78,12 +78,12 @@ namespace Unit_Test
             return uniformImage( randomValue<uint8_t>( 256 ) );
         }
 
-        PenguinV_Image::Image uniformColorImage()
+        PenguinV_Image::Image uniformRGBImage()
         {
-            return uniformColorImage( randomValue<uint8_t>( 256 ) );
+            return uniformRGBImage( randomValue<uint8_t>( 256 ) );
         }
 
-        PenguinV_Image::Image uniformColorImage( uint8_t value )
+        PenguinV_Image::Image uniformRGBImage( uint8_t value )
         {
             return generateImage( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::RGB, value );
         }

@@ -59,8 +59,8 @@ namespace
 
     void ConvertToColor( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        PenguinV_Image::Image input  = Performance_Test::uniformImage     ( size, size );
-        PenguinV_Image::Image output = Performance_Test::uniformColorImage( size, size );
+        PenguinV_Image::Image input  = Performance_Test::uniformImage   ( size, size );
+        PenguinV_Image::Image output = Performance_Test::uniformRGBImage( size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -73,8 +73,8 @@ namespace
 
     void ConvertToGrayscale( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        PenguinV_Image::Image input  = Performance_Test::uniformColorImage( size, size );
-        PenguinV_Image::Image output = Performance_Test::uniformImage     ( size, size );
+        PenguinV_Image::Image input  = Performance_Test::uniformRGBImage( size, size );
+        PenguinV_Image::Image output = Performance_Test::uniformImage   ( size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
@@ -170,7 +170,7 @@ namespace
 
     void RgbToBgr( Performance_Test::TimerContainer & timer, uint32_t size )
     {
-        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformColorImages( 2, size, size );
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformRGBImages( 2, size, size );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();

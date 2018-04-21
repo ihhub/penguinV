@@ -32,12 +32,12 @@ namespace Unit_Test
         return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value );
     }
 
-    PenguinV_Image::Image uniformColorImage()
+    PenguinV_Image::Image uniformRGBImage()
     {
-        return uniformColorImage( randomValue<uint8_t>( 256 ) );
+        return uniformRGBImage( randomValue<uint8_t>( 256 ) );
     }
 
-    PenguinV_Image::Image uniformColorImage( uint8_t value )
+    PenguinV_Image::Image uniformRGBImage( uint8_t value )
     {
         return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value );
     }

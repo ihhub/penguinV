@@ -134,7 +134,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                PenguinV_Image::Image input = Cuda::uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = Cuda::uniformRGBImage( intensity[0] );
 
                 PenguinV_Image::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
 
@@ -149,7 +149,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                PenguinV_Image::Image input = Cuda::uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = Cuda::uniformRGBImage( intensity[0] );
                 PenguinV_Image::ImageCuda output( input.width(), input.height() );
 
                 output.fill( intensity[1] );

@@ -377,7 +377,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
 
                 PenguinV_Image::Image output = Image_Function::ConvertToGrayScale( input );
 
@@ -392,7 +392,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                PenguinV_Image::Image input = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
                 PenguinV_Image::Image output( input.width(), input.height() );
 
                 output.fill( intensity[1] );
@@ -410,7 +410,7 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 1 );
-                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
+                PenguinV_Image::Image input  = uniformRGBImage( intensity[0] );
 
                 uint32_t roiX, roiY, roiWidth, roiHeight;
 
@@ -429,8 +429,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                PenguinV_Image::Image input  = uniformColorImage( intensity[0] );
-                PenguinV_Image::Image output = uniformImage     ( intensity[1] );
+                PenguinV_Image::Image input  = uniformRGBImage( intensity[0] );
+                PenguinV_Image::Image output = uniformImage   ( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -507,8 +507,8 @@ namespace Unit_Test
         {
             for( uint32_t i = 0; i < runCount(); ++i ) {
                 std::vector < uint8_t > intensity = intensityArray( 2 );
-                PenguinV_Image::Image input  = uniformImage     ( intensity[0] );
-                PenguinV_Image::Image output = uniformColorImage( intensity[1] );
+                PenguinV_Image::Image input  = uniformImage   ( intensity[0] );
+                PenguinV_Image::Image output = uniformRGBImage( intensity[1] );
 
                 std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 

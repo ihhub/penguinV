@@ -13,8 +13,8 @@ namespace Unit_Test
         // Generate images
         PenguinV_Image::Image uniformImage();
         PenguinV_Image::Image uniformImage( uint8_t value );
-        PenguinV_Image::Image uniformColorImage();
-        PenguinV_Image::Image uniformColorImage( uint8_t value );
+        PenguinV_Image::Image uniformRGBImage();
+        PenguinV_Image::Image uniformRGBImage( uint8_t value );
         PenguinV_Image::Image blackImage();
         PenguinV_Image::Image whiteImage();
         std::vector < PenguinV_Image::Image > uniformImages( uint32_t images );
