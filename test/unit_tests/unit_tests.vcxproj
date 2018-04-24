@@ -157,13 +157,9 @@
     <ClCompile Include="unit_test_bitmap.cpp" />
     <ClCompile Include="unit_test_blob_detection.cpp" />
     <ClCompile Include="unit_test_framework.cpp" />
-    <ClCompile Include="unit_test_function_pool.cpp" />
     <ClCompile Include="unit_test_helper.cpp" />
     <ClCompile Include="unit_test_image_buffer.cpp" />
     <ClCompile Include="unit_test_image_function.cpp" />
-    <ClCompile Include="unit_test_image_function_avx.cpp" />
-    <ClCompile Include="unit_test_image_function_neon.cpp" />
-    <ClCompile Include="unit_test_image_function_sse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\blob_detection.h" />
@@ -184,13 +180,9 @@
     <ClInclude Include="unit_test_bitmap.h" />
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_framework.h" />
-    <ClInclude Include="unit_test_function_pool.h" />
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />
     <ClInclude Include="unit_test_image_function.h" />
-    <ClInclude Include="unit_test_image_function_avx.h" />
-    <ClInclude Include="unit_test_image_function_neon.h" />
-    <ClInclude Include="unit_test_image_function_sse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

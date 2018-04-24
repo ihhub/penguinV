@@ -2,221 +2,221 @@
 #include "unit_test_image_buffer.h"
 #include "../../src/image_function.h"
 
-namespace Unit_Test
+namespace template_image
 {
-    namespace template_image
+    bool EmptyConstructorTest()
     {
-        bool EmptyConstructorTest()
-        {
-            PenguinV_Image::ImageTemplate < uint8_t > image;
+        PenguinV_Image::ImageTemplate < uint8_t > image;
 
-            return isEmpty( image );
-        }
-
-        bool Constructor2ParametersTest()
-        {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                const uint32_t width      = randomValue<uint32_t>( 2048 );
-                const uint32_t height     = randomValue<uint32_t>( 2048 );
-
-                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height ), width, height, rowSize( width ), 1, 1 ) )
-                    return false;
-            }
-
-            return true;
-        }
-
-        bool Constructor3ParametersTest()
-        {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                const uint32_t width      = randomValue<uint32_t>( 2048 );
-                const uint32_t height     = randomValue<uint32_t>( 2048 );
-                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-
-                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
-                                rowSize( width, colorCount ), colorCount, 1 ) )
-                    return false;
-            }
-
-            return true;
-        }
-
-        bool Constructor4ParametersTest()
-        {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                const uint32_t width      = randomValue<uint32_t>( 2048 );
-                const uint32_t height     = randomValue<uint32_t>( 2048 );
-                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                if( !equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
-                                rowSize( width, colorCount, alignment ), colorCount, alignment ) )
-                    return false;
-            }
-
-            return true;
-        }
-
-        template <typename _Type>
-        bool CopyConstructorTest()
-        {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                const uint32_t width      = randomValue<uint32_t>( 1024 );
-                const uint32_t height     = randomValue<uint32_t>( 1024 );
-                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < _Type > image_copy( image );
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
-        }
-
-        bool CopyConstructorU8Test()
-        {
-            return CopyConstructorTest < uint8_t > ();
-        }
-
-        bool CopyConstructorU16Test()
-        {
-            return CopyConstructorTest < uint16_t > ();
-        }
-
-        bool CopyConstructorU32Test()
-        {
-            return CopyConstructorTest < uint32_t > ();
-        }
-
-        bool CopyConstructorU64Test()
-        {
-            return CopyConstructorTest < uint64_t > ();
-        }
-
-        bool CopyConstructorS8Test()
-        {
-            return CopyConstructorTest < int8_t > ();
-        }
-
-        bool CopyConstructorS16Test()
-        {
-            return CopyConstructorTest < int16_t > ();
-        }
-
-        bool CopyConstructorS32Test()
-        {
-            return CopyConstructorTest < int32_t > ();
-        }
-
-        bool CopyConstructorS64Test()
-        {
-            return CopyConstructorTest < int64_t > ();
-        }
-
-        bool CopyConstructorFTest()
-        {
-            return CopyConstructorTest < float > ();
-        }
-
-        bool CopyConstructorDTest()
-        {
-            return CopyConstructorTest < double > ();
-        }
-
-        bool NullAssignmentTest()
-        {
-            try {
-                PenguinV_Image::ImageTemplate < uint8_t > image;
-
-                uint8_t fakeArray[1];
-                uint8_t fakeValue = static_cast<uint8_t>(rand() % 2);
-                if( fakeValue == 1 )
-                    fakeValue = 0;
-
-                image.assign( fakeArray, fakeValue, fakeValue, fakeValue, fakeValue );
-            }
-            catch( imageException & ) {
-                return true;
-            }
-
-            return false;
-        }
-
-        template <typename _Type>
-        bool AssignmentOperatorTest()
-        {
-            for( uint32_t i = 0; i < runCount(); ++i ) {
-                const uint32_t width      = randomValue<uint32_t>( 1024 );
-                const uint32_t height     = randomValue<uint32_t>( 1024 );
-                const uint8_t  colorCount = randomValue<uint8_t >( 1, 4 );
-                const uint8_t  alignment  = randomValue<uint8_t >( 1, 32 );
-
-                PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-                PenguinV_Image::ImageTemplate < _Type > image_copy;
-
-                image_copy = image;
-
-                if( !equalSize( image, image_copy ) || !equalData( image, image_copy ) )
-                    return false;
-            }
-
-            return true;
-        }
-
-        bool AssignmentOperatorU8Test()
-        {
-            return AssignmentOperatorTest < uint8_t > ();
-        }
-
-        bool AssignmentOperatorU16Test()
-        {
-            return AssignmentOperatorTest < uint16_t > ();
-        }
-
-        bool AssignmentOperatorU32Test()
-        {
-            return AssignmentOperatorTest < uint32_t > ();
-        }
-
-        bool AssignmentOperatorU64Test()
-        {
-            return AssignmentOperatorTest < uint64_t > ();
-        }
-
-        bool AssignmentOperatorS8Test()
-        {
-            return AssignmentOperatorTest < int8_t > ();
-        }
-
-        bool AssignmentOperatorS16Test()
-        {
-            return AssignmentOperatorTest < int16_t > ();
-        }
-
-        bool AssignmentOperatorS32Test()
-        {
-            return AssignmentOperatorTest < int32_t > ();
-        }
-
-        bool AssignmentOperatorS64Test()
-        {
-            return AssignmentOperatorTest < int64_t > ();
-        }
-
-        bool AssignmentOperatorFTest()
-        {
-            return AssignmentOperatorTest < float > ();
-        }
-
-        bool AssignmentOperatorDTest()
-        {
-            return AssignmentOperatorTest < double > ();
-        }
+        return Unit_Test::isEmpty( image );
     }
 
+    bool Constructor2ParametersTest()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
+
+            if( !Unit_Test::equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height ), width, height, Unit_Test::rowSize( width ), 1, 1 ) )
+                return false;
+        }
+
+        return true;
+    }
+
+    bool Constructor3ParametersTest()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+
+            if( !Unit_Test::equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount ), width, height,
+                                       Unit_Test::rowSize( width, colorCount ), colorCount, 1 ) )
+                return false;
+        }
+
+        return true;
+    }
+
+    bool Constructor4ParametersTest()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+
+            if( !Unit_Test::equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
+                                       Unit_Test::rowSize( width, colorCount, alignment ), colorCount, alignment ) )
+                return false;
+        }
+
+        return true;
+    }
+
+    template <typename _Type>
+    bool CopyConstructorTest()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+
+            PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+            PenguinV_Image::ImageTemplate < _Type > image_copy( image );
+
+            if( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
+                return false;
+        }
+
+        return true;
+    }
+
+    bool CopyConstructorU8Test()
+    {
+        return CopyConstructorTest < uint8_t > ();
+    }
+
+    bool CopyConstructorU16Test()
+    {
+        return CopyConstructorTest < uint16_t > ();
+    }
+
+    bool CopyConstructorU32Test()
+    {
+        return CopyConstructorTest < uint32_t > ();
+    }
+
+    bool CopyConstructorU64Test()
+    {
+        return CopyConstructorTest < uint64_t > ();
+    }
+
+    bool CopyConstructorS8Test()
+    {
+        return CopyConstructorTest < int8_t > ();
+    }
+
+    bool CopyConstructorS16Test()
+    {
+        return CopyConstructorTest < int16_t > ();
+    }
+
+    bool CopyConstructorS32Test()
+    {
+        return CopyConstructorTest < int32_t > ();
+    }
+
+    bool CopyConstructorS64Test()
+    {
+        return CopyConstructorTest < int64_t > ();
+    }
+
+    bool CopyConstructorFTest()
+    {
+        return CopyConstructorTest < float > ();
+    }
+
+    bool CopyConstructorDTest()
+    {
+        return CopyConstructorTest < double > ();
+    }
+
+    bool NullAssignmentTest()
+    {
+        try {
+            PenguinV_Image::ImageTemplate < uint8_t > image;
+
+            uint8_t fakeArray[1];
+            uint8_t fakeValue = static_cast<uint8_t>(rand() % 2);
+            if( fakeValue == 1 )
+                fakeValue = 0;
+
+            image.assign( fakeArray, fakeValue, fakeValue, fakeValue, fakeValue );
+        }
+        catch( imageException & ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    template <typename _Type>
+    bool AssignmentOperatorTest()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+
+            PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+            PenguinV_Image::ImageTemplate < _Type > image_copy;
+
+            image_copy = image;
+
+            if( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
+                return false;
+        }
+
+        return true;
+    }
+
+    bool AssignmentOperatorU8Test()
+    {
+        return AssignmentOperatorTest < uint8_t > ();
+    }
+
+    bool AssignmentOperatorU16Test()
+    {
+        return AssignmentOperatorTest < uint16_t > ();
+    }
+
+    bool AssignmentOperatorU32Test()
+    {
+        return AssignmentOperatorTest < uint32_t > ();
+    }
+
+    bool AssignmentOperatorU64Test()
+    {
+        return AssignmentOperatorTest < uint64_t > ();
+    }
+
+    bool AssignmentOperatorS8Test()
+    {
+        return AssignmentOperatorTest < int8_t > ();
+    }
+
+    bool AssignmentOperatorS16Test()
+    {
+        return AssignmentOperatorTest < int16_t > ();
+    }
+
+    bool AssignmentOperatorS32Test()
+    {
+        return AssignmentOperatorTest < int32_t > ();
+    }
+
+    bool AssignmentOperatorS64Test()
+    {
+        return AssignmentOperatorTest < int64_t > ();
+    }
+
+    bool AssignmentOperatorFTest()
+    {
+        return AssignmentOperatorTest < float > ();
+    }
+
+    bool AssignmentOperatorDTest()
+    {
+        return AssignmentOperatorTest < double > ();
+    }
+}
+
+namespace Unit_Test
+{
     void addTests_Image_Buffer( UnitTestFramework & framework )
     {
         ADD_TEST( framework, template_image::EmptyConstructorTest );

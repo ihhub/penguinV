@@ -16,13 +16,9 @@ SRCS :=  \
 	unit_test_bitmap.cpp \
 	unit_test_blob_detection.cpp \
 	unit_test_framework.cpp \
-	unit_test_function_pool.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
-	unit_test_image_function.cpp \
-	unit_test_image_function_avx.cpp \
-	unit_test_image_function_neon.cpp \
-	unit_test_image_function_sse.cpp
+	unit_test_image_function.cpp
 TARGET := unit_tests
 
 CXX := g++

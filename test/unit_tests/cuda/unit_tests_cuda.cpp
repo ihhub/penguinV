@@ -20,7 +20,7 @@ int main()
     multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
     // We create a framework
-    Unit_Test::UnitTestFramework framework;
+    UnitTestFramework framework;
 
     // We add tests
     Unit_Test::addTests_Image_Function_Cuda( framework );
