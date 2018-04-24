@@ -130,7 +130,7 @@ namespace template_image
             PenguinV_Image::ImageTemplate < uint8_t > image;
 
             uint8_t fakeArray[1];
-            uint8_t fakeValue = static_cast<uint8_t>(rand() % 2);
+            uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 2 );
             if( fakeValue == 1 )
                 fakeValue = 0;
 
