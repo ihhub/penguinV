@@ -192,7 +192,7 @@ namespace Performance_Test
 #ifdef PENGUINV_SSE_SET
     void addTests_Image_Function_Sse( PerformanceTestFramework & framework)
     {
-        if( isNeonAvailable ) {
+        if( isSseAvailable ) {
             ADD_TEST_FUNCTION( framework, AbsoluteDifference )
             ADD_TEST_FUNCTION( framework, BitwiseAnd         )
             ADD_TEST_FUNCTION( framework, BitwiseOr          )
