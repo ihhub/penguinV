@@ -234,22 +234,19 @@ ADD_TEST( framework, cuda_##function:: _512_8 ); \
 ADD_TEST( framework, cuda_##function::_1024_8 ); \
 ADD_TEST( framework, cuda_##function::_2048_8 );
 
-namespace Performance_Test
+void addTests_Image_Function_Cuda( PerformanceTestFramework & framework )
 {
-    void addTests_Image_Function_Cuda( PerformanceTestFramework & framework )
-    {
-        ADD_TEST_FUNCTION( framework, AbsoluteDifference )
-        ADD_TEST_FUNCTION( framework, BitwiseAnd         )
-        ADD_TEST_FUNCTION( framework, BitwiseOr          )
-        ADD_TEST_FUNCTION( framework, BitwiseXor         )
-        ADD_TEST_FUNCTION( framework, Flip               )
-        ADD_TEST_FUNCTION( framework, Histogram          )
-        ADD_TEST_FUNCTION( framework, Invert             )
-        ADD_TEST_FUNCTION( framework, LookupTable        )
-        ADD_TEST_FUNCTION( framework, Maximum            )
-        ADD_TEST_FUNCTION( framework, Minimum            )
-        ADD_TEST_FUNCTION( framework, Subtract           )
-        ADD_TEST_FUNCTION( framework, Threshold          )
-        ADD_TEST_FUNCTION( framework, ThresholdDouble    )
-    }
+    ADD_TEST_FUNCTION( framework, AbsoluteDifference )
+    ADD_TEST_FUNCTION( framework, BitwiseAnd         )
+    ADD_TEST_FUNCTION( framework, BitwiseOr          )
+    ADD_TEST_FUNCTION( framework, BitwiseXor         )
+    ADD_TEST_FUNCTION( framework, Flip               )
+    ADD_TEST_FUNCTION( framework, Histogram          )
+    ADD_TEST_FUNCTION( framework, Invert             )
+    ADD_TEST_FUNCTION( framework, LookupTable        )
+    ADD_TEST_FUNCTION( framework, Maximum            )
+    ADD_TEST_FUNCTION( framework, Minimum            )
+    ADD_TEST_FUNCTION( framework, Subtract           )
+    ADD_TEST_FUNCTION( framework, Threshold          )
+    ADD_TEST_FUNCTION( framework, ThresholdDouble    )
 }

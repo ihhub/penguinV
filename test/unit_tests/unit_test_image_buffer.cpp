@@ -215,37 +215,34 @@ namespace template_image
     }
 }
 
-namespace Unit_Test
+void addTests_Image_Buffer( UnitTestFramework & framework )
 {
-    void addTests_Image_Buffer( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, template_image::EmptyConstructorTest );
-        ADD_TEST( framework, template_image::Constructor2ParametersTest );
-        ADD_TEST( framework, template_image::Constructor3ParametersTest );
-        ADD_TEST( framework, template_image::Constructor4ParametersTest );
+    ADD_TEST( framework, template_image::EmptyConstructorTest );
+    ADD_TEST( framework, template_image::Constructor2ParametersTest );
+    ADD_TEST( framework, template_image::Constructor3ParametersTest );
+    ADD_TEST( framework, template_image::Constructor4ParametersTest );
 
-        ADD_TEST( framework, template_image::CopyConstructorU8Test );
-        ADD_TEST( framework, template_image::CopyConstructorU16Test );
-        ADD_TEST( framework, template_image::CopyConstructorU32Test );
-        ADD_TEST( framework, template_image::CopyConstructorU64Test );
-        ADD_TEST( framework, template_image::CopyConstructorS8Test );
-        ADD_TEST( framework, template_image::CopyConstructorS16Test );
-        ADD_TEST( framework, template_image::CopyConstructorS32Test );
-        ADD_TEST( framework, template_image::CopyConstructorS64Test );
-        ADD_TEST( framework, template_image::CopyConstructorFTest );
-        ADD_TEST( framework, template_image::CopyConstructorDTest );
+    ADD_TEST( framework, template_image::CopyConstructorU8Test );
+    ADD_TEST( framework, template_image::CopyConstructorU16Test );
+    ADD_TEST( framework, template_image::CopyConstructorU32Test );
+    ADD_TEST( framework, template_image::CopyConstructorU64Test );
+    ADD_TEST( framework, template_image::CopyConstructorS8Test );
+    ADD_TEST( framework, template_image::CopyConstructorS16Test );
+    ADD_TEST( framework, template_image::CopyConstructorS32Test );
+    ADD_TEST( framework, template_image::CopyConstructorS64Test );
+    ADD_TEST( framework, template_image::CopyConstructorFTest );
+    ADD_TEST( framework, template_image::CopyConstructorDTest );
 
-        ADD_TEST( framework, template_image::NullAssignmentTest );
+    ADD_TEST( framework, template_image::NullAssignmentTest );
 
-        ADD_TEST( framework, template_image::AssignmentOperatorU8Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorU16Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorU32Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorU64Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorS8Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorS16Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorS32Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorS64Test );
-        ADD_TEST( framework, template_image::AssignmentOperatorFTest );
-        ADD_TEST( framework, template_image::AssignmentOperatorDTest );
-    }
+    ADD_TEST( framework, template_image::AssignmentOperatorU8Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorU16Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorU32Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorU64Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorS8Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorS16Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorS32Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorS64Test );
+    ADD_TEST( framework, template_image::AssignmentOperatorFTest );
+    ADD_TEST( framework, template_image::AssignmentOperatorDTest );
 }

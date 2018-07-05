@@ -2530,10 +2530,7 @@ namespace sse
 }
 #endif
 
-namespace Unit_Test
+void addTests_Image_Function( UnitTestFramework & framework )
 {
-    void addTests_Image_Function( UnitTestFramework & framework )
-    {
-        FunctionRegistrator::instance().set( framework );
-    }
+    FunctionRegistrator::instance().set( framework );
 }

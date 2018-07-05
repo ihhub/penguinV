@@ -5,20 +5,17 @@
 #define _STRINGIFY(x) #x // Macros to convert the name of function to string
 #define ADD_TEST(framework, function) framework.add( function, _STRINGIFY(function) ); // Macros to call add() function of framework
 
-namespace Performance_Test
+class PerformanceTestFramework
 {
+public:
     // pointer to performance test function. Function must return 2 values:
     // - mean value in milliseconds
     // - sigma value in milliseconds
     typedef std::pair < double, double > ( *testFunction )();
 
-    class PerformanceTestFramework
-    {
-    public:
-        void add( const testFunction test, const std::string & name ); // register function in framework
+    void add( const testFunction test, const std::string & name ); // register function in framework
 
-        void run() const; // run framework performance tests
-    private:
-        std::map < testFunction, std::string > _performanceTest; // container with pointer to functions and their names
-    };
-}
+    void run() const; // run framework performance tests
+private:
+    std::map < testFunction, std::string > _performanceTest; // container with pointer to functions and their names
+};

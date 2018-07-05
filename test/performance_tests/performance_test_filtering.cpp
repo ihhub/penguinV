@@ -82,12 +82,9 @@ ADD_TEST( framework, filtering_##function::_512 );  \
 ADD_TEST( framework, filtering_##function::_1024 ); \
 ADD_TEST( framework, filtering_##function::_2048 );
 
-namespace Performance_Test
+void addTests_Filtering( PerformanceTestFramework & framework )
 {
-    void addTests_Filtering( PerformanceTestFramework & framework )
-    {
-        ADD_TEST_FUNCTION( framework, MedianFilter3x3 )
-        ADD_TEST_FUNCTION( framework, PrewittFilter   )
-        ADD_TEST_FUNCTION( framework, SobelFilter     )
-    }
+    ADD_TEST_FUNCTION( framework, MedianFilter3x3 )
+    ADD_TEST_FUNCTION( framework, PrewittFilter   )
+    ADD_TEST_FUNCTION( framework, SobelFilter     )
 }

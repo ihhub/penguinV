@@ -47,10 +47,7 @@ ADD_TEST( framework, blob_detection_##function::_512 );  \
 ADD_TEST( framework, blob_detection_##function::_1024 ); \
 ADD_TEST( framework, blob_detection_##function::_2048 );
 
-namespace Performance_Test
+void addTests_Blob_Detection( PerformanceTestFramework & framework )
 {
-    void addTests_Blob_Detection( PerformanceTestFramework & framework )
-    {
-        ADD_TEST_FUNCTION( framework, SolidImage )
-    }
+    ADD_TEST_FUNCTION( framework, SolidImage )
 }

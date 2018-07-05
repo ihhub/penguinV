@@ -32,10 +32,8 @@ namespace blob_detection
     }
 }
 
-namespace Unit_Test
+
+void addTests_Blob_Detection( UnitTestFramework & framework )
 {
-    void addTests_Blob_Detection( UnitTestFramework & framework )
-    {
-        framework.add( blob_detection::Detect1Blob, "blob_detection::Detect one blob" );
-    }
+    framework.add( blob_detection::Detect1Blob, "blob_detection::Detect one blob" );
 }

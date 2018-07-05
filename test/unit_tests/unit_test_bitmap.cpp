@@ -20,10 +20,8 @@ namespace bitmap_operation
     }
 }
 
-namespace Unit_Test
+
+void addTests_Bitmap( UnitTestFramework & framework )
 {
-    void addTests_Bitmap( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, bitmap_operation::LoadSaveGrayScaleImage );
-    }
+    ADD_TEST( framework, bitmap_operation::LoadSaveGrayScaleImage );
 }

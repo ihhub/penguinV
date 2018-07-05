@@ -528,53 +528,50 @@ namespace image_function_cuda
     }
 }
 
-namespace Unit_Test
+void addTests_Image_Function_Cuda( UnitTestFramework & framework )
 {
-    void addTests_Image_Function_Cuda( UnitTestFramework & framework )
-    {
-        ADD_TEST( framework, image_function_cuda::AbsoluteDifference2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::AbsoluteDifference3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::AbsoluteDifference2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::AbsoluteDifference3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::BitwiseAnd2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::BitwiseAnd3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseAnd2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseAnd3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::BitwiseOr2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::BitwiseOr3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseOr2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseOr3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::BitwiseXor2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::BitwiseXor3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseXor2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseXor3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::ConvertToGrayScale1ParameterTest );
-        ADD_TEST( framework, image_function_cuda::ConvertToGrayScale2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToGrayScale1ParameterTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToGrayScale2ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::ConvertToRgb1ParameterTest );
-        ADD_TEST( framework, image_function_cuda::ConvertToRgb2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToRgb1ParameterTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToRgb2ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::GammaCorrection3ParametersTest );
-        ADD_TEST( framework, image_function_cuda::GammaCorrection4ParametersTest );
+    ADD_TEST( framework, image_function_cuda::GammaCorrection3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::GammaCorrection4ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Histogram1ParameterTest );
-        ADD_TEST( framework, image_function_cuda::Histogram2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Histogram1ParameterTest );
+    ADD_TEST( framework, image_function_cuda::Histogram2ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Invert1ParameterTest );
-        ADD_TEST( framework, image_function_cuda::Invert2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Invert1ParameterTest );
+    ADD_TEST( framework, image_function_cuda::Invert2ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::LookupTable2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::LookupTable3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::LookupTable2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::LookupTable3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Maximum2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::Maximum3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Maximum2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Maximum3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Minimum2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::Minimum3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Minimum2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Minimum3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Subtract2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::Subtract3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Subtract2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Subtract3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::Threshold2ParametersTest );
-        ADD_TEST( framework, image_function_cuda::Threshold3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Threshold2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::Threshold3ParametersTest );
 
-        ADD_TEST( framework, image_function_cuda::ThresholdDouble3ParametersTest );
-        ADD_TEST( framework, image_function_cuda::ThresholdDouble4ParametersTest );
-    }
+    ADD_TEST( framework, image_function_cuda::ThresholdDouble3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ThresholdDouble4ParametersTest );
 }

@@ -20,10 +20,10 @@ int main()
     multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
     // We create a framework
-    Performance_Test::PerformanceTestFramework framework;
+    PerformanceTestFramework framework;
 
     // We add tests
-    Performance_Test::addTests_Image_Function_Cuda( framework );
+    addTests_Image_Function_Cuda( framework );
 
     // Just run the framework what will handle all tests
     framework.run();

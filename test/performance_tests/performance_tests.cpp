@@ -15,16 +15,16 @@ int main()
     // To do this we need an engine (framework) and a bunch of tests
 
     // We create a framework
-    Performance_Test::PerformanceTestFramework framework;
+    PerformanceTestFramework framework;
 
     // We add tests
-    Performance_Test::addTests_Blob_Detection     ( framework );
-    Performance_Test::addTests_Filtering          ( framework );
-    Performance_Test::addTests_Function_Pool      ( framework );
-    Performance_Test::addTests_Image_Function     ( framework );
-    Performance_Test::addTests_Image_Function_Avx ( framework );
-    Performance_Test::addTests_Image_Function_Neon( framework );
-    Performance_Test::addTests_Image_Function_Sse ( framework );
+    addTests_Blob_Detection     ( framework );
+    addTests_Filtering          ( framework );
+    addTests_Function_Pool      ( framework );
+    addTests_Image_Function     ( framework );
+    addTests_Image_Function_Avx ( framework );
+    addTests_Image_Function_Neon( framework );
+    addTests_Image_Function_Sse ( framework );
 
     // Just run the framework what will handle all tests
     framework.run();

@@ -23,7 +23,7 @@ int main()
     UnitTestFramework framework;
 
     // We add tests
-    Unit_Test::addTests_Image_Function_Cuda( framework );
+    addTests_Image_Function_Cuda( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();

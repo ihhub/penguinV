@@ -15,10 +15,10 @@ int main()
     UnitTestFramework framework;
 
     // We add tests
-    Unit_Test::addTests_Bitmap             ( framework );
-    Unit_Test::addTests_Blob_Detection     ( framework );
-    Unit_Test::addTests_Image_Buffer       ( framework );
-    Unit_Test::addTests_Image_Function     ( framework );
+    addTests_Bitmap             ( framework );
+    addTests_Blob_Detection     ( framework );
+    addTests_Image_Buffer       ( framework );
+    addTests_Image_Function     ( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();

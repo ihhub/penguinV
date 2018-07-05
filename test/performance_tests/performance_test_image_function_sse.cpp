@@ -187,26 +187,23 @@ ADD_TEST( framework, sse_##function::_512 );     \
 ADD_TEST( framework, sse_##function::_1024 );    \
 ADD_TEST( framework, sse_##function::_2048 );
 
-namespace Performance_Test
-{
 #ifdef PENGUINV_SSE_SET
-    void addTests_Image_Function_Sse( PerformanceTestFramework & framework)
-    {
-        if( isSseAvailable ) {
-            ADD_TEST_FUNCTION( framework, AbsoluteDifference )
-            ADD_TEST_FUNCTION( framework, BitwiseAnd         )
-            ADD_TEST_FUNCTION( framework, BitwiseOr          )
-            ADD_TEST_FUNCTION( framework, BitwiseXor         )
-            ADD_TEST_FUNCTION( framework, Invert             )
-            ADD_TEST_FUNCTION( framework, Maximum            )
-            ADD_TEST_FUNCTION( framework, Minimum            )
-            ADD_TEST_FUNCTION( framework, Subtract           )
-            ADD_TEST_FUNCTION( framework, Sum                )
-            ADD_TEST_FUNCTION( framework, Threshold          )
-            ADD_TEST_FUNCTION( framework, ThresholdDouble    )
-        }
+void addTests_Image_Function_Sse( PerformanceTestFramework & framework)
+{
+    if( isSseAvailable ) {
+        ADD_TEST_FUNCTION( framework, AbsoluteDifference )
+        ADD_TEST_FUNCTION( framework, BitwiseAnd         )
+        ADD_TEST_FUNCTION( framework, BitwiseOr          )
+        ADD_TEST_FUNCTION( framework, BitwiseXor         )
+        ADD_TEST_FUNCTION( framework, Invert             )
+        ADD_TEST_FUNCTION( framework, Maximum            )
+        ADD_TEST_FUNCTION( framework, Minimum            )
+        ADD_TEST_FUNCTION( framework, Subtract           )
+        ADD_TEST_FUNCTION( framework, Sum                )
+        ADD_TEST_FUNCTION( framework, Threshold          )
+        ADD_TEST_FUNCTION( framework, ThresholdDouble    )
     }
-#else
-    void addTests_Image_Function_Sse( PerformanceTestFramework & ) {}
-#endif
 }
+#else
+void addTests_Image_Function_Sse( PerformanceTestFramework & ) {}
+#endif

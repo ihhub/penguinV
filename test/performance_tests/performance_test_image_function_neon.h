@@ -2,7 +2,4 @@
 
 #include "performance_test_framework.h"
 
-namespace Performance_Test
-{
-    void addTests_Image_Function_Neon( PerformanceTestFramework & framework );
-}
+void addTests_Image_Function_Neon( PerformanceTestFramework & framework );
