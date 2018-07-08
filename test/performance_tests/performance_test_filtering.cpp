@@ -14,7 +14,7 @@ namespace
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
-            Image_Function::Filtering::Median( input, output, 3 );
+            Image_Function::Median( input, output, 3 );
 
             timer.stop();
         }
@@ -32,7 +32,7 @@ namespace
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
-            Image_Function::Filtering::Prewitt( input, output );
+            Image_Function::Prewitt( input, output );
 
             timer.stop();
         }
@@ -50,7 +50,7 @@ namespace
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
-            Image_Function::Filtering::Sobel( input, output );
+            Image_Function::Sobel( input, output );
 
             timer.stop();
         }

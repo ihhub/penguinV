@@ -37,7 +37,7 @@ int main()
         PenguinV_Image::Image filtered( image.width(), image.height() );
 
         // Filter it!
-        Image_Function::Filtering::Median( image, filtered, 3 );
+        Image_Function::Median( image, filtered, 3 );
 
         // Save filtered image into bitmap
         Bitmap_Operation::Save( "filtered.bmp", filtered );
