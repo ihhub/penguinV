@@ -4,43 +4,24 @@
 
 namespace
 {
-    std::pair < double, double > MedianFilter3x3( uint32_t size )
+    typedef void ( *filterFunction )( const PenguinV_Image::Image & input, PenguinV_Image::Image & output );
+
+    void MedianFilter3x3( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
     {
-        Performance_Test::TimerContainer timer;
-
-        PenguinV_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
-        PenguinV_Image::Image output( input.width(), input.height() );
-
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Median( input, output, 3 );
-
-            timer.stop();
-        }
-
-        return timer.mean();
+        Image_Function::Median( input, output, 3 );
     }
 
-    std::pair < double, double > PrewittFilter( uint32_t size )
+    void PrewittFilter( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
     {
-        Performance_Test::TimerContainer timer;
-
-        PenguinV_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
-        PenguinV_Image::Image output( input.width(), input.height() );
-
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Prewitt( input, output );
-
-            timer.stop();
-        }
-
-        return timer.mean();
+        Image_Function::Prewitt( input, output );
     }
 
-    std::pair < double, double > SobelFilter( uint32_t size )
+    void SobelFilter( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
+    {
+        Image_Function::Sobel( input, output );
+    }
+
+    std::pair < double, double > FilterFunctionTest( filterFunction Filter, uint32_t size )
     {
         Performance_Test::TimerContainer timer;
 
@@ -50,7 +31,7 @@ namespace
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
-            Image_Function::Sobel( input, output );
+            Filter( input, output );
 
             timer.stop();
         }
@@ -63,10 +44,10 @@ namespace
 #define SET_FUNCTION( function )                                      \
 namespace filtering_##function                                        \
 {                                                                     \
-    std::pair < double, double > _256 () { return function( 256  ); } \
-    std::pair < double, double > _512 () { return function( 512  ); } \
-    std::pair < double, double > _1024() { return function( 1024 ); } \
-    std::pair < double, double > _2048() { return function( 2048 ); } \
+    std::pair < double, double > _256 () { return FilterFunctionTest( function, 256  ); } \
+    std::pair < double, double > _512 () { return FilterFunctionTest( function, 512  ); } \
+    std::pair < double, double > _1024() { return FilterFunctionTest( function, 1024 ); } \
+    std::pair < double, double > _2048() { return FilterFunctionTest( function, 2048 ); } \
 }
 
 namespace
