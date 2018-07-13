@@ -16,12 +16,8 @@ SRCS :=  \
 	performance_test_blob_detection.cpp \
 	performance_test_filtering.cpp \
 	performance_test_framework.cpp \
-	performance_test_function_pool.cpp \
 	performance_test_helper.cpp \
-	performance_test_image_function.cpp \
-	performance_test_image_function_avx.cpp \
-	performance_test_image_function_neon.cpp \
-	performance_test_image_function_sse.cpp
+	performance_test_image_function.cpp
 TARGET := performance_tests
 
 CXX := g++

@@ -1,314 +1,291 @@
+#include "../../src/function_pool.h"
 #include "../../src/image_function.h"
+#include "../../src/image_function_avx.h"
+#include "../../src/image_function_neon.h"
+#include "../../src/image_function_sse.h"
+#include "../../src/thread_pool.h"
+#include "../../src/penguinv/cpu_identification.h"
 #include "performance_test_image_function.h"
 #include "performance_test_helper.h"
 
 namespace
 {
-    void AbsoluteDifference( Performance_Test::TimerContainer & timer, uint32_t size )
+    class FunctionRegistrator
+    {
+    public:
+        static FunctionRegistrator& instance()
+        {
+            static FunctionRegistrator registrator;
+            return registrator;
+        }
+
+        void add( const PerformanceTestFramework::testFunction test, const std::string & name )
+        {
+            _function[test] = name;
+        }
+
+        void set( PerformanceTestFramework & framework )
+        {
+            for (std::map < PerformanceTestFramework::testFunction, std::string >::const_iterator func = _function.cbegin(); func != _function.cend(); ++func)
+                framework.add( func->first, func->second );
+
+            _function.clear();
+        }
+
+    private:
+        std::map < PerformanceTestFramework::testFunction, std::string > _function; // container with pointer to functions and their names
+    };
+}
+
+namespace Function_Template
+{
+    using namespace PenguinV_Image;
+
+    // Function pointer definitions
+    typedef void     (*AbsoluteDifferenceFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*AccumulateFunction)( const Image & image, std::vector < uint32_t > & result );
+    typedef void     (*BinaryDilateFunction)( Image & image, uint32_t dilationX, uint32_t dilationY );
+    typedef void     (*BinaryErodeFunction)( Image & image, uint32_t erosionX, uint32_t erosionY );
+    typedef void     (*BitwiseAndFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*BitwiseOrFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*BitwiseXorFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*ConvertToGrayScaleFunction)( const Image & in, Image & out );
+    typedef void     (*ConvertToRgbFunction)( const Image & in, Image & out );
+    typedef void     (*CopyFunction)( const Image & in, Image & out );
+    typedef void     (*ExtractChannelFunction)( const Image & in, Image & out, uint8_t channelId );
+    typedef void     (*FillFunction)( Image & image, uint8_t value );
+    typedef void     (*FlipFunction)( const Image & in, Image & out, bool horizontal, bool vertical );
+    typedef void     (*GammaCorrectionFunction)( const Image & in, Image & out, double a, double gamma );
+    typedef uint8_t  (*GetPixelFunction)( const Image & image, uint32_t x, uint32_t y );
+    typedef uint8_t  (*GetThresholdFunction)( const std::vector < uint32_t > & histogram );
+    typedef void     (*HistogramFunction)( const Image & image, std::vector < uint32_t > & histogram );
+    typedef void     (*InvertFunction)( const Image & in, Image & out );
+    typedef bool     (*IsBinaryFunction)( const Image & image );
+    typedef bool     (*IsEqualFunction)( const Image & in1, const Image & in2 );
+    typedef void     (*LookupTableFunction)( const Image & in, Image & out, const std::vector < uint8_t > & table );
+    typedef void     (*MaximumFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*MergeFunction)( const Image & in1, const Image & in2, const Image & in3, Image & out );
+    typedef void     (*MinimumFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef void     (*NormalizeFunction)( const Image & in, Image & out );
+    typedef void     (*ProjectionProfileFunction)( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+    typedef void     (*ResizeFunction)( const Image & in, Image & out );
+    typedef void     (*RgbToBgrFunction)( const Image & in, Image & out );
+    typedef void     (*RotateFunction)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+    typedef void     (*SetPixelFunction)( Image & image, uint32_t x, uint32_t y, uint8_t value );
+    typedef void     (*SplitFunction)( const Image & in, Image & out1, Image & out2, Image & out3 );
+    typedef void     (*SubtractFunction)( const Image & in1, const Image & in2, Image & out );
+    typedef uint32_t (*SumFunction)( const Image & image );
+    typedef void     (*ThresholdFunction)( const Image & in, Image & out, uint8_t threshold );
+    typedef void     (*ThresholdDoubleFunction)( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
+    typedef void     (*TransposeFunction)( const Image & in, Image & out );
+
+    #define TEST_FUNCTION_LOOP( testFunction )                         \
+        Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );         \
+        Performance_Test::TimerContainer timer;                        \
+        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) { \
+            timer.start();                                             \
+            testFunction;                                              \
+            timer.stop();                                              \
+        }                                                              \
+        return timer.mean();
+
+    std::pair < double, double > template_AbsoluteDifference( AbsoluteDifferenceFunction AbsoluteDifference, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::AbsoluteDifference( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( AbsoluteDifference( image[0], image[1], image[2] ); )
     }
 
-    void BitwiseAnd( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_BitwiseAnd( BitwiseAndFunction BitwiseAnd, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::BitwiseAnd( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( BitwiseAnd( image[0], image[1], image[2] ); )
     }
 
-    void BitwiseOr( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_BitwiseOr( BitwiseOrFunction BitwiseOr, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::BitwiseOr( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( BitwiseOr( image[0], image[1], image[2] ); )
     }
 
-    void BitwiseXor( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_BitwiseXor( BitwiseXorFunction BitwiseXor, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::BitwiseXor( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( BitwiseXor( image[0], image[1], image[2] ); )
     }
 
-    void ConvertToColor( Performance_Test::TimerContainer & timer, uint32_t size )
-    {
-        PenguinV_Image::Image input  = Performance_Test::uniformImage   ( size, size );
-        PenguinV_Image::Image output = Performance_Test::uniformRGBImage( size, size );
-
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::ConvertToRgb( input, output );
-
-            timer.stop();
-        }
-    }
-
-    void ConvertToGrayscale( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_ConvertToGrayScale( ConvertToGrayScaleFunction ConvertToGrayScale, uint32_t size )
     {
         PenguinV_Image::Image input  = Performance_Test::uniformRGBImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage   ( size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::ConvertToGrayScale( input, output );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( ConvertToGrayScale( input, output ); )
     }
 
-    void Fill( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_ConvertToRgb( ConvertToRgbFunction ConvertToRgb, uint32_t size )
+    {
+        PenguinV_Image::Image input  = Performance_Test::uniformImage   ( size, size );
+        PenguinV_Image::Image output = Performance_Test::uniformRGBImage( size, size );
+
+        TEST_FUNCTION_LOOP( ConvertToRgb( input, output ); )
+    }
+
+    std::pair < double, double > template_Fill( FillFunction Fill, uint32_t size )
     {
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
         uint8_t value = Performance_Test::randomValue<uint8_t>( 256 );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Fill( image, value );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Fill( image, value ); )
     }
 
-    void GammaCorrection( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_GammaCorrection( GammaCorrectionFunction GammaCorrection, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
-
         double a     = Performance_Test::randomValue <uint32_t>( 100 ) / 100.0;
         double gamma = Performance_Test::randomValue <uint32_t>( 300 ) / 100.0;
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::GammaCorrection( image[0], image[1], a, gamma );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( GammaCorrection( image[0], image[1], a, gamma ); )
     }
 
-    void Histogram( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Histogram( HistogramFunction Histogram, uint32_t size )
     {
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
+        std::vector < uint32_t > histogramTable;
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Histogram( image );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Histogram( image, histogramTable ); )
     }
 
-    void Invert( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Invert( InvertFunction Invert, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Invert( image[0], image[1] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Invert( image[0], image[1] ); )
     }
 
-    void LookupTable( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_LookupTable( LookupTableFunction LookupTable, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
-
         std::vector<uint8_t> table(256, 0);
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::LookupTable( image[0], image[1], table );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( LookupTable( image[0], image[1], table ); )
     }
 
-    void Maximum( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Maximum( MaximumFunction Maximum, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Maximum( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Maximum( image[0], image[1], image[2] ); )
     }
 
-    void Minimum( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Minimum( MinimumFunction Minimum, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Minimum( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Minimum( image[0], image[1], image[2] ); )
     }
 
-    void RgbToBgr( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_RgbToBgr( RgbToBgrFunction RgbToBgr, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformRGBImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::RgbToBgr( image[0], image[1] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( RgbToBgr( image[0], image[1] ); )
     }
 
-    void ResizeDown( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_ResizeDown( ResizeFunction Resize, uint32_t size )
     {
         PenguinV_Image::Image input  = Performance_Test::uniformImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage( size / 2, size / 2 );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Resize( input, output );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Resize( input, output ); )
     }
 
-    void ResizeUp( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_ResizeUp( ResizeFunction Resize, uint32_t size )
     {
         PenguinV_Image::Image input  = Performance_Test::uniformImage( size, size );
         PenguinV_Image::Image output = Performance_Test::uniformImage( size * 2, size * 2 );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Resize( input, output );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Resize( input, output ); )
     }
 
-    void Subtract( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Subtract( SubtractFunction Subtract, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Subtract( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Subtract( image[0], image[1], image[2] ); )
     }
 
-    void Sum( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Sum( SumFunction Sum, uint32_t size )
     {
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Sum( image );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Sum( image ); )
     }
 
-    void Threshold( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Threshold( ThresholdFunction Threshold, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Threshold( image[0], image[1], threshold );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Threshold( image[0], image[1], threshold ); )
     }
 
-    void ThresholdDouble( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_ThresholdDouble( ThresholdDoubleFunction Threshold, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
         uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
         uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Threshold( image[0], image[1], minThreshold, maxThreshold );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Threshold( image[0], image[1], minThreshold, maxThreshold ); )
     }
 
-    void Transpose( Performance_Test::TimerContainer & timer, uint32_t size )
+    std::pair < double, double > template_Transpose( TransposeFunction Transpose, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function::Transpose( image[0], image[1] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Transpose( image[0], image[1] ); )
     }
 }
 
-// Function naming: _functionName_imageSize
-#define SET_FUNCTION( function )                                                                            \
-namespace image_function_##function                                                                         \
-{                                                                                                           \
-    std::pair < double, double > _256 () { return Performance_Test::runPerformanceTest( function,  256 ); } \
-    std::pair < double, double > _512 () { return Performance_Test::runPerformanceTest( function,  512 ); } \
-    std::pair < double, double > _1024() { return Performance_Test::runPerformanceTest( function, 1024 ); } \
-    std::pair < double, double > _2048() { return Performance_Test::runPerformanceTest( function, 2048 ); } \
-}
+#define FUNCTION_REGISTRATION( function, functionWrapper, size )                                                                                   \
+struct Register_##functionWrapper                                                                                                                  \
+{                                                                                                                                                  \
+    explicit Register_##functionWrapper( bool makeRegistration )                                                                                   \
+    {                                                                                                                                              \
+        if( makeRegistration )                                                                                                                     \
+            FunctionRegistrator::instance().add( functionWrapper, namespaceName + std::string("::") + std::string(#function) + std::string(" (") + \
+                                                 std::string(#size) + std::string("x") + std::string(#size) + std::string(")") );                  \
+    }                                                                                                                                              \
+};                                                                                                                                                 \
+const Register_##functionWrapper registrator_##functionWrapper( isSupported );
 
-namespace
+#define REGISTER_FUNCTION( functionName, functionPointer )                                                                              \
+    std::pair < double, double > type1_##functionName() { return Function_Template::template_##functionName( functionPointer, 256  ); } \
+    std::pair < double, double > type2_##functionName() { return Function_Template::template_##functionName( functionPointer, 512  ); } \
+    std::pair < double, double > type3_##functionName() { return Function_Template::template_##functionName( functionPointer, 1024 ); } \
+    std::pair < double, double > type4_##functionName() { return Function_Template::template_##functionName( functionPointer, 2048 ); } \
+    FUNCTION_REGISTRATION( functionName, type1_##functionName, 256  )                                                                   \
+    FUNCTION_REGISTRATION( functionName, type2_##functionName, 512  )                                                                   \
+    FUNCTION_REGISTRATION( functionName, type3_##functionName, 1024 )                                                                   \
+    FUNCTION_REGISTRATION( functionName, type4_##functionName, 2048 )
+
+#define SET_FUNCTION( function ) REGISTER_FUNCTION( function, function )
+
+namespace image_function
 {
+    using namespace Image_Function;
+
+    const bool isSupported = true;
+    const std::string namespaceName = "image_function";
+
     SET_FUNCTION( AbsoluteDifference )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
-    SET_FUNCTION( ConvertToColor     )
-    SET_FUNCTION( ConvertToGrayscale )
+    SET_FUNCTION( ConvertToRgb     )
+    SET_FUNCTION( ConvertToGrayScale )
     SET_FUNCTION( Fill               )
     SET_FUNCTION( GammaCorrection    )
     SET_FUNCTION( Histogram          )
@@ -317,42 +294,109 @@ namespace
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
     SET_FUNCTION( RgbToBgr           )
-    SET_FUNCTION( ResizeDown         )
-    SET_FUNCTION( ResizeUp           )
+    REGISTER_FUNCTION( ResizeDown, Resize )
+    REGISTER_FUNCTION( ResizeUp, Resize   )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
-    SET_FUNCTION( ThresholdDouble    )
+    REGISTER_FUNCTION( ThresholdDouble, Threshold )
     SET_FUNCTION( Transpose          )
 }
 
-#define ADD_TEST_FUNCTION( framework, function )         \
-ADD_TEST( framework, image_function_##function::_256 );  \
-ADD_TEST( framework, image_function_##function::_512 );  \
-ADD_TEST( framework, image_function_##function::_1024 ); \
-ADD_TEST( framework, image_function_##function::_2048 );
+namespace function_pool
+{
+    using namespace Function_Pool;
+
+    const bool isSupported = true;
+    const std::string namespaceName = "function_pool";
+
+    SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( BitwiseAnd         )
+    SET_FUNCTION( BitwiseOr          )
+    SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( ConvertToRgb     )
+    SET_FUNCTION( ConvertToGrayScale )
+    SET_FUNCTION( GammaCorrection    )
+    SET_FUNCTION( Histogram          )
+    SET_FUNCTION( Invert             )
+    SET_FUNCTION( LookupTable        )
+    SET_FUNCTION( Maximum            )
+    SET_FUNCTION( Minimum            )
+    SET_FUNCTION( RgbToBgr           )
+    REGISTER_FUNCTION( ResizeDown, Resize )
+    REGISTER_FUNCTION( ResizeUp, Resize   )
+    SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Sum                )
+    SET_FUNCTION( Threshold          )
+    REGISTER_FUNCTION( ThresholdDouble, Threshold )
+}
+
+#ifdef PENGUINV_AVX_SET
+namespace image_function_avx
+{
+    using namespace Image_Function_Avx;
+
+    const bool isSupported = isAvxAvailable;
+    const std::string namespaceName = "image_function_avx";
+
+    SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( BitwiseAnd         )
+    SET_FUNCTION( BitwiseOr          )
+    SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( Invert             )
+    SET_FUNCTION( Maximum            )
+    SET_FUNCTION( Minimum            )
+    SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Sum                )
+    SET_FUNCTION( Threshold          )
+    REGISTER_FUNCTION( ThresholdDouble, Threshold )
+}
+#endif
+
+#ifdef PENGUINV_NEON_SET
+namespace image_function_neon
+{
+    using namespace Image_Function_Neon;
+
+    const bool isSupported = isNeonAvailable;
+    const std::string namespaceName = "image_function_neon";
+
+    SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( BitwiseAnd         )
+    SET_FUNCTION( BitwiseOr          )
+    SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( Invert             )
+    SET_FUNCTION( Maximum            )
+    SET_FUNCTION( Minimum            )
+    SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Threshold          )
+    REGISTER_FUNCTION( ThresholdDouble, Threshold )
+}
+#endif
+
+#ifdef PENGUINV_SSE_SET
+namespace image_function_sse
+{
+    using namespace Image_Function_Sse;
+
+    const bool isSupported = isSseAvailable;
+    const std::string namespaceName = "image_function_sse";
+
+    SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( BitwiseAnd         )
+    SET_FUNCTION( BitwiseOr          )
+    SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( Invert             )
+    SET_FUNCTION( Maximum            )
+    SET_FUNCTION( Minimum            )
+    SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Sum                )
+    SET_FUNCTION( Threshold          )
+    REGISTER_FUNCTION( ThresholdDouble, Threshold )
+}
+#endif
 
 void addTests_Image_Function( PerformanceTestFramework & framework )
 {
-    ADD_TEST_FUNCTION( framework, AbsoluteDifference )
-    ADD_TEST_FUNCTION( framework, BitwiseAnd         )
-    ADD_TEST_FUNCTION( framework, BitwiseOr          )
-    ADD_TEST_FUNCTION( framework, BitwiseXor         )
-    ADD_TEST_FUNCTION( framework, ConvertToColor     )
-    ADD_TEST_FUNCTION( framework, ConvertToGrayscale )
-    ADD_TEST_FUNCTION( framework, Fill               )
-    ADD_TEST_FUNCTION( framework, GammaCorrection    )
-    ADD_TEST_FUNCTION( framework, Histogram          )
-    ADD_TEST_FUNCTION( framework, Invert             )
-    ADD_TEST_FUNCTION( framework, LookupTable        )
-    ADD_TEST_FUNCTION( framework, Maximum            )
-    ADD_TEST_FUNCTION( framework, Minimum            )
-    ADD_TEST_FUNCTION( framework, RgbToBgr           )
-    ADD_TEST_FUNCTION( framework, ResizeDown         )
-    ADD_TEST_FUNCTION( framework, ResizeUp           )
-    ADD_TEST_FUNCTION( framework, Subtract           )
-    ADD_TEST_FUNCTION( framework, Sum                )
-    ADD_TEST_FUNCTION( framework, Threshold          )
-    ADD_TEST_FUNCTION( framework, ThresholdDouble    )
-    ADD_TEST_FUNCTION( framework, Transpose          )
+    FunctionRegistrator::instance().set( framework );
 }

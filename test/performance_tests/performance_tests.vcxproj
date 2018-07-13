@@ -157,12 +157,8 @@
     <ClCompile Include="performance_test_blob_detection.cpp" />
     <ClCompile Include="performance_test_filtering.cpp" />
     <ClCompile Include="performance_test_framework.cpp" />
-    <ClCompile Include="performance_test_function_pool.cpp" />
     <ClCompile Include="performance_test_helper.cpp" />
     <ClCompile Include="performance_test_image_function.cpp" />
-    <ClCompile Include="performance_test_image_function_avx.cpp" />
-    <ClCompile Include="performance_test_image_function_neon.cpp" />
-    <ClCompile Include="performance_test_image_function_sse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\blob_detection.h" />
@@ -182,12 +178,8 @@
     <ClInclude Include="performance_test_blob_detection.h" />
     <ClInclude Include="performance_test_filtering.h" />
     <ClInclude Include="performance_test_framework.h" />
-    <ClInclude Include="performance_test_function_pool.h" />
     <ClInclude Include="performance_test_helper.h" />
     <ClInclude Include="performance_test_image_function.h" />
-    <ClInclude Include="performance_test_image_function_avx.h" />
-    <ClInclude Include="performance_test_image_function_neon.h" />
-    <ClInclude Include="performance_test_image_function_sse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
