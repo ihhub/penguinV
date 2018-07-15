@@ -11,6 +11,12 @@ void multithreaded( const std::vector < PenguinV_Image::Image > & frame );
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
 
+template <class T_>
+T_ randomValue( T_ maximum )
+{
+    return static_cast<T_>(rand()) % maximum;
+}
+
 int main()
 {
     try // <---- do not forget to put your code into try.. catch block!
@@ -36,18 +42,18 @@ int main()
 
         for( std::vector < PenguinV_Image::Image >::iterator image = frame.begin(); image != frame.end(); ++image ) {
             // Fill background. Let's assume that background varies from 0 to 15 gray scale values
-            image->fill( static_cast<uint8_t>(rand() % 16) );
+            image->fill( randomValue<uint8_t>(16u) );
 
             // Then add some 'suspicious' objects on some random images
-            if( rand() % 10 == 0 ) { // at least ~6 of 60 images would have objects
+            if( randomValue<int>(10) == 0 ) { // at least ~6 of 60 images would have objects
                 // generate random place of object, in our case is rectangle
-                uint32_t x      = static_cast<uint32_t>(rand()) % (image->width()  * 2 / 3);
-                uint32_t y      = static_cast<uint32_t>(rand()) % (image->height() * 2 / 3);
-                uint32_t width  = static_cast<uint32_t>(rand()) % (image->width()  - x);
-                uint32_t height = static_cast<uint32_t>(rand()) % (image->height() - y);
+                const uint32_t x      = randomValue<uint32_t>(image->width()  * 2 / 3);
+                const uint32_t y      = randomValue<uint32_t>(image->height() * 2 / 3);
+                const uint32_t width  = randomValue<uint32_t>(image->width()  - x);
+                const uint32_t height = randomValue<uint32_t>(image->height() - y);
 
                 // fill an area with some random value what is bigger than background value
-                Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>(rand() % 128) + 64 );
+                Image_Function::Fill( *image, x, y, width, height, randomValue<uint8_t>(128u) + 64u );
             }
         }
 
@@ -94,8 +100,8 @@ int main()
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start )
 {
-    std::chrono::time_point < std::chrono::system_clock > end = std::chrono::system_clock::now();
-    std::chrono::duration < double > time = end - start;
+    const std::chrono::time_point < std::chrono::system_clock > end = std::chrono::system_clock::now();
+    const std::chrono::duration < double > time = end - start;
 
     return time.count();
 }
