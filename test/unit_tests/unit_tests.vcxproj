@@ -147,10 +147,8 @@
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
-    <ClCompile Include="..\..\src\image_function_avx.cpp" />
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\src\image_function_neon.cpp" />
-    <ClCompile Include="..\..\src\image_function_sse.cpp" />
+    <ClCompile Include="..\..\src\image_function_simd.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\..\src\thread_pool.cpp" />
     <ClCompile Include="unit_tests.cpp" />
@@ -168,10 +166,8 @@
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
-    <ClInclude Include="..\..\src\image_function_avx.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
-    <ClInclude Include="..\..\src\image_function_neon.h" />
-    <ClInclude Include="..\..\src\image_function_sse.h" />
+    <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_id_windows.h" />

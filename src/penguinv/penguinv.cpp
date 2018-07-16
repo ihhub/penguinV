@@ -1,19 +1,8 @@
+#include "penguinv.h"
+
 #include "cpu_identification.h"
 #include "../image_function.h"
-
-#ifdef PENGUINV_AVX_SET
-#include "../image_function_avx.h"
-#endif
-
-#ifdef PENGUINV_SSE_SET
-#include "../image_function_sse.h"
-#endif
-
-#ifdef PENGUINV_NEON_SET
-#include "../image_function_neon.h"
-#endif
-
-#include "penguinv.h"
+#include "../image_function_simd.h"
 
 // We directly make first call to initialize function table
 // to prevent multithreading issues
@@ -59,52 +48,19 @@ namespace
         table.Threshold2         = &Image_Function::Threshold;
         table.Transpose          = &Image_Function::Transpose;
 
-#ifdef PENGUINV_SSE_SET
-        if( isSseAvailable ) {
-            table.AbsoluteDifference = &Image_Function_Sse::AbsoluteDifference;
-            table.BitwiseAnd         = &Image_Function_Sse::BitwiseAnd;
-            table.BitwiseOr          = &Image_Function_Sse::BitwiseOr;
-            table.BitwiseXor         = &Image_Function_Sse::BitwiseXor;
-            table.Invert             = &Image_Function_Sse::Invert;
-            table.Maximum            = &Image_Function_Sse::Maximum;
-            table.Minimum            = &Image_Function_Sse::Minimum;
-            table.Subtract           = &Image_Function_Sse::Subtract;
-            table.Sum                = &Image_Function_Sse::Sum;
-            table.Threshold          = &Image_Function_Sse::Threshold;
-            table.Threshold2         = &Image_Function_Sse::Threshold;
-        }
-#endif
+        // SIMD
+        table.AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+        table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
+        table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
+        table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+        table.Invert             = &Image_Function_Simd::Invert;
+        table.Maximum            = &Image_Function_Simd::Maximum;
+        table.Minimum            = &Image_Function_Simd::Minimum;
+        table.Subtract           = &Image_Function_Simd::Subtract;
+        table.Sum                = &Image_Function_Simd::Sum;
+        table.Threshold          = &Image_Function_Simd::Threshold;
+        table.Threshold2         = &Image_Function_Simd::Threshold;
 
-#ifdef PENGUINV_AVX_SET
-        if( isAvxAvailable ) {
-            table.AbsoluteDifference = &Image_Function_Avx::AbsoluteDifference;
-            table.BitwiseAnd         = &Image_Function_Avx::BitwiseAnd;
-            table.BitwiseOr          = &Image_Function_Avx::BitwiseOr;
-            table.BitwiseXor         = &Image_Function_Avx::BitwiseXor;
-            table.Invert             = &Image_Function_Avx::Invert;
-            table.Maximum            = &Image_Function_Avx::Maximum;
-            table.Minimum            = &Image_Function_Avx::Minimum;
-            table.Subtract           = &Image_Function_Avx::Subtract;
-            table.Sum                = &Image_Function_Avx::Sum;
-            table.Threshold          = &Image_Function_Avx::Threshold;
-            table.Threshold2         = &Image_Function_Avx::Threshold;
-        }
-#endif
-
-#ifdef PENGUINV_NEON_SET
-        if( isNeonAvailable ) {
-            table.AbsoluteDifference = &Image_Function_Neon::AbsoluteDifference;
-            table.BitwiseAnd         = &Image_Function_Neon::BitwiseAnd;
-            table.BitwiseOr          = &Image_Function_Neon::BitwiseOr;
-            table.BitwiseXor         = &Image_Function_Neon::BitwiseXor;
-            table.Invert             = &Image_Function_Neon::Invert;
-            table.Maximum            = &Image_Function_Neon::Maximum;
-            table.Minimum            = &Image_Function_Neon::Minimum;
-            table.Subtract           = &Image_Function_Neon::Subtract;
-            table.Threshold          = &Image_Function_Neon::Threshold;
-            table.Threshold2         = &Image_Function_Neon::Threshold;
-        }
-#endif
         return table;
     }
 }

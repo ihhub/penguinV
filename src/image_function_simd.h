@@ -1,20 +1,9 @@
 #pragma once
 
+#include "image_buffer.h"
 #include "penguinv/cpu_identification.h"
 
-#ifdef PENGUINV_SSE_SET
-
-#include "image_buffer.h"
-
-// Utilize these image functions only if your CPU supports SSE2 !!!
-
-// These functions contain SSE2 code through Intel Intrinsics functions
-// Functions have totally same results like normal functions but they are faster!
-// You will have speed up compare to normal functions if the width of inspection area is bigger than 16 pixels
-// because 16 pixels is minimum width what SSE function can process
-// Anyway you do not need to care about this. Everything is done inside. Just use it if you want to have faster code
-
-namespace Image_Function_Sse
+namespace Image_Function_Simd
 {
     using namespace PenguinV_Image;
 
@@ -98,5 +87,13 @@ namespace Image_Function_Sse
                      uint8_t maxThreshold );
     void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                      uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
+
+    // This namespace is designed only for testing simd technique functions individually
+    namespace Simd_Activation
+    {
+        void EnableSimd( bool enable );
+        void EnableAvx( bool enable );
+        void EnableSse( bool enable );
+        void EnableNeon( bool enable );
+    }
 }
-#endif

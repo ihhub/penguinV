@@ -8,9 +8,7 @@ SRCS :=  \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \
-	$(LIB_DIR)/image_function_avx.cpp \
-	$(LIB_DIR)/image_function_neon.cpp \
-	$(LIB_DIR)/image_function_sse.cpp \
+	$(LIB_DIR)/image_function_simd.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	unit_tests.cpp \
 	unit_test_bitmap.cpp \

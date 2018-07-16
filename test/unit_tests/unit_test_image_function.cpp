@@ -2,9 +2,7 @@
 #include <numeric>
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
-#include "../../src/image_function_avx.h"
-#include "../../src/image_function_neon.h"
-#include "../../src/image_function_sse.h"
+#include "../../src/image_function_simd.h"
 #include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
 #include "unit_test_image_function.h"
@@ -12,9 +10,30 @@
 
 namespace
 {
-    void PrepareFunction()
+    void PrepareFunction( const std::string& namespaceName )
     {
-        Thread_Pool::ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
+        if ( namespaceName == "function_pool" ) {
+            Image_Function_Simd::Simd_Activation::EnableSimd( true );
+            Thread_Pool::ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
+        }
+        else if ( namespaceName == "image_function_avx" ) {
+            Image_Function_Simd::Simd_Activation::EnableSimd( false );
+            Image_Function_Simd::Simd_Activation::EnableAvx( true );
+        }
+        else if ( namespaceName == "image_function_sse" ) {
+            Image_Function_Simd::Simd_Activation::EnableSimd( false );
+            Image_Function_Simd::Simd_Activation::EnableSse( true );
+        }
+        else if ( namespaceName == "image_function_neon" ) {
+            Image_Function_Simd::Simd_Activation::EnableSimd( false );
+            Image_Function_Simd::Simd_Activation::EnableNeon( true );
+        }
+    }
+
+    void CleanupFunction(const std::string& namespaceName)
+    {
+        if ( (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") )
+            Image_Function_Simd::Simd_Activation::EnableSimd( true );
     }
 
     class FunctionRegistrator
@@ -2037,8 +2056,10 @@ const Register_##functionWrapper registrator_##functionWrapper( isSupported );
 
 #define DECLARE_FUNCTION_BODY( functionCall )                       \
     for( uint32_t i = 0; i < Function_Template::runCount(); ++i ) { \
-        PrepareFunction();                                          \
-        if ( !functionCall )                                        \
+        PrepareFunction(namespaceName);                             \
+        const bool returnValue = functionCall;                      \
+        CleanupFunction(namespaceName);                             \
+        if ( !returnValue )                                         \
             return false;                                           \
     }                                                               \
     return true;
@@ -2139,7 +2160,7 @@ namespace function_pool
 #ifdef PENGUINV_AVX_SET
 namespace avx
 {
-    using namespace Image_Function_Avx;
+    using namespace Image_Function_Simd;
 
     const bool isSupported = isAvxAvailable;
     const std::string namespaceName = "image_function_avx";
@@ -2160,7 +2181,7 @@ namespace avx
 #ifdef PENGUINV_NEON_SET
 namespace neon
 {
-    using namespace Image_Function_Neon;
+    using namespace Image_Function_Simd;
 
     const bool isSupported = isNeonAvailable;
     const std::string namespaceName = "image_function_neon";
@@ -2180,7 +2201,7 @@ namespace neon
 #ifdef PENGUINV_SSE_SET
 namespace sse
 {
-    using namespace Image_Function_Sse;
+    using namespace Image_Function_Simd;
 
     const bool isSupported = isSseAvailable;
     const std::string namespaceName = "image_function_sse";

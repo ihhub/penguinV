@@ -143,9 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\image_function_avx.cpp" />
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\src\image_function_sse.cpp" />
+    <ClCompile Include="..\..\src\image_function_simd.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="example_function_pool.cpp" />
     <ClCompile Include="..\..\src\thread_pool.cpp" />
@@ -157,9 +156,8 @@
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
-    <ClInclude Include="..\..\src\image_function_avx.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
-    <ClInclude Include="..\..\src\image_function_sse.h" />
+    <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />
