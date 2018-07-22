@@ -9,22 +9,31 @@ int main()
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
-    if( !multiCuda::isCudaSupported() ) {
+    if ( !multiCuda::isCudaSupported() ) {
         std::cout << "No CUDA devices in the system" << std::endl;
         return 0;
     }
 
-    multiCuda::CudaDeviceManager::instance().initializeDevices();
+    multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
+    deviceManager.initializeDevices();
 
-    // We preallocate memory (32 MB)
-    multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+    int returnValue = 0;
+    for ( int deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId ) {
+        deviceManager.setActiveDevice( deviceId );
 
-    // We create a framework
-    UnitTestFramework framework;
+        const multiCuda::CudaDevice & device = deviceManager.device();
+        std::cout << device.name() << ": " << device.computeCapability() << std::endl;
 
-    // We add tests
-    addTests_Image_Function_Cuda( framework );
+        // We preallocate memory (32 MB)
+        multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
-    // Just run the framework what will handle all tests
-    return framework.run();
+        // We create a framework and add tests
+        UnitTestFramework framework;
+        addTests_Image_Function_Cuda( framework );
+
+        // Just run the framework what will handle all tests
+        returnValue += framework.run();
+    }
+
+    return returnValue;
 }

@@ -14,19 +14,25 @@ int main()
         return 0;
     }
 
-    multiCuda::CudaDeviceManager::instance().initializeDevices();
+    multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
+    deviceManager.initializeDevices();
 
-    // We preallocate memory (32 MB)
-    multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+    for ( int deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId ) {
+        deviceManager.setActiveDevice( deviceId );
 
-    // We create a framework
-    PerformanceTestFramework framework;
+        const multiCuda::CudaDevice & device = deviceManager.device();
+        std::cout << device.name() << ": " << device.computeCapability() << std::endl;
 
-    // We add tests
-    addTests_Image_Function_Cuda( framework );
+        // We preallocate memory (32 MB)
+        multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
-    // Just run the framework what will handle all tests
-    framework.run();
+        // We create a framework and add tests
+        PerformanceTestFramework framework;
+        addTests_Image_Function_Cuda( framework );
+
+        // Just run the framework what will handle all tests
+        framework.run();
+    }
 
     return 0;
 }
