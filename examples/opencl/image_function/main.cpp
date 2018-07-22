@@ -72,39 +72,42 @@ void cpuBased()
     image = Image_Function::Threshold( image, Image_Function::GetThreshold( Image_Function::Histogram( image ) ) );
 
     // Save result
-    Bitmap_Operation::Save( "result1.bmp", image );
+    Bitmap_Operation::Save( "result_CPU.bmp", image );
 }
 
 void gpuBased()
 {
-    multiCL::OpenCLDeviceManager::instance().initializeDevices();
+    multiCL::OpenCLDeviceManager & deviceManager = multiCL::OpenCLDeviceManager::instance();
+    deviceManager.initializeDevices();
+    for ( uint32_t deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId) {
+        deviceManager.setActiveDevice( deviceId );
+        // It is recommended to use preallocated buffers for GPU memory usage
+        // So we preallocate 32 MB of GPU memory for our usage
+        multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
-    // It is recommended to use preallocated buffers for GPU memory usage
-    // So we preallocate 32 MB of GPU memory for our usage
-    multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+        // Load an image from storage
+        // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
+        // Otherwise you can change the path where the image stored
+        PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
-    // Load an image from storage
-    // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
-    // Otherwise you can change the path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
+        // If the image is empty it means that the image doesn't exist or the file is not readable
+        if( image.empty() )
+            throw imageException( "Cannot load the image" );
 
-    // If the image is empty it means that the image doesn't exist or the file is not readable
-    if( image.empty() )
-        throw imageException( "Cannot load the image" );
+        // We try to mutate the image to make alignment equal to 1
+        image.mutate( image.width(), image.height(), image.colorCount(), 1u );
 
-    // We try to mutate the image to make alignment equal to 1
-    image.mutate( image.width(), image.height(), image.colorCount(), 1u );
+        // Copy image from GPU space to GPU space
+        Bitmap_Image_OpenCL::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
 
-    // Copy image from GPU space to GPU space
-    Bitmap_Image_OpenCL::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
+        // Convert to gray-scale image if it's not
+        if( imageGPU.colorCount() != Bitmap_Image_OpenCL::GRAY_SCALE )
+            imageGPU = Image_Function_OpenCL::ConvertToGrayScale( imageGPU );
 
-    // Convert to gray-scale image if it's not
-    if( imageGPU.colorCount() != Bitmap_Image_OpenCL::GRAY_SCALE )
-        imageGPU = Image_Function_OpenCL::ConvertToGrayScale( imageGPU );
+        // Threshold image with calculated optimal threshold
+        imageGPU = Image_Function_OpenCL::Threshold( imageGPU, Image_Function_OpenCL::GetThreshold( Image_Function_OpenCL::Histogram( imageGPU ) ) );
 
-    // Threshold image with calculated optimal threshold
-    imageGPU = Image_Function_OpenCL::Threshold( imageGPU, Image_Function_OpenCL::GetThreshold( Image_Function_OpenCL::Histogram( imageGPU ) ) );
-
-    // Save result
-    Bitmap_Operation::Save( "result2.bmp", Image_Function_OpenCL::ConvertFromOpenCL( imageGPU ) );
+        // Save result
+        Bitmap_Operation::Save( "result_" + deviceManager.device().name() + ".bmp", Image_Function_OpenCL::ConvertFromOpenCL( imageGPU ) );
+    }
 }

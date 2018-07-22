@@ -400,15 +400,11 @@ namespace multiCL
                 _supportedDeviceId.resize( supportedDeviceCount + deviceCount );
 
                 if( !openCLSafeCheck( clGetDeviceIDs( *platform, CL_DEVICE_TYPE_GPU, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
-                    _supportedDeviceId.clear();
-                    break;
+                    _supportedDeviceId.resize( supportedDeviceCount );
+                    continue;
                 }
 
                 supportedDeviceCount += deviceCount;
-            }
-            else {
-                _supportedDeviceId.clear();
-                break;
             }
         }
     }
