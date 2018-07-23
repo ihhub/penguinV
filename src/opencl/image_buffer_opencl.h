@@ -180,9 +180,5 @@ namespace Bitmap_Image_OpenCL
         cl_mem _data;
     };
 
-    const static uint8_t GRAY_SCALE = 1u;
-    const static uint8_t RGB = 3u;
-    const static uint8_t RGBA = 4u;
-
     typedef ImageTemplateOpenCL <uint8_t> Image;
 }

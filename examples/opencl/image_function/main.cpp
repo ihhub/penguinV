@@ -101,7 +101,7 @@ void gpuBased()
         Bitmap_Image_OpenCL::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
 
         // Convert to gray-scale image if it's not
-        if( imageGPU.colorCount() != Bitmap_Image_OpenCL::GRAY_SCALE )
+        if( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
             imageGPU = Image_Function_OpenCL::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold
