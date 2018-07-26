@@ -95,7 +95,7 @@ namespace
         if ( x < width && y < height ) {
             const uint8_t * dataIn = in + y * rowSizeIn + x;
 
-            uint8_t * dataOut = out + (width * y + x) * colorCount;
+            uint8_t * dataOut = out + (rowSizeOut * y + x) * colorCount;
             const uint8_t * dataOutEnd = dataOut + colorCount;
 
             for ( ; dataOut != dataOutEnd; ++dataOut )
@@ -622,7 +622,7 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( in );
 
-        Image out( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height(), in.colorCount(), in.alignment() );
 
         Flip( in, out, horizontal, vertical );
 
