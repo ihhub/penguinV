@@ -12,173 +12,73 @@
 #include "../image_exception.h"
 #include "../thirdparty/multicl/src/opencl_device.h"
 
-namespace Bitmap_Image_OpenCL
+namespace PenguinV_Image
 {
     template <typename TColorDepth>
-    class ImageTemplateOpenCL
+    class ImageTemplateOpenCL : public ImageTemplate<TColorDepth>
     {
     public:
-        ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u )
-            : _width     ( 0 )    // width of image
-            , _height    ( 0 )    // height of image
-            , _colorCount( 1 )    // number of colors per pixel
-            , _rowSize   ( 0 )    // size of single row on image which is equal to width * colorCount
-            , _data      ( NULL ) // an array what store image information (pixel data)
+        ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
-            setColorCount( colorCount_ );
-            resize( width_, height_ );
+            ImageTemplate<TColorDepth>::_setType( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
+            ImageTemplate<TColorDepth>::setAlignment( alignment_ );
+            ImageTemplate<TColorDepth>::resize( width_, height_ );
         }
 
         ImageTemplateOpenCL( const ImageTemplateOpenCL & image )
-            : _data      ( NULL )
         {
-            copy( image );
+            ImageTemplate<TColorDepth>::operator=( image );
         }
 
         ImageTemplateOpenCL( ImageTemplateOpenCL && image )
-            : _width     ( 0 )
-            , _height    ( 0 )
-            , _colorCount( 1 )
-            , _data      ( NULL )
         {
-            swap( image );
+            ImageTemplate<TColorDepth>::swap( image );
         }
 
         ImageTemplateOpenCL & operator=( const ImageTemplateOpenCL & image )
         {
-            copy( image );
+            ImageTemplate<TColorDepth>::operator=( image );
 
             return (*this);
         }
 
         ImageTemplateOpenCL & operator=( ImageTemplateOpenCL && image )
         {
-            swap( image );
+            ImageTemplate<TColorDepth>::swap( image );
 
             return (*this);
         }
-
-        ~ImageTemplateOpenCL()
+    private:
+        static TColorDepth * _allocateMemory( size_t size )
         {
-            clear();
+            return reinterpret_cast<TColorDepth*>( multiCL::MemoryManager::memory().allocate<TColorDepth>( size ) );
         }
 
-        void resize( uint32_t width_, uint32_t height_ )
+        static void _deallocateMemory( TColorDepth * data )
         {
-            if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
-                clear();
-
-                _width  = width_;
-                _height = height_;
-                _rowSize = width() * colorCount();
-
-                _data = multiCL::MemoryManager::memory().allocate<TColorDepth>( _rowSize * _height );
-            }
+            multiCL::MemoryManager::memory().free( reinterpret_cast<cl_mem>( data ) );
         }
 
-        void clear()
+        static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
         {
-            if( _data != NULL ) {
-                multiCL::MemoryManager::memory().free( _data );
+            cl_mem inMem  = reinterpret_cast<cl_mem>( in );
+            cl_mem outMem = reinterpret_cast<cl_mem>( out );
 
-                _data = NULL;
-            }
-
-            _width  = 0;
-            _height = 0;
+            const cl_int error = clEnqueueCopyBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), inMem, outMem, 0, 0, size, 0, NULL, NULL );
+            if( error != CL_SUCCESS )
+                throw imageException( "Cannot copy a memory in GPU device" );
         }
 
-        cl_mem data()
+        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
-            return _data;
-        }
+            cl_mem dataMem = reinterpret_cast<cl_mem>( data );
 
-        const cl_mem data() const
-        {
-            return _data;
-        }
-
-        bool empty() const
-        {
-            return _data == NULL;
-        }
-
-        uint32_t width() const
-        {
-            return _width;
-        }
-
-        uint32_t height() const
-        {
-            return _height;
-        }
-
-        uint32_t rowSize() const
-        {
-            return _rowSize;
-        }
-
-        uint8_t colorCount() const
-        {
-            return _colorCount;
-        }
-
-        void setColorCount( uint8_t colorCount_ )
-        {
-            if( colorCount_ > 0 && _colorCount != colorCount_ ) {
-                clear();
-                _colorCount = colorCount_;
-            }
-        }
-
-        void fill( TColorDepth value )
-        {
-            if( empty() )
-                return;
-
-            cl_int error = clEnqueueFillBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), _data, &value, sizeof( TColorDepth ),
-                                                0, _rowSize * _width, 0, NULL, NULL );
+            const cl_int error = clEnqueueFillBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), dataMem, &value, sizeof( TColorDepth ), 0, size, 0, NULL, NULL );
             if( error != CL_SUCCESS )
                 throw imageException( "Cannot fill a memory for GPU device" );
         }
-
-        void swap( ImageTemplateOpenCL & image )
-        {
-            std::swap( _width, image._width );
-            std::swap( _height, image._height );
-
-            std::swap( _colorCount, image._colorCount );
-            std::swap( _rowSize   , image._rowSize );
-
-            std::swap( _data, image._data );
-        }
-
-        void copy( const ImageTemplateOpenCL & image )
-        {
-            clear();
-
-            _width  = image._width;
-            _height = image._height;
-            _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
-
-            if( image._data != NULL ) {
-                _data = multiCL::MemoryManager::memory().allocate<TColorDepth>( _rowSize * _width );
-
-                cl_int error = clEnqueueCopyBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), image.data(), _data, 0, 0, _rowSize * _width, 0, NULL, NULL );
-                if( error != CL_SUCCESS )
-                    throw imageException( "Cannot copy a memory in GPU device" );
-            }
-        }
-
-    private:
-        uint32_t _width;
-        uint32_t _height;
-        uint8_t  _colorCount;
-        uint32_t _rowSize;
-
-        cl_mem _data;
     };
 
-    typedef ImageTemplateOpenCL <uint8_t> Image;
+    typedef PenguinV_Image::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
 }

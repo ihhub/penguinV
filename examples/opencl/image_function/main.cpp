@@ -94,11 +94,8 @@ void gpuBased()
         if( image.empty() )
             throw imageException( "Cannot load the image" );
 
-        // We try to mutate the image to make alignment equal to 1
-        image.mutate( image.width(), image.height(), image.colorCount(), 1u );
-
         // Copy image from GPU space to GPU space
-        Bitmap_Image_OpenCL::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
+        PenguinV_Image::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
 
         // Convert to gray-scale image if it's not
         if( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
