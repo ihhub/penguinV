@@ -461,7 +461,9 @@ namespace Bitmap_Operation
             }
         }
 
-        uint32_t lineLength = width * image.colorCount();
+        const uint8_t colorCount = image.colorCount();
+
+        uint32_t lineLength = width * colorCount;
         if( lineLength % BITMAP_ALIGNMENT != 0 )
             lineLength = (lineLength / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
@@ -473,7 +475,7 @@ namespace Bitmap_Operation
 
         info.setWidth     ( width );
         info.setHeight    ( height );
-        info.setColorCount( image.colorCount() );
+        info.setColorCount( colorCount );
         info.setImageSize ( lineLength * height );
 
         std::fstream file;
@@ -499,12 +501,12 @@ namespace Bitmap_Operation
 
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * imageY = image.data() + (startY + height - 1) * rowSize + startX;
+        const uint8_t * imageY = image.data() + (startY + height - 1) * rowSize + startX * colorCount;
 
         std::vector < uint8_t > temp( lineLength, 0 );
 
         for( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
-            memcpy( temp.data(), imageY, sizeof( uint8_t ) * width );
+            memcpy( temp.data(), imageY, sizeof( uint8_t ) * width * colorCount );
 
             file.write( reinterpret_cast<const char *>(temp.data()), lineLength );
             file.flush();
