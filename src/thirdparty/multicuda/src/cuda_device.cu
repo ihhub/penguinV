@@ -102,6 +102,7 @@ namespace multiCuda
 
     CudaDevice::~CudaDevice()
     {
+        setActive();
         delete _allocator;
 
         for( std::vector< CudaStream * >::iterator streamId = _stream.begin(); streamId != _stream.end(); ++streamId )
