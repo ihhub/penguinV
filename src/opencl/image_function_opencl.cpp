@@ -1,6 +1,9 @@
 #include "image_function_opencl.h"
 
+#include <map>
 #include <math.h>
+#include <memory>
+#include <mutex>
 #include "../thirdparty/multicl/src/opencl_device.h"
 #include "../thirdparty/multicl/src/opencl_helper.h"
 #include "../image_function_helper.h"
@@ -11,8 +14,8 @@ namespace
     const std::string programCode = R"(
         #pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable
 
-        __kernel void absoluteDifferenceOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                                __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void absoluteDifferenceOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                                __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -25,8 +28,8 @@ namespace
             }
         }
 
-        __kernel void bitwiseAndOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                        __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void bitwiseAndOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                        __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -39,8 +42,8 @@ namespace
             }
         }
 
-        __kernel void bitwiseOrOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                       __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void bitwiseOrOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                       __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -53,8 +56,8 @@ namespace
             }
         }
 
-        __kernel void bitwiseXorOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                        __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void bitwiseXorOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                        __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -67,17 +70,17 @@ namespace
             }
         }
 
-        __kernel void convertToGrayScaleOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, unsigned char colorCount, __global unsigned char * out, unsigned int rowSizeOut,
-                                                unsigned int width, unsigned int height )
+        __kernel void convertToGrayScaleOpenCL( __global const uchar * in, uint rowSizeIn, uchar colorCount, __global uchar * out, uint rowSizeOut,
+                                                uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                __global const unsigned char * data = in + (rowSizeIn * y) + x * colorCount;
+                __global const uchar * data = in + (rowSizeIn * y) + x * colorCount;
 
-                unsigned int sum = 0;
-                for( unsigned char i = 0; i < colorCount; ++i, ++data )
+                uint sum = 0;
+                for( uchar i = 0; i < colorCount; ++i, ++data )
                 {
                     sum += (*data);
                 }
@@ -87,8 +90,8 @@ namespace
             }
         }
 
-        __kernel void convertToRgbOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut, unsigned char colorCount,
-                                          unsigned int width, unsigned int height )
+        __kernel void convertToRgbOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uchar colorCount,
+                                          uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -96,16 +99,16 @@ namespace
             if( x < width && y < height ) {
                 const size_t id = y * rowSizeIn + x;
 
-                __global unsigned char * data = out + (rowSizeOut * y) + x * colorCount;
+                __global uchar * data = out + (rowSizeOut * y) + x * colorCount;
 
-                for( unsigned char i = 0; i < colorCount; ++i, ++data )
+                for( uchar i = 0; i < colorCount; ++i, ++data )
                 {
                     (*data) = in[id];
                 }
             }
         }
 
-        __kernel void copyOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void copyOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -115,8 +118,8 @@ namespace
             }
         }
 
-        __kernel void extractChannelOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, unsigned char colorCount, __global unsigned char * out, unsigned int rowSizeOut,
-                                            unsigned int width, unsigned int height, unsigned char channelId )
+        __kernel void extractChannelOpenCL( __global const uchar * in, uint rowSizeIn, uchar colorCount, __global uchar * out, uint rowSizeOut,
+                                            uint width, uint height, uchar channelId )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -125,7 +128,7 @@ namespace
                 out[y * rowSizeOut + x] = in[(y * rowSizeIn + x) * colorCount + channelId];
         }
 
-        __kernel void fillOpenCL( __global unsigned char * data, unsigned int rowSize, unsigned int width, unsigned int height, unsigned char value )
+        __kernel void fillOpenCL( __global uchar * data, uint rowSize, uint width, uint height, uchar value )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -134,8 +137,8 @@ namespace
                 data[y * rowSize + x] = value;
         }
 
-        __kernel void flipOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut,
-                                  unsigned int width, unsigned int height, unsigned char horizontal, unsigned char vertical )
+        __kernel void flipOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+                                  uint width, uint height, uchar horizontal, uchar vertical )
         {
             const size_t inX = get_global_id(0);
             const size_t inY = get_global_id(1);
@@ -148,7 +151,7 @@ namespace
             }
         }
 
-        __kernel void histogramOpenCL( __global const unsigned char * data, unsigned int rowSize, unsigned int width, unsigned int height, volatile __global unsigned int * histogram )
+        __kernel void histogramOpenCL( __global const uchar * data, uint rowSize, uint width, uint height, volatile __global uint * histogram )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -159,7 +162,7 @@ namespace
             }
         }
 
-        __kernel void invertOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void invertOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -168,8 +171,8 @@ namespace
                 out[y * rowSizeOut + x] = ~in[y * rowSizeIn + x];
         }
 
-        __kernel void lookupTableOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut,
-                                         unsigned int width, unsigned int height, __global unsigned char * table )
+        __kernel void lookupTableOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+                                         uint width, uint height, __global uchar * table )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -178,8 +181,8 @@ namespace
                 out[y * rowSizeOut + x] = table[in[y * rowSizeIn + x]];
         }
 
-        __kernel void maximumOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                     __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void maximumOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                     __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -192,8 +195,8 @@ namespace
             }
         }
 
-        __kernel void minimumOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                     __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void minimumOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                     __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -206,8 +209,8 @@ namespace
             }
         }
 
-        __kernel void subtractOpenCL( __global const unsigned char * in1, unsigned int rowSizeIn1, __global const unsigned char * in2, unsigned int rowSizeIn2,
-                                      __global unsigned char * out, unsigned int rowSizeOut, unsigned int width, unsigned int height )
+        __kernel void subtractOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
+                                      __global uchar * out, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -220,8 +223,8 @@ namespace
             }
         }
 
-        __kernel void thresholdOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut,
-                                       unsigned int width, unsigned int height, unsigned char threshold )
+        __kernel void thresholdOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+                                       uint width, uint height, uchar threshold )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -231,8 +234,8 @@ namespace
             }
         }
 
-        __kernel void thresholdDoubleOpenCL( __global const unsigned char * in, unsigned int rowSizeIn, __global unsigned char * out, unsigned int rowSizeOut,
-                                             unsigned int width, unsigned int height, unsigned char minThreshold, unsigned char maxThreshold )
+        __kernel void thresholdDoubleOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+                                             uint width, uint height, uchar minThreshold, uchar maxThreshold )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
@@ -244,9 +247,22 @@ namespace
         }
         )";
 
-    multiCL::OpenCLProgram GetProgram()
+    const multiCL::OpenCLProgram& GetProgram()
     {
-        return multiCL::OpenCLProgram( multiCL::OpenCLDeviceManager::instance().device().context(), programCode );
+        static std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > > deviceProgram;
+        static std::mutex mapGuard;
+
+        multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
+
+        std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > >::const_iterator program = deviceProgram.find( device.deviceId() );
+        if ( program != deviceProgram.cend() )
+            return *(program->second);
+
+        mapGuard.lock();
+        deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode ) );
+        mapGuard.unlock();
+
+        return *(deviceProgram[device.deviceId()]);
     }
 }
 
