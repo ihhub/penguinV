@@ -95,7 +95,7 @@ namespace
         if ( x < width && y < height ) {
             const uint8_t * dataIn = in + y * rowSizeIn + x;
 
-            uint8_t * dataOut = out + (rowSizeOut * y + x) * colorCount;
+            uint8_t * dataOut = out + y * rowSizeOut + x * colorCount;
             const uint8_t * dataOutEnd = dataOut + colorCount;
 
             for ( ; dataOut != dataOutEnd; ++dataOut )
