@@ -14,70 +14,70 @@ namespace
     const std::string programCode = R"(
         #pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable
 
-        __kernel void absoluteDifferenceOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                                __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void absoluteDifferenceOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                                __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] > in2[idIn2]) ? (in1[idIn1] - in2[idIn2]) : (in2[idIn2] - in1[idIn1]);
             }
         }
 
-        __kernel void bitwiseAndOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                        __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void bitwiseAndOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                        __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] & in2[idIn2]);
             }
         }
 
-        __kernel void bitwiseOrOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                       __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void bitwiseOrOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                       __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] | in2[idIn2]);
             }
         }
 
-        __kernel void bitwiseXorOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                        __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void bitwiseXorOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                        __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] ^ in2[idIn2]);
             }
         }
 
-        __kernel void convertToGrayScaleOpenCL( __global const uchar * in, uint rowSizeIn, uchar colorCount, __global uchar * out, uint rowSizeOut,
+        __kernel void convertToGrayScaleOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, uchar colorCount, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                                 uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                __global const uchar * data = in + (rowSizeIn * y) + x * colorCount;
+                __global const uchar * data = in + offsetIn + (rowSizeIn * y) + x * colorCount;
 
                 uint sum = 0;
                 for( uchar i = 0; i < colorCount; ++i, ++data )
@@ -85,21 +85,21 @@ namespace
                     sum += (*data);
                 }
 
-                const size_t id = y * rowSizeOut + x;
+                const size_t id = offsetOut + y * rowSizeOut + x;
                 out[id] = sum / colorCount;
             }
         }
 
-        __kernel void convertToRgbOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uchar colorCount,
+        __kernel void convertToRgbOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut, uchar colorCount,
                                           uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t id = y * rowSizeIn + x;
+                const size_t id = offsetIn + y * rowSizeIn + x;
 
-                __global uchar * data = out + (rowSizeOut * y) + x * colorCount;
+                __global uchar * data = out + offsetOut + (rowSizeOut * y) + x * colorCount;
 
                 for( uchar i = 0; i < colorCount; ++i, ++data )
                 {
@@ -108,36 +108,36 @@ namespace
             }
         }
 
-        __kernel void copyOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void copyOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if ( x < width && y < height ) {
-                out[y * rowSizeOut + x] = in[y * rowSizeIn + x];
+                out[rowSizeOut + y * rowSizeOut + x] = in[offsetIn + y * rowSizeIn + x];
             }
         }
 
-        __kernel void extractChannelOpenCL( __global const uchar * in, uint rowSizeIn, uchar colorCount, __global uchar * out, uint rowSizeOut,
+        __kernel void extractChannelOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, uchar colorCount, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                             uint width, uint height, uchar channelId )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height )
-                out[y * rowSizeOut + x] = in[(y * rowSizeIn + x) * colorCount + channelId];
+                out[offsetOut + y * rowSizeOut + x] = in[offsetIn + (y * rowSizeIn + x) * colorCount + channelId];
         }
 
-        __kernel void fillOpenCL( __global uchar * data, uint rowSize, uint width, uint height, uchar value )
+        __kernel void fillOpenCL( __global uchar * data, uint offset, uint rowSize, uint width, uint height, uchar value )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height )
-                data[y * rowSize + x] = value;
+                data[offset + y * rowSize + x] = value;
         }
 
-        __kernel void flipOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+        __kernel void flipOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                   uint width, uint height, uchar horizontal, uchar vertical )
         {
             const size_t inX = get_global_id(0);
@@ -147,102 +147,102 @@ namespace
                 const size_t outX = (horizontal != 0) ? (width  - 1 - inX) : inX;
                 const size_t outY = (vertical != 0)   ? (height - 1 - inY) : inY;
 
-                out[outY * rowSizeOut + outX] = in[inY * rowSizeIn + inX];
+                out[offsetOut + outY * rowSizeOut + outX] = in[offsetIn + inY * rowSizeIn + inX];
             }
         }
 
-        __kernel void histogramOpenCL( __global const uchar * data, uint rowSize, uint width, uint height, volatile __global uint * histogram )
+        __kernel void histogramOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, volatile __global uint * histogram )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t id = y * rowSize + x;
+                const size_t id = offset + y * rowSize + x;
                 atomic_add( &histogram[data[id]], 1 );
             }
         }
 
-        __kernel void invertOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void invertOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height )
-                out[y * rowSizeOut + x] = ~in[y * rowSizeIn + x];
+                out[offsetOut + y * rowSizeOut + x] = ~in[offsetIn + y * rowSizeIn + x];
         }
 
-        __kernel void lookupTableOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+        __kernel void lookupTableOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                          uint width, uint height, __global uchar * table )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height )
-                out[y * rowSizeOut + x] = table[in[y * rowSizeIn + x]];
+                out[offsetOut + y * rowSizeOut + x] = table[in[offsetIn + y * rowSizeIn + x]];
         }
 
-        __kernel void maximumOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                     __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void maximumOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                     __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] > in2[idIn2]) ? in1[idIn1] : in2[idIn2];
             }
         }
 
-        __kernel void minimumOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                     __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void minimumOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                     __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] < in2[idIn2]) ? in1[idIn1] : in2[idIn2];
             }
         }
 
-        __kernel void subtractOpenCL( __global const uchar * in1, uint rowSizeIn1, __global const uchar * in2, uint rowSizeIn2,
-                                      __global uchar * out, uint rowSizeOut, uint width, uint height )
+        __kernel void subtractOpenCL( __global const uchar * in1, uint offsetIn1, uint rowSizeIn1, __global const uchar * in2, uint offsetIn2, uint rowSizeIn2,
+                                      __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn1 = y * rowSizeIn1 + x;
-                const size_t idIn2 = y * rowSizeIn2 + x;
-                const size_t idOut = y * rowSizeOut + x;
+                const size_t idIn1 = offsetIn1 + y * rowSizeIn1 + x;
+                const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
+                const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] > in2[idIn2]) ? (in1[idIn1] - in2[idIn2]) : 0;
             }
         }
 
-        __kernel void thresholdOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+        __kernel void thresholdOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                        uint width, uint height, uchar threshold )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                out[y * rowSizeOut + x] = (in[y * rowSizeIn + x] < threshold) ? 0 : 255;
+                out[offsetOut + y * rowSizeOut + x] = (in[offsetIn + y * rowSizeIn + x] < threshold) ? 0 : 255;
             }
         }
 
-        __kernel void thresholdDoubleOpenCL( __global const uchar * in, uint rowSizeIn, __global uchar * out, uint rowSizeOut,
+        __kernel void thresholdDoubleOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
                                              uint width, uint height, uchar minThreshold, uchar maxThreshold )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t idIn = y * rowSizeIn + x;
-                out[y * rowSizeOut + x] = ((in[idIn] < minThreshold) || (in[idIn] > maxThreshold)) ? 0 : 255;
+                const size_t idIn = offsetIn + y * rowSizeIn + x;
+                out[offsetOut + y * rowSizeOut + x] = ((in[idIn] < minThreshold) || (in[idIn] > maxThreshold)) ? 0 : 255;
             }
         }
         )";
@@ -291,7 +291,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "absoluteDifferenceOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -319,7 +331,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseAndOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -347,7 +371,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseOrOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -375,7 +411,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseXorOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -472,7 +520,14 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "convertToGrayScaleOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), in.colorCount(), out.data(), out.rowSize(), width, height );
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, in.colorCount(), out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -504,7 +559,14 @@ namespace Image_Function_OpenCL
         else {
             const multiCL::OpenCLProgram & program = GetProgram();
             multiCL::OpenCLKernel kernel( program, "convertToRgbOpenCL");
-            kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), out.colorCount(), width, height );
+
+            const uint32_t rowSizeIn = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+            const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
+
+            kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, out.colorCount(), width, height );
 
             multiCL::launchKernel2D( kernel, width, height );
         }
@@ -529,7 +591,18 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "copyOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), width, height );
+        
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+        
+        
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -560,7 +633,14 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "extractChannelOpenCL");
-        kernel.setArgument( in.data(), in.data(), in.colorCount(), out.data(), out.rowSize(), width, height, channelId );
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, in.colorCount(), out.data(), offsetOut, rowSizeOut, width, height, channelId );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -577,7 +657,11 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "fillOpenCL");
-        kernel.setArgument( image.data(), image.rowSize(), width, height, value );
+
+        const uint32_t rowSize = image.rowSize();
+        const uint32_t offset = x * rowSize + y;
+
+        kernel.setArgument( image.data(), offset, rowSize, width, height, value );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -604,7 +688,11 @@ namespace Image_Function_OpenCL
         else {
             const multiCL::OpenCLProgram & program = GetProgram();
             multiCL::OpenCLKernel kernel( program, "flipOpenCL");
-            kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), in.width(), in.height(), horizontal, vertical );
+
+            const uint32_t rowSizeIn = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            kernel.setArgument( in.data(), 0, rowSizeIn, out.data(), 0, rowSizeOut, in.width(), in.height(), horizontal, vertical );
 
             multiCL::launchKernel2D( kernel, in.width(), in.height() );
         }
@@ -682,7 +770,11 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "histogramOpenCL");
-        kernel.setArgument( image.data(), image.rowSize(), width, height, histogramOpenCL );
+
+        const uint32_t rowSize = image.rowSize();
+        const uint32_t offset = x * rowSize + y;
+
+        kernel.setArgument( image.data(), offset, rowSize, width, height, histogramOpenCL );
 
         multiCL::launchKernel2D( kernel, width, height );
 
@@ -712,7 +804,17 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "invertOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -747,7 +849,14 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), width, height, tableOpenCL );
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, tableOpenCL );
 
         multiCL::launchKernel2D( kernel, width, height );
 
@@ -777,7 +886,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "maximumOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -805,7 +926,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "minimumOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -833,7 +966,19 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "subtractOpenCL");
-        kernel.setArgument( in1.data(), in1.rowSize(), in2.data(), in2.rowSize(), out.data(), out.rowSize(), width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
+        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -861,7 +1006,14 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "thresholdOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), width, height, threshold );
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, threshold );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
@@ -890,7 +1042,14 @@ namespace Image_Function_OpenCL
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "thresholdDoubleOpenCL");
-        kernel.setArgument( in.data(), in.rowSize(), out.data(), out.rowSize(), width, height, minThreshold, maxThreshold );
+
+        const uint32_t rowSizeIn = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, minThreshold, maxThreshold );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
