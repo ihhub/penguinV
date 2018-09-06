@@ -1,7 +1,7 @@
 skip_commits:
   files:
   - .travis.yml
-  - **/*.md
+  - '**/*.md'
   - .gitignore
   - LICENSE
 
