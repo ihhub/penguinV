@@ -1,19 +1,13 @@
 # API description
 
 ## Namespaces
-**Bitmap_Image_Cuda**    
-Declares a class for BITMAP images:
-- ***Image*** - a bitmap image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
+**PenguinV_Image**    
+- ***ImageCuda*** - a 8-bit image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
 
-**Bitmap_Image_Cuda_Cpu**    
-Declares a class for BITMAP images:
-- ***Image*** - a bitmap pinned memory allocated image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
+- ***ImageCudaPinned*** - a 8-bit pinned memory allocated image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
 
 **Image_Function_Cuda**    
 Contains all basic functions for image processing by CUDA.    
-
-**Template_Image_Cuda**    
-Includes only one template class ***ImageTemplateCuda*** which is the main class for image buffer classes.    
 
 ## Functions
 
@@ -21,9 +15,14 @@ All images in function parameter list must have width and height greater than 0 
 
 - **ConvertFromCuda** [_Namespaces: **Image_Function_Cuda**_]
 
+ImageCuda ConvertToCuda( const Image & in );
+    void  ConvertToCuda( const Image & in, ImageCuda & out );
+    Image ConvertFromCuda( const Image & in );
+    void  ConvertFromCuda( const Image & in, Image & out ); 
+
 	##### Syntax:
 	```cpp
-	Bitmap_Image::Image ConvertFromCuda(
+	PenguinV_Image::Image ConvertFromCuda(
 		const Image & in
 	);
 	```
@@ -40,7 +39,7 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	void ConvertFromCuda(
 		const Image & in,
-		Bitmap_Image::Image & out
+		PenguinV_Image::Image & out
 	);
 	```
 	**Description:**    
@@ -58,7 +57,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void ConvertToCuda(
-		const Bitmap_Image::Image & in,
+		const PenguinV_Image::Image & in,
 	);
 	```
 	**Description:**    
@@ -73,8 +72,8 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	void ConvertToCuda(
-		const Bitmap_Image::Image & in,
-		Image & out
+		const PenguinV_Image::Image & in,
+		ImageCuda & out
 	);
 	```
 	**Description:**    
