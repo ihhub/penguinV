@@ -2,8 +2,8 @@
 #include <iostream>
 #include "performance_test_image_function_cuda.h"
 #include "../performance_test_framework.h"
-#include "../../../src/thirdparty/multicuda/src/cuda_device.cuh"
-#include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
+#include "../../../src/cuda/cuda_device.cuh"
+#include "../../../src/cuda/cuda_helper.cuh"
 
 int main()
 {

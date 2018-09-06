@@ -44,8 +44,6 @@ int main()
         return 0;
     }
 
-    std::cout << "Everything went fine." << std::endl;
-
     return 0;
 }
 

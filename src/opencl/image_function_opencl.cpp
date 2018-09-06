@@ -4,8 +4,8 @@
 #include <math.h>
 #include <memory>
 #include <mutex>
-#include "../thirdparty/multicl/src/opencl_device.h"
-#include "../thirdparty/multicl/src/opencl_helper.h"
+#include "opencl_device.h"
+#include "opencl_helper.h"
 #include "../image_function_helper.h"
 #include "../parameter_validation.h"
 
@@ -259,7 +259,7 @@ namespace
             return *(program->second);
 
         mapGuard.lock();
-        deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode ) );
+        deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
         mapGuard.unlock();
 
         return *(deviceProgram[device.deviceId()]);

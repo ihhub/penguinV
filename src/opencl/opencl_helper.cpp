@@ -3,7 +3,7 @@
 #include <vector>
 #include "opencl_device.h"
 #include "opencl_helper.h"
-#include "opencl_exception.h"
+#include "../image_exception.h"
 
 namespace
 {
@@ -88,7 +88,7 @@ namespace multiCL
             char errorMessage[64];
             sprintf( errorMessage, "Failed to run OpenCL function with error %d", error );
 
-            throw openCLException( errorMessage );
+            throw imageException( errorMessage );
         }
     }
 
@@ -124,7 +124,7 @@ namespace multiCL
 
         file.close();
 
-        return OpenCLProgram( context, std::string( fileContent.begin(), fileContent.end() ) );
+        return OpenCLProgram( context, fileContent.data() );
     }
 
     KernelParameters::KernelParameters()

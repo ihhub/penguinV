@@ -1,14 +1,19 @@
 #pragma once
 
-#include <cstdint>
-#include <cuda_runtime.h>
-#include <vector>
-#include "cuda_device.cuh"
-#include "multicuda_exception.h"
+#if defined(__APPLE__) || defined(__MACOSX)
+#include <OpenCL/cl.h>
+#else
+#include <CL/cl.h>
+#endif
 
-namespace multiCuda
+#include <cstdint>
+#include <vector>
+#include "opencl_device.h"
+#include "../image_exception.h"
+
+namespace multiCL
 {
-    // This namespace contains template classes to simplify development on CUDA
+    // This namespace contains template classes to simplify development on OPENCL
 
     // A class which contains a single value of specific type
     template <typename TData>
@@ -105,10 +110,10 @@ namespace multiCuda
             if( _data != NULL && in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw multiCudaException( "Memory in CUDA device is not allocated" );
+                throw imageException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -122,10 +127,10 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, &in, sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw multiCudaException( "Memory in CUDA device is not allocated" );
+                throw imageException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -136,10 +141,10 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( &out, _data, sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw multiCudaException( "Memory in CUDA device is not allocated" );
+                throw imageException( "Memory in CUDA device is not allocated" );
             }
 
             return out;
@@ -274,10 +279,10 @@ namespace multiCuda
             if( in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, _size * sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw multiCudaException( "Memory in CUDA device is not allocated" );
+                throw imageException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -292,7 +297,7 @@ namespace multiCuda
             if( _data != NULL && _size == data.size() ) {
                 cudaError_t error = cudaMemcpy( _data, data.data(), _size * sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
         }
 
@@ -303,7 +308,7 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( out.data(), _data, _size * sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot copy a memory in CUDA device" );
+                    throw imageException( "Cannot copy a memory in CUDA device" );
             }
 
             return out;

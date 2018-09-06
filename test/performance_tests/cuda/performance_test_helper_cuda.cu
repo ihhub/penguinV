@@ -1,5 +1,5 @@
 #include "performance_test_helper_cuda.cuh"
-#include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
+#include "../../../src/cuda/cuda_helper.cuh"
 
 namespace
 {

@@ -2,7 +2,7 @@
 
 #include <cuda_runtime.h>
 #include "../image_buffer.h"
-#include "../thirdparty/multicuda/src/cuda_device.cuh"
+#include "cuda_device.cuh"
 
 namespace PenguinV_Image
 {

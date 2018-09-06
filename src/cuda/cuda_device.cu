@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "cuda_device.cuh"
 #include "cuda_helper.cuh"
-#include "multicuda_exception.h"
+#include "../image_exception.h"
 
 namespace
 {
@@ -71,7 +71,7 @@ namespace multiCuda
         : _currentStreamId( 0u )
     {
         if( deviceId_ < 0 )
-            multiCudaException( "Invalid CUDA device ID" );
+            imageException( "Invalid CUDA device ID" );
 
         _deviceId = deviceId_;
 
@@ -169,7 +169,7 @@ namespace multiCuda
     void CudaDevice::setThreadsPerBlock( uint32_t threadCount )
     {
         if( (threadCount == 0) || (threadCount % 32) != 0 )
-            throw multiCudaException( "Invalid thread count per block" );
+            throw imageException( "Invalid thread count per block" );
 
         const int threads = static_cast<int>(threadCount);
 
@@ -283,7 +283,7 @@ namespace multiCuda
     void CudaDeviceManager::initializeDevice( int deviceId )
     {
         if( deviceId < 0 || deviceId >= _supportedDeviceCount )
-            throw multiCudaException( "System does not contain a device with such ID" );
+            throw imageException( "System does not contain a device with such ID" );
 
         std::list<CudaDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                             [&deviceId]( const CudaDevice * device ) { return device->deviceId() == deviceId; } );
@@ -294,7 +294,7 @@ namespace multiCuda
     void CudaDeviceManager::closeDevice( int deviceId )
     {
         if( deviceId < 0 || deviceId >= _supportedDeviceCount )
-            throw multiCudaException( "System does not contain a device with such ID" );
+            throw imageException( "System does not contain a device with such ID" );
 
         std::list<CudaDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                       [&deviceId]( const CudaDevice * device ) { return device->deviceId() == deviceId; } );
@@ -335,12 +335,12 @@ namespace multiCuda
     CudaDevice & CudaDeviceManager::device( int deviceId )
     {
         if( _device.empty() )
-            throw multiCudaException( "Device manager does not contain any devices" );
+            throw imageException( "Device manager does not contain any devices" );
 
         std::list<CudaDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                       [&deviceId]( const CudaDevice * cudaDevice ) { return cudaDevice->deviceId() == deviceId; } );
         if( foundDevice == _device.end() )
-            throw multiCudaException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
 
         return *(*foundDevice);
     }
@@ -348,12 +348,12 @@ namespace multiCuda
     const CudaDevice & CudaDeviceManager::device( int deviceId ) const
     {
         if( _device.empty() )
-            throw multiCudaException( "Device manager does not contain any devices" );
+            throw imageException( "Device manager does not contain any devices" );
 
         std::list<CudaDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                             [&deviceId]( const CudaDevice * cudaDevice ) { return cudaDevice->deviceId() == deviceId; } );
         if( foundDevice == _device.end() )
-            throw multiCudaException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
 
         return *(*foundDevice);
     }
@@ -363,7 +363,7 @@ namespace multiCuda
         std::list<CudaDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                       [&deviceId]( const CudaDevice * cudaDevice ) { return cudaDevice->deviceId() == deviceId; } );
         if( foundDevice == _device.end() )
-            throw multiCudaException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
 
         (*foundDevice)->setActive();
     }

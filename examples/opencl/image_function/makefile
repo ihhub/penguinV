@@ -1,9 +1,8 @@
 PWD := $(shell pwd)
-OPENCL_LIB_DIR := $(PWD)/../../../src/thirdparty/multicl/src
 MAIN_LIB_DIR := $(PWD)/../../../src
 SRCS :=  \
-	$(OPENCL_LIB_DIR)/opencl_device.cpp \
-	$(OPENCL_LIB_DIR)/opencl_helper.cpp \
+	$(MAIN_LIB_DIR)/opencl/opencl_device.cpp \
+	$(MAIN_LIB_DIR)/opencl/opencl_helper.cpp \
 	$(MAIN_LIB_DIR)/image_function.cpp \
 	$(MAIN_LIB_DIR)/image_function_helper.cpp \
 	$(MAIN_LIB_DIR)/FileOperation/bitmap.cpp \
@@ -13,7 +12,7 @@ TARGET := example
 
 CXX := g++
 LINKER := g++
-INCDIRS := -I$(PWD) -I$(OPENCL_LIB_DIR) -I$(MAIN_LIB_DIR)
+INCDIRS := -I$(PWD) -I$(MAIN_LIB_DIR)
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
@@ -46,12 +45,6 @@ $(BIN)/%.o: $(MAIN_LIB_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(MAIN_LIB_DIR)/**/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(OPENCL_LIB_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(OPENCL_LIB_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)

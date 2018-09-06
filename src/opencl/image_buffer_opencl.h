@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <cstring>
 #include "../image_exception.h"
-#include "../thirdparty/multicl/src/opencl_device.h"
+#include "opencl_device.h"
 
 namespace PenguinV_Image
 {

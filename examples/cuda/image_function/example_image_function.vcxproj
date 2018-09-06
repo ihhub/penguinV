@@ -34,16 +34,15 @@
     <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\memory\memory_allocator.h" />
     <ClInclude Include="..\..\..\src\parameter_validation.h" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_memory.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_types.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\multicuda_exception.h" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_device.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="..\..\..\src\cuda\image_function_cuda.cu" />
-    <CudaCompile Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cu" />
-    <CudaCompile Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cu" />
+    <CudaCompile Include="..\..\..\src\cuda\cuda_device.cu" />
+    <CudaCompile Include="..\..\..\src\cuda\cuda_helper.cu" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3A5CCF6-A76C-4D39-9F12-67CFD1FEDD45}</ProjectGuid>

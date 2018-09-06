@@ -5,8 +5,8 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "multicuda_exception.h"
-#include "../../../memory/memory_allocator.h"
+#include "../image_exception.h"
+#include "../memory/memory_allocator.h"
 
 namespace multiCuda
 {
@@ -49,7 +49,7 @@ namespace multiCuda
             _DataType* address = nullptr;
             cudaError_t error = cudaMalloc( &address, size );
             if( error != cudaSuccess )
-                throw multiCudaException( "Cannot allocate a memory for CUDA device" );
+                throw imageException( "Cannot allocate a memory for CUDA device" );
 
             return address;
         }
@@ -74,7 +74,7 @@ namespace multiCuda
 
             cudaError_t error = cudaFree( address );
             if( error != cudaSuccess )
-                throw multiCudaException( "Cannot deallocate memory for CUDA device" );
+                throw imageException( "Cannot deallocate memory for CUDA device" );
         }
     private:
         void * _data; // a pointer to memory allocated chunk
@@ -89,13 +89,13 @@ namespace multiCuda
         {
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
-                    throw multiCudaException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
+                    throw imageException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
                 cudaError_t error = cudaMalloc( &_data, size );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot allocate a memory for CUDA device" );
+                    throw imageException( "Cannot allocate a memory for CUDA device" );
 
                 _size = size;
             }
@@ -107,7 +107,7 @@ namespace multiCuda
             if( _data != nullptr ) {
                 cudaError_t error = cudaFree( _data );
                 if( error != cudaSuccess )
-                    throw multiCudaException( "Cannot deallocate memory for CUDA device" );
+                    throw imageException( "Cannot deallocate memory for CUDA device" );
                 _data = nullptr;
             }
 

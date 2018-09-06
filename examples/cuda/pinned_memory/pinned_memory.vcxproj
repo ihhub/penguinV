@@ -158,15 +158,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda_pinned.cuh" />
     <ClInclude Include="..\..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\..\src\memory\memory_allocator.h" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_memory.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\cuda_types.cuh" />
-    <ClInclude Include="..\..\..\src\thirdparty\multicuda\src\multicuda_exception.h" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_device.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="..\..\..\src\thirdparty\multicuda\src\cuda_device.cu" />
-    <CudaCompile Include="..\..\..\src\thirdparty\multicuda\src\cuda_helper.cu" />
+    <CudaCompile Include="..\..\..\src\cuda\cuda_device.cu" />
+    <CudaCompile Include="..\..\..\src\cuda\cuda_helper.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

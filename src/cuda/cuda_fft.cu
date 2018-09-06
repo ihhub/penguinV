@@ -1,6 +1,6 @@
 #include <cuda_runtime.h>
 #include "cuda_fft.cuh"
-#include "../thirdparty/multicuda/src/cuda_helper.cuh"
+#include "cuda_helper.cuh"
 #include "../image_exception.h"
 
 namespace

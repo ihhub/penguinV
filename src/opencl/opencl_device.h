@@ -45,7 +45,7 @@ namespace multiCL
     class OpenCLProgram
     {
     public:
-        OpenCLProgram( const OpenCLContext& context, const std::string& program );
+        OpenCLProgram( const OpenCLContext& context, const char * program );
         explicit OpenCLProgram( cl_program program );
         OpenCLProgram( OpenCLProgram && program );
         ~OpenCLProgram();

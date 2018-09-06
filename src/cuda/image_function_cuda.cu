@@ -3,8 +3,8 @@
 #include "image_function_cuda.cuh"
 #include "../parameter_validation.h"
 #include "../image_function_helper.h"
-#include "../thirdparty/multicuda/src/cuda_types.cuh"
-#include "../thirdparty/multicuda/src/cuda_helper.cuh"
+#include "cuda_types.cuh"
+#include "cuda_helper.cuh"
 
 namespace
 {

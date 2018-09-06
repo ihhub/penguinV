@@ -3,8 +3,8 @@
 #include "../../../src/image_buffer.h"
 #include "../../../src/image_function.h"
 #include "../../../src/FileOperation/bitmap.h"
-#include "../../../src/thirdparty/multicuda/src/cuda_device.cuh"
-#include "../../../src/thirdparty/multicuda/src/cuda_helper.cuh"
+#include "../../../src/cuda/cuda_device.cuh"
+#include "../../../src/cuda/cuda_helper.cuh"
 #include "../../../src/cuda/image_buffer_cuda.cuh"
 #include "../../../src/cuda/image_function_cuda.cuh"
 

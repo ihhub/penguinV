@@ -5,8 +5,8 @@
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/image_function_opencl.h"
 #include "../../../src/FileOperation/bitmap.h"
-#include "../../../src/thirdparty/multicl/src/opencl_device.h"
-#include "../../../src/thirdparty/multicl/src/opencl_helper.h"
+#include "../../../src/opencl/opencl_device.h"
+#include "../../../src/opencl/opencl_helper.h"
 
 void cpuBased();
 void gpuBased();

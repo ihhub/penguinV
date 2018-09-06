@@ -2,7 +2,7 @@
 
 #include <cufft.h>
 #include <stdint.h>
-#include "../thirdparty/multicuda/src/cuda_types.cuh"
+#include "cuda_types.cuh"
 #include "image_buffer_cuda.cuh"
 
 namespace FFT_Cuda

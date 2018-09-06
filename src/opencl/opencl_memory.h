@@ -10,8 +10,8 @@
 #include <map>
 #include <set>
 #include <vector>
-#include "../../../memory/memory_allocator.h"
-#include "opencl_exception.h"
+#include "../memory/memory_allocator.h"
+#include "../image_exception.h"
 
 namespace multiCL
 {
@@ -51,7 +51,7 @@ namespace multiCL
                     cl_int error;
                     cl_mem memory = clCreateSubBuffer( _data, CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, &region, &error );
                     if( error != CL_SUCCESS )
-                        throw openCLException( "Cannot allocate a subbuffer memory for GPU device" );
+                        throw imageException( "Cannot allocate a subbuffer memory for GPU device" );
 
                     _allocatedChunck.insert( std::pair< cl_mem, std::pair < size_t, uint8_t > >( memory,  std::pair < size_t, uint8_t >(*(_freeChunck[level].begin()), level) ) );
                     _freeChunck[level].erase( _freeChunck[level].begin() );
@@ -63,7 +63,7 @@ namespace multiCL
             cl_int error;
             cl_mem memory = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
             if( error != CL_SUCCESS )
-                throw openCLException( "Cannot allocate a memory for GPU device" );
+                throw imageException( "Cannot allocate a memory for GPU device" );
 
             return memory;
         }
@@ -85,7 +85,7 @@ namespace multiCL
             }
 
             if( clReleaseMemObject( memory ) != CL_SUCCESS )
-                throw openCLException( "Cannot deallocate a memory for GPU device" );
+                throw imageException( "Cannot deallocate a memory for GPU device" );
         }
     private:
         cl_context _context;
@@ -102,14 +102,14 @@ namespace multiCL
         {
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
-                    throw openCLException( "Cannot free a memory on GPU device. Not all objects were previously deallocated from allocator." );
+                    throw imageException( "Cannot free a memory on GPU device. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
                 cl_int error;
                 _data = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
                 if( error != CL_SUCCESS )
-                    throw openCLException( "Cannot allocate a memory for GPU device" );
+                    throw imageException( "Cannot allocate a memory for GPU device" );
 
                 _size = size;
             }
@@ -121,7 +121,7 @@ namespace multiCL
             if( _data != NULL ) {
                 cl_int error = clReleaseMemObject( _data );
                 if( error != CL_SUCCESS)
-                    throw openCLException( "Cannot deallocate a memory for GPU device" );
+                    throw imageException( "Cannot deallocate a memory for GPU device" );
                 _data = NULL;
             }
 
