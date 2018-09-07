@@ -101,15 +101,27 @@ namespace Unit_Test
         if( images == 0 )
             throw imageException( "Invalid parameter" );
 
+        std::vector<uint8_t> intesity( images );
+        for( size_t i = 0; i < image.size(); ++i )
+            intesity[i] = randomValue<uint8_t>( 256 );
+
+        return uniformImages( intesity );
+    }
+
+    std::vector < PenguinV_Image::Image > uniformImages( const std::vector<uint8_t> & intensityValue )
+    {
+        if( intensityValue.size() == 0 )
+            throw imageException( "Invalid parameter" );
+
         std::vector < PenguinV_Image::Image > image;
 
-        image.push_back( uniformImage() );
+        image.push_back( uniformImage( intensityValue[0] ) );
 
-        image.resize( images );
+        image.resize( intensityValue.size() );
 
         for( size_t i = 1; i < image.size(); ++i ) {
             image[i].resize( image[0].width(), image[0].height() );
-            image[i].fill( randomValue<uint8_t>( 256 ) );
+            image[i].fill( intensityValue[i] );
         }
 
         return image;
@@ -133,25 +145,6 @@ namespace Unit_Test
     std::vector < uint8_t > intensityArray( uint32_t size )
     {
         return generateArray<uint8_t>( size, 256u );
-    }
-
-    std::vector < PenguinV_Image::Image > uniformImages( std::vector < uint8_t > intensityValue )
-    {
-        if( intensityValue.size() == 0 )
-            throw imageException( "Invalid parameter" );
-
-        std::vector < PenguinV_Image::Image > image;
-
-        image.push_back( uniformImage( intensityValue[0] ) );
-
-        image.resize( intensityValue.size() );
-
-        for( size_t i = 1; i < image.size(); ++i ) {
-            image[i].resize( image[0].width(), image[0].height() );
-            image[i].fill( intensityValue[i] );
-        }
-
-        return image;
     }
 
     bool equalSize( const PenguinV_Image::Image & image, uint32_t width, uint32_t height )

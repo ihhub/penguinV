@@ -437,7 +437,7 @@ namespace Image_Function_OpenCL
         return out;
     }
 
-    void ConvertToOpenCL( const Image & in, Image & out )
+    void ConvertToOpenCL( const Image & in, ImageOpenCL & out )
     {
         Image_Function::ParameterValidation( in, out );
 

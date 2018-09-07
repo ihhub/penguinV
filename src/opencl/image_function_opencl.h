@@ -36,10 +36,8 @@ namespace Image_Function_OpenCL
     void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-    // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
-    // or (width * color count) will be equal to row size
     ImageOpenCL ConvertToOpenCL( const Image & in );
-    void  ConvertToOpenCL( const Image & in, Image & out );
+    void  ConvertToOpenCL( const Image & in, ImageOpenCL & out );
     Image ConvertFromOpenCL( const Image & in );
     void  ConvertFromOpenCL( const Image & in, Image & out );
 

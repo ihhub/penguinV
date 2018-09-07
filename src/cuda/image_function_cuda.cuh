@@ -35,8 +35,6 @@ namespace Image_Function_Cuda
     void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-    // To archive maximum performance it is recommended that Bitmap_Image::Image has 1 pixel alignment
-    // or (width * color count) will be equal to row size
     ImageCuda ConvertToCuda( const Image & in );
     void  ConvertToCuda( const Image & in, ImageCuda & out );
     Image ConvertFromCuda( const Image & in );
