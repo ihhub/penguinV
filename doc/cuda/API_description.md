@@ -15,11 +15,6 @@ All images in function parameter list must have width and height greater than 0 
 
 - **ConvertFromCuda** [_Namespaces: **Image_Function_Cuda**_]
 
-ImageCuda ConvertToCuda( const Image & in );
-    void  ConvertToCuda( const Image & in, ImageCuda & out );
-    Image ConvertFromCuda( const Image & in );
-    void  ConvertFromCuda( const Image & in, Image & out ); 
-
 	##### Syntax:
 	```cpp
 	PenguinV_Image::Image ConvertFromCuda(
