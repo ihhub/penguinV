@@ -1399,7 +1399,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	##### Syntax:
 	```cpp
-	BitmapRawImage Load(
+	Image Load(
 		std::string path
 	);
 	```
@@ -1410,13 +1410,13 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;path - a path of bitmap image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;raw bitmap data class. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
 	void Load(
 		std::string path,
-		BitmapRawImage & raw
+		Image & raw
 	);
 	```
 	**Description:**    
@@ -1424,7 +1424,7 @@ All images in function parameter list must have width and height greater than 0 
 	
 	**Parameters:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;path - a path of bitmap image    
-	&nbsp;&nbsp;&nbsp;&nbsp;raw - raw image data class    
+	&nbsp;&nbsp;&nbsp;&nbsp;raw - image    
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
@@ -2480,7 +2480,7 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	void Save(
 		std::string path,
-		Template_Image::ImageTemplate < uint8_t > & image
+		Image & image
 	);
 	```
 	**Description:**    
@@ -2497,7 +2497,7 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	void Save(
 		std::string path,
-		Template_Image::ImageTemplate < uint8_t > & image,
+		Image & image,
 		uint32_t startX,
 		uint32_t startY,
 		uint32_t width,

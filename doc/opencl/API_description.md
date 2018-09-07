@@ -2,22 +2,20 @@
 
 ## Namespaces
 **PenguinV_Image**    
-- ***ImageCuda*** - a 8-bit image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
+- ***ImageOpenCL*** - a 8-bit image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
 
-- ***ImageCudaPinned*** - a 8-bit pinned memory allocated image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
-
-**Image_Function_Cuda**    
-Contains all basic functions for image processing by CUDA.    
+**Image_Function_OpenCL**    
+Contains all basic functions for image processing by OpenCL.    
 
 ## Functions
 
 All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
 
-- **ConvertFromCuda** [_Namespaces: **Image_Function_Cuda**_]
+- **ConvertFromOpenCL** [_Namespaces: **Image_Function_OpenCL**_]
 
 	##### Syntax:
 	```cpp
-	Image ConvertFromCuda(
+	Image ConvertFromOpenCL(
 		const Image & in
 	);
 	```
@@ -32,7 +30,7 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	void ConvertFromCuda(
+	void ConvertFromOpenCL(
 		const Image & in,
 		Image & out
 	);
@@ -47,11 +45,11 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ConvertToCuda** [_Namespaces: **Image_Function_Cuda**_]
+- **ConvertToOpenCL** [_Namespaces: **Image_Function_OpenCL**_]
 
 	##### Syntax:
 	```cpp
-	ImageCuda ConvertToCuda(
+	ImageOpenCL ConvertToOpenCL(
 		const Image & in,
 	);
 	```
@@ -66,9 +64,9 @@ All images in function parameter list must have width and height greater than 0 
 		
 	##### Syntax:
 	```cpp
-	void ConvertToCuda(
+	void ConvertToOpenCL(
 		const Image & in,
-		ImageCuda & out
+		ImageOpenCL & out
 	);
 	```
 	**Description:**    
