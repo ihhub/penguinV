@@ -17,7 +17,7 @@ namespace Unit_Test
     PenguinV_Image::Image randomImage();
     PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
     std::vector < PenguinV_Image::Image > uniformImages( uint32_t images );
-    std::vector < PenguinV_Image::Image > uniformImages( std::vector < uint8_t > intensityValue );
+    std::vector < PenguinV_Image::Image > uniformImages( const std::vector < uint8_t > & intensityValue );
 
     // Generate pixel intensity values
     uint8_t intensityValue();

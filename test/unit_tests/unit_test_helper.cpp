@@ -102,7 +102,7 @@ namespace Unit_Test
             throw imageException( "Invalid parameter" );
 
         std::vector<uint8_t> intesity( images );
-        for( size_t i = 0; i < image.size(); ++i )
+        for( size_t i = 0; i < intesity.size(); ++i )
             intesity[i] = randomValue<uint8_t>( 256 );
 
         return uniformImages( intesity );
