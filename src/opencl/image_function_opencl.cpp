@@ -439,7 +439,8 @@ namespace Image_Function_OpenCL
 
     void ConvertToOpenCL( const Image & in, ImageOpenCL & out )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
 
         if( in.width() != out.width() || in.height() != out.height() ||
             in.colorCount() != out.colorCount())
