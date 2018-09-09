@@ -428,7 +428,7 @@ namespace Image_Function_OpenCL
         multiCL::launchKernel2D( kernel, width, height );
     }
 
-    ImageOpenCL ConvertToOpenCL( const PenguinV_Image::Image & in )
+    ImageOpenCL ConvertToOpenCL( const Image & in )
     {
         ImageOpenCL out( in.width(), in.height(), in.colorCount() );
 
