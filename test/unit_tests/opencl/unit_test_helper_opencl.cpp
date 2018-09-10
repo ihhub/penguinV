@@ -3,12 +3,10 @@
 
 #include "../../../src/image_buffer.h"
 #include "../../../src/image_exception.h"
-#include "../../../src/image_function.h"
 #include "../../../src/opencl/opencl_helper.h"
-#include "../../../src/opencl/image_function_opencl.h"
+#include "../../../src/opencl/image_buffer_opencl.h"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_opencl.h"
-
 
 namespace
 {
@@ -49,7 +47,7 @@ namespace
             }
         }
     )";
-    
+
     const multiCL::OpenCLProgram& GetProgram()
     {
         static std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > > deviceProgram;

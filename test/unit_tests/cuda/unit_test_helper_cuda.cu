@@ -4,13 +4,12 @@
 #include "../../../src/image_function.h"
 #include "../../../src/cuda/cuda_types.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
-#include "../../../src/cuda/image_function_cuda.cuh"
+#include "../../../src/cuda/image_buffer_cuda.cuh"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_cuda.cuh"
 
 namespace
 {
-    // This function must run with thread count as 1
     __global__ void isEqualCuda( const uint8_t * image, uint8_t value, uint32_t width, uint32_t height, uint32_t * differenceCount )
     {
         const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;

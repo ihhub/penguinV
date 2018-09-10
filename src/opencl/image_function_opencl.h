@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include "../image_buffer.h"
 #include "image_buffer_opencl.h"
 
 namespace Image_Function_OpenCL

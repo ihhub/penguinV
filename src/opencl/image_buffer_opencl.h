@@ -6,10 +6,7 @@
 #include <CL/cl.h>
 #endif
 
-#include <algorithm>
-#include <cstdint>
-#include <cstring>
-#include "../image_exception.h"
+#include "../image_buffer.h"
 #include "opencl_device.h"
 
 namespace PenguinV_Image
