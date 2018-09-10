@@ -31,7 +31,7 @@ namespace PenguinV_Image
 
         ImageTemplate( const ImageTemplate & image )
             : _data      ( nullptr )
-            , _type      ( 0 )
+            , _type      ( image._type )
         {
             copy( image );
         }
