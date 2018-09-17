@@ -268,11 +268,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = AbsoluteDifference( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
     }
 
     bool form2_AbsoluteDifference(AbsoluteDifferenceForm2 AbsoluteDifference)
@@ -282,10 +279,7 @@ namespace Function_Template
 
         AbsoluteDifference( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
     }
 
     bool form3_AbsoluteDifference(AbsoluteDifferenceForm3 AbsoluteDifference)
@@ -299,11 +293,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = AbsoluteDifference( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
     }
 
     bool form4_AbsoluteDifference(AbsoluteDifferenceForm4 AbsoluteDifference)
@@ -317,11 +308,8 @@ namespace Function_Template
 
         AbsoluteDifference( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
+                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
     }
 
     bool form1_Accumulate(AccumulateForm1 Accumulate)
@@ -337,10 +325,7 @@ namespace Function_Template
 
         const uint32_t sum = std::accumulate( intensity.begin(), intensity.end(), 0u );
 
-        if( std::any_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v != sum; } ) )
-            return false;
-
-        return true;
+        return std::all_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v == sum; } );
     }
 
     bool form2_Accumulate(AccumulateForm2 Accumulate)
@@ -363,10 +348,7 @@ namespace Function_Template
 
         const uint32_t sum = std::accumulate( intensity.begin(), intensity.end(), 0u );
 
-        if( std::any_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v != sum; } ) )
-            return false;
-
-        return true;
+        return std::all_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v == sum; } );
     }
 
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
@@ -376,10 +358,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseAnd( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] & intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) && verifyImage( output, intensity[0] & intensity[1] );
     }
 
     bool form2_BitwiseAnd(BitwiseAndForm2 BitwiseAnd)
@@ -389,10 +368,7 @@ namespace Function_Template
 
         BitwiseAnd( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] & intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] & intensity[1] );
     }
 
     bool form3_BitwiseAnd(BitwiseAndForm3 BitwiseAnd)
@@ -406,10 +382,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseAnd( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] & intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity[0] & intensity[1] );
     }
 
     bool form4_BitwiseAnd(BitwiseAndForm4 BitwiseAnd)
@@ -423,10 +396,7 @@ namespace Function_Template
 
         BitwiseAnd( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] & intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] & intensity[1] );
     }
 
     bool form1_BitwiseOr(BitwiseOrForm1 BitwiseOr)
@@ -436,10 +406,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseOr( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] | intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) && verifyImage( output, intensity[0] | intensity[1] );
     }
 
     bool form2_BitwiseOr(BitwiseOrForm2 BitwiseOr)
@@ -449,10 +416,7 @@ namespace Function_Template
 
         BitwiseOr( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] | intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] | intensity[1] );
     }
 
     bool form3_BitwiseOr(BitwiseOrForm3 BitwiseOr)
@@ -466,10 +430,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseOr( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] | intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity[0] | intensity[1] );
     }
 
     bool form4_BitwiseOr(BitwiseOrForm4 BitwiseOr)
@@ -483,10 +444,7 @@ namespace Function_Template
 
         BitwiseOr( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] | intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] | intensity[1] );
     }
 
     bool form1_BitwiseXor(BitwiseXorForm1 BitwiseXor)
@@ -496,10 +454,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseXor( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) && verifyImage( output, intensity[0] ^ intensity[1] );
     }
 
     bool form2_BitwiseXor(BitwiseXorForm2 BitwiseXor)
@@ -509,10 +464,7 @@ namespace Function_Template
 
         BitwiseXor( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] ^ intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] ^ intensity[1] );
     }
 
     bool form3_BitwiseXor(BitwiseXorForm3 BitwiseXor)
@@ -526,10 +478,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = BitwiseXor( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity[0] ^ intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity[0] ^ intensity[1] );
     }
 
     bool form4_BitwiseXor(BitwiseXorForm4 BitwiseXor)
@@ -543,10 +492,7 @@ namespace Function_Template
 
         BitwiseXor( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight, intensity[0] ^ intensity[1] );
     }
 
     bool form1_ConvertToGrayScale(ConvertToGrayScaleForm1 ConvertToGrayScale)
@@ -556,10 +502,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = ConvertToGrayScale( input );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form2_ConvertToGrayScale(ConvertToGrayScaleForm2 ConvertToGrayScale)
@@ -572,10 +515,7 @@ namespace Function_Template
 
         ConvertToGrayScale( input, output );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form3_ConvertToGrayScale(ConvertToGrayScaleForm3 ConvertToGrayScale)
@@ -588,10 +528,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = ConvertToGrayScale( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form4_ConvertToGrayScale(ConvertToGrayScaleForm4 ConvertToGrayScale)
@@ -611,10 +548,7 @@ namespace Function_Template
 
         ConvertToGrayScale( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
     }
 
     bool form1_ConvertToRgb(ConvertToRgbForm1 ConvertToRgb)
@@ -624,10 +558,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = ConvertToRgb( input );
 
-        if( output.colorCount() != PenguinV_Image::RGB || !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return output.colorCount() == PenguinV_Image::RGB && verifyImage( output, intensity[0] );
     }
 
     bool form2_ConvertToRgb(ConvertToRgbForm2 ConvertToRgb)
@@ -640,10 +571,7 @@ namespace Function_Template
 
         ConvertToRgb( input, output );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form3_ConvertToRgb(ConvertToRgbForm3 ConvertToRgb)
@@ -656,10 +584,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = ConvertToRgb( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( output.colorCount() != PenguinV_Image::RGB || !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return output.colorCount() == PenguinV_Image::RGB && verifyImage( output, intensity[0] );
     }
 
     bool form4_ConvertToRgb(ConvertToRgbForm4 ConvertToRgb)
@@ -679,10 +604,7 @@ namespace Function_Template
 
         ConvertToRgb( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
     }
 
     bool form1_Copy(CopyForm1 Copy)
@@ -692,10 +614,7 @@ namespace Function_Template
 
         Copy( input[0], input[1] );
 
-        if( !verifyImage( input[1], intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( input[1], intensity[0] );
     }
 
     bool form2_Copy(CopyForm2 Copy)
@@ -708,10 +627,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Copy( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity );
     }
 
     bool form3_Copy(CopyForm3 Copy)
@@ -725,10 +641,7 @@ namespace Function_Template
 
         Copy( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
     }
 
     bool form1_Fill(FillForm1 Fill)
@@ -738,10 +651,7 @@ namespace Function_Template
 
         Fill( image, intensity[1] );
 
-        if( !verifyImage( image, intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image, intensity[1] );
     }
 
     bool form2_Fill(FillForm2 Fill)
@@ -754,10 +664,7 @@ namespace Function_Template
 
         Fill( image, roiX, roiY, roiWidth, roiHeight, intensity[1] );
 
-        if( !verifyImage( image, roiX, roiY, roiWidth, roiHeight, intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image, roiX, roiY, roiWidth, roiHeight, intensity[1] );
     }
 
     bool form1_Flip(FlipForm1 Flip)
@@ -946,10 +853,7 @@ namespace Function_Template
         const double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
         const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255;
 
-        if( !verifyImage( output, corrected ) )
-            return false;
-
-        return true;
+        return verifyImage( output, corrected );
     }
 
     bool form2_GammaCorrection(GammaCorrectionForm2 GammaCorrection)
@@ -965,10 +869,7 @@ namespace Function_Template
         const double value = a * pow( intensity[0] / 255.0, gamma ) * 255 + 0.5;
         const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255;
 
-        if( !verifyImage( input[1], corrected ) )
-            return false;
-
-        return true;
+        return verifyImage( input[1], corrected );
     }
 
     bool form3_GammaCorrection(GammaCorrectionForm3 GammaCorrection)
@@ -987,10 +888,7 @@ namespace Function_Template
         const double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
         const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255;
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, corrected ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, corrected );
     }
 
     bool form4_GammaCorrection(GammaCorrectionForm4 GammaCorrection)
@@ -1010,10 +908,7 @@ namespace Function_Template
         const double value = a * pow( intensity[0] / 255.0, gamma ) * 255 + 0.5;
         const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255;
 
-        if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, corrected ) )
-            return false;
-
-        return true;
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, corrected );
     }
 
     bool form1_GetThreshold(GetThresholdForm1 GetThreshold)
@@ -1026,10 +921,7 @@ namespace Function_Template
         ++histogram[intensity[0]];
         ++histogram[intensity[1]];
 
-        if( GetThreshold(histogram) != std::min(intensity[0], intensity[1]) )
-            return false;
-
-        return true;
+        return GetThreshold(histogram) == std::min(intensity[0], intensity[1]);
     }
 
     bool form1_Histogram(HistogramForm1 Histogram)
@@ -1039,11 +931,8 @@ namespace Function_Template
 
         const std::vector < uint32_t > histogram = Histogram( image );
 
-        if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
-            std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
-            return false;
-
-        return true;
+        return histogram.size() == 256u && histogram[intensity] == image.width() * image.height() &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == image.width() * image.height();
     }
 
     bool form2_Histogram(HistogramForm2 Histogram)
@@ -1054,11 +943,8 @@ namespace Function_Template
         std::vector < uint32_t > histogram;
         Histogram( image, histogram );
 
-        if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
-            std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
-            return false;
-
-        return true;
+        return histogram.size() == 256u && histogram[intensity] == image.width() * image.height() &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == image.width() * image.height();
     }
 
     bool form3_Histogram(HistogramForm3 Histogram)
@@ -1071,11 +957,8 @@ namespace Function_Template
 
         const std::vector < uint32_t > histogram = Histogram( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( histogram.size() != 256u || histogram[intensity] != roiWidth * roiHeight ||
-            std::accumulate( histogram.begin(), histogram.end(), 0u )  != roiWidth * roiHeight )
-            return false;
-
-        return true;
+        return histogram.size() == 256u && histogram[intensity] == roiWidth * roiHeight &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == roiWidth * roiHeight;
     }
 
     bool form4_Histogram(HistogramForm4 Histogram)
@@ -1089,11 +972,8 @@ namespace Function_Template
         std::vector < uint32_t > histogram;
         Histogram( input, roiX, roiY, roiWidth, roiHeight, histogram );
 
-        if( histogram.size() != 256u || histogram[intensity] != roiWidth * roiHeight ||
-            std::accumulate( histogram.begin(), histogram.end(), 0u )  != roiWidth * roiHeight )
-            return false;
-
-        return true;
+        return histogram.size() == 256u && histogram[intensity] == roiWidth * roiHeight &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == roiWidth * roiHeight;
     }
 
     bool form1_Invert(InvertForm1 Invert)
@@ -1103,10 +983,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Invert( input );
 
-        if( !verifyImage( output, ~intensity ) )
-            return false;
-
-        return true;
+        return verifyImage( output, ~intensity );
     }
 
     bool form2_Invert(InvertForm2 Invert)
@@ -1116,10 +993,7 @@ namespace Function_Template
 
         Invert( input[0], input[1] );
 
-        if( !verifyImage( input[1], ~intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( input[1], ~intensity[0] );
     }
 
     bool form3_Invert(InvertForm3 Invert)
@@ -1132,10 +1006,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Invert( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, ~intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, ~intensity );
     }
 
     bool form4_Invert(InvertForm4 Invert)
@@ -1149,10 +1020,7 @@ namespace Function_Template
 
         Invert( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
@@ -1160,10 +1028,7 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        if( (intensity[0] == intensity[1]) != (IsEqual( input[0], input[1] )) )
-            return false;
-
-        return true;
+        return (intensity[0] == intensity[1]) == (IsEqual( input[0], input[1] ));
     }
 
     bool form2_IsEqual(IsEqualForm2 IsEqual)
@@ -1175,11 +1040,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        if( (intensity[0] == intensity[1]) !=
-            (IsEqual( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight )) )
-            return false;
-
-        return true;
+        return (intensity[0] == intensity[1]) ==
+            (IsEqual( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight ));
     }
 
     bool form1_LookupTable(LookupTableForm1 LookupTable)
@@ -1199,10 +1061,7 @@ namespace Function_Template
         normalized[0] = lookupTable[intensity[0]];
         normalized[1] = lookupTable[intensity[1]];
 
-        if( !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, normalized );
     }
 
     bool form2_LookupTable(LookupTableForm2 LookupTable)
@@ -1225,10 +1084,7 @@ namespace Function_Template
         normalized[0] = lookupTable[intensity[0]];
         normalized[1] = lookupTable[intensity[1]];
 
-        if( !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, normalized );
     }
 
     bool form3_LookupTable(LookupTableForm3 LookupTable)
@@ -1253,10 +1109,7 @@ namespace Function_Template
         normalized[0] = lookupTable[intensity[0]];
         normalized[1] = lookupTable[intensity[1]];
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, normalized );
     }
 
     bool form4_LookupTable(LookupTableForm4 LookupTable)
@@ -1289,10 +1142,7 @@ namespace Function_Template
         normalized[0] = lookupTable[intensity[0]];
         normalized[1] = lookupTable[intensity[1]];
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized );
     }
 
     bool form1_Maximum(MaximumForm1 Maximum)
@@ -1302,11 +1152,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Maximum( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form2_Maximum(MaximumForm2 Maximum)
@@ -1316,10 +1163,7 @@ namespace Function_Template
 
         Maximum( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form3_Maximum(MaximumForm3 Maximum)
@@ -1336,11 +1180,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Maximum( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form4_Maximum(MaximumForm4 Maximum)
@@ -1357,11 +1198,8 @@ namespace Function_Template
 
         Maximum( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
+                          intensity[0] > intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form1_Minimum(MinimumForm1 Minimum)
@@ -1371,11 +1209,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Minimum( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) ||
-            !verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) &&
+            verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form2_Minimum(MinimumForm2 Minimum)
@@ -1385,10 +1220,7 @@ namespace Function_Template
 
         Minimum( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] < intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form3_Minimum(MinimumForm3 Minimum)
@@ -1405,11 +1237,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Minimum( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) ||
-            !verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) &&
+            verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form4_Minimum(MinimumForm4 Minimum)
@@ -1426,11 +1255,8 @@ namespace Function_Template
 
         Minimum( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
+                          intensity[0] < intensity[1] ? intensity[0] : intensity[1] );
     }
 
     bool form1_Normalize(NormalizeForm1 Normalize)
@@ -1450,10 +1276,7 @@ namespace Function_Template
             normalized[1] = 255;
         }
 
-        if( !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, normalized );
     }
 
     bool form2_Normalize(NormalizeForm2 Normalize)
@@ -1476,10 +1299,7 @@ namespace Function_Template
             normalized[1] = 255;
         }
 
-        if( !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, normalized );
     }
 
     bool form3_Normalize(NormalizeForm3 Normalize)
@@ -1504,10 +1324,7 @@ namespace Function_Template
             normalized[1] = 255;
         }
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, normalized ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, normalized );
     }
 
     bool form4_Normalize(NormalizeForm4 Normalize)
@@ -1540,10 +1357,7 @@ namespace Function_Template
             normalized[1] = 255;
         }
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, normalized );
     }
 
     bool form1_ProjectionProfile(ProjectionProfileForm1 ProjectionProfile)
@@ -1557,11 +1371,8 @@ namespace Function_Template
 
         const uint32_t value = (horizontal ? image.height() : image.width()) * intensity;
 
-        if( projection.size() != (horizontal ? image.width() : image.height()) ||
-            std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
-            return false;
-
-        return true;
+        return projection.size() == (horizontal ? image.width() : image.height()) &&
+            std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value == v; } );
     }
 
     bool form2_ProjectionProfile(ProjectionProfileForm2 ProjectionProfile)
@@ -1576,11 +1387,8 @@ namespace Function_Template
 
         const uint32_t value = (horizontal ? image.height() : image.width()) * intensity;
 
-        if( projection.size() != (horizontal ? image.width() : image.height()) ||
-            std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
-            return false;
-
-        return true;
+        return projection.size() == (horizontal ? image.width() : image.height()) &&
+            std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value == v; } );
     }
 
     bool form3_ProjectionProfile(ProjectionProfileForm3 ProjectionProfile)
@@ -1597,11 +1405,8 @@ namespace Function_Template
 
         uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
 
-        if( projection.size() != (horizontal ? roiWidth : roiHeight) ||
-            std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
-            return false;
-
-        return true;
+        return projection.size() == (horizontal ? roiWidth : roiHeight) &&
+            std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value == v; } );
     }
 
     bool form4_ProjectionProfile(ProjectionProfileForm4 ProjectionProfile)
@@ -1619,11 +1424,8 @@ namespace Function_Template
 
         const uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
 
-        if( projection.size() != (horizontal ? roiWidth : roiHeight) ||
-            std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
-            return false;
-
-        return true;
+        return projection.size() == (horizontal ? roiWidth : roiHeight) &&
+            std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value == v; } );
     }
 
     bool form1_Resize(ResizeForm1 Resize)
@@ -1636,10 +1438,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Resize( input, outputWidth, outputHeight );
 
-        if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, outputWidth, outputHeight ) && verifyImage( output, intensity );
     }
 
     bool form2_Resize(ResizeForm2 Resize)
@@ -1650,10 +1449,7 @@ namespace Function_Template
 
         Resize( input, output );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form3_Resize(ResizeForm3 Resize)
@@ -1669,10 +1465,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Resize( input, roiX, roiY, roiWidth, roiHeight, outputWidth, outputHeight );
 
-        if( !equalSize( output, outputWidth, outputHeight ) || !verifyImage( output, intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, outputWidth, outputHeight ) && verifyImage( output, intensity );
     }
 
     bool form4_Resize(ResizeForm4 Resize)
@@ -1688,10 +1481,7 @@ namespace Function_Template
 
         Resize( input, roiX[0], roiY[0], roiWidth[0], roiHeight[0], output, roiX[1], roiY[1], roiWidth[1], roiHeight[1] );
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] );
     }
 
     bool form1_SetPixel(SetPixelForm1 SetPixel)
@@ -1703,10 +1493,7 @@ namespace Function_Template
 
         SetPixel( image, x, y, intensity[1] );
 
-        if( !verifyImage( image, x, y, 1, 1, intensity[1] ) )
-            return false;
-
-        return true;
+        return verifyImage( image, x, y, 1, 1, intensity[1] );
     }
 
     bool form2_SetPixel(SetPixelForm2 SetPixel)
@@ -1738,11 +1525,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Subtract( input[0], input[1] );
 
-        if( !equalSize( input[0], output ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
-            return false;
-
-        return true;
+        return equalSize( input[0], output ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
     }
 
     bool form2_Subtract(SubtractForm2 Subtract)
@@ -1752,10 +1536,7 @@ namespace Function_Template
 
         Subtract( image[0], image[1], image[2] );
 
-        if( !verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
     }
 
     bool form3_Subtract(SubtractForm3 Subtract)
@@ -1772,11 +1553,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Subtract( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !equalSize( output, roiWidth, roiHeight ) ||
-            !verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) &&
+            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
     }
 
     bool form4_Subtract(SubtractForm4 Subtract)
@@ -1793,11 +1571,8 @@ namespace Function_Template
 
         Subtract( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        if( !verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
-            return false;
-
-        return true;
+        return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
+                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
     }
 
     bool form1_Sum(SumForm1 Sum)
@@ -1805,10 +1580,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = uniformImage( intensity );
 
-        if( Sum( input ) != intensity * input.width() * input.height() )
-            return false;
-
-        return true;
+        return Sum( input ) == intensity * input.width() * input.height();
     }
 
     bool form2_Sum(SumForm2 Sum)
@@ -1819,10 +1591,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( Sum( input, roiX, roiY, roiWidth, roiHeight ) != intensity * roiWidth * roiHeight )
-            return false;
-
-        return true;
+        return Sum( input, roiX, roiY, roiWidth, roiHeight ) == intensity * roiWidth * roiHeight;
     }
 
     bool form1_Threshold(ThresholdForm1 Threshold)
@@ -1834,10 +1603,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Threshold( input, threshold );
 
-        if( !verifyImage( output, intensity < threshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity < threshold ? 0 : 255 );
     }
 
     bool form2_Threshold(ThresholdForm2 Threshold)
@@ -1849,10 +1615,7 @@ namespace Function_Template
 
         Threshold( input[0], input[1], threshold );
 
-        if( !verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( input[1], intensity[0] < threshold ? 0 : 255 );
     }
 
     bool form3_Threshold(ThresholdForm3 Threshold)
@@ -1867,10 +1630,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
-        if( !equalSize( output, roiWidth, roiHeight ) || !verifyImage( output, intensity < threshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity < threshold ? 0 : 255 );
     }
 
     bool form4_Threshold(ThresholdForm4 Threshold)
@@ -1889,10 +1649,7 @@ namespace Function_Template
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
-        if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] < threshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] < threshold ? 0 : 255 );
     }
 
     bool form5_Threshold(ThresholdDoubleForm1 Threshold)
@@ -1905,10 +1662,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Threshold( input, minThreshold, maxThreshold );
 
-        if( !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 );
     }
 
     bool form6_Threshold(ThresholdDoubleForm2 Threshold)
@@ -1921,10 +1675,7 @@ namespace Function_Template
 
         Threshold( input[0], input[1], minThreshold, maxThreshold );
 
-        if( !verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 );
     }
 
     bool form7_Threshold(ThresholdDoubleForm3 Threshold)
@@ -1940,11 +1691,8 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold, maxThreshold );
 
-        if( !equalSize( output, roiWidth, roiHeight ) ||
-            !verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiWidth, roiHeight ) &&
+            verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 );
     }
 
     bool form8_Threshold(ThresholdDoubleForm4 Threshold)
@@ -1964,11 +1712,8 @@ namespace Function_Template
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, minThreshold, maxThreshold );
 
-        if( !verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
-                          intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
-            return false;
-
-        return true;
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight,
+                          intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 );
     }
 
     bool form1_Transpose(TransposeForm1 Transpose)
@@ -1978,10 +1723,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Transpose( input );
 
-        if( !equalSize( output, input.height(), input.width() ) || !verifyImage( output, intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, input.height(), input.width() ) && verifyImage( output, intensity );
     }
 
     bool form2_Transpose(TransposeForm2 Transpose)
@@ -1994,10 +1736,7 @@ namespace Function_Template
 
         Transpose( input, output );
 
-        if( !verifyImage( output, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, intensity[0] );
     }
 
     bool form3_Transpose(TransposeForm3 Transpose)
@@ -2010,10 +1749,7 @@ namespace Function_Template
 
         PenguinV_Image::Image output = Transpose( input, roiX, roiY, roiWidth, roiHeight );
 
-        if( !equalSize( output, roiHeight, roiWidth ) || !verifyImage( output, intensity ) )
-            return false;
-
-        return true;
+        return equalSize( output, roiHeight, roiWidth )&& verifyImage( output, intensity );
     }
 
     bool form4_Transpose(TransposeForm4 Transpose)
@@ -2035,10 +1771,7 @@ namespace Function_Template
 
         Transpose( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
-        if( !verifyImage( output, roiX[1], roiY[1], roiHeight, roiWidth, intensity[0] ) )
-            return false;
-
-        return true;
+        return verifyImage( output, roiX[1], roiY[1], roiHeight, roiWidth, intensity[0] );
     }
 }
 
