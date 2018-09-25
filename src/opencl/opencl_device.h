@@ -24,6 +24,8 @@ namespace multiCL
 
         // Returns memory allocator for specified device ID
         MemoryAllocator & memory( uint32_t deviceId );
+
+        void memorySet( cl_mem data, const void * pattern, size_t patternSize, size_t offset, size_t size );
     }
 
     class OpenCLContext

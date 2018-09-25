@@ -71,9 +71,7 @@ namespace PenguinV_Image
         {
             cl_mem dataMem = reinterpret_cast<cl_mem>( data );
 
-            const cl_int error = clEnqueueFillBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), dataMem, &value, sizeof( TColorDepth ), 0, size, 0, NULL, NULL );
-            if( error != CL_SUCCESS )
-                throw imageException( "Cannot fill a memory for GPU device" );
+            multiCL::MemoryManager::memorySet( dataMem, &value, sizeof( TColorDepth ), 0, size );
         }
     };
 

@@ -1,6 +1,7 @@
 #include <algorithm>
-#include <iostream>
 #include <assert.h>
+#include <map>
+#include <mutex>
 #include "opencl_device.h"
 #include "opencl_helper.h"
 #include "../image_exception.h"
@@ -24,6 +25,52 @@ namespace
     {
         return defaultDeviceId;
     }
+
+    const std::string memsetCode = R"(
+        __kernel void memsetOpenCL( __global uchar * data, uint offset, uint size, uchar value )
+        {
+            const size_t x = get_global_id(0);
+
+            if( x < size )
+                data[offset + x] = value;
+        }
+        )";
+
+    struct MemsetKernelHolder
+    {
+        MemsetKernelHolder() {}
+        ~MemsetKernelHolder()
+        {
+            kernel.reset();
+            program.reset();
+        }
+
+        std::shared_ptr< multiCL::OpenCLProgram > program;
+        std::shared_ptr< multiCL::OpenCLKernel > kernel;
+    };
+
+    multiCL::OpenCLKernel & getMemsetKernel()
+    {
+        static std::map< cl_device_id, MemsetKernelHolder > deviceProgram;
+        static std::mutex mapGuard;
+
+        multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
+
+        std::map< cl_device_id, MemsetKernelHolder >::const_iterator program = deviceProgram.find( device.deviceId() );
+        if ( program != deviceProgram.cend() )
+            return *(program->second.kernel);
+
+        mapGuard.lock();
+
+        MemsetKernelHolder holder;
+        holder.program = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), memsetCode.data() ) );
+        holder.kernel = std::shared_ptr< multiCL::OpenCLKernel >( new multiCL::OpenCLKernel( *(holder.program), "memsetOpenCL" ) );
+
+        deviceProgram[device.deviceId()] = holder;
+        mapGuard.unlock();
+
+        return *(deviceProgram[device.deviceId()].kernel);
+    }
 }
 
 namespace multiCL
@@ -38,6 +85,23 @@ namespace multiCL
         MemoryAllocator & memory( uint32_t deviceId )
         {
             return OpenCLDeviceManager::instance().device( deviceId ).allocator();
+        }
+
+        void memorySet( cl_mem data, const void * pattern, size_t patternSize, size_t offset, size_t size )
+        {
+            if ( patternSize == 1u ) {
+                multiCL::OpenCLKernel & kernel = getMemsetKernel();
+                kernel.reset();
+                const uint8_t value = *(static_cast<const uint8_t*>(pattern));
+                kernel.setArgument( data, static_cast<uint32_t>(offset), static_cast<uint32_t>(size), value );
+                multiCL::launchKernel1D( kernel, size );
+            }
+            else
+            {
+                const cl_int error = clEnqueueFillBuffer( OpenCLDeviceManager::instance().device().queue()(), data, pattern, patternSize, offset, size, 0, NULL, NULL );
+                if( error != CL_SUCCESS )
+                    throw imageException( "Cannot fill a memory for GPU device" );
+            }
         }
     }
 
