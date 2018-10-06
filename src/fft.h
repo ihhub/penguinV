@@ -12,7 +12,7 @@ namespace FFT
     {
     public:
         ComplexData();
-        ComplexData( const Bitmap_Image::Image & image );
+        ComplexData( const PenguinV_Image::Image & image );
 
         ComplexData( const ComplexData & data );
         ComplexData( ComplexData && data );
@@ -22,11 +22,11 @@ namespace FFT
 
         ~ComplexData();
 
-        void set( const Bitmap_Image::Image & image );
+        void set( const PenguinV_Image::Image & image );
         void set( const std::vector<float> & data );
 
         // This function returns normalized image with swapped quadrants
-        Bitmap_Image::Image get() const;
+        PenguinV_Image::Image get() const;
 
         void resize( uint32_t width_, uint32_t height_ );
 
