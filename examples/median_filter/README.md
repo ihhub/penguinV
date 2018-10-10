@@ -5,7 +5,7 @@ Open example_median_filter.vcxproj file in this directory to create solution for
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash
-	g++ -std=c++11 -Wall example_median_filter.cpp ../../src/image_function.cpp ../../src/filtering.cpp ../../src/FileOperation/bitmap.cpp -o application
+	g++ -std=c++11 -Wall example_median_filter.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/filtering.cpp ../../src/FileOperation/bitmap.cpp -o application
 	```
 
 - make    
