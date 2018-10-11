@@ -21,6 +21,10 @@ At the current stage of development library does not have some features but we a
 
 The library does **NOT** have it's own image displaying code but you can refer to QT example.
 
+Contribution
+---------------------------
+Please read [contribution](https://github.com/ihhub/penguinV/wiki/Contributions) page before starting work on a pull request. All contributors are listed in the project's wiki page.
+
 Requirements
 ---------------------------
 To compile the source code your compiler must support at least **C++ 11** version.
