@@ -168,6 +168,13 @@ namespace Image_Function
     void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
 
+    // Convert image |in| into an RGBA image with alpha channel value |alpha|.
+    Image RgbToRgba( const Image & in, uint8_t alpha );
+    void  RgbToRgba( const Image & in, Image & out, uint8_t alpha);
+    Image RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t alpha );
+    void  RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                     uint32_t width, uint32_t height, uint8_t alpha );
+
     void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );

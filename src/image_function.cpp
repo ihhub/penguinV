@@ -1222,6 +1222,57 @@ namespace Image_Function
         }
     }
 
+    Image RgbToRgba( const Image & in, uint8_t alpha )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in, alpha );
+    }
+
+    void RgbToRgba( const Image & in, Image & out, uint8_t alpha)
+    {
+        Image_Function_Helper::RgbToRgba( RgbToRgba, in, out, alpha );
+    }
+
+    Image RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t alpha )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in, startXIn, startYIn, width, height, alpha );
+    }
+
+    void RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height, uint8_t alpha )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyRGBImage     ( in );
+        VerifyRGBAImage    ( out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t inColorCount = PenguinV_Image::RGB;
+        const uint8_t outColorCount = PenguinV_Image::RGBA;
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * inColorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * outColorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * inXEnd = inX + width * inColorCount;
+            const uint8_t * outXEnd = outX + width * outColorCount;
+
+            for( ; inX != inXEnd && outX != outXEnd; inX += inColorCount, outX += outColorCount ) {
+                // Copy over the existing color data.
+                *(outX) = *(inX);
+                *(outX + 1) = *(inX + 1);
+                *(outX + 2) = *(inX + 2);
+                // Add the alpha channel value.
+                *(outX + 3) = alpha;
+            }
+        }
+    }
+
     void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
     {
         ParameterValidation( in, out );

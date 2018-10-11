@@ -2327,6 +2327,100 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
+- **RgbToRgba** [_Namespaces: **Function_Pool**_]
+
+	##### Syntax:
+	```cpp
+	Image RgbToRgba(
+		const Image & in,
+		uint8_t alpha
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image from RGB representation to RGBA representation.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an input image
+	&nbsp;&nbsp;&nbsp;&nbsp;alpha - the alpha channel value to use in the converted image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	void RgbToRgba(
+		const Image & in,
+		Image & out,
+		uint8_t alpha
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image from RGB represantation to RGBA representation.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of conversion. Height and width of result image are the same as of input image
+	&nbsp;&nbsp;&nbsp;&nbsp;alpha - the alpha channel value to use in the converted image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	Image RgbToRgba(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		uint8_t alpha
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image at area of [width, height] size from RGB representation to a RGBA representation.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where conversion is performed
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed
+	&nbsp;&nbsp;&nbsp;&nbsp;alpha - the alpha channel value to use in the converted image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion with size [width, height]. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	void RgbToRgba(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		uint8_t alpha
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Converts a 3-colored image at area of [width, height] size from RGB representation to RGBA representation.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of conversion
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area where conversion is performed
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed
+	&nbsp;&nbsp;&nbsp;&nbsp;alpha - the alpha channel value to use in the converted image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
 - **Resize** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
