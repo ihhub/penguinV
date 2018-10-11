@@ -24,28 +24,51 @@ namespace Image_Function
     template <typename TImage>
     bool IsCorrectColorCount( const TImage & image )
     {
-        return image.colorCount() == PenguinV_Image::GRAY_SCALE || image.colorCount() == PenguinV_Image::RGB;
+        return image.colorCount() == PenguinV_Image::GRAY_SCALE || image.colorCount() == PenguinV_Image::RGB || image.colorCount() == PenguinV_Image::RGBA;
     }
 
     template <typename TImage>
-    void VerifyRGBImage( const TImage & image1 )
+    void VerifyGenericImage( const TImage & image )
     {
-        if( image1.colorCount() != PenguinV_Image::RGB )
-            throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
+        if ( image.empty())
+            throw imageException( "Bad input parameters in image function: image is empty" );
+        if ( !IsCorrectColorCount( image ))
+            throw imageException( "Bad input parameters in image function: image has invalid color count" );
+    }
+
+    template <typename TImage, typename... Args>
+    void VerifyGenericImage( const TImage & image, Args... args)
+    {
+        VerifyGenericImage( image );
+        VerifyGenericImage( args... );
     }
 
     template <typename TImage>
-    void VerifyRGBImage( const TImage & image1, const TImage & image2 )
+    void VerifyRGBImage( const TImage & image )
     {
-        if( image1.colorCount() != PenguinV_Image::RGB || image2.colorCount() != PenguinV_Image::RGB )
+        if( image.colorCount() != PenguinV_Image::RGB )
             throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
     }
 
-    template <typename TImage>
-    void VerifyRGBImage( const TImage & image1, const TImage & image2, const TImage & image3 )
+    template <typename TImage, typename... Args>
+    void VerifyRGBImage( const TImage & image, Args... args)
     {
-        if( image1.colorCount() != PenguinV_Image::RGB || image2.colorCount() != PenguinV_Image::RGB || image3.colorCount() != PenguinV_Image::RGB )
-            throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
+        VerifyRGBImage( image );
+        VerifyRGBImage( args... );
+    }
+
+    template <typename TImage>
+    void VerifyRGBAImage( const TImage & image )
+    {
+        if( image.colorCount() != PenguinV_Image::RGBA )
+            throw imageException( "Bad input parameters in image function: RGBA image has different than 4 color channels" );
+    }
+
+    template <typename TImage, typename... Args>
+    void VerifyRGBAImage( const TImage & image, Args... args)
+    {
+        VerifyRGBAImage( image );
+        VerifyRGBAImage( args... );
     }
 
     template <typename TImage>
@@ -55,50 +78,32 @@ namespace Image_Function
             throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 
-    template <typename TImage>
-    void VerifyGrayScaleImage( const TImage & image1, const TImage & image2 )
+    template <typename TImage, typename... Args>
+    void VerifyGrayScaleImage( const TImage & image, Args... args)
     {
-        if( image1.colorCount() != PenguinV_Image::GRAY_SCALE || image2.colorCount() != PenguinV_Image::GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
+        VerifyGrayScaleImage( image );
+        VerifyGrayScaleImage( args... );
     }
 
     template <typename TImage>
-    void VerifyGrayScaleImage( const TImage & image1, const TImage & image2, const TImage & image3 )
+    void ParameterValidation( const TImage & image )
     {
-        if( image1.colorCount() != PenguinV_Image::GRAY_SCALE || image2.colorCount() != PenguinV_Image::GRAY_SCALE ||
-            image3.colorCount() != PenguinV_Image::GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
+        VerifyGenericImage( image );
     }
 
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1 )
+    template <typename TImage, typename... Args>
+    void ParameterValidation( const TImage & image, Args... args)
     {
-        if( image1.empty() || !IsCorrectColorCount( image1 ) )
-            throw imageException( "Bad input parameters in image function" );
-    }
-
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1, const TImage & image2 )
-    {
-        if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            image1.width() != image2.width() || image1.height() != image2.height() )
-            throw imageException( "Bad input parameters in image function" );
-    }
-
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1, const TImage & image2, const TImage & image3 )
-    {
-        if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            !IsCorrectColorCount( image3 ) || image1.width() != image2.width() || image1.height() != image2.height() ||
-            image1.width() != image3.width() || image1.height() != image3.height() )
-            throw imageException( "Bad input parameters in image function" );
+        ParameterValidation( image );
+        ParameterValidation( args... );
     }
 
     template <typename TImage>
     void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
-            throw imageException( "Bad input parameters in image function" );
+        VerifyGenericImage( image );
+        if( width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
+            throw imageException( "Bad input parameters in image function: invalid image section size" );
     }
 
     template <typename TImage>
@@ -106,10 +111,8 @@ namespace Image_Function
                               const TImage & image2, uint32_t startX2, uint32_t startY2,
                               uint32_t width, uint32_t height )
     {
-        if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() )
-            throw imageException( "Bad input parameters in image function" );
+        ParameterValidation ( image1, startX1, startY1, width, height );
+        ParameterValidation ( image2, startX2, startY2, width, height );
     }
 
     template <typename TImage>
@@ -118,11 +121,8 @@ namespace Image_Function
                               const TImage & image3, uint32_t startX3, uint32_t startY3,
                               uint32_t width, uint32_t height )
     {
-        if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            !IsCorrectColorCount( image3 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() ||
-            startX3 + width > image3.width() || startY3 + height > image3.height() )
-            throw imageException( "Bad input parameters in image function" );
+        ParameterValidation ( image1, startX1, startY1, width, height );
+        ParameterValidation ( image2, startX2, startY2, width, height );
+        ParameterValidation ( image3, startX3, startY3, width, height );
     }
 }

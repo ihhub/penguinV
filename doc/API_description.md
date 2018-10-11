@@ -2031,56 +2031,36 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	template <typename TImage>
 	void ParameterValidation(
-		const TImage & image1
+		const TImage & image
 	);
 	```
-	**Description:**    
+	**Description:**
 	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether an image is allocated and has a valid color channel count.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
-	
-	**Return value:**    
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image
+
+	**Return value:**
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+
 	##### Syntax:
 	```cpp
-	template <typename TImage>
+	template <typename TImage, typename... Args>
 	void ParameterValidation(
-		const TImage & image1,
-		const TImage & image2
+		const TImage & image,
+		Args... args
 	);
 	```
-	**Description:**    
+	**Description:**
 	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether two images are allocated, they are same size and have a valid color channel count.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
-	
-	**Return value:**    
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;args - parameter list of images
+
+	**Return value:**
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
-	##### Syntax:
-	```cpp
-	template <typename TImage>
-	void ParameterValidation(
-		const TImage & image1,
-		const TImage & image2,
-		const TImage & image3
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Validates whether three images are allocated, they are same size and have a valid color channel count.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image3 - third image    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-		
+
 	##### Syntax:
 	```cpp
 	template <typename TImage>
@@ -3057,6 +3037,78 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
+- **VerifyRGBAImage** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyRGBAImage(
+		const TImage & image
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count as an RGBA image - 4.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	template <typename TImage, typename... Args>
+	void VerifyRGBAImage(
+		const TImage & image,
+		Args... args
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel counts as RGBA images - 4.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;args - parameter list of images
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+- **VerifyGenericImage** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	template <typename TImage>
+	void VerifyGenericImage(
+		const TImage & image
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count and is not empty.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
+	##### Syntax:
+	```cpp
+	template <typename TImage, typename... Args>
+	void VerifyGenericImage(
+		const TImage & image,
+		Args... args
+	);
+	```
+	**Description:**
+	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count and are not empty.
+
+	**Parameters:**
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;args - parameter list of images
+
+	**Return value:**
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+
 - **VerifyColoredImage** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
@@ -3119,53 +3171,32 @@ All images in function parameter list must have width and height greater than 0 
 	```cpp
 	template <typename TImage>
 	void VerifyGrayScaleImage(
-		const TImage & image1
+		const TImage & image
 	);
 	```
 	**Description:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether an image has a valid color channel count as a gray-scale image - 1.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
 	##### Syntax:
 	```cpp
-	template <typename TImage>
+	template <typename TImage, typename... Args>
 	void VerifyGrayScaleImage(
-		const TImage & image1,
-		const TImage & image2
+		const TImage & image,
+		Args... args
 	);
 	```
 	**Description:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a gray-scale image - 1.
 	
 	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
+	&nbsp;&nbsp;&nbsp;&nbsp;image - an image
+	&nbsp;&nbsp;&nbsp;&nbsp;args - parameter list of images
 	
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-	
-	##### Syntax:
-	```cpp
-	template <typename TImage>
-	void VerifyGrayScaleImage(
-		const TImage & image1,
-		const TImage & image2,
-		const TImage & image3
-	);
-	```
-	**Description:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;Verifies whether images have a valid color channel count as a gray-scale image - 1.
-	
-	**Parameters:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image1 - first image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
-	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
-	
-	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
-	
