@@ -54,6 +54,8 @@ namespace Image_Function_Helper
                                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut);
         typedef void ( *RgbToBgr )         (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                             uint32_t width, uint32_t height);
+        typedef void ( *RgbToRgba )        (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                            uint32_t width, uint32_t height, uint8_t alpha);
         typedef void ( *SetPixel )         (Image & image, uint32_t x, uint32_t y, uint8_t value);
         typedef void ( *SetPixel2 )        (Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value);
         typedef void ( *Split )            (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
@@ -258,6 +260,15 @@ namespace Image_Function_Helper
 
     Image RgbToBgr( FunctionTable::RgbToBgr rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
+    Image RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                     const Image & in, uint8_t alpha );
+
+    void RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                    const Image & in, Image & out, uint8_t alpha );
+
+    Image RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t alpha );
 
     Image Subtract( FunctionTable::Subtract subtract,
                     const Image & in1, const Image & in2 );

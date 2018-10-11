@@ -8,6 +8,10 @@
 
 namespace PenguinV_Image
 {
+    const static uint8_t GRAY_SCALE = 1u;
+    const static uint8_t RGB = 3u;
+    const static uint8_t RGBA = 4u;
+
     template <typename TColorDepth>
     class ImageTemplate
     {
@@ -177,6 +181,22 @@ namespace PenguinV_Image
                 return;
 
             _set( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
+        }
+
+        // Fill the image buffer with uniform pixels of color (|red|, |green|, |blue|).
+        void fillRGB( TColorDepth red, TColorDepth green, TColorDepth blue) {
+            if ( empty() )
+                return;
+            if ( _colorCount != RGB )
+                throw imageException( "Cannot use fillRGB on a non RGB image." );
+
+            uint8_t *pixel = data();
+            uint8_t *end = data() + _width * _height * RGB;
+            for (; pixel != end; pixel += 3) {
+                *pixel = red;
+                *(pixel + 1) = green;
+                *(pixel + 2) = blue;
+            }
         }
 
         void swap( ImageTemplate & image )
@@ -387,8 +407,4 @@ namespace PenguinV_Image
     };
 
     typedef ImageTemplate <uint8_t> Image;
-
-    const static uint8_t GRAY_SCALE = 1u;
-    const static uint8_t RGB = 3u;
-    const static uint8_t RGBA = 4u;
 }
