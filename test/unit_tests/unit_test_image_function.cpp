@@ -222,6 +222,9 @@ namespace Function_Template
     typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                     uint32_t width, uint32_t height );
 
+    typedef Image (*RgbToRgbaForm1)( const Image & in, uint8_t alpha );
+    typedef void  (*RgbToRgbaForm2)( const Image & in, Image & out, uint8_t alpha);
+
     typedef void (*Rotate)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
 
     typedef void (*SetPixelForm1)( Image & image, uint32_t x, uint32_t y, uint8_t value );
@@ -1484,6 +1487,23 @@ namespace Function_Template
         return verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] );
     }
 
+    bool form1_RgbToRgba(RgbToRgbaForm1 RgbToRgba)
+    {
+        const std::vector< uint8_t > intensity = intensityArray ( PenguinV_Image::RGBA );
+        PenguinV_Image::Image input = uniformRGBImage(intensity[0], intensity[1], intensity[2]);
+        PenguinV_Image::Image output = RgbToRgba( input, intensity[3] );
+        return output.colorCount() == PenguinV_Image::RGBA && verifyImage(output, intensity);
+    }
+
+    bool form2_RgbToRgba(RgbToRgbaForm2 RgbToRgba)
+    {
+        const std::vector< uint8_t > intensity = intensityArray ( PenguinV_Image::RGBA );
+        PenguinV_Image::Image input = uniformRGBImage(intensity[0], intensity[1], intensity[2]);
+        PenguinV_Image::Image output = input.generate(input.width(), input.height(), PenguinV_Image::RGBA );
+        RgbToRgba(input, output, intensity[3] );
+        return output.colorCount() == PenguinV_Image::RGBA && verifyImage(output, intensity);
+    }
+
     bool form1_SetPixel(SetPixelForm1 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1855,6 +1875,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Resize )
+    SET_FUNCTION_2_FORMS( RgbToRgba )
     SET_FUNCTION_2_FORMS( SetPixel )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )

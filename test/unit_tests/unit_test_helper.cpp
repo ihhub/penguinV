@@ -18,6 +18,15 @@ namespace
 
         return image;
     }
+
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t red, uint8_t green, uint8_t blue )
+    {
+        PenguinV_Image::Image image( width, height, colorCount );
+
+        image.fillRGB( red, green, blue );
+
+        return image;
+    }
 }
 
 namespace Unit_Test
@@ -40,6 +49,11 @@ namespace Unit_Test
     PenguinV_Image::Image uniformRGBImage( uint8_t value )
     {
         return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value );
+    }
+
+    PenguinV_Image::Image uniformRGBImage( uint8_t red, uint8_t green, uint8_t blue )
+    {
+        return generateImage ( randomSize(), randomSize(), PenguinV_Image::RGB, red, green, blue );
     }
 
     PenguinV_Image::Image blackImage()

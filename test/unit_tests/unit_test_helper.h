@@ -12,6 +12,7 @@ namespace Unit_Test
     PenguinV_Image::Image uniformImage( uint8_t value );
     PenguinV_Image::Image uniformRGBImage();
     PenguinV_Image::Image uniformRGBImage( uint8_t value );
+    PenguinV_Image::Image uniformRGBImage( uint8_t red, uint8_t green, uint8_t blue );
     PenguinV_Image::Image blackImage();
     PenguinV_Image::Image whiteImage();
     PenguinV_Image::Image randomImage();
