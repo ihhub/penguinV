@@ -5,7 +5,7 @@ Open example_function_pool.vcxproj file in this directory to create solution for
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash
-	g++ -std=c++11 -pthread -Wall example_function_pool.cpp ../../src/image_function.cpp ../../src/thread_pool.cpp ../../src/function_pool.cpp ../../src/penguinv/penguinv.cpp -o application
+	g++ -std=c++11 -pthread -Wall example_function_pool.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/image_function_simd.cpp ../../src/thread_pool.cpp ../../src/function_pool.cpp ../../src/penguinv/penguinv.cpp -o application
 	```
 
 - make    
