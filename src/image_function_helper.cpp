@@ -679,6 +679,38 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                     const Image & in, uint8_t alpha )
+    {
+        Image_Function::ParameterValidation( in );
+
+        Image out = in.generate( in.width(), in.height(), PenguinV_Image::RGBA );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height(), alpha );
+
+        return out;
+    }
+
+    void RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                    const Image & in, Image & out, uint8_t alpha )
+    {
+        Image_Function::ParameterValidation( in, out );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height(), alpha );
+    }
+
+    Image RgbToRgba( FunctionTable::RgbToRgba rgbToRgba,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t alpha )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = in.generate( width, height, PenguinV_Image::RGBA );
+
+        rgbToRgba( in, startXIn, startYIn, out, 0, 0, width, height, alpha );
+
+        return out;
+    }
+
     Image Subtract( FunctionTable::Subtract subtract,
                     const Image & in1, const Image & in2 )
     {
