@@ -49,92 +49,12 @@ namespace
                 atomicAdd( differenceCount, 1 );
         }
     }
-
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
-    {
-        PenguinV_Image::ImageCuda image( width, height, colorCount );
-
-        image.fill( value );
-
-        PenguinV_Image::Image imageOut;
-        imageOut.swap( image );
-
-        return imageOut;
-    }
 }
 
 namespace Unit_Test
 {
     namespace Cuda
     {
-        PenguinV_Image::Image uniformImage( uint8_t value )
-        {
-            return generateImage( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::GRAY_SCALE, value );
-        }
-
-        PenguinV_Image::Image uniformImage()
-        {
-            return uniformImage( randomValue<uint8_t>( 256 ) );
-        }
-
-        PenguinV_Image::Image uniformRGBImage()
-        {
-            return uniformRGBImage( randomValue<uint8_t>( 256 ) );
-        }
-
-        PenguinV_Image::Image uniformRGBImage( uint8_t value )
-        {
-            return generateImage( randomValue<uint32_t>( 1, 2048 ), randomValue<uint32_t>( 1, 2048 ), PenguinV_Image::RGB, value );
-        }
-
-        PenguinV_Image::Image blackImage()
-        {
-            return uniformImage( 0u );
-        }
-
-        PenguinV_Image::Image whiteImage()
-        {
-            return uniformImage( 255u );
-        }
-
-        std::vector < PenguinV_Image::Image > uniformImages( uint32_t images )
-        {
-            if( images == 0 )
-                throw imageException( "Invalid parameter" );
-
-            std::vector < PenguinV_Image::Image > image;
-
-            image.push_back( uniformImage() );
-
-            image.resize( images );
-
-            for( size_t i = 1; i < image.size(); ++i ) {
-                image[i] = image.front().generate( image[0].width(), image[0].height() );
-                image[i].fill( randomValue<uint8_t>( 256 ) );
-            }
-
-            return image;
-        }
-
-        std::vector < PenguinV_Image::Image > uniformImages( std::vector < uint8_t > intensityValue )
-        {
-            if( intensityValue.size() == 0 )
-                throw imageException( "Invalid parameter" );
-
-            std::vector < PenguinV_Image::Image > image;
-
-            image.push_back( uniformImage( intensityValue[0] ) );
-
-            image.resize( intensityValue.size() );
-
-            for( size_t i = 1; i < image.size(); ++i ) {
-                image[i] = image.front().generate( image[0].width(), image[0].height() );
-                image[i].fill( intensityValue[i] );
-            }
-
-            return image;
-        }
-
         bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
         {
             multiCuda::Type<uint32_t> differenceCount( 0 );
