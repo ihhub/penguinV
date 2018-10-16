@@ -1039,6 +1039,36 @@ namespace neon
         }
     }
 
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY,const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        uint32_t sum = 0;
+        uint32x4_t simdSum = vdupq_n_u32(0);
+        
+        for( ; imageY != imageYEnd; imageY += rowSize ) {
+            const uint8_t * src    =  imageY;
+            const uint8_t * srcEnd = src + simdWidth;
+
+            for( ; src != srcEnd; ++src ) {
+                const uint8x16_t data = vld1q_u8(src);
+                const uint16x8_t data8Sum = vaddl_u8(vget_high_u8(data), vget_low_u8(data));
+                const uint32x4_t data16Sum = vaddl_u16(vget_high_u16(data8Sum), vget_low_u16(data8Sum));
+                simdSum = vaddq_u32(simdSum, data16Sum);
+            }
+            
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX )
+                    sum += (*imageX);
+            }
+        }
+        
+        uint32_t output[4] ={ 0 };
+        vst1q_u32(output, simdSum);
+        return (sum + output[0] + output[1] + output[2] + output[3]);
+    }
+
     void Threshold( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd, uint8_t threshold,
                     uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1477,7 +1507,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (simdType == neon_function) || (width < simdSize) ) { // No implementation in NEON yet
+        if( (simdType == cpu_function) || (width < simdSize) ) {
             #ifdef PENGUINV_AVX_SET
             if ( simdType == avx_function )
                 return Sum( image, x, y, width, height, sse_function );
@@ -1506,6 +1536,10 @@ if ( simdType == neon_function ) { \
         if ( simdType == sse_function )
             return sse::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
         #endif
+        #ifdef PENGUINV_NEON_SET
+        if (simdType == neon_function)
+			return neon::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
+		#endif
 
         return 0u;
     }
