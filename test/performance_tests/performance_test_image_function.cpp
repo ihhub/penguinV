@@ -394,6 +394,7 @@ namespace image_function_neon
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
     SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
     REGISTER_FUNCTION( ThresholdDouble, Threshold )
 }

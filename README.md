@@ -23,7 +23,7 @@ The library does **NOT** have it's own image displaying code but you can refer t
 
 Contribution
 ---------------------------
-Please read [contribution](https://github.com/ihhub/penguinV/wiki/Contributions) page before starting work on a pull request. All contributors are listed in the project's wiki page.
+Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki page.
 
 Requirements
 ---------------------------
