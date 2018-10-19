@@ -70,7 +70,6 @@ namespace Jpeg_Ops {
     }
 
     void Save(const std::string & path, PenguinV_Image::Image & image) {
-
         if( path.empty() )
             throw imageException( "Incorrect file path for image file saving" );
 
