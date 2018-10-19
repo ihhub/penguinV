@@ -1,7 +1,6 @@
 #pragma once
 
 #include "image_buffer.h"
-#include "penguinv/cpu_identification.h"
 
 namespace Image_Function_Simd
 {
