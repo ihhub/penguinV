@@ -44,6 +44,7 @@ penguinV is a volunteer effort. We encourage you to pitch in and join the team:
 * 0x72D0
 * rithvikp1998
 * hrishabh23
+* dainmiller
 
 Thanks! :heart: :heart: :heart:
 
