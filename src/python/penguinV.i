@@ -8,7 +8,6 @@
 #include "..\image_buffer.h"
 #include "..\FileOperation\bitmap.h"
 #include "..\image_function.h"
-#include "..\image_function_helper.h"
 %}
 
 %nodefaultctor PenguinV_Image::ImageTemplate;
