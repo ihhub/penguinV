@@ -22,4 +22,3 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd cuda; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
-
