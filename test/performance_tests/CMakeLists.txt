@@ -24,15 +24,21 @@ target_compile_features(performance_tests_options INTERFACE cxx_std_11)
 
 # Link this 'library' to use the standard warnings
 add_library(performance_tests_warnings INTERFACE)
-target_compile_options(performance_tests_warnings
-                       INTERFACE -Wall
-                                 -Wextra           # reasonable and standard
-                                 -Wstrict-aliasing # warn the user if a variable declaration shadows one
-                                 -Wpedantic        # warn if non-standard C++ is used
-                                 -Wconversion
-                                 -Wsign-conversion
-                                 -O2
-                                 -march=native)
+if(MSVC)
+    target_compile_options(performance_tests_warnings 
+                           INTERFACE /W4 /WX "/permissive-")
+else()
+    target_compile_options(performance_tests_warnings
+                           INTERFACE -Wall
+                                     -Wextra           # reasonable and standard
+                                     -Wstrict-aliasing # warn the user if a variable declaration shadows one
+                                     -Wpedantic        # warn if non-standard C++ is used
+                                     -Wconversion
+                                     -Wsign-conversion
+                                     -O2
+                                     -march=native)
+endif()
+
 
 add_executable(performance_tests ${SRCS})
 target_link_libraries(performance_tests 
