@@ -12,32 +12,32 @@ In this directory you need to type/paste this text in terminal:
 	```
 
 - CMake
-To build the project, you will need to have CMake with minimum version of 3.10 and a compiler 
-that support `cxx_std_11`.
+	To build the project, you will need to have CMake with minimum version of 3.10 and a compiler 
+	that support `cxx_std_11`.
 
-Then in the project directory:
-```
-mkdir build && cd build
-cmake .. -DPENGUINV_BUILD_TEST=ON
-```
+	Then in the project directory:
+	```
+	mkdir build && cd build
+	cmake .. -DPENGUINV_BUILD_TEST=ON
+	```
 
-After successfully finishing the build process, run the tests to see if everything is work.
+	After successfully finishing the build process, run the tests to see if everything is work.
 
-You can use ctest
+	You can use ctest
 
-```
-$ ctest
-```
+	```
+	$ ctest
+	```
 
-Or make
+	Or make
 
-```
-$ make test
-```
+	```
+	$ make test
+	```
 
-Or execute the tests directly. To do so, simply go to the `build/test/` folder and run the tests.
+	Or execute the tests directly. To do so, simply go to the `build/test/` folder and run the tests.
 
-```
-$ ./performance_tests/performance_tests
-$ ./unit_tests/unit_tests
-```
+	```
+	$ ./performance_tests/performance_tests
+	$ ./unit_tests/unit_tests
+	```
