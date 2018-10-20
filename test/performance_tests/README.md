@@ -11,7 +11,7 @@ In this directory you need to type/paste this text in terminal:
 	g++ -std=c++11 -Wall performance_tests.cpp ../../src/image_function.cpp ../../src/thread_pool.cpp ../../src/function_pool.cpp performance_test_framework.cpp performance_test_helper.cpp performance_test_image_function.cpp performance_test_function_pool.cpp ../../src/penguinv/penguinv.cpp -o application
 	```
 
-- CMake
+- CMake    
 	To build the project, you will need to have CMake with minimum version of 3.10 and a compiler 
 	that support `cxx_std_11`.
 
