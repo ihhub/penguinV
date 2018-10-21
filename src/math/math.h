@@ -47,7 +47,7 @@ template <typename _Type>
 struct PointBase3D : public PointBase2D<_Type>
 {
     PointBase3D( _Type _x = 0, _Type _y = 0, _Type _z = 0 )
-        : PointBase2D<_Type>( x, y )
+        : PointBase2D<_Type>( _x, _y )
         , z( _z )
     { }
 
@@ -72,12 +72,12 @@ struct PointBase3D : public PointBase2D<_Type>
 
     PointBase3D operator + ( const PointBase3D & point ) const
     {
-        return PointBase3D( x + point.x, y + point.y, z + point.z );
+        return PointBase3D( PointBase2D<_Type>::x + point.x, PointBase2D<_Type>::y + point.y, z + point.z );
     }
 
     PointBase3D operator - ( const PointBase3D & point ) const
     {
-        return PointBase3D( x - point.x, y - point.y, z - point.z );
+        return PointBase3D( PointBase2D<_Type>::x - point.x, PointBase2D<_Type>::y - point.y, z - point.z );
     }
 
     _Type z;
