@@ -19,6 +19,6 @@ before_install:
 script:
   - mkdir build && cd build/
   - cmake ../ && cmake --build . && ctest --output-on-failure
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd cuda; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ../test/unit_tests/cuda; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
