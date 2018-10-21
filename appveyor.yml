@@ -24,15 +24,15 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
-  - cmd: cd C:\projects\penguinv\test
 
 build_script:
-  - msbuild unit_tests\unit_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-  - msbuild performance_tests\performance_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-before_test:
-  - cd unit_tests
-  - if "%platform%" == "x64" cd x64
+  - cmd: cd C:\projects\penguinv
+  - cmd: md build
+  - cmd: cd build
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%configuration% ..
+  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=%configuration% ..
+  - cmd: cmake --build . --config %configuration%
 
 test_script:
-  - cmd: Release\unit_tests.exe
+  - cmd: ctest -C %configuration% --extra-verbose
+
