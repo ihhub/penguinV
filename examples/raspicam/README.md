@@ -31,7 +31,7 @@
 	-- Generating done
 	-- Build files have been written to: /home/pi/raspicam/trunk/build
 	```
-	 If OpenCV development files are installed in your system, then  you see
+	 If OpenCV development files are installed in your system, then  you'll see
 	```
 	-- CREATE OPENCV MODULE=1
 	```
@@ -41,7 +41,7 @@
 	sudo make install
 	sudo ldconfig
 	```
-	+ Run raspicam_test to check the compilation is ok
+	+ Run raspicam_test to check if the compilation is ok
 ### Compiling example with g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash
