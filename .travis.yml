@@ -17,13 +17,8 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
 
 script:
-  - cd test/performance_tests
-  - make
-  - cd ../unit_tests
-  - make
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd cuda; fi
+  - mkdir build && cd build/
+  - cmake ../ && cmake --build . && ctest --extra-verbose
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ../test/unit_tests/cuda; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
-
-after_script: ./unit_tests
-
