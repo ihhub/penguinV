@@ -39,5 +39,4 @@ In this directory you need to type/paste this text in terminal:
 
 	```
 	$ ./performance_tests/performance_tests
-	$ ./unit_tests/unit_tests
 	```
