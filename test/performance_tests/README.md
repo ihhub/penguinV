@@ -12,7 +12,7 @@ In this directory you need to type/paste this text in terminal:
 	```
 
 - CMake    
-	To build the project, you will need to have CMake with minimum version of 3.10 and a compiler 
+	To build the project, you will need to have CMake with minimum version of 3.8 and a compiler 
 	that support `cxx_std_11`.
 
 	Then in the project directory:
