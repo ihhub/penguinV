@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "math/math.h"
 #include "image_buffer.h"
+#include "math_base.h"
 
 namespace Blob_Detection
 {
