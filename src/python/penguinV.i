@@ -13,6 +13,8 @@
 %nodefaultctor PenguinV_Image::ImageTemplate;
 %nodefaultctor Image;
 
+%feature("autodoc", "1");
+
 namespace std {
     %template(vectorUInt32) vector<uint32_t>;
 };
@@ -25,9 +27,19 @@ namespace PenguinV_Image {
 
         ImageTemplate(uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u );
         ImageTemplate( const ImageTemplate<TColorDepth> & image_ );
-        ~ImageTemplate();
+        // Missing ImageTemplate( ImageTemplate && image) as moving constructors don't make sense in python.
+        // Missing overloading of operator= as it doesn't make sense in python as everything in python is just references.
+        ~ImageTemplate(); //originally virtual, but every member function is virtual in python.
+
         void resize(uint32_t width_, uint32_t height_ );
         void clear();
+
+        TColorDepth * data(); // This doesn't wrap to return an array or list in python. The pointer is just wrapped as
+                              // an object that can't be manipulated directly in python, but it can be used with penguinV
+                              // functions such as ImageTemplate::assign().
+
+        void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ );
+
         bool empty() const;
         uint32_t width() const;
         uint32_t height() const;
@@ -49,7 +61,6 @@ namespace PenguinV_Image {
     // template instance.
 
     typedef ImageTemplate<uint8_t> Image; 
-    %feature("autodoc", "1");
     %template(Image) ImageTemplate<uint8_t>; 
 
     const uint8_t GRAY_SCALE;
@@ -60,21 +71,35 @@ namespace PenguinV_Image {
 namespace Bitmap_Operation {
 
     PenguinV_Image::Image Load ( const std::string & path);
-    void Save( const std::string & path, const PenguinV_Image::Image & image );
+    void                  Load( const std::string & path, PenguinV_Image::Image & image );
 
+    void Save( const std::string & path, const PenguinV_Image::Image & image );
+    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
+               uint32_t width, uint32_t height );
 }
 
 namespace Image_Function {
 
    using namespace PenguinV_Image;
 
-   Image ConvertToGrayScale( const Image & in); 
+   Image ConvertToGrayScale( const Image & in );
+   void  ConvertToGrayScale( const Image & in, Image & out );
+   Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+   void  ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                             uint32_t width, uint32_t height );
 
    uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
    std::vector < uint32_t > Histogram( const Image & image );
-
+   void                     Histogram( const Image & image, std::vector < uint32_t > & histogram );
+   std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
+   void                     Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                                       std::vector < uint32_t > & histogram );
    Image Threshold( const Image & in, uint8_t threshold );
+   void  Threshold( const Image & in, Image & out, uint8_t threshold );
+   Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold );
+   void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height, uint8_t threshold );
 
 }
 
