@@ -83,22 +83,5 @@ struct PointBase3D : public PointBase2D<_Type>
     _Type z;
 };
 
-namespace
-{
-    const double epsilonDouble = 1e-10;
-}
-
-template<>
-bool PointBase2D<double>::operator == ( const PointBase2D<double> & point ) const
-{
-    return fabs(x - point.x) < epsilonDouble && fabs(y - point.y) < epsilonDouble;
-}
-
-template<>
-bool PointBase3D<double>::operator == ( const PointBase3D<double> & point ) const
-{
-    return fabs(x - point.x) < epsilonDouble && fabs(y - point.y) < epsilonDouble && fabs(z - point.z) < epsilonDouble;
-}
-
 typedef PointBase2D<double> Point2d;
 typedef PointBase3D<double> Point3d;
