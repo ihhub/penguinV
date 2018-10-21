@@ -34,4 +34,5 @@ build_script:
   - cmd: cmake --build . --config %configuration%
 
 test_script:
-  - cmd: ctest -C %configuration% --output-on-failure
+  - cmd: ctest -C %configuration% --extra-verbose
+

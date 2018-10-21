@@ -27,7 +27,7 @@ target_compile_features(unit_tests_options INTERFACE cxx_std_11)
 add_library(unit_tests_warnings INTERFACE)
 if(MSVC)
     target_compile_options(unit_tests_warnings 
-                           INTERFACE /W4 /WX "/permissive-")
+                           INTERFACE /W4 /WX)
 else()
     target_compile_options(unit_tests_warnings
                            INTERFACE -Wall
