@@ -72,7 +72,7 @@ $(BIN)/%.o: ./**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)
-	@echo "Running example ..."
+	@echo "Running CUDA unit tests ..."
 	@./$(TARGET)
 clean:
 	@rm -rf $(BUILD_DIR)

@@ -5,6 +5,11 @@
 #include "unit_test_helper_opencl.h"
 #include "unit_test_image_function_opencl.h"
 
+namespace
+{
+    const PenguinV_Image::ImageOpenCL reference;
+}
+
 namespace image_function_opencl
 {
     using namespace Unit_Test;
@@ -13,7 +18,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::AbsoluteDifference( input[0], input[1] );
 
@@ -29,7 +34,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -44,7 +49,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::BitwiseAnd( input[0], input[1] );
 
@@ -59,7 +64,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -74,7 +79,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::BitwiseOr( input[0], input[1] );
 
@@ -89,7 +94,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseOr( image[0], image[1], image[2] );
 
@@ -104,7 +109,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             PenguinV_Image::Image output = Image_Function_OpenCL::BitwiseXor( input[0], input[1] );
 
@@ -119,7 +124,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseXor( image[0], image[1], image[2] );
 
@@ -134,7 +139,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
-            const PenguinV_Image::Image input = OpenCL::uniformRGBImage( intensity[0] );
+            const PenguinV_Image::Image input = uniformRGBImage( intensity[0], reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::ConvertToGrayScale( input );
 
@@ -149,7 +154,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const PenguinV_Image::Image input = OpenCL::uniformRGBImage( intensity[0] );
+            const PenguinV_Image::Image input = uniformRGBImage( intensity[0], reference );
             PenguinV_Image::ImageOpenCL output( input.width(), input.height() );
 
             output.fill( intensity[1] );
@@ -167,7 +172,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity[0] );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::ConvertToRgb( input );
 
@@ -182,7 +187,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity[0] );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], reference );
             PenguinV_Image::ImageOpenCL output( input.width(), input.height(), PenguinV_Image::RGB );
 
             output.fill( intensity[1] );
@@ -200,7 +205,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image input = uniformImage( intensity, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -221,7 +226,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -242,7 +247,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image image = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image image = uniformImage( intensity, reference );
 
             const std::vector < uint32_t > histogram = Image_Function_OpenCL::Histogram( image );
 
@@ -258,7 +263,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image image = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image image = uniformImage( intensity, reference );
 
             std::vector < uint32_t > histogram;
             Image_Function_OpenCL::Histogram( image, histogram );
@@ -275,7 +280,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image input = uniformImage( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::Invert( input );
 
@@ -290,7 +295,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Invert( input[0], input[1] );
 
@@ -358,7 +363,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::Maximum( input[0], input[1] );
 
@@ -374,7 +379,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Maximum( image[0], image[1], image[2] );
 
@@ -389,7 +394,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::Minimum( input[0], input[1] );
 
@@ -405,7 +410,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Minimum( image[0], image[1], image[2] );
 
@@ -420,7 +425,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::Subtract( input[0], input[1] );
 
@@ -436,7 +441,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < PenguinV_Image::Image > image = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Subtract( image[0], image[1], image[2] );
 
@@ -451,7 +456,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image input = uniformImage( intensity, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -468,7 +473,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -485,7 +490,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = OpenCL::uniformImage( intensity );
+            const PenguinV_Image::Image input = uniformImage( intensity, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
@@ -503,7 +508,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < PenguinV_Image::Image > input = OpenCL::uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );

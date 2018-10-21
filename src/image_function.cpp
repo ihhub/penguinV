@@ -443,11 +443,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        width = width * colorCount;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
-            const uint8_t * outXEnd = outX + width * colorCount;
+            const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; outX += colorCount, ++inX )
                 memset( outX, (*inX), sizeof( uint8_t ) * colorCount );

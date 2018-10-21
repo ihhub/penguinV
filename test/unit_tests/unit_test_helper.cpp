@@ -10,9 +10,9 @@ namespace
         return Unit_Test::randomValue<uint32_t>( 1, 2048 );
     }
 
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value, const PenguinV_Image::Image & reference )
     {
-        PenguinV_Image::Image image( width, height, colorCount );
+        PenguinV_Image::Image image = reference.generate( width, height, colorCount );
 
         image.fill( value );
 
@@ -22,34 +22,34 @@ namespace
 
 namespace Unit_Test
 {
-    PenguinV_Image::Image uniformImage()
+    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( randomValue<uint8_t>( 256 ) );
+        return uniformImage( randomValue<uint8_t>( 256 ), reference );
     }
 
-    PenguinV_Image::Image uniformImage( uint8_t value )
+    PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value );
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
     }
 
-    PenguinV_Image::Image uniformRGBImage()
+    PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
     {
-        return uniformRGBImage( randomValue<uint8_t>( 256 ) );
+        return uniformRGBImage( randomValue<uint8_t>( 256 ), reference );
     }
 
-    PenguinV_Image::Image uniformRGBImage( uint8_t value )
+    PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value );
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value, reference );
     }
 
-    PenguinV_Image::Image blackImage()
+    PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 0u );
+        return uniformImage( 0u, reference );
     }
 
-    PenguinV_Image::Image whiteImage()
+    PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 255u );
+        return uniformImage( 255u, reference );
     }
 
     PenguinV_Image::Image randomImage()
@@ -96,7 +96,7 @@ namespace Unit_Test
         return image;
     }
 
-    std::vector < PenguinV_Image::Image > uniformImages( uint32_t images )
+    std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference )
     {
         if( images == 0 )
             throw imageException( "Invalid parameter" );
@@ -105,22 +105,22 @@ namespace Unit_Test
         for( size_t i = 0; i < intesity.size(); ++i )
             intesity[i] = randomValue<uint8_t>( 256 );
 
-        return uniformImages( intesity );
+        return uniformImages( intesity, reference );
     }
 
-    std::vector < PenguinV_Image::Image > uniformImages( const std::vector<uint8_t> & intensityValue )
+    std::vector < PenguinV_Image::Image > uniformImages( const std::vector<uint8_t> & intensityValue, const PenguinV_Image::Image & reference )
     {
         if( intensityValue.size() == 0 )
             throw imageException( "Invalid parameter" );
 
         std::vector < PenguinV_Image::Image > image;
 
-        image.push_back( uniformImage( intensityValue[0] ) );
+        image.push_back( uniformImage( intensityValue[0], reference ) );
 
         image.resize( intensityValue.size() );
 
         for( size_t i = 1; i < image.size(); ++i ) {
-            image[i].resize( image[0].width(), image[0].height() );
+            image[i] = reference.generate( image[0].width(), image[0].height() );
             image[i].fill( intensityValue[i] );
         }
 

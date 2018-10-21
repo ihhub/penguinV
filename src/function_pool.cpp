@@ -181,7 +181,30 @@ namespace Function_Pool
 
         void getProjection( std::vector <uint32_t> & projection_ )
         {
-            _getArray( projection, projection_ );
+            if( projection.empty() )
+                throw imageException( "Projection array is empty" );
+
+            if ( projection_.size() == projection.front().size() ) {
+                _getArray( projection, projection_ );
+            }
+            else {
+                size_t totalSize = 0u;
+                for( size_t i = 0; i < projection.size(); ++i )
+                    totalSize += projection[i].size();
+
+                if ( projection_.size() != totalSize )
+                    throw imageException( "Projection array is invalid" );
+
+                uint32_t * out = projection_.data();
+                for( size_t i = 0; i < projection.size(); ++i ) {
+                    std::vector < uint32_t >::const_iterator in  = projection[i].begin();
+                    std::vector < uint32_t >::const_iterator end = projection[i].end();
+
+                    for( ; in != end; ++in, ++out )
+                        *out = *in;
+                }
+                projection.clear(); // to guarantee that no one can use it second time
+            }
         }
 
         uint32_t getSum()
@@ -380,6 +403,8 @@ namespace Function_Pool
             _dataOut.resize( _infoIn1->_size() );
             _dataIn.horizontalProjection = horizontal;
             _process( _ProjectionProfile );
+
+            projection.resize( horizontal ? width : height );
             _dataOut.getProjection( projection );
         }
 
