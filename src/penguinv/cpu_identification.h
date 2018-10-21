@@ -18,7 +18,7 @@
             #endif
         #endif
     #endif
-#elif defined(__APPLE__) || defined(__linux__) // MacOS
+#elif defined(__APPLE__) || defined(__linux__) // MacOS and Linux
 
 #include "cpu_id_unix.h"
 
