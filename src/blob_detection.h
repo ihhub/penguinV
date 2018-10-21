@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "math\math.h"
+#include "math/math.h"
 #include "image_buffer.h"
 
 namespace Blob_Detection
