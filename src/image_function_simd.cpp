@@ -54,6 +54,44 @@ namespace avx
         }
     }
 
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd zero = _mm256_setzero_si256();
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += rowSize ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+            const simd * dst_const = reinterpret_cast <const simd*> (outY);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            for( ; src != srcEnd; ++src, dst+=4, dst_const+=4) {
+                simd data = _mm256_loadu_si256( src );
+
+                const simd dataLo  = _mm256_unpacklo_epi8( data, zero );
+                const simd dataHi  = _mm256_unpackhi_epi8( data, zero );
+
+                const simd data_1 = _mm256_unpacklo_epi16( dataLo, zero );
+                const simd data_2 = _mm256_unpackhi_epi16( dataLo, zero );
+                const simd data_3 = _mm256_unpacklo_epi16( dataHi, zero );
+                const simd data_4 = _mm256_unpackhi_epi16( dataHi, zero );
+
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_1, _mm256_loadu_si256( dst_const ) ) );
+                _mm256_storeu_si256( dst+1, _mm256_add_epi32( data_2, _mm256_loadu_si256( dst_const+1 ) ) );
+                _mm256_storeu_si256( dst+2, _mm256_add_epi32( data_3, _mm256_loadu_si256( dst_const+2 ) ) );
+                _mm256_storeu_si256( dst+3, _mm256_add_epi32( data_4, _mm256_loadu_si256( dst_const+3 ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX   = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }   
+        }
+    }
+
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                      uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1253,6 +1291,39 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector<uint32_t> & result, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+        const uint8_t colorCount = image.colorCount();
+
+        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
+            AVX_CODE( Accumulate( image, x, y, width, height, result, sse_function ); )
+
+            Image_Function::Accumulate(image, x, y, width, height, result);
+            return;
+        }
+
+        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::VerifyGrayScaleImage( image );
+
+        if( result.size() != width * height * colorCount )
+            throw imageException( "Array size is not equal to image ROI (width * height) size" );
+
+        const uint32_t rowSize = image.rowSize();
+
+        const uint8_t * imageY    = image.data() + y * rowSize + x * colorCount;
+        const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        uint32_t * outY = &(result.front());
+        width = width * colorCount;
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -1656,6 +1727,16 @@ namespace Image_Function_Simd
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         simd::AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    void Accumulate( const Image & image, std::vector < uint32_t > & result )
+    {
+        Image_Function_Helper::Accumulate( Accumulate, image, result );
+    }
+
+    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+    {
+        simd::Accumulate(image, x, y, width, height, result, simd::actualSimdType());
     }
 
     Image BitwiseAnd( const Image & in1, const Image & in2 )
