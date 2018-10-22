@@ -5,95 +5,60 @@
 
 namespace
 {
+    #define TEST_FUNCTION_LOOP( testFunction )                         \
+        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) { \
+            timer.start();                                             \
+            testFunction;                                              \
+            timer.stop();                                              \
+        }
+
     void AbsoluteDifference( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] ) )
     }
 
     void BitwiseAnd( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] ) )
     }
 
     void BitwiseOr( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] ) )
     }
 
     void BitwiseXor( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] ) )
     }
 
     void Flip( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Flip( image[0], image[1], true, true );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Flip( image[0], image[1], true, true ) )
     }
 
     void Histogram( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 1, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Histogram( image[0] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Histogram( image[0] ) )
     }
 
     void Invert( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Invert( image[0], image[1] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Invert( image[0], image[1] ) )
     }
 
     void LookupTable( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
@@ -101,79 +66,42 @@ namespace
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
         const std::vector<uint8_t> table( 256, 0);
 
-
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::LookupTable( image[0], image[1], table );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::LookupTable( image[0], image[1], table ) )
     }
 
     void Maximum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Maximum( image[0], image[1], image[2] ) )
     }
 
     void Minimum( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Minimum( image[0], image[1], image[2] ) )
     }
 
     void Subtract( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 3, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Subtract( image[0], image[1], image[2] ) )
     }
 
     void Threshold( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Threshold( image[0], image[1], 128 );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Threshold( image[0], image[1], 128 ) )
     }
 
     void ThresholdDouble( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            Image_Function_Cuda::Threshold( image[0], image[1], 64, 192 );
-
-            timer.stop();
-        }
+        TEST_FUNCTION_LOOP( Image_Function_Cuda::Threshold( image[0], image[1], 64, 192 ) )
     }
 }
 

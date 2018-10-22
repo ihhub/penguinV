@@ -18,21 +18,7 @@
             #endif
         #endif
     #endif
-#elif __APPLE__ // MacOS
-
-#include "cpu_id_unix.h"
-
-    #ifdef __arm__
-        #define PENGUINV_NEON_SET
-    #elif __SSE2__
-        #define PENGUINV_SSE_SET
-
-        #ifdef __AVX2__
-            #define PENGUINV_AVX_SET
-        #endif
-    #endif
-
-#elif __linux__ // Linux
+#elif defined(__APPLE__) || defined(__linux__) // MacOS and Linux
 
 #include "cpu_id_unix.h"
 

@@ -3,6 +3,7 @@
 #include "image_function.h"
 #include "image_function_helper.h"
 #include "parameter_validation.h"
+#include "penguinv/cpu_identification.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>

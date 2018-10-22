@@ -389,13 +389,6 @@ namespace Function_Pool
             _process( _Minimum );
         }
 
-        void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height )
-        {
-            _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            _process( _Normalize );
-        }
-
         void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                 std::vector < uint32_t > & projection )
         {
@@ -475,7 +468,6 @@ namespace Function_Pool
             _LookupTable,
             _Maximum,
             _Minimum,
-            _Normalize,
             _ProjectionProfile,
             _Resize,
             _RgbToBgr,
@@ -568,11 +560,6 @@ namespace Function_Pool
                                        _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
-                    break;
-                case _Normalize:
-                    penguinV::Normalize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ProjectionProfile:
                     penguinV::ProjectionProfile(
@@ -1016,7 +1003,33 @@ namespace Function_Pool
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        FunctionTask().Normalize( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        const std::vector<uint32_t> histogram = Histogram( in, startXIn, startYIn, width, height );
+        size_t minimum = 255u;
+        size_t maximum = 0u;
+
+        for ( size_t i = 0u; i < histogram.size(); ++i ) {
+            if ( histogram[i] > 0u ) {
+                if ( maximum < i )
+                    maximum = i;
+                if ( minimum > i )
+                    minimum = i;
+            }
+        }
+
+        if ( minimum >= maximum ) {
+            penguinV::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        }
+        else {
+            const double correction = 255.0 / (maximum - minimum);
+
+            // We precalculate all values and store them in lookup table
+            std::vector < uint8_t > value( 256 );
+
+            for( uint16_t i = 0; i < 256; ++i )
+                value[i] = static_cast <uint8_t>((i - minimum) * correction + 0.5);
+
+            FunctionTask().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+        }
     }
 
     std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
