@@ -62,10 +62,9 @@ namespace avx
         for( ; imageY != imageYEnd; imageY += rowSize, outY += rowSize ) {
             const simd * src    = reinterpret_cast <const simd*> (imageY);
             const simd * srcEnd = src + simdWidth;
-            const simd * dst_const = reinterpret_cast <const simd*> (outY);
-            simd       * dst  = reinterpret_cast <simd*> (outY);
+            simd       * dst    = reinterpret_cast <simd*> (outY);
 
-            for( ; src != srcEnd; ++src, dst+=4, dst_const+=4) {
+            for( ; src != srcEnd; ++src ) {
                 simd data = _mm256_loadu_si256( src );
 
                 const simd dataLo  = _mm256_unpacklo_epi8( data, zero );
@@ -76,10 +75,14 @@ namespace avx
                 const simd data_3 = _mm256_unpacklo_epi16( dataHi, zero );
                 const simd data_4 = _mm256_unpackhi_epi16( dataHi, zero );
 
-                _mm256_storeu_si256( dst, _mm256_add_epi32( data_1, _mm256_loadu_si256( dst_const ) ) );
-                _mm256_storeu_si256( dst+1, _mm256_add_epi32( data_2, _mm256_loadu_si256( dst_const+1 ) ) );
-                _mm256_storeu_si256( dst+2, _mm256_add_epi32( data_3, _mm256_loadu_si256( dst_const+2 ) ) );
-                _mm256_storeu_si256( dst+3, _mm256_add_epi32( data_4, _mm256_loadu_si256( dst_const+3 ) ) );
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_1, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_2, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_3, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_4, _mm256_loadu_si256( dst ) ) );
+                ++dst;
             }
 
             if( nonSimdWidth > 0 ) {
@@ -1297,9 +1300,7 @@ if ( simdType == neon_function ) { \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
-            AVX_CODE( Accumulate( image, x, y, width, height, result, sse_function ); )
-
+        if( (simdType != avx_function) || ((width * height * colorCount) < simdSize) ) {
             Image_Function::Accumulate(image, x, y, width, height, result);
             return;
         }
