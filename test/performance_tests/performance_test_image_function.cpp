@@ -123,11 +123,10 @@ namespace Function_Template
 
     std::pair < double, double > template_Accumulate( AccumulateFunction Accumulate , const std::string & namespaceName, uint32_t size )
     {
-        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 1, size, size );
-        std::vector < uint32_t > result = {0};
-        result.resize(size*size*image[0].colorCount());
+        const PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
+        std::vector < uint32_t > result( size * size * image.colorCount(), 0u );
 
-        TEST_FUNCTION_LOOP( Accumulate( image[0], result ), namespaceName )
+        TEST_FUNCTION_LOOP( Accumulate( image, result ), namespaceName )
     }
 
     std::pair < double, double > template_BitwiseAnd( BitwiseAndFunction BitwiseAnd, const std::string & namespaceName, uint32_t size )
