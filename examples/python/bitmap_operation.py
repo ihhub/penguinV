@@ -53,8 +53,8 @@ except penguinV.ImageException as err:
 
         print(err)
 
-except:
+except BaseException as err: 
 
         # Something more serious has gone wrong.
 
-        print('Unknown Error.') 
+        print('Unknown Error ', err) 
