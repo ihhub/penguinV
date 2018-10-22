@@ -121,6 +121,15 @@ namespace Function_Template
         TEST_FUNCTION_LOOP( AbsoluteDifference( image[0], image[1], image[2] ), namespaceName )
     }
 
+    std::pair < double, double > template_Accumulate( AccumulateFunction Accumulate , const std::string & namespaceName, uint32_t size )
+    {
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 1, size, size );
+        std::vector < uint32_t > result = {0};
+        result.resize(size*size*image[0].colorCount());
+
+        TEST_FUNCTION_LOOP( Accumulate( image[0], result ), namespaceName )
+    }
+
     std::pair < double, double > template_BitwiseAnd( BitwiseAndFunction BitwiseAnd, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
@@ -306,6 +315,7 @@ namespace image_function
     const std::string namespaceName = "image_function";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
@@ -365,6 +375,7 @@ namespace image_function_avx
     const std::string namespaceName = "image_function_avx";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
