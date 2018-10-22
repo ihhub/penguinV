@@ -44,4 +44,7 @@ target_link_libraries(${TARGET_NAME}
                       PRIVATE ${TARGET_NAME}_options
                               ${TARGET_NAME}_warnings
                               OpenCL::OpenCL)
+if(MSVC)
+    target_compile_definitions(${TARGET_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
