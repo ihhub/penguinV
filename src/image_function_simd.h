@@ -12,6 +12,9 @@ namespace Image_Function_Simd
                               uint32_t width, uint32_t height );
     void  AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                               Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+    
+    void Accumulate( const Image & image, std::vector < uint32_t > & result );
+    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result );
 
     Image BitwiseAnd( const Image & in1, const Image & in2 );
     void  BitwiseAnd( const Image & in1, const Image & in2, Image & out );
