@@ -14,12 +14,6 @@ set(SRCS
 set(TARGET_NAME unit_tests_opencl)
 
 find_package(OpenCL)
-if (OpenCL_FOUND)
-    message(STATUS "OpenCL version : ${OpenCL_VERSION_STRING}")
-    message(STATUS "OpenCL include dir: ${OpenCL_INCLUDE_DIR}")
-    message(STATUS "OpenCL library dir: ${OpenCL_LIBRARY}")
-endif (OpenCL_FOUND)
-
 if (NOT OpenCL_FOUND)
     message(STATUS "OpenCL was not found, searching for CUDA")
     find_package(CUDA)
@@ -30,17 +24,42 @@ if (NOT OpenCL_FOUND)
 
         find_path(OpenCL_INCLUDE_DIR
                     NAMES CL/cl.h OpenCL/cl.h
-                    PATHS ENV AMDAPPSDKROOT
-                    PATH_SUFFIXES include)
+                    PATHS 
+                        ENV AMDAPPSDKROOT
+                        ENV CUDA_PATH
+                    PATH_SUFFIXES 
+                        include
+                        OpenCL/common/inc)
         find_library(OpenCL_LIBRARY
                     NAMES OpenCL
-                    PATHS ENV AMDAPPSDKROOT
-                    PATH_SUFFIXES lib/x86_64 lib/x64)
+                    PATHS 
+                        ENV AMDAPPSDKROOT
+                        ENV CUDA_PATH
+                    PATH_SUFFIXES lib lib64)
         set(OpenCL_LIBRARIES ${OpenCL_LIBRARY})
         set(OpenCL_INCLUDE_DIRS ${OpenCL_INCLUDE_DIR})
-        add_library(OpenCL::OpenCL UNKNOWN IMPORTED)
-        set_target_properties(OpenCL::OpenCL PROPERTIES IMPORTED_LOCATION "${OpenCL_LIBRARY}")
-        set_target_properties(OpenCL::OpenCL PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${OpenCL_INCLUDE_DIRS}")
+        include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+        find_package_handle_standard_args(
+            OpenCL
+            FOUND_VAR OpenCL_FOUND
+            REQUIRED_VARS OpenCL_LIBRARY OpenCL_INCLUDE_DIR
+            VERSION_VAR OpenCL_VERSION_STRING)
+
+        mark_as_advanced(OpenCL_INCLUDE_DIR OpenCL_LIBRARY)
+
+        if(OpenCL_FOUND AND NOT TARGET OpenCL::OpenCL)
+            if(OpenCL_LIBRARY MATCHES "/([^/]+)\\.framework$")
+                add_library(OpenCL::OpenCL INTERFACE IMPORTED)
+                set_target_properties(OpenCL::OpenCL PROPERTIES
+                INTERFACE_LINK_LIBRARIES "${OpenCL_LIBRARY}")
+            else()
+                add_library(OpenCL::OpenCL UNKNOWN IMPORTED)
+                set_target_properties(OpenCL::OpenCL PROPERTIES
+                IMPORTED_LOCATION "${OpenCL_LIBRARY}")
+            endif()
+        set_target_properties(OpenCL::OpenCL PROPERTIES
+            INTERFACE_INCLUDE_DIRECTORIES "${OpenCL_INCLUDE_DIRS}")
+        endif()
     endif (CUDA_FOUND)
 endif (NOT OpenCL_FOUND)
 
