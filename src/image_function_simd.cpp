@@ -59,7 +59,9 @@ namespace avx
     {
         simd zero = _mm256_setzero_si256();
 
-        for( ; imageY != imageYEnd; imageY += rowSize, outY += rowSize ) {
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
             const simd * src    = reinterpret_cast <const simd*> (imageY);
             const simd * srcEnd = src + simdWidth;
             simd       * dst    = reinterpret_cast <simd*> (outY);
@@ -88,7 +90,7 @@ namespace avx
             if( nonSimdWidth > 0 ) {
                 const uint8_t * imageX    = imageY + totalSimdWidth;
                 const uint8_t * imageXEnd = imageX + nonSimdWidth;
-                uint32_t      * outX   = outY + totalSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
 
                 for( ; imageX != imageXEnd; ++imageX, ++outX )
                     (*outX) += (*imageX);
@@ -1316,7 +1318,7 @@ if ( simdType == neon_function ) { \
         const uint8_t * imageY    = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        uint32_t * outY = &(result.front());
+        uint32_t * outY = result.data();
         width = width * colorCount;
 
         const uint32_t simdWidth = width / simdSize;
