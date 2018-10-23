@@ -21,7 +21,7 @@ find_package(Threads REQUIRED)
 
 find_package(OpenCL QUIET)
 if (OpenCL_FOUND)
-    add_subdirectory(unit_tests/opencl)
+    add_subdirectory(opencl)
 endif(OpenCL_FOUND)
 
 # Link this 'library' to set the c++ standard / compile-time options requested
