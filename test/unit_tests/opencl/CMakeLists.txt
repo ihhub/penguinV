@@ -27,6 +27,20 @@ if (NOT OpenCL_FOUND)
         message (STATUS "CUDA include: ${CUDA_INCLUDE_DIRS}")
         message (STATUS "CUDA libs: ${CUDA_TOOLKIT_ROOT_DIR}/lib64")
         message (STATUS "CUDA version: ${CUDA_VERSION}")
+
+        find_path(OpenCL_INCLUDE_DIR
+                    NAMES CL/cl.h OpenCL/cl.h
+                    PATHS ENV AMDAPPSDKROOT
+                    PATH_SUFFIXES include)
+        find_library(OpenCL_LIBRARY
+                    NAMES OpenCL
+                    PATHS ENV AMDAPPSDKROOT
+                    PATH_SUFFIXES lib/x86_64 lib/x64)
+        set(OpenCL_LIBRARIES ${OpenCL_LIBRARY})
+        set(OpenCL_INCLUDE_DIRS ${OpenCL_INCLUDE_DIR})
+        add_library(OpenCL::OpenCL UNKNOWN IMPORTED)
+        set_target_properties(OpenCL::OpenCL PROPERTIES IMPORTED_LOCATION "${OpenCL_LIBRARY}")
+        set_target_properties(OpenCL::OpenCL PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${OpenCL_INCLUDE_DIRS}")
     endif (CUDA_FOUND)
 endif (NOT OpenCL_FOUND)
 
