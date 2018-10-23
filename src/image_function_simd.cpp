@@ -1345,7 +1345,7 @@ if ( simdType == neon_function ) { \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType != avx_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || (simdType == neon_function) || ((width * height * colorCount) < simdSize) ) {
             Image_Function::Accumulate(image, x, y, width, height, result);
             return;
         }
