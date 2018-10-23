@@ -519,6 +519,49 @@ namespace sse
         }
     }
 
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd zero = _mm_setzero_si128();
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+            simd       * dst    = reinterpret_cast <simd*> (outY);
+
+            for( ; src != srcEnd; ++src ) {
+                simd data = _mm_loadu_si128( src );
+
+                const simd dataLo  = _mm_unpacklo_epi8( data, zero );
+                const simd dataHi  = _mm_unpackhi_epi8( data, zero );
+
+                const simd data_1 = _mm_unpacklo_epi16( dataLo, zero );
+                const simd data_2 = _mm_unpackhi_epi16( dataLo, zero );
+                const simd data_3 = _mm_unpacklo_epi16( dataHi, zero );
+                const simd data_4 = _mm_unpackhi_epi16( dataHi, zero );
+
+                _mm_storeu_si128( dst, _mm_add_epi32( data_1, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_2, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_3, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_4, _mm_loadu_si128( dst ) ) );
+                ++dst;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }   
+        }
+    }
+
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                      uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1326,6 +1369,7 @@ if ( simdType == neon_function ) { \
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
         AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
