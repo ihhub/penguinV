@@ -1942,6 +1942,7 @@ namespace sse
     const std::string namespaceName = "image_function_sse";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
+    SET_FUNCTION_2_FORMS( Accumulate )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
