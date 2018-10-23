@@ -1,3 +1,2 @@
 add_subdirectory(performance_tests)
 add_subdirectory(unit_tests)
-add_subdirectory(unit_tests/opencl)
