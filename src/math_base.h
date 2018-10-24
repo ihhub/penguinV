@@ -2,8 +2,6 @@
 
 #include <cmath>
 
-
-
 namespace
 {
     const double epsilonDouble = 1e-10;
@@ -19,9 +17,7 @@ namespace
     {
         return fabs( value1 - value2 ) < epsilonDouble;
     }
-
 }
-
 
 template <typename _Type>
 struct PointBase2D
@@ -33,7 +29,7 @@ struct PointBase2D
 
     virtual bool operator == ( const PointBase2D & point ) const
     {
-        return isEqual(x, point.x) && isEqual(y, point.y);
+        return isEqual( x, point.x ) && isEqual( y, point.y );
     }
 
     PointBase2D & operator += ( const PointBase2D & point )
@@ -74,7 +70,7 @@ struct PointBase3D : public PointBase2D<_Type>
 
     virtual bool operator == ( const PointBase3D & point ) const
     {
-        return PointBase2D<_Type>::operator==( point ) && isEqual(z, point.z);
+        return PointBase2D<_Type>::operator==( point ) && isEqual( z, point.z );
     }
 
     PointBase3D & operator += ( const PointBase3D & point )
