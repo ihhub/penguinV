@@ -148,7 +148,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 
-- **Accumulate** [_Namespaces: **Image_Function**_]
+- **Accumulate** [_Namespaces: **Image_Function, Image_Function_Simd**_]
 
 	##### Syntax:
 	```cpp
