@@ -5,7 +5,7 @@
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
 
-int main() 
+int main()
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
