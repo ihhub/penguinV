@@ -21,7 +21,7 @@ namespace
 
             uint8_t ** startPos = new uint8_t *[2 * width];
             uint8_t ** endPos = startPos + width;
-            
+
             const uint32_t rowSize = image.rowSize();
             uint8_t * imageY    = image.data() + y * rowSize + x;
             uint8_t * imageYEnd = imageY + height * rowSize;
