@@ -6,11 +6,10 @@ namespace bitmap_operation
 {
     bool WhiteGrayScaleImage()
     {
-        PenguinV_Image::Image original = Unit_Test::whiteImage();
-
+        const PenguinV_Image::Image original = Unit_Test::whiteImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
-        PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
+        const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
@@ -21,40 +20,41 @@ namespace bitmap_operation
 
     bool BlackGrayScaleImage()
     {
-        PenguinV_Image::Image original = Unit_Test::blackImage();
+        const PenguinV_Image::Image original = Unit_Test::blackImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
-        PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
 
-        if (original.height() != loaded.height() || 
-            original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() || 
-            !Unit_Test::verifyImage( loaded, 0u ))
+        const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
+
+        if( original.height() != loaded.height() || original.width() != loaded.width() ||
+            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
             return false;
+
         return true;
     }
 
     bool RandomRGBImage()
     {
-        PenguinV_Image::Image original = Unit_Test::randomImage();
+        const PenguinV_Image::Image original = Unit_Test::randomImage();
         Bitmap_Operation::Save("bitmap.bmp", original);
-        PenguinV_Image::Image loaded = Bitmap_Operation::Load("bitmap.bmp");
 
-        if ((original.height() != loaded.height()) ||
-            (original.width() != loaded.width()) ||
-            (original.colorCount() != loaded.colorCount()))
+        const PenguinV_Image::Image loaded = Bitmap_Operation::Load("bitmap.bmp");
+
+        if( original.height() != loaded.height() || original.width() != loaded.width() ||
+            original.colorCount() != loaded.colorCount() )
             return false;
-        else
-        {
-            uint32_t rowsizeDiff = loaded.rowSize() - original.rowSize();
-            for (size_t row = 0; row < original.height(); row++)
-            {
-                if (memcmp(&original.data()[row * original.width()],
-                           &loaded.data()[row * (original.width() + 
-                                                 rowsizeDiff)],
-                           original.width()))
-                    return false;
-            }
+
+        const uint32_t rowSizeIn  = original.rowSize();
+        const uint32_t rowSizeOut = loaded.rowSize();
+        const uint32_t width = original.width();
+        const uint8_t * inY  = original.data();
+        const uint8_t * outY = loaded.data();
+        const uint8_t * inYEnd = inY + rowSizeIn + original.height();
+        
+        for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+            if ( memcmp( inY, outY, width ) != 0 )
+                return false;
         }
+
         return true;
     }
 }
@@ -62,10 +62,7 @@ namespace bitmap_operation
 
 void addTests_Bitmap( UnitTestFramework & framework )
 {
-    framework.add(bitmap_operation::WhiteGrayScaleImage, 
-                  "Load and save white gray-scale image");
-    framework.add(bitmap_operation::BlackGrayScaleImage, 
-                  "Load and save black gray-scale image");
-    framework.add(bitmap_operation::RandomRGBImage, 
-                  "Load and save random RGB image");
+    framework.add(bitmap_operation::WhiteGrayScaleImage, "Load and save white gray-scale image");
+    framework.add(bitmap_operation::BlackGrayScaleImage, "Load and save black gray-scale image");
+    framework.add(bitmap_operation::RandomRGBImage,      "Load and save random RGB image");
 }
