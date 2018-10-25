@@ -19,7 +19,8 @@ namespace
         if( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);
 
-            uint8_t ** imageWPos = new uint8_t *[width*2 + 1];
+            uint8_t ** startPos = new uint8_t *[2 * width];
+            uint8_t ** endPos = startPos + width;
             
             const uint32_t rowSize = image.rowSize();
             uint8_t * imageY    = image.data() + y * rowSize + x;
@@ -38,15 +39,14 @@ namespace
                 for( ; imageX != imageXEnd; ++imageX ) {
                     if( (*imageX) != previousValue ) {
                         if( imageX - imageXStart < dilateX )
-                            imageWPos[pairCount] = imageXStart;
+                            startPos[pairCount] = imageXStart;
                         else
-                            imageWPos[pairCount] = imageX - dilateX;
+                            startPos[pairCount] = imageX - dilateX;
 
-                        endPos = width + pairCount; 
                         if( imageXEnd - imageX < dilateX )
-                            imageWPos[endPos] = imageXEnd;
+                            endPos[pairCount] = imageXEnd;
                         else
-                            imageWPos[endPos] = imageX + dilateX;
+                            endPos[pairCount] = imageX + dilateX;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -54,19 +54,20 @@ namespace
                 }
 
                 for( uint32_t i = 0u; i < pairCount; ++i ) {
-                    imageX    = imageWPos[i];
-                    imageXEnd = imageWPos[i + width];
+                    imageX    = startPos[i];
+                    imageXEnd = endPos[i];
 
                     for( ; imageX != imageXEnd; ++imageX )
                         (*imageX) = value;
                 }
             }
 
-            delete[] imageWPos;
+            delete[] startPos;
         }
 
         if( dilationY > 0u ) {
-            uint8_t ** imageHPos = new uint8_t *[height*2 + 1];
+            uint8_t ** startPos = new uint8_t *[2 * height];
+            uint8_t ** endPos = startPos + height;
 
             const uint32_t rowSize = image.rowSize();
             uint8_t * imageX    = image.data() + y * rowSize + x;
@@ -87,15 +88,14 @@ namespace
                         const uint32_t rowId = static_cast<uint32_t>(imageY - imageYStart) / rowSize;
 
                         if( rowId < dilationY )
-                            imageHPos[pairCount] = imageYStart;
+                            startPos[pairCount] = imageYStart;
                         else
-                            imageHPos[pairCount] = imageY - dilationY * rowSize;
+                            startPos[pairCount] = imageY - dilationY * rowSize;
 
-                        endPos = height + pairCount;
                         if( height - rowId < dilationY )
-                            imageHPos[endPos] = imageYEnd;
+                            endPos[pairCount] = imageYEnd;
                         else
-                            imageHPos[endPos] = imageY + dilationY * rowSize;
+                            endPos[pairCount] = imageY + dilationY * rowSize;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -103,15 +103,15 @@ namespace
                 }
 
                 for( uint32_t i = 0u; i < pairCount; ++i ) {
-                    imageY    = imageHPos[i];
-                    imageYEnd = imageHPos[i + height];
+                    imageY    = startPos[i];
+                    imageYEnd = endPos[i];
 
                     for( ; imageY != imageYEnd; imageY += rowSize )
                         (*imageY) = value;
                 }
             }
 
-            delete[] imageHPos;
+            delete[] startPos;
         }
     }
 }
