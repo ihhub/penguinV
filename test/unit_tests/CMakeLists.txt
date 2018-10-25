@@ -19,6 +19,11 @@ set(SRCS
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+find_package(OpenCL QUIET)
+if (OpenCL_FOUND)
+    add_subdirectory(opencl)
+endif(OpenCL_FOUND)
+
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(unit_tests_options INTERFACE)
 target_compile_features(unit_tests_options INTERFACE cxx_std_11)
