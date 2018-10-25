@@ -45,7 +45,7 @@ namespace bitmap_operation
 
         const uint32_t rowSizeIn  = original.rowSize();
         const uint32_t rowSizeOut = loaded.rowSize();
-        const uint32_t width = original.width();
+        const uint32_t width = original.width() * original.colorCount();
         const uint8_t * inY  = original.data();
         const uint8_t * outY = loaded.data();
         const uint8_t * inYEnd = inY + rowSizeIn + original.height();
