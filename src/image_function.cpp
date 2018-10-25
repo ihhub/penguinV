@@ -27,6 +27,7 @@ namespace
 
             for( ; imageY != imageYEnd; imageY += rowSize ) {
                 uint32_t pairCount = 0u;
+                uint32_t endPos = 0u;
 
                 uint8_t previousValue = *imageY;
 
@@ -41,10 +42,11 @@ namespace
                         else
                             imageWPos[pairCount] = imageX - dilateX;
 
+                        endPos = width + pairCount; 
                         if( imageXEnd - imageX < dilateX )
-                            imageWPos[pairCount + width] = imageXEnd;
+                            imageWPos[endPos] = imageXEnd;
                         else
-                            imageWPos[pairCount + width] = imageX + dilateX;
+                            imageWPos[endPos] = imageX + dilateX;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -72,6 +74,7 @@ namespace
 
             for( ; imageX != imageXEnd; ++imageX ) {
                 uint32_t pairCount = 0u;
+                uint32_t endPos = 0u;
 
                 uint8_t previousValue = *imageX;
 
@@ -88,10 +91,11 @@ namespace
                         else
                             imageHPos[pairCount] = imageY - dilationY * rowSize;
 
+                        endPos = height + pairCount;
                         if( height - rowId < dilationY )
-                            imageHPos[pairCount + height] = imageYEnd;
+                            imageHPos[endPos] = imageYEnd;
                         else
-                            imageHPos[pairCount + height] = imageY + dilationY * rowSize;
+                            imageHPos[endPos] = imageY + dilationY * rowSize;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
