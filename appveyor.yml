@@ -29,8 +29,8 @@ build_script:
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
-  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DCMAKE_BUILD_TYPE=%configuration% ..
-  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=%configuration% ..
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DPENGUINV_BUILD_UNIT_TEST_OPENCL=OFF ..
+  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" -DPENGUINV_BUILD_UNIT_TEST_OPENCL=OFF ..
   - cmd: cmake --build . --config %configuration%
 
 test_script:
