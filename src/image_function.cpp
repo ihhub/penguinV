@@ -28,7 +28,6 @@ namespace
 
             for( ; imageY != imageYEnd; imageY += rowSize ) {
                 uint32_t pairCount = 0u;
-                uint32_t endPos = 0u;
 
                 uint8_t previousValue = *imageY;
 
@@ -75,7 +74,6 @@ namespace
 
             for( ; imageX != imageXEnd; ++imageX ) {
                 uint32_t pairCount = 0u;
-                uint32_t endPos = 0u;
 
                 uint8_t previousValue = *imageX;
 
