@@ -10,8 +10,6 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
-        if( dilationX == 0u && dilationY == 0u )
-            return;
 
         if( dilationX > width / 2 )
             dilationX = width / 2;
@@ -21,9 +19,8 @@ namespace
         if( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);
 
-            uint8_t ** startPos = new uint8_t *[width];
-            uint8_t ** endPos   = new uint8_t *[width];
-
+            uint8_t ** imageWPos = new uint8_t *[width*2 + 1];
+            
             const uint32_t rowSize = image.rowSize();
             uint8_t * imageY    = image.data() + y * rowSize + x;
             uint8_t * imageYEnd = imageY + height * rowSize;
@@ -40,14 +37,14 @@ namespace
                 for( ; imageX != imageXEnd; ++imageX ) {
                     if( (*imageX) != previousValue ) {
                         if( imageX - imageXStart < dilateX )
-                            startPos[pairCount] = imageXStart;
+                            imageWPos[pairCount] = imageXStart;
                         else
-                            startPos[pairCount] = imageX - dilateX;
+                            imageWPos[pairCount] = imageX - dilateX;
 
                         if( imageXEnd - imageX < dilateX )
-                            endPos[pairCount] = imageXEnd;
+                            imageWPos[pairCount + width] = imageXEnd;
                         else
-                            endPos[pairCount] = imageX + dilateX;
+                            imageWPos[pairCount + width] = imageX + dilateX;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -55,21 +52,19 @@ namespace
                 }
 
                 for( uint32_t i = 0u; i < pairCount; ++i ) {
-                    imageX    = startPos[i];
-                    imageXEnd = endPos[i];
+                    imageX    = imageWPos[i];
+                    imageXEnd = imageWPos[i + width];
 
                     for( ; imageX != imageXEnd; ++imageX )
                         (*imageX) = value;
                 }
             }
 
-            delete[] startPos;
-            delete[] endPos;
+            delete[] imageWPos;
         }
 
         if( dilationY > 0u ) {
-            uint8_t ** startPos = new uint8_t *[height];
-            uint8_t ** endPos   = new uint8_t *[height];
+            uint8_t ** imageHPos = new uint8_t *[height*2 + 1];
 
             const uint32_t rowSize = image.rowSize();
             uint8_t * imageX    = image.data() + y * rowSize + x;
@@ -89,14 +84,14 @@ namespace
                         const uint32_t rowId = static_cast<uint32_t>(imageY - imageYStart) / rowSize;
 
                         if( rowId < dilationY )
-                            startPos[pairCount] = imageYStart;
+                            imageHPos[pairCount] = imageYStart;
                         else
-                            startPos[pairCount] = imageY - dilationY * rowSize;
+                            imageHPos[pairCount] = imageY - dilationY * rowSize;
 
                         if( height - rowId < dilationY )
-                            endPos[pairCount] = imageYEnd;
+                            imageHPos[pairCount + height] = imageYEnd;
                         else
-                            endPos[pairCount] = imageY + dilationY * rowSize;
+                            imageHPos[pairCount + height] = imageY + dilationY * rowSize;
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -104,16 +99,15 @@ namespace
                 }
 
                 for( uint32_t i = 0u; i < pairCount; ++i ) {
-                    imageY    = startPos[i];
-                    imageYEnd = endPos[i];
+                    imageY    = imageHPos[i];
+                    imageYEnd = imageHPos[i + height];
 
                     for( ; imageY != imageYEnd; imageY += rowSize )
                         (*imageY) = value;
                 }
             }
 
-            delete[] startPos;
-            delete[] endPos;
+            delete[] imageHPos;
         }
     }
 }
