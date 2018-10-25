@@ -34,7 +34,7 @@ namespace bitmap_operation
 
     bool RandomRGBImage()
     {
-        const PenguinV_Image::Image original = Unit_Test::randomImage();
+        const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Bitmap_Operation::Save("bitmap.bmp", original);
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load("bitmap.bmp");
@@ -48,7 +48,7 @@ namespace bitmap_operation
         const uint32_t width = original.width() * original.colorCount();
         const uint8_t * inY  = original.data();
         const uint8_t * outY = loaded.data();
-        const uint8_t * inYEnd = inY + rowSizeIn + original.height();
+        const uint8_t * inYEnd = inY + rowSizeIn * original.height();
         
         for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             if ( memcmp( inY, outY, width ) != 0 )
