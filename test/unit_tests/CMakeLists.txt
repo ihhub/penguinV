@@ -22,25 +22,6 @@ find_package(Threads REQUIRED)
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     find_package(OpenCL QUIET)
-    if (MSVC AND NOT OpenCL_FOUND)
-        message(STATUS "OpenCL was not found by CMAKE. Searching under CUDA")
-        find_path(OpenCL_INCLUDE_DIR    NAMES CL/cl.h OpenCL/cl.h
-                                        PATHS ENV CUDA_PATH
-                                        PATH_SUFFIXES include)
-
-        if(CMAKE_SIZEOF_VOID_P EQUAL 4)
-            find_library(OpenCL_LIBRARY NAMES OpenCL
-                                        PATHS ENV CUDA_PATH
-                                        PATH_SUFFIXES lib/Win32)
-        elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-            find_library(OpenCL_LIBRARY NAMES OpenCL
-                                        PATHS ENV CUDA_PATH
-                                        PATH_SUFFIXES lib/x64)
-        endif()
-        add_library(OpenCL::OpenCL UNKNOWN IMPORTED)
-        set_target_properties(OpenCL::OpenCL PROPERTIES IMPORTED_LOCATION "${OpenCL_LIBRARY}")
-        set_target_properties(OpenCL::OpenCL PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${OpenCL_INCLUDE_DIR}")
-    endif()
     add_subdirectory(opencl)
 endif()
 

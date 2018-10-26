@@ -36,10 +36,16 @@ endif()
 # Move the the executable file created by add_executable to the <build_directory>/bin subfolder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 add_executable(${TARGET_NAME} ${SRCS})
-target_link_libraries(${TARGET_NAME}
-                        PRIVATE ${TARGET_NAME}_options
-                            ${TARGET_NAME}_warnings
-                            OpenCL::OpenCL)
+target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_NAME}_options
+                                             ${TARGET_NAME}_warnings
+                                             OpenCL::OpenCL)
+
+if(CMAKE_SIZEOF_VOID_P EQUAL 4)
+    install(FILES $ENV{CUDA_PATH}/bin/cudart32_80.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    install(FILES $ENV{CUDA_PATH}/bin/cudart64_80.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+endif()
+
 if(MSVC)
     target_compile_definitions(${TARGET_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
