@@ -35,5 +35,5 @@ build_script:
   - cmd: cmake --build . --config %configuration%
 
 test_script:
-  - cmd: ctest -C %configuration% --extra-verbose
+  - cmd: ctest -C %configuration% -E unit_tests_opencl --extra-verbose
 
