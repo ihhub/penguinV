@@ -34,6 +34,6 @@ build_script:
   - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" -DPENGUINV_BUILD_UNIT_TEST_OPENCL=OFF ..
   - cmd: cmake --build . --config %configuration%
 
-test_script:
-  - cmd: ctest -C %configuration% --extra-verbose
+#test_script:
+#  - cmd: ctest -C %configuration% --extra-verbose
 
