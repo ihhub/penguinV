@@ -59,6 +59,7 @@ namespace bitmap_operation
             if ( memcmp( inY, outY, width ) != 0 )
                 return false;
         }
+
         return true;
     }
 }
