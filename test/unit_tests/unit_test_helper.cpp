@@ -96,6 +96,24 @@ namespace Unit_Test
         return image;
     }
 
+    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image& reference)
+    {
+        PenguinV_Image::Image image = reference.generate(randomSize(),
+            randomSize(), PenguinV_Image::RGB);
+
+        uint8_t * outY = image.data();
+        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+
+        for( ; outY != outYEnd; outY += image.rowSize() ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + image.rowSize();
+
+            for( ; outX != outXEnd; ++outX )
+                (*outX) = randomValue<uint8_t>( 256 );
+        }
+        return image;
+    }
+
     std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference )
     {
         if( images == 0 )
