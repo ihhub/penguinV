@@ -6,6 +6,7 @@ namespace bitmap_operation
 {
     bool WhiteGrayScaleImage()
     {
+        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::whiteImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
@@ -13,13 +14,15 @@ namespace bitmap_operation
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
-            return false;
+            passed = false;
 
-        return true;
+        remove("bitmap.bmp");
+        return passed;
     }
 
     bool BlackGrayScaleImage()
     {
+        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::blackImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
@@ -27,13 +30,15 @@ namespace bitmap_operation
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
-            return false;
+            passed = false;
 
-        return true;
+        remove("bitmap.bmp");
+        return passed;
     }
 
     bool RandomRGBImage()
     {
+        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Bitmap_Operation::Save("bitmap.bmp", original);
 
@@ -52,10 +57,12 @@ namespace bitmap_operation
         
         for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             if ( memcmp( inY, outY, width ) != 0 )
-                return false;
+                passed = false;
+                break;
         }
 
-        return true;
+        remove("bitmap.bmp");
+        return passed;
     }
 }
 
