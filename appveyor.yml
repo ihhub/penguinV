@@ -24,16 +24,16 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
-  - cmd: call script\appveyor\find_cuda_opencl.cmd
 
 build_script:
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
-  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DPENGUINV_BUILD_UNIT_TEST_OPENCL=ON ..
-  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" -DPENGUINV_BUILD_UNIT_TEST_OPENCL=ON ..
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
+  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
   - cmd: cmake --build . --config %configuration%
 
 test_script:
+# OpenCL unit test is excluded as it fails with Exception: Exit code 0xc0000135 on Appveyor
   - cmd: ctest -C %configuration% -E unit_tests_opencl --extra-verbose
 
