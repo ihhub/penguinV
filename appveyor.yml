@@ -24,6 +24,7 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
+  - cmd: call script\appveyor\find_cuda_opencl.cmd
 
 build_script:
   - cmd: cd C:\projects\penguinv
