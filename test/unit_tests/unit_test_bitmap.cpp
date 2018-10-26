@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "unit_test_bitmap.h"
 #include "unit_test_helper.h"
 #include "../../src/FileOperation/bitmap.h"
@@ -6,43 +8,41 @@ namespace bitmap_operation
 {
     bool WhiteGrayScaleImage()
     {
-        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::whiteImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
+        remove("bitmap.bmp");
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
-            passed = false;
+            return false;
 
-        remove("bitmap.bmp");
-        return passed;
+        return true;
     }
 
     bool BlackGrayScaleImage()
     {
-        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::blackImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
+        remove("bitmap.bmp");
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
-            passed = false;
+            return false;
 
-        remove("bitmap.bmp");
-        return passed;
+        return true;
     }
 
     bool RandomRGBImage()
     {
-        bool passed = true;
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Bitmap_Operation::Save("bitmap.bmp", original);
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load("bitmap.bmp");
+        remove("bitmap.bmp");
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() )
@@ -57,12 +57,9 @@ namespace bitmap_operation
         
         for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             if ( memcmp( inY, outY, width ) != 0 )
-                passed = false;
-                break;
+                return false;
         }
-
-        remove("bitmap.bmp");
-        return passed;
+        return true;
     }
 }
 
