@@ -14,7 +14,7 @@ namespace pvmath
             const double lineTolerance = Unit_Test::randomValue( 0.1, 5, 0.01 );
 
             const double noiseValue = lineTolerance / 2;
-            std::vector< Point2d > point( Unit_Test::randomValue( 50, 100 ) );
+            std::vector< Point2d > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
 
             const double sinVal = sin( angle );
             const double cosVal = cos( angle );
