@@ -113,4 +113,6 @@ namespace Unit_Test
             return value;
         }
     }
+
+    double randomValue( double minimum, double maximum, double stepVal );
 }

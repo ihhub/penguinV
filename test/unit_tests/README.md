@@ -8,7 +8,7 @@ Open unit_tests.vcxproj file in this directory to create solution for your Visua
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```cpp
-	g++ -std=c++11 -Wall unit_tests.cpp ../../src/image_function.cpp ../../src/blob_detection.cpp ../../src/FileOperation/bitmap.cpp unit_test_bitmap.cpp unit_test_blob_detection.cpp unit_test_framework.cpp unit_test_helper.cpp unit_test_image_buffer.cpp unit_test_image_function.cpp -o application
+	g++ -std=c++11 -Wall unit_tests.cpp ../../src/image_function.cpp ../../src/blob_detection.cpp ../../src/FileOperation/bitmap.cpp ../../src/math/hough_transform.cpp ../../src/math/math_base.cpp unit_test_bitmap.cpp unit_test_blob_detection.cpp unit_test_framework.cpp unit_test_helper.cpp unit_test_image_buffer.cpp unit_test_image_function.cpp unit_test_math.cpp -o application
 	```
 
 - CMake    
