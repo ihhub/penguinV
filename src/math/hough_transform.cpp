@@ -30,19 +30,19 @@ namespace Image_Function
             lineTolerance = minimumLineTolerance;
 
         // find a range of search
-        const size_t angleStepCount = static_cast<size_t>(angleTolerance * 2 / angleStep + 0.5) + 1u; // 1 step in the middle
+        const int angleStepPerSide = static_cast<int>((angleTolerance / angleStep) + 0.5);
         const double lineToleranceRange = lineTolerance * 2;
 
         const size_t inputPointCount = input.size();
         std::vector < double > distanceToLine ( inputPointCount );
 
-        size_t bestAngleId = 0u;
+        int bestAngleId = -angleStepPerSide;
         size_t highestPointCount = 0u;
         double averageDistance = 0;
 
-        double angleVal = -(initialAngle - angleStep * (angleStepCount - 1) / 2); // this should be an opposite angle
+        double angleVal = -(initialAngle - angleStep * angleStepPerSide); // this should be an opposite angle
 
-        for ( size_t angleId = 0; angleId < angleStepCount; ++angleId, angleVal -= angleStep ) {
+        for ( int angleId = -angleStepPerSide; angleId <= angleStepPerSide; ++angleId, angleVal -= angleStep ) {
             const double cosVal = cos( angleVal );
             const double sinVal = sin( angleVal );
 
@@ -84,7 +84,7 @@ namespace Image_Function
         outOnLine.clear();
         outOffLine.clear();
 
-        angleVal = -(initialAngle + angleStep * bestAngleId - angleStep * ((angleStepCount - 1) / 2));
+        angleVal = -(initialAngle + angleStep * bestAngleId);
 
         const double minDistance = averageDistance - lineTolerance;
         const double maxDistance = averageDistance + lineTolerance;
