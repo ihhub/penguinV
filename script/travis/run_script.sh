@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ["${STATIC_ANALYSIS}" == 'ON']; then
+if ["${STATIC_ANALYSIS}"]; then
 	git clone https://github.com/myint/cppclean
 else
 	mkdir build && cd build/
