@@ -9,8 +9,7 @@ if [ -z "${STATIC_ANALYSIS+x}"]; then
 		make
 	fi
 else
-	cd ..
 	git clone https://github.com/myint/cppclean
-	./cppclean/cppclean penguinv
+	./cppclean/cppclean --include-path=test --include-path=examples src
 	exit 0
 fi
