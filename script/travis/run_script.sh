@@ -8,7 +8,7 @@ if [ -z "${STATIC_ANALYSIS+x}"]; then
 		cd ../test/unit_tests/cuda
 		make
 	fi
-	
 else
 	git clone https://github.com/myint/cppclean
+	./cppclean/cppclean
 fi
