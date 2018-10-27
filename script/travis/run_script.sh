@@ -10,5 +10,5 @@ if [ -z "${STATIC_ANALYSIS+x}"]; then
 	fi
 else
 	git clone https://github.com/myint/cppclean
-	./cppclean/cppclean
+	./cppclean/cppclean .
 fi
