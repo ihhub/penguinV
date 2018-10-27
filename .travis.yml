@@ -21,5 +21,5 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
 
 script:
-  - source /script/travis/run_script.sh
+  - source script/travis/run_script.sh
 
