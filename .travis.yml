@@ -14,13 +14,12 @@ matrix:
     - os: linux
       env: CUDA=8.0.61-1
     - os: osx
+    - os: osx
+      env: STATIC_ANALYSIS=ON
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
 
 script:
-  - mkdir build && cd build/
-  - cmake ../ && cmake --build . && ctest --extra-verbose
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ../test/unit_tests/cuda; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
+  - ./script/travis/run_script.sh
+
