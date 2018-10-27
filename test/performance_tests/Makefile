@@ -2,6 +2,7 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
+	$(LIB_DIR)/math/math_base.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \

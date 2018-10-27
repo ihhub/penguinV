@@ -1,6 +1,8 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/FileOperation/bitmap.cpp
+	${LIB_DIR}/math/hough_transform.cpp
+	${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
     ${LIB_DIR}/blob_detection.cpp
     ${LIB_DIR}/function_pool.cpp
@@ -14,7 +16,8 @@ set(SRCS
     unit_test_framework.cpp
     unit_test_helper.cpp
     unit_test_image_buffer.cpp
-    unit_test_image_function.cpp)
+    unit_test_image_function.cpp
+	unit_test_math.cpp)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -22,9 +25,7 @@ find_package(Threads REQUIRED)
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     find_package(OpenCL QUIET)
-    if (OpenCL_FOUND)
-        add_subdirectory(opencl)
-    endif(OpenCL_FOUND)
+    add_subdirectory(opencl)
 endif()
 
 # Link this 'library' to set the c++ standard / compile-time options requested

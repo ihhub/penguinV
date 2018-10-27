@@ -3,6 +3,8 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
 	$(LIB_DIR)/FileOperation/bitmap.cpp \
+	$(LIB_DIR)/math/hough_transform.cpp \
+	$(LIB_DIR)/math/math_base.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/function_pool.cpp \
@@ -16,7 +18,8 @@ SRCS :=  \
 	unit_test_framework.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
-	unit_test_image_function.cpp
+	unit_test_image_function.cpp \
+	unit_test_math.cpp
 TARGET := unit_tests
 
 CXX := g++
