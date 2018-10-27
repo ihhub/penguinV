@@ -5,13 +5,13 @@ namespace pvmath
     template <>
     bool isEqual<double>( const double & value1, const double & value2 )
     {
-        return abs( value1 - value2 ) < epsilonDouble;
+        return std::abs( value1 - value2 ) < epsilonDouble;
     }
 
     template <>
     bool isEqual<float>( const float & value1, const float & value2 )
     {
-        return fabs( value1 - value2 ) < epsilonFloat;
+        return std::fabs( value1 - value2 ) < epsilonFloat;
     }
 
     double toRadians(double angleDegree)
