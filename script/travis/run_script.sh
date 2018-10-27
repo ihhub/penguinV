@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z "${STATIC_ANALYSIS+x}"]]; then
+if [ -z "${STATIC_ANALYSIS+x}"]; then
 	mkdir build && cd build/
 	cmake ../ && cmake --build . && ctest --extra-verbose
 	
