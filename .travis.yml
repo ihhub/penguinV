@@ -18,7 +18,7 @@ matrix:
       env: STATIC_ANALYSIS=ON
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ] && [ -z "${STATIC_ANALYSIS+x}"]]; then source script/travis/install_cuda.sh; fi
 
 script:
   - source script/travis/run_script.sh
