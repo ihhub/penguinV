@@ -5,9 +5,9 @@
 %include "std_vector.i"
 
 %{
-#include "..\image_buffer.h"
-#include "..\FileOperation\bitmap.h"
-#include "..\image_function.h"
+#include "../image_buffer.h"
+#include "../FileOperation/bitmap.h"
+#include "../image_function.h"
 %}
 
 %nodefaultctor PenguinV_Image::ImageTemplate;
@@ -60,8 +60,8 @@ namespace PenguinV_Image {
     // Type definitions aren't passed to wrapper code. We have to tell swig to generate the
     // template instance.
 
-    typedef ImageTemplate<uint8_t> Image; 
-    %template(Image) ImageTemplate<uint8_t>; 
+    typedef ImageTemplate<uint8_t> Image;
+    %template(Image) ImageTemplate<uint8_t>;
 
     const uint8_t GRAY_SCALE;
     const uint8_t RGB;
@@ -103,7 +103,7 @@ namespace Image_Function {
 
 }
 
-// For custom exceptions in ..\image_exception.h, it is easier to just manually redeclare the custom exceptions in python.
+// For custom exceptions in ../image_exception.h, it is easier to just manually redeclare the custom exceptions in python.
 
 %pythoncode %{
 
@@ -112,13 +112,13 @@ class PenguinV_Error(Exception):
     pass
 
 class ImageException(PenguinV_Error):
-    ''' Exceptions raised by image operations. 
+    ''' Exceptions raised by image operations.
     Attributes:
     expression - input expression in which the error occurred.
     message - explanation of the error.
     '''
     def __init__(self, expression, error):
         self.expression = expression
-        self.error = error 
+        self.error = error
 
-%} 
+%}
