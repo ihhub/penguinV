@@ -19,7 +19,6 @@ matrix:
 
 before_install:
    - source script/travis/before_script.sh
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
 
 script:
   - source script/travis/run_script.sh
