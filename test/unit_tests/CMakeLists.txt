@@ -22,9 +22,7 @@ find_package(Threads REQUIRED)
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     find_package(OpenCL QUIET)
-    if (OpenCL_FOUND)
-        add_subdirectory(opencl)
-    endif(OpenCL_FOUND)
+    add_subdirectory(opencl)
 endif()
 
 # Link this 'library' to set the c++ standard / compile-time options requested
