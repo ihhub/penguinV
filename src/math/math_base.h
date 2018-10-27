@@ -2,9 +2,11 @@
 
 #include <cmath>
 
-namespace
+namespace pvmath
 {
+    const double pi = std::acos(-1);
     const double epsilonDouble = 1e-10;
+    const double epsilonFloat  = 1e-5f;
 
     template <typename _Type>
     bool isEqual( const _Type & value1, const _Type & value2 )
@@ -13,10 +15,13 @@ namespace
     }
 
     template <>
-    bool isEqual<double>( const double & value1, const double & value2 )
-    {
-        return fabs( value1 - value2 ) < epsilonDouble;
-    }
+    bool isEqual<double>( const double & value1, const double & value2 );
+
+    template <>
+    bool isEqual<float>( const float & value1, const float & value2 );
+
+    double toRadians(double angleDegree);
+    double toDegrees(double angleRadians);
 }
 
 template <typename _Type>
@@ -29,7 +34,7 @@ struct PointBase2D
 
     virtual bool operator == ( const PointBase2D & point ) const
     {
-        return isEqual( x, point.x ) && isEqual( y, point.y );
+        return pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y );
     }
 
     PointBase2D & operator += ( const PointBase2D & point )
@@ -70,7 +75,7 @@ struct PointBase3D : public PointBase2D<_Type>
 
     virtual bool operator == ( const PointBase3D & point ) const
     {
-        return PointBase2D<_Type>::operator==( point ) && isEqual( z, point.z );
+        return PointBase2D<_Type>::operator==( point ) && pvmath::isEqual( z, point.z );
     }
 
     PointBase3D & operator += ( const PointBase3D & point )

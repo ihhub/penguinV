@@ -5,6 +5,7 @@
 #include "unit_test_framework.h"
 #include "unit_test_image_buffer.h"
 #include "unit_test_image_function.h"
+#include "unit_test_math.h"
 
 int main()
 {
@@ -15,10 +16,11 @@ int main()
     UnitTestFramework framework;
 
     // We add tests
-    addTests_Bitmap             ( framework );
-    addTests_Blob_Detection     ( framework );
-    addTests_Image_Buffer       ( framework );
-    addTests_Image_Function     ( framework );
+    addTests_Bitmap         ( framework );
+    addTests_Blob_Detection ( framework );
+    addTests_Image_Buffer   ( framework );
+    addTests_Image_Function ( framework );
+    addTests_Math           ( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();

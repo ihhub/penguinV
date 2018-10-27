@@ -15,8 +15,6 @@ namespace
         EDGE       = 3u,
         CONTOUR    = 4u
     };
-
-    const double pi = 3.1415926536;
 }
 
 namespace Blob_Detection
@@ -172,7 +170,7 @@ namespace Blob_Detection
     void BlobInfo::_getCircularity()
     {
         if( !_contourX.empty() && !_circularity.found ) {
-            const double radius = sqrt( static_cast<double>(size()) / pi );
+            const double radius = sqrt( static_cast<double>(size()) / pvmath::pi );
             _getCenter();
 
             double difference = 0;

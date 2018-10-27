@@ -1,6 +1,8 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/FileOperation/bitmap.cpp
+	${LIB_DIR}/math/hough_transform.cpp
+	${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
     ${LIB_DIR}/blob_detection.cpp
     ${LIB_DIR}/function_pool.cpp
