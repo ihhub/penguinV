@@ -18,7 +18,8 @@ SRCS :=  \
 	unit_test_framework.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
-	unit_test_image_function.cpp
+	unit_test_image_function.cpp \
+	unit_test_math.cpp
 TARGET := unit_tests
 
 CXX := g++
