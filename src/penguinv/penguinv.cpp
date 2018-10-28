@@ -193,7 +193,7 @@ namespace penguinV
                 uint32_t width, uint32_t height )
     {
         run( in1, Merge )( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3,
-                                    out, startXOut, startYOut, width, height );
+                           out, startXOut, startYOut, width, height );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -241,7 +241,7 @@ namespace penguinV
                 uint32_t width, uint32_t height )
     {
         run( in, Split )( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2,
-                                   out3, startXOut3, startYOut3, width, height );
+                          out3, startXOut3, startYOut3, width, height );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
