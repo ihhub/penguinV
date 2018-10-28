@@ -3,6 +3,7 @@ set(UNIT_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(SRCS
     ${MAIN_LIB_DIR}/opencl/opencl_device.cpp
     ${MAIN_LIB_DIR}/opencl/opencl_helper.cpp
+	${MAIN_LIB_DIR}/penguinv/penguinv.cpp
     ${MAIN_LIB_DIR}/image_function.cpp
     ${MAIN_LIB_DIR}/image_function_helper.cpp
     ${MAIN_LIB_DIR}/opencl/image_function_opencl.cpp

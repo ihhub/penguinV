@@ -4,6 +4,7 @@
 #include "image_function_helper.h"
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
+#include "penguinv/penguinv.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>
@@ -16,6 +17,32 @@
 #ifdef PENGUINV_NEON_SET
 #include <arm_neon.h>
 #endif
+
+namespace
+{
+    struct FunctionRegistrator : public penguinV::FunctionTable
+    {
+        FunctionRegistrator()
+        {
+            AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+            Accumulate         = &Image_Function_Simd::Accumulate;
+            BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
+            BitwiseOr          = &Image_Function_Simd::BitwiseOr;
+            BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            Invert             = &Image_Function_Simd::Invert;
+            Maximum            = &Image_Function_Simd::Maximum;
+            Minimum            = &Image_Function_Simd::Minimum;
+            Subtract           = &Image_Function_Simd::Subtract;
+            Sum                = &Image_Function_Simd::Sum;
+            Threshold          = &Image_Function_Simd::Threshold;
+            Threshold2         = &Image_Function_Simd::Threshold;
+
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this, true );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+}
 
 namespace avx
 {

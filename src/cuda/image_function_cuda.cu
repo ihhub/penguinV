@@ -3,11 +3,41 @@
 #include "image_function_cuda.cuh"
 #include "../parameter_validation.h"
 #include "../image_function_helper.h"
+#include "../penguinv/penguinv.h"
 #include "cuda_types.cuh"
 #include "cuda_helper.cuh"
 
 namespace
 {
+    struct FunctionRegistrator : public penguinV::FunctionTable
+    {
+        FunctionRegistrator()
+        {
+            AbsoluteDifference = &Image_Function_Cuda::AbsoluteDifference;
+            BitwiseAnd         = &Image_Function_Cuda::BitwiseAnd;
+            BitwiseOr          = &Image_Function_Cuda::BitwiseOr;
+            BitwiseXor         = &Image_Function_Cuda::BitwiseXor;
+            ConvertToGrayScale = &Image_Function_Cuda::ConvertToGrayScale;
+            ConvertToRgb       = &Image_Function_Cuda::ConvertToRgb;
+            Copy               = &Image_Function_Cuda::Copy;
+            ExtractChannel     = &Image_Function_Cuda::ExtractChannel;
+            Fill               = &Image_Function_Cuda::Fill;
+            GammaCorrection    = &Image_Function_Cuda::GammaCorrection;
+            Histogram          = &Image_Function_Cuda::Histogram;
+            Invert             = &Image_Function_Cuda::Invert;
+            LookupTable        = &Image_Function_Cuda::LookupTable;
+            Maximum            = &Image_Function_Cuda::Maximum;
+            Minimum            = &Image_Function_Cuda::Minimum;
+            Subtract           = &Image_Function_Cuda::Subtract;
+            Threshold          = &Image_Function_Cuda::Threshold;
+            Threshold2         = &Image_Function_Cuda::Threshold;
+
+            penguinV::registerFunctionTable( PenguinV_Image::ImageCuda(), *this );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+
     // The list of CUDA device functions on device side
     __global__ void absoluteDifferenceCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                             uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
