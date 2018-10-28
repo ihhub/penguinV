@@ -25,6 +25,7 @@ namespace
         FunctionRegistrator()
         {
             AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+            Accumulate         = &Image_Function_Simd::Accumulate;
             BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
             BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             BitwiseXor         = &Image_Function_Simd::BitwiseXor;
