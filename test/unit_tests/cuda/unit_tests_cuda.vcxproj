@@ -36,6 +36,7 @@
     <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
+    <ClInclude Include="..\..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\unit_test_framework.h" />
     <ClInclude Include="..\unit_test_helper.h" />
     <ClInclude Include="unit_test_helper_cuda.cuh" />
@@ -44,6 +45,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
+    <ClCompile Include="..\..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\unit_test_framework.cpp" />
     <ClCompile Include="..\unit_test_helper.cpp" />
     <ClCompile Include="unit_tests_cuda.cpp" />

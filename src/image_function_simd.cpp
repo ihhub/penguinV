@@ -4,6 +4,7 @@
 #include "image_function_helper.h"
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
+#include "penguinv/penguinv.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>
@@ -16,6 +17,32 @@
 #ifdef PENGUINV_NEON_SET
 #include <arm_neon.h>
 #endif
+
+namespace
+{
+    struct FunctionRegistrator : public penguinV::FunctionTable
+    {
+        FunctionRegistrator()
+        {
+            AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+            Accumulate         = &Image_Function_Simd::Accumulate;
+            BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
+            BitwiseOr          = &Image_Function_Simd::BitwiseOr;
+            BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            Invert             = &Image_Function_Simd::Invert;
+            Maximum            = &Image_Function_Simd::Maximum;
+            Minimum            = &Image_Function_Simd::Minimum;
+            Subtract           = &Image_Function_Simd::Subtract;
+            Sum                = &Image_Function_Simd::Sum;
+            Threshold          = &Image_Function_Simd::Threshold;
+            Threshold2         = &Image_Function_Simd::Threshold;
+
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this, true );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+}
 
 namespace avx
 {
@@ -931,6 +958,45 @@ namespace neon
             }
         }
     }
+    
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth,
+                     uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8x8_t zero_8 = vdup_n_u8(0);
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const uint8_t * src    = imageY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
+            uint32_t      * dst    = outY;
+
+            for( ; src != srcEnd; src+= simdSize ) {
+                uint8x16_t data = vld1q_u8( src );
+
+                const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero_8 );
+                const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero_8 );
+
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataLo) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataLo) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataHi) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataHi) ) );
+                dst += 4;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }
+        }
+    }
 
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                      uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
@@ -1345,7 +1411,7 @@ if ( simdType == neon_function ) { \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType == cpu_function) || (simdType == neon_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
             Image_Function::Accumulate(image, x, y, width, height, result);
             return;
         }
@@ -1370,6 +1436,7 @@ if ( simdType == neon_function ) { \
 
         AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

@@ -5,21 +5,18 @@ penguinV
 |-----------------|-------------|------------------|
 | [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) | [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) | [![CodeFactor](https://www.codefactor.io/repository/github/ihhub/penguinv/badge)](https://www.codefactor.io/repository/github/ihhub/penguinv) |
 
-PenguinV is a simple and easy to use C++ image processing library with focus on heterogeneous systems. It is designed to have simple programming syntax and to deliver good performance. Some core features of the library are:
+PenguinV is a simple and easy to use C++ image processing library with focus on heterogeneous systems. It is designed to have simple programming syntax and to deliver best performance. Some core features of the library are:
 
-- heterogeneous system support (CPU/GPU)
-- compactness
+- heterogeneous system support (CPU and GPUs)
 - optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
+- Python support
+- [multithreading support](#multithreading-support)
 - cross-platform
-- functions can perform processing on separate part (region of interest) of images
-- multithreading support for individual functions (please refer to [multithreading support](#multithreading-support) section)
-- user-defined image types support (you can create your own image types and image functions [See API description, ImageTemplate class])
+- compactness
+- ability to process separate parts of an image
+- user-defined image types and more.
 
-At the current stage of development library does not have some features but we are intending to introduce them very soon:
-- better support of CUDA, OpenCL, SSE, AVX, NEON
-- better heterogeneous system architecture
-
-The library does **NOT** have it's own image displaying code but you can refer to QT example.
+The project in is active process of development so new features are coming soon!
 
 Contribution
 ---------------------------
@@ -31,7 +28,7 @@ To compile the source code your compiler must support at least **C++ 11** versio
 
 How to install
 ---------------------------
-The library is distributed in the form of source code. To use the library you need to include library files into your application project. That's it! No more extra moves!
+The library is distributed in the form of source code. To use the library you need to include necessary files into your application project. That's it! No more extra moves!
 
 How to compile an example
 ---------------------------
@@ -39,12 +36,11 @@ Open README.md file in any of example directories and follow instructions.
 
 Multithreading support
 ---------------------------
-Every non empty image can be divided into multiple parts or areas (in scientific terms ROI - region of interest). To run image processing in multiple threads you need only to split bigger ROI into small parts and call necessary basic functions. No extra magic! Make sure that small parts are not intersecting by each other.    
-Almost all basic functions support multithreading. Please refer to **Function_Pool** namespace and function_pool example.
+The library contains it's own thread pool which creates multiple tasks to run image processing function for a given image via multiple threads. Such tenchnique gives a big boost on machines with major CPU usage.
 
 GPU support
 ---------------------------
-All source code related to CUDA or OpenCL is located in separate directory named as **cuda** and **opencl** respectively. Read full description about CUDA or OpenCL support in **README** file in the directory.
+All source code and descriptions related to CUDA or OpenCL are located in separate **src/cuda** and **src/opencl** directories respectively. Read full description about CUDA or OpenCL support in **README** file in the directory.
 
 License
 ---------------------------
@@ -52,4 +48,4 @@ This project is under 3-clause BSD License. Please refer to file **LICENSE** for
 
 API description
 ---------------------------
-Please refer to file **API_description.md** in **doc** directory for full description of API.
+Directory **doc** contains latest and valid information and description of library's API.
