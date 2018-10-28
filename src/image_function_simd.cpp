@@ -941,8 +941,8 @@ namespace neon
 
         for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
             const uint8_t * src    = imageY;
-            const uint8_t * srcEnd = src + simdWidth;
-            uint32_t       * dst    = outY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
+            uint32_t      * dst    = outY;
 
             for( ; src != srcEnd; src+= simdSize ) {
                 uint8x16_t data = vld1q_u8( src );
@@ -951,13 +951,13 @@ namespace neon
                 const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero_8 );
 
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataLo) ) );
-                ++dst;
+				dst+=4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataLo) ) );
-                ++dst;
+                dst+=4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataHi) ) );
-                ++dst;
+                dst+=4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataHi) ) );
-                ++dst;
+                dst+=4;
             }
 
             if( nonSimdWidth > 0 ) {
@@ -1384,7 +1384,7 @@ if ( simdType == neon_function ) { \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType == cpu_function) || (simdType == neon_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
             Image_Function::Accumulate(image, x, y, width, height, result);
             return;
         }
