@@ -5,3 +5,7 @@ if [ -z "${STATIC_ANALYSIS+x}" ]; then
 		source script/travis/install_cuda.sh
 	fi
 fi
+
+if [ "$QT_BASE" = "59" ]; then 
+	sudo add-apt-repository ppa:beineri/opt-qt596-trusty -y;
+fi
