@@ -397,6 +397,7 @@ namespace image_function_neon
     const std::string namespaceName = "image_function_neon";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
