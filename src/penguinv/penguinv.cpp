@@ -65,7 +65,7 @@ namespace
     }
 
 #define run( image, func_ )                                                                                        \
-    auto func = functionTable( image ).##func_;                                                                    \
+    auto func = functionTable( image ). ##func_;                                                                   \
     if ( func == nullptr ) {                                                                                       \
         const std::string error( std::string("Function ") + std::string(#func_) + std::string("is not defined") ); \
         throw imageException(error.data());                                                                        \
