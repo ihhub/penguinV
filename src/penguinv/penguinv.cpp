@@ -1,75 +1,82 @@
 #include "penguinv.h"
 
-#include "cpu_identification.h"
-#include "../image_function.h"
-#include "../image_function_simd.h"
-
-// We directly make first call to initialize function table
-// to prevent multithreading issues
-static const penguinV::FunctionTable& functionTable = penguinV::functionTable();
+#include <map>
+#include <mutex>
 
 namespace
 {
-    penguinV::FunctionTable initialize()
+    std::map< uint8_t, penguinV::FunctionTable > functionTableMap;
+
+    template <typename _Function>
+    void setFunction( _Function F1, _Function F2, bool forceSetup )
     {
-        penguinV::FunctionTable table;
+        if ( (F1 == nullptr) || (forceSetup && (F2 != nullptr)) )
+        {
+            F1 = F2;
+        }
+    }
 
-        // A list of basic functions
-        table.AbsoluteDifference = &Image_Function::AbsoluteDifference;
-        table.Accumulate         = &Image_Function::Accumulate;
-        table.BitwiseAnd         = &Image_Function::BitwiseAnd;
-        table.BitwiseOr          = &Image_Function::BitwiseOr;
-        table.BitwiseXor         = &Image_Function::BitwiseXor;
-        table.ConvertToGrayScale = &Image_Function::ConvertToGrayScale;
-        table.ConvertToRgb       = &Image_Function::ConvertToRgb;
-        table.Copy               = &Image_Function::Copy;
-        table.ExtractChannel     = &Image_Function::ExtractChannel;
-        table.Fill               = &Image_Function::Fill;
-        table.Flip               = &Image_Function::Flip;
-        table.GammaCorrection    = &Image_Function::GammaCorrection;
-        table.GetPixel           = &Image_Function::GetPixel;
-        table.Histogram          = &Image_Function::Histogram;
-        table.Invert             = &Image_Function::Invert;
-        table.IsEqual            = &Image_Function::IsEqual;
-        table.LookupTable        = &Image_Function::LookupTable;
-        table.Maximum            = &Image_Function::Maximum;
-        table.Merge              = &Image_Function::Merge;
-        table.Minimum            = &Image_Function::Minimum;
-        table.Normalize          = &Image_Function::Normalize;
-        table.ProjectionProfile  = &Image_Function::ProjectionProfile;
-        table.Resize             = &Image_Function::Resize;
-        table.RgbToBgr           = &Image_Function::RgbToBgr;
-        table.SetPixel           = &Image_Function::SetPixel;
-        table.SetPixel2          = &Image_Function::SetPixel;
-        table.Split              = &Image_Function::Split;
-        table.Subtract           = &Image_Function::Subtract;
-        table.Sum                = &Image_Function::Sum;
-        table.Threshold          = &Image_Function::Threshold;
-        table.Threshold2         = &Image_Function::Threshold;
-        table.Transpose          = &Image_Function::Transpose;
+#define SET_FUNCTION( functionName ) \
+    setFunction( oldTable.functionName, newTable.functionName, forceSetup );
 
-        // SIMD
-        table.AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
-        table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
-        table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
-        table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
-        table.Invert             = &Image_Function_Simd::Invert;
-        table.Maximum            = &Image_Function_Simd::Maximum;
-        table.Minimum            = &Image_Function_Simd::Minimum;
-        table.Subtract           = &Image_Function_Simd::Subtract;
-        table.Sum                = &Image_Function_Simd::Sum;
-        table.Threshold          = &Image_Function_Simd::Threshold;
-        table.Threshold2         = &Image_Function_Simd::Threshold;
-
-        return table;
+    void setupTable( penguinV::FunctionTable & oldTable, const penguinV::FunctionTable & newTable, bool forceSetup )
+    {
+        SET_FUNCTION(AbsoluteDifference)
+        SET_FUNCTION(Accumulate)
+        SET_FUNCTION(BitwiseAnd)
+        SET_FUNCTION(BitwiseOr)
+        SET_FUNCTION(BitwiseXor)
+        SET_FUNCTION(ConvertToGrayScale)
+        SET_FUNCTION(ConvertToRgb)
+        SET_FUNCTION(Copy)
+        SET_FUNCTION(ExtractChannel)
+        SET_FUNCTION(Fill)
+        SET_FUNCTION(Flip)
+        SET_FUNCTION(GammaCorrection)
+        SET_FUNCTION(GetPixel)
+        SET_FUNCTION(Histogram)
+        SET_FUNCTION(Invert)
+        SET_FUNCTION(IsEqual)
+        SET_FUNCTION(LookupTable)
+        SET_FUNCTION(Maximum)
+        SET_FUNCTION(Merge)
+        SET_FUNCTION(Minimum)
+        SET_FUNCTION(Normalize)
+        SET_FUNCTION(ProjectionProfile)
+        SET_FUNCTION(Resize)
+        SET_FUNCTION(RgbToBgr)
+        SET_FUNCTION(SetPixel)
+        SET_FUNCTION(SetPixel2)
+        SET_FUNCTION(Split)
+        SET_FUNCTION(Subtract)
+        SET_FUNCTION(Sum)
+        SET_FUNCTION(Threshold)
+        SET_FUNCTION(Threshold2)
+        SET_FUNCTION(Transpose)
     }
 }
 
 namespace penguinV
 {
-    const FunctionTable & functionTable()
+    void registerFunctionTable( const Image & image, const FunctionTable & table, bool forceSetup )
     {
-        static FunctionTable table = initialize();
-        return table;
+        static std::mutex mapGuard;
+
+        mapGuard.lock();
+        std::map< uint8_t, penguinV::FunctionTable >::iterator oldTable = functionTableMap.find( image.type() );
+        if (oldTable != functionTableMap.end())
+            setupTable( oldTable->second, table, forceSetup );
+        else
+            functionTableMap[image.type()] = table;
+        mapGuard.unlock();
+    }
+
+    const FunctionTable & functionTable( const Image & image )
+    {
+        std::map< uint8_t, penguinV::FunctionTable >::const_iterator table = functionTableMap.find( image.type() );
+        if (table == functionTableMap.end())
+            throw imageException( "Function table is not initialised" );
+
+        return table->second;
     }
 }
