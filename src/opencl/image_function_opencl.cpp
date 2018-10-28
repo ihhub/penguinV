@@ -8,9 +8,39 @@
 #include "opencl_helper.h"
 #include "../image_function_helper.h"
 #include "../parameter_validation.h"
+#include "../penguinv/penguinv.h"
 
 namespace
 {
+    struct FunctionRegistrator : public penguinV::FunctionTable
+    {
+        FunctionRegistrator()
+        {
+            AbsoluteDifference = &Image_Function_OpenCL::AbsoluteDifference;
+            BitwiseAnd         = &Image_Function_OpenCL::BitwiseAnd;
+            BitwiseOr          = &Image_Function_OpenCL::BitwiseOr;
+            BitwiseXor         = &Image_Function_OpenCL::BitwiseXor;
+            ConvertToGrayScale = &Image_Function_OpenCL::ConvertToGrayScale;
+            ConvertToRgb       = &Image_Function_OpenCL::ConvertToRgb;
+            Copy               = &Image_Function_OpenCL::Copy;
+            ExtractChannel     = &Image_Function_OpenCL::ExtractChannel;
+            Fill               = &Image_Function_OpenCL::Fill;
+            GammaCorrection    = &Image_Function_OpenCL::GammaCorrection;
+            Histogram          = &Image_Function_OpenCL::Histogram;
+            Invert             = &Image_Function_OpenCL::Invert;
+            LookupTable        = &Image_Function_OpenCL::LookupTable;
+            Maximum            = &Image_Function_OpenCL::Maximum;
+            Minimum            = &Image_Function_OpenCL::Minimum;
+            Subtract           = &Image_Function_OpenCL::Subtract;
+            Threshold          = &Image_Function_OpenCL::Threshold;
+            Threshold2         = &Image_Function_OpenCL::Threshold;
+
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+
     const std::string programCode = R"(
         #pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable
 
