@@ -35,7 +35,7 @@ namespace
             Threshold          = &Image_Function_OpenCL::Threshold;
             Threshold2         = &Image_Function_OpenCL::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this );
+            penguinV::registerFunctionTable( PenguinV_Image::ImageOpenCL(), *this );
         }
     };
 

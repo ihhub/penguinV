@@ -32,7 +32,7 @@ namespace
             Threshold          = &Image_Function_Cuda::Threshold;
             Threshold2         = &Image_Function_Cuda::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this );
+            penguinV::registerFunctionTable( PenguinV_Image::ImageCuda(), *this );
         }
     };
 
