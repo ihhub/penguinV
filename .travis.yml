@@ -18,9 +18,11 @@ matrix:
     - os: osx
       env:
         - QT_BASE=latest
+    - os: linux
+      env: STATIC_ANALYSIS=ON
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
+  - source script/travis/before_script.sh
   - if [ "$QT_BASE" = "59" ]; then sudo add-apt-repository ppa:beineri/opt-qt596-trusty -y; fi
 
 install:
@@ -32,8 +34,4 @@ install:
     fi
 
 script:
-  - mkdir build && cd build/
-  - cmake ../ && cmake --build . && ctest --extra-verbose
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ../test/unit_tests/cuda; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
+  - source script/travis/run_script.sh
