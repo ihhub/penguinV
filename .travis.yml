@@ -12,12 +12,10 @@ addons:
 matrix:
   include:
     - os: linux
-      env: 
-        - CUDA=8.0.61-1
-        - QT_BASE=59
+      env: CUDA=8.0.61-1
+      env: QT_BASE=59
     - os: osx
-      env:
-        - QT_BASE=latest
+      env: QT_BASE=latest
     - os: linux
       env: STATIC_ANALYSIS=ON
 
