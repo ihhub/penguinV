@@ -5,7 +5,11 @@
 
 namespace
 {
-    std::map< uint8_t, penguinV::FunctionTable > functionTableMap;
+    std::map< uint8_t, penguinV::FunctionTable > & functionTableMap()
+    {
+        static std::map< uint8_t, penguinV::FunctionTable > map;
+        return map;
+    }
 
     template <typename _Function>
     void setFunction( _Function F1, _Function F2, bool forceSetup )
@@ -57,8 +61,8 @@ namespace
 
     const penguinV::FunctionTable & functionTable( const PenguinV_Image::Image & image )
     {
-        std::map< uint8_t, penguinV::FunctionTable >::const_iterator table = functionTableMap.find( image.type() );
-        if (table == functionTableMap.end())
+        std::map< uint8_t, penguinV::FunctionTable >::const_iterator table = functionTableMap().find( image.type() );
+        if (table == functionTableMap().end())
             throw imageException( "Function table is not initialised" );
 
         return table->second;
@@ -279,11 +283,11 @@ namespace penguinV
         static std::mutex mapGuard;
 
         mapGuard.lock();
-        std::map< uint8_t, penguinV::FunctionTable >::iterator oldTable = functionTableMap.find( image.type() );
-        if (oldTable != functionTableMap.end())
+        std::map< uint8_t, penguinV::FunctionTable >::iterator oldTable = functionTableMap().find( image.type() );
+        if (oldTable != functionTableMap().end())
             setupTable( oldTable->second, table, forceSetup );
         else
-            functionTableMap[image.type()] = table;
+            functionTableMap()[image.type()] = table;
         mapGuard.unlock();
     }
 }
