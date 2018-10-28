@@ -2,9 +2,53 @@
 #include "image_function.h"
 #include "parameter_validation.h"
 #include "image_function_helper.h"
+#include "penguinv/penguinv.h"
 
 namespace
 {
+    struct FunctionRegistrator : public penguinV::FunctionTable
+    {
+        FunctionRegistrator()
+        {
+            AbsoluteDifference = &Image_Function::AbsoluteDifference;
+            Accumulate         = &Image_Function::Accumulate;
+            BitwiseAnd         = &Image_Function::BitwiseAnd;
+            BitwiseOr          = &Image_Function::BitwiseOr;
+            BitwiseXor         = &Image_Function::BitwiseXor;
+            ConvertToGrayScale = &Image_Function::ConvertToGrayScale;
+            ConvertToRgb       = &Image_Function::ConvertToRgb;
+            Copy               = &Image_Function::Copy;
+            ExtractChannel     = &Image_Function::ExtractChannel;
+            Fill               = &Image_Function::Fill;
+            Flip               = &Image_Function::Flip;
+            GammaCorrection    = &Image_Function::GammaCorrection;
+            GetPixel           = &Image_Function::GetPixel;
+            Histogram          = &Image_Function::Histogram;
+            Invert             = &Image_Function::Invert;
+            IsEqual            = &Image_Function::IsEqual;
+            LookupTable        = &Image_Function::LookupTable;
+            Maximum            = &Image_Function::Maximum;
+            Merge              = &Image_Function::Merge;
+            Minimum            = &Image_Function::Minimum;
+            Normalize          = &Image_Function::Normalize;
+            ProjectionProfile  = &Image_Function::ProjectionProfile;
+            Resize             = &Image_Function::Resize;
+            RgbToBgr           = &Image_Function::RgbToBgr;
+            SetPixel           = &Image_Function::SetPixel;
+            SetPixel2          = &Image_Function::SetPixel;
+            Split              = &Image_Function::Split;
+            Subtract           = &Image_Function::Subtract;
+            Sum                = &Image_Function::Sum;
+            Threshold          = &Image_Function::Threshold;
+            Threshold2         = &Image_Function::Threshold;
+            Transpose          = &Image_Function::Transpose;
+
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+
     void Dilate( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );

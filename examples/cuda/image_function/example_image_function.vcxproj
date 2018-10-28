@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\..\src\FileOperation\bitmap.cpp" />
     <ClCompile Include="..\..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
+    <ClCompile Include="..\..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="example_image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,7 @@
     <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
+    <ClInclude Include="..\..\..\src\penguinv\penguinv.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="..\..\..\src\cuda\image_function_cuda.cu" />
