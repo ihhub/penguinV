@@ -8,4 +8,5 @@ fi
 
 if [ "$QT_BASE" = "59" ]; then 
 	sudo add-apt-repository ppa:beineri/opt-qt596-trusty -y;
+	sudo apt-get update;
 fi
