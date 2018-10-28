@@ -6,46 +6,44 @@
 
 namespace
 {
-    class FunctionRegistrator
+    struct FunctionRegistrator : public penguinV::FunctionTable
     {
-    public:
         FunctionRegistrator()
         {
-            penguinV::FunctionTable table;
-            table.AbsoluteDifference = &Image_Function::AbsoluteDifference;
-            table.Accumulate         = &Image_Function::Accumulate;
-            table.BitwiseAnd         = &Image_Function::BitwiseAnd;
-            table.BitwiseOr          = &Image_Function::BitwiseOr;
-            table.BitwiseXor         = &Image_Function::BitwiseXor;
-            table.ConvertToGrayScale = &Image_Function::ConvertToGrayScale;
-            table.ConvertToRgb       = &Image_Function::ConvertToRgb;
-            table.Copy               = &Image_Function::Copy;
-            table.ExtractChannel     = &Image_Function::ExtractChannel;
-            table.Fill               = &Image_Function::Fill;
-            table.Flip               = &Image_Function::Flip;
-            table.GammaCorrection    = &Image_Function::GammaCorrection;
-            table.GetPixel           = &Image_Function::GetPixel;
-            table.Histogram          = &Image_Function::Histogram;
-            table.Invert             = &Image_Function::Invert;
-            table.IsEqual            = &Image_Function::IsEqual;
-            table.LookupTable        = &Image_Function::LookupTable;
-            table.Maximum            = &Image_Function::Maximum;
-            table.Merge              = &Image_Function::Merge;
-            table.Minimum            = &Image_Function::Minimum;
-            table.Normalize          = &Image_Function::Normalize;
-            table.ProjectionProfile  = &Image_Function::ProjectionProfile;
-            table.Resize             = &Image_Function::Resize;
-            table.RgbToBgr           = &Image_Function::RgbToBgr;
-            table.SetPixel           = &Image_Function::SetPixel;
-            table.SetPixel2          = &Image_Function::SetPixel;
-            table.Split              = &Image_Function::Split;
-            table.Subtract           = &Image_Function::Subtract;
-            table.Sum                = &Image_Function::Sum;
-            table.Threshold          = &Image_Function::Threshold;
-            table.Threshold2         = &Image_Function::Threshold;
-            table.Transpose          = &Image_Function::Transpose;
+            AbsoluteDifference = &Image_Function::AbsoluteDifference;
+            Accumulate         = &Image_Function::Accumulate;
+            BitwiseAnd         = &Image_Function::BitwiseAnd;
+            BitwiseOr          = &Image_Function::BitwiseOr;
+            BitwiseXor         = &Image_Function::BitwiseXor;
+            ConvertToGrayScale = &Image_Function::ConvertToGrayScale;
+            ConvertToRgb       = &Image_Function::ConvertToRgb;
+            Copy               = &Image_Function::Copy;
+            ExtractChannel     = &Image_Function::ExtractChannel;
+            Fill               = &Image_Function::Fill;
+            Flip               = &Image_Function::Flip;
+            GammaCorrection    = &Image_Function::GammaCorrection;
+            GetPixel           = &Image_Function::GetPixel;
+            Histogram          = &Image_Function::Histogram;
+            Invert             = &Image_Function::Invert;
+            IsEqual            = &Image_Function::IsEqual;
+            LookupTable        = &Image_Function::LookupTable;
+            Maximum            = &Image_Function::Maximum;
+            Merge              = &Image_Function::Merge;
+            Minimum            = &Image_Function::Minimum;
+            Normalize          = &Image_Function::Normalize;
+            ProjectionProfile  = &Image_Function::ProjectionProfile;
+            Resize             = &Image_Function::Resize;
+            RgbToBgr           = &Image_Function::RgbToBgr;
+            SetPixel           = &Image_Function::SetPixel;
+            SetPixel2          = &Image_Function::SetPixel;
+            Split              = &Image_Function::Split;
+            Subtract           = &Image_Function::Subtract;
+            Sum                = &Image_Function::Sum;
+            Threshold          = &Image_Function::Threshold;
+            Threshold2         = &Image_Function::Threshold;
+            Transpose          = &Image_Function::Transpose;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), table );
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this );
         }
     };
 
