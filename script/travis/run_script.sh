@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -o pipefail
 
 if [ -z "${STATIC_ANALYSIS+x}" ]; then
 	mkdir build && cd build/
