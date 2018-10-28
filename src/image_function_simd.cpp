@@ -932,10 +932,10 @@ namespace neon
         }
     }
     
-    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth,
+                     uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        uint8x8_t zero_8 = vdup_n_u8(0);
-        
+        const uint8x8_t zero_8 = vdup_n_u8(0);
 
         const uint32_t width = totalSimdWidth + nonSimdWidth;
 
@@ -951,13 +951,13 @@ namespace neon
                 const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero_8 );
 
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataLo) ) );
-				dst+=4;
+                dst += 4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataLo) ) );
-                dst+=4;
+                dst += 4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataHi) ) );
-                dst+=4;
+                dst += 4;
                 vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataHi) ) );
-                dst+=4;
+                dst += 4;
             }
 
             if( nonSimdWidth > 0 ) {
@@ -967,7 +967,7 @@ namespace neon
 
                 for( ; imageX != imageXEnd; ++imageX, ++outX )
                     (*outX) += (*imageX);
-            }   
+            }
         }
     }
 
