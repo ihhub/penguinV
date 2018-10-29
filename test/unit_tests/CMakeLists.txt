@@ -16,6 +16,7 @@ set(SRCS
     unit_tests.cpp
     unit_test_bitmap.cpp
     unit_test_blob_detection.cpp
+	unit_test_fft.cpp
     unit_test_framework.cpp
     unit_test_helper.cpp
     unit_test_image_buffer.cpp
