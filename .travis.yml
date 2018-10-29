@@ -12,7 +12,7 @@ addons:
 matrix:
   include:
     - os: linux
-      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-PENGUINV_BUILD_TEST=ON"
+      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
     - os: osx
     - os: linux
