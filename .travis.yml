@@ -20,16 +20,16 @@ matrix:
 
 script:
   - if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
-      git clone https://github.com/myint/cppclean
-      ./cppclean/cppclean src test examples
-      exit 0
+      git clone https://github.com/myint/cppclean;
+      ./cppclean/cppclean src test examples;
+      exit 0;
     fi
   - mkdir build
   - cd build
   - cmake .. ${CMAKE_OPTIONS}
   - cmake --build .
   - if [[ $CUDA ]]; then
-      cd ../test/unit_tests/cuda
-      make
+      cd ../test/unit_tests/cuda;
+      make;
     fi
   - ctest --extra-verbose
