@@ -28,8 +28,8 @@ script:
   - cd build
   - cmake .. ${CMAKE_OPTIONS}
   - cmake --build .
+  - ctest --extra-verbose
   - if [[ $CUDA ]]; then
       cd ../test/unit_tests/cuda;
       make;
     fi
-  - ctest --extra-verbose
