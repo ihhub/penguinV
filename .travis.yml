@@ -12,7 +12,7 @@ addons:
 matrix:
   include:
     - os: linux
-      env: 
+      env:
         - CUDA=8.0.61-1
         - QT_BASE=59
         - STATIC_ANALYSIS=ON
