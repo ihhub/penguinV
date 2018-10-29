@@ -332,7 +332,7 @@ namespace Unit_Test
 
     uint32_t runCount()
     {
-        return 1024u; // some magic number for loop. Higher value = higher chance to verify all possible situations
+        return 1001u; // some magic number for loop. Higher value = higher chance to verify all possible situations
     }
 
     double randomValue( double minimum, double maximum, double stepVal )
