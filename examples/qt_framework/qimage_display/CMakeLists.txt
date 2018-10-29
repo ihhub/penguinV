@@ -20,7 +20,8 @@ set(SRCS
     ${LIB_DIR}/image_function.cpp
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/math/math_base.cpp
-    ${LIB_DIR}/FileOperation/bitmap.cpp)
+    ${LIB_DIR}/FileOperation/bitmap.cpp
+    ${LIB_DIR}/penguinv/penguinv.cpp)
 
 add_executable(${TARGET_NAME} main.cpp ${SRCS})
 target_compile_features(${TARGET_NAME} PRIVATE cxx_std_11)
