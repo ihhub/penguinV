@@ -6,7 +6,8 @@ Example of how to use python wrappers of penguinV to save a gray scale version o
 # to the places that python will look for the module.
 
 import sys
-sys.path.insert(0, '..\\..\\src\\python')
+import os
+sys.path.insert(0, os.path.join('..', '..', 'src', 'python'))
 
 # Now get the module.
 
@@ -43,7 +44,7 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
 
 try:
 
-    saveGrayScaleCopy( filenameToOpen = '..\\_image\\mercury.bmp', 
+    saveGrayScaleCopy( filenameToOpen = os.path.join('..', '_image', 'mercury.bmp'),
                        filenameToSave = 'result.bmp'
                      ) 
 
