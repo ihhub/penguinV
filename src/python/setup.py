@@ -1,13 +1,15 @@
 from distutils.core import Extension, setup
+import os
 
 module = Extension( '_penguinV', 
-                    sources = ['penguinV.i', 
-                               '..\\FileOperation\\bitmap.cpp',
-                               '..\\image_function.cpp',
-                               '..\\image_function_helper.cpp' # Need image_function_helper.cpp 
-                                                               # or we get linking errors. 
+                    sources = ['penguinV.i',
+                               os.path.join('..', 'FileOperation', 'bitmap.cpp'),
+                               os.path.join('..', 'image_function.cpp'),
+                               os.path.join('..', 'image_function_helper.cpp'),  # Need image_function_helper.cpp
+                                                                                 # or we get linking errors.
                               ],
-                    swig_opts = ['-c++'], language = 'c++'
+                    swig_opts = ['-c++'], language = 'c++',
+                    extra_compile_args=['-std=c++11']
                   )
 setup(name = 'penguinV',
       ext_modules = [module],
