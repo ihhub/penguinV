@@ -12,14 +12,16 @@ addons:
 matrix:
   include:
     - os: linux
-      env: CUDA=8.0.61-1
+      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-PENGUINV_BUILD_TEST=ON"
+      before_install: source script/travis/install_cuda.sh
     - os: osx
     - os: linux
       env: STATIC_ANALYSIS=ON
-
-before_install:
-   - source script/travis/before_script.sh
+      before_install: pip install cppclean
 
 script:
-  - source script/travis/run_script.sh
-
+  - if [[ "$STATIC_ANALYSIS" == "ON" ]]; then cppclean src test examples; exit 0; fi
+  - mkdir build
+  - cd build
+  - cmake .. ${CMAKE_OPTIONS}
+  - make
