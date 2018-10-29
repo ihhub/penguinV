@@ -13,13 +13,15 @@ matrix:
   include:
     - os: linux
       env: CUDA=8.0.61-1
-    - os: osx
+    - os: linux
+      env: QT_BASE=59
     - os: linux
       env: STATIC_ANALYSIS=ON
+    - os: osx
+      env: QT_BASE=latest
 
-before_install:
-   - source script/travis/before_script.sh
+install:
+  - source script/travis/before_script.sh
 
 script:
   - source script/travis/run_script.sh
-
