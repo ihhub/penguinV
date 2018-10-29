@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $CUDA ]]; then
+if [[ $QT_BASE ]]; then
     if [ "$TRAVIS_OS_NAME" = "linux" ]; then
         sudo add-apt-repository ppa:beineri/opt-qt596-trusty -y;
         sudo apt-get update -qq;
