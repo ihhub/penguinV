@@ -20,7 +20,7 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: osx
-      env: QT_BASE=latest
+      env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
 
 script:
