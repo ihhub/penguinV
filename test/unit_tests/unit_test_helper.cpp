@@ -18,6 +18,20 @@ namespace
 
         return image;
     }
+
+    void fillRandomData( PenguinV_Image::Image & image )
+    {
+        uint8_t * outY = image.data();
+        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+
+        for( ; outY != outYEnd; outY += image.rowSize() ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + image.width() * image.colorCount();
+
+            for( ; outX != outXEnd; ++outX )
+                (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
+        }
+    }
 }
 
 namespace Unit_Test
@@ -52,20 +66,11 @@ namespace Unit_Test
         return uniformImage( 255u, reference );
     }
 
-    PenguinV_Image::Image randomImage()
+    PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
     {
-        PenguinV_Image::Image image( randomSize(), randomSize() );
+        PenguinV_Image::Image image( (width == 0) ? randomSize() : width, (height == 0) ? randomSize() : height );
 
-        uint8_t * outY = image.data();
-        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
-
-        for( ; outY != outYEnd; outY += image.rowSize() ) {
-            uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + image.width();
-
-            for( ; outX != outXEnd; ++outX )
-                (*outX) = randomValue<uint8_t>( 256 );
-        }
+        fillRandomData( image );
 
         return image;
     }
@@ -96,21 +101,12 @@ namespace Unit_Test
         return image;
     }
 
-    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image& reference)
+    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference)
     {
-        PenguinV_Image::Image image = reference.generate(randomSize(),
-            randomSize(), PenguinV_Image::RGB);
+        PenguinV_Image::Image image = reference.generate(randomSize(), randomSize(), PenguinV_Image::RGB);
 
-        uint8_t * outY = image.data();
-        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+        fillRandomData( image );
 
-        for( ; outY != outYEnd; outY += image.rowSize() ) {
-            uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + image.rowSize();
-
-            for( ; outX != outXEnd; ++outX )
-                (*outX) = randomValue<uint8_t>( 256 );
-        }
         return image;
     }
 
