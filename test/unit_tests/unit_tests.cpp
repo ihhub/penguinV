@@ -22,7 +22,7 @@ int main()
     addTests_Image_Buffer   ( framework );
     addTests_Image_Function ( framework );
     addTests_Math           ( framework );
-    addTests_FFT( framework );
+    addTests_FFT            ( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();

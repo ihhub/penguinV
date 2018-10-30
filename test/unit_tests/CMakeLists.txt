@@ -4,10 +4,10 @@ set(SRCS
 	${LIB_DIR}/math/hough_transform.cpp
 	${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
-	${LIB_DIR}/thirdparty/kissfft/kiss_fft.c
-	${LIB_DIR}/thirdparty/kissfft/kiss_fftnd.c
+    ${LIB_DIR}/thirdparty/kissfft/kiss_fft.c
+    ${LIB_DIR}/thirdparty/kissfft/kiss_fftnd.c
     ${LIB_DIR}/blob_detection.cpp
-	${LIB_DIR}/fft.cpp
+    ${LIB_DIR}/fft.cpp
     ${LIB_DIR}/function_pool.cpp
     ${LIB_DIR}/image_function.cpp
     ${LIB_DIR}/image_function_helper.cpp
@@ -16,7 +16,7 @@ set(SRCS
     unit_tests.cpp
     unit_test_bitmap.cpp
     unit_test_blob_detection.cpp
-	unit_test_fft.cpp
+    unit_test_fft.cpp
     unit_test_framework.cpp
     unit_test_helper.cpp
     unit_test_image_buffer.cpp
