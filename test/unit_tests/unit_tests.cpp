@@ -2,6 +2,7 @@
 #include <iostream>
 #include "unit_test_bitmap.h"
 #include "unit_test_blob_detection.h"
+#include "unit_test_fft.h"
 #include "unit_test_framework.h"
 #include "unit_test_image_buffer.h"
 #include "unit_test_image_function.h"
@@ -21,6 +22,7 @@ int main()
     addTests_Image_Buffer   ( framework );
     addTests_Image_Function ( framework );
     addTests_Math           ( framework );
+    addTests_FFT            ( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();
