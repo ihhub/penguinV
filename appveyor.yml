@@ -35,5 +35,4 @@ build_script:
 
 test_script:
 # OpenCL unit test is excluded as it fails with Exception: Exit code 0xc0000135 on Appveyor
-  - cmd: ctest -C %configuration% -E unit_tests_opencl --extra-verbose
-
+  - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test" --extra-verbose

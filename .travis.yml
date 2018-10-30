@@ -28,7 +28,7 @@ script:
   - cd build
   - cmake .. ${CMAKE_OPTIONS}
   - cmake --build .
-  - ctest --extra-verbose
+  - ctest -E perf_test --extra-verbose
   - if [[ $CUDA ]]; then
       cd ../test/unit_tests/cuda;
       make;
