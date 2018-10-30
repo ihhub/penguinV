@@ -2,13 +2,12 @@
 #include "image_function.h"
 #include "parameter_validation.h"
 #include "image_function_helper.h"
-#include "penguinv/penguinv.h"
 
 namespace
 {
     struct FunctionRegistrator
     {
-        penguinV::FunctionTable table;
+        Image_Function_Helper::FunctionTableHolder table;
         
         FunctionRegistrator()
         {
@@ -45,7 +44,7 @@ namespace
             table.Threshold2         = &Image_Function::Threshold;
             table.Transpose          = &Image_Function::Transpose;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), table );
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::Image(), table );
         }
     };
 

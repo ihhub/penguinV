@@ -8,13 +8,12 @@
 #include "opencl_helper.h"
 #include "../image_function_helper.h"
 #include "../parameter_validation.h"
-#include "../penguinv/penguinv.h"
 
 namespace
 {
     struct FunctionRegistrator
     {
-        penguinV::FunctionTable table;
+        Image_Function_Helper::FunctionTableHolder table;
 
         FunctionRegistrator()
         {
@@ -37,7 +36,7 @@ namespace
             table.Threshold          = &Image_Function_OpenCL::Threshold;
             table.Threshold2         = &Image_Function_OpenCL::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::ImageOpenCL(), table );
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageOpenCL(), table );
         }
     };
 

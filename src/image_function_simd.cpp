@@ -4,7 +4,6 @@
 #include "image_function_helper.h"
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
-#include "penguinv/penguinv.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>
@@ -22,7 +21,7 @@ namespace
 {
     struct FunctionRegistrator
     {
-        penguinV::FunctionTable table;
+        Image_Function_Helper::FunctionTableHolder table;
 
         FunctionRegistrator()
         {
@@ -39,7 +38,7 @@ namespace
             table.Threshold          = &Image_Function_Simd::Threshold;
             table.Threshold2         = &Image_Function_Simd::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), table, true );
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::Image(), table, true );
         }
     };
 

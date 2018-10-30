@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "image_buffer.h"
 
@@ -296,4 +297,46 @@ namespace Image_Function_Helper
 
     Image Transpose( FunctionTable::Transpose transpose,
                      const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
+    struct FunctionTableHolder
+    {
+        FunctionTable::AbsoluteDifference AbsoluteDifference = nullptr;
+        FunctionTable::Accumulate         Accumulate         = nullptr;
+        FunctionTable::BitwiseAnd         BitwiseAnd         = nullptr;
+        FunctionTable::BitwiseOr          BitwiseOr          = nullptr;
+        FunctionTable::BitwiseXor         BitwiseXor         = nullptr;
+        FunctionTable::ConvertToGrayScale ConvertToGrayScale = nullptr;
+        FunctionTable::ConvertToRgb       ConvertToRgb       = nullptr;
+        FunctionTable::Copy               Copy               = nullptr;
+        FunctionTable::ExtractChannel     ExtractChannel     = nullptr;
+        FunctionTable::Fill               Fill               = nullptr;
+        FunctionTable::Flip               Flip               = nullptr;
+        FunctionTable::GammaCorrection    GammaCorrection    = nullptr;
+        FunctionTable::GetPixel           GetPixel           = nullptr;
+        FunctionTable::Histogram          Histogram          = nullptr;
+        FunctionTable::Invert             Invert             = nullptr;
+        FunctionTable::IsEqual            IsEqual            = nullptr;
+        FunctionTable::LookupTable        LookupTable        = nullptr;
+        FunctionTable::Maximum            Maximum            = nullptr;
+        FunctionTable::Merge              Merge              = nullptr;
+        FunctionTable::Minimum            Minimum            = nullptr;
+        FunctionTable::Normalize          Normalize          = nullptr;
+        FunctionTable::ProjectionProfile  ProjectionProfile  = nullptr;
+        FunctionTable::Resize             Resize             = nullptr;
+        FunctionTable::RgbToBgr           RgbToBgr           = nullptr;
+        FunctionTable::SetPixel           SetPixel           = nullptr;
+        FunctionTable::SetPixel2          SetPixel2          = nullptr;
+        FunctionTable::Split              Split              = nullptr;
+        FunctionTable::Subtract           Subtract           = nullptr;
+        FunctionTable::Sum                Sum                = nullptr;
+        FunctionTable::Threshold          Threshold          = nullptr;
+        FunctionTable::Threshold2         Threshold2         = nullptr;
+        FunctionTable::Transpose          Transpose          = nullptr;
+    };
+
+    // Register function table for specific image type. This function must be called within source file (*.cpp) during startup of the library
+    // forceSetup flag is needed for SIMD function table set as we are not sure in which order normal CPU and SIMD global function code would be called
+    void registerFunctionTable( const Image & image, const FunctionTableHolder & table, bool forceSetup = false );
+
+    const FunctionTableHolder & getFunctionTableHolder( const Image & image );
 }
