@@ -20,24 +20,26 @@
 
 namespace
 {
-    struct FunctionRegistrator : public penguinV::FunctionTable
+    struct FunctionRegistrator
     {
+        penguinV::FunctionTable table;
+
         FunctionRegistrator()
         {
-            AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
-            Accumulate         = &Image_Function_Simd::Accumulate;
-            BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
-            BitwiseOr          = &Image_Function_Simd::BitwiseOr;
-            BitwiseXor         = &Image_Function_Simd::BitwiseXor;
-            Invert             = &Image_Function_Simd::Invert;
-            Maximum            = &Image_Function_Simd::Maximum;
-            Minimum            = &Image_Function_Simd::Minimum;
-            Subtract           = &Image_Function_Simd::Subtract;
-            Sum                = &Image_Function_Simd::Sum;
-            Threshold          = &Image_Function_Simd::Threshold;
-            Threshold2         = &Image_Function_Simd::Threshold;
+            table.AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+            table.Accumulate         = &Image_Function_Simd::Accumulate;
+            table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
+            table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
+            table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            table.Invert             = &Image_Function_Simd::Invert;
+            table.Maximum            = &Image_Function_Simd::Maximum;
+            table.Minimum            = &Image_Function_Simd::Minimum;
+            table.Subtract           = &Image_Function_Simd::Subtract;
+            table.Sum                = &Image_Function_Simd::Sum;
+            table.Threshold          = &Image_Function_Simd::Threshold;
+            table.Threshold2         = &Image_Function_Simd::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::Image(), *this, true );
+            penguinV::registerFunctionTable( PenguinV_Image::Image(), table, true );
         }
     };
 
