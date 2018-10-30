@@ -9,30 +9,32 @@
 
 namespace
 {
-    struct FunctionRegistrator : public penguinV::FunctionTable
+    struct FunctionRegistrator
     {
+        penguinV::FunctionTable table;
+
         FunctionRegistrator()
         {
-            AbsoluteDifference = &Image_Function_Cuda::AbsoluteDifference;
-            BitwiseAnd         = &Image_Function_Cuda::BitwiseAnd;
-            BitwiseOr          = &Image_Function_Cuda::BitwiseOr;
-            BitwiseXor         = &Image_Function_Cuda::BitwiseXor;
-            ConvertToGrayScale = &Image_Function_Cuda::ConvertToGrayScale;
-            ConvertToRgb       = &Image_Function_Cuda::ConvertToRgb;
-            Copy               = &Image_Function_Cuda::Copy;
-            ExtractChannel     = &Image_Function_Cuda::ExtractChannel;
-            Fill               = &Image_Function_Cuda::Fill;
-            GammaCorrection    = &Image_Function_Cuda::GammaCorrection;
-            Histogram          = &Image_Function_Cuda::Histogram;
-            Invert             = &Image_Function_Cuda::Invert;
-            LookupTable        = &Image_Function_Cuda::LookupTable;
-            Maximum            = &Image_Function_Cuda::Maximum;
-            Minimum            = &Image_Function_Cuda::Minimum;
-            Subtract           = &Image_Function_Cuda::Subtract;
-            Threshold          = &Image_Function_Cuda::Threshold;
-            Threshold2         = &Image_Function_Cuda::Threshold;
+            table.AbsoluteDifference = &Image_Function_Cuda::AbsoluteDifference;
+            table.BitwiseAnd         = &Image_Function_Cuda::BitwiseAnd;
+            table.BitwiseOr          = &Image_Function_Cuda::BitwiseOr;
+            table.BitwiseXor         = &Image_Function_Cuda::BitwiseXor;
+            table.ConvertToGrayScale = &Image_Function_Cuda::ConvertToGrayScale;
+            table.ConvertToRgb       = &Image_Function_Cuda::ConvertToRgb;
+            table.Copy               = &Image_Function_Cuda::Copy;
+            table.ExtractChannel     = &Image_Function_Cuda::ExtractChannel;
+            table.Fill               = &Image_Function_Cuda::Fill;
+            table.GammaCorrection    = &Image_Function_Cuda::GammaCorrection;
+            table.Histogram          = &Image_Function_Cuda::Histogram;
+            table.Invert             = &Image_Function_Cuda::Invert;
+            table.LookupTable        = &Image_Function_Cuda::LookupTable;
+            table.Maximum            = &Image_Function_Cuda::Maximum;
+            table.Minimum            = &Image_Function_Cuda::Minimum;
+            table.Subtract           = &Image_Function_Cuda::Subtract;
+            table.Threshold          = &Image_Function_Cuda::Threshold;
+            table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::ImageCuda(), *this );
+            penguinV::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
         }
     };
 
