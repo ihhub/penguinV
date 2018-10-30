@@ -1,7 +1,8 @@
 # How to Create the Python Wrappers
 
 The wrappers for python are generated using SWIG ([website](http://www.swig.org/)), and for ease of use, the wrappers
-can also be generated with the help of the `distutils` python module. 
+can also be generated with the help of the `distutils` python module.
+On Windows, you may need to add the location where swig.exe was installed to your PATH.
 The interface for the wrappers is specified by the file `penguinV.i`. To generate the wrappers, 
 you will need to make sure you have the `distutils` python module, which most likely came as a standard module with your version of `python`.
 
@@ -21,6 +22,12 @@ the documentation, simply run the following from a terminal (in this directory):
 
 ``` 
 pydoc -w penguinV
+```
+
+or
+
+```
+python -m pydoc -w penguinV
 ```
 
 This will create `penguinV.html`, containing the documentation for the python wrappers.
