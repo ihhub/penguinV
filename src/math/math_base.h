@@ -32,7 +32,7 @@ struct PointBase2D
         , y( _y )
     { }
 
-    virtual bool operator == ( const PointBase2D & point ) const
+    bool operator == ( const PointBase2D & point ) const
     {
         return pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y );
     }
@@ -73,7 +73,7 @@ struct PointBase3D : public PointBase2D<_Type>
         , z( _z )
     { }
 
-    virtual bool operator == ( const PointBase3D & point ) const
+    bool operator == ( const PointBase3D & point ) const
     {
         return PointBase2D<_Type>::operator==( point ) && pvmath::isEqual( z, point.z );
     }
