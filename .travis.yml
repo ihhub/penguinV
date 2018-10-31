@@ -25,10 +25,11 @@ matrix:
 
 script:
   - if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
-      export EXCLUDE_PATTERN_1="not found in any directly \#included header";
-      export EXCLUDE_PATTERN_2="or any other directly \#included header";
+      export EXCLUDE_PATTERN_1=" not found in expected header ";
+      export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
+      export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
       git clone https://github.com/myint/cppclean;
-      ./cppclean/cppclean src test examples | sed -E "s/($EXCLUDE_PATTERN_1|$EXCLUDE_PATTERN_2)+$//";
+      ./cppclean/cppclean src test examples | grep -v $EXCLUDE_PATTERN_1 | grep -v $EXCLUDE_PATTERN_2 | grep -v $EXCLUDE_PATTERN_3;
       exit 0;
     fi
   - mkdir build
