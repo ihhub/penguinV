@@ -10,7 +10,6 @@ SRCSCU :=  \
 SRCSCPP :=  \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \
-	$(LIB_DIR)/penguinv/penguinv.cpp \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
 	unit_tests_cuda.cpp \

@@ -3,7 +3,7 @@
 ##
 CXXFLAGS += -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 -march=native
 
-example_image_function : ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/penguinv/penguinv.cpp
+example_image_function : ../../src/image_function_helper.cpp ../../src/image_function.cpp
 
 .PHONY: clean
 clean:

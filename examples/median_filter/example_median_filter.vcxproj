@@ -144,7 +144,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="example_median_filter.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
@@ -158,7 +157,6 @@
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
-    <ClInclude Include="..\..\src\penguinv\penguinv.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

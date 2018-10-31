@@ -157,7 +157,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\performance_test_framework.cpp" />
     <ClCompile Include="..\performance_test_helper.cpp" />
     <ClCompile Include="performance_tests_cuda.cpp" />
@@ -176,7 +175,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
-    <ClInclude Include="..\..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\performance_test_framework.h" />
     <ClInclude Include="..\performance_test_helper.h" />
     <ClInclude Include="performance_test_helper_cuda.cuh" />
