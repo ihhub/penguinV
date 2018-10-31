@@ -3,12 +3,15 @@
 
 namespace
 {
-#define run( image, func_ )                                                                                        \
+#define initialize( image, func_ )                                                                                 \
     auto func = Image_Function_Helper::getFunctionTableHolder( image ).func_;                                      \
     if ( func == nullptr ) {                                                                                       \
         const std::string error( std::string("Function ") + std::string(#func_) + std::string("is not defined") ); \
         throw imageException(error.data());                                                                        \
-    }                                                                                                              \
+    }
+
+#define run( image, func_ )   \
+    initialize( image, func_) \
     func
 
 }
@@ -87,7 +90,7 @@ namespace penguinV
 
     uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
     {
-        run( image, GetPixel );
+        initialize( image, GetPixel );
         return func( image, x, y );
     }
 
@@ -111,7 +114,7 @@ namespace penguinV
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   uint32_t width, uint32_t height )
     {
-        run( in1, IsEqual );
+        initialize( in1, IsEqual );
         return func( in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
@@ -191,7 +194,7 @@ namespace penguinV
 
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
-        run( image, Sum );
+        initialize( image, Sum );
         return func( image, x, y, width, height );
     }
 

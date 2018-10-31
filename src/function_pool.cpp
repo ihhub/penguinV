@@ -1004,10 +1004,13 @@ namespace Function_Pool
                     uint32_t width, uint32_t height )
     {
         const std::vector<uint32_t> histogram = Histogram( in, startXIn, startYIn, width, height );
-        size_t minimum = 255u;
-        size_t maximum = 0u;
+        if ( histogram.size() != 256u )
+            throw imageException( "Histogram size is not equal to 256" );
 
-        for ( size_t i = 0u; i < histogram.size(); ++i ) {
+        uint16_t minimum = 255u;
+        uint16_t maximum = 0u;
+
+        for ( uint16_t i = 0u; i < 256u; ++i ) {
             if ( histogram[i] > 0u ) {
                 if ( maximum < i )
                     maximum = i;
