@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "../image_buffer.h"
-#include "../image_function_helper.h"
 
 namespace penguinV
 {
@@ -101,45 +100,4 @@ namespace penguinV
 
     void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
-
-    // A table which contains pointers to basic functions
-    struct FunctionTable
-    {
-        Image_Function_Helper::FunctionTable::AbsoluteDifference AbsoluteDifference = nullptr;
-        Image_Function_Helper::FunctionTable::Accumulate         Accumulate         = nullptr;
-        Image_Function_Helper::FunctionTable::BitwiseAnd         BitwiseAnd         = nullptr;
-        Image_Function_Helper::FunctionTable::BitwiseOr          BitwiseOr          = nullptr;
-        Image_Function_Helper::FunctionTable::BitwiseXor         BitwiseXor         = nullptr;
-        Image_Function_Helper::FunctionTable::ConvertToGrayScale ConvertToGrayScale = nullptr;
-        Image_Function_Helper::FunctionTable::ConvertToRgb       ConvertToRgb       = nullptr;
-        Image_Function_Helper::FunctionTable::Copy               Copy               = nullptr;
-        Image_Function_Helper::FunctionTable::ExtractChannel     ExtractChannel     = nullptr;
-        Image_Function_Helper::FunctionTable::Fill               Fill               = nullptr;
-        Image_Function_Helper::FunctionTable::Flip               Flip               = nullptr;
-        Image_Function_Helper::FunctionTable::GammaCorrection    GammaCorrection    = nullptr;
-        Image_Function_Helper::FunctionTable::GetPixel           GetPixel           = nullptr;
-        Image_Function_Helper::FunctionTable::Histogram          Histogram          = nullptr;
-        Image_Function_Helper::FunctionTable::Invert             Invert             = nullptr;
-        Image_Function_Helper::FunctionTable::IsEqual            IsEqual            = nullptr;
-        Image_Function_Helper::FunctionTable::LookupTable        LookupTable        = nullptr;
-        Image_Function_Helper::FunctionTable::Maximum            Maximum            = nullptr;
-        Image_Function_Helper::FunctionTable::Merge              Merge              = nullptr;
-        Image_Function_Helper::FunctionTable::Minimum            Minimum            = nullptr;
-        Image_Function_Helper::FunctionTable::Normalize          Normalize          = nullptr;
-        Image_Function_Helper::FunctionTable::ProjectionProfile  ProjectionProfile  = nullptr;
-        Image_Function_Helper::FunctionTable::Resize             Resize             = nullptr;
-        Image_Function_Helper::FunctionTable::RgbToBgr           RgbToBgr           = nullptr;
-        Image_Function_Helper::FunctionTable::SetPixel           SetPixel           = nullptr;
-        Image_Function_Helper::FunctionTable::SetPixel2          SetPixel2          = nullptr;
-        Image_Function_Helper::FunctionTable::Split              Split              = nullptr;
-        Image_Function_Helper::FunctionTable::Subtract           Subtract           = nullptr;
-        Image_Function_Helper::FunctionTable::Sum                Sum                = nullptr;
-        Image_Function_Helper::FunctionTable::Threshold          Threshold          = nullptr;
-        Image_Function_Helper::FunctionTable::Threshold2         Threshold2         = nullptr;
-        Image_Function_Helper::FunctionTable::Transpose          Transpose          = nullptr;
-    };
-
-    // Register function table for specific image type. This function must be called within source file (*.cpp) during startup of the library
-    // forceSetup flag is needed for SIMD function table set as we are not sure in which order normal CPU and SIMD global function code would be called
-    void registerFunctionTable( const Image & image, const FunctionTable & table, bool forceSetup = false );
 }

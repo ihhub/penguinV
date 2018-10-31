@@ -3,7 +3,6 @@
 #include "image_function_cuda.cuh"
 #include "../parameter_validation.h"
 #include "../image_function_helper.h"
-#include "../penguinv/penguinv.h"
 #include "cuda_types.cuh"
 #include "cuda_helper.cuh"
 
@@ -11,7 +10,7 @@ namespace
 {
     struct FunctionRegistrator
     {
-        penguinV::FunctionTable table;
+        Image_Function_Helper::FunctionTableHolder table;
 
         FunctionRegistrator()
         {
@@ -34,7 +33,7 @@ namespace
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            penguinV::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
         }
     };
 

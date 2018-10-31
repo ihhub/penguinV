@@ -160,7 +160,6 @@
     <ClCompile Include="..\..\..\src\opencl\image_function_opencl.cpp" />
     <ClCompile Include="..\..\..\src\opencl\opencl_device.cpp" />
     <ClCompile Include="..\..\..\src\opencl\opencl_helper.cpp" />
-    <ClCompile Include="..\..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\unit_test_framework.cpp" />
     <ClCompile Include="..\unit_test_helper.cpp" />
     <ClCompile Include="unit_tests_opencl.cpp" />
@@ -177,7 +176,6 @@
     <ClInclude Include="..\..\..\src\opencl\opencl_device.h" />
     <ClInclude Include="..\..\..\src\opencl\opencl_helper.h" />
     <ClInclude Include="..\..\..\src\opencl\opencl_memory.h" />
-    <ClInclude Include="..\..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\unit_test_framework.h" />
     <ClInclude Include="..\unit_test_helper.h" />
     <ClInclude Include="unit_test_helper_opencl.h" />

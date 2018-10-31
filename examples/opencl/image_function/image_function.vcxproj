@@ -161,7 +161,6 @@
     <ClCompile Include="..\..\..\src\opencl\image_function_opencl.cpp" />
     <ClCompile Include="..\..\..\src\opencl\opencl_device.cpp" />
     <ClCompile Include="..\..\..\src\opencl\opencl_helper.cpp" />
-    <ClCompile Include="..\..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,7 +174,6 @@
     <ClInclude Include="..\..\..\src\opencl\opencl_device.h" />
     <ClInclude Include="..\..\..\src\opencl\opencl_helper.h" />
     <ClInclude Include="..\..\..\src\opencl\opencl_memory.h" />
-    <ClInclude Include="..\..\..\src\penguinv\penguinv.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

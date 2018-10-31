@@ -4,7 +4,6 @@ UNIT_TEST_DIR := $(PWD)/..
 SRCS :=  \
 	$(MAIN_LIB_DIR)/opencl/opencl_device.cpp \
 	$(MAIN_LIB_DIR)/opencl/opencl_helper.cpp \
-	$(MAIN_LIB_DIR)/penguinv/penguinv.cpp \
 	$(MAIN_LIB_DIR)/image_function.cpp \
 	$(MAIN_LIB_DIR)/image_function_helper.cpp \
 	$(MAIN_LIB_DIR)/opencl/image_function_opencl.cpp \
