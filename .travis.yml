@@ -45,7 +45,7 @@ script:
       cmake .. ${CMAKE_OPTIONS}
       make unit_tests -j2 -k
       ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
-      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log > out && cat out
+      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log > out && cat out
       test ! -s out
       exit 0
     fi
