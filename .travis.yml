@@ -20,7 +20,7 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: linux
-      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=debug"
+      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       addons:
         apt:
           update: true
@@ -30,7 +30,8 @@ matrix:
       before_install: source script/travis/install_qt5.sh
 
 script:
-  - if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
+  - |
+    if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
       export EXCLUDE_PATTERN_1=" not found in expected header ";
       export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
       export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
@@ -38,8 +39,9 @@ script:
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
       exit 0;
     fi
-  - if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-      (mkdir build && cd build)
+  - |
+    if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      mkdir build && cd build
       cmake .. ${CMAKE_OPTIONS}
       make test
       ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
