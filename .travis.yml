@@ -43,7 +43,9 @@ script:
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
       mkdir build && cd build
       cmake .. ${CMAKE_OPTIONS}
+      make unit_tests -j2 -k
       ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
+      exit 0
     fi
   - mkdir build
   - cd build
