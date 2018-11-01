@@ -41,10 +41,12 @@ script:
     fi
   - |
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-      mkdir build && cd build
+      mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
       make unit_tests -j2 -k
       ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
+      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log > out && cat out
+      test ! -s out
       exit 0
     fi
   - mkdir build
