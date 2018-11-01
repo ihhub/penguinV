@@ -19,6 +19,12 @@ matrix:
       before_install: source script/travis/install_qt5.sh
     - os: linux
       env: STATIC_ANALYSIS=ON
+    - os: linux
+      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=debug"
+      addons:
+        apt:
+          update: true
+          packages: valgrind
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
@@ -31,6 +37,12 @@ script:
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
       exit 0;
+    fi
+  - if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      (mkdir build && cd build)
+      cmake .. ${CMAKE_OPTIONS}
+      make test
+      ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
     fi
   - mkdir build
   - cd build
