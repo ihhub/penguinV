@@ -25,7 +25,8 @@ matrix:
         apt:
           update: true
           packages: valgrind
-      after_script: echo $(cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log)
+      after_script:
+        - echo "$(<${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log)"
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
