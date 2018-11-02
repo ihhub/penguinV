@@ -25,6 +25,7 @@ matrix:
         apt:
           update: true
           packages: valgrind
+      after_script: echo $(cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log)
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
@@ -45,11 +46,7 @@ script:
       cmake .. ${CMAKE_OPTIONS}
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
-      ctest -E perf_test --extra-verbose -D ExperimentalMemCheck -j2
-      echo ${TRAVIS_BUILD_DIR} #Should be /home/travis/build/ihhub/penguinV/
-      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log > out && cat out
-      test ! -s out
-      exit 0
+      (ctest -E perf_test --extra-verbose -D ExperimentalMemCheck -j2) || exit 1
     fi
   - mkdir build
   - cd build
