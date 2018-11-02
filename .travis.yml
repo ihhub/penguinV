@@ -20,11 +20,15 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: linux
-      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release"
       addons:
         apt:
           update: true
           packages: valgrind
+      before_install:
+        - which $CXX
+        - which valgrind
+        - $CXX --version
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
@@ -43,9 +47,10 @@ script:
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
       mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
-      make unit_tests -j2 -k
-      ctest -E perf_test --extra-verbose -D ExperimentalMemCheck
-      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log > out && cat out
+      cmake --build . --target unit_tests -- -j2
+      ctest -D ExperimentalBuild -j2
+      ctest -E perf_test --extra-verbose -D ExperimentalMemCheck -j2
+      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log > out && cat out
       test ! -s out
       exit 0
     fi
