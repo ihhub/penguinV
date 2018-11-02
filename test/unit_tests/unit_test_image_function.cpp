@@ -351,6 +351,58 @@ namespace Function_Template
         return std::all_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v == sum; } );
     }
 
+    bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
+    {
+        std::vector <uint8_t> v (100, 255u);
+        v.push_back(0u);
+        PenguinV_Image::Image image = randomImage(v);
+
+        BinaryDilate(image, randomValue<uint32_t>(1, image.width()), randomValue<uint32_t>(1, image.height()));
+
+        return verifyImage(image, 255u);
+    }
+
+    bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
+    {
+        std::vector <uint8_t> v (100, 255u);
+        v.push_back(0u);
+        PenguinV_Image::Image image = randomImage(v);
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi ( image, roiX, roiY, roiWidth, roiHeight );
+        uint8_t result = !verifyImage (image, roiX, roiY, roiWidth, roiHeight, 0u) ? 255u : 0u;
+
+        BinaryDilate(image, roiX, roiY, roiWidth, roiHeight, randomValue<uint32_t>(1, roiWidth + 1), randomValue<uint32_t>(1, roiHeight + 1));
+
+        return verifyImage(image, roiX, roiY, roiWidth, roiHeight, result);
+    }
+
+    bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
+    {
+        std::vector <uint8_t> v (100, 0u);
+        v.push_back(255u);
+        PenguinV_Image::Image image = randomImage(v);
+
+        BinaryErode(image, randomValue<uint32_t>(1, image.width()), randomValue<uint32_t>(1, image.height()));
+
+        return verifyImage(image, 0u);
+    }
+
+    bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
+    {
+        std::vector <uint8_t> v (100, 0u);
+        v.push_back(255u);
+        PenguinV_Image::Image image = randomImage(v);
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi ( image, roiX, roiY, roiWidth, roiHeight );
+        uint8_t result = !verifyImage (image, roiX, roiY, roiWidth, roiHeight, 255u) ? 0u : 255u;
+
+        BinaryErode(image, roiX, roiY, roiWidth, roiHeight, randomValue<uint32_t>(1, roiWidth + 1), randomValue<uint32_t>(1, roiHeight + 1));
+
+        return verifyImage(image, roiX, roiY, roiWidth, roiHeight, result);
+    }
+
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1836,6 +1888,8 @@ namespace image_function
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
     SET_FUNCTION_2_FORMS( Accumulate )
+    SET_FUNCTION_2_FORMS( BinaryDilate )
+    SET_FUNCTION_2_FORMS( BinaryErode )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
