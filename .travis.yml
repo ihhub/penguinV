@@ -20,15 +20,11 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: linux
-      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release"
+      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       addons:
         apt:
           update: true
           packages: valgrind
-      before_install:
-        - which $CXX
-        - which valgrind
-        - $CXX --version
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
