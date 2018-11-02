@@ -46,7 +46,8 @@ script:
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
       ctest -E perf_test --extra-verbose -D ExperimentalMemCheck -j2
-      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log > out && cat out
+      echo ${TRAVIS_BUILD_DIR} #Should be /home/travis/build/ihhub/penguinV/
+      cat ${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log > out && cat out
       test ! -s out
       exit 0
     fi
