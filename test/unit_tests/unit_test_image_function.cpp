@@ -357,7 +357,7 @@ namespace Function_Template
         fillData.push_back(0u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
-        PenguinV_Image:Image output = input;
+        PenguinV_Image::Image output = input;
 
         const uint32_t dilationX = randomValue<uint32_t>(1, 5);
         const uint32_t dilationY = randomValue<uint32_t>(1, 5);
@@ -388,7 +388,7 @@ namespace Function_Template
         fillData.push_back(255u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
-        PenguinV_Image:Image output = input;
+        PenguinV_Image::Image output = input;
 
         const uint32_t dilationX = randomValue<uint32_t>(1, 5);
         const uint32_t dilationY = randomValue<uint32_t>(1, 5);
