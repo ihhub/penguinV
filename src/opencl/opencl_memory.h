@@ -128,7 +128,10 @@ namespace multiCL
             _allocatedChunck.clear();
         }
 
-        MemoryAllocator(const MemoryAllocator & ) {}
+        MemoryAllocator(const MemoryAllocator & allocator )
+            : BaseMemoryAllocator( allocator )
+        {
+        }
         MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
     };
 }
