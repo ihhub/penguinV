@@ -6,8 +6,8 @@ namespace fft
 {
     bool RandomImageFFT()
     {
-        for ( uint32_t i = 0; i < 32; ++i ) { // a special case for FFT because it take a lot of time for execution
-            const uint32_t dimension = 2 << Unit_Test::randomValue<uint8_t>( 11 );
+        for ( uint32_t i = 0u; i < 32u; ++i ) { // a special case for FFT because it take a lot of time for execution
+            const uint32_t dimension = (2u << Unit_Test::randomValue<uint8_t>( 11 ));
 
             const PenguinV_Image::Image input = Unit_Test::randomImage( dimension, dimension );
 
