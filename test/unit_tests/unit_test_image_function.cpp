@@ -353,13 +353,18 @@ namespace Function_Template
 
     bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
     {
-        std::vector <uint8_t> v (100, 255u);
-        v.push_back(0u);
-        PenguinV_Image::Image image = randomImage(v);
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
 
-        BinaryDilate(image, randomValue<uint32_t>(1, image.width()), randomValue<uint32_t>(1, image.height()));
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image:Image output = input;
 
-        return verifyImage(image, 255u);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryDilate(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 255u );
     }
 
     bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
@@ -379,13 +384,18 @@ namespace Function_Template
 
     bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
     {
-        std::vector <uint8_t> v (100, 0u);
-        v.push_back(255u);
-        PenguinV_Image::Image image = randomImage(v);
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
 
-        BinaryErode(image, randomValue<uint32_t>(1, image.width()), randomValue<uint32_t>(1, image.height()));
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image:Image output = input;
 
-        return verifyImage(image, 0u);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryDilate(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
     }
 
     bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
