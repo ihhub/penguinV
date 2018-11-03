@@ -393,7 +393,7 @@ namespace Function_Template
         const uint32_t dilationX = randomValue<uint32_t>(1, 5);
         const uint32_t dilationY = randomValue<uint32_t>(1, 5);
 
-        BinaryDilate(output, dilationX, dilationY);
+        BinaryErode(output, dilationX, dilationY);
 
         return equalSize( input, output ) && verifyImage( output, 0u );
     }
