@@ -45,7 +45,7 @@ script:
       cmake .. ${CMAKE_OPTIONS}
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
-      ctest --test-command unit_tests 101 --extra-verbose -D ExperimentalMemCheck -j2
+      ctest -E perf_test --extra-verbose -D ExperimentalMemCheck -j2
       exit 0
     fi
   - mkdir build
