@@ -351,6 +351,80 @@ namespace Function_Template
         return std::all_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v == sum; } );
     }
 
+    bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryDilate(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 255u );
+    }
+
+    bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 0u) ) // full ROI is black, nothing to dilate
+            return true;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        
+        BinaryDilate( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
+
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 255u );
+    }
+
+    bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryErode(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 255u) ) // full ROI is white, nothing to erode
+            return true;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryErode( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
+
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 0u );
+    }
+
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1836,6 +1910,8 @@ namespace image_function
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
     SET_FUNCTION_2_FORMS( Accumulate )
+    SET_FUNCTION_2_FORMS( BinaryDilate )
+    SET_FUNCTION_2_FORMS( BinaryErode )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
