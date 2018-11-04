@@ -58,5 +58,5 @@ script:
       make;
     fi
 
-after_script:
+after_success:
   - source script/travis/print_valgrind_log.sh
