@@ -59,4 +59,4 @@ script:
     fi
 
 after_success:
-  - source script/travis/print_valgrind_log.sh
+  - .script/travis/print_valgrind_log.sh
