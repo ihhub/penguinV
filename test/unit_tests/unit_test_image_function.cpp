@@ -369,17 +369,23 @@ namespace Function_Template
 
     bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
     {
-        std::vector <uint8_t> v (100, 255u);
-        v.push_back(0u);
-        PenguinV_Image::Image image = randomImage(v);
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
-        generateRoi ( image, roiX, roiY, roiWidth, roiHeight );
-        uint8_t result = !verifyImage (image, roiX, roiY, roiWidth, roiHeight, 0u) ? 255u : 0u;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 0u) ) // full ROI is black, nothing to dilate
+            return true;
 
-        BinaryDilate(image, roiX, roiY, roiWidth, roiHeight, randomValue<uint32_t>(1, roiWidth + 1), randomValue<uint32_t>(1, roiHeight + 1));
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        
+        BinaryDilate( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
-        return verifyImage(image, roiX, roiY, roiWidth, roiHeight, result);
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 255u );
     }
 
     bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
@@ -400,17 +406,23 @@ namespace Function_Template
 
     bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
     {
-        std::vector <uint8_t> v (100, 0u);
-        v.push_back(255u);
-        PenguinV_Image::Image image = randomImage(v);
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
-        generateRoi ( image, roiX, roiY, roiWidth, roiHeight );
-        uint8_t result = !verifyImage (image, roiX, roiY, roiWidth, roiHeight, 255u) ? 0u : 255u;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 255u) ) // full ROI is white, nothing to erode
+            return true;
 
-        BinaryErode(image, roiX, roiY, roiWidth, roiHeight, randomValue<uint32_t>(1, roiWidth + 1), randomValue<uint32_t>(1, roiHeight + 1));
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        
+        BinaryErode( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
-        return verifyImage(image, roiX, roiY, roiWidth, roiHeight, result);
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 0u );
     }
 
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
