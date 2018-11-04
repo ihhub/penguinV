@@ -87,6 +87,7 @@ namespace Unit_Test
     uint32_t rowSize( uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1 );
 
     uint32_t runCount(); // fixed value for all test loops
+    void setRunCount( uint32_t count );
 
     // Return random value for specific range or variable type
     template <typename data>
