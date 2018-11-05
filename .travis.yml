@@ -46,7 +46,7 @@ script:
       cmake .. ${CMAKE_OPTIONS}
       cmake --build .
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest -C Debug -E 'perf_test|unit_test' --extra-verbose -T MemCheck -j2 # execute unit_test_valgrind
+        ctest -R unit_test_valgrind --extra-verbose -T MemCheck # execute unit_test_valgrind
       else
         ctest -E 'perf_test|unit_test_valgrind' --extra-verbose # execute unit_test and unit_test_opencl
       fi
