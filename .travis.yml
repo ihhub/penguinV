@@ -21,9 +21,6 @@ matrix:
       env: STATIC_ANALYSIS=ON
     - os: linux
       env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
-      after_script:
-       - echo "Executing after-script routine..."
-       - ./script/travis/print_valgrind_log.sh
       addons:
         apt:
           update: true
@@ -60,3 +57,7 @@ script:
       cd ../test/unit_tests/cuda;
       make;
     fi
+    
+after_script:
+ - echo "Executing after-script routine..."
+ - ./script/travis/print_valgrind_log.sh
