@@ -137,7 +137,7 @@ namespace Image_Function
         const uint32_t gradientWidth  = width  - 2;
         const uint32_t gradientHeight = height - 2;
 
-        const float multiplier = 255.0f / sqrtf( 1170450.0f ); // 1170450 is 2 * (255 * 3) * (255 * 3);
+        const float multiplier = 1.0f / ( 3.0f * sqrtf( 2.0f ) );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -174,7 +174,7 @@ namespace Image_Function
                 const int32_t gY = *(inX - rowSizeIn - 1) + *(inX - rowSizeIn) + *(inX - rowSizeIn + 1) -
                                    *(inX + rowSizeIn - 1) - *(inX + rowSizeIn) - *(inX + rowSizeIn + 1);
 
-                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY + gY) ) * multiplier + 0.5f);
+                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
             }
 
             // set last pixel in row to 0
@@ -227,7 +227,7 @@ namespace Image_Function
         const uint32_t gradientWidth  = width  - 2;
         const uint32_t gradientHeight = height - 2;
 
-        const float multiplier = 255.0f / sqrtf( 2080800.0f ); // 2080800 is 2 * (255 * 4) * (255 * 4);
+        const float multiplier = 1.0f / ( 4.0f * sqrtf( 2.0f ) );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -264,7 +264,7 @@ namespace Image_Function
                 const int32_t gY = *(inX - rowSizeIn - 1) + 2 * (*(inX - rowSizeIn)) + *(inX - rowSizeIn + 1) -
                                    *(inX + rowSizeIn - 1) - 2 * (*(inX + rowSizeIn)) - *(inX + rowSizeIn + 1);
 
-                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY + gY) ) * multiplier + 0.5f);
+                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
             }
 
             // set last pixel in row to 0
