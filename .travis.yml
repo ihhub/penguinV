@@ -21,6 +21,7 @@ matrix:
       env: STATIC_ANALYSIS=ON
     - os: linux
       env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+      after_success: script/travis/print_valgrind_log.sh
       addons:
         apt:
           update: true
@@ -46,7 +47,6 @@ script:
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
       ctest -E perf_test --extra-verbose -T MemCheck -j2
-      cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log"
       exit 0
     fi
   - mkdir build
