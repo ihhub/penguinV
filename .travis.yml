@@ -22,7 +22,7 @@ matrix:
     - os: linux
       env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
-        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log" > out && cat out
+        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.3.log" > out && cat out
         - test ! -s out
       addons:
         apt:
