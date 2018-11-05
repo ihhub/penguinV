@@ -22,7 +22,7 @@ matrix:
     - os: linux
       env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
-        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log" > out && cat out
+        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.1.log" > out && cat out
         - test ! -s out
       addons:
         apt:
@@ -47,11 +47,10 @@ script:
     cmake .. ${CMAKE_OPTIONS}
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
       cmake --build . --target unit_tests -- -j2
-      ctest -D ExperimentalBuild -j2
-      ctest -R '.*valgrind$' --extra-verbose -T MemCheck -j2
+      ctest -C Debug -R 'unit_test_valgrind' --extra-verbose -T MemCheck -j2
     else
       cmake --build .
-      ctest -E perf_test --extra-verbose
+      ctest -E 'perf_test|unit_test_valgrind' --extra-verbose
     fi
   - |
     if [[ $CUDA ]]; then
