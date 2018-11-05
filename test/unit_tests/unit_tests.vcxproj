@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\src\fft.cpp" />
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
+    <ClCompile Include="..\..\src\function_pool_task.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\..\src\image_function_simd.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\src\fft.h" />
     <ClInclude Include="..\..\src\FileOperation\bitmap.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
+    <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />

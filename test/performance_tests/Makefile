@@ -6,6 +6,7 @@ SRCS :=  \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
+    $(LIB_DIR)/function_pool_task.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \

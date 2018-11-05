@@ -99,10 +99,10 @@ private:
 };
 
 // Task giver class for example 1 inherited from TaskProvider
-class TaskGiver1 : public Thread_Pool::TaskProvider, public AbstractTaskGiver
+class TaskGiver1 : public TaskProvider, public AbstractTaskGiver
 {
 public:
-    TaskGiver1( Thread_Pool::ThreadPool * pool )
+    TaskGiver1( ThreadPool * pool )
         : TaskProvider( pool )
     {
     }
@@ -133,7 +133,7 @@ protected:
 
 // This is task giver class for example 2 inherited from TaskProviderSingleton
 // TaskGiver1 and TaskGiver2 are totally same for task execution point of view
-class TaskGiver2 : public Thread_Pool::TaskProviderSingleton, public AbstractTaskGiver
+class TaskGiver2 : public TaskProviderSingleton, public AbstractTaskGiver
 {
 public:
     virtual ~TaskGiver2() { }
@@ -164,7 +164,7 @@ void example1()
 {
     // Create a thread pool with 4 worker threads
     std::cout << "Create thread pool with 4 threads" << std::endl;
-    Thread_Pool::ThreadPool pool( 4 );
+    ThreadPool pool( 4 );
 
     // Create a task giver
     TaskGiver1 firstGiver( &pool );
@@ -210,7 +210,7 @@ void example2()
 {
     // Resize thread pool to 4 worker threads
     std::cout << "Resize thread pool to 4 threads" << std::endl;
-    Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
+    ThreadPoolMonoid::instance().resize( 4 );
 
     // Create a task giver
     TaskGiver2 firstGiver;
@@ -223,7 +223,7 @@ void example2()
 
     // We decided to reduce number of threads held by thread pool to 2 due to some lack of resources
     std::cout << "Resize thread pool to 2 threads" << std::endl;
-    Thread_Pool::ThreadPoolMonoid::instance().resize( 2 );
+    ThreadPoolMonoid::instance().resize( 2 );
 
     // Generate another bunch of tasks and give them to thread pool
     firstGiver.run();
@@ -240,7 +240,7 @@ void example2()
     // Suddenly our application got more power and we change number of thread in thread pool to 8
     // Starting from this line result displaying is unpredictable due to multithreading effects!
     std::cout << "Resize thread pool to 8 threads" << std::endl;
-    Thread_Pool::ThreadPoolMonoid::instance().resize( 8 );
+    ThreadPoolMonoid::instance().resize( 8 );
 
     // First giver generates tasks and feed them to thread pool
     firstGiver.run();
@@ -254,5 +254,5 @@ void example2()
     // We use singleton and we want to be sure that destructor will not have any exceptions
     // so we call stop() function what suppose to be called in destructor to clean all stuff. Profit!
     // Be aware that after this code no more threads will be in thread pool
-    Thread_Pool::ThreadPoolMonoid::instance().stop();
+    ThreadPoolMonoid::instance().stop();
 }

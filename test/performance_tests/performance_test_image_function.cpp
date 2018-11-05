@@ -81,7 +81,7 @@ namespace Function_Template
     {
         if ( namespaceName == "function_pool" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( true );
-            Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
+            ThreadPoolMonoid::instance().resize( 4 );
         }
         else if ( namespaceName == "image_function_avx" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( false );
