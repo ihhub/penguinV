@@ -44,11 +44,10 @@ script:
       mkdir -p build
       cd build
       cmake .. ${CMAKE_OPTIONS}
+      cmake --build .
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        cmake --build . --target unit_tests -- -j2
         ctest -C Debug -E 'perf_test|unit_test' --extra-verbose -T MemCheck -j2 # execute unit_test_valgrind
       else
-        cmake --build .
         ctest -E 'perf_test|unit_test_valgrind' --extra-verbose # execute unit_test and unit_test_opencl
       fi
     fi
