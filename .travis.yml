@@ -46,7 +46,6 @@ script:
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
       ctest -E perf_test --extra-verbose -T MemCheck -j2
-      exit 0
     fi
   - mkdir build
   - cd build
@@ -59,5 +58,4 @@ script:
     fi
 
 after_script:
-  - echo "Executing after-script routine..."
-  - ./script/travis/print_valgrind_log.sh
+  - script/travis/print_valgrind_log.sh
