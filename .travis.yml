@@ -46,7 +46,7 @@ script:
       cmake --build . --target unit_tests -- -j2
       ctest -D ExperimentalBuild -j2
       ctest -E perf_test --extra-verbose -T MemCheck -j2
-      ../script/travis/print_valgrind_log.sh
+      cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.*.log"
       exit 0
     fi
   - mkdir build
