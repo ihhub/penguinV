@@ -57,7 +57,7 @@ script:
       cd ../test/unit_tests/cuda;
       make;
     fi
-    
+
 after_script:
- - echo "Executing after-script routine..."
- - ./script/travis/print_valgrind_log.sh
+  - echo "Executing after-script routine..."
+  - ./script/travis/print_valgrind_log.sh
