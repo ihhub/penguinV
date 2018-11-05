@@ -40,17 +40,17 @@ script:
       export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
-    fi
-  - |
-    mkdir -p build
-    cd build
-    cmake .. ${CMAKE_OPTIONS}
-    if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-      cmake --build . --target unit_tests -- -j2
-      ctest -C Debug -R 'unit_test_valgrind' --extra-verbose -T MemCheck -j2
     else
-      cmake --build .
-      ctest -E 'perf_test|unit_test_valgrind' --extra-verbose
+      mkdir -p build
+      cd build
+      cmake .. ${CMAKE_OPTIONS}
+      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+        cmake --build . --target unit_tests -- -j2
+        ctest -C Debug -E 'perf_test|unit_test' --extra-verbose -T MemCheck -j2 # execute unit_test_valgrind
+      else
+        cmake --build .
+        ctest -E 'perf_test|unit_test_valgrind' --extra-verbose # execute unit_test and unit_test_opencl
+      fi
     fi
   - |
     if [[ $CUDA ]]; then
