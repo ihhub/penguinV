@@ -162,23 +162,30 @@ namespace Image_Function
         if( width < 3 || height < 3 )
             throw imageException( "Input image is very small for Sobel filter to be applied" );
 
+        const uint32_t startXOffset = (startXIn > 0u) ? 1u : 0u;
+        const uint32_t startYOffset = (startYIn > 0u) ? 1u : 0u;
+        const uint32_t endXOffset   = ((startXIn + width  + 1u) < in.width ()) ? 1u : 0u;
+        const uint32_t endYOffset   = ((startYIn + height + 1u) < in.height()) ? 1u : 0u;
+
         // Create the map of gradient values
-        const uint32_t gradientWidth  = width  - 2;
-        const uint32_t gradientHeight = height - 2;
+        const uint32_t gradientWidth  = width  - ( ((startXOffset > 0u) ? 0u : 1u) + ((endXOffset > 0u) ? 0u : 1u) );
+        const uint32_t gradientHeight = height - ( ((startYOffset > 0u) ? 0u : 1u) + ((endYOffset > 0u) ? 0u : 1u) );
 
         const float multiplier = 1.0f / ( 3.0f * sqrtf( 2.0f ) );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + (startYIn + 1) * rowSizeIn + startXIn + 1;
+        const uint8_t * inY  = in.data()  + (startYIn + 1u - startYOffset) * rowSizeIn + startXIn + 1u - startXOffset;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         const uint8_t * inYEnd = inY + gradientHeight * rowSizeIn;
 
-        // fill top row with zeros
-        memset( outY, 0, width );
-        outY += rowSizeOut;
+        if ( startYOffset == 0u ) {
+            // fill top row with zeros
+            memset( outY, 0, width );
+            outY += rowSizeOut;
+        }
 
         const uint32_t yPlusX  = rowSizeIn + 1u;
         const uint32_t yMinusX = rowSizeIn - 1u;
@@ -186,10 +193,14 @@ namespace Image_Function
         static const FilterKernel<3u> kernel(multiplier);
 
         for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-            // set first pixel in row to 0
-            *outY = 0;
+            uint8_t       * outX   = outY;
 
-            uint8_t       * outX   = outY + 1;
+            if ( startXOffset == 0u ) {
+                // set first pixel in row to 0
+                *outX = 0;
+                ++outX;
+            }
+
             const uint8_t * inX    = inY;
             const uint8_t * inXEnd = inX + gradientWidth;
 
@@ -210,12 +221,16 @@ namespace Image_Function
                 *outX = kernel.kernel[(gX < 0) ? -gX : gX][(gY < 0) ? -gY : gY];
             }
 
-            // set last pixel in row to 0
-            *outX = 0;
+            if ( endXOffset == 0u ) {
+                // set last pixel in row to 0
+                *outX = 0;
+            }
         }
 
-        // fill bottom row with zeros
-        memset( outY, 0, width );
+        if ( endYOffset == 0u ) {
+            // fill bottom row with zeros
+            memset( outY, 0, width );
+        }
     }
 
     Image Sobel( const Image & in )
@@ -256,33 +271,44 @@ namespace Image_Function
         if( width < 3 || height < 3 )
             throw imageException( "Input image is very small for Sobel filter to be applied" );
 
+        const uint32_t startXOffset = (startXIn > 0u) ? 1u : 0u;
+        const uint32_t startYOffset = (startYIn > 0u) ? 1u : 0u;
+        const uint32_t endXOffset   = ((startXIn + width  + 1u) < in.width ()) ? 1u : 0u;
+        const uint32_t endYOffset   = ((startYIn + height + 1u) < in.height()) ? 1u : 0u;
+
         // Create the map of gradient values
-        const uint32_t gradientWidth  = width  - 2;
-        const uint32_t gradientHeight = height - 2;
+        const uint32_t gradientWidth  = width  - ( ((startXOffset > 0u) ? 0u : 1u) + ((endXOffset > 0u) ? 0u : 1u) );
+        const uint32_t gradientHeight = height - ( ((startYOffset > 0u) ? 0u : 1u) + ((endYOffset > 0u) ? 0u : 1u) );
 
         const float multiplier = 1.0f / ( 4.0f * sqrtf( 2.0f ) );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + (startYIn + 1) * rowSizeIn + startXIn + 1;
+        const uint8_t * inY  = in.data()  + (startYIn + 1u - startYOffset) * rowSizeIn + startXIn + 1u - startXOffset;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         const uint8_t * inYEnd = inY + gradientHeight * rowSizeIn;
 
-        // fill top row with zeros
-        memset( outY, 0, width );
-        outY += rowSizeOut;
+        if ( startYOffset == 0u ) {
+            // fill top row with zeros
+            memset( outY, 0, width );
+            outY += rowSizeOut;
+        }
 
         const uint32_t yPlusX  = rowSizeIn + 1u;
         const uint32_t yMinusX = rowSizeIn - 1u;
         static const FilterKernel<4u> kernel(multiplier);
 
         for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-            // set first pixel in row to 0
-            *outY = 0;
+            uint8_t       * outX   = outY;
 
-            uint8_t       * outX   = outY + 1;
+            if ( startXOffset == 0u ) {
+                // set first pixel in row to 0
+                *outX = 0;
+                ++outX;
+            }
+
             const uint8_t * inX    = inY;
             const uint8_t * inXEnd = inX + gradientWidth;
 
@@ -303,12 +329,16 @@ namespace Image_Function
                 *outX = kernel.kernel[(gX < 0) ? -gX : gX][(gY < 0) ? -gY : gY];
             }
 
-            // set last pixel in row to 0
-            *outX = 0;
+            if ( endXOffset == 0u ) {
+                // set last pixel in row to 0
+                *outX = 0;
+            }
         }
 
-        // fill bottom row with zeros
-        memset( outY, 0, width );
+        if ( endYOffset == 0u ) {
+            // fill bottom row with zeros
+            memset( outY, 0, width );
+        }
     }
 
     void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
