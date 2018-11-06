@@ -146,6 +146,7 @@
     <ClCompile Include="..\..\src\blob_detection.cpp" />
     <ClCompile Include="..\..\src\fft.cpp" />
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
+    <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\function_pool_task.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="..\..\src\blob_detection.h" />
     <ClInclude Include="..\..\src\fft.h" />
     <ClInclude Include="..\..\src\FileOperation\bitmap.h" />
+    <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
