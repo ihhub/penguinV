@@ -62,3 +62,4 @@ target_link_libraries(unit_tests
                               unit_tests_warnings
                               Threads::Threads)
 add_test(NAME unit_test COMMAND unit_tests)
+add_test(NAME unit_test_valgrind COMMAND unit_tests 10)
