@@ -20,7 +20,7 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: linux
-      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DPENGUINV_ENABLE_VALGRIND_UNIT_TEST=ON"
       after_script:
         - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.3.log" > out && cat out
         - test ! -s out
