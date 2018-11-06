@@ -3,6 +3,35 @@
 #include "image_function.h"
 #include "parameter_validation.h"
 
+namespace
+{
+    // We could precalculate all values so our filter would be faster
+    // This structure needs some optimisation in size as we store all values in symmetric matrix
+    // We could reduce the size of the array by storing only a half of the matrix
+    template <uint32_t sizeInBytes>
+    struct FilterKernel
+    {
+        explicit FilterKernel(float multiplier_)
+            : multiplier( multiplier_ )
+        {
+            const uint32_t size = 256u * sizeInBytes;
+            for ( uint32_t i = 0; i < size; ++i ) {
+                for ( uint32_t j = i; j < size; ++j ) {
+                    kernel[i][j] = kernel[j][i] = gradient( i, j );
+                }
+            }
+        }
+
+        uint8_t gradient(uint32_t gX, uint32_t gY) const
+        {
+            return static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
+        }
+
+        uint8_t kernel[256u * sizeInBytes][256u * sizeInBytes];
+        const float multiplier;
+    };
+}
+
 namespace Image_Function
 {
     Image Median( const Image & in, uint32_t kernelSize )
@@ -154,6 +183,8 @@ namespace Image_Function
         const uint32_t yPlusX  = rowSizeIn + 1u;
         const uint32_t yMinusX = rowSizeIn - 1u;
 
+        static const FilterKernel<3u> kernel(multiplier);
+
         for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             // set first pixel in row to 0
             *outY = 0;
@@ -176,7 +207,7 @@ namespace Image_Function
                 const int32_t gX = partialG + *(inX - 1        ) + *(inX + yMinusX) - *(inX - yMinusX) - *(inX + 1        );
                 const int32_t gY = partialG + *(inX - rowSizeIn) + *(inX - yMinusX) - *(inX + yMinusX) - *(inX + rowSizeIn);
 
-                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
+                *outX = kernel.kernel[(gX < 0) ? -gX : gX][(gY < 0) ? -gY : gY];
             }
 
             // set last pixel in row to 0
@@ -245,6 +276,7 @@ namespace Image_Function
 
         const uint32_t yPlusX  = rowSizeIn + 1u;
         const uint32_t yMinusX = rowSizeIn - 1u;
+        static const FilterKernel<4u> kernel(multiplier);
 
         for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             // set first pixel in row to 0
@@ -268,7 +300,7 @@ namespace Image_Function
                 const int32_t gX = partialG + *(inX + yMinusX) - *(inX - yMinusX) + 2 * ( static_cast<int32_t>(*(inX - 1        )) - (*(inX + 1        )) );
                 const int32_t gY = partialG + *(inX - yMinusX) - *(inX + yMinusX) + 2 * ( static_cast<int32_t>(*(inX - rowSizeIn)) - (*(inX + rowSizeIn)) );
 
-                *outX = static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
+                *outX = kernel.kernel[(gX < 0) ? -gX : gX][(gY < 0) ? -gY : gY];
             }
 
             // set last pixel in row to 0
