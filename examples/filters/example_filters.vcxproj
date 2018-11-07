@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="example_median_filter.cpp" />
+    <ClCompile Include="example_filters.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />

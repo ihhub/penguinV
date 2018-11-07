@@ -1,5 +1,6 @@
 #include <math.h>
 #include <numeric>
+#include "../../src/filtering.h"
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
 #include "../../src/image_function_simd.h"
@@ -260,6 +261,19 @@ namespace Function_Template
     typedef Image (*TransposeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
     typedef void  (*TransposeForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                      uint32_t width, uint32_t height );
+
+    // Filters
+    typedef Image (*PrewittForm1)( const Image & in );
+    typedef void  (*PrewittForm2)( const Image & in, Image & out );
+    typedef Image (*PrewittForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    typedef void  (*PrewittForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                   uint32_t width, uint32_t height );
+
+    typedef Image (*SobelForm1)( const Image & in );
+    typedef void  (*SobelForm2)( const Image & in, Image & out );
+    typedef Image (*SobelForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    typedef void  (*SobelForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                 uint32_t width, uint32_t height );
 
     bool form1_AbsoluteDifference(AbsoluteDifferenceForm1 AbsoluteDifference)
     {
@@ -1847,6 +1861,113 @@ namespace Function_Template
 
         return verifyImage( output, roiX[1], roiY[1], roiHeight, roiWidth, intensity[0] );
     }
+
+    // Filters
+    bool form1_Prewitt(PrewittForm1 Prewitt)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+        if ( (input.width() < 3) || (input.height() < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Prewitt( input );
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_Prewitt(PrewittForm2 Prewitt)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
+        if ( (image[0].width() < 3) || (image[0].height() < 3) )
+            return true;
+
+        Prewitt( image[0], image[1] );
+
+        return verifyImage( image[1], 0u );
+    }
+
+    bool form3_Prewitt(PrewittForm3 Prewitt)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Prewitt( input, roiX, roiY, roiWidth, roiHeight );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, 0u );
+    }
+
+    bool form4_Prewitt(PrewittForm4 Prewitt)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        Prewitt( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, 0u );
+    }
+
+    bool form1_Sobel(SobelForm1 Sobel)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+        if ( (input.width() < 3) || (input.height() < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Sobel( input );
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_Sobel(SobelForm2 Sobel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
+        if ( (image[0].width() < 3) || (image[0].height() < 3) )
+            return true;
+
+        Sobel( image[0], image[1] );
+
+        return verifyImage( image[1], 0u );
+    }
+
+    bool form3_Sobel(SobelForm3 Sobel)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Sobel( input, roiX, roiY, roiWidth, roiHeight );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, 0u );
+    }
+
+    bool form4_Sobel(SobelForm4 Sobel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        Sobel( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, 0u );
+    }
 }
 
 #define FUNCTION_REGISTRATION( function, functionWrapper, counter )                                                             \
@@ -1936,6 +2057,9 @@ namespace image_function
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
     SET_FUNCTION_4_FORMS( Transpose )
+
+    SET_FUNCTION_4_FORMS( Prewitt )
+    SET_FUNCTION_4_FORMS( Sobel )
 }
 
 namespace function_pool
