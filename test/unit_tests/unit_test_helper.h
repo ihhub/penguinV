@@ -96,7 +96,7 @@ namespace Unit_Test
         if( maximum == 0 )
             return 0;
         else
-            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            return static_cast<data>(static_cast<uint32_t>(rand()) % (maximum+1));
     }
 
     template <typename data>
