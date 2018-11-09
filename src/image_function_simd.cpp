@@ -299,14 +299,12 @@ namespace avx
     void ProjectionProfile( uint32_t rowSize, const uint8_t* imageStart, uint32_t width, uint32_t height, bool horizontal,
                             uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        simd zero = _mm256_setzero_si256();
+        const simd zero = _mm256_setzero_si256();
 
         if( horizontal ) {
-            
-            const uint8_t* imageSimdXEnd = imageStart + totalSimdWidth;
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
 
-            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize)
-            {
+            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
                 const uint8_t * imageSimdY = imageStart;
                 const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
                 simd simdSum_1 = _mm256_setzero_si256();
@@ -314,10 +312,9 @@ namespace avx
                 simd simdSum_3 = _mm256_setzero_si256();
                 simd simdSum_4 = _mm256_setzero_si256();
 
-                simd * dst    = reinterpret_cast <simd*> (out);
+                simd * dst = reinterpret_cast <simd*> (out);
 
-                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) 
-                {
+                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
                     const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
 
                     simd data = _mm256_loadu_si256( src );
@@ -344,12 +341,10 @@ namespace avx
                 _mm256_storeu_si256( dst, _mm256_add_epi32( simdSum_4, _mm256_loadu_si256( dst ) ) );
             }
 
-            if( nonSimdWidth > 0 )
-            {
+            if( nonSimdWidth > 0 ) {
                 const uint8_t* imageXEnd = imageStart + nonSimdWidth;
 
-                for( ; imageStart != imageXEnd; ++imageStart, ++out ) 
-                {
+                for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
                     const uint8_t * imageY    = imageStart;
                     const uint8_t * imageYEnd = imageY + height * rowSize;
 
@@ -358,12 +353,10 @@ namespace avx
                 }
             }
         }
-
         else {
             const uint8_t * imageYEnd = imageStart + height * rowSize;
 
-            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out) 
-            {
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out) {
                 const simd * src    = reinterpret_cast <const simd*> (imageStart);
                 const simd * srcEnd = src + simdWidth;
                 simd simdSum = _mm256_setzero_si256();
