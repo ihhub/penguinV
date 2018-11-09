@@ -296,7 +296,7 @@ namespace avx
         }
     }
 
-    void ProjectionProfile( uint32_t rowSize, const uint8_t* imageStart, uint32_t width, uint32_t height, bool horizontal,
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
                             uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const simd zero = _mm256_setzero_si256();
@@ -317,7 +317,7 @@ namespace avx
                 for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
                     const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
 
-                    simd data = _mm256_loadu_si256( src );
+                    const simd data = _mm256_loadu_si256( src );
 
                     const simd dataLo  = _mm256_unpacklo_epi8( data, zero );
                     const simd dataHi  = _mm256_unpackhi_epi8( data, zero );
@@ -356,7 +356,7 @@ namespace avx
         else {
             const uint8_t * imageYEnd = imageStart + height * rowSize;
 
-            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out) {
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
                 const simd * src    = reinterpret_cast <const simd*> (imageStart);
                 const simd * srcEnd = src + simdWidth;
                 simd simdSum = _mm256_setzero_si256();
@@ -369,7 +369,7 @@ namespace avx
                     simd sumLoHi = _mm256_add_epi16( dataLo, dataHi );
 
                     simdSum = _mm256_add_epi32( simdSum, _mm256_add_epi32( _mm256_unpacklo_epi16( sumLoHi, zero ),
-                                                                        _mm256_unpackhi_epi16( sumLoHi, zero ) ) );
+                                                                           _mm256_unpackhi_epi16( sumLoHi, zero ) ) );
                 }
 
                 if( nonSimdWidth > 0 ) {
@@ -380,7 +380,7 @@ namespace avx
                         (*out) += (*imageX);
                 }
 
-                uint32_t output[8] ={ 0 };
+                uint32_t output[8] = { 0 };
                 _mm256_storeu_si256( reinterpret_cast <simd*>(output), simdSum );
                 
                 (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
@@ -1773,7 +1773,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-        AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, width, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+        AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
