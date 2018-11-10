@@ -63,4 +63,4 @@ target_link_libraries(unit_tests
                               unit_tests_warnings
                               Threads::Threads)
 
-add_test(NAME unit_test COMMAND unit_tests $ENV{UNIT_TEST_RUN_COUNT})
+add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})
