@@ -62,5 +62,5 @@ target_link_libraries(unit_tests
                       PRIVATE unit_tests_options
                               unit_tests_warnings
                               Threads::Threads)
+
 add_test(NAME unit_test COMMAND unit_tests $ENV{UNIT_TEST_RUN_COUNT})
-endif()
