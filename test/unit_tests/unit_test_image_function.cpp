@@ -1453,7 +1453,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1468,7 +1468,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1487,7 +1487,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1505,7 +1505,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
