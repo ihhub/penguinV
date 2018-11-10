@@ -14,7 +14,7 @@ namespace
     }
 
     template <typename _Function>
-    void setFunction( _Function F1, _Function F2, bool forceSetup )
+    void setFunction( _Function & F1, const _Function & F2, bool forceSetup )
     {
         if ( (F1 == nullptr) || (forceSetup && (F2 != nullptr)) )
         {
