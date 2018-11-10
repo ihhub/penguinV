@@ -20,7 +20,7 @@ matrix:
     - os: linux
       env: STATIC_ANALYSIS=ON
     - os: linux
-      env: DYNAMIC_ANALYSIS=ON CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DPENGUINV_ENABLE_VALGRIND_UNIT_TEST=ON"
+      env: DYNAMIC_ANALYSIS=ON UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug -DPENGUINV_ENABLE_VALGRIND_UNIT_TEST=ON"
       after_script:
         - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.3.log" > out && cat out
         - test ! -s out
@@ -46,9 +46,9 @@ script:
       cmake .. ${CMAKE_OPTIONS}
       cmake --build .
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest -R unit_test_valgrind --extra-verbose -T MemCheck # execute unit_test_valgrind
+        ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test_valgrind
       else
-        ctest -E 'perf_test|unit_test_valgrind' --extra-verbose # execute unit_test and unit_test_opencl
+        ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
       fi
     fi
   - |
