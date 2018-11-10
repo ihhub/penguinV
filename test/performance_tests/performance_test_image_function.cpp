@@ -220,6 +220,14 @@ namespace Function_Template
         TEST_FUNCTION_LOOP( Minimum( image[0], image[1], image[2] ), namespaceName )
     }
 
+    std::pair < double, double > template_ProjectionProfile( ProjectionProfileFunction ProjectionProfile , const std::string & namespaceName, uint32_t size )
+    {
+        const PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
+        std::vector < uint32_t > projection;
+
+        TEST_FUNCTION_LOOP( ProjectionProfile( image, false, projection ), namespaceName )
+    }
+
     std::pair < double, double > template_RgbToBgr( RgbToBgrFunction RgbToBgr, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformRGBImages( 2, size, size );
@@ -327,6 +335,7 @@ namespace image_function
     SET_FUNCTION( LookupTable        )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( RgbToBgr           )
     REGISTER_FUNCTION( ResizeDown, Resize )
     REGISTER_FUNCTION( ResizeUp, Resize   )
@@ -356,6 +365,7 @@ namespace function_pool
     SET_FUNCTION( LookupTable        )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( RgbToBgr           )
     REGISTER_FUNCTION( ResizeDown, Resize )
     REGISTER_FUNCTION( ResizeUp, Resize   )
@@ -381,6 +391,7 @@ namespace image_function_avx
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
