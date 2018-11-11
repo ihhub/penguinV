@@ -26,6 +26,7 @@ before_build:
   - cmd: call script\appveyor\cuda_install.cmd
 
 build_script:
+  - set PENGUINV_UNIT_TEST_RUN_COUNT=500
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
