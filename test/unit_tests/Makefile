@@ -3,6 +3,7 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
 	$(LIB_DIR)/FileOperation/bitmap.cpp \
+	$(LIB_DIR)/FileOperation/jpeg_file.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/function_pool.cpp \
@@ -16,13 +17,14 @@ SRCS :=  \
 	unit_test_framework.cpp \
 	unit_test_helper.cpp \
 	unit_test_image_buffer.cpp \
-	unit_test_image_function.cpp
+	unit_test_image_function.cpp \
+	unit_test_jpeg_ops.cpp
 TARGET := unit_tests
 
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-LIBS := -pthread
+LIBS := -pthread -ljpeg
 CXXFLAGS := -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 -march=native
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
