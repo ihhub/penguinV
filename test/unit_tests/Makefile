@@ -9,7 +9,7 @@ SRCS :=  \
 	$(LIB_DIR)/thirdparty/kissfft/kiss_fft.c \
 	$(LIB_DIR)/thirdparty/kissfft/kiss_fftnd.c \
 	$(LIB_DIR)/blob_detection.cpp \
-    ${LIB_DIR}/filtering.cpp \
+    ${LIB_DIR}/filtering.cpp
 	$(LIB_DIR)/fft.cpp \
 	$(LIB_DIR)/function_pool.cpp \
     $(LIB_DIR)/function_pool_task.cpp \
