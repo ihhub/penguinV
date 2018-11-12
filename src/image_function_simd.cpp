@@ -858,7 +858,7 @@ namespace sse
             const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
 
             for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
-                const uint8_t * imageSimdY = imageStart;
+                const uint8_t * imageSimdY    = imageStart;
                 const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
                 simd simdSum_1 = _mm_setzero_si128();
                 simd simdSum_2 = _mm_setzero_si128();
@@ -895,7 +895,7 @@ namespace sse
             }
 
             if( nonSimdWidth > 0 ) {
-                const uint8_t* imageXEnd = imageStart + nonSimdWidth;
+                const uint8_t * imageXEnd = imageStart + nonSimdWidth;
 
                 for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
                     const uint8_t * imageY    = imageStart;
@@ -922,7 +922,7 @@ namespace sse
                     simd sumLoHi = _mm_add_epi16( dataLo, dataHi );
 
                     simdSum = _mm_add_epi32( simdSum, _mm_add_epi32( _mm_unpacklo_epi16( sumLoHi, zero ),
-                                                                           _mm_unpackhi_epi16( sumLoHi, zero ) ) );
+                                                                     _mm_unpackhi_epi16( sumLoHi, zero ) ) );
                 }
 
                 if( nonSimdWidth > 0 ) {
