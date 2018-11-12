@@ -2151,6 +2151,7 @@ namespace sse
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
+    SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
