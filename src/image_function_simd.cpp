@@ -936,7 +936,7 @@ namespace sse
                 uint32_t output[4] = { 0 };
                 _mm_storeu_si128( reinterpret_cast <simd*>(output), simdSum );
                 
-                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
+                (*out) += output[0] + output[1] + output[2] + output[3];
             }
         }
     }
