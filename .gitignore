@@ -45,3 +45,11 @@
 *.obj
 *.pch
 *.tmp
+
+# CUDA files
+*.i
+*.ii
+*.gpu
+*.ptx
+*.cubin
+*.fatbin
