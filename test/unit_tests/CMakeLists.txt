@@ -30,6 +30,8 @@ set(SRCS
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+find_package(JPEG REQUIRED)
+
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     find_package(OpenCL QUIET)
@@ -63,6 +65,7 @@ add_executable(unit_tests ${SRCS})
 target_link_libraries(unit_tests
                       PRIVATE unit_tests_options
                               unit_tests_warnings
-                              Threads::Threads)
+                              Threads::Threads
+                              ${JPEG_LIBRARIES})
 
 add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})
