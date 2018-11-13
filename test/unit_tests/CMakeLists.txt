@@ -33,26 +33,20 @@ find_package(Threads REQUIRED)
 find_package(JPEG QUIET)
 if(NOT JPEG_FOUND)
     if (WIN32)
-        set(JPEG_BINARY_DIR     ${CMAKE_CURRENT_BINARY_DIR}/jpeg/src/jpeg)
-        set(JPEG_INSTALL_DIR    ${CMAKE_CURRENT_BINARY_DIR}/jpeg/install)
-        set(JPEG_LIBRARY        ${JPEG_INSTALL_DIR}/lib/jpeg-static.lib)
+        set(JPEG_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/jpeg)
         include(ExternalProject)
         ExternalProject_Add(jpeg
             PREFIX jpeg
             URL "http://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz"
             URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
-            BUILD_BYPRODUCTS ${JPEG_LIBRARY}
-            PATCH_COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/patches/jpeg/CMakeLists.txt ${JPEG_BINARY_DIR}
-            BINARY_DIR ${JPEG_BINARY_DIR}
+	    DOWNLOAD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external
+	    DOWNLOAD_NO_PROGRESS 0
             INSTALL_DIR ${JPEG_INSTALL_DIR}
-            DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
-            CMAKE_CACHE_ARGS
-                -DENABLE_SHARED=OFF
-			    -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-			    -DWITH_CRT_DLL=ON
+            CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE:STRING=Release
                 -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
                 -DCMAKE_INSTALL_PREFIX:STRING=${JPEG_INSTALL_DIR})
+	    set(JPEG_LIBRARY jpeg-static.lib)
     endif(WIN32)
 endif(NOT JPEG_FOUND)
 
