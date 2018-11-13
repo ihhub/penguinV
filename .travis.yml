@@ -6,24 +6,53 @@ addons:
   apt:
     packages:
       - libpng-dev
+      - ocl-icd-opencl-dev
+      - opencl-headers
 
 matrix:
   include:
     - os: linux
-      env: CUDA=8.0.61-1
+      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
+      before_install: source script/travis/install_cuda.sh
+    - os: linux
+      env: QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
+      before_install: source script/travis/install_qt5.sh
+    - os: linux
+      env: STATIC_ANALYSIS=ON
+    - os: linux
+      env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+      after_script:
+        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.2.log" > out && cat out
+        - test ! -s out
+      addons:
+        apt:
+          update: true
+          packages: valgrind
     - os: osx
-
-before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then source script/travis/install_cuda.sh; fi
+      env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
+      before_install: source script/travis/install_qt5.sh
 
 script:
-  - cd test/performance_tests
-  - make
-  - cd ../unit_tests
-  - make
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd cuda; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
-
-after_script: ./unit_tests
-
+  - |
+    if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
+      export EXCLUDE_PATTERN_1=" not found in expected header ";
+      export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
+      export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
+      git clone https://github.com/myint/cppclean;
+      ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+    else
+      mkdir -p build
+      cd build
+      cmake .. ${CMAKE_OPTIONS}
+      cmake --build .
+      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+        ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
+      else
+        ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+      fi
+    fi
+  - |
+    if [[ $CUDA ]]; then
+      cd ../test/unit_tests/cuda;
+      make;
+    fi

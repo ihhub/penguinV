@@ -1,143 +1,11 @@
 #include "image_function_helper.h"
 #include "function_pool.h"
+#include "function_pool_task.h"
 #include "parameter_validation.h"
-#include "thread_pool.h"
 #include "penguinv/penguinv.h"
-
-namespace
-{
-    uint32_t threadCount()
-    {
-        uint32_t count = static_cast<uint32_t>(Thread_Pool::ThreadPoolMonoid::instance().threadCount());
-        if( count == 0 )
-            throw imageException( "Thread Pool is not initialized." );
-        return count;
-    }
-}
 
 namespace Function_Pool
 {
-    struct AreaInfo
-    {
-        AreaInfo( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
-        {
-            _calculate( x, y, width_, height_, count );
-        }
-
-        std::vector < uint32_t > startX; // start X position of image ROI
-        std::vector < uint32_t > startY; // start Y position of image ROI
-        std::vector < uint32_t > width;  // width of image ROI
-        std::vector < uint32_t > height; // height of image ROI
-
-        size_t _size() const
-        {
-            return startX.size();
-        }
-
-        // this function makes a similar input data sorting like it is done in info parameter
-        void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ )
-        {
-            if( info._size() > 0 ) {
-                bool yAxis = true;
-
-                for( size_t i = 0; i < info._size() - 1; ++i ) {
-                    if( info.startX[i] != info.startX[i + 1] || info.width[i] != info.width[i + 1] ) {
-                        yAxis = false;
-                        break;
-                    }
-                }
-
-                _fill( x, y, width_, height_, static_cast<uint32_t>(info._size()), yAxis );
-            }
-        }
-    private:
-        static const uint32_t cacheSize = 16; // Remember: every CPU has it's own caching technique so processing time of
-                                              // subsequent memory cells is much faster!
-                                              // Change this value if you need to adjust to specific CPU. 16 bytes are set
-                                              // for proper SSE/NEON support
-
-        // this function will sort out all input data into arrays for multithreading execution
-        void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
-        {
-            uint32_t maximumXTaskCount = width_ / cacheSize;
-            if( maximumXTaskCount == 0 )
-                maximumXTaskCount = 1;
-            if( maximumXTaskCount > count )
-                maximumXTaskCount = count;
-
-            uint32_t maximumYTaskCount = height_;
-            if( maximumYTaskCount > count )
-                maximumYTaskCount = count;
-
-            count = (maximumYTaskCount >= maximumXTaskCount) ? maximumYTaskCount : maximumXTaskCount;
-
-            _fill( x, y, width_, height_, count, maximumYTaskCount >= maximumXTaskCount );
-        }
-
-        // this function fills all arrays by necessary values
-        void _fill( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count, bool yAxis )
-        {
-            startX.resize( count );
-            startY.resize( count );
-            width.resize( count );
-            height.resize( count );
-
-            if( yAxis ) { // process by rows
-                std::fill( startX.begin(), startX.end(), x );
-                std::fill( width.begin(), width.end(), width_ );
-
-                uint32_t remainValue = height_ % count;
-                uint32_t previousValue = y;
-
-                for( size_t i = 0; i < count; ++i ) {
-                    height[i] = height_ / count;
-                    if( remainValue > 0 ) {
-                        --remainValue;
-                        ++height[i];
-                    }
-                    startY[i] = previousValue;
-                    previousValue = startY[i] + height[i];
-                }
-            }
-            else { // process by columns
-                std::fill( startY.begin(), startY.end(), y );
-                std::fill( height.begin(), height.end(), height_ );
-
-                uint32_t remainValue = width_ % count;
-                uint32_t previousValue = x;
-
-                for( size_t i = 0; i < count; ++i ) {
-                    width[i] = width_ / count;
-                    if( remainValue > 0 ) {
-                        --remainValue;
-                        ++width[i];
-                    }
-                    startX[i] = previousValue;
-                    previousValue = startX[i] + width[i];
-                }
-            }
-        }
-    };
-
-    struct InputImageInfo : public AreaInfo
-    {
-        InputImageInfo( const Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
-            : AreaInfo( x, y, width_, height_, count )
-            , image( in )
-        { }
-
-        const Image & image;
-    };
-
-    struct OutputImageInfo : public AreaInfo
-    {
-        OutputImageInfo( Image & in, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count )
-            : AreaInfo( x, y, width_, height_, count )
-            , image( in )
-        { }
-
-        Image & image;
-    };
     // This structure holds input parameters for some specific functions
     struct InputInfo
     {
@@ -264,7 +132,7 @@ namespace Function_Pool
         }
     };
 
-    class FunctionTask : public Thread_Pool::TaskProviderSingleton
+    class FunctionTask : public FunctionPoolTask
     {
     public:
         FunctionTask()
@@ -389,13 +257,6 @@ namespace Function_Pool
             _process( _Minimum );
         }
 
-        void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height )
-        {
-            _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            _process( _Normalize );
-        }
-
         void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                 std::vector < uint32_t > & projection )
         {
@@ -475,7 +336,6 @@ namespace Function_Pool
             _LookupTable,
             _Maximum,
             _Minimum,
-            _Normalize,
             _ProjectionProfile,
             _Resize,
             _RgbToBgr,
@@ -485,7 +345,7 @@ namespace Function_Pool
             _ThresholdDouble
         };
 
-        void _task( size_t taskId )
+        virtual void _task( size_t taskId )
         {
             switch( functionId ) {
                 case _none:
@@ -569,11 +429,6 @@ namespace Function_Pool
                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
-                case _Normalize:
-                    penguinV::Normalize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
-                    break;
                 case _ProjectionProfile:
                     penguinV::ProjectionProfile(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -620,85 +475,15 @@ namespace Function_Pool
 
     private:
         TaskName functionId;
-        std::unique_ptr < InputImageInfo  > _infoIn1; // structure which holds information about first input image
-        std::unique_ptr < InputImageInfo  > _infoIn2; // structure which holds information about second input image
-        std::unique_ptr < OutputImageInfo > _infoOut; // structure which holds information about output image
 
         InputInfo  _dataIn;  // structure which holds some unique input parameters
         OutputInfo _dataOut; // structure which holds some unique output values
 
-        // functions for setting up all parameters needed for multithreading and to validate input parameters
-        void _setup( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
-        {
-            Image_Function::ParameterValidation( image, x, y, width, height );
-
-            if( !_ready() )
-                throw imageException( "FunctionTask object was called multiple times!" );
-
-            _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( image, x, y, width, height, threadCount() ) );
-        }
-
-        void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
-        {
-            Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
-
-            if( !_ready() )
-                throw imageException( "FunctionTask object was called multiple times!" );
-
-            _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1, startY1, width, height, threadCount() ) );
-            _infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2, startY2, width, height, threadCount() ) );
-        }
-
-        void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height )
-        {
-            Image_Function::ParameterValidation( in, inX, inY, out, outX, outY, width, height );
-
-            if( !_ready() )
-                throw imageException( "FunctionTask object was called multiple times!" );
-
-            _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, inX, inY, width, height, threadCount() ) );
-            _infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, threadCount() ) );
-        }
-
-        void _setup( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
-        {
-            Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
-            Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
-
-            if( !_ready() )
-                throw imageException( "FunctionTask object was called multiple times!" );
-
-            _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, startXIn, startYIn, std::min( widthIn, widthOut ), std::min( heightIn, heightOut ), threadCount() ) );
-            _infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, threadCount() ) );
-
-            _infoOut->_copy( *_infoIn1, startXOut, startYOut, widthOut, heightOut );
-            _infoIn1->_copy( *_infoOut, startXIn, startYIn, widthIn, heightIn );
-        }
-
-        void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
-        {
-            Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-            if( !_ready() )
-                throw imageException( "FunctionTask object was called multiple times!" );
-
-            _infoIn1 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1, startY1, width, height, threadCount() ) );
-            _infoIn2 = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2, startY2, width, height, threadCount() ) );
-            _infoOut = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, width, height, threadCount() ) );
-        }
-
-        void _process( TaskName id ) // function which calls global thread pool and waits results from it
+        void _process( TaskName id )
         {
             functionId = id;
 
-            _run( _infoIn1->_size() );
-
-            if( !_wait() ) {
-                throw imageException( "An exception raised during task execution in function pool" );
-            }
+            _processTask();
         }
     };
 
@@ -1016,7 +801,36 @@ namespace Function_Pool
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        FunctionTask().Normalize( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        const std::vector<uint32_t> histogram = Histogram( in, startXIn, startYIn, width, height );
+        if ( histogram.size() != 256u )
+            throw imageException( "Histogram size is not equal to 256" );
+
+        uint16_t minimum = 255u;
+        uint16_t maximum = 0u;
+
+        for ( uint16_t i = 0u; i < 256u; ++i ) {
+            if ( histogram[i] > 0u ) {
+                if ( maximum < i )
+                    maximum = i;
+                if ( minimum > i )
+                    minimum = i;
+            }
+        }
+
+        if ( minimum >= maximum ) {
+            penguinV::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        }
+        else {
+            const double correction = 255.0 / (maximum - minimum);
+
+            // We precalculate all values and store them in lookup table
+            std::vector < uint8_t > value( 256 );
+
+            for( uint16_t i = 0; i < 256; ++i )
+                value[i] = static_cast <uint8_t>((i - minimum) * correction + 0.5);
+
+            FunctionTask().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+        }
     }
 
     std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )

@@ -1,5 +1,6 @@
 #include <math.h>
 #include <numeric>
+#include "../../src/filtering.h"
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
 #include "../../src/image_function_simd.h"
@@ -14,7 +15,7 @@ namespace
     {
         if ( namespaceName == "function_pool" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( true );
-            Thread_Pool::ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
+            ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
         }
         else if ( namespaceName == "image_function_avx" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( false );
@@ -261,6 +262,19 @@ namespace Function_Template
     typedef void  (*TransposeForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                      uint32_t width, uint32_t height );
 
+    // Filters
+    typedef Image (*PrewittForm1)( const Image & in );
+    typedef void  (*PrewittForm2)( const Image & in, Image & out );
+    typedef Image (*PrewittForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    typedef void  (*PrewittForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                   uint32_t width, uint32_t height );
+
+    typedef Image (*SobelForm1)( const Image & in );
+    typedef void  (*SobelForm2)( const Image & in, Image & out );
+    typedef Image (*SobelForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    typedef void  (*SobelForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                 uint32_t width, uint32_t height );
+
     bool form1_AbsoluteDifference(AbsoluteDifferenceForm1 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -349,6 +363,80 @@ namespace Function_Template
         const uint32_t sum = std::accumulate( intensity.begin(), intensity.end(), 0u );
 
         return std::all_of( result.begin(), result.end(), [&sum]( uint32_t v ) { return v == sum; } );
+    }
+
+    bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryDilate(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 255u );
+    }
+
+    bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        fillData.push_back(0u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 0u) ) // full ROI is black, nothing to dilate
+            return true;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        
+        BinaryDilate( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
+
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 255u );
+    }
+
+    bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryErode(output, dilationX, dilationY);
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
+    {
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        fillData.push_back(255u);
+
+        const PenguinV_Image::Image input = randomImage( fillData );
+        PenguinV_Image::Image output = input;
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( output, roiX, roiY, roiWidth, roiHeight );
+        if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 255u) ) // full ROI is white, nothing to erode
+            return true;
+
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+
+        BinaryErode( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
+
+        return verifyImage( output, roiX, roiY, roiWidth, roiHeight, 0u );
     }
 
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
@@ -1365,7 +1453,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1380,7 +1468,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1399,7 +1487,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1417,7 +1505,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
@@ -1773,6 +1861,113 @@ namespace Function_Template
 
         return verifyImage( output, roiX[1], roiY[1], roiHeight, roiWidth, intensity[0] );
     }
+
+    // Filters
+    bool form1_Prewitt(PrewittForm1 Prewitt)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+        if ( (input.width() < 3) || (input.height() < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Prewitt( input );
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_Prewitt(PrewittForm2 Prewitt)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
+        if ( (image[0].width() < 3) || (image[0].height() < 3) )
+            return true;
+
+        Prewitt( image[0], image[1] );
+
+        return verifyImage( image[1], 0u );
+    }
+
+    bool form3_Prewitt(PrewittForm3 Prewitt)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Prewitt( input, roiX, roiY, roiWidth, roiHeight );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, 0u );
+    }
+
+    bool form4_Prewitt(PrewittForm4 Prewitt)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        Prewitt( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, 0u );
+    }
+
+    bool form1_Sobel(SobelForm1 Sobel)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+        if ( (input.width() < 3) || (input.height() < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Sobel( input );
+
+        return equalSize( input, output ) && verifyImage( output, 0u );
+    }
+
+    bool form2_Sobel(SobelForm2 Sobel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
+        if ( (image[0].width() < 3) || (image[0].height() < 3) )
+            return true;
+
+        Sobel( image[0], image[1] );
+
+        return verifyImage( image[1], 0u );
+    }
+
+    bool form3_Sobel(SobelForm3 Sobel)
+    {
+        const PenguinV_Image::Image input = uniformImage();
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        const PenguinV_Image::Image output = Sobel( input, roiX, roiY, roiWidth, roiHeight );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, 0u );
+    }
+
+    bool form4_Sobel(SobelForm4 Sobel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+        if ( (roiWidth < 3) || (roiHeight < 3) )
+            return true;
+
+        Sobel( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, 0u );
+    }
 }
 
 #define FUNCTION_REGISTRATION( function, functionWrapper, counter )                                                             \
@@ -1836,6 +2031,8 @@ namespace image_function
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
     SET_FUNCTION_2_FORMS( Accumulate )
+    SET_FUNCTION_2_FORMS( BinaryDilate )
+    SET_FUNCTION_2_FORMS( BinaryErode )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
@@ -1860,6 +2057,9 @@ namespace image_function
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
     SET_FUNCTION_4_FORMS( Transpose )
+
+    SET_FUNCTION_4_FORMS( Prewitt )
+    SET_FUNCTION_4_FORMS( Sobel )
 }
 
 namespace function_pool
@@ -1882,7 +2082,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( LookupTable )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
-    //SET_FUNCTION_4_FORMS( Normalize ) <--- these tests fail
+    SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Resize )
     SET_FUNCTION_4_FORMS( Subtract )
@@ -1899,12 +2099,14 @@ namespace avx
     const std::string namespaceName = "image_function_avx";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
+    SET_FUNCTION_2_FORMS( Accumulate )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
+    SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
@@ -1920,6 +2122,7 @@ namespace neon
     const std::string namespaceName = "image_function_neon";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
+    SET_FUNCTION_2_FORMS( Accumulate )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
@@ -1941,12 +2144,14 @@ namespace sse
     const std::string namespaceName = "image_function_sse";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
+    SET_FUNCTION_2_FORMS( Accumulate )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
+    SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )

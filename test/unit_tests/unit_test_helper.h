@@ -16,8 +16,9 @@ namespace Unit_Test
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image randomImage();
+    PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
     PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
+    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference = PenguinV_Image::Image());
     std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     std::vector < PenguinV_Image::Image > uniformImages( const std::vector < uint8_t > & intensityValue, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
 
@@ -86,6 +87,7 @@ namespace Unit_Test
     uint32_t rowSize( uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1 );
 
     uint32_t runCount(); // fixed value for all test loops
+    void setRunCount( uint32_t count );
 
     // Return random value for specific range or variable type
     template <typename data>
@@ -112,4 +114,6 @@ namespace Unit_Test
             return value;
         }
     }
+
+    double randomValue( double minimum, double maximum, double stepVal );
 }

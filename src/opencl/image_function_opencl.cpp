@@ -11,6 +11,37 @@
 
 namespace
 {
+    struct FunctionRegistrator
+    {
+        Image_Function_Helper::FunctionTableHolder table;
+
+        FunctionRegistrator()
+        {
+            table.AbsoluteDifference = &Image_Function_OpenCL::AbsoluteDifference;
+            table.BitwiseAnd         = &Image_Function_OpenCL::BitwiseAnd;
+            table.BitwiseOr          = &Image_Function_OpenCL::BitwiseOr;
+            table.BitwiseXor         = &Image_Function_OpenCL::BitwiseXor;
+            table.ConvertToGrayScale = &Image_Function_OpenCL::ConvertToGrayScale;
+            table.ConvertToRgb       = &Image_Function_OpenCL::ConvertToRgb;
+            table.Copy               = &Image_Function_OpenCL::Copy;
+            table.ExtractChannel     = &Image_Function_OpenCL::ExtractChannel;
+            table.Fill               = &Image_Function_OpenCL::Fill;
+            table.GammaCorrection    = &Image_Function_OpenCL::GammaCorrection;
+            table.Histogram          = &Image_Function_OpenCL::Histogram;
+            table.Invert             = &Image_Function_OpenCL::Invert;
+            table.LookupTable        = &Image_Function_OpenCL::LookupTable;
+            table.Maximum            = &Image_Function_OpenCL::Maximum;
+            table.Minimum            = &Image_Function_OpenCL::Minimum;
+            table.Subtract           = &Image_Function_OpenCL::Subtract;
+            table.Threshold          = &Image_Function_OpenCL::Threshold;
+            table.Threshold2         = &Image_Function_OpenCL::Threshold;
+
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageOpenCL(), table );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+
     const std::string programCode = R"(
         #pragma OPENCL EXTENSION cl_khr_global_int32_base_atomics : enable
 

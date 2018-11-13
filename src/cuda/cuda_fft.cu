@@ -146,7 +146,7 @@ namespace FFT_Cuda
         if( empty() )
             return PenguinV_Image::Image();
 
-        PenguinV_Image::Image image( _width, _height );
+        PenguinV_Image::Image image = PenguinV_Image::ImageCuda().generate( _width, _height );
 
         const float size = static_cast<float>(image.width() * image.height());
 

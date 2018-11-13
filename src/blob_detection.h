@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "image_buffer.h"
+#include "math/math_base.h"
 
 namespace Blob_Detection
 {
@@ -82,23 +83,6 @@ namespace Blob_Detection
         }
     };
 
-    struct Point
-    {
-        Point()
-            : x( 0 )
-            , y( 0 )
-        { }
-
-        // this constructor is made to avoid 'Value' template restriction
-        explicit Point( double value )
-            : x( value )
-            , y( value )
-        { }
-
-        double x;
-        double y;
-    };
-
     struct Area
     {
         Area()
@@ -155,8 +139,8 @@ namespace Blob_Detection
         // - constant function return value no matter a value was calculated or not
         Area     area();              // minimum fitting rectangle what can contain blob
         Area     area() const;        // minimum fitting rectangle what can contain blob
-        Point    center();            // gravity center of blob
-        Point    center() const;      // gravity center of blob
+        Point2d  center();            // gravity center of blob
+        Point2d  center() const;      // gravity center of blob
         double   circularity();       // circularity of blob
         double   circularity() const; // circularity of blob
         double   elongation();        // elongation of blob
@@ -179,7 +163,7 @@ namespace Blob_Detection
         std::vector < uint32_t > _edgeY;
 
         Value < Area   > _area;
-        Value < Point  > _center;
+        Value < Point2d> _center;
         Value < double > _circularity;
         Value < double > _elongation;
         Value <uint32_t> _height;

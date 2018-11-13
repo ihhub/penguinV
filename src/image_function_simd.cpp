@@ -17,6 +17,35 @@
 #include <arm_neon.h>
 #endif
 
+namespace
+{
+    struct FunctionRegistrator
+    {
+        Image_Function_Helper::FunctionTableHolder table;
+
+        FunctionRegistrator()
+        {
+            table.AbsoluteDifference = &Image_Function_Simd::AbsoluteDifference;
+            table.Accumulate         = &Image_Function_Simd::Accumulate;
+            table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
+            table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
+            table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            table.Invert             = &Image_Function_Simd::Invert;
+            table.Maximum            = &Image_Function_Simd::Maximum;
+            table.Minimum            = &Image_Function_Simd::Minimum;
+            table.ProjectionProfile  = &Image_Function_Simd::ProjectionProfile;
+            table.Subtract           = &Image_Function_Simd::Subtract;
+            table.Sum                = &Image_Function_Simd::Sum;
+            table.Threshold          = &Image_Function_Simd::Threshold;
+            table.Threshold2         = &Image_Function_Simd::Threshold;
+
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::Image(), table, true );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+}
+
 namespace avx
 {
     const uint32_t simdSize = 32u;
@@ -52,6 +81,49 @@ namespace avx
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                     (*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
             }
+        }
+    }
+
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd zero = _mm256_setzero_si256();
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+            simd       * dst    = reinterpret_cast <simd*> (outY);
+
+            for( ; src != srcEnd; ++src ) {
+                simd data = _mm256_loadu_si256( src );
+
+                const simd dataLo  = _mm256_unpacklo_epi8( data, zero );
+                const simd dataHi  = _mm256_unpackhi_epi8( data, zero );
+
+                const simd data_1 = _mm256_unpacklo_epi16( dataLo, zero );
+                const simd data_2 = _mm256_unpackhi_epi16( dataLo, zero );
+                const simd data_3 = _mm256_unpacklo_epi16( dataHi, zero );
+                const simd data_4 = _mm256_unpackhi_epi16( dataHi, zero );
+
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_1, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_2, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_3, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( data_4, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }   
         }
     }
 
@@ -220,6 +292,98 @@ namespace avx
                     else
                         (*outX) = (*in2X);
                 }
+            }
+        }
+    }
+
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
+                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm256_setzero_si256();
+
+        if( horizontal ) {
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
+
+            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
+                const uint8_t * imageSimdY = imageStart;
+                const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
+                simd simdSum_1 = _mm256_setzero_si256();
+                simd simdSum_2 = _mm256_setzero_si256();
+                simd simdSum_3 = _mm256_setzero_si256();
+                simd simdSum_4 = _mm256_setzero_si256();
+
+                simd * dst = reinterpret_cast <simd*> (out);
+
+                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                    const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
+
+                    const simd data = _mm256_loadu_si256( src );
+
+                    const simd dataLo  = _mm256_unpacklo_epi8( data, zero );
+                    const simd dataHi  = _mm256_unpackhi_epi8( data, zero );
+
+                    const simd data_1 = _mm256_unpacklo_epi16( dataLo, zero );
+                    const simd data_2 = _mm256_unpackhi_epi16( dataLo, zero );
+                    const simd data_3 = _mm256_unpacklo_epi16( dataHi, zero );
+                    const simd data_4 = _mm256_unpackhi_epi16( dataHi, zero );
+                    simdSum_1 = _mm256_add_epi32( data_1, simdSum_1 );
+                    simdSum_2 = _mm256_add_epi32( data_2, simdSum_2 );
+                    simdSum_3 = _mm256_add_epi32( data_3, simdSum_3 );
+                    simdSum_4 = _mm256_add_epi32( data_4, simdSum_4 );
+                }
+
+                _mm256_storeu_si256( dst, _mm256_add_epi32( simdSum_1, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( simdSum_2, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( simdSum_3, _mm256_loadu_si256( dst ) ) );
+                ++dst;
+                _mm256_storeu_si256( dst, _mm256_add_epi32( simdSum_4, _mm256_loadu_si256( dst ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t* imageXEnd = imageStart + nonSimdWidth;
+
+                for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
+                    const uint8_t * imageY    = imageStart;
+                    const uint8_t * imageYEnd = imageY + height * rowSize;
+
+                    for( ; imageY != imageYEnd; imageY += rowSize )
+                        (*out) += (*imageY);
+                }
+            }
+        }
+        else {
+            const uint8_t * imageYEnd = imageStart + height * rowSize;
+
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
+                const simd * src    = reinterpret_cast <const simd*> (imageStart);
+                const simd * srcEnd = src + simdWidth;
+                simd simdSum = _mm256_setzero_si256();
+
+                for( ; src != srcEnd; ++src ) {
+                    simd data = _mm256_loadu_si256( src );
+
+                    simd dataLo  = _mm256_unpacklo_epi8( data, zero );
+                    simd dataHi  = _mm256_unpackhi_epi8( data, zero );
+                    simd sumLoHi = _mm256_add_epi16( dataLo, dataHi );
+
+                    simdSum = _mm256_add_epi32( simdSum, _mm256_add_epi32( _mm256_unpacklo_epi16( sumLoHi, zero ),
+                                                                           _mm256_unpackhi_epi16( sumLoHi, zero ) ) );
+                }
+
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * imageX    = imageStart + totalSimdWidth;
+                    const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                    for( ; imageX != imageXEnd; ++imageX )
+                        (*out) += (*imageX);
+                }
+
+                uint32_t output[8] = { 0 };
+                _mm256_storeu_si256( reinterpret_cast <simd*>(output), simdSum );
+                
+                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
             }
         }
     }
@@ -476,6 +640,49 @@ namespace sse
         }
     }
 
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd zero = _mm_setzero_si128();
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+            simd       * dst    = reinterpret_cast <simd*> (outY);
+
+            for( ; src != srcEnd; ++src ) {
+                simd data = _mm_loadu_si128( src );
+
+                const simd dataLo  = _mm_unpacklo_epi8( data, zero );
+                const simd dataHi  = _mm_unpackhi_epi8( data, zero );
+
+                const simd data_1 = _mm_unpacklo_epi16( dataLo, zero );
+                const simd data_2 = _mm_unpackhi_epi16( dataLo, zero );
+                const simd data_3 = _mm_unpacklo_epi16( dataHi, zero );
+                const simd data_4 = _mm_unpackhi_epi16( dataHi, zero );
+
+                _mm_storeu_si128( dst, _mm_add_epi32( data_1, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_2, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_3, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( data_4, _mm_loadu_si128( dst ) ) );
+                ++dst;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }   
+        }
+    }
+
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                      uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -638,6 +845,98 @@ namespace sse
                     else
                         (*outX) = (*in2X);
                 }
+            }
+        }
+    }
+
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
+                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm_setzero_si128();
+
+        if( horizontal ) {
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
+
+            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
+                const uint8_t * imageSimdY    = imageStart;
+                const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
+                simd simdSum_1 = _mm_setzero_si128();
+                simd simdSum_2 = _mm_setzero_si128();
+                simd simdSum_3 = _mm_setzero_si128();
+                simd simdSum_4 = _mm_setzero_si128();
+
+                simd * dst = reinterpret_cast <simd*> (out);
+
+                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                    const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
+
+                    const simd data = _mm_loadu_si128( src );
+
+                    const simd dataLo  = _mm_unpacklo_epi8( data, zero );
+                    const simd dataHi  = _mm_unpackhi_epi8( data, zero );
+
+                    const simd data_1 = _mm_unpacklo_epi16( dataLo, zero );
+                    const simd data_2 = _mm_unpackhi_epi16( dataLo, zero );
+                    const simd data_3 = _mm_unpacklo_epi16( dataHi, zero );
+                    const simd data_4 = _mm_unpackhi_epi16( dataHi, zero );
+                    simdSum_1 = _mm_add_epi32( data_1, simdSum_1 );
+                    simdSum_2 = _mm_add_epi32( data_2, simdSum_2 );
+                    simdSum_3 = _mm_add_epi32( data_3, simdSum_3 );
+                    simdSum_4 = _mm_add_epi32( data_4, simdSum_4 );
+                }
+
+                _mm_storeu_si128( dst, _mm_add_epi32( simdSum_1, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( simdSum_2, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( simdSum_3, _mm_loadu_si128( dst ) ) );
+                ++dst;
+                _mm_storeu_si128( dst, _mm_add_epi32( simdSum_4, _mm_loadu_si128( dst ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageXEnd = imageStart + nonSimdWidth;
+
+                for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
+                    const uint8_t * imageY    = imageStart;
+                    const uint8_t * imageYEnd = imageY + height * rowSize;
+
+                    for( ; imageY != imageYEnd; imageY += rowSize )
+                        (*out) += (*imageY);
+                }
+            }
+        }
+        else {
+            const uint8_t * imageYEnd = imageStart + height * rowSize;
+
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
+                const simd * src    = reinterpret_cast <const simd*> (imageStart);
+                const simd * srcEnd = src + simdWidth;
+                simd simdSum = _mm_setzero_si128();
+
+                for( ; src != srcEnd; ++src ) {
+                    simd data = _mm_loadu_si128( src );
+
+                    simd dataLo  = _mm_unpacklo_epi8( data, zero );
+                    simd dataHi  = _mm_unpackhi_epi8( data, zero );
+                    simd sumLoHi = _mm_add_epi16( dataLo, dataHi );
+
+                    simdSum = _mm_add_epi32( simdSum, _mm_add_epi32( _mm_unpacklo_epi16( sumLoHi, zero ),
+                                                                     _mm_unpackhi_epi16( sumLoHi, zero ) ) );
+                }
+
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * imageX    = imageStart + totalSimdWidth;
+                    const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                    for( ; imageX != imageXEnd; ++imageX )
+                        (*out) += (*imageX);
+                }
+
+                uint32_t output[4] = { 0 };
+                _mm_storeu_si128( reinterpret_cast <simd*>(output), simdSum );
+                
+                (*out) += output[0] + output[1] + output[2] + output[3];
             }
         }
     }
@@ -842,6 +1141,45 @@ namespace neon
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                     (*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
+            }
+        }
+    }
+    
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth,
+                     uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8x8_t zero_8 = vdup_n_u8(0);
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const uint8_t * src    = imageY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
+            uint32_t      * dst    = outY;
+
+            for( ; src != srcEnd; src+= simdSize ) {
+                uint8x16_t data = vld1q_u8( src );
+
+                const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero_8 );
+                const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero_8 );
+
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataLo) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataLo) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_low_u16(dataHi) ) );
+                dst += 4;
+                vst1q_u32( dst, vaddw_u16( vld1q_u32( dst ), vget_high_u16(dataHi) ) );
+                dst += 4;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
             }
         }
     }
@@ -1254,6 +1592,39 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector<uint32_t> & result, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+        const uint8_t colorCount = image.colorCount();
+
+        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
+            Image_Function::Accumulate(image, x, y, width, height, result);
+            return;
+        }
+
+        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::VerifyGrayScaleImage( image );
+
+        if( result.size() != width * height * colorCount )
+            throw imageException( "Array size is not equal to image ROI (width * height) size" );
+
+        const uint32_t rowSize = image.rowSize();
+
+        const uint8_t * imageY    = image.data() + y * rowSize + x * colorCount;
+        const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        uint32_t * outY = result.data();
+        width = width * colorCount;
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -1468,6 +1839,36 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                            std::vector < uint32_t > & projection, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+        const uint8_t colorCount = image.colorCount();
+
+        if( (simdType == cpu_function) || (simdType == neon_function) || ((width * height * colorCount) < simdSize) ) {
+            AVX_CODE( ProjectionProfile( image, x, y, width, height, horizontal, projection, sse_function ); )
+
+            Image_Function::ProjectionProfile( image, x, y, width, height, horizontal, projection );
+            return;
+        }
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        projection.resize( horizontal ? width * colorCount : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+        uint32_t * out = projection.data();
+
+        const uint32_t rowSize = image.rowSize();
+        width = width * colorCount;
+        const uint8_t * imageStart = image.data() + y * rowSize + x * colorCount; 
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+        SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+    }
+
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -1659,6 +2060,16 @@ namespace Image_Function_Simd
         simd::AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
+    void Accumulate( const Image & image, std::vector < uint32_t > & result )
+    {
+        Image_Function_Helper::Accumulate( Accumulate, image, result );
+    }
+
+    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+    {
+        simd::Accumulate(image, x, y, width, height, result, simd::actualSimdType());
+    }
+
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
@@ -1788,6 +2199,24 @@ namespace Image_Function_Simd
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         simd::Minimum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal, projection );
+    }
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal, 
+                            std::vector < uint32_t > & projection )
+    {
+        simd::ProjectionProfile( image, x, y, width, height, horizontal, projection, simd::actualSimdType() );
     }
 
     Image Subtract( const Image & in1, const Image & in2 )

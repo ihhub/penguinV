@@ -81,7 +81,7 @@ namespace Function_Template
     {
         if ( namespaceName == "function_pool" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( true );
-            Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
+            ThreadPoolMonoid::instance().resize( 4 );
         }
         else if ( namespaceName == "image_function_avx" ) {
             Image_Function_Simd::Simd_Activation::EnableSimd( false );
@@ -119,6 +119,14 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( AbsoluteDifference( image[0], image[1], image[2] ), namespaceName )
+    }
+
+    std::pair < double, double > template_Accumulate( AccumulateFunction Accumulate , const std::string & namespaceName, uint32_t size )
+    {
+        const PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
+        std::vector < uint32_t > result( size * size * image.colorCount(), 0u );
+
+        TEST_FUNCTION_LOOP( Accumulate( image, result ), namespaceName )
     }
 
     std::pair < double, double > template_BitwiseAnd( BitwiseAndFunction BitwiseAnd, const std::string & namespaceName, uint32_t size )
@@ -210,6 +218,14 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( Minimum( image[0], image[1], image[2] ), namespaceName )
+    }
+
+    std::pair < double, double > template_ProjectionProfile( ProjectionProfileFunction ProjectionProfile , const std::string & namespaceName, uint32_t size )
+    {
+        const PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
+        std::vector < uint32_t > projection;
+
+        TEST_FUNCTION_LOOP( ProjectionProfile( image, false, projection ), namespaceName )
     }
 
     std::pair < double, double > template_RgbToBgr( RgbToBgrFunction RgbToBgr, const std::string & namespaceName, uint32_t size )
@@ -306,6 +322,7 @@ namespace image_function
     const std::string namespaceName = "image_function";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
@@ -318,6 +335,7 @@ namespace image_function
     SET_FUNCTION( LookupTable        )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( RgbToBgr           )
     REGISTER_FUNCTION( ResizeDown, Resize )
     REGISTER_FUNCTION( ResizeUp, Resize   )
@@ -347,6 +365,7 @@ namespace function_pool
     SET_FUNCTION( LookupTable        )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( RgbToBgr           )
     REGISTER_FUNCTION( ResizeDown, Resize )
     REGISTER_FUNCTION( ResizeUp, Resize   )
@@ -365,12 +384,14 @@ namespace image_function_avx
     const std::string namespaceName = "image_function_avx";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
@@ -387,6 +408,7 @@ namespace image_function_neon
     const std::string namespaceName = "image_function_neon";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
@@ -409,12 +431,14 @@ namespace image_function_sse
     const std::string namespaceName = "image_function_sse";
 
     SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )

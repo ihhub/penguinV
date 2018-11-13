@@ -28,25 +28,7 @@
 
 #### **Do you want to contribute to the documentation?**
 
-penguinV is a volunteer effort. We encourage you to pitch in and join the team:
-
-* ihhub
-* syclik
-* platipo
-* rab-h-sonmai
-* seancyw
-* yunchih
-* tbelaire
-* arcrode
-* mexchip
-* NFM-8
-* hrishabh23
-* 0x72D0
-* rithvikp1998
-* hrishabh23
-* dainmiller
-* coderdecoder01
-* moeharuna
+penguinV is a volunteer effort. We encourage you to pitch in and [join the team](https://github.com/ihhub/penguinV/wiki/Contributors)! If you see that your name is not present in the list, please be free to contact us and report about such terrible mistake.
 
 Thanks! :heart: :heart: :heart:
 

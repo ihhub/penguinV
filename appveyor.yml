@@ -24,15 +24,16 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
-  - cmd: cd C:\projects\penguinv\test
 
 build_script:
-  - msbuild unit_tests\unit_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-  - msbuild performance_tests\performance_tests.vcxproj /verbosity:minimal /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-
-before_test:
-  - cd unit_tests
-  - if "%platform%" == "x64" cd x64
+  - set PENGUINV_UNIT_TEST_RUN_COUNT=500
+  - cmd: cd C:\projects\penguinv
+  - cmd: md build
+  - cmd: cd build
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
+  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
+  - cmd: cmake --build . --config %configuration%
 
 test_script:
-  - cmd: Release\unit_tests.exe
+# OpenCL unit test is excluded as it fails with Exception: Exit code 0xc0000135 on Appveyor
+  - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test" --extra-verbose

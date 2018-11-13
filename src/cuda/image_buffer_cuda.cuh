@@ -54,7 +54,7 @@ namespace PenguinV_Image
 
         static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
         {
-            cudaError error = cudaMemcpy( in, out, size, cudaMemcpyDeviceToDevice );
+            cudaError error = cudaMemcpy( out, in, size, cudaMemcpyDeviceToDevice );
             if( error != cudaSuccess )
                 throw imageException( "Cannot copy a memory in CUDA device" );
         }

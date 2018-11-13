@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <map>
+#include <memory>
 #include <mutex>
 #include "opencl_device.h"
 #include "opencl_helper.h"
@@ -46,7 +47,7 @@ namespace
         }
 
         std::shared_ptr< multiCL::OpenCLProgram > program;
-        std::shared_ptr< multiCL::OpenCLKernel > kernel;
+        std::shared_ptr< multiCL::OpenCLKernel  > kernel;
     };
 
     multiCL::OpenCLKernel & getMemsetKernel()

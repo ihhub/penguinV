@@ -146,9 +146,11 @@
     <ClCompile Include="..\..\src\blob_detection.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
+    <ClCompile Include="..\..\src\function_pool_task.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\..\src\image_function_simd.cpp" />
+    <ClCompile Include="..\..\src\math\math_base.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\..\src\thread_pool.cpp" />
     <ClCompile Include="performance_tests.cpp" />
@@ -162,11 +164,13 @@
     <ClInclude Include="..\..\src\blob_detection.h" />
     <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
+    <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\image_function_simd.h" />
+    <ClInclude Include="..\..\src\math\math_base.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />

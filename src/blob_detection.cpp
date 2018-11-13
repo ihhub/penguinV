@@ -15,8 +15,6 @@ namespace
         EDGE       = 3u,
         CONTOUR    = 4u
     };
-
-    const double pi = 3.1415926536;
 }
 
 namespace Blob_Detection
@@ -63,14 +61,14 @@ namespace Blob_Detection
         return _area.value;
     }
 
-    Point BlobInfo::center()
+    Point2d BlobInfo::center()
     {
         _getCenter();
 
         return _center.value;
     }
 
-    Point BlobInfo::center() const
+    Point2d BlobInfo::center() const
     {
         return _center.value;
     }
@@ -172,7 +170,7 @@ namespace Blob_Detection
     void BlobInfo::_getCircularity()
     {
         if( !_contourX.empty() && !_circularity.found ) {
-            const double radius = sqrt( static_cast<double>(size()) / pi );
+            const double radius = sqrt( static_cast<double>(size()) / pvmath::pi );
             _getCenter();
 
             double difference = 0;
@@ -202,7 +200,7 @@ namespace Blob_Detection
 
                 uint32_t maximumDistance = 0;
 
-                Point startPoint, endPoint;
+                Point2d startPoint, endPoint;
 
                 for( ; x != (end - 1); ++x, ++y ) {
                     std::vector < uint32_t >::const_iterator xx = x + 1;

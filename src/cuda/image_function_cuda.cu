@@ -8,6 +8,37 @@
 
 namespace
 {
+    struct FunctionRegistrator
+    {
+        Image_Function_Helper::FunctionTableHolder table;
+
+        FunctionRegistrator()
+        {
+            table.AbsoluteDifference = &Image_Function_Cuda::AbsoluteDifference;
+            table.BitwiseAnd         = &Image_Function_Cuda::BitwiseAnd;
+            table.BitwiseOr          = &Image_Function_Cuda::BitwiseOr;
+            table.BitwiseXor         = &Image_Function_Cuda::BitwiseXor;
+            table.ConvertToGrayScale = &Image_Function_Cuda::ConvertToGrayScale;
+            table.ConvertToRgb       = &Image_Function_Cuda::ConvertToRgb;
+            table.Copy               = &Image_Function_Cuda::Copy;
+            table.ExtractChannel     = &Image_Function_Cuda::ExtractChannel;
+            table.Fill               = &Image_Function_Cuda::Fill;
+            table.GammaCorrection    = &Image_Function_Cuda::GammaCorrection;
+            table.Histogram          = &Image_Function_Cuda::Histogram;
+            table.Invert             = &Image_Function_Cuda::Invert;
+            table.LookupTable        = &Image_Function_Cuda::LookupTable;
+            table.Maximum            = &Image_Function_Cuda::Maximum;
+            table.Minimum            = &Image_Function_Cuda::Minimum;
+            table.Subtract           = &Image_Function_Cuda::Subtract;
+            table.Threshold          = &Image_Function_Cuda::Threshold;
+            table.Threshold2         = &Image_Function_Cuda::Threshold;
+
+            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
+        }
+    };
+
+    const FunctionRegistrator functionRegistrator;
+
     // The list of CUDA device functions on device side
     __global__ void absoluteDifferenceCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                             uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )

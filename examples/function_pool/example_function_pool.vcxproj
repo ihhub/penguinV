@@ -150,12 +150,14 @@
     <ClCompile Include="..\..\src\thread_pool.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
+    <ClCompile Include="..\..\src\function_pool_task.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
+    <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />

@@ -50,7 +50,7 @@ public:
             }
 
             if ( usedSize == 0 )
-                _freeChunck.resize( levelCount + 1 );
+                _freeChunck.resize( levelCount + 1u );
 
             _freeChunck[levelCount].insert( usedSize );
 
@@ -108,8 +108,8 @@ protected:
             size_t memorySize = static_cast<size_t>(1) << (startLevel - 1);
 
             for ( ; startLevel > from; --startLevel, memorySize >>= 1 ) {
-                _freeChunck[startLevel - 1].insert( *_freeChunck[startLevel].begin() );
-                _freeChunck[startLevel - 1].insert( *_freeChunck[startLevel].begin() + memorySize );
+                _freeChunck[startLevel - 1u].insert( *_freeChunck[startLevel].begin() );
+                _freeChunck[startLevel - 1u].insert( *_freeChunck[startLevel].begin() + memorySize );
                 _freeChunck[startLevel].erase( _freeChunck[startLevel].begin() );
             }
         }

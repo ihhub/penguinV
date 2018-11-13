@@ -223,7 +223,7 @@ static void kf_bfly_generic(
             int twidx=0;
             Fout[ k ] = scratch[0];
             for (q=1;q<p;++q ) {
-                twidx += fstride * k;
+                twidx += (int)(fstride * k);
                 if (twidx>=Norig) twidx-=Norig;
                 C_MUL(t,scratch[q] , twiddles[twidx] );
                 C_ADDTO( Fout[ k ] ,t);
@@ -386,12 +386,6 @@ void kiss_fft(kiss_fft_cfg cfg,const kiss_fft_cpx *fin,kiss_fft_cpx *fout)
 {
     kiss_fft_stride(cfg,fin,fout,1);
 }
-
-
-//void kiss_fft_cleanup(void)
-//{
-//    // nothing needed any more
-//}
 
 int kiss_fft_next_fast_size(int n)
 {

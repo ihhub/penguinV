@@ -18,6 +18,22 @@ namespace
 
         return image;
     }
+
+    void fillRandomData( PenguinV_Image::Image & image )
+    {
+        uint8_t * outY = image.data();
+        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+
+        for( ; outY != outYEnd; outY += image.rowSize() ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + image.width() * image.colorCount();
+
+            for( ; outX != outXEnd; ++outX )
+                (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
+        }
+    }
+
+    uint32_t testRunCount = 1001;  // some magic number for loop. Higher value = higher chance to verify all possible situations
 }
 
 namespace Unit_Test
@@ -52,20 +68,11 @@ namespace Unit_Test
         return uniformImage( 255u, reference );
     }
 
-    PenguinV_Image::Image randomImage()
+    PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
     {
-        PenguinV_Image::Image image( randomSize(), randomSize() );
+        PenguinV_Image::Image image( (width == 0) ? randomSize() : width, (height == 0) ? randomSize() : height );
 
-        uint8_t * outY = image.data();
-        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
-
-        for( ; outY != outYEnd; outY += image.rowSize() ) {
-            uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + image.width();
-
-            for( ; outX != outXEnd; ++outX )
-                (*outX) = randomValue<uint8_t>( 256 );
-        }
+        fillRandomData( image );
 
         return image;
     }
@@ -92,6 +99,15 @@ namespace Unit_Test
                     id = 0;
             }
         }
+
+        return image;
+    }
+
+    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference)
+    {
+        PenguinV_Image::Image image = reference.generate(randomSize(), randomSize(), PenguinV_Image::RGB);
+
+        fillRandomData( image );
 
         return image;
     }
@@ -314,6 +330,24 @@ namespace Unit_Test
 
     uint32_t runCount()
     {
-        return 1024u; // some magic number for loop. Higher value = higher chance to verify all possible situations
+        return testRunCount;
+    }
+
+    void setRunCount( uint32_t count )
+    {
+        if ( count > 0u )
+            testRunCount = count;
+    }
+
+    double randomValue( double minimum, double maximum, double stepVal )
+    {
+        if (minimum > maximum || stepVal < 0)
+            return minimum;
+
+        int range = static_cast<int>( (maximum - minimum) / stepVal );
+        if (range <= 0)
+            range = 1;
+
+        return static_cast<double>(rand() % range) * stepVal + minimum;
     }
 }
