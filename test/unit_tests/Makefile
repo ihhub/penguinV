@@ -3,6 +3,7 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
     $(LIB_DIR)/FileOperation/bitmap.cpp \
+    $(LIB_DIR)/FileOperation/jpeg_file.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/math_base.cpp \
     $(LIB_DIR)/penguinv/penguinv.cpp \
