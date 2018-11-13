@@ -87,7 +87,7 @@ namespace Jpeg_Operation
         image = Load(path);
     }
 
-    void Save(const std::string & path, PenguinV_Image::Image & image)
+    void Save(const std::string & path, const PenguinV_Image::Image & image)
     {
         if (path.empty())
             throw imageException("Incorrect file path for image file saving");
@@ -111,8 +111,8 @@ namespace Jpeg_Operation
         jpeg_set_defaults(&cInfo);
         jpeg_start_compress(&cInfo, TRUE);
 
-        uint8_t * imageData = image.data();
-        const uint8_t *endData = imageData + image.rowSize() * image.height();
+        const uint8_t * imageData = image.data();
+        const uint8_t * endData = imageData + image.rowSize() * image.height();
 
         for (; imageData != endData; imageData += image.rowSize())
             jpeg_write_scanlines(&cInfo, (JSAMPARRAY)imageData, 1);
