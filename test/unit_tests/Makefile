@@ -28,18 +28,15 @@ SRCS :=  \
     unit_test_image_function.cpp \
     unit_test_math.cpp \
     unit_test_jpeg_ops.cpp
-
 TARGET := unit_tests
 
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-
 LIBS := -pthread -ljpeg
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)
-
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
