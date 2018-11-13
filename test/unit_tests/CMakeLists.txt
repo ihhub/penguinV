@@ -23,7 +23,8 @@ set(SRCS
     unit_test_helper.cpp
     unit_test_image_buffer.cpp
     unit_test_image_function.cpp
-    unit_test_math.cpp)
+    unit_test_math.cpp
+    unit_test_jpeg_ops.cpp)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
