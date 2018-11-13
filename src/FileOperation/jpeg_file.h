@@ -2,8 +2,8 @@
 
 namespace Jpeg_Operation
 {
-    PenguinV_Image::Image Load(const std::string &path);
-    void Load(const std::string &path, PenguinV_Image::Image &image);
+    PenguinV_Image::Image Load(const std::string & path);
+    void Load(const std::string & path, PenguinV_Image::Image & image);
 
-    void Save(const std::string &path, PenguinV_Image::Image &image);
+    void Save(const std::string & path, const PenguinV_Image::Image & image);
 }
