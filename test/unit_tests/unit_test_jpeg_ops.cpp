@@ -4,23 +4,22 @@
 
 namespace jpeg_operation
 {
-bool LoadSaveRGBImage()
-{
-    PenguinV_Image::Image jpegImg = Unit_Test::uniformRGBImage();
+    bool LoadSaveRGBImage()
+    {
+        const PenguinV_Image::Image original = Unit_Test::uniformRGBImage();
+        Jpeg_Operation::Save("rgb.jpg", original);
 
-    Jpeg_Operation::Save("rgb.jpg", jpegImg);
+        const PenguinV_Image::Image loaded = Jpeg_Operation::Load("rgb.bmp");
 
-    PenguinV_Image::Image loaded = Jpeg_Operation::Load("rgb.bmp");
-
-    if (jpegImg.height() != loaded.height() || jpegImg.width() != loaded.width() ||
-        jpegImg.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage(loaded, 255u))
-        return false;
-
-    return true;
+        if (original.height() != loaded.height() || original.width() != loaded.width() ||
+            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage(loaded, 255u))
+            return false;
+    
+        return true;
+    }
 }
-} // namespace jpeg_operation
 
-void addTests_Jpeg(UnitTestFramework &framework)
+void addTests_Jpeg( UnitTestFramework & framework )
 {
     ADD_TEST(framework, jpeg_operation::LoadSaveRGBImage);
 }
