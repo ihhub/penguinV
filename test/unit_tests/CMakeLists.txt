@@ -32,7 +32,7 @@ find_package(Threads REQUIRED)
 if(WIN32)
     include(ExternalProject)
     set(zlib_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/zlib_archive)
-    set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib/install
+    set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib/install)
     set(ZLIB_STATIC_LIBRARIES
             debug ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib
             optimized ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
@@ -63,7 +63,7 @@ if(WIN32)
 
     set(png_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/png_archive)
     set(png_INSTALL ${CMAKE_BINARY_DIR}/png/install)
-    set(png_STATIC_LIBRARIES 
+    set(png_STATIC_LIBRARIES
         debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
         optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
     set(png_HEADERS
