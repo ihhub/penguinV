@@ -29,6 +29,70 @@ set(SRCS
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+if(WIN32)
+    include(ExternalProject)
+    set(zlib_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/zlib_archive)
+    set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib/install
+    set(ZLIB_STATIC_LIBRARIES
+            debug ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib
+            optimized ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+    set(ZLIB_HEADERS
+            "${ZLIB_INSTALL}/include/zconf.h"
+            "${ZLIB_INSTALL}/include/zlib.h")
+    ExternalProject_Add(zlib
+        PREFIX zlib
+        URL https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib1211.zip
+        URL_MD5 16b41357b2cd81bca5e1947238e64465
+        INSTALL_DIR ${ZLIB_INSTALL}
+        BUILD_IN_SOURCE 1
+        BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARIES}
+        DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
+        CMAKE_CACHE_ARGS
+            -DCMAKE_BUILD_TYPE:STRING=Release
+            -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
+            -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON)
+    add_custom_target(zlib_create_destination_dir
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${zlib_INCLUDE_DIR}
+        DEPENDS zlib)
+    add_custom_target(zlib_copy_headers_to_destination 
+        DEPENDS zlib_create_destination_dir)
+    foreach(header_file ${ZLIB_HEADERS})
+        add_custom_command(TARGET zlib_copy_headers_to_destination PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${zlib_INCLUDE_DIR})
+    endforeach()
+
+    set(png_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/png_archive)
+    set(png_INSTALL ${CMAKE_BINARY_DIR}/png/install)
+    set(png_STATIC_LIBRARIES 
+        debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
+        optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
+    set(png_HEADERS
+            "${png_INSTALL}/include/libpng16/png.h"
+            "${png_INSTALL}/include/libpng16/pngconf.h"
+            "${png_INSTALL}/include/libpng16/pnglibconf.h")
+    ExternalProject_Add(png
+        PREFIX png
+        DEPENDS zlib
+        URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lp1635.zip
+        URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
+        BUILD_BYPRODUCTS ${png_STATIC_LIBRARIES}
+        INSTALL_DIR ${png_INSTALL}
+        DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
+        CMAKE_CACHE_ARGS
+            -DCMAKE_BUILD_TYPE:STRING=Release
+            -DCMAKE_INSTALL_PREFIX:STRING=${png_INSTALL}
+            -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+        -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
+    add_custom_target(png_create_destination_dir
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${png_INCLUDE_DIR}
+        DEPENDS png)
+    add_custom_target(png_copy_headers_to_destination
+        DEPENDS png_create_destination_dir)
+    foreach(header_file ${png_HEADERS})
+        add_custom_command(TARGET png_copy_headers_to_destination PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${png_INCLUDE_DIR}/)
+    endforeach()
+endif(WIN32)
 find_package(PNG REQUIRED)
 
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
