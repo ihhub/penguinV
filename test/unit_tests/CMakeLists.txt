@@ -35,8 +35,9 @@ if(WIN32)
         CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
     include(ExternalProject)
-    set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/zlib_archive)
-    set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib/install)
+    set(ZLIB_INSTALL ${CMAKE_BINARY_DIR}/zlib)
+    set(ZLIB_BUILD_DIR ${CMAKE_BINARY_DIR}/zlib/build)
+    set(ZLIB_INCLUDE_DIR ${ZLIB_INSTALL}/include)
     set(ZLIB_STATIC_LIBRARIES
             debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
             optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
@@ -47,10 +48,10 @@ if(WIN32)
         PREFIX zlib
         URL https://sourceforge.net/projects/libpng/files/zlib/1.2.11/zlib1211.zip
         URL_MD5 16b41357b2cd81bca5e1947238e64465
-        INSTALL_DIR ${ZLIB_INSTALL}
-        BUILD_IN_SOURCE 1
+        BINARY_DIR ${ZLIB_BUILD_DIR}
         BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARIES}
         DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
+        INSTALL_DIR ${ZLIB_INSTALL}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
@@ -65,23 +66,25 @@ if(WIN32)
             COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${ZLIB_INCLUDE_DIR})
     endforeach()
 
-    set(PNG_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/png_archive)
-    set(PNG_INSTALL ${CMAKE_BINARY_DIR}/png/install)
+    set(PNG_INSTALL ${CMAKE_BINARY_DIR}/png)
+    set(PNG_BUILD_DIR ${CMAKE_BINARY_DIR}/png/build)
+    set(PNG_INCLUDE_DIR ${PNG_INSTALL}/include)
     set(PNG_STATIC_LIBRARIES
-            debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
-            optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
+            debug ${PNG_INSTALL}/lib/libpng16_staticd.lib
+            optimized ${PNG_INSTALL}/lib/libpng16_static.lib)
     set(PNG_HEADERS
-            "${PNG_INSTALL}/include/libpng16/png.h"
-            "${PNG_INSTALL}/include/libpng16/pngconf.h"
-            "${PNG_INSTALL}/include/libpng16/pnglibconf.h")
+            "${PNG_INCLUDE_DIR}/libpng16/png.h"
+            "${PNG_INCLUDE_DIR}/libpng16/pngconf.h"
+            "${PNG_INCLUDE_DIR}/libpng16/pnglibconf.h")
     ExternalProject_Add(png
         PREFIX png
         DEPENDS zlib
         URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
         URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
+        BINARY_DIR ${PNG_BUILD_DIR}
         BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
-        INSTALL_DIR ${PNG_INSTALL}
         DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
+        INSTALL_DIR ${PNG_INSTALL}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
@@ -131,7 +134,8 @@ endif()
 
 add_executable(unit_tests ${SRCS})
 if (WIN32)
-    target_include_directories(unit_tests PRIVATE ${PNG_INSTALL}/include)
+    target_include_directories(unit_tests
+        PUBLIC $<BUILD_INTERFACE:${PNG_INCLUDE_DIR}>)
     target_link_libraries(unit_tests
         PRIVATE unit_tests_options unit_tests_warnings Threads::Threads PNG_STATIC_LIBRARIES)
 else()
