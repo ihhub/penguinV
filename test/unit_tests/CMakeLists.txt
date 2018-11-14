@@ -30,12 +30,17 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 if(WIN32)
+    message(STATUS "Downloading and building zlib and libpng")
+    # Location where external projects will be downloaded
+    set(DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
+        CACHE PATH "Location where external projects will be downloaded.")
+    mark_as_advanced(DOWNLOAD_LOCATION)
     include(ExternalProject)
-    set(zlib_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/zlib_archive)
+    set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/zlib_archive)
     set(ZLIB_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/zlib/install)
     set(ZLIB_STATIC_LIBRARIES
-            debug ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstaticd.lib
-            optimized ${CMAKE_CURRENT_BINARY_DIR}/zlib/install/lib/zlibstatic.lib)
+            debug ${ZLIB_INSTALL}/lib/zlibstaticd.lib
+            optimized ${ZLIB_INSTALL}/lib/zlibstatic.lib)
     set(ZLIB_HEADERS
             "${ZLIB_INSTALL}/include/zconf.h"
             "${ZLIB_INSTALL}/include/zlib.h")
@@ -46,27 +51,27 @@ if(WIN32)
         INSTALL_DIR ${ZLIB_INSTALL}
         BUILD_IN_SOURCE 1
         BUILD_BYPRODUCTS ${ZLIB_STATIC_LIBRARIES}
-        DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
+        DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${ZLIB_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON)
     add_custom_target(zlib_create_destination_dir
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${zlib_INCLUDE_DIR}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${ZLIB_INCLUDE_DIR}
         DEPENDS zlib)
     add_custom_target(zlib_copy_headers_to_destination 
         DEPENDS zlib_create_destination_dir)
     foreach(header_file ${ZLIB_HEADERS})
         add_custom_command(TARGET zlib_copy_headers_to_destination PRE_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${zlib_INCLUDE_DIR})
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${ZLIB_INCLUDE_DIR})
     endforeach()
 
-    set(png_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/png_archive)
-    set(png_INSTALL ${CMAKE_BINARY_DIR}/png/install)
-    set(png_STATIC_LIBRARIES
-        debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
-        optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
-    set(png_HEADERS
+    set(PNG_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external/png_archive)
+    set(PNG_INSTALL ${CMAKE_BINARY_DIR}/png/install)
+    set(PNG_STATIC_LIBRARIES
+            debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
+            optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
+    set(PNG_HEADERS
             "${png_INSTALL}/include/libpng16/png.h"
             "${png_INSTALL}/include/libpng16/pngconf.h"
             "${png_INSTALL}/include/libpng16/pnglibconf.h")
@@ -77,23 +82,24 @@ if(WIN32)
         URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
         BUILD_BYPRODUCTS ${png_STATIC_LIBRARIES}
         INSTALL_DIR ${png_INSTALL}
-        DOWNLOAD_DIR "${DOWNLOAD_LOCATION}"
+        DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${png_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
         -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
     add_custom_target(png_create_destination_dir
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${png_INCLUDE_DIR}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${PNG_INCLUDE_DIR}
         DEPENDS png)
     add_custom_target(png_copy_headers_to_destination
         DEPENDS png_create_destination_dir)
-    foreach(header_file ${png_HEADERS})
+    foreach(header_file ${PNG_HEADERS})
         add_custom_command(TARGET png_copy_headers_to_destination PRE_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${png_INCLUDE_DIR}/)
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
     endforeach()
+else()
+    find_package(PNG REQUIRED)
 endif(WIN32)
-find_package(PNG REQUIRED)
 
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
@@ -125,10 +131,14 @@ else()
 endif()
 
 add_executable(unit_tests ${SRCS})
-target_link_libraries(unit_tests
-                      PRIVATE unit_tests_options
-                              unit_tests_warnings
-                              Threads::Threads
-                              PNG::PNG)
+if (NOT PNG_FOUND)
+    target_include_directories(unit_tests PRIVATE ${png_INCLUDE_DIR})
+    target_link_libraries(unit_tests
+        PRIVATE unit_tests_options unit_tests_warnings Threads::Threads png_STATIC_LIBRARIES)
+else()
+    # We found libpng via find_package
+    target_link_libraries(unit_tests
+        PRIVATE unit_tests_options unit_tests_warnings Threads::Threads PNG::PNG)
+endif()
 
 add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})
