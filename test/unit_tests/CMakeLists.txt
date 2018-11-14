@@ -89,6 +89,7 @@ if(WIN32)
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+            -DPNG_TESTS:BOOL=OFF
         -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
     add_custom_target(png_create_destination_dir
         COMMAND ${CMAKE_COMMAND} -E make_directory ${PNG_INCLUDE_DIR}
