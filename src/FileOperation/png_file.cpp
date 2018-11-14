@@ -1,5 +1,5 @@
 #include <stdlib.h>
- #include <png.h>
+#include <png.h>
 
 #include "png_file.h"
 #include "../image_exception.h"
