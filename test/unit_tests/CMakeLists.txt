@@ -134,6 +134,8 @@ endif()
 
 add_executable(unit_tests ${SRCS})
 if (WIN32)
+    # Quiet warnings related to fopen on MSVC
+    target_compile_definitions(unit_tests  PRIVATE _CRT_SECURE_NO_WARNINGS)
     target_include_directories(unit_tests
         PUBLIC $<BUILD_INTERFACE:${PNG_INCLUDE_DIR}>)
     target_link_libraries(unit_tests
