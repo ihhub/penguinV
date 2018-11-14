@@ -30,7 +30,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 if(WIN32)
-    message(STATUS "Downloading and building zlib and libpng")
     # Location where external projects will be downloaded
     set(DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
         CACHE PATH "Location where external projects will be downloaded.")
@@ -78,14 +77,14 @@ if(WIN32)
     ExternalProject_Add(png
         PREFIX png
         DEPENDS zlib
-        URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lp1635.zip
+        URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
         URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
-        BUILD_BYPRODUCTS ${png_STATIC_LIBRARIES}
-        INSTALL_DIR ${png_INSTALL}
+        BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
+        INSTALL_DIR ${PNG_INSTALL}
         DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
-            -DCMAKE_INSTALL_PREFIX:STRING=${png_INSTALL}
+            -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
         -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
     add_custom_target(png_create_destination_dir
