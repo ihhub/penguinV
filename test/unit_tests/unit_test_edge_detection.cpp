@@ -14,8 +14,10 @@ namespace edge_detection
             Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiXEnd = roiX + roiWidth;
+            const bool isValidLeftEdge  = ( roiX > 1u ) && ( roiX    + 1u < image.width() );
+            const bool isValidRightEdge = ( roiX > 0u ) && ( roiXEnd + 2u < image.width() );
 
-            if ( roiX <= 1u && (roiXEnd + 2u) >= image.width() )
+            if ( !isValidLeftEdge && !isValidRightEdge )
                 continue;
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
@@ -26,7 +28,7 @@ namespace edge_detection
             const std::vector< Point2d > & positive = edgeDetection.positiveEdge();
             const std::vector< Point2d > & negative = edgeDetection.negativeEdge();
 
-            if ( ( (roiX > 1u) && (positive.size() != roiHeight) ) || ( ((roiXEnd + 2u) < image.width()) && (negative.size() != roiHeight) ) )
+            if ( ( isValidLeftEdge && (positive.size() != roiHeight) ) || ( isValidRightEdge && (negative.size() != roiHeight) ) )
                 return false;
 
             for ( std::vector< Point2d >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
@@ -53,8 +55,10 @@ namespace edge_detection
             Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiYEnd = roiY + roiHeight;
+            const bool isValidTopEdge    = ( roiY > 1u ) && ( roiY    + 1u < image.height() );
+            const bool isValidBottomEdge = ( roiY > 0u ) && ( roiYEnd + 2u < image.height() );
 
-            if ( roiY <= 1u && (roiYEnd + 2u) >= image.height() )
+            if ( !isValidTopEdge && !isValidBottomEdge )
                 continue;
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
@@ -65,7 +69,7 @@ namespace edge_detection
             const std::vector< Point2d > & positive = edgeDetection.positiveEdge();
             const std::vector< Point2d > & negative = edgeDetection.negativeEdge();
 
-            if ( ( (roiY > 1u) && (positive.size() != roiWidth) ) || ( ((roiYEnd + 2u) < image.height()) && (negative.size() != roiWidth) ) )
+            if ( ( isValidTopEdge && (positive.size() != roiWidth) ) || ( isValidBottomEdge && (negative.size() != roiWidth) ) )
                 return false;
 
             for ( std::vector< Point2d >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {

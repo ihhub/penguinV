@@ -245,6 +245,9 @@ const std::vector < Point2d > & EdgeDetection::negativeEdge() const
 
 void EdgeDetection::getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const
 {
+    // input array range is [0; n)
+    // first deriviative range is [0; n - 1)
+    // second deriviative range is [1; n - 1)
     std::transform( image.begin() + 1u, image.end(), image.begin(), first.begin(), std::minus<int>() );
     std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
 }
@@ -267,7 +270,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
 
     const bool checkContrast = (edgeParameter.contrastCheckLeftSideOffset > 0u) && (edgeParameter.contrastCheckRightSideOffset > 0u);
 
-    for ( size_t i = 1u; i < dataSize - 2u; i++ ) {
+    for ( size_t i = 1u; i < dataSize - 1u; i++ ) {
         if ( second[i] < 0 || second[i + 1] > 0 )
             continue;
 
@@ -315,7 +318,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         size_t normalRightSide  = i + 1u;
         size_t minimumRightSide = i + 1u;
 
-        for ( size_t j = i + 1u; j < dataSize - 2u; ++j ) {
+        for ( size_t j = i + 1u; j < dataSize - 1u; ++j ) {
             if ( !normalGradientRightEdgeFound && first[j] < halfGradient ) {
                 normalRightSide = j;
                 normalGradientRightEdgeFound = true;
