@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "unit_test_bitmap.h"
 #include "unit_test_blob_detection.h"
+#include "unit_test_edge_detection.h"
 #include "unit_test_fft.h"
 #include "unit_test_framework.h"
 #include "unit_test_helper.h"
@@ -26,6 +27,7 @@ int main( int argc, char * argv[] )
     // We add tests
     addTests_Bitmap         ( framework );
     addTests_Blob_Detection ( framework );
+    addTests_Edge_Detection ( framework );
     addTests_Image_Buffer   ( framework );
     addTests_Image_Function ( framework );
     addTests_Math           ( framework );
