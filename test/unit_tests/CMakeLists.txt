@@ -139,7 +139,11 @@ if (WIN32)
     target_include_directories(unit_tests
         PUBLIC $<BUILD_INTERFACE:${PNG_INCLUDE_DIR}>)
     target_link_libraries(unit_tests
-        PRIVATE unit_tests_options unit_tests_warnings Threads::Threads ${PNG_STATIC_LIBRARIES})
+        PRIVATE 
+            unit_tests_options unit_tests_warnings
+            Threads::Threads
+            ${PNG_STATIC_LIBRARIES}
+            ${ZLIB_STATIC_LIBRARIES})
 else()
     # We found libpng via find_package
     target_link_libraries(unit_tests
