@@ -71,9 +71,9 @@ if(WIN32)
             debug ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_staticd.lib
             optimized ${CMAKE_BINARY_DIR}/png/install/lib/libpng16_static.lib)
     set(PNG_HEADERS
-            "${png_INSTALL}/include/libpng16/png.h"
-            "${png_INSTALL}/include/libpng16/pngconf.h"
-            "${png_INSTALL}/include/libpng16/pnglibconf.h")
+            "${PNG_INSTALL}/include/libpng16/png.h"
+            "${PNG_INSTALL}/include/libpng16/pngconf.h"
+            "${PNG_INSTALL}/include/libpng16/pnglibconf.h")
     ExternalProject_Add(png
         PREFIX png
         DEPENDS zlib
@@ -130,10 +130,11 @@ else()
 endif()
 
 add_executable(unit_tests ${SRCS})
-if (NOT PNG_FOUND)
-    target_include_directories(unit_tests PRIVATE ${png_INCLUDE_DIR})
+if (WIN32)
+    message(STATUS "PNG headers are located at ${PNG_INCLUDE_DIR}.")
+    target_include_directories(unit_tests PRIVATE ${PNG_INCLUDE_DIR})
     target_link_libraries(unit_tests
-        PRIVATE unit_tests_options unit_tests_warnings Threads::Threads png_STATIC_LIBRARIES)
+        PRIVATE unit_tests_options unit_tests_warnings Threads::Threads PNG_STATIC_LIBRARIES)
 else()
     # We found libpng via find_package
     target_link_libraries(unit_tests
