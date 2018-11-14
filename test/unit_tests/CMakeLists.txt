@@ -1,6 +1,7 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/FileOperation/bitmap.cpp
+    ${LIB_DIR}/FileOperation/png_file.cpp
     ${LIB_DIR}/math/hough_transform.cpp
     ${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
@@ -27,6 +28,8 @@ set(SRCS
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
+
+find_package(PNG REQUIRED)
 
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
@@ -61,6 +64,7 @@ add_executable(unit_tests ${SRCS})
 target_link_libraries(unit_tests
                       PRIVATE unit_tests_options
                               unit_tests_warnings
-                              Threads::Threads)
+                              Threads::Threads
+                              PNG::PNG)
 
 add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})
