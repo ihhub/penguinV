@@ -131,8 +131,7 @@ endif()
 
 add_executable(unit_tests ${SRCS})
 if (WIN32)
-    message(STATUS "PNG headers are located at ${PNG_INCLUDE_DIR}.")
-    target_include_directories(unit_tests PRIVATE ${PNG_INCLUDE_DIR})
+    target_include_directories(unit_tests PRIVATE ${PNG_INSTALL}/include)
     target_link_libraries(unit_tests
         PRIVATE unit_tests_options unit_tests_warnings Threads::Threads PNG_STATIC_LIBRARIES)
 else()
