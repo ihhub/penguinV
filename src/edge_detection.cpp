@@ -270,7 +270,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
 
     const bool checkContrast = (edgeParameter.contrastCheckLeftSideOffset > 0u) && (edgeParameter.contrastCheckRightSideOffset > 0u);
 
-    for ( size_t i = 1u; i < dataSize - 1u; i++ ) {
+    for ( size_t i = 1u; i < dataSize - 2u; i++ ) {
         if ( second[i] < 0 || second[i + 1] > 0 )
             continue;
 
@@ -289,7 +289,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         size_t normalLeftSide  = i;
         size_t minimumLeftSide = i;
 
-        for ( size_t j = i; ;--j ) {
+        for ( size_t j = i; j > 0u ;--j ) {
             if ( !normalGradientleftEdgeFound && first[j] < halfGradient ) {
                 normalLeftSide = j;
                 normalGradientleftEdgeFound = true;
@@ -303,9 +303,6 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
 
             if ( first[j] > maxGradient )
                 break;
-
-            if (j == 0u) // this is to avoid out of bounds situation
-                break;
         }
 
         if ( !normalGradientleftEdgeFound && !minimumGradientLeftEdgeFound )
@@ -318,7 +315,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         size_t normalRightSide  = i + 1u;
         size_t minimumRightSide = i + 1u;
 
-        for ( size_t j = i + 1u; j < dataSize - 1u; ++j ) {
+        for ( size_t j = i + 1u; j < dataSize - 2u; ++j ) {
             if ( !normalGradientRightEdgeFound && first[j] < halfGradient ) {
                 normalRightSide = j;
                 normalGradientRightEdgeFound = true;
