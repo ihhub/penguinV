@@ -9,6 +9,7 @@ SRCS :=  \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fft.c \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fftnd.c \
     $(LIB_DIR)/blob_detection.cpp \
+	  $(LIB_DIR)/edge_detection.cpp \
     $(LIB_DIR)/filtering.cpp \
     $(LIB_DIR)/fft.cpp \
     $(LIB_DIR)/function_pool.cpp \
@@ -20,6 +21,7 @@ SRCS :=  \
     unit_tests.cpp \
     unit_test_bitmap.cpp \
     unit_test_blob_detection.cpp \
+    unit_test_edge_detection.cpp \
     unit_test_fft.cpp \
     unit_test_framework.cpp \
     unit_test_helper.cpp \
