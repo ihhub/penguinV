@@ -13,6 +13,7 @@ image: Visual Studio 2015
 
 # build configuration, i.e. Debug, Release, etc.
 configuration: Release
+cmake_options: "-DPENGUINV_ENABLE_PNG_SUPPORT=ON -DPENGUINV_USE_EXTERNAL_PNG=ON"
 
 platform:
   - x64
@@ -30,8 +31,8 @@ build_script:
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
-  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
-  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" %cmake_options% ..
+  - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" %cmake_options% ..
   - cmd: cmake --build . --config %configuration%
 
 test_script:
