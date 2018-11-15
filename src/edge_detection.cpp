@@ -289,7 +289,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         uint32_t normalLeftSide  = i;
         uint32_t minimumLeftSide = i;
 
-        for ( uint32_t j = i; j > 0u ;--j ) {
+        for ( uint32_t j = i; ; --j ) {
             if ( !normalGradientleftEdgeFound && first[j] < halfGradient ) {
                 normalLeftSide = j;
                 normalGradientleftEdgeFound = true;
@@ -303,6 +303,9 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
 
             if ( first[j] > maxGradient )
                 break;
+            
+            if (j == 0u) // this is to avoid out of bounds situation
+                break;
         }
 
         if ( !normalGradientleftEdgeFound && !minimumGradientLeftEdgeFound )
@@ -315,7 +318,7 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         uint32_t normalRightSide  = i + 1u;
         uint32_t minimumRightSide = i + 1u;
 
-        for ( uint32_t j = i + 1u; j < dataSize - 2u; ++j ) {
+        for ( uint32_t j = i + 1u; j < dataSize - 1u; ++j ) {
             if ( !normalGradientRightEdgeFound && first[j] < halfGradient ) {
                 normalRightSide = j;
                 normalGradientRightEdgeFound = true;
