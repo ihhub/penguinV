@@ -20,7 +20,3 @@ endif()
 
 option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
 option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
-if(${PENGUINV_USE_EXTERNAL_PNG})
-    include(external_zlib)
-    include(external_png)
-endif()

@@ -25,8 +25,7 @@ if(WIN32)
       endif()
     endif()
 else()
-    set(PNG_STATIC_LIBRARIES
-        ${PNG_LIB_DIR}/libpng16.a)
+    set(PNG_STATIC_LIBRARIES ${PNG_LIB_DIR}/libpng16.a)
 endif()
 
 ExternalProject_Add(png
@@ -56,7 +55,6 @@ foreach(header_file ${PNG_HEADERS})
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
 endforeach()
 
-add_library(PNG_EXTERNAL UNKNOWN IMPORTED)
-set_target_properties(PNG_EXTERNAL PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIR}"
-    IMPORTED_LOCATION "${PNG_STATIC_LIBRARIES}")
+add_library(PNG_EXTERNAL STATIC IMPORTED)
+set_target_properties(PNG_EXTERNAL PROPERTIES IMPORTED_LOCATION "${PNG_STATIC_LIBRARIES}")
+set_target_properties(PNG_EXTERNAL PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIR}")
