@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.8)
 project(penguinV)
 include(CTest)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake")
+if(NOT CMAKE_MODULE_PATH)
+    set(CMAKE_MODULE_PATH)
+endif()
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 option(PENGUINV_BUILD_TEST "Build tests of penguinV" ON)
 if(${PENGUINV_BUILD_TEST} OR (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
@@ -16,8 +19,8 @@ if(${PENGUINV_BUILD_EXAMPLE} OR (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_
 endif()
 
 option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
+option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
 if(${PENGUINV_ENABLE_PNG_SUPPORT})
-    option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
     if (${PENGUINV_USE_EXTERNAL_PNG})
         include(external_zlib)
         include(external_png)

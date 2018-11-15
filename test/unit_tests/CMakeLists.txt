@@ -63,8 +63,6 @@ target_link_libraries(unit_tests PRIVATE unit_tests_options unit_tests_warnings 
 if(${PENGUINV_ENABLE_PNG_SUPPORT})
     target_sources(unit_tests PRIVATE ${LIB_DIR}/FileOperation/png_file.cpp)
     if(${PENGUINV_USE_EXTERNAL_PNG})
-        message(STATUS "PNG include directories: ${PNG_INCLUDE_DIR}")
-        message(STATUS "PNG Libraries: ${PNG_STATIC_LIBRARIES}")
         target_include_directories(unit_tests PUBLIC $<BUILD_INTERFACE:${PNG_INCLUDE_DIR}>)
         target_link_libraries(unit_tests PRIVATE ${PNG_STATIC_LIBRARIES} ${ZLIB_STATIC_LIBRARIES})
     else()
