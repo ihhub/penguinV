@@ -46,8 +46,8 @@ namespace
     }
 
     bool findPoint( const std::vector< int > & data, const std::vector< int > & second, std::vector< double > & edge,
-                    size_t leftSideOffset, size_t rightSideOffset, int minimumContrast, bool checkContrast,
-                    uint32_t leftSideContrastCheck, uint32_t rightSideContrastCheck, size_t position, size_t size )
+                    uint32_t leftSideOffset, uint32_t rightSideOffset, int minimumContrast, bool checkContrast,
+                    uint32_t leftSideContrastCheck, uint32_t rightSideContrastCheck, uint32_t position, uint32_t size )
     {
         const int maxIntensity = *(std::max_element( data.begin() + leftSideOffset, data.begin() + rightSideOffset + 1 ));
         const int minIntensity = *(std::min_element( data.begin() + leftSideOffset, data.begin() + rightSideOffset + 1 ));
@@ -56,11 +56,11 @@ namespace
             return false;
 
         if ( checkContrast && leftSideContrastCheck <= position && ( rightSideContrastCheck + position ) < size ) {
-            const size_t blackContrastEnd   = position;
-            const size_t whiteContrastStart = position + 1;
+            const uint32_t blackContrastEnd   = position;
+            const uint32_t whiteContrastStart = position + 1;
 
-            const size_t blackContrastStart = position - leftSideContrastCheck;
-            const size_t whiteContrastEnd   = position + rightSideContrastCheck;
+            const uint32_t blackContrastStart = position - leftSideContrastCheck;
+            const uint32_t whiteContrastEnd   = position + rightSideContrastCheck;
 
             double sumBlack = std::accumulate( data.begin() + blackContrastStart, data.begin() + blackContrastEnd + 1, 0 );
             double sumWhite = std::accumulate( data.begin() + whiteContrastStart, data.begin() + whiteContrastEnd + 1, 0 );
@@ -265,12 +265,12 @@ void EdgeDetection::removeSimilarPoints( std::vector < double > & edge ) const
 void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vector < int > & data, const std::vector < int > & first, const std::vector < int > & second,
                                    const EdgeParameter & edgeParameter ) const
 {
-    const size_t dataSize = data.size();
+    const uint32_t dataSize = static_cast<uint32_t>( data.size() ); // we know that initial size is uint32_t
     const int minimumContrast = static_cast<int>(edgeParameter.minimumContrast * edgeParameter.groupFactor);
 
     const bool checkContrast = (edgeParameter.contrastCheckLeftSideOffset > 0u) && (edgeParameter.contrastCheckRightSideOffset > 0u);
 
-    for ( size_t i = 1u; i < dataSize - 2u; i++ ) {
+    for ( uint32_t i = 1u; i < dataSize - 2u; i++ ) {
         if ( second[i] < 0 || second[i + 1] > 0 )
             continue;
 
@@ -286,10 +286,10 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         bool normalGradientleftEdgeFound  = false;
         bool minimumGradientLeftEdgeFound = false;
 
-        size_t normalLeftSide  = i;
-        size_t minimumLeftSide = i;
+        uint32_t normalLeftSide  = i;
+        uint32_t minimumLeftSide = i;
 
-        for ( size_t j = i; j > 0u ;--j ) {
+        for ( uint32_t j = i; j > 0u ;--j ) {
             if ( !normalGradientleftEdgeFound && first[j] < halfGradient ) {
                 normalLeftSide = j;
                 normalGradientleftEdgeFound = true;
@@ -312,10 +312,10 @@ void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vec
         bool normalGradientRightEdgeFound  = false;
         bool minimumGradientRightEdgeFound = false;
 
-        size_t normalRightSide  = i + 1u;
-        size_t minimumRightSide = i + 1u;
+        uint32_t normalRightSide  = i + 1u;
+        uint32_t minimumRightSide = i + 1u;
 
-        for ( size_t j = i + 1u; j < dataSize - 2u; ++j ) {
+        for ( uint32_t j = i + 1u; j < dataSize - 2u; ++j ) {
             if ( !normalGradientRightEdgeFound && first[j] < halfGradient ) {
                 normalRightSide = j;
                 normalGradientRightEdgeFound = true;
