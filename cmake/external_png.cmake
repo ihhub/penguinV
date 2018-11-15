@@ -43,6 +43,7 @@ ExternalProject_Add(png
         -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
         -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
         -DPNG_TESTS:BOOL=OFF
+        -DCMAKE_PREFIX_PATH:STRING=${PNG_INSTALL};${CMAKE_PREFIX_PATH}
     -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
 
 add_custom_target(png_create_destination_dir
