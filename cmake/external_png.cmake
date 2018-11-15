@@ -55,6 +55,6 @@ foreach(header_file ${PNG_HEADERS})
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
 endforeach()
 
-add_library(PNG_EXTERNAL STATIC IMPORTED)
+add_library(PNG_EXTERNAL UNKNOWN IMPORTED)
 set_target_properties(PNG_EXTERNAL PROPERTIES IMPORTED_LOCATION "${PNG_STATIC_LIBRARIES}")
 set_target_properties(PNG_EXTERNAL PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIR}")
