@@ -59,7 +59,7 @@ endforeach()
 
 ExternalProject_Get_Property(png install_dir)
 add_library(PNG_EXTERNAL STATIC IMPORTED GLOBAL)
-set(PNG_LIBRARY ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png16${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(PNG_LIBRARY ${PNG_STATIC_LIBRARIES})
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
 # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
 # This is quite unhelpful because those directories are only generated at build time
