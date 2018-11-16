@@ -61,10 +61,3 @@ ExternalProject_Get_Property(png install_dir)
 add_library(PNG_EXTERNAL STATIC IMPORTED)
 set(PNG_LIBRARY ${PNG_STATIC_LIBRARIES})
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
-# CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
-# This is quite unhelpful because those directories are only generated at build time
-file(MAKE_DIRECTORY ${PNG_INCLUDE_DIRS}) # Workaround
-set_target_properties(PNG_EXTERNAL PROPERTIES
-    IMPORTED_LOCATION ${PNG_LIBRARY}
-    INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIRS}"
-    INTERFACE_LINK_LIBRARIES "${PNG_LIBRARY};${ZLIB_STATIC_LIBRARIES}")
