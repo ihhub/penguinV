@@ -3,6 +3,7 @@ set(DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
 CACHE PATH "Location where external projects will be downloaded.")
 mark_as_advanced(DOWNLOAD_LOCATION)
 
+# ZLIB
 set(ZLIB_INSTALL ${CMAKE_BINARY_DIR}/zlib)
 set(ZLIB_BUILD_DIR ${CMAKE_BINARY_DIR}/zlib/build)
 set(ZLIB_LIB_DIR ${ZLIB_INSTALL}/lib)
@@ -50,10 +51,16 @@ add_custom_command(TARGET zlib_copy_headers_to_destination PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${ZLIB_INCLUDE_DIR})
 endforeach()
 ExternalProject_Get_Property(zlib install_dir)
+add_library(ZLIB_EXTERNAL STATIC IMPORTED)
 set(ZLIB_LIBRARY_RELEASE ${install_dir}/lib/zlibstatic.lib)
 set(ZLIB_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/zlibstatic.lib)
 set(ZLIB_LIBRARY_DEBUG ${install_dir}/lib/zlibstaticd.lib)
+set_target_properties(ZLIB_EXTERNAL PROPERTIES
+    IMPORTED_LOCATION_RELEASE "${ZLIB_LIBRARY_RELEASE}"
+    IMPORTED_LOCATION_RELWITHDEBINFO "${ZLIB_LIBRARY_RELWITHDEBINFO}"
+    IMPORTED_LOCATION_DEBUG "${ZLIB_LIBRARY_DEBUG}")
 
+# PNG
 set(PNG_INSTALL ${CMAKE_BINARY_DIR}/png)
 set(PNG_BUILD_DIR ${CMAKE_BINARY_DIR}/png/build)
 set(PNG_LIB_DIR ${PNG_INSTALL}/lib)
@@ -118,7 +125,7 @@ set(PNG_INCLUDE_DIRS ${install_dir}/include)
 # This is quite unhelpful because those directories are only generated at build time
 file(MAKE_DIRECTORY ${PNG_INCLUDE_DIRS}) # Workaround
 set_target_properties(PNG_EXTERNAL PROPERTIES
-    IMPORTED_LOCATION_RELEASE "${PNG_LIBRARY_RELEASE};${ZLIB_LIBRARY_RELEASE}"
-    IMPORTED_LOCATION_RELWITHDEBINFO "${PNG_LIBRARY_RELWITHDEBINFO};${ZLIB_LIBRARY_RELWITHDEBINFO}"
-    IMPORTED_LOCATION_DEBUG "${PNG_LIBRARY_DEBUG};${ZLIB_LIBRARY_DEBUG}"
+    IMPORTED_LOCATION_RELEASE "${PNG_LIBRARY_RELEASE}"
+    IMPORTED_LOCATION_RELWITHDEBINFO "${PNG_LIBRARY_RELWITHDEBINFO}"
+    IMPORTED_LOCATION_DEBUG "${PNG_LIBRARY_DEBUG}"
     INTERFACE_INCLUDE_DIRECTORIES ${PNG_INCLUDE_DIRS})

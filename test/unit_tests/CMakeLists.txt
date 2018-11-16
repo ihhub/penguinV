@@ -66,7 +66,7 @@ endif()
 
 if(${PENGUINV_USE_EXTERNAL_PNG})
     include(external_png)
-    target_link_libraries(unit_tests PRIVATE PNG_EXTERNAL)
+    target_link_libraries(unit_tests PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
 else()
     find_package(PNG REQUIRED)
     target_link_libraries(unit_tests PRIVATE PNG::PNG)
