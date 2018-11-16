@@ -65,7 +65,6 @@ if(${PENGUINV_ENABLE_PNG_SUPPORT})
 endif()
 
 if(${PENGUINV_USE_EXTERNAL_PNG})
-    include(external_zlib)
     include(external_png)
     target_link_libraries(unit_tests PRIVATE PNG_EXTERNAL)
 else()
