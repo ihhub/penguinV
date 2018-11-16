@@ -7,6 +7,9 @@ if(NOT CMAKE_MODULE_PATH)
 endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
+option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
+
 option(PENGUINV_BUILD_TEST "Build tests of penguinV" ON)
 if(${PENGUINV_BUILD_TEST} OR (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
     enable_testing()
@@ -17,8 +20,3 @@ option(PENGUINV_BUILD_EXAMPLE "Build examples of penguinV" ON)
 if(${PENGUINV_BUILD_EXAMPLE} OR (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
     add_subdirectory(examples)
 endif()
-
-option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
-option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
-add_definitions(-DPENGUINV_ENABLE_PNG_SUPPORT=${PENGUINV_ENABLE_PNG_SUPPORT})
-add_definitions(-DPENGUINV_USE_EXTERNAL_PNG=${PENGUINV_USE_EXTERNAL_PNG})
