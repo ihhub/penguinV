@@ -16,7 +16,7 @@ configuration: Release
 
 # environment variables
 environment:
-  CMAKE_OPTIONS: -DPENGUINV_ENABLE_PNG_SUPPORT=ON -DPENGUINV_USE_EXTERNAL_PNG=ON
+  CMAKE_OPTIONS: -DPENGUINV_USE_EXTERNAL_PNG=ON
 
 platform:
   - x64

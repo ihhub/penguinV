@@ -12,7 +12,7 @@ addons:
 matrix:
   include:
     - os: linux
-      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON -DPENGUINV_ENABLE_PNG_SUPPORT=ON -DPENGUINV_USE_EXTERNAL_PNG=OFF"
+      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
     - os: linux
       env: QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
@@ -29,7 +29,7 @@ matrix:
           update: true
           packages: valgrind
     - os: osx
-      env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON -DPENGUINV_ENABLE_PNG_SUPPORT=ON -DPENGUINV_USE_EXTERNAL_PNG=OFF"
+      env: QT_BASE=latest CMAKE_OPTIONS="-DPENGUINV_BUILD_QT_EXAMPLE=ON"
       before_install: source script/travis/install_qt5.sh
 
 script:
