@@ -58,7 +58,7 @@ foreach(header_file ${PNG_HEADERS})
 endforeach()
 
 ExternalProject_Get_Property(png install_dir)
-add_library(PNG_EXTERNAL STATIC IMPORTED)
+add_library(PNG_EXTERNAL UNKNOWN IMPORTED)
 set(PNG_LIBRARY ${install_dir}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}png16${CMAKE_STATIC_LIBRARY_SUFFIX})
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
 set_target_properties(PNG_EXTERNAL PROPERTIES
