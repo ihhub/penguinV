@@ -57,5 +57,14 @@ foreach(header_file ${PNG_HEADERS})
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
 endforeach()
 
-set(PNG_LIBRARY "${PNG_STATIC_LIBRARIES};${ZLIB_STATIC_LIBRARIES}")
+ExternalProject_Get_Property(png install_dir)
+add_library(PNG_EXTERNAL STATIC IMPORTED)
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
+# CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
+# This is quite unhelpful because those directories are only generated at build time
+file(MAKE_DIRECTORY ${PNG_INCLUDE_DIRS}) # Workaround
+set_target_properties(PNG_EXTERNAL PROPERTIES
+    IMPORTED_LOCATION_RELEASE "${install_dir}/lib/libpng16_static.lib"
+    IMPORTED_LOCATION_RELWITHDEBINFO "${install_dir}/lib/libpng16_static.lib"
+    IMPORTED_LOCATION_DEBUG "${install_dir}/lib/libpng16_staticd.lib"
+    INTERFACE_INCLUDE_DIRECTORIES ${PNG_INCLUDE_DIRS})
