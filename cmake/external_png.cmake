@@ -58,7 +58,7 @@ foreach(header_file ${PNG_HEADERS})
 endforeach()
 
 ExternalProject_Get_Property(png install_dir)
-add_library(PNG_EXTERNAL STATIC IMPORTED GLOBAL)
+add_library(PNG_EXTERNAL INTERFACE IMPORTED GLOBAL)
 set(PNG_LIBRARY ${PNG_STATIC_LIBRARIES})
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
 # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
