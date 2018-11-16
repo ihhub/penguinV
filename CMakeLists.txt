@@ -20,5 +20,5 @@ endif()
 
 option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
 option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
-add_definitions(-DPENGUINV_ENABLE_PNG_SUPPORT)
-add_definitions(-DPENGUINV_USE_EXTERNAL_PNG)
+add_definitions(-DPENGUINV_ENABLE_PNG_SUPPORT=${PENGUINV_ENABLE_PNG_SUPPORT})
+add_definitions(-DPENGUINV_USE_EXTERNAL_PNG=${PENGUINV_USE_EXTERNAL_PNG})
