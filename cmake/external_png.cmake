@@ -64,6 +64,5 @@ set(PNG_INCLUDE_DIRS ${install_dir}/include)
 # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
 # This is quite unhelpful because those directories are only generated at build time
 file(MAKE_DIRECTORY ${PNG_INCLUDE_DIRS}) # Workaround
-set_target_properties(PNG_EXTERNAL PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIRS}"
-    INTERFACE_LINK_LIBRARIES "${PNG_LIBRARY} ${ZLIB_STATIC_LIBRARIES}")
+set_property(TARGET PNG_EXTERNAL PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${PNG_INCLUDE_DIRS}")
+set_property(TARGET PNG_EXTERNAL PROPERTY INTERFACE_LINK_LIBRARIES "${PNG_LIBRARY};${ZLIB_STATIC_LIBRARIES}")
