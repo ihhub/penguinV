@@ -64,11 +64,10 @@ if(${PENGUINV_ENABLE_PNG_SUPPORT})
     target_sources(unit_tests PRIVATE ${LIB_DIR}/FileOperation/png_file.cpp)
 endif()
 
+include(install_png)
 if(${PENGUINV_USE_EXTERNAL_PNG})
-    include(external_png)
     target_link_libraries(unit_tests PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
 else()
-    find_package(PNG REQUIRED)
     target_link_libraries(unit_tests PRIVATE PNG::PNG)
 endif()
 
