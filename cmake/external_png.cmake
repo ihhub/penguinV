@@ -57,7 +57,5 @@ foreach(header_file ${PNG_HEADERS})
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
 endforeach()
 
-ExternalProject_Get_Property(png install_dir)
-add_library(PNG_EXTERNAL STATIC IMPORTED)
-set(PNG_LIBRARY ${PNG_STATIC_LIBRARIES})
+set(PNG_LIBRARY "${PNG_STATIC_LIBRARIES};${ZLIB_STATIC_LIBRARIES}")
 set(PNG_INCLUDE_DIRS ${install_dir}/include)
