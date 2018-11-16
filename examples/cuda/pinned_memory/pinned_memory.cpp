@@ -67,17 +67,18 @@ int main()
         measureTiming( out, in2, "Pinned    ", false );
         measureTiming( out, in1, "Non-pinned", false );
     }
-    catch( const std::exception & ex ) {
-        // uh-oh, something went wrong!
-        std::cout << "Exception '" << ex.what() << "' raised. Do your black magic to recover..." << std::endl;
+    catch( imageException & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
         // your magic code must be here to recover from bad things
-        return 0;
+        return 1;
     }
-    catch( ... ) {
-        // uh-oh, something terrible happen!
-        std::cout << "Something very terrible happen. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
-        return 0;
+    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        return 2;
+    }
+    catch( ... ) { // uh-oh, something terrible happen!
+        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        return 3;
     }
 
     return 0;
