@@ -1,3 +1,4 @@
+#pragma once
 #include "../image_buffer.h"
 
 namespace Bitmap_Operation

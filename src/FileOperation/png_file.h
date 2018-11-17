@@ -1,3 +1,4 @@
+#pragma once
 #include "../image_buffer.h"
 
 namespace Png_Operation
