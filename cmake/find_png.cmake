@@ -3,7 +3,7 @@ option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
 option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
 
 if(${PENGUINV_ENABLE_PNG_SUPPORT})
-    find_package(PNG REQUIRED)
+    find_package(PNG)
     if(NOT PNG_FOUND)
         set(PENGUINV_USE_EXTERNAL_PNG ON CACHE BOOL "")
     endif()
