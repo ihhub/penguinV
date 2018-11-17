@@ -60,7 +60,7 @@ endif()
 add_executable(unit_tests ${SRCS})
 target_link_libraries(unit_tests PRIVATE unit_tests_options unit_tests_warnings Threads::Threads)
 
-include(FindPNG)
+include(find_png)
 if(${PENGUINV_ENABLE_PNG_SUPPORT})
     target_sources(unit_tests PRIVATE ${LIB_DIR}/FileOperation/png_file.cpp)
 endif()
