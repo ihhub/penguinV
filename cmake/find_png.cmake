@@ -2,14 +2,14 @@ include(ExternalProject)
 option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
 option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
 
-if(${PENGUINV_ENABLE_PNG_SUPPORT})
+if(PENGUINV_ENABLE_PNG_SUPPORT)
     find_package(PNG)
     if(NOT PNG_FOUND)
         set(PENGUINV_USE_EXTERNAL_PNG ON CACHE BOOL "")
     endif()
 endif()
 
-if(${PENGUINV_USE_EXTERNAL_PNG})
+if(PENGUINV_USE_EXTERNAL_PNG)
     set(DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
     CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
