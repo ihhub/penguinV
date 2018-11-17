@@ -53,3 +53,5 @@
 *.ptx
 *.cubin
 *.fatbin
+*.cu.deps
+*.cu.cache
