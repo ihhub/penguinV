@@ -3,6 +3,7 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
     $(LIB_DIR)/FileOperation/bitmap.cpp \
+    $(LIB_DIR)/FileOperation/png_file.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/math_base.cpp \
     $(LIB_DIR)/penguinv/penguinv.cpp \
@@ -33,7 +34,7 @@ TARGET := unit_tests
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-LIBS := -pthread
+LIBS := -pthread -lpng
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)

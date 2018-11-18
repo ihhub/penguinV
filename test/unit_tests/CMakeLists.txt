@@ -1,6 +1,7 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/FileOperation/bitmap.cpp
+    ${LIB_DIR}/FileOperation/png_file.cpp
     ${LIB_DIR}/math/hough_transform.cpp
     ${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
@@ -60,9 +61,22 @@ else()
 endif()
 
 add_executable(unit_tests ${SRCS})
-target_link_libraries(unit_tests
-                      PRIVATE unit_tests_options
-                              unit_tests_warnings
-                              Threads::Threads)
+target_link_libraries(unit_tests PRIVATE unit_tests_options unit_tests_warnings Threads::Threads)
+
+include(find_png)
+if(${PENGUINV_ENABLE_PNG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_PNG})
+        target_link_libraries(unit_tests PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
+    else()
+        target_link_libraries(unit_tests PRIVATE PNG::PNG)
+    endif()
+else()
+    target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_PNG_SUPPORT)
+endif()
+
+if (WIN32)
+    # Quiet warnings related to fopen on MSVC
+    target_compile_definitions(unit_tests PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
 
 add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})

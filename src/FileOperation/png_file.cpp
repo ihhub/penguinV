@@ -1,10 +1,36 @@
-#include <stdlib.h>
+#ifdef PENGUINV_DISABLE_PNG_SUPPORT
 
-#ifdef _WIN32
+#include "png_file.h"
+#include "../image_exception.h"
+
+namespace Png_Operation
+{
+    PenguinV_Image::Image Load( const std::string & )
+    {
+        throw imageException( "PNG is not supported" );
+        return PenguinV_Image::Image(); // to do not make compilation warning
+    }
+
+    void Load( const std::string &, PenguinV_Image::Image & )
+    {
+        throw imageException( "PNG is not supported" );
+    }
+
+    void Save( const std::string &, const PenguinV_Image::Image & )
+    {
+        throw imageException( "PNG is not supported" );
+    }
+
+    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    {
+        throw imageException( "PNG is not supported" );
+    }
+}
 
 #else
-    #include <png.h>
-#endif
+
+#include <stdlib.h>
+#include <png.h>
 
 #include "png_file.h"
 #include "../image_exception.h"
@@ -171,3 +197,5 @@ namespace Png_Operation
         png_destroy_write_struct( &png, &info );
     }
 }
+
+#endif
