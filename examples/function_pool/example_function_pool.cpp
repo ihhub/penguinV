@@ -135,7 +135,7 @@ void basic( const std::vector < PenguinV_Image::Image > & frame )
 void multithreaded( const std::vector < PenguinV_Image::Image > & frame )
 {
     // okay we setup 4 thread in global thread pool
-    Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
+    ThreadPoolMonoid::instance().resize( 4 );
 
     // Prepare image map
     PenguinV_Image::Image map( frame.front().width(), frame.front().height() );
@@ -162,5 +162,5 @@ void multithreaded( const std::vector < PenguinV_Image::Image > & frame )
     // here we have to save the image map but don't do this in the example
 
     // We stop all threads in thread pool
-    Thread_Pool::ThreadPoolMonoid::instance().stop();
+    ThreadPoolMonoid::instance().stop();
 }
