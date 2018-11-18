@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(penguinV CXX CUDA)
+project(penguinV)
 include(CTest)
 
 if(NOT CMAKE_MODULE_PATH)
@@ -7,16 +7,11 @@ if(NOT CMAKE_MODULE_PATH)
 endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-if(MSVC AND NOT CMAKE_VERSION VERSION_LESS "3.8.0")
-  enable_language(CUDA)
-elseif(MSVC)
-  find_package(CUDA REQUIRED)
-endif()
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 find_package(OpenCL)
 find_package(Qt5Widgets)
+find_package(CUDA)
 
 option(PENGUINV_BUILD_TEST "Build tests of penguinV" ON)
 if(${PENGUINV_BUILD_TEST} OR (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
