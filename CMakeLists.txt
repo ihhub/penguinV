@@ -7,6 +7,12 @@ if(NOT CMAKE_MODULE_PATH)
 endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+if(MSVC AND NOT CMAKE_VERSION VERSION_LESS "3.8.0")
+  enable_language(CUDA)
+elseif(MSVC)
+  find_package(CUDA REQUIRED)
+endif()
+
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 find_package(OpenCL)
