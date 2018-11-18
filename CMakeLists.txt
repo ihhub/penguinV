@@ -1,13 +1,11 @@
 cmake_minimum_required(VERSION 3.8)
-project(penguinV)
+project(penguinV CXX CUDA)
 include(CTest)
 
 if(NOT CMAKE_MODULE_PATH)
     set(CMAKE_MODULE_PATH)
 endif()
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
-enable_language(CUDA)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
