@@ -17,9 +17,6 @@ set(SRCS
     performance_test_helper.cpp
     performance_test_image_function.cpp)
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
 # Link this 'library' to set the c++ standard / compile-time options requested
 add_library(performance_tests_options INTERFACE)
 target_compile_features(performance_tests_options INTERFACE cxx_std_11)
