@@ -11,4 +11,4 @@ set_target_properties(cuda_example_image_function
 target_include_directories(cuda_example_image_function
     PRIVATE ${CUDA_INCLUDE_DIRS})
 target_link_libraries(cuda_example_image_function
-    PRIVATE example_features_options example_features_warnings)
+    PRIVATE example_features_options example_features_warnings ${CUDA_LIBRARIES})
