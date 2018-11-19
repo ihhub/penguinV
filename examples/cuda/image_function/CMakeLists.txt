@@ -1,5 +1,8 @@
 add_executable(cuda_example_image_function
     ${CMAKE_CURRENT_LIST_DIR}/example_image_function.cpp
+    ${LIB_DIR}/src/image_function.cpp
+    ${LIB_DIR}/src/image_function_helper.cpp
+    ${LIB_DIR}/src/FileOperation/bitmap.cpp
     ${LIB_DIR}/cuda/image_function_cuda.cu
     ${LIB_DIR}/cuda/cuda_device.cu
     ${LIB_DIR}/cuda/cuda_helper.cu)
