@@ -1,8 +1,8 @@
-# How to compile
-- QT
+# How to compile    
+- QT    
 Open example_qimage_display.pro file in this directory inside QT Framework (Creator) and configure the project. Open qt-logo.bmp image within compiled application.
 
-- CMake
+- CMake    
 To build this example, you will need a fairly new toolchain with a compiler supporting at least
 `C++11`, `Qt 5.9` and `CMake >= 3.8`.
 From the project root directory, execute the following commands:
