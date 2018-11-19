@@ -103,13 +103,9 @@ int main( int argc, char **argv )
         // your magic code must be here to recover from bad things
         return 1;
     }
-    catch( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
-        return 2;
-    }
     catch( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Closing the application..." << std::endl;
-        return 3;
+        return 2;
     }
 
     return 0;
