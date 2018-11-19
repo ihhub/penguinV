@@ -5,15 +5,7 @@ add_executable(cuda_example_image_function
     ${LIB_DIR}/FileOperation/bitmap.cpp
     ${LIB_DIR}/cuda/image_function_cuda.cu
     ${LIB_DIR}/cuda/cuda_device.cu
-    ${LIB_DIR}/cuda/cuda_helper.cu
-    ${LIB_DIR}/cuda/image_buffer_cuda.cuh
-    ${LIB_DIR}/cuda/image_function_cuda.cuh
-    ${LIB_DIR}/cuda/cuda_device.cuh
-    ${LIB_DIR}/cuda/cuda_helper.cuh
-    ${LIB_DIR}/cuda/cuda_memory.cuh
-    ${LIB_DIR}/cuda/cuda_types.cuh)
-set_target_properties(cuda_example_image_function
-    PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+    ${LIB_DIR}/cuda/cuda_helper.cu)
 target_include_directories(cuda_example_image_function
     PRIVATE ${CUDA_INCLUDE_DIRS})
 target_link_libraries(cuda_example_image_function
