@@ -4,7 +4,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Turn on automatic invocation of the MOC
 set(CMAKE_AUTOMOC ON)
 
-set(TARGET_NAME qimage_display)
+set(TARGET_NAME example_qimage_display)
 set(SRCS
     ${LIB_DIR}/blob_detection.cpp
     ${LIB_DIR}/image_function.cpp
