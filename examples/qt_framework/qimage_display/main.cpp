@@ -91,6 +91,8 @@ int main( int argc, char *argv[] )
         std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
     }
+
+    return 0;
 }
 
 void showImage( QLabel & window, QImage & image )
