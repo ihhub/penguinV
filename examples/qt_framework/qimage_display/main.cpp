@@ -83,17 +83,14 @@ int main( int argc, char *argv[] )
 
         return app.exec();
     }
-    catch( imageException & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from bad things
+    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
         return 1;
     }
     catch( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
     }
-
-    return 0;
 }
 
 void showImage( QLabel & window, QImage & image )
