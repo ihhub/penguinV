@@ -24,24 +24,13 @@ int main()
 
         example2();
     }
-    catch( imageException & ex ) {
-        // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from bad things
-        return 0;
+    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        return 1;
     }
-    catch( const std::exception & ex ) {
-        // uh-oh, something terrible happen!
-        // it might be that you compiled code in linux without threading parameters
-        std::cout << "Something terrible happen (" << ex.what() << "). Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
-        return 0;
-    }
-    catch( ... ) {
-        // uh-oh, something really terrible happen!
-        std::cout << "Something really terrible happen. No idea what it is. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
-        return 0;
+    catch( ... ) { // uh-oh, something terrible happen!
+        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        return 2;
     }
 
     return 0;
