@@ -6,5 +6,7 @@ add_executable(example_opencl_image_function
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/FileOperation/bitmap.cpp
     ${LIB_DIR}/opencl/image_function_opencl.cpp)
+target_compile_definitions(example_opencl_image_function
+    PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_link_libraries(example_opencl_image_function
     PRIVATE example_features_options example_features_warnings OpenCL::OpenCL)
