@@ -36,8 +36,6 @@ int main()
 
     std::cout << "Application ended correctly." << std::endl;
     return 0;
-
-    return 0;
 }
 
 void example1()
