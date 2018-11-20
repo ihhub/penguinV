@@ -10,4 +10,3 @@ target_compile_definitions(example_opencl_image_function
     PRIVATE _CRT_SECURE_NO_WARNINGS)
 target_link_libraries(example_opencl_image_function
     PRIVATE example_features_options example_features_warnings OpenCL::OpenCL)
-    
