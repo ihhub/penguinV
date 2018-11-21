@@ -28,12 +28,8 @@ set(SRCS
     unit_test_image_function.cpp
     unit_test_math.cpp)
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
-    find_package(OpenCL QUIET)
     if(OpenCL_FOUND)
         add_subdirectory(opencl)
     endif(OpenCL_FOUND)
