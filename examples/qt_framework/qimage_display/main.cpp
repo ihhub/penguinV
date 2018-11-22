@@ -35,7 +35,7 @@ int main( int argc, char *argv[] )
         // Because our logo is green-white so we extract red channel to make green areas be as black on gray-scale image
         PenguinV_Image::Image red = Image_Function::ExtractChannel( original, 0 );
 
-        // Convert image into QImage format
+        // Display image in separate window
         UiWindowQt window2( red );
         window2.show();
 
@@ -44,7 +44,7 @@ int main( int argc, char *argv[] )
         // But we made this just to show how it works
         PenguinV_Image::Image thresholded = Image_Function::Threshold( red, Image_Function::GetThreshold( Image_Function::Histogram( red ) ) );
 
-        // Convert image into QImage format
+        // Display image in separate window
         UiWindowQt window3( thresholded );
         window3.show();
 
@@ -62,7 +62,7 @@ int main( int argc, char *argv[] )
         for( std::vector <Blob_Detection::BlobInfo>::const_iterator blob = detection().begin() + 1; blob != detection().end(); ++blob )
             Image_Function::SetPixel( output, blob->edgeX(), blob->edgeY(), 255 );
 
-        // Convert image into QImage format
+        // Display image in separate window
         UiWindowQt window4( output );
         window4.show();
 
