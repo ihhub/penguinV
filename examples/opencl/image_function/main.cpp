@@ -35,21 +35,16 @@ int main()
         // GPU code
         gpuBased();
     }
-    catch( const std::exception & ex ) {
-        // uh-oh, something went wrong!
-        std::cout << "Exception '" << ex.what() << "' raised. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from bad things
+    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
         return 1;
     }
-    catch( ... ) {
-        // uh-oh, something terrible happen!
-        std::cout << "Something very terrible happen. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
+    catch( ... ) { // uh-oh, something terrible happen!
+        std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
     }
 
-    std::cout << "Everything went fine." << std::endl;
-
+    std::cout << "Application ended correctly." << std::endl;
     return 0;
 }
 

@@ -13,3 +13,14 @@ In this directory you need to type/paste this text in terminal:
 	```bash
 	make ./example_thread_pool
 	```
+
+- CMake    
+To build this example, you will need a fairly new toolchain with a compiler supporting at least
+`C++11` and `CMake >= 3.8`.
+From the project root directory, execute the following commands:
+```
+mkdir build
+cd build
+cmake ..
+cmake --build ./examples/thread_pool --config Release
+```

@@ -4,12 +4,14 @@ LIB_DIR := $(PWD)/../../src
 SRCS :=  \
     $(LIB_DIR)/FileOperation/bitmap.cpp \
     $(LIB_DIR)/FileOperation/jpeg_file.cpp \
+    $(LIB_DIR)/FileOperation/png_file.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/math_base.cpp \
     $(LIB_DIR)/penguinv/penguinv.cpp \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fft.c \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fftnd.c \
     $(LIB_DIR)/blob_detection.cpp \
+	  $(LIB_DIR)/edge_detection.cpp \
     $(LIB_DIR)/filtering.cpp \
     $(LIB_DIR)/fft.cpp \
     $(LIB_DIR)/function_pool.cpp \
@@ -21,6 +23,7 @@ SRCS :=  \
     unit_tests.cpp \
     unit_test_bitmap.cpp \
     unit_test_blob_detection.cpp \
+    unit_test_edge_detection.cpp \
     unit_test_fft.cpp \
     unit_test_framework.cpp \
     unit_test_helper.cpp \
@@ -33,7 +36,7 @@ TARGET := unit_tests
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-LIBS := -pthread -ljpeg
+LIBS := -pthread -ljpeg -lpng
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)

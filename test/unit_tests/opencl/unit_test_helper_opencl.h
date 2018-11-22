@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
-#include "../../../src/opencl/image_buffer_opencl.h"
+#include "../../../src/image_buffer.h"
 
 // A bunch of functions to help writing unit tests
 namespace Unit_Test

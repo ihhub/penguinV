@@ -1,7 +1,6 @@
 #include <map>
 #include <memory>
 
-#include "../../../src/image_buffer.h"
 #include "../../../src/image_exception.h"
 #include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/image_buffer_opencl.h"

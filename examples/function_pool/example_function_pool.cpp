@@ -73,28 +73,16 @@ int main()
 
         std::cout << "Total time is " << getElapsedTime( startTime ) << " seconds" << std::endl;
     }
-    catch( const imageException & ex ) {
-        // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from bad things
+    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
         return 1;
     }
-    catch( const std::exception & ex ) {
-        // uh-oh, something terrible happen!
-        // it might be that you compiled code in linux without threading parameters
-        std::cout << "Something terrible happen (" << ex.what() << "). Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
+    catch( ... ) { // uh-oh, something terrible happen!
+        std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
     }
-    catch( ... ) {
-        // uh-oh, something really terrible happen!
-        std::cout << "Something really terrible happen. No idea what it is. Do your black magic to recover..." << std::endl;
-        // your magic code must be here to recover from terrible things
-        return 3;
-    }
 
-    std::cout << "Everything went fine." << std::endl;
-
+    std::cout << "Application ended correctly." << std::endl;
     return 0;
 }
 
@@ -135,7 +123,7 @@ void basic( const std::vector < PenguinV_Image::Image > & frame )
 void multithreaded( const std::vector < PenguinV_Image::Image > & frame )
 {
     // okay we setup 4 thread in global thread pool
-    Thread_Pool::ThreadPoolMonoid::instance().resize( 4 );
+    ThreadPoolMonoid::instance().resize( 4 );
 
     // Prepare image map
     PenguinV_Image::Image map( frame.front().width(), frame.front().height() );
@@ -162,5 +150,5 @@ void multithreaded( const std::vector < PenguinV_Image::Image > & frame )
     // here we have to save the image map but don't do this in the example
 
     // We stop all threads in thread pool
-    Thread_Pool::ThreadPoolMonoid::instance().stop();
+    ThreadPoolMonoid::instance().stop();
 }

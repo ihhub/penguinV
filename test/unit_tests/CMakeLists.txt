@@ -2,12 +2,14 @@ set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/FileOperation/bitmap.cpp
     ${LIB_DIR}/FileOperation/jpeg_file.cpp
+    ${LIB_DIR}/FileOperation/png_file.cpp
     ${LIB_DIR}/math/hough_transform.cpp
     ${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
     ${LIB_DIR}/thirdparty/kissfft/kiss_fft.c
     ${LIB_DIR}/thirdparty/kissfft/kiss_fftnd.c
     ${LIB_DIR}/blob_detection.cpp
+    ${LIB_DIR}/edge_detection.cpp
     ${LIB_DIR}/filtering.cpp
     ${LIB_DIR}/fft.cpp
     ${LIB_DIR}/function_pool.cpp
@@ -19,6 +21,7 @@ set(SRCS
     unit_tests.cpp
     unit_test_bitmap.cpp
     unit_test_blob_detection.cpp
+    unit_test_edge_detection.cpp
     unit_test_fft.cpp
     unit_test_framework.cpp
     unit_test_helper.cpp
@@ -52,7 +55,6 @@ endif(NOT JPEG_FOUND)
 
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
-    find_package(OpenCL QUIET)
     if(OpenCL_FOUND)
         add_subdirectory(opencl)
     endif(OpenCL_FOUND)
@@ -80,10 +82,22 @@ else()
 endif()
 
 add_executable(unit_tests ${SRCS})
-target_link_libraries(unit_tests
-                      PRIVATE unit_tests_options
-                              unit_tests_warnings
-                              Threads::Threads
-                              ${JPEG_LIBRARIES})
+target_link_libraries(unit_tests PRIVATE unit_tests_options unit_tests_warnings Threads::Threads ${JPEG_LIBRARIES})
+
+include(find_png)
+if(${PENGUINV_ENABLE_PNG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_PNG})
+        target_link_libraries(unit_tests PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
+    else()
+        target_link_libraries(unit_tests PRIVATE PNG::PNG)
+    endif()
+else()
+    target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_PNG_SUPPORT)
+endif()
+
+if (WIN32)
+    # Quiet warnings related to fopen on MSVC
+    target_compile_definitions(unit_tests PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
 
 add_test(NAME unit_test COMMAND unit_tests $ENV{PENGUINV_UNIT_TEST_RUN_COUNT})
