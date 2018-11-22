@@ -28,9 +28,9 @@ void UiWindowQt::drawPoint( const Point2d & point )
     QPainter paint(&_pixmap);
     paint.setPen( QColor(20, 255, 20, 255) );
     paint.drawPoint( static_cast<int>( point.x ), static_cast<int>( point.y ) );
-    
+
     _window.setPixmap( _pixmap );
-	draw();
+    draw();
 }
 
 void UiWindowQt::drawLine( const Point2d & start, const Point2d & end )
@@ -38,7 +38,7 @@ void UiWindowQt::drawLine( const Point2d & start, const Point2d & end )
     QPainter paint(&_pixmap);
     paint.setPen( QColor(20, 255, 20, 255) );
     paint.drawLine( static_cast<int>( start.x ), static_cast<int>( start.y ), static_cast<int>( end.x ), static_cast<int>( end.y ) );
-    
+
     _window.setPixmap( _pixmap );
-	draw();
+    draw();
 }
