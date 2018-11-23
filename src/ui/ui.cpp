@@ -22,12 +22,12 @@ void UiWindow::setImage( const PenguinV_Image::Image & image )
     draw();
 }
 
-void UiWindow::drawPoint( const Point2d & )
+void UiWindow::drawPoint( const Point2d &, const PaintColor & )
 {
     draw();
 }
 
-void UiWindow::drawLine( const Point2d &, const Point2d & )
+void UiWindow::drawLine( const Point2d &, const Point2d &, const PaintColor & )
 {
     draw();
 }

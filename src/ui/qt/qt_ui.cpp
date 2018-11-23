@@ -23,20 +23,20 @@ void UiWindowQt::draw()
     _window.show();
 }
 
-void UiWindowQt::drawPoint( const Point2d & point )
+void UiWindowQt::drawPoint( const Point2d & point, const PaintColor & color )
 {
     QPainter paint(&_pixmap);
-    paint.setPen( QColor(20, 255, 20, 255) );
+    paint.setPen( QColor(color.red, color.green, color.blue, color.alpha) );
     paint.drawPoint( static_cast<int>( point.x ), static_cast<int>( point.y ) );
 
     _window.setPixmap( _pixmap );
     draw();
 }
 
-void UiWindowQt::drawLine( const Point2d & start, const Point2d & end )
+void UiWindowQt::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
     QPainter paint(&_pixmap);
-    paint.setPen( QColor(20, 255, 20, 255) );
+    paint.setPen( QColor(color.red, color.green, color.blue, color.alpha) );
     paint.drawLine( static_cast<int>( start.x ), static_cast<int>( start.y ), static_cast<int>( end.x ), static_cast<int>( end.y ) );
 
     _window.setPixmap( _pixmap );
