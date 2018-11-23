@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "../image_buffer.h"
 #include "../math/math_base.h"
 
