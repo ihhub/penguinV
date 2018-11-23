@@ -1,8 +1,9 @@
 #include "ui.h"
 
-UiWindow::UiWindow( const PenguinV_Image::Image & image)
+UiWindow::UiWindow( const PenguinV_Image::Image & image, const std::string & title )
     : _image( image )
-    , _shown( false)
+    , _title( title )
+    , _shown( false )
 {
 }
 
@@ -13,25 +14,25 @@ UiWindow::~UiWindow()
 void UiWindow::show()
 {
     _shown = true;
-    draw();
+    _display();
 }
 
 void UiWindow::setImage( const PenguinV_Image::Image & image )
 {
     _image = image;
-    draw();
+    _display();
 }
 
 void UiWindow::drawPoint( const Point2d &, const PaintColor & )
 {
-    draw();
+    _display();
 }
 
 void UiWindow::drawLine( const Point2d &, const Point2d &, const PaintColor & )
 {
-    draw();
+    _display();
 }
 
-void UiWindow::draw()
+void UiWindow::_display()
 {
 }
