@@ -16,9 +16,12 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+SOURCES += main.cpp \
+           ../../../src/FileOperation/bitmap.cpp \
+           ../../../src/image_function.cpp \
+           ../../../src/image_function_helper.cpp \
+           ../../../src/blob_detection.cpp \
+           ../../../src/ui/ui.cpp \
+           ../../../src/ui/qt/qt_ui.cpp
 
-SOURCES += main.cpp
-SOURCES += ../../../src/FileOperation/bitmap.cpp
-SOURCES += ../../../src/image_function.cpp
-SOURCES += ../../../src/image_function_helper.cpp
-SOURCES += ../../../src/blob_detection.cpp
+HEADERS += ../../../src/ui/qt/qt_ui.h

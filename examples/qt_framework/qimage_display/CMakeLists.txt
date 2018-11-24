@@ -10,7 +10,9 @@ set(SRCS
     ${LIB_DIR}/image_function.cpp
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/math/math_base.cpp
-    ${LIB_DIR}/FileOperation/bitmap.cpp)
+    ${LIB_DIR}/FileOperation/bitmap.cpp
+    ${LIB_DIR}/ui/ui.cpp
+    ${LIB_DIR}/ui/qt/qt_ui.cpp)
 
 add_executable(${TARGET_NAME} main.cpp ${SRCS})
 target_link_libraries(${TARGET_NAME} example_features_options example_features_warnings Qt5::Widgets)
