@@ -1,6 +1,7 @@
 #include "qt_ui.h"
 #include <QImage>
 #include <QPainter>
+#include <QString>
 
 UiWindowQt::UiWindowQt( const PenguinV_Image::Image & image, const std::string & title )
     : UiWindow( image, title )
@@ -9,6 +10,7 @@ UiWindowQt::UiWindowQt( const PenguinV_Image::Image & image, const std::string &
                           static_cast<int>( _image.rowSize() ), (_image.colorCount() == 1u) ? QImage::Format_Grayscale8 : QImage::Format_RGB888 );
     _pixmap = QPixmap::fromImage( imageQt );
     _window.setPixmap( _pixmap );
+    _window.window()->setWindowTitle( QString::fromStdString( _title ) );
 }
 
 UiWindowQt::~UiWindowQt()
