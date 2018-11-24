@@ -25,7 +25,7 @@ public:
     explicit UiWindow( const PenguinV_Image::Image & image = PenguinV_Image::Image(), const std::string & title = std::string() );
     virtual ~UiWindow();
     void show(); // show window at the screen
-    void setImage( const PenguinV_Image::Image & image ); // replaces existing shown image by new image
+    virtual void setImage( const PenguinV_Image::Image & image ); // replaces existing shown image by new image
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
 protected:
