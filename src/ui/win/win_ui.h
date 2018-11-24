@@ -3,6 +3,7 @@
 #ifdef _WIN32 // Windows
 
 #include <windows.h>
+#include <vector>
 #include "../ui.h"
 
 namespace WindowsUi
