@@ -5,48 +5,22 @@
 namespace FFT
 {
     ComplexData::ComplexData()
-        : _data  ( NULL )
-        , _width ( 0 )
-        , _height( 0 )
     {
     }
 
     ComplexData::ComplexData( const PenguinV_Image::Image & image )
-        : _data  ( NULL )
-        , _width ( 0 )
-        , _height( 0 )
     {
         set( image );
     }
 
-    ComplexData::ComplexData( const ComplexData & data )
-        : _data  ( NULL )
-        , _width ( 0 )
-        , _height( 0 )
+    ComplexData::ComplexData( const BaseComplexData<kiss_fft_cpx> & data )
     {
         _copy( data );
     }
 
     ComplexData::ComplexData( ComplexData && data )
-        : _data  ( NULL )
-        , _width ( 0 )
-        , _height( 0 )
     {
         _swap( data );
-    }
-
-    ComplexData & ComplexData::operator=( const ComplexData & data )
-    {
-        _copy( data );
-
-        return *this;
-    }
-
-    ComplexData & ComplexData::operator=( ComplexData && data )
-    {
-        _swap( data );
-
-        return *this;
     }
 
     ComplexData::~ComplexData()
@@ -63,7 +37,7 @@ namespace FFT
 
         const uint32_t size = image.width() * image.height();
 
-        _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size * sizeof(kiss_fft_cpx) ) );
+        _allocateData(size * sizeof(kiss_fft_cpx)); 
 
         _width  = image.width();
         _height = image.height();
@@ -126,86 +100,31 @@ namespace FFT
         return image;
     }
 
-    void ComplexData::resize( uint32_t width_, uint32_t height_ )
+    void ComplexData::_allocateData(size_t nBytes) 
     {
-        if( ( width_ != _width || height_ != _height ) && width_ != 0 && height_ != 0 ) {
-            _clean();
-
-            const uint32_t size = width_ * height_;
-
-            _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size * sizeof(kiss_fft_cpx) ) );
-
-            _width  = width_;
-            _height = height_;
-        }
+         _data = reinterpret_cast<kiss_fft_cpx *>( malloc( nBytes ) );
     }
 
-    kiss_fft_cpx * ComplexData::data()
+    void ComplexData::_freeData()
     {
-        return _data;
+        kiss_fft_free( _data );
     }
 
-    const kiss_fft_cpx * ComplexData::data() const
+    void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data) 
     {
-        return _data;
-    }
-
-    uint32_t ComplexData::width() const
-    {
-        return _width;
-    }
-
-    uint32_t ComplexData::height() const
-    {
-        return _height;
-    }
-
-    bool ComplexData::empty() const
-    {
-        return _data == NULL;
-    }
-
-    void ComplexData::_clean()
-    {
-        if( _data != NULL ) {
-            kiss_fft_free( _data );
-            _data = NULL;
-        }
-
-        _width  = 0;
-        _height = 0;
-    }
-
-    void ComplexData::_copy( const ComplexData & data )
-    {
-        _clean();
-
-        resize( data._width, data._height );
-
-        if( !empty() )
-            memcpy( _data, data._data, _width * _height * sizeof(kiss_fft_cpx) );
-    }
-
-    void ComplexData::_swap( ComplexData & data )
-    {
-        std::swap( _data  , data._data );
-        std::swap( _width , data._width );
-        std::swap( _height, data._height );
+        memcpy( _data, data.data(), _width * _height * sizeof(kiss_fft_cpx) );
     }
 
     FFTExecutor::FFTExecutor()
         : _planDirect  ( 0 )
         , _planInverse ( 0 )
-        , _width       ( 0 )
-        , _height      ( 0 )
     {
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
-        : _planDirect  ( 0 )
+        : BaseFFTExecutor(width_, height_)
+        , _planDirect  ( 0 )
         , _planInverse ( 0 )
-        , _width       ( 0 )
-        , _height      ( 0 )
     {
         initialize( width_, height_ );
     }
@@ -215,62 +134,44 @@ namespace FFT
         _clean();
     }
 
-    void FFTExecutor::initialize( uint32_t width_, uint32_t height_ )
+    bool FFTExecutor::dimensionsMatch( const ComplexData & data) const 
     {
-        if( width_ == 0 || height_ == 0 )
-            throw imageException( "Invalid parameters for FFTExecutor" );
-
-        _clean();
-
-        const int dims[2] = { static_cast<int>(width_), static_cast<int>(height_) };
-        _planDirect  = kiss_fftnd_alloc(dims, 2, false, 0, 0);
-        _planInverse = kiss_fftnd_alloc(dims, 2, true , 0, 0);
-
-        _width  = width_;
-        _height = height_;
+        return dimensionsMatch(data.width(), data.height() );
     }
 
-    uint32_t FFTExecutor::width() const
+    void FFTExecutor::directTransform( ComplexData & data)
     {
-        return _width;
-    }
-
-    uint32_t FFTExecutor::height() const
-    {
-        return _height;
-    }
-
-    void FFTExecutor::directTransform( ComplexData & data )
-    {
-        directTransform( data, data );
+        directTransform(data, data);
     }
 
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planDirect == 0 || _width != in.width() || _height != in.height() || _width != out.width() || _height != out.height() )
-            throw imageException( "Invalid parameters for FFTExecutor" );
+        if( _planDirect == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+        //if( _planDirect == 0 || static_cast<Rectangle>(*this) != in || static_cast<Rectangle>(*this) != out)
+            throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
     }
 
-    void FFTExecutor::inverseTransform( ComplexData & data )
+    void FFTExecutor::inverseTransform( ComplexData & data) 
     {
-        inverseTransform( data, data );
+        inverseTransform(data, data);
     }
 
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planInverse == 0 || _width != in.width() || _height != in.height() || _width != out.width() || _height != out.height() )
-            throw imageException( "Invalid parameters for FFTExecutor" );
+        //if( _planInverse == 0 || static_cast<Rectangle>(*this) != in || static_cast<Rectangle>(*this) != out )
+        if( _planInverse == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+            throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
         kiss_fftnd( _planInverse, in.data(), out.data() );
     }
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
-        if( in1.width() != in2.width() || in1.height() != in2.height() || in1.width() != out.width() || in1.height() != out.height() ||
-            in1.width() == 0 || in1.height() == 0 )
-            throw imageException( "Invalid parameters for FFTExecutor" );
+        //if ( static_cast<Rectangle>(in1) != in2 || static_cast<Rectangle>(in1) != out || static_cast<Rectangle>(in1).empty())
+        if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0)
+            throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
         // in1 = A + iB
         // in2 = C + iD
@@ -289,7 +190,14 @@ namespace FFT
         }
     }
 
-    void FFTExecutor::_clean()
+    void FFTExecutor::_makePlans(const uint32_t width_, const uint32_t height_) 
+    {
+        const int dims[2] = { static_cast<int>(width_), static_cast<int>(height_) };
+        _planDirect  = kiss_fftnd_alloc(dims, 2, false, 0, 0);
+        _planInverse = kiss_fftnd_alloc(dims, 2, true , 0, 0);
+    }
+
+    void FFTExecutor::_cleanPlans()
     {
         if( _planDirect != 0 ) {
             kiss_fft_free( _planDirect );
@@ -303,7 +211,5 @@ namespace FFT
             _planInverse = 0;
         }
 
-        _width  = 0;
-        _height = 0;
     }
 }
