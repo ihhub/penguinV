@@ -10,6 +10,7 @@ set(SRCS
     ${LIB_DIR}/blob_detection.cpp
     ${LIB_DIR}/edge_detection.cpp
     ${LIB_DIR}/filtering.cpp
+    ${LIB_DIR}/math/fft_base.cpp
     ${LIB_DIR}/fft.cpp
     ${LIB_DIR}/function_pool.cpp
     ${LIB_DIR}/function_pool_task.cpp
