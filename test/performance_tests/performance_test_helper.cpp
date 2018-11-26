@@ -28,19 +28,19 @@ namespace
 
             bool removed = false;
 
-            const size_t sizeLimit = data.size() * 3 / 4;
+            const size_t sizeLimit = data.size() * 3 / 4; // remove maximum 25% of values
 
             do {
-                // The function removes 'biggest' element from an array in case
-                // if a difference between a value and mean is more than 6 sigma
-                mean  = sum / data.size();
-                sigma = sqrt( (sumSquare / (data.size()) - mean * mean) * (data.size()) / (data.size() - 1) );
+                // The loop removes 'biggest' element from an array in case if a difference between the value and mean is more than 6 sigma
+                const uint32_t size = static_cast<uint32_t>( data.size() ); // reasonable as amount of input data cannot be so huge
+                mean  = sum / size;
+                sigma = sqrt( (sumSquare / size - mean * mean) * size / (size - 1) );
 
                 double maximumValue = 0;
                 std::vector < double >::iterator maximumPosition = data.begin();
 
                 for( std::vector < double >::iterator v = data.begin(); v != data.end(); ++v ) {
-                    double value = fabs( (*v) - mean );
+                    const double value = fabs( (*v) - mean );
 
                     if( maximumValue < value ) {
                         maximumPosition = v;
