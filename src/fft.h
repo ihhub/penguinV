@@ -60,7 +60,7 @@ namespace FFT
         kiss_fftnd_cfg _planDirect;
         kiss_fftnd_cfg _planInverse;
 
-        void _makePlans( const uint32_t width_, const uint32_t height_ ) override;
+        void _makePlans() override;
         void _cleanPlans() override;
     };
 }

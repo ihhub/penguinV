@@ -82,7 +82,7 @@ namespace FFT
 
         void _clean();
 
-        virtual void _makePlans(const uint32_t width_, const uint32_t height_) = 0;
+        virtual void _makePlans() = 0;
         virtual void _cleanPlans() = 0;
     }; 
 

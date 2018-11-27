@@ -187,9 +187,9 @@ namespace FFT
         }
     }
 
-    void FFTExecutor::_makePlans(const uint32_t width_, const uint32_t height_) 
+    void FFTExecutor::_makePlans() 
     {
-        const int dims[2] = { static_cast<int>(width_), static_cast<int>(height_) };
+        const int dims[2] = { static_cast<int>(_width), static_cast<int>(_height) };
         _planDirect  = kiss_fftnd_alloc(dims, 2, false, 0, 0);
         _planInverse = kiss_fftnd_alloc(dims, 2, true , 0, 0);
     }

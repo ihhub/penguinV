@@ -21,11 +21,9 @@ namespace FFT
             throw imageException( "Invalid parameters for FFTExecutor::intialize()" );
 
         _clean();
-
-        _makePlans(width_, height_);
-
         _width = width_;
         _height = height_;
+        _makePlans();
     }
 
     bool BaseFFTExecutor::dimensionsMatch(const BaseFFTExecutor & other) const 

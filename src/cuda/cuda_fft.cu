@@ -214,9 +214,9 @@ namespace FFT_Cuda
         }
     }
 
-    void FFTExecutor::_makePlans(const uint32_t width_, const uint32_t height_) 
+    void FFTExecutor::_makePlans() 
     {
-        if( cufftPlan2d( &_plan, width_, height_, CUFFT_C2C ) != CUFFT_SUCCESS )
+        if( cufftPlan2d( &_plan, _width, _height, CUFFT_C2C ) != CUFFT_SUCCESS )
             throw imageException( "Cannot create FFT plan on CUDA device" );
     }
 }

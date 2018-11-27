@@ -60,6 +60,6 @@ namespace FFT_Cuda
         cufftHandle _plan;
 
         void _cleanPlans() override;
-        void _makePlans(const uint32_t width_, const uint32_t height_) override;
+        void _makePlans() override;
     };
 }
