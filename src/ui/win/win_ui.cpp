@@ -143,7 +143,7 @@ UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string
     if ( !registrator.registered )
         throw imageException( "Unable to create Windows API class" );
 
-    setImage( image );
+    UiWindowWin::setImage( image );
 
     const std::wstring titleWChar = std::wstring( title.begin(), title.end() );
     _window = CreateWindowEx( 0, registrator.className.data(), titleWChar.data(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
@@ -234,14 +234,14 @@ void UiWindowWin::setImage( const PenguinV_Image::Image & image )
 
 void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )
 {
-    _point.push_back( PointToDraw( point, color ) );
+    _point.emplace_back( point, color );
 
     _display();
 }
 
 void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
-    _line.push_back( LineToDraw( start, end, color ) );
+    _line.emplace_back( start, end, color );
 
     _display();
 }
