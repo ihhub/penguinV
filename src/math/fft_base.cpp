@@ -2,7 +2,6 @@
 
 namespace FFT
 {
-
     BaseFFTExecutor::BaseFFTExecutor() 
         : _width(0)
         , _height(0)
@@ -45,5 +44,4 @@ namespace FFT
         _width = 0;
         _height = 0;
     }
-
 }

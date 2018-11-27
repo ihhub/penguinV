@@ -8,13 +8,12 @@
 
 namespace FFT_Cuda
 {
-
     // This class store complex ([Re, Im]) data in GPU memory
     // It is used for Fast Fourier Transform
     class ComplexData : public FFT::BaseComplexData<cufftComplex>
     {
     public:
-        ComplexData() {}
+        ComplexData();
         ComplexData( const PenguinV_Image::Image & image );
 
         ComplexData( const ComplexData & data );
@@ -29,11 +28,9 @@ namespace FFT_Cuda
         PenguinV_Image::Image get() const;
 
     private:
-
         void _allocateData(size_t nBytes) override;
         void _freeData() override;
         void _copyData(const BaseComplexData<cufftComplex> & data) override;
-
     };
 
     // The class for FFT commands execution like:
@@ -50,11 +47,11 @@ namespace FFT_Cuda
         using BaseFFTExecutor::dimensionsMatch;
 
         // conversion from original domain of data to frequency domain
-        void directTransform( ComplexData & data);
+        void directTransform( ComplexData & data );
         void directTransform( ComplexData & in, ComplexData & out );
 
         // conversion from frequence domain of data to original domain
-        void inverseTransform( ComplexData & data);
+        void inverseTransform( ComplexData & data );
         void inverseTransform( ComplexData & in, ComplexData & out );
 
         void complexMultiplication( const ComplexData & in1, ComplexData & in2, ComplexData & out ) const;

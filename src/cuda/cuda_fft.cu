@@ -66,6 +66,9 @@ namespace
 
 namespace FFT_Cuda
 {
+    ComplexData::ComplexData()
+    {
+    }
 
     ComplexData::ComplexData( const PenguinV_Image::Image & image )
     {
@@ -127,9 +130,9 @@ namespace FFT_Cuda
         return image;
     }
 
-    void ComplexData::_allocateData(size_t nBytes)
+    void ComplexData::_allocateData( size_t size )
     {
-          multiCuda::cudaCheck( cudaMalloc( &_data, nBytes ) );
+        multiCuda::cudaCheck( cudaMalloc( &_data, size ) );
     }
 
     void ComplexData::_freeData() 
@@ -139,9 +142,8 @@ namespace FFT_Cuda
 
     void ComplexData::_copyData( const BaseComplexData<cufftComplex> & data) 
     {
-
-            if( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data.data(), _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
-                throw imageException( "Cannot copy a memory to CUDA device" );
+        if( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data.data(), _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
+            throw imageException( "Cannot copy a memory to CUDA device" );
     }
 
     FFTExecutor::FFTExecutor()
@@ -166,9 +168,9 @@ namespace FFT_Cuda
         return FFT::BaseFFTExecutor::dimensionsMatch(data.width(), data.height());
     }
 
-    void FFTExecutor::directTransform( ComplexData & data) 
+    void FFTExecutor::directTransform( ComplexData & data )
     {
-        directTransform(data, data);
+        directTransform( data, data );
     }
 
     void FFTExecutor::directTransform( ComplexData & in, ComplexData & out )
@@ -180,9 +182,9 @@ namespace FFT_Cuda
             throw imageException( "Cannot execute direct FFT transform on CUDA device" );
     }
 
-    void FFTExecutor::inverseTransform( ComplexData & data) 
+    void FFTExecutor::inverseTransform( ComplexData & data )
     {
-        inverseTransform(data, data);
+        inverseTransform( data, data );
     }
 
     void FFTExecutor::inverseTransform( ComplexData & in, ComplexData & out )
@@ -210,7 +212,6 @@ namespace FFT_Cuda
 
             _plan = 0;
         }
-
     }
 
     void FFTExecutor::_makePlans(const uint32_t width_, const uint32_t height_) 

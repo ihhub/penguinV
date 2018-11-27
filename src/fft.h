@@ -28,11 +28,9 @@ namespace FFT
         PenguinV_Image::Image get() const;
 
     private:
-
         void _allocateData(size_t nBytes) override;
         void _freeData() override;
         void _copyData(const BaseComplexData<kiss_fft_cpx> & data) override;
-
     };
 
     // The class for FFT command execution:
@@ -49,11 +47,11 @@ namespace FFT
         using BaseFFTExecutor::dimensionsMatch;
 
         // conversion from original domain of data to frequence domain
-        void directTransform( ComplexData & data);
+        void directTransform( ComplexData & data );
         void directTransform( const ComplexData & in, ComplexData & out );
 
         // conversion from frequence domain of data to original domain
-        void inverseTransform( ComplexData & data);
+        void inverseTransform( ComplexData & data );
         void inverseTransform( const ComplexData & in, ComplexData & out );
 
         void complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const;
@@ -62,7 +60,7 @@ namespace FFT
         kiss_fftnd_cfg _planDirect;
         kiss_fftnd_cfg _planInverse;
 
-        void _makePlans(const uint32_t width_, const uint32_t height_) override;
+        void _makePlans( const uint32_t width_, const uint32_t height_ ) override;
         void _cleanPlans() override;
     };
 }

@@ -139,28 +139,26 @@ namespace FFT
         return dimensionsMatch(data.width(), data.height() );
     }
 
-    void FFTExecutor::directTransform( ComplexData & data)
+    void FFTExecutor::directTransform( ComplexData & data )
     {
-        directTransform(data, data);
+        directTransform( data, data );
     }
 
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
         if( _planDirect == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
-        //if( _planDirect == 0 || static_cast<Rectangle>(*this) != in || static_cast<Rectangle>(*this) != out)
             throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
     }
 
-    void FFTExecutor::inverseTransform( ComplexData & data) 
+    void FFTExecutor::inverseTransform( ComplexData & data )
     {
-        inverseTransform(data, data);
+        inverseTransform( data, data );
     }
 
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
-        //if( _planInverse == 0 || static_cast<Rectangle>(*this) != in || static_cast<Rectangle>(*this) != out )
         if( _planInverse == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
             throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
@@ -169,7 +167,6 @@ namespace FFT
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
-        //if ( static_cast<Rectangle>(in1) != in2 || static_cast<Rectangle>(in1) != out || static_cast<Rectangle>(in1).empty())
         if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0)
             throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
@@ -210,6 +207,5 @@ namespace FFT
 
             _planInverse = 0;
         }
-
     }
 }
