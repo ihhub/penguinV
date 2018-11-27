@@ -26,6 +26,16 @@ namespace FFT
         _makePlans();
     }
 
+    uint32_t BaseFFTExecutor::width() const
+    {
+        return _width;
+    }
+
+    uint32_t BaseFFTExecutor::height() const
+    {
+        return _height;
+    }
+
     bool BaseFFTExecutor::dimensionsMatch(const BaseFFTExecutor & other) const 
     {
         return dimensionsMatch(other.width(), other.height());

@@ -65,14 +65,8 @@ namespace FFT
 
         void initialize( uint32_t width_, uint32_t height_ ); // Calls virtual functions
 
-        uint32_t width() const
-        {
-            return _width;
-        }  
-        uint32_t height() const
-        {
-            return _height;
-        }
+        uint32_t width() const;
+        uint32_t height() const;
         bool dimensionsMatch(const BaseFFTExecutor & other) const;
         bool dimensionsMatch(uint32_t width, uint32_t height) const;
 
