@@ -37,7 +37,7 @@ namespace FFT
 
         const uint32_t size = image.width() * image.height();
 
-        _allocateData(size * sizeof(kiss_fft_cpx)); 
+        _allocateData(size * sizeof(kiss_fft_cpx));
 
         _width  = image.width();
         _height = image.height();
