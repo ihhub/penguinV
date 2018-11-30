@@ -56,7 +56,6 @@ namespace FFT
             return _data;
         }
 
-
         const DataType * data() const
         {
             return _data;
@@ -77,9 +76,9 @@ namespace FFT
             return _height;
         }
 
-        bool dimensionsMatch( const BaseComplexData<DataType> & other) const
+        bool dimensionsMatch( const BaseComplexData & other) const
         {
-            return dimensionsMatch(other.width(), other.height());
+            return dimensionsMatch( other.width(), other.height() );
         }
 
 
@@ -108,23 +107,22 @@ namespace FFT
             _height = 0;
         }
 
-        void _copy( const BaseComplexData<DataType> & data)
+        void _copy( const BaseComplexData & data)
         {
             _clean();
     
-            resize(data._width, data._height);
+            resize( data._width, data._height );
     
             if( !empty() )
                 _copyData(data);
         }
 
-        void _swap( BaseComplexData<DataType> & data )
+        void _swap( BaseComplexData & data )
         {
             std::swap( _data  , data._data );
             std::swap( _width, data._width);
             std::swap( _height, data._height); 
         }
-
     };
 
     // The base class fft execution. Sub-classes need to implement the direct and inverse
