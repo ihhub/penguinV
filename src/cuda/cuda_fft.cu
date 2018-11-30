@@ -135,12 +135,12 @@ namespace FFT_Cuda
         multiCuda::cudaCheck( cudaMalloc( &_data, size ) );
     }
 
-    void ComplexData::_freeData() 
+    void ComplexData::_freeData()
     {
         cudaFree( _data );
     }
 
-    void ComplexData::_copyData( const BaseComplexData<cufftComplex> & data) 
+    void ComplexData::_copyData( const BaseComplexData<cufftComplex> & data )
     {
         if( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data.data(), _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
             throw imageException( "Cannot copy a memory to CUDA device" );
@@ -152,8 +152,8 @@ namespace FFT_Cuda
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
-        : BaseFFTExecutor(width_, height_)
-        , _plan  ( 0 )
+        : BaseFFTExecutor( width_, height_)
+        , _plan          ( 0 )
     {
         initialize( width_, height_ );
     }
@@ -175,7 +175,7 @@ namespace FFT_Cuda
 
     void FFTExecutor::directTransform( ComplexData & in, ComplexData & out )
     {
-        if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) ) 
+        if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
@@ -205,7 +205,7 @@ namespace FFT_Cuda
                         in1.data(), in2.data(), out.data(), _width, _height );
     }
 
-    void FFTExecutor::_cleanPlans() 
+    void FFTExecutor::_cleanPlans()
     {
         if( _plan != 0 ) {
             cufftDestroy( _plan );
