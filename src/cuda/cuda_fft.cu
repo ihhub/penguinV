@@ -147,13 +147,12 @@ namespace FFT_Cuda
     }
 
     FFTExecutor::FFTExecutor()
-        : _plan  ( 0 )
+        : _plan ( 0 )
     {
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
-        : BaseFFTExecutor( width_, height_)
-        , _plan          ( 0 )
+        : _plan ( 0 )
     {
         initialize( width_, height_ );
     }
