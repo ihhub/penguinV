@@ -38,8 +38,7 @@ namespace FFT
     class FFTExecutor : public BaseFFTExecutor
     {
     public:
-        FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
 
         bool dimensionsMatch( const ComplexData & data) const;
