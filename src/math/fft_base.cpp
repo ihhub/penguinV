@@ -1,4 +1,5 @@
 #include "fft_base.h"
+#include "../image_exception.h"
 
 namespace FFT
 {
