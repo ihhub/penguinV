@@ -7,6 +7,11 @@
 namespace FFT 
 {
 
+    // Function template for comparing when two objects have the same width and height.
+    // The second template parameter defaults to the first if you only provide one 
+    // template parameter. This function is meant to be used with any classes
+    // inheriting from an instance of BaseComplexData or from FFTExecutor.
+
     template <typename _type1, typename _type2 = _type1>
     bool equalSize( const _type1 & first, const _type2 & second) 
     {
