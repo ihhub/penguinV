@@ -146,11 +146,6 @@ namespace FFT_Cuda
             throw imageException( "Cannot copy a memory to CUDA device" );
     }
 
-    FFTExecutor::FFTExecutor()
-        : _plan ( 0 )
-    {
-    }
-
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
         : _plan ( 0 )
     {
