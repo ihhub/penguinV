@@ -27,9 +27,9 @@ namespace FFT
         PenguinV_Image::Image get() const;
 
     private:
-        void _allocateData(size_t nBytes) override;
+        void _allocateData( size_t size ) override;
         void _freeData() override;
-        void _copyData(const BaseComplexData<kiss_fft_cpx> & data) override;
+        void _copyData( const BaseComplexData<kiss_fft_cpx> & data ) override;
     };
 
     // The class for FFT command execution:
