@@ -100,9 +100,9 @@ namespace FFT
         return image;
     }
 
-    void ComplexData::_allocateData(size_t nBytes) 
+    void ComplexData::_allocateData(size_t size) 
     {
-         _data = reinterpret_cast<kiss_fft_cpx *>( malloc( nBytes ) );
+         _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size ) );
     }
 
     void ComplexData::_freeData()
@@ -110,7 +110,7 @@ namespace FFT
         kiss_fft_free( _data );
     }
 
-    void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data) 
+    void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data )
     {
         memcpy( _data, data.data(), _width * _height * sizeof(kiss_fft_cpx) );
     }
@@ -122,9 +122,9 @@ namespace FFT
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
-        : BaseFFTExecutor(width_, height_)
-        , _planDirect  ( 0 )
-        , _planInverse ( 0 )
+        : BaseFFTExecutor( width_, height_)
+        , _planDirect    ( 0 )
+        , _planInverse   ( 0 )
     {
         initialize( width_, height_ );
     }
@@ -134,9 +134,9 @@ namespace FFT
         _clean();
     }
 
-    bool FFTExecutor::dimensionsMatch( const ComplexData & data) const 
+    bool FFTExecutor::dimensionsMatch( const ComplexData & data) const
     {
-        return dimensionsMatch(data.width(), data.height() );
+        return dimensionsMatch( data.width(), data.height() );
     }
 
     void FFTExecutor::directTransform( ComplexData & data )
