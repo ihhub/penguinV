@@ -115,12 +115,6 @@ namespace FFT
         memcpy( _data, data.data(), _width * _height * sizeof(kiss_fft_cpx) );
     }
 
-    FFTExecutor::FFTExecutor()
-        : _planDirect  ( 0 )
-        , _planInverse ( 0 )
-    {
-    }
-
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
         : _planDirect    ( 0 )
         , _planInverse   ( 0 )
