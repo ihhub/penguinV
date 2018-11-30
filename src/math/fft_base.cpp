@@ -36,16 +36,6 @@ namespace FFT
         return _height;
     }
 
-    bool BaseFFTExecutor::dimensionsMatch(const BaseFFTExecutor & other) const 
-    {
-        return dimensionsMatch(other.width(), other.height());
-    }
-
-    bool BaseFFTExecutor::dimensionsMatch(uint32_t width, uint32_t height) const 
-    {
-        return _width == width && _height == height;
-    }
-
     void BaseFFTExecutor::_clean() 
     {
         _cleanPlans();

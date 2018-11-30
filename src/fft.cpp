@@ -134,11 +134,6 @@ namespace FFT
         _clean();
     }
 
-    bool FFTExecutor::dimensionsMatch( const ComplexData & data) const 
-    {
-        return dimensionsMatch(data.width(), data.height() );
-    }
-
     void FFTExecutor::directTransform( ComplexData & data )
     {
         directTransform( data, data );
@@ -146,7 +141,8 @@ namespace FFT
 
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planDirect == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+        if( _planDirect == 0 || !equalSize<FFTExecutor, ComplexData> (*this, in) 
+                             || !equalSize<ComplexData> (in, out) )
             throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
@@ -159,7 +155,8 @@ namespace FFT
 
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planInverse == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+        if( _planInverse == 0 || !equalSize<FFTExecutor, ComplexData> (*this, in)
+                              || !equalSize<ComplexData> (in, out) )
             throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
         kiss_fftnd( _planInverse, in.data(), out.data() );
@@ -167,7 +164,8 @@ namespace FFT
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
-        if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0)
+        if ( !equalSize<ComplexData>(in1, in2) || !equalSize<ComplexData>(in1, out) || in1.width() == 0 
+             || in1.height() == 0)
             throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
         // in1 = A + iB

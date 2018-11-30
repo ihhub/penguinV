@@ -5,6 +5,13 @@
 
 namespace FFT 
 {
+
+    template <typename _type1, typename _type2 = _type1>
+    bool equalSize( const _type1 & first, const _type2 & second) 
+    {
+        return (first.width() == second.width()) && (first.height() == second.height()); 
+    }
+
     // This class template is the base for storing complex-valued data ([real, imaginary]) for
     // the purpose of using in a Fast Fourier Transform. The template parameter is the type of 
     // data to use. Instances of this class template are meant to be inherited by a sub-class.
@@ -41,7 +48,9 @@ namespace FFT
 
         void resize( uint32_t width_, uint32_t height_ )
         {
-            if( !dimensionsMatch(width_, height_) && width_ != 0 && height_ != 0 ) {
+            if( (_width != width_ || _height != height_) 
+                && width_ != 0 && height_ != 0)
+            {
                 _clean();
     
                 const uint32_t size = width_ * height_;
@@ -79,16 +88,6 @@ namespace FFT
             return _height;
         }
 
-        bool dimensionsMatch( const BaseComplexData<DataType> & other) const
-        {
-            return dimensionsMatch(other.width(), other.height());
-        }
-
-
-        bool dimensionsMatch( uint32_t width, uint32_t height) const
-        {
-            return _width == width && _height == height;
-        }
 
     protected:
         DataType * _data;
@@ -145,8 +144,6 @@ namespace FFT
 
         uint32_t width() const;
         uint32_t height() const;
-        bool dimensionsMatch(const BaseFFTExecutor & other) const;
-        bool dimensionsMatch(uint32_t width, uint32_t height) const;
 
     protected:
         uint32_t _width;

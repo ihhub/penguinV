@@ -43,9 +43,6 @@ namespace FFT
         FFTExecutor( uint32_t width_, uint32_t height_ );
         ~FFTExecutor();
 
-        bool dimensionsMatch( const ComplexData & data) const;
-        using BaseFFTExecutor::dimensionsMatch;
-
         // conversion from original domain of data to frequence domain
         void directTransform( ComplexData & data );
         void directTransform( const ComplexData & in, ComplexData & out );

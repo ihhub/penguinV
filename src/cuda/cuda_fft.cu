@@ -163,11 +163,6 @@ namespace FFT_Cuda
         _clean();
     }
 
-    bool FFTExecutor::dimensionsMatch( const ComplexData & data) const 
-    {
-        return FFT::BaseFFTExecutor::dimensionsMatch(data.width(), data.height());
-    }
-
     void FFTExecutor::directTransform( ComplexData & data )
     {
         directTransform( data, data );
@@ -175,7 +170,9 @@ namespace FFT_Cuda
 
     void FFTExecutor::directTransform( ComplexData & in, ComplexData & out )
     {
-        if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) ) 
+        if( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> (*this, in)
+            || !FFT::equalSize<ComplexData> (in, out) )
+        //if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) ) 
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
@@ -189,7 +186,9 @@ namespace FFT_Cuda
 
     void FFTExecutor::inverseTransform( ComplexData & in, ComplexData & out )
     {
-        if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+        if( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> (*this, in)
+            || !FFT::equalSize<ComplexData> (in, out) )
+        //if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE ) != CUFFT_SUCCESS )
@@ -198,7 +197,9 @@ namespace FFT_Cuda
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, ComplexData & in2, ComplexData & out ) const
     {
-        if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0 )
+        if( !FFT::equalSize<ComplexData> (in1, in2) || !FFT::equalSize<ComplexData> (in1, out) || in1.width() == 0 
+            || in2.height() == 0 )
+        //if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         launchKernel2D( complexMultiplicationCuda, _width, _height,
