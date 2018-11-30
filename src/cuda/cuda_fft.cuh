@@ -28,9 +28,9 @@ namespace FFT_Cuda
         PenguinV_Image::Image get() const;
 
     private:
-        void _allocateData(size_t nBytes) override;
+        void _allocateData( size_t size ) override;
         void _freeData() override;
-        void _copyData(const BaseComplexData<cufftComplex> & data) override;
+        void _copyData( const BaseComplexData<cufftComplex> & data ) override;
     };
 
     // The class for FFT commands execution like:
