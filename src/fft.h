@@ -7,7 +7,6 @@
 
 namespace FFT
 {
-
     // This class store complex ([real, imaginary]) data in CPU memory
     // It is used for Fast Fourier Transform
     class ComplexData : public BaseComplexData<kiss_fft_cpx>
