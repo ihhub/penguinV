@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include "../image_exception.h"
 
 namespace FFT 
 {
@@ -19,20 +18,19 @@ namespace FFT
     public:
         BaseComplexData()
             : _data  ( nullptr )
-            , _width (0)
-            , _height(0)
+            , _width ( 0u )
+            , _height( 0u )
         {
         }
 
-
-        BaseComplexData<DataType> & operator=( const BaseComplexData<DataType> & data )
+        BaseComplexData & operator=( const BaseComplexData & data )
         {
             _copy( data );
     
             return *this;
         }
 
-        BaseComplexData<DataType> & operator=( BaseComplexData<DataType> && data )
+        BaseComplexData & operator=( BaseComplexData && data )
         {
             _swap( data );
     
@@ -95,9 +93,9 @@ namespace FFT
         uint32_t _width;
         uint32_t _height;
 
-        virtual void _allocateData(size_t size) = 0; // Override to deal with actual memory allocation
+        virtual void _allocateData( size_t size ) = 0; // Override to deal with actual memory allocation
         virtual void _freeData() = 0; // Override to deal with actual memory freeing
-        virtual void _copyData(const BaseComplexData<DataType> & data) = 0; // Override to deal with actual data copying
+        virtual void _copyData( const BaseComplexData & data ) = 0; // Override to deal with actual data copying
 
         void _clean()
         {
@@ -109,7 +107,6 @@ namespace FFT
             _width = 0;
             _height = 0;
         }
-
 
         void _copy( const BaseComplexData<DataType> & data)
         {
@@ -139,14 +136,13 @@ namespace FFT
     {
     public:
         BaseFFTExecutor();
-        BaseFFTExecutor( uint32_t width_, uint32_t height_ );
 
         void initialize( uint32_t width_, uint32_t height_ ); // Calls virtual functions
 
         uint32_t width() const;
         uint32_t height() const;
-        bool dimensionsMatch(const BaseFFTExecutor & other) const;
-        bool dimensionsMatch(uint32_t width, uint32_t height) const;
+        bool dimensionsMatch( const BaseFFTExecutor & other ) const;
+        bool dimensionsMatch( uint32_t width, uint32_t height ) const;
 
     protected:
         uint32_t _width;
@@ -157,5 +153,4 @@ namespace FFT
         virtual void _makePlans() = 0;
         virtual void _cleanPlans() = 0;
     }; 
-
 }
