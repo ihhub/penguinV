@@ -8,13 +8,6 @@ namespace FFT
     {
     }
 
-    BaseFFTExecutor::BaseFFTExecutor( uint32_t width_, uint32_t height_ )
-        : _width( width_ )
-        , _height( height_) 
-    {
-        // Need to call initialize() from sub-class as intialize calls virtual functions.
-    }
-
     void BaseFFTExecutor::initialize( uint32_t width_, uint32_t height_ )
     {
         if( width_ == 0 || height_ == 0 )
