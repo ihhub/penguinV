@@ -5,12 +5,13 @@ SRCS :=  \
     $(LIB_DIR)/FileOperation/bitmap.cpp \
     $(LIB_DIR)/FileOperation/png_file.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
+    $(LIB_DIR)/math/fft_base.cpp \
     $(LIB_DIR)/math/math_base.cpp \
     $(LIB_DIR)/penguinv/penguinv.cpp \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fft.c \
     $(LIB_DIR)/thirdparty/kissfft/kiss_fftnd.c \
     $(LIB_DIR)/blob_detection.cpp \
-	  $(LIB_DIR)/edge_detection.cpp \
+    $(LIB_DIR)/edge_detection.cpp \
     $(LIB_DIR)/filtering.cpp \
     $(LIB_DIR)/fft.cpp \
     $(LIB_DIR)/function_pool.cpp \

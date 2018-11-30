@@ -1,4 +1,5 @@
 #include "fft_base.h"
+#include "../image_exception.h"
 
 namespace FFT
 {
@@ -6,13 +7,6 @@ namespace FFT
         : _width(0)
         , _height(0)
     {
-    }
-
-    BaseFFTExecutor::BaseFFTExecutor( uint32_t width_, uint32_t height_ )
-        : _width( width_ )
-        , _height( height_) 
-    {
-        // Need to call initialize() from sub-class as intialize calls virtual functions.
     }
 
     void BaseFFTExecutor::initialize( uint32_t width_, uint32_t height_ )

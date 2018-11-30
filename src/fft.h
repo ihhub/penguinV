@@ -7,7 +7,6 @@
 
 namespace FFT
 {
-
     // This class store complex ([real, imaginary]) data in CPU memory
     // It is used for Fast Fourier Transform
     class ComplexData : public BaseComplexData<kiss_fft_cpx>
@@ -28,9 +27,9 @@ namespace FFT
         PenguinV_Image::Image get() const;
 
     private:
-        void _allocateData(size_t nBytes) override;
+        void _allocateData( size_t size ) override;
         void _freeData() override;
-        void _copyData(const BaseComplexData<kiss_fft_cpx> & data) override;
+        void _copyData( const BaseComplexData<kiss_fft_cpx> & data ) override;
     };
 
     // The class for FFT command execution:
@@ -39,8 +38,7 @@ namespace FFT
     class FFTExecutor : public BaseFFTExecutor
     {
     public:
-        FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
 
         // conversion from original domain of data to frequence domain

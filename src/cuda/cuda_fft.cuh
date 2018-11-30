@@ -28,9 +28,9 @@ namespace FFT_Cuda
         PenguinV_Image::Image get() const;
 
     private:
-        void _allocateData(size_t nBytes) override;
+        void _allocateData( size_t size ) override;
         void _freeData() override;
-        void _copyData(const BaseComplexData<cufftComplex> & data) override;
+        void _copyData( const BaseComplexData<cufftComplex> & data ) override;
     };
 
     // The class for FFT commands execution like:
@@ -39,8 +39,7 @@ namespace FFT_Cuda
     class FFTExecutor : public FFT::BaseFFTExecutor
     {
     public:
-        FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
     
         // conversion from original domain of data to frequency domain
