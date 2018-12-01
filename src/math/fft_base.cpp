@@ -3,19 +3,19 @@
 
 namespace FFT
 {
-    BaseFFTExecutor::BaseFFTExecutor() 
-        : _width(0)
-        , _height(0)
+    BaseFFTExecutor::BaseFFTExecutor()
+        : _width ( 0u )
+        , _height( 0u )
     {
     }
 
     void BaseFFTExecutor::initialize( uint32_t width_, uint32_t height_ )
     {
-        if( width_ == 0 || height_ == 0 )
+        if ( width_ == 0 || height_ == 0 )
             throw imageException( "Invalid parameters for FFTExecutor::intialize()" );
 
         _clean();
-        _width = width_;
+        _width  = width_;
         _height = height_;
         _makePlans();
     }
@@ -30,10 +30,10 @@ namespace FFT
         return _height;
     }
 
-    void BaseFFTExecutor::_clean() 
+    void BaseFFTExecutor::_clean()
     {
         _cleanPlans();
-        _width = 0;
-        _height = 0;
+        _width  = 0u;
+        _height = 0u;
     }
 }
