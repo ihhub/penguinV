@@ -164,7 +164,7 @@ namespace FFT_Cuda
 
     void FFTExecutor::directTransform( ComplexData & in, ComplexData & out )
     {
-        if ( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> ( *this, in ) || !FFT::equalSize<ComplexData> ( in, out ) )
+        if ( _plan == 0 || !FFT::equalSize( *this, in ) || !FFT::equalSize( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         if ( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
@@ -178,7 +178,7 @@ namespace FFT_Cuda
 
     void FFTExecutor::inverseTransform( ComplexData & in, ComplexData & out )
     {
-        if ( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> ( *this, in ) || !FFT::equalSize<ComplexData> ( in, out ) )
+        if ( _plan == 0 || !FFT::equalSize( *this, in ) || !FFT::equalSize( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         if ( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE ) != CUFFT_SUCCESS )
@@ -187,7 +187,7 @@ namespace FFT_Cuda
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, ComplexData & in2, ComplexData & out ) const
     {
-        if ( !FFT::equalSize<ComplexData> ( in1, in2 ) || !FFT::equalSize<ComplexData> ( in1, out ) || in1.width() == 0 || in2.height() == 0 )
+        if ( !FFT::equalSize( in1, in2 ) || !FFT::equalSize( in1, out ) || in1.width() == 0 || in2.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         launchKernel2D( complexMultiplicationCuda, _width, _height,
