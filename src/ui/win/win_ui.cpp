@@ -36,16 +36,19 @@ namespace WindowsUi
             const double xFactor = static_cast<double>(clientRoi.right - clientRoi.left) / _window->_image.width();
             const double yFactor = static_cast<double>(clientRoi.bottom - clientRoi.top) / _window->_image.height();
 
+            const int minPointFactor = static_cast<int>(xFactor < yFactor ? xFactor : yFactor);
+            const int pointMultiplicator = minPointFactor > 1 ? minPointFactor / 2 : 1;
+
             for ( std::vector < UiWindowWin::PointToDraw >::const_iterator point = _window->_point.cbegin(); point != _window->_point.cend(); ++point ) {
                 const int x = static_cast<int>(point->point.x * xFactor);
                 const int y = static_cast<int>(point->point.y * yFactor);
 
                 HPEN hPen = CreatePen( PS_SOLID, 1, RGB( point->color.red, point->color.green, point->color.blue ) );
                 HGDIOBJ hOldPen = SelectObject( hdc, hPen );
-                MoveToEx( hdc, x - 1, y - 1, NULL );
-                LineTo  ( hdc, x + 1, y + 1 );
-                MoveToEx( hdc, x + 1, y - 1, NULL );
-                LineTo  ( hdc, x - 1, y + 1 );
+                MoveToEx( hdc, x - pointMultiplicator, y - pointMultiplicator, NULL );
+                LineTo  ( hdc, x + pointMultiplicator, y + pointMultiplicator );
+                MoveToEx( hdc, x + pointMultiplicator, y - pointMultiplicator, NULL );
+                LineTo  ( hdc, x - pointMultiplicator, y + pointMultiplicator );
                 SelectObject( hdc, hOldPen );
                 DeleteObject( hPen );
             }
@@ -216,7 +219,7 @@ void UiWindowWin::setImage( const PenguinV_Image::Image & image )
     _bmpInfo->bmiHeader.biSizeImage     = image.rowSize() * image.height();
     _bmpInfo->bmiHeader.biXPelsPerMeter = 0;
     _bmpInfo->bmiHeader.biYPelsPerMeter = 0;
-    _bmpInfo->bmiHeader.biClrUsed       = rgbImage ? 0 : 255;
+    _bmpInfo->bmiHeader.biClrUsed       = rgbImage ? 0 : 256;
     _bmpInfo->bmiHeader.biClrImportant  = 0;
 
     if ( !rgbImage ) {
