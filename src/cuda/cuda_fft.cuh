@@ -41,7 +41,7 @@ namespace FFT_Cuda
     public:
         FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
-    
+
         // conversion from original domain of data to frequency domain
         void directTransform( ComplexData & data );
         void directTransform( ComplexData & in, ComplexData & out );
