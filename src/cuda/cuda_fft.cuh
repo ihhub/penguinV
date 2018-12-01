@@ -3,13 +3,14 @@
 #include <cufft.h>
 #include <stdint.h>
 #include "cuda_types.cuh"
+#include "../math/fft_base.h"
 #include "image_buffer_cuda.cuh"
 
 namespace FFT_Cuda
 {
     // This class store complex ([Re, Im]) data in GPU memory
     // It is used for Fast Fourier Transform
-    class ComplexData
+    class ComplexData : public FFT::BaseComplexData<cufftComplex>
     {
     public:
         ComplexData();
@@ -17,9 +18,6 @@ namespace FFT_Cuda
 
         ComplexData( const ComplexData & data );
         ComplexData( ComplexData && data );
-
-        ComplexData & operator=( const ComplexData & data );
-        ComplexData & operator=( ComplexData && data );
 
         ~ComplexData();
 
@@ -29,41 +27,22 @@ namespace FFT_Cuda
         // This function returns normalized image with swapped quadrants
         PenguinV_Image::Image get() const;
 
-        void resize( uint32_t width_, uint32_t height_ );
-
-        cufftComplex * data(); // returns a pointer to GPU memory
-        const cufftComplex * data() const; // returns a pointer to GPU memory
-        uint32_t width() const; // width of array
-        uint32_t height() const; // height of array
-        bool empty() const; // returns true is array is empty (unullocated)
-
     private:
-        cufftComplex * _data;
-        uint32_t _width;
-        uint32_t _height;
-
-        void _clean();
-
-        void _copy( const ComplexData & data );
-        void _swap( ComplexData & data );
+        void _allocateData( size_t size ) override;
+        void _freeData() override;
+        void _copyData( const BaseComplexData<cufftComplex> & data ) override;
     };
 
     // The class for FFT commands execution like:
     // conversion from original domain of data to frequence domain and vice versa,
     // complex multiplication in frequency domain (convolution)
-    class FFTExecutor
+    class FFTExecutor : public FFT::BaseFFTExecutor
     {
     public:
-        FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
 
-        void initialize( uint32_t width_, uint32_t height_ );
-
-        uint32_t width() const;
-        uint32_t height() const;
-
-        // conversion from original domain of data to frequence domain
+        // conversion from original domain of data to frequency domain
         void directTransform( ComplexData & data );
         void directTransform( ComplexData & in, ComplexData & out );
 
@@ -71,13 +50,12 @@ namespace FFT_Cuda
         void inverseTransform( ComplexData & data );
         void inverseTransform( ComplexData & in, ComplexData & out );
 
-        void complexMultiplication( ComplexData & in1, ComplexData & in2, ComplexData & out ) const;
+        void complexMultiplication( const ComplexData & in1, ComplexData & in2, ComplexData & out ) const;
 
     private:
         cufftHandle _plan;
-        uint32_t _width;
-        uint32_t _height;
 
-        void _clean();
+        void _cleanPlans() override;
+        void _makePlans() override;
     };
 }

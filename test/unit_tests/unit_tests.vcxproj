@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\..\src\image_function_simd.cpp" />
+    <ClCompile Include="..\..\src\math\fft_base.cpp" />
     <ClCompile Include="..\..\src\math\hough_transform.cpp" />
     <ClCompile Include="..\..\src\math\math_base.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />

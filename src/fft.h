@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "image_buffer.h"
+#include "math/fft_base.h"
 #include "thirdparty/kissfft/kiss_fft.h"
 #include "thirdparty/kissfft/kiss_fftnd.h"
 
@@ -8,17 +9,14 @@ namespace FFT
 {
     // This class store complex ([real, imaginary]) data in CPU memory
     // It is used for Fast Fourier Transform
-    class ComplexData
+    class ComplexData : public BaseComplexData<kiss_fft_cpx>
     {
     public:
         ComplexData();
         ComplexData( const PenguinV_Image::Image & image );
 
-        ComplexData( const ComplexData & data );
+        ComplexData( const BaseComplexData<kiss_fft_cpx> & data );
         ComplexData( ComplexData && data );
-
-        ComplexData & operator=( const ComplexData & data );
-        ComplexData & operator=( ComplexData && data );
 
         ~ComplexData();
 
@@ -28,39 +26,20 @@ namespace FFT
         // This function returns normalized image with swapped quadrants
         PenguinV_Image::Image get() const;
 
-        void resize( uint32_t width_, uint32_t height_ );
-
-        kiss_fft_cpx * data(); // returns a pointer to data
-        const kiss_fft_cpx * data() const;
-        uint32_t width() const; // width of array
-        uint32_t height() const; // height of array
-        bool empty() const; // returns true is array is empty (unullocated)
-
     private:
-        kiss_fft_cpx * _data;
-        uint32_t _width;
-        uint32_t _height;
-
-        void _clean();
-
-        void _copy( const ComplexData & data );
-        void _swap( ComplexData & data );
+        void _allocateData( size_t size ) override;
+        void _freeData() override;
+        void _copyData( const BaseComplexData<kiss_fft_cpx> & data ) override;
     };
 
     // The class for FFT command execution:
     // - conversion from original domain of data to frequency domain and vice versa
     // - complex multiplication in frequency domain (convolution)
-    class FFTExecutor
+    class FFTExecutor : public BaseFFTExecutor
     {
     public:
-        FFTExecutor();
-        FFTExecutor( uint32_t width_, uint32_t height_ );
+        FFTExecutor( uint32_t width_ = 0u, uint32_t height_ = 0u );
         ~FFTExecutor();
-
-        void initialize( uint32_t width_, uint32_t height_ );
-
-        uint32_t width() const;
-        uint32_t height() const;
 
         // conversion from original domain of data to frequence domain
         void directTransform( ComplexData & data );
@@ -75,9 +54,8 @@ namespace FFT
     private:
         kiss_fftnd_cfg _planDirect;
         kiss_fftnd_cfg _planInverse;
-        uint32_t _width;
-        uint32_t _height;
 
-        void _clean();
+        void _makePlans() override;
+        void _cleanPlans() override;
     };
 }
