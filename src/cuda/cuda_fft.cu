@@ -92,7 +92,7 @@ namespace FFT_Cuda
 
     void ComplexData::set( const PenguinV_Image::Image & image )
     {
-        if( image.empty() || image.colorCount() != 1u )
+        if ( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
 
         _clean();
@@ -108,7 +108,7 @@ namespace FFT_Cuda
 
     void ComplexData::set( const multiCuda::Array<float> & data )
     {
-        if( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
+        if ( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
 
         launchKernel2D( copyFromFloatCuda, _width, _height,
@@ -117,7 +117,7 @@ namespace FFT_Cuda
 
     PenguinV_Image::Image ComplexData::get() const
     {
-        if( empty() )
+        if ( empty() )
             return PenguinV_Image::Image();
 
         PenguinV_Image::Image image = PenguinV_Image::ImageCuda().generate( _width, _height );
@@ -142,7 +142,7 @@ namespace FFT_Cuda
 
     void ComplexData::_copyData( const BaseComplexData<cufftComplex> & data )
     {
-        if( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data.data(), _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
+        if ( !multiCuda::cudaSafeCheck( cudaMemcpy( _data, data.data(), _width * _height * sizeof( cufftComplex ), cudaMemcpyDeviceToDevice ) ) )
             throw imageException( "Cannot copy a memory to CUDA device" );
     }
 
@@ -164,11 +164,10 @@ namespace FFT_Cuda
 
     void FFTExecutor::directTransform( ComplexData & in, ComplexData & out )
     {
-        if( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> (*this, in)
-            || !FFT::equalSize<ComplexData> (in, out) )
+        if ( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> ( *this, in ) || !FFT::equalSize<ComplexData> ( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
-        if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
+        if ( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_FORWARD ) != CUFFT_SUCCESS )
             throw imageException( "Cannot execute direct FFT transform on CUDA device" );
     }
 
@@ -179,20 +178,16 @@ namespace FFT_Cuda
 
     void FFTExecutor::inverseTransform( ComplexData & in, ComplexData & out )
     {
-        if( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> (*this, in)
-            || !FFT::equalSize<ComplexData> (in, out) )
-        //if( _plan == 0 || !dimensionsMatch(in) || !dimensionsMatch(out) )
+        if ( _plan == 0 || !FFT::equalSize<FFTExecutor, ComplexData> ( *this, in ) || !FFT::equalSize<ComplexData> ( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
-        if( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE ) != CUFFT_SUCCESS )
+        if ( cufftExecC2C( _plan, in.data(), out.data(), CUFFT_INVERSE ) != CUFFT_SUCCESS )
             throw imageException( "Cannot execute inverse FFT transform on CUDA device" );
     }
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, ComplexData & in2, ComplexData & out ) const
     {
-        if( !FFT::equalSize<ComplexData> (in1, in2) || !FFT::equalSize<ComplexData> (in1, out) || in1.width() == 0 
-            || in2.height() == 0 )
-        //if( !in1.dimensionsMatch(in2) || !in1.dimensionsMatch(out) || in1.width() == 0 || in1.height() == 0 )
+        if ( !FFT::equalSize<ComplexData> ( in1, in2 ) || !FFT::equalSize<ComplexData> ( in1, out ) || in1.width() == 0 || in2.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor" );
 
         launchKernel2D( complexMultiplicationCuda, _width, _height,
@@ -201,16 +196,16 @@ namespace FFT_Cuda
 
     void FFTExecutor::_cleanPlans()
     {
-        if( _plan != 0 ) {
+        if ( _plan != 0 ) {
             cufftDestroy( _plan );
 
             _plan = 0;
         }
     }
 
-    void FFTExecutor::_makePlans() 
+    void FFTExecutor::_makePlans()
     {
-        if( cufftPlan2d( &_plan, _width, _height, CUFFT_C2C ) != CUFFT_SUCCESS )
+        if ( cufftPlan2d( &_plan, _width, _height, CUFFT_C2C ) != CUFFT_SUCCESS )
             throw imageException( "Cannot create FFT plan on CUDA device" );
     }
 }
