@@ -134,7 +134,7 @@ namespace FFT
 
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
-        if ( _planDirect == 0 || !equalSize<FFTExecutor, ComplexData> ( *this, in ) || !equalSize<ComplexData> ( in, out ) )
+        if ( _planDirect == 0 || !equalSize( *this, in ) || !equalSize( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
@@ -147,7 +147,7 @@ namespace FFT
 
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
-        if ( _planInverse == 0 || !equalSize<FFTExecutor, ComplexData> ( *this, in ) || !equalSize<ComplexData> ( in, out ) )
+        if ( _planInverse == 0 || !equalSize( *this, in ) || !equalSize( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
         kiss_fftnd( _planInverse, in.data(), out.data() );
@@ -155,7 +155,7 @@ namespace FFT
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
-        if ( !equalSize<ComplexData>( in1, in2 ) || !equalSize<ComplexData>( in1, out ) || in1.width() == 0 || in1.height() == 0 )
+        if ( !equalSize( in1, in2 ) || !equalSize( in1, out ) || in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
         // in1 = A + iB
