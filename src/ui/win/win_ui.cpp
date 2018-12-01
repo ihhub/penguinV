@@ -115,7 +115,11 @@ namespace
     {
         UiWindowWinRegistrator()
             : registered( 0 )
+#ifdef UNICODE
             , className( L"UiWindowWin" )
+#else
+            , className( "UiWindowWin" )
+#endif
         {
             WNDCLASSEX wcex;
             wcex.cbSize        = sizeof( WNDCLASSEX );
@@ -134,7 +138,11 @@ namespace
             registered = RegisterClassEx( &wcex );
         }
         WORD registered;
+#ifdef UNICODE
         const std::wstring className;
+#else
+        const std::string className;
+#endif
     };
 }
 
@@ -148,8 +156,12 @@ UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string
 
     UiWindowWin::setImage( image );
 
-    const std::wstring titleWChar = std::wstring( title.begin(), title.end() );
-    _window = CreateWindowEx( 0, registrator.className.data(), titleWChar.data(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+#ifdef UNICODE
+    const std::wstring titleName = std::wstring( title.begin(), title.end() );
+#else
+    const std::string & titleName = title;
+#endif
+    _window = CreateWindowEx( 0, registrator.className.data(), titleName.data(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
                               CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle( 0 ), this ) ;
 
     if ( _window == nullptr )
