@@ -30,14 +30,14 @@ namespace FFT
 
     void ComplexData::set( const PenguinV_Image::Image & image )
     {
-        if( image.empty() || image.colorCount() != 1u )
+        if ( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
 
         _clean();
 
         const uint32_t size = image.width() * image.height();
 
-        _allocateData(size * sizeof(kiss_fft_cpx));
+        _allocateData( size * sizeof( kiss_fft_cpx ) );
 
         _width  = image.width();
         _height = image.height();
@@ -50,11 +50,11 @@ namespace FFT
 
         const uint8_t * inYEnd = inY + _height * rowSize;
 
-        for( ; inY != inYEnd; inY += rowSize ) {
+        for ( ; inY != inYEnd; inY += rowSize ) {
             const uint8_t * inX  = inY;
             const uint8_t * inXEnd = inX + _width;
 
-            for( ; inX != inXEnd; ++inX, ++out ) {
+            for ( ; inX != inXEnd; ++inX, ++out ) {
                 out->r = *inX;
                 out->i = 0;
             }
@@ -63,14 +63,14 @@ namespace FFT
 
     void ComplexData::set( const std::vector<float> & data )
     {
-        if( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
+        if ( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
 
         const float * in = data.data();
         kiss_fft_cpx * out = _data;
         const kiss_fft_cpx * outEnd = out + _width * _height;
 
-        for( ; out != outEnd; ++in, ++out ) {
+        for ( ; out != outEnd; ++in, ++out ) {
             out->r = *in;
             out->i = 0;
         }
@@ -78,7 +78,7 @@ namespace FFT
 
     PenguinV_Image::Image ComplexData::get() const
     {
-        if( empty() )
+        if ( empty() )
             return PenguinV_Image::Image();
 
         PenguinV_Image::Image image( _width, _height, 1u, 1u );
@@ -88,10 +88,10 @@ namespace FFT
         const uint32_t middleX = _width  / 2;
         const uint32_t middleY = _height / 2;
 
-        for( uint32_t inY = 0; inY < _height; ++inY ) {
+        for ( uint32_t inY = 0; inY < _height; ++inY ) {
             const uint32_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
 
-            for( uint32_t inX = 0; inX < _width; ++inX ) {
+            for ( uint32_t inX = 0; inX < _width; ++inX ) {
                 const uint32_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
                 out[outY * _width + outX] = static_cast<uint8_t>(_data[inY * _width + inX].r / static_cast<float>(size) + 0.5);
             }
@@ -100,9 +100,9 @@ namespace FFT
         return image;
     }
 
-    void ComplexData::_allocateData(size_t size) 
+    void ComplexData::_allocateData( size_t size )
     {
-         _data = reinterpret_cast<kiss_fft_cpx *>( malloc( size ) );
+        _data = reinterpret_cast<kiss_fft_cpx *>(malloc( size ));
     }
 
     void ComplexData::_freeData()
@@ -112,7 +112,7 @@ namespace FFT
 
     void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data )
     {
-        memcpy( _data, data.data(), _width * _height * sizeof(kiss_fft_cpx) );
+        memcpy( _data, data.data(), _width * _height * sizeof( kiss_fft_cpx ) );
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
@@ -134,8 +134,7 @@ namespace FFT
 
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planDirect == 0 || !equalSize<FFTExecutor, ComplexData> (*this, in) 
-                             || !equalSize<ComplexData> (in, out) )
+        if ( _planDirect == 0 || !equalSize<FFTExecutor, ComplexData> ( *this, in ) || !equalSize<ComplexData> ( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
@@ -148,8 +147,7 @@ namespace FFT
 
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
-        if( _planInverse == 0 || !equalSize<FFTExecutor, ComplexData> (*this, in)
-                              || !equalSize<ComplexData> (in, out) )
+        if ( _planInverse == 0 || !equalSize<FFTExecutor, ComplexData> ( *this, in ) || !equalSize<ComplexData> ( in, out ) )
             throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
         kiss_fftnd( _planInverse, in.data(), out.data() );
@@ -157,8 +155,7 @@ namespace FFT
 
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
-        if ( !equalSize<ComplexData>(in1, in2) || !equalSize<ComplexData>(in1, out) || in1.width() == 0 
-             || in1.height() == 0)
+        if ( !equalSize<ComplexData>( in1, in2 ) || !equalSize<ComplexData>( in1, out ) || in1.width() == 0 || in1.height() == 0 )
             throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
         // in1 = A + iB
@@ -172,28 +169,28 @@ namespace FFT
         kiss_fft_cpx * outX = out.data();
         const kiss_fft_cpx * outXEnd = outX + size;
 
-        for( ; outX != outXEnd; ++in1X, ++in2X, ++outX ) {
+        for ( ; outX != outXEnd; ++in1X, ++in2X, ++outX ) {
             outX->r = in1X->r * in2X->r - in1X->i * in2X->i;
             outX->i = in1X->r * in2X->i + in1X->i * in2X->r;
         }
     }
 
-    void FFTExecutor::_makePlans() 
+    void FFTExecutor::_makePlans()
     {
         const int dims[2] = { static_cast<int>(_width), static_cast<int>(_height) };
-        _planDirect  = kiss_fftnd_alloc(dims, 2, false, 0, 0);
-        _planInverse = kiss_fftnd_alloc(dims, 2, true , 0, 0);
+        _planDirect  = kiss_fftnd_alloc( dims, 2, false, 0, 0 );
+        _planInverse = kiss_fftnd_alloc( dims, 2, true, 0, 0 );
     }
 
     void FFTExecutor::_cleanPlans()
     {
-        if( _planDirect != 0 ) {
+        if ( _planDirect != 0 ) {
             kiss_fft_free( _planDirect );
 
             _planDirect = 0;
         }
 
-        if( _planInverse != 0 ) {
+        if ( _planInverse != 0 ) {
             kiss_fft_free( _planInverse );
 
             _planInverse = 0;
