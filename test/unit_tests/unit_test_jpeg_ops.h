@@ -2,4 +2,4 @@
 
 #include "unit_test_framework.h"
 
-void addTests_Jpeg(UnitTestFramework &framework);
+void addTests_Jpeg(UnitTestFramework & framework);
