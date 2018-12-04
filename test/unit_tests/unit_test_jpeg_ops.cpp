@@ -35,7 +35,7 @@ namespace jpeg_operation
         return true;
     }
 
-    bool LoadSaveRGBImage()
+    bool RandomRGBImage()
     {
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Jpeg_Operation::Save("rgb.jpg", original);
