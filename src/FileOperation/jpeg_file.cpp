@@ -41,7 +41,7 @@ namespace Jpeg_Operation
         struct jpeg_decompress_struct cInfo;
         err_ptr jErr;
 
-        /* Allocate and initialize JPEG decompression object */
+        // Allocate and initialize JPEG decompression object
         cInfo.err = jpeg_std_error(&jErr->pub);
         jErr->pub.error_exit = custom_jerr_exit; // override default error handler
         if (setjmp(jErr->setjmp_buffer)) {
