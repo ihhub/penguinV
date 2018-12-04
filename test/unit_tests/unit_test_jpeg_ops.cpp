@@ -65,7 +65,7 @@ namespace jpeg_operation
 
 void addTests_Jpeg( UnitTestFramework & framework )
 {
-    framework.add(jpeg_operation::WhiteGrayScaleImage, "Load and save white gray-scale image");
-    framework.add(jpeg_operation::BlackGrayScaleImage, "Load and save black gray-scale image");
-    framework.add(jpeg_operation::RandomRGBImage,      "Load and save random RGB image");
+    framework.add(jpeg_operation::WhiteGrayScaleImage, "Load and save white gray-scale JPEG image");
+    framework.add(jpeg_operation::BlackGrayScaleImage, "Load and save black gray-scale JPEG image");
+    framework.add(jpeg_operation::RandomRGBImage,      "Load and save random RGB JPEG image");
 }
