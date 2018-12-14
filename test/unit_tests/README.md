@@ -19,7 +19,7 @@ In this directory you need to type/paste this text in terminal:
 	```
 	cd ../..
 	mkdir build && cd build
-	cmake .. -DPENGUINV_BUILD_TEST=ONrm 
+	cmake .. -DPENGUINV_BUILD_TEST=ON
 	cmake --build . --target unit_tests
 	```
 
