@@ -15,10 +15,12 @@ In this directory you need to type/paste this text in terminal:
 	To build the project, you will need to have CMake with minimum version of 3.8 and a compiler 
 	that support `cxx_std_11`.
 
-	Then in the project directory:
+	Then in the main project directory:
 	```
+	cd ../..
 	mkdir build && cd build
 	cmake .. -DPENGUINV_BUILD_TEST=ON
+	cmake --build . --target unit_tests
 	```
 
 	After successfully finishing the build process, run the tests to see if everything is work.
