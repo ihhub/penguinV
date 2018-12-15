@@ -2,8 +2,8 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
-    $(LIB_DIR)/FileOperation/bitmap.cpp \
-    $(LIB_DIR)/FileOperation/png_file.cpp \
+    $(LIB_DIR)/file/bmp_image.cpp \
+    $(LIB_DIR)/file/png_image.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/fft_base.cpp \
     $(LIB_DIR)/math/math_base.cpp \

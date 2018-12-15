@@ -146,12 +146,12 @@
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
     <ClCompile Include="example_filters.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
-    <ClCompile Include="..\..\src\FileOperation\bitmap.cpp" />
+    <ClCompile Include="..\..\src\file\bmp_image.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\filtering.h" />
-    <ClInclude Include="..\..\src\FileOperation\bitmap.h" />
+    <ClInclude Include="..\..\src\file\bmp_image.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />

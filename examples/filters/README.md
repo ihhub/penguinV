@@ -5,7 +5,7 @@ Open example_filters.vcxproj file in this directory to create solution for your 
 - g++    
 In this directory you need to type/paste this text in terminal:
 	```bash
-	g++ -std=c++11 -Wall example_filters.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/filtering.cpp ../../src/FileOperation/bitmap.cpp -o application
+	g++ -std=c++11 -Wall example_filters.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/filtering.cpp ../../src/file/bmp_image.cpp -o application
 	```
 
 - make    

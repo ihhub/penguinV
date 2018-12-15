@@ -5,7 +5,7 @@
 #include "../../../src/blob_detection.h"
 #include "../../../src/image_buffer.h"
 #include "../../../src/image_function.h"
-#include "../../../src/FileOperation/bitmap.h"
+#include "../../../src/file/bmp_image.h"
 #include "../../../src/ui/qt/qt_ui.h"
 
 int main( int argc, char *argv[] )

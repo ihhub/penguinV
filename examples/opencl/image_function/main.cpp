@@ -4,7 +4,7 @@
 #include "../../../src/image_function.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/image_function_opencl.h"
-#include "../../../src/FileOperation/bitmap.h"
+#include "../../../src/file/bmp_image.h"
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
 

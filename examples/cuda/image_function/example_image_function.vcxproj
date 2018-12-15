@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\FileOperation\bitmap.cpp" />
+    <ClCompile Include="..\..\..\src\file\bmp_image.cpp" />
     <ClCompile Include="..\..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
     <ClCompile Include="example_image_function.cpp" />
@@ -27,7 +27,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\cuda\image_buffer_cuda.cuh" />
     <ClInclude Include="..\..\..\src\cuda\image_function_cuda.cuh" />
-    <ClInclude Include="..\..\..\src\FileOperation\bitmap.h" />
+    <ClInclude Include="..\..\..\src\file\bmp_image.h" />
     <ClInclude Include="..\..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\..\src\image_exception.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
