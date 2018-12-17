@@ -1308,13 +1308,19 @@ namespace Image_Function
                         const uint8_t * inX = inY + y * rowSizeIn + x;
 
                         // we use bilinear approximation to find pixel intensity value
+
                         double coeffX = posX - x;
                         double coeffY = posY - y;
 
+                        // Take a weighted mean of four pixels. Use offset of 0.5
+                        // so that integer conversion leads to rounding instead of 
+                        // simple truncation.
+
                         double sum = (*inX) * (1 - coeffX) * (1 - coeffY) +
-                            (*inX + 1) * (coeffX) * (1 - coeffY) +
-                            (*inX + rowSizeIn) * (1 - coeffX) * (coeffY)+
-                            (*inX + rowSizeIn + 1) * (coeffX) * (coeffY)+0.5;
+                            *(inX + 1) * (coeffX) * (1 - coeffY) +
+                            *(inX + rowSizeIn) * (1 - coeffX) * (coeffY) +
+                            *(inX + rowSizeIn + 1) * (coeffX) * (coeffY) + 
+                            0.5;
 
                         (*outX) = static_cast<uint8_t>(sum);
                     }
