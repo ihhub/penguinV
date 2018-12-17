@@ -5,7 +5,7 @@ SRCS :=  \
 	$(MAIN_LIB_DIR)/opencl/opencl_helper.cpp \
 	$(MAIN_LIB_DIR)/image_function.cpp \
 	$(MAIN_LIB_DIR)/image_function_helper.cpp \
-	$(MAIN_LIB_DIR)/FileOperation/bitmap.cpp \
+	$(MAIN_LIB_DIR)/file/bmp_image.cpp \
 	$(MAIN_LIB_DIR)/opencl/image_function_opencl.cpp \
 	main.cpp
 TARGET := example

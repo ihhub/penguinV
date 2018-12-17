@@ -1,7 +1,7 @@
 #include <fstream>
 #include <memory>
 #include <vector>
-#include "bitmap.h"
+#include "bmp_image.h"
 #include "../image_exception.h"
 #include "../parameter_validation.h"
 

@@ -1,6 +1,6 @@
 #ifdef PENGUINV_DISABLE_PNG_SUPPORT
 
-#include "png_file.h"
+#include "png_image.h"
 #include "../image_exception.h"
 
 namespace Png_Operation
@@ -32,7 +32,7 @@ namespace Png_Operation
 #include <stdlib.h>
 #include <png.h>
 
-#include "png_file.h"
+#include "png_image.h"
 #include "../image_exception.h"
 #include "../parameter_validation.h"
 

@@ -155,7 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\FileOperation\bitmap.cpp" />
+    <ClCompile Include="..\..\..\src\file\bmp_image.cpp" />
     <ClCompile Include="..\..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\..\..\src\opencl\image_function_opencl.cpp" />
@@ -164,7 +164,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\FileOperation\bitmap.h" />
+    <ClInclude Include="..\..\..\src\file\bmp_image.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
     <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\memory\memory_allocator.h" />

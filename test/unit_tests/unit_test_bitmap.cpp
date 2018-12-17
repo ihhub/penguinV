@@ -2,7 +2,7 @@
 
 #include "unit_test_bitmap.h"
 #include "unit_test_helper.h"
-#include "../../src/FileOperation/bitmap.h"
+#include "../../src/file/bmp_image.h"
 
 namespace bitmap_operation
 {

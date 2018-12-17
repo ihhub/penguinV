@@ -17,7 +17,7 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-           ../../../src/FileOperation/bitmap.cpp \
+           ../../../src/file/bmp_image.cpp \
            ../../../src/image_function.cpp \
            ../../../src/image_function_helper.cpp \
            ../../../src/blob_detection.cpp \

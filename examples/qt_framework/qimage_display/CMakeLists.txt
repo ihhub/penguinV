@@ -10,7 +10,7 @@ set(SRCS
     ${LIB_DIR}/image_function.cpp
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/math/math_base.cpp
-    ${LIB_DIR}/FileOperation/bitmap.cpp
+    ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/ui/ui.cpp
     ${LIB_DIR}/ui/qt/qt_ui.cpp)
 

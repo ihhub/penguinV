@@ -3,7 +3,7 @@
 #include "../../src/filtering.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include "../../src/FileOperation/bitmap.h"
+#include "../../src/file/bmp_image.h"
 
 int main()
 {
