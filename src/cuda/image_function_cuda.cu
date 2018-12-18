@@ -239,6 +239,60 @@ namespace
         }
     }
 
+    __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint32_t inHeight, float inXStart, float inYStart, 
+                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, 
+                                float cosAngle, float sinAngle)
+    {
+        uint32_t outX = blockDim.x * blockIdx.x + threadIdx.x,
+                 outY = blockDim.y * blockIdx.y + threadIdx.y;
+       
+        // If this thread isn't for a valid pixel in the output image, then do nothing. 
+
+        if ( outX >= rowSizeOut || outY >= outHeight ) 
+            return;
+
+        // Both input coordinates are shifted using the cosAngle, sinAngle, outX, and outY. The shift
+        // comes from inverse rotating the horizontal and vertical iterations over the output.
+
+        // Note that inverse rotation of horizontal motion is ( cos(angle), -sin(angle)),
+        // and the inverse rotation of vertical motion is ( sin(angle), cos(angle) ).
+
+        float exactInX = inXStart + cosAngle * outX + sinAngle * outY,
+              exactInY = inYStart - sinAngle * outX + cosAngle * outY; 
+
+        int32_t inX = static_cast<int32_t>(exactInX),
+                inY = static_cast<int32_t>(exactInY);
+
+        uint8_t * outMem = out + outY * rowSizeOut + outX;
+
+        // Note that we will be taking an average with next pixels, so next pixels need to be in the
+        // image too.
+ 
+        if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1) 
+        {
+            *outMem = 0; // We do not actually know what is beyond the image, so set value to 0.            
+        } 
+        else 
+        {
+            // Now we use a bilinear approximation to find the pixel intensity value. That is, we take an
+            // average of pixels (inX, inY), (inX+1, inY), (inX, inY+1), and (inX+1, inY+1).
+            // We add an offset of 0.5 so that conversion to integer is done using rounding.
+
+            const uint8_t * inMem = in + inY * rowSizeIn + inX;
+
+            float probX = exactInX - inX,
+                  probY = exactInY - inY,
+                  mean = (*inMem) * (1 - probX) * (1 - probY) + 
+                         *(inMem + 1) * probX * (1 - probY) + 
+                         *(inMem + rowSizeIn) * (1 - probX) * probY + 
+                         *(inMem + rowSizeIn + 1) * probX * probY + 
+                         0.5;
+            
+            (*outMem) = static_cast<uint8_t>(mean);
+        }
+        
+    } 
+
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                   uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
     {
@@ -891,6 +945,38 @@ namespace Image_Function_Cuda
 
         launchKernel2D( minimumCuda, width, height,
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
+    }
+
+    void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle ) 
+    {
+
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        const float cosAngle = cos( angle ),
+                    sinAngle = sin( angle );
+
+        const uint32_t rowSizeIn  = in.rowSize(),
+                       rowSizeOut = out.rowSize();
+
+        const uint32_t inHeight = in.height(),
+                       outHeight = out.height();
+
+        uint8_t const * inMem  = in.data();
+        uint8_t * outMem = out.data();
+
+        // We iterate over the output array in the usual manner; we iterate over the
+        // input using inverse rotation of this shift. Doing so, we start the input
+        // iteration at the following positions:
+
+        float inXStart = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn,
+              inYStart = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+
+         launchKernel2D( rotateCuda, rowSizeOut, outHeight,
+                         inMem, rowSizeIn, inHeight, inXStart, inYStart,  
+                         outMem, rowSizeOut, outHeight,  
+                         cosAngle, sinAngle );
+
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
