@@ -290,7 +290,6 @@ namespace
             
             (*outMem) = static_cast<uint8_t>(mean);
         }
-        
     } 
 
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
@@ -949,7 +948,6 @@ namespace Image_Function_Cuda
 
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle ) 
     {
-
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
 
@@ -976,7 +974,6 @@ namespace Image_Function_Cuda
                          inMem, rowSizeIn, inHeight, inXStart, inYStart,  
                          outMem, rowSizeOut, outHeight,  
                          cosAngle, sinAngle );
-
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
