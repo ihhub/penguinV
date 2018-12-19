@@ -240,55 +240,58 @@ namespace
     }
 
     __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint32_t inHeight, float inXStart, float inYStart, 
-                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, 
-                                float cosAngle, float sinAngle)
+                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, float cosAngle, float sinAngle)
     {
-        uint32_t outX = blockDim.x * blockIdx.x + threadIdx.x,
-                 outY = blockDim.y * blockIdx.y + threadIdx.y;
+        uint32_t outX = blockDim.x * blockIdx.x + threadIdx.x;
+        uint32_t outY = blockDim.y * blockIdx.y + threadIdx.y;
        
-        // If this thread isn't for a valid pixel in the output image, then do nothing. 
+        // Only do something if this thread is for a valid pixel in the output. 
 
-        if ( outX >= rowSizeOut || outY >= outHeight ) 
-            return;
+        if ( outX < rowSizeOut && outY < outHeight ) 
+        {
+            // Both input coordinates are shifted using the cosAngle, sinAngle, outX, and outY. The shift
+            // comes from inverse rotating the horizontal and vertical iterations over the output.
 
-        // Both input coordinates are shifted using the cosAngle, sinAngle, outX, and outY. The shift
-        // comes from inverse rotating the horizontal and vertical iterations over the output.
+            // Note that inverse rotation of horizontal motion is ( cos(angle), -sin(angle)),
+            // and the inverse rotation of vertical motion is ( sin(angle), cos(angle) ).
 
-        // Note that inverse rotation of horizontal motion is ( cos(angle), -sin(angle)),
-        // and the inverse rotation of vertical motion is ( sin(angle), cos(angle) ).
+            const float exactInX = inXStart + cosAngle * outX + sinAngle * outY;
+            const float exactInY = inYStart - sinAngle * outX + cosAngle * outY; 
 
-        float exactInX = inXStart + cosAngle * outX + sinAngle * outY,
-              exactInY = inYStart - sinAngle * outX + cosAngle * outY; 
+            const int32_t inX = static_cast<int32_t>(exactInX);
+            const int32_t inY = static_cast<int32_t>(exactInY);
 
-        int32_t inX = static_cast<int32_t>(exactInX),
-                inY = static_cast<int32_t>(exactInY);
+            // Shift to the output pixel.
 
-        uint8_t * outMem = out + outY * rowSizeOut + outX;
+            out = out + outY * rowSizeOut + outX;
 
-        // Note that we will be taking an average with next pixels, so next pixels need to be in the
-        // image too.
+            // Note that we will be taking an average with next pixels, so next pixels need to be in the
+            // image too.
  
-        if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1) 
-        {
-            *outMem = 0; // We do not actually know what is beyond the image, so set value to 0.            
-        } 
-        else 
-        {
-            // Now we use a bilinear approximation to find the pixel intensity value. That is, we take an
-            // average of pixels (inX, inY), (inX+1, inY), (inX, inY+1), and (inX+1, inY+1).
-            // We add an offset of 0.5 so that conversion to integer is done using rounding.
+            if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1) 
+            {
+                *out = 0; // We do not actually know what is beyond the image, so set value to 0.            
+            } 
+            else 
+            {
+                // Shift to the input pixel.
 
-            const uint8_t * inMem = in + inY * rowSizeIn + inX;
+                in = in + inY * rowSizeIn + inX;
 
-            float probX = exactInX - inX,
-                  probY = exactInY - inY,
-                  mean = (*inMem) * (1 - probX) * (1 - probY) + 
-                         *(inMem + 1) * probX * (1 - probY) + 
-                         *(inMem + rowSizeIn) * (1 - probX) * probY + 
-                         *(inMem + rowSizeIn + 1) * probX * probY + 
-                         0.5;
-            
-            (*outMem) = static_cast<uint8_t>(mean);
+                // Now we use a bilinear approximation to find the pixel intensity value. That is, we take an
+                // average of pixels (inX, inY), (inX+1, inY), (inX, inY+1), and (inX+1, inY+1).
+                // We add an offset of 0.5 so that conversion to integer is done using rounding.
+
+                const float probX = exactInX - inX;
+                const float probY = exactInY - inY;
+                const float mean = *in * (1 - probX) * (1 - probY) + 
+                                   *(in + 1) * probX * (1 - probY) + 
+                                   *(in + rowSizeIn) * (1 - probX) * probY + 
+                                   *(in + rowSizeIn + 1) * probX * probY + 
+                                   0.5;
+                
+                *out = static_cast<uint8_t>(mean);
+            }
         }
     } 
 
@@ -951,14 +954,14 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        const float cosAngle = cos( angle ),
-                    sinAngle = sin( angle );
+        const float cosAngle = cos( angle );
+        const float sinAngle = sin( angle );
 
-        const uint32_t rowSizeIn  = in.rowSize(),
-                       rowSizeOut = out.rowSize();
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t inHeight = in.height(),
-                       outHeight = out.height();
+        const uint32_t inHeight = in.height();
+        const uint32_t outHeight = out.height();
 
         uint8_t const * inMem  = in.data();
         uint8_t * outMem = out.data();
@@ -967,8 +970,8 @@ namespace Image_Function_Cuda
         // input using inverse rotation of this shift. Doing so, we start the input
         // iteration at the following positions:
 
-        float inXStart = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn,
-              inYStart = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+        const float inXStart = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
+        const float inYStart = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
 
          launchKernel2D( rotateCuda, rowSizeOut, outHeight,
                          inMem, rowSizeIn, inHeight, inXStart, inYStart,  
