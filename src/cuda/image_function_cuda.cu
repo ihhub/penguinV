@@ -239,61 +239,52 @@ namespace
         }
     }
 
-    __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint32_t inHeight, float inXStart, float inYStart, 
-                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, float cosAngle, float sinAngle)
+    __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint32_t inHeight, float inXStart, float inYStart,
+                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, float cosAngle, float sinAngle )
     {
         uint32_t outX = blockDim.x * blockIdx.x + threadIdx.x;
         uint32_t outY = blockDim.y * blockIdx.y + threadIdx.y;
-       
-        // Only do something if this thread is for a valid pixel in the output. 
 
-        if ( outX < rowSizeOut && outY < outHeight ) 
-        {
+        // Only do something if this thread is for a valid pixel in the output
+        if ( outX < rowSizeOut && outY < outHeight ) {
             // Both input coordinates are shifted using the cosAngle, sinAngle, outX, and outY. The shift
             // comes from inverse rotating the horizontal and vertical iterations over the output.
 
-            // Note that inverse rotation of horizontal motion is ( cos(angle), -sin(angle)),
-            // and the inverse rotation of vertical motion is ( sin(angle), cos(angle) ).
+            // Note that inverse rotation by X axis is [cos(angle), -sin(angle)],
+            //   and the inverse rotation by Y axis is [sin(angle),  cos(angle)].
 
             const float exactInX = inXStart + cosAngle * outX + sinAngle * outY;
-            const float exactInY = inYStart - sinAngle * outX + cosAngle * outY; 
+            const float exactInY = inYStart - sinAngle * outX + cosAngle * outY;
 
             const int32_t inX = static_cast<int32_t>(exactInX);
             const int32_t inY = static_cast<int32_t>(exactInY);
 
-            // Shift to the output pixel.
-
+            // Shift to the output pixel
             out = out + outY * rowSizeOut + outX;
 
-            // Note that we will be taking an average with next pixels, so next pixels need to be in the
-            // image too.
- 
-            if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1) 
-            {
-                *out = 0; // We do not actually know what is beyond the image, so set value to 0.            
-            } 
-            else 
-            {
-                // Shift to the input pixel.
-
+            // Note that we will be taking an average with next pixels, so next pixels need to be in the image too
+            if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1 ) {
+                *out = 0; // We do not actually know what is beyond the image, so set value to 0
+            }
+            else {
+                // Shift to the input pixel
                 in = in + inY * rowSizeIn + inX;
 
                 // Now we use a bilinear approximation to find the pixel intensity value. That is, we take an
-                // average of pixels (inX, inY), (inX+1, inY), (inX, inY+1), and (inX+1, inY+1).
+                // average of pixels (inX, inY), (inX + 1, inY), (inX, inY + 1), and (inX + 1, inY + 1).
                 // We add an offset of 0.5 so that conversion to integer is done using rounding.
-
                 const float probX = exactInX - inX;
                 const float probY = exactInY - inY;
-                const float mean = *in * (1 - probX) * (1 - probY) + 
-                                   *(in + 1) * probX * (1 - probY) + 
-                                   *(in + rowSizeIn) * (1 - probX) * probY + 
-                                   *(in + rowSizeIn + 1) * probX * probY + 
-                                   0.5;
-                
+                const float mean = *in * (1 - probX) * (1 - probY) +
+                                   *(in + 1) * probX * (1 - probY) +
+                                   *(in + rowSizeIn) * (1 - probX) * probY +
+                                   *(in + rowSizeIn + 1) * probX * probY +
+                                   0.5f;
+
                 *out = static_cast<uint8_t>(mean);
             }
         }
-    } 
+    }
 
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                   uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
@@ -949,7 +940,7 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
-    void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle ) 
+    void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
     {
         Image_Function::ParameterValidation( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
@@ -969,14 +960,13 @@ namespace Image_Function_Cuda
         // We iterate over the output array in the usual manner; we iterate over the
         // input using inverse rotation of this shift. Doing so, we start the input
         // iteration at the following positions:
-
         const float inXStart = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
         const float inYStart = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
 
-         launchKernel2D( rotateCuda, rowSizeOut, outHeight,
-                         inMem, rowSizeIn, inHeight, inXStart, inYStart,  
-                         outMem, rowSizeOut, outHeight,  
-                         cosAngle, sinAngle );
+        launchKernel2D( rotateCuda, rowSizeOut, outHeight,
+                        inMem, rowSizeIn, inHeight, inXStart, inYStart,
+                        outMem, rowSizeOut, outHeight,
+                        cosAngle, sinAngle );
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
