@@ -1350,6 +1350,7 @@ namespace neon
                             uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8x8_t zero = vdup_n_u8(0);
+        const uint16x4_t zero_16 = vdup_n_u16(0);
 
         if( horizontal ) {
             const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
@@ -1372,10 +1373,15 @@ namespace neon
                     const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero );
                     const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
 
-                    simdSum_1 = vaddw_u16( simdSum_1, vget_low_u16(dataLo)  );
-                    simdSum_2 = vaddw_u16( simdSum_2, vget_high_u16(dataLo) );
-                    simdSum_3 = vaddw_u16( simdSum_3, vget_low_u16(dataHi)  );
-                    simdSum_4 = vaddw_u16( simdSum_4, vget_high_u16(dataHi) );
+                    const uint32x4_t data_1  = vaddl_u16( vget_low_u16(dataLo), zero_16 );
+                    const uint32x4_t data_2  = vaddl_u16( vget_high_u16(dataLo), zero_16 );
+                    const uint32x4_t data_3  = vaddl_u16( vget_low_u16(dataLo), zero_16 );
+                    const uint32x4_t data_4  = vaddl_u16( vget_high_u16(dataLo), zero_16 );
+
+                    simdSum_1 = vaddq_u32( simdSum_1, data_1  );
+                    simdSum_2 = vaddq_u32( simdSum_2, data_2 );
+                    simdSum_3 = vaddq_u32( simdSum_3, data_3  );
+                    simdSum_4 = vaddq_u32( simdSum_4, data_4 );
                 }
 
                 vst1q_u32( dst, vaddq_u32( vld1q_u32( dst ), simdSum_1 ) );
@@ -1414,8 +1420,11 @@ namespace neon
                     const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
                     const uint16x8_t sumLoHi  = vaddq_u16( dataHi, dataLo );
 
-                    simdSum = vaddw_u16( simdSum, vadd_u16( vget_low_u16(sumLoHi),
-                                                            vget_high_u16(sumLoHi) ) );
+                    const uint32x4_t sum = vaddl_u16( vadd_u16( vget_low_u16(sumLoHi), 
+                                                                vget_high_u16(sumLoHi) ),
+                                                                zero_16 );
+
+                    simdSum = vaddq_u32( simdSum, sum );
                 }
 
                 if( nonSimdWidth > 0 ) {
