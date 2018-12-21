@@ -239,14 +239,15 @@ namespace
         }
     }
 
-    __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint32_t inHeight, float inXStart, float inYStart,
-                                uint8_t * out, uint32_t rowSizeOut, uint32_t outHeight, float cosAngle, float sinAngle )
+    __global__ void rotateCuda( const uint8_t * in, uint32_t rowSizeIn, uint8_t * out, uint32_t rowSizeOut,
+                                float inXStart, float inYStart, uint32_t width, uint32_t height, 
+                                float cosAngle, float sinAngle )
     {
         uint32_t outX = blockDim.x * blockIdx.x + threadIdx.x;
         uint32_t outY = blockDim.y * blockIdx.y + threadIdx.y;
 
         // Only do something if this thread is for a valid pixel in the output
-        if ( outX < rowSizeOut && outY < outHeight ) {
+        if ( outX < width && outY < height ) {
             // Both input coordinates are shifted using the cosAngle, sinAngle, outX, and outY. The shift
             // comes from inverse rotating the horizontal and vertical iterations over the output.
 
@@ -263,7 +264,7 @@ namespace
             out = out + outY * rowSizeOut + outX;
 
             // Note that we will be taking an average with next pixels, so next pixels need to be in the image too
-            if ( inX < 0 || inX >= rowSizeIn - 1 || inY < 0 || inY >= inHeight - 1 ) {
+            if ( inX < 0 || inX >= width - 1 || inY < 0 || inY >= height - 1 ) {
                 *out = 0; // We do not actually know what is beyond the image, so set value to 0
             }
             else {
@@ -951,21 +952,21 @@ namespace Image_Function_Cuda
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t inHeight = in.height();
-        const uint32_t outHeight = out.height();
+        const uint32_t width  = in.width();
+        const uint32_t height = in.height();
 
-        uint8_t const * inMem  = in.data();
+        uint8_t const * inMem = in.data();
         uint8_t * outMem = out.data();
 
         // We iterate over the output array in the usual manner; we iterate over the
         // input using inverse rotation of this shift. Doing so, we start the input
         // iteration at the following positions:
-        const float inXStart = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
+        const float inXStart = -( cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
         const float inYStart = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
 
-        launchKernel2D( rotateCuda, rowSizeOut, outHeight,
-                        inMem, rowSizeIn, inHeight, inXStart, inYStart,
-                        outMem, rowSizeOut, outHeight,
+        launchKernel2D( rotateCuda, width, height,
+                        inMem, rowSizeIn, outMem, rowSizeOut,
+                        inXStart, inYStart, width, height,
                         cosAngle, sinAngle );
     }
 
