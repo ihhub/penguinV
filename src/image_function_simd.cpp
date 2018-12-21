@@ -1346,6 +1346,94 @@ namespace neon
         }
     }
 
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
+                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8x8_t zero = vdup_n_u8(0);
+
+        if( horizontal ) {
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
+
+            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
+                const uint8_t * imageSimdY    = imageStart;
+                const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
+                uint32x4_t simdSum_1 = vdupq_n_u32(0);
+                uint32x4_t simdSum_2 = vdupq_n_u32(0);
+                uint32x4_t simdSum_3 = vdupq_n_u32(0);
+                uint32x4_t simdSum_4 = vdupq_n_u32(0);
+
+                uint32_t * dst = out;
+
+                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                    const uint8_t * src = imageSimdY;
+
+                    const uint8x16_t data = vld1q_u8( src );
+
+                    const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero );
+                    const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
+
+                    simdSum_1 = vaddw_u16( simdSum_1, vget_low_u16(dataLo)  );
+                    simdSum_2 = vaddw_u16( simdSum_2, vget_high_u16(dataLo) );
+                    simdSum_3 = vaddw_u16( simdSum_3, vget_low_u16(dataHi)  );
+                    simdSum_4 = vaddw_u16( simdSum_4, vget_high_u16(dataHi) );
+                }
+
+                vst1q_u32( dst, vaddq_u32( vld1q_u32( dst ), simdSum_1 ) );
+                dst += 4;
+                vst1q_u32( dst, vaddq_u32( vld1q_u32( dst ), simdSum_2 ) );
+                dst += 4;
+                vst1q_u32( dst, vaddq_u32( vld1q_u32( dst ), simdSum_3 ) );
+                dst += 4;
+                vst1q_u32( dst, vaddq_u32( vld1q_u32( dst ), simdSum_4 ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageXEnd = imageStart + nonSimdWidth;
+
+                for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
+                    const uint8_t * imageY    = imageStart;
+                    const uint8_t * imageYEnd = imageY + height * rowSize;
+
+                    for( ; imageY != imageYEnd; imageY += rowSize )
+                        (*out) += (*imageY);
+                }
+            }
+        }
+        else {
+            const uint8_t * imageYEnd = imageStart + height * rowSize;
+
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
+                const uint8_t * src    = imageStart;
+                const uint8_t * srcEnd = src + simdWidth*simdSize;
+                uint32x4_t simdSum = vdupq_n_u32(0);
+
+                for( ; src != srcEnd; src += simdSize ) {
+                    const uint8x16_t data = vld1q_u8( src );
+
+                    const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero );
+                    const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
+                    const uint16x8_t sumLoHi  = vaddq_u16( dataHi, dataLo );
+
+                    simdSum = vaddw_u16( simdSum, vadd_u16( vget_low_u16(sumLoHi),
+                                                            vget_high_u16(sumLoHi) ) );
+                }
+
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * imageX    = imageStart + totalSimdWidth;
+                    const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                    for( ; imageX != imageXEnd; ++imageX )
+                        (*out) += (*imageX);
+                }
+
+                uint32_t output[4] = { 0 };
+                vst1q_u32( output, simdSum );
+                
+                (*out) += output[0] + output[1] + output[2] + output[3];
+            }
+        }
+    }
+
     void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1845,7 +1933,7 @@ if ( simdType == neon_function ) { \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType == cpu_function) || (simdType == neon_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
             AVX_CODE( ProjectionProfile( image, x, y, width, height, horizontal, projection, sse_function ); )
 
             Image_Function::ProjectionProfile( image, x, y, width, height, horizontal, projection );
@@ -1867,6 +1955,7 @@ if ( simdType == neon_function ) { \
 
         AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+        NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
