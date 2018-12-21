@@ -117,6 +117,8 @@ namespace Image_Function_Cuda
     void  Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+    void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle );
+
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
