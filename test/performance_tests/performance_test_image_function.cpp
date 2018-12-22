@@ -415,6 +415,7 @@ namespace image_function_neon
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
