@@ -228,6 +228,12 @@ namespace Function_Template
     typedef void (*SetPixelForm1)( Image & image, uint32_t x, uint32_t y, uint8_t value );
     typedef void (*SetPixelForm2)( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
 
+    typedef Image (*ShiftForm1)( const Image & in, double shiftX, double shiftY );
+    typedef void  (*ShiftForm2)( const Image & in, Image & out, double shiftX, double shiftY );
+    typedef Image (*ShiftForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+    typedef void  (*ShiftForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                 uint32_t width, uint32_t height, double shiftX, double shiftY );
+
     typedef void (*SplitForm1)( const Image & in, Image & out1, Image & out2, Image & out3 );
     typedef void (*SplitForm2)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
                                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
@@ -1604,6 +1610,69 @@ namespace Function_Template
         }
 
         return true;
+    }
+
+    bool form1_Shift(ShiftForm1 Shift)
+    {
+        const uint8_t intensity = intensityValue();
+        const PenguinV_Image::Image input = uniformImage( intensity );
+
+        const double shiftX = randomValue<int>( input.width()  / 2 ) - input.width()  / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftY = randomValue<int>( input.height() / 2 ) - input.height() / 4 + randomValue<int>( 100 ) / 100.0;
+
+        const PenguinV_Image::Image output = Shift( input, shiftX, shiftY );
+
+        return verifyImage( output, intensity );
+    }
+
+    bool form2_Shift(ShiftForm2 Shift)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
+
+        const double shiftX = randomValue<int>( input[0].width()  / 2 ) - input[0].width()  / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftY = randomValue<int>( input[0].height() / 2 ) - input[0].height() / 4 + randomValue<int>( 100 ) / 100.0;
+
+        Shift( input[0], input[1], shiftX, shiftY );
+
+        return verifyImage( input[1], intensity[0] );
+    }
+
+    bool form3_Shift(ShiftForm3 Shift)
+    {
+        const uint8_t intensity = intensityValue();
+        const PenguinV_Image::Image input = uniformImage( intensity );
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+        const uint32_t maxShiftX = roiX < (input.width()  - roiWidth  - roiX) ? roiX : (input.width()  - roiWidth  - roiX);
+        const uint32_t maxShiftY = roiY < (input.height() - roiHeight - roiY) ? roiY : (input.height() - roiHeight - roiY);
+        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+
+        const PenguinV_Image::Image output = Shift( input, roiX, roiY, roiWidth, roiHeight, shiftX, shiftY );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity );
+    }
+
+    bool form4_Shift(ShiftForm4 Shift)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        const uint32_t maxShiftX = roiX[0] < (image[0].width()  - roiWidth  - roiX[0]) ? roiX[0] : (image[0].width()  - roiWidth  - roiX[0]);
+        const uint32_t maxShiftY = roiY[0] < (image[0].height() - roiHeight - roiY[0]) ? roiY[0] : (image[0].height() - roiHeight - roiY[0]);
+        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+
+        Shift( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, shiftX, shiftY );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
     }
 
     bool form1_Subtract(SubtractForm1 Subtract)

@@ -740,6 +740,36 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image Shift( FunctionTable::Shift shift,
+                 const Image & in, double shiftX, double shiftY )
+    {
+        Image_Function::ParameterValidation( in );
+        Image out = in.generate( in.width(), in.height() );
+
+        shift( in, 0, 0, out, 0, 0, out.width(), out.height(), shiftX, shiftY );
+        return out;
+    }
+
+    void  Shift( FunctionTable::Shift shift,
+                 const Image & in, Image & out, double shiftX, double shiftY )
+    {
+        Image_Function::ParameterValidation( in, out );
+
+        shift( in, 0, 0, out, 0, 0, out.width(), out.height(), shiftX, shiftY );
+    }
+
+    Image Shift( FunctionTable::Shift shift,
+                 const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = in.generate( width, height );
+
+        shift( in, startXIn, startYIn, out, 0, 0, width, height, shiftX, shiftY );
+
+        return out;
+    }
+
     Image Subtract( FunctionTable::Subtract subtract,
                     const Image & in1, const Image & in2 )
     {

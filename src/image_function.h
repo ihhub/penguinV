@@ -173,6 +173,12 @@ namespace Image_Function
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
 
+    Image Shift( const Image & in, double shiftX, double shiftY );
+    void  Shift( const Image & in, Image & out, double shiftX, double shiftY );
+    Image Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+    void  Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                  uint32_t width, uint32_t height, double shiftX, double shiftY );
+
     void Split( const Image & in, Image & out1, Image & out2, Image & out3 );
     void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
