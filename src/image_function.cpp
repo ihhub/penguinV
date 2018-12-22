@@ -37,6 +37,7 @@ namespace
             table.RgbToBgr           = &Image_Function::RgbToBgr;
             table.SetPixel           = &Image_Function::SetPixel;
             table.SetPixel2          = &Image_Function::SetPixel;
+            table.Shift              = &Image_Function::Shift;
             table.Split              = &Image_Function::Split;
             table.Subtract           = &Image_Function::Subtract;
             table.Sum                = &Image_Function::Sum;
@@ -1358,6 +1359,103 @@ namespace Image_Function
 
             *(data + (*y) * rowSize + (*x)) = value;
         }
+    }
+
+    Image Shift( const Image & in, double shiftX, double shiftY )
+    {
+        return Image_Function_Helper::Shift( Shift, in, shiftX, shiftY );
+    }
+
+    void Shift( const Image & in, Image & out, double shiftX, double shiftY )
+    {
+        Image_Function_Helper::Shift( Shift, in, out, shiftX, shiftY );
+    }
+
+    Image Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
+    {
+        return Image_Function_Helper::Shift( Shift, in, startXIn, startYIn, width, height, shiftX, shiftY );
+    }
+
+    void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, double shiftX, double shiftY )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyGrayScaleImage( in, out );
+
+        if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
+            throw imageException("Shift value by value bigger than ROI");
+
+        // take a note that we use an opposite values
+        int32_t shiftXIntegral = -static_cast<int32_t>( shiftX );
+        int32_t shiftYIntegral = -static_cast<int32_t>( shiftY );
+
+        shiftX = shiftX + shiftXIntegral;
+        shiftY = shiftY + shiftYIntegral;
+
+        if ( shiftX > 0.0 )
+            --shiftXIntegral;
+
+        if ( shiftY > 0.0 )
+            --shiftYIntegral;
+
+        const double coeffX = ( shiftX < 0.0 ) ? (1.0 + shiftX) : shiftX;
+        const double coeffY = ( shiftY < 0.0 ) ? (1.0 + shiftY) : shiftY;
+
+        // 2^23 = 8388608, 2^23 * 256 is a integer limit
+        const uint32_t coeff0 = static_cast<uint32_t>((      coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff1 = static_cast<uint32_t>((1.0 - coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff2 = static_cast<uint32_t>((1.0 - coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+        const uint32_t coeff3 = static_cast<uint32_t>((      coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+
+        const uint32_t limitX = in.width()  - 1u; // we need 2 subsequent pixels so we cannot use last pixel
+        const uint32_t limitY = in.height() - 1u;
+
+        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ? (-shiftXIntegral - startXIn) : 0u;
+        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + shiftXIntegral) ? (startXIn + width + shiftXIntegral - limitX) : 0u;
+        const uint32_t realWidth = width - emptyLeftArea - emptyRightArea;
+
+        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ? (-shiftYIntegral - startYIn) : 0u;
+        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + shiftYIntegral) ? (startYIn + height + shiftYIntegral - limitY) : 0u;
+        const uint32_t realHeight = height - emptyTopArea - emptyBottomArea;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        inY += shiftXIntegral + shiftYIntegral * rowSizeIn;
+
+        const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut )
+            memset( outY, 0, width );
+
+        inY += emptyTopArea * rowSizeIn;
+
+        outYEnd = outY + realHeight * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut, inY+=rowSizeIn ) {
+            const uint8_t * inX = inY;
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + emptyLeftArea + realWidth;
+
+            memset( outX, 0, emptyLeftArea );
+            inX += emptyLeftArea;
+
+            for( ; outX != outXEnd; ++outX ) {
+                uint32_t data  = (*(inX))  * coeff0;
+                data += (*(inX+rowSizeIn)) * coeff3;
+                data += (*(++inX))         * coeff1; // here we increment inX
+                data += (*(inX+rowSizeIn)) * coeff2;
+
+                *outX = static_cast<uint8_t>((data + 8192) >> 14); // 8192 is 0.5 after calculations
+            }
+
+            memset( outX, 0, emptyRightArea );
+        }
+
+        outYEnd = outY + emptyBottomArea * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut )
+            memset( outY, 0, width );
     }
 
     void Split( const Image & in, Image & out1, Image & out2, Image & out3 )

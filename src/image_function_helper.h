@@ -57,6 +57,8 @@ namespace Image_Function_Helper
                                             uint32_t width, uint32_t height);
         typedef void ( *SetPixel )         (Image & image, uint32_t x, uint32_t y, uint8_t value);
         typedef void ( *SetPixel2 )        (Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value);
+        typedef void ( *Shift)             ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                             uint32_t width, uint32_t height, double shiftX, double shiftY );
         typedef void ( *Split )            (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
                                             Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                                             uint32_t width, uint32_t height);
@@ -260,6 +262,13 @@ namespace Image_Function_Helper
     Image RgbToBgr( FunctionTable::RgbToBgr rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    Image Shift( FunctionTable::Shift shift,
+                 const Image & in, double shiftX, double shiftY );
+    void  Shift( FunctionTable::Shift shift,
+                 const Image & in, Image & out, double shiftX, double shiftY );
+    Image Shift( FunctionTable::Shift shift,
+                 const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+
     Image Subtract( FunctionTable::Subtract subtract,
                     const Image & in1, const Image & in2 );
 
@@ -326,6 +335,7 @@ namespace Image_Function_Helper
         FunctionTable::RgbToBgr           RgbToBgr           = nullptr;
         FunctionTable::SetPixel           SetPixel           = nullptr;
         FunctionTable::SetPixel2          SetPixel2          = nullptr;
+        FunctionTable::Shift              Shift              = nullptr;
         FunctionTable::Split              Split              = nullptr;
         FunctionTable::Subtract           Subtract           = nullptr;
         FunctionTable::Sum                Sum                = nullptr;
