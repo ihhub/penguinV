@@ -1370,17 +1370,17 @@ namespace neon
 
                     const uint8x16_t data = vld1q_u8( src );
 
-                    const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero );
-                    const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
+                    const uint16x8_t dataLo = vaddl_u8( vget_low_u8(data), zero );
+                    const uint16x8_t dataHi = vaddl_u8( vget_high_u8(data), zero );
 
-                    const uint32x4_t data_1  = vaddl_u16( vget_low_u16(dataLo), zero_16 );
-                    const uint32x4_t data_2  = vaddl_u16( vget_high_u16(dataLo), zero_16 );
-                    const uint32x4_t data_3  = vaddl_u16( vget_low_u16(dataLo), zero_16 );
-                    const uint32x4_t data_4  = vaddl_u16( vget_high_u16(dataLo), zero_16 );
+                    const uint32x4_t data_1 = vaddl_u16( vget_low_u16 (dataLo), zero_16 );
+                    const uint32x4_t data_2 = vaddl_u16( vget_high_u16(dataLo), zero_16 );
+                    const uint32x4_t data_3 = vaddl_u16( vget_low_u16 (dataLo), zero_16 );
+                    const uint32x4_t data_4 = vaddl_u16( vget_high_u16(dataLo), zero_16 );
 
-                    simdSum_1 = vaddq_u32( simdSum_1, data_1  );
+                    simdSum_1 = vaddq_u32( simdSum_1, data_1 );
                     simdSum_2 = vaddq_u32( simdSum_2, data_2 );
-                    simdSum_3 = vaddq_u32( simdSum_3, data_3  );
+                    simdSum_3 = vaddq_u32( simdSum_3, data_3 );
                     simdSum_4 = vaddq_u32( simdSum_4, data_4 );
                 }
 
@@ -1418,9 +1418,9 @@ namespace neon
 
                     const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero );
                     const uint16x8_t dataHi  = vaddl_u8( vget_high_u8(data), zero );
-                    const uint16x8_t sumLoHi  = vaddq_u16( dataHi, dataLo );
+                    const uint16x8_t sumLoHi = vaddq_u16( dataHi, dataLo );
 
-                    const uint32x4_t sum = vaddl_u16( vadd_u16( vget_low_u16(sumLoHi), 
+                    const uint32x4_t sum = vaddl_u16( vadd_u16( vget_low_u16(sumLoHi),
                                                                 vget_high_u16(sumLoHi) ),
                                                                 zero_16 );
 
@@ -1437,7 +1437,7 @@ namespace neon
 
                 uint32_t output[4] = { 0 };
                 vst1q_u32( output, simdSum );
-                
+
                 (*out) += output[0] + output[1] + output[2] + output[3];
             }
         }
