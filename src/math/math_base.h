@@ -117,7 +117,6 @@ struct LineBase2D
     {
         this->p1 = PointBase2D<_Type>(_p.x, _p.y);
         this->p2 = PointBase2D<_Type>(std::cos(angleRadians) * length(), std::sin(angleRadians) * length());
-
     }
 
     bool operator == ( const LineBase2D & line ) const
@@ -159,6 +158,13 @@ struct LineBase2D
 
         const double inverse_denominator = 1.0 / denominator;
         const double na = (b.y * c.x - b.x * c.y) * inverse_denominator;
+        if (point)
+        {
+            *point = p1 + a * na;
+            return true;
+        }
+
+        return false;
     }
 
     PointBase2D<_Type> p1;
