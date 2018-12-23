@@ -29,6 +29,22 @@ namespace Bitmap_Operation
         }
     }
 
+    std::vector< uint8_t > generateGrayScalePallete()
+    {
+        std::vector< uint8_t > pallete( 1024u, 0 );
+
+        uint8_t * palleteData = pallete.data();
+        uint8_t * palleteEnd = palleteData + pallete.size();
+
+        for( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
+            *palleteData++ = i;
+            *palleteData++ = i;
+            *palleteData++ = i;
+        }
+
+        return pallete;
+    }
+
     // Seems like very complicated structure but we did this to avoid compiler specific code for bitmap structures :(
     template <typename valueType>
     void get_value( const std::vector < uint8_t > & data, size_t & offset, valueType & value )
@@ -389,7 +405,7 @@ namespace Bitmap_Operation
         const uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
         std::vector < uint8_t > pallete( palleteSize );
 
-        const bool convertFrom256Color = (palleteSize == 1024u) && (info->colorCount() == 1u); // 256 color image
+        bool convertFrom256Color = false; // 256 color image case
 
         if( palleteSize > 0 ) {
             size_t dataToRead = palleteSize;
@@ -406,8 +422,14 @@ namespace Bitmap_Operation
                 dataToRead -= readSize;
             }
 
-            if( convertFrom256Color )
-                info->setColorCount( 3u );
+            if( (palleteSize == 1024u) && (info->colorCount() == 1u) ) {
+                std::vector< uint8_t > generatedPallete = generateGrayScalePallete();
+
+                if( pallete != generatedPallete ) {
+                    convertFrom256Color = true;
+                    info->setColorCount( 3u );
+                }
+            }
         }
 
         PenguinV_Image::Image image( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
@@ -475,17 +497,8 @@ namespace Bitmap_Operation
 
         // Create a pallete only for gray-scale image
         if( image.colorCount() == 1u ) {
-            palleteSize = 1024u;
-            pallete.resize( palleteSize, 0 );
-
-            uint8_t * palleteData = pallete.data();
-            uint8_t * palleteEnd = palleteData + pallete.size();
-
-            for( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
-                *palleteData++ = i;
-                *palleteData++ = i;
-                *palleteData++ = i;
-            }
+            pallete = generateGrayScalePallete();
+            palleteSize = static_cast<uint32_t>( pallete.size() );
         }
 
         const uint8_t colorCount = image.colorCount();
