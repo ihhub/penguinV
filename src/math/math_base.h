@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <stdexcept>
 
 namespace pvmath
 {
@@ -131,9 +132,33 @@ struct LineBase2D
 
     double length() const
     {
-        double x = static_cast<double>(p2.x) - static_cast<double>(p1.x);
-        double y = static_cast<double>(p2.y) - static_cast<double>(p1.y);
+        const double x = static_cast<double>(p2.x) - static_cast<double>(p1.x);
+        const double y = static_cast<double>(p2.y) - static_cast<double>(p1.y);
         return std::sqrt(x * x + y * y);
+    }
+
+    double angle() const
+    {
+        if (p1 == p2) throw std::invalid_argument("Points p1 and p2 must be different!");
+        const double x = static_cast<double>(p2.x) - static_cast<double>(p1.x);
+        const double y = static_cast<double>(p2.y) - static_cast<double>(p1.y);
+        const double angleRadians = std::atan2(y, x);
+        return angleRadians < 0 ? angleRadians + 2 * pvmath::pi : angleRadians;
+    }
+
+    bool intersect(const LineBase2D & line, PointBase2D<_Type> * point) const
+    {
+        // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
+        // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
+        const PointBase2D<_Type> a = p2 - p1;
+        const PointBase2D<_Type> b = line.p1 - line.p2;
+        const PointBase2D<_Type> c = p1 - line.p1;
+
+        const double denominator = a.y * b.x - a.x * b.y;
+        if (denominator == 0) return false; // parallel
+
+        const double inverse_denominator = 1.0 / denominator;
+        const double na = (b.y * c.x - b.x * c.y) * inverse_denominator;
     }
 
     PointBase2D<_Type> p1;
