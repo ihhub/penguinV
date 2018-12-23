@@ -29,6 +29,22 @@ namespace Bitmap_Operation
         }
     }
 
+    std::vector< uint8_t > generateGrayScalePallete()
+    {
+        std::vector< uint8_t > pallete( 1024u, 0 );
+
+        uint8_t * palleteData = pallete.data();
+        uint8_t * palleteEnd = palleteData + pallete.size();
+
+        for( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
+            *palleteData++ = i;
+            *palleteData++ = i;
+            *palleteData++ = i;
+        }
+
+        return pallete;
+    }
+
     // Seems like very complicated structure but we did this to avoid compiler specific code for bitmap structures :(
     template <typename valueType>
     void get_value( const std::vector < uint8_t > & data, size_t & offset, valueType & value )
@@ -387,10 +403,11 @@ namespace Bitmap_Operation
             return PenguinV_Image::Image();
 
         const uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
+        std::vector < uint8_t > pallete( palleteSize );
+
+        bool convertFrom256Color = false; // 256 color image case
 
         if( palleteSize > 0 ) {
-            std::vector < uint8_t > pallete( palleteSize );
-
             size_t dataToRead = palleteSize;
             size_t dataReaded = 0;
 
@@ -403,6 +420,15 @@ namespace Bitmap_Operation
 
                 dataReaded += readSize;
                 dataToRead -= readSize;
+            }
+
+            if( (palleteSize == 1024u) && (info->colorCount() == 1u) ) {
+                std::vector< uint8_t > generatedPallete = generateGrayScalePallete();
+
+                if( pallete != generatedPallete ) {
+                    convertFrom256Color = true;
+                    info->setColorCount( 3u );
+                }
             }
         }
 
@@ -420,6 +446,29 @@ namespace Bitmap_Operation
 
             dataReaded += readSize;
             dataToRead -= readSize;
+        }
+
+        // A special case for 256 color bitmap files
+        if( convertFrom256Color ) {
+            const uint8_t * inY    = image.data() + rowSize * (info->height() - 1);
+            const uint8_t * inYEnd = image.data();
+            uint8_t * outY  = image.data() + image.rowSize() * (image.height() - 1);
+
+            for( ; inY != inYEnd; inY -= rowSize, outY -= image.rowSize() ) {
+                const uint8_t * inX    = inY + (info->width() - 1u);
+                const uint8_t * inXEnd = inY;
+                uint8_t * outX = outY + 3u * (image.width() - 1u);
+
+                for( ; ; --inX, outX -= 3u ) {
+                    const uint8_t * palleteValue = pallete.data() + (*inX) * 4u;
+                    *(outX    ) = *(palleteValue++);
+                    *(outX + 1) = *(palleteValue++);
+                    *(outX + 2) = *(palleteValue++);
+
+                    if( inX == inXEnd ) // this is done to count first pixel in row
+                        break;
+                }
+            }
         }
 
         // thanks to bitmap creators image is stored in wrong flipped format so we have to flip back
@@ -448,17 +497,8 @@ namespace Bitmap_Operation
 
         // Create a pallete only for gray-scale image
         if( image.colorCount() == 1u ) {
-            palleteSize = 1024u;
-            pallete.resize( palleteSize, 0 );
-
-            uint8_t * palleteData = pallete.data();
-            uint8_t * palleteEnd = palleteData + pallete.size();
-
-            for( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
-                *palleteData++ = i;
-                *palleteData++ = i;
-                *palleteData++ = i;
-            }
+            pallete = generateGrayScalePallete();
+            palleteSize = static_cast<uint32_t>( pallete.size() );
         }
 
         const uint8_t colorCount = image.colorCount();
