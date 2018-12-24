@@ -154,7 +154,10 @@ struct LineBase2D
         const PointBase2D<_Type> c = p1 - line.p1;
 
         const double denominator = a.y * b.x - a.x * b.y;
-        if (denominator == 0) return false; // parallel
+        if (pvmath::isEqual<_Type>(denominator, 0))
+        {
+            return false; // parallel
+        }
 
         const double inverse_denominator = 1.0 / denominator;
         const double na = (b.y * c.x - b.x * c.y) * inverse_denominator;
