@@ -128,13 +128,6 @@ struct LineBase2D
         return LineBase2D(this->p1 + point, this->p2 + point);
     }
 
-    double length() const
-    {
-        const double x = static_cast<double>(p2.x) - static_cast<double>(p1.x);
-        const double y = static_cast<double>(p2.y) - static_cast<double>(p1.y);
-        return std::sqrt(x * x + y * y);
-    }
-
     double angle() const
     {
         if (p1 == p2) throw std::invalid_argument("Points p1 and p2 must be different!");
