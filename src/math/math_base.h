@@ -166,11 +166,11 @@ struct LineBase2D
 
     bool parallel( const LineBase2D & line )
     {
-        const PointBase2D<_Type> a = p2 - p1;
-        const PointBase2D<_Type> b = line.p1 - line.p2;
-        const PointBase2D<_Type> c = p1 - line.p1;
+        const PointBase2D<_Type> A = p2 - p1;
+        const PointBase2D<_Type> B = line.p1 - line.p2;
+        const PointBase2D<_Type> C = p1 - line.p1;
 
-        const double denominator = a.y * b.x - a.x * b.y;
+        const double denominator = A.y * B.x - A.x * B.y;
         return pvmath::isEqual<_Type>(denominator, 0);
     }
 
@@ -186,8 +186,8 @@ struct LineBase2D
         const _Type B = -(p2.x - p1.x);
         const _Type C = (p2.x * p1.y - p1.x * p2.y);
         
-        const _Type divided = (A * point.x + B * point.y + C);
-        return (divided < 0 ? -divided : divided) / sqrt( A * A + B * B );
+        const _Type numerator = (A * point.x + B * point.y + C);
+        return (numerator < 0 ? -numerator : numerator) / sqrt( A * A + B * B );
     }
 
     PointBase2D<_Type> p1;
