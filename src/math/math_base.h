@@ -120,7 +120,7 @@ struct LineBase2D
 
     bool operator == ( const LineBase2D & line ) const
     {
-        return p1 == line.p1 && p2 == line.p2;
+        return pvmath::isEqual<_Type>(angle(), line.angle()) && pvmath::isEqual<_Type>(distance(line.p1), 0);
     }
 
     LineBase2D operator + ( const PointBase2D<_Type> & point )
@@ -162,6 +162,18 @@ struct LineBase2D
 
     _Type distance( const PointBase2D<_Type> & point ) const
     {
+        // Line equation in the Cartesian coordinate system is
+        // y = a * x + b or A * x + B * y + C = 0
+        // A distance from a point to a line can be calculated as:
+        // |A * x0 + B * y0 + C| / sqrt(A * A + B * B)
+        if ( p1 == p2 ) // there is no line
+            return 0;
+        const _Type A = (p2.y - p1.y);
+        const _Type B = -(p2.x - p1.x);
+        const _Type C = (p2.x * p1.y - p1.x * p2.y);
+        
+        const _Type divided = (A * point.x + B * point.y + C);
+        return (divided < 0 ? -divided : divided) / sqrt( A * A + B * B );
     }
 
     PointBase2D<_Type> p1;
@@ -170,3 +182,4 @@ struct LineBase2D
 
 typedef PointBase2D<double> Point2d;
 typedef PointBase3D<double> Point3d;
+typedef LineBase2D<double> Line2d;
