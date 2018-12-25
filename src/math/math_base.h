@@ -122,10 +122,16 @@ struct LineBase2D
         return p1 == line.p1 && p2 == line.p2;
     }
 
+    LineBase2D operator + ( const PointBase2D<_Type> & point )
+    {
+        return LineBase2D(this->p1 + point, this->p2 + point);
+    }
+
     // This is translation (shift) function
     LineBase2D & operator += ( const PointBase2D<_Type> & point )
     {
-        return LineBase2D(this->p1 + point, this->p2 + point);
+        *this = *this + point;
+        return *this;
     }
 
     double angle() const
