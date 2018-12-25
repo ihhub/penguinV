@@ -120,7 +120,7 @@ struct LineBase2D
 
     bool operator == ( const LineBase2D & line ) const
     {
-        return pvmath::isEqual<_Type>(angle(), line.angle()) && pvmath::isEqual<_Type>(distance(line.p1), 0);
+        return parallel( line ) && pvmath::isEqual<_Type>(distance(line.p1), 0);
     }
 
     LineBase2D operator + ( const PointBase2D<_Type> & point )
@@ -141,7 +141,13 @@ struct LineBase2D
         return std::atan2(p2.y - p1.y, p2.x - p1.x);
     }
 
-    bool intersect(const LineBase2D & line, PointBase2D<_Type> & point) const
+    bool intersect( const LineBase2D & line ) const
+    {
+        PointBase2D<_Type> point;
+        return intersect( line, point );
+    }
+
+    bool intersect( const LineBase2D & line, PointBase2D<_Type> & point ) const
     {
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
@@ -158,6 +164,16 @@ struct LineBase2D
         const double na = (b.y * c.x - b.x * c.y) / denominator;
         point = p1 + a * na;
         return true;
+    }
+
+    bool parallel( const LineBase2D & line )
+    {
+        const PointBase2D<_Type> a = p2 - p1;
+        const PointBase2D<_Type> b = line.p1 - line.p2;
+        const PointBase2D<_Type> c = p1 - line.p1;
+
+        const double denominator = a.y * b.x - a.x * b.y;
+        return pvmath::isEqual<_Type>(denominator, 0);
     }
 
     _Type distance( const PointBase2D<_Type> & point ) const
