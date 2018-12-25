@@ -151,8 +151,7 @@ struct LineBase2D
             return false; // parallel
         }
 
-        const double inverse_denominator = 1.0 / denominator;
-        const double na = (b.y * c.x - b.x * c.y) * inverse_denominator;
+        const double na = (b.y * c.x - b.x * c.y) / denominator;
         if (point)
         {
             *point = p1 + a * na;
