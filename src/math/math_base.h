@@ -113,7 +113,7 @@ struct LineBase2D
         : p1( _p1 ), p2( _p2 )
     { }
 
-    LineBase2D( const PointBase2D<_Type> & _p, double angleRadians )
+    LineBase2D( const PointBase2D<_Type> & _p, _Type angleRadians )
         : p1( _p ), p2( _p.x + std::cos(angleRadians), _p.y + std::sin(angleRadians) )
     { }
 
@@ -130,14 +130,10 @@ struct LineBase2D
 
     double angle() const
     {
-        if (p1 == p2)
-            throw std::invalid_argument("Points p1 and p2 must be different!");
-        const double deltaX = static_cast<double>(p2.x) - static_cast<double>(p1.x);
-        const double deltaY = static_cast<double>(p2.y) - static_cast<double>(p1.y);
-        return std::atan2(deltaY, deltaX);
+        return std::atan2(p2.y - p1.y, p2.x - p1.x);
     }
 
-    bool intersect(const LineBase2D & line, PointBase2D<_Type> * point) const
+    bool intersect(const LineBase2D & line, const PointBase2D<_Type> & point) const
     {
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
@@ -152,17 +148,12 @@ struct LineBase2D
         }
 
         const double na = (b.y * c.x - b.x * c.y) / denominator;
-        if (point)
-        {
-            *point = p1 + a * na;
-            return true;
-        }
-
-        return false;
+        point = p1 + a * na;
+        return true;
     }
 
-    PointBase2D<_Type> p1;
-    PointBase2D<_Type> p2;
+    PointBase2D<_Type> p1{};
+    PointBase2D<_Type> p2{};
 };
 
 typedef PointBase2D<double> Point2d;
