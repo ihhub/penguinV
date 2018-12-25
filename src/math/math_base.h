@@ -157,9 +157,7 @@ struct LineBase2D
 
         const double denominator = a.y * b.x - a.x * b.y;
         if (pvmath::isEqual<_Type>(denominator, 0))
-        {
             return false; // parallel
-        }
 
         const double na = (b.y * c.x - b.x * c.y) / denominator;
         point = p1 + a * na;
