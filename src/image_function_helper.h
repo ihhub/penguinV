@@ -350,3 +350,23 @@ namespace Image_Function_Helper
 
     const FunctionTableHolder & getFunctionTableHolder( const Image & image );
 }
+
+// This namespace is a helper namespace for SIMD instruction based code
+namespace simd
+{
+    // These functions are designed only for testing simd technique functions individually
+    void EnableSimd( bool enable );
+    void EnableAvx ( bool enable );
+    void EnableSse ( bool enable );
+    void EnableNeon( bool enable );
+
+    enum SIMDType
+    {
+        avx_function,
+        sse_function,
+        neon_function,
+        cpu_function
+    };
+
+    SIMDType actualSimdType();
+}

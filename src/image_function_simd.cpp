@@ -1575,38 +1575,6 @@ namespace neon
 
 namespace simd
 {
-    enum SIMDType
-    {
-        avx_function,
-        sse_function,
-        neon_function,
-        cpu_function
-    };
-
-    bool isAvxEnabled = true;
-    bool isSseEnabled = true;
-    bool isNeonEnabled = true;
-
-    SIMDType actualSimdType()
-    {
-        #ifdef PENGUINV_AVX_SET
-        if ( isAvxAvailable && isAvxEnabled )
-            return avx_function;
-        #endif
-
-        #ifdef PENGUINV_SSE_SET
-        if ( isSseAvailable && isSseEnabled )
-            return sse_function;
-        #endif
-
-        #ifdef PENGUINV_NEON_SET
-        if ( isNeonAvailable && isNeonEnabled )
-            return neon_function;
-        #endif
-
-        return cpu_function;
-    }
-
     uint32_t getSimdSize( SIMDType simdType )
     {
         if ( simdType == avx_function )
@@ -2111,31 +2079,6 @@ if ( simdType == neon_function ) { \
 
 namespace Image_Function_Simd
 {
-    namespace Simd_Activation
-    {
-        void EnableSimd( bool enable )
-        {
-            EnableAvx( enable );
-            EnableSse( enable );
-            EnableNeon( enable );
-        }
-
-        void EnableAvx( bool enable )
-        {
-            simd::isAvxEnabled = enable;
-        }
-
-        void EnableSse( bool enable )
-        {
-            simd::isSseEnabled = enable;
-        }
-
-        void EnableNeon( bool enable )
-        {
-            simd::isNeonEnabled = enable;
-        }
-    }
-
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2 );
