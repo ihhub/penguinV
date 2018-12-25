@@ -130,11 +130,11 @@ struct LineBase2D
 
     double angle() const
     {
-        if (p1 == p2) throw std::invalid_argument("Points p1 and p2 must be different!");
-        const double x = static_cast<double>(p2.x) - static_cast<double>(p1.x);
-        const double y = static_cast<double>(p2.y) - static_cast<double>(p1.y);
-        const double angleRadians = std::atan2(y, x);
-        return angleRadians < 0 ? angleRadians + 2 * pvmath::pi : angleRadians;
+        if (p1 == p2)
+            throw std::invalid_argument("Points p1 and p2 must be different!");
+        const double deltaX = static_cast<double>(p2.x) - static_cast<double>(p1.x);
+        const double deltaY = static_cast<double>(p2.y) - static_cast<double>(p1.y);
+        return std::atan2(deltaY, deltaX);
     }
 
     bool intersect(const LineBase2D & line, PointBase2D<_Type> * point) const
