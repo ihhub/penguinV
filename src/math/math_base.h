@@ -141,7 +141,7 @@ struct LineBase2D
         return std::atan2(p2.y - p1.y, p2.x - p1.x);
     }
 
-    bool intersect(const LineBase2D & line, const PointBase2D<_Type> & point) const
+    bool intersect(const LineBase2D & line, PointBase2D<_Type> & point) const
     {
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
