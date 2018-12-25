@@ -95,13 +95,4 @@ namespace Image_Function_Simd
                      uint8_t maxThreshold );
     void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                      uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
-
-    // This namespace is designed only for testing simd technique functions individually
-    namespace Simd_Activation
-    {
-        void EnableSimd( bool enable );
-        void EnableAvx( bool enable );
-        void EnableSse( bool enable );
-        void EnableNeon( bool enable );
-    }
 }

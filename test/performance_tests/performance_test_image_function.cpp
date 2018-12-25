@@ -1,5 +1,6 @@
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
+#include "../../src/image_function_helper.h"
 #include "../../src/image_function_simd.h"
 #include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
@@ -80,27 +81,27 @@ namespace Function_Template
     void SetupFunction( const std::string & namespaceName )
     {
         if ( namespaceName == "function_pool" ) {
-            Image_Function_Simd::Simd_Activation::EnableSimd( true );
+            simd::EnableSimd( true );
             ThreadPoolMonoid::instance().resize( 4 );
         }
         else if ( namespaceName == "image_function_avx" ) {
-            Image_Function_Simd::Simd_Activation::EnableSimd( false );
-            Image_Function_Simd::Simd_Activation::EnableAvx( true );
+            simd::EnableSimd( false );
+            simd::EnableAvx( true );
         }
         else if ( namespaceName == "image_function_sse" ) {
-            Image_Function_Simd::Simd_Activation::EnableSimd( false );
-            Image_Function_Simd::Simd_Activation::EnableSse( true );
+            simd::EnableSimd( false );
+            simd::EnableSse( true );
         }
         else if ( namespaceName == "image_function_neon" ) {
-            Image_Function_Simd::Simd_Activation::EnableSimd( false );
-            Image_Function_Simd::Simd_Activation::EnableNeon( true );
+            simd::EnableSimd( false );
+            simd::EnableNeon( true );
         }
     }
 
     void CleanupFunction(const std::string& namespaceName)
     {
         if ( (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") )
-            Image_Function_Simd::Simd_Activation::EnableSimd( true );
+            simd::EnableSimd( true );
     }
 
     #define TEST_FUNCTION_LOOP( testFunction, namespaceName )          \

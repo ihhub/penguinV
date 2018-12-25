@@ -4,6 +4,7 @@
 #include <mutex>
 
 #include "parameter_validation.h"
+#include "penguinv/cpu_identification.h"
 
 namespace
 {
@@ -921,5 +922,54 @@ namespace Image_Function_Helper
             throw imageException( "Function table is not initialised" );
 
         return table->second;
+    }
+}
+
+namespace simd
+{
+    bool isAvxEnabled = true;
+    bool isSseEnabled = true;
+    bool isNeonEnabled = true;
+
+    void EnableSimd( bool enable )
+    {
+        EnableAvx( enable );
+        EnableSse( enable );
+        EnableNeon( enable );
+    }
+    
+    void EnableAvx( bool enable )
+    {
+        isAvxEnabled = enable;
+    }
+    
+    void EnableSse( bool enable )
+    {
+        isSseEnabled = enable;
+    }
+    
+    void EnableNeon( bool enable )
+    {
+        isNeonEnabled = enable;
+    }
+
+    SIMDType actualSimdType()
+    {
+        #ifdef PENGUINV_AVX_SET
+        if ( isAvxAvailable && isAvxEnabled )
+            return avx_function;
+        #endif
+
+        #ifdef PENGUINV_SSE_SET
+        if ( isSseAvailable && isSseEnabled )
+            return sse_function;
+        #endif
+
+        #ifdef PENGUINV_NEON_SET
+        if ( isNeonAvailable && isNeonEnabled )
+            return neon_function;
+        #endif
+
+        return cpu_function;
     }
 }
