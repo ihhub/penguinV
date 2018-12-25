@@ -110,11 +110,13 @@ template <typename _Type>
 struct LineBase2D
 {
     LineBase2D( const PointBase2D<_Type> & _p1, const PointBase2D<_Type> & _p2 )
-        : p1( _p1 ), p2( _p2 )
+        : p1( _p1 )
+        , p2( _p2 )
     { }
 
     LineBase2D( const PointBase2D<_Type> & _p, _Type angleRadians )
-        : p1( _p ), p2( _p.x + std::cos(angleRadians), _p.y + std::sin(angleRadians) )
+        : p1( _p )
+        , p2( _p.x + std::cos(angleRadians), _p.y + std::sin(angleRadians) )
     { }
 
     bool operator == ( const LineBase2D & line ) const
@@ -124,7 +126,7 @@ struct LineBase2D
 
     LineBase2D operator + ( const PointBase2D<_Type> & point )
     {
-        return LineBase2D(this->p1 + point, this->p2 + point);
+        return LineBase2D(p1 + point, p2 + point);
     }
 
     // This is translation (shift) function
@@ -158,8 +160,12 @@ struct LineBase2D
         return true;
     }
 
-    PointBase2D<_Type> p1{};
-    PointBase2D<_Type> p2{};
+    _Type distance( const PointBase2D<_Type> & point ) const
+    {
+    }
+
+    PointBase2D<_Type> p1;
+    PointBase2D<_Type> p2;
 };
 
 typedef PointBase2D<double> Point2d;
