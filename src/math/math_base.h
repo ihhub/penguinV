@@ -132,7 +132,8 @@ struct LineBase2D
     // This is translation (shift) function
     LineBase2D & operator += ( const PointBase2D<_Type> & point )
     {
-        *this = *this + point;
+        p1 += point;
+        p2 += point;
         return *this;
     }
 
