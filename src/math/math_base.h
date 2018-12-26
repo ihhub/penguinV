@@ -106,92 +106,94 @@ struct PointBase3D : public PointBase2D<_Type>
 };
 
 template <typename _Type>
-struct LineBase2D
+class LineBase2D
 {
-    LineBase2D( const PointBase2D<_Type> & _p1, const PointBase2D<_Type> & _p2 )
-        : p1( _p1 )
-        , p2( _p2 )
-    { }
+public:
+    LineBase2D( const PointBase2D<_Type> & point1 = PointBase2D<_Type>(), const PointBase2D<_Type> & point2 = PointBase2D<_Type>() )
+        : _position( point1 )
+    {
+        if ( point1 == point2 ) {
+            _direction = PointBase2D<_Type>( 1, 0 ); // we could raise an exception here instead
+        }
+        else {
+            const _Type xDiff = point2.x - point1.x;
+            const _Type yDiff = point2.y - point1.y;
+            const _Type length = std::sqrt( xDiff * xDiff + yDiff * yDiff ); // here we might need more specific code for non-double cases
+            _direction = PointBase2D<_Type>( xDiff / length, yDiff / length );
+        }
+    }
 
-    LineBase2D( const PointBase2D<_Type> & _p, _Type angleRadians )
-        : p1( _p )
-        , p2( _p.x + std::cos(angleRadians), _p.y + std::sin(angleRadians) )
-    { }
+    // Angle is in radians
+    LineBase2D( const PointBase2D<_Type> & position, _Type angle )
+        : _position( position )
+        , _direction( std::cos(angle), std::sin(angle) )
+    {
+    }
 
     bool operator == ( const LineBase2D & line ) const
     {
-        return parallel( line ) && pvmath::isEqual<_Type>(distance(line.p1), 0);
-    }
-
-    LineBase2D operator + ( const PointBase2D<_Type> & point )
-    {
-        return LineBase2D(p1 + point, p2 + point);
+        return parallel( line ) && pvmath::isEqual<_Type>( distance(line._position), 0 );
     }
 
     // This is translation (shift) function
-    LineBase2D & operator += ( const PointBase2D<_Type> & point )
+    LineBase2D operator + ( const PointBase2D<_Type> & offset )
     {
-        p1 += point;
-        p2 += point;
+        return LineBase2D( _position + offset, angle() );
+    }
+
+    LineBase2D & operator += ( const PointBase2D<_Type> & offset )
+    {
+        _position += offset;
         return *this;
     }
 
     double angle() const
     {
-        return std::atan2(p2.y - p1.y, p2.x - p1.x);
+        return std::atan2( _direction.y, _direction.x );
     }
 
-    bool intersect( const LineBase2D & line ) const
+    PointBase2D<_Type> position() const
     {
-        PointBase2D<_Type> point;
-        return intersect( line, point );
+        return _position;
     }
 
-    bool intersect( const LineBase2D & line, PointBase2D<_Type> & point ) const
+    bool intersection( const LineBase2D & line, PointBase2D<_Type> & point ) const
     {
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
-        const PointBase2D<_Type> a = p2 - p1;
-        const PointBase2D<_Type> b = line.p1 - line.p2;
-        const PointBase2D<_Type> c = p1 - line.p1;
-
-        const double denominator = a.y * b.x - a.x * b.y;
+        const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
         if (pvmath::isEqual<_Type>(denominator, 0))
-            return false; // parallel
+            return false; // they are parallel
 
-        const double na = (b.y * c.x - b.x * c.y) / denominator;
-        point = p1 + a * na;
+        const PointBase2D<_Type> offset = _position - line._position;
+        const _Type na = (line._direction.y * offset.x - line._direction.x * offset.y) / denominator;
+        point = _position + _direction * na;
         return true;
     }
 
-    bool parallel( const LineBase2D & line )
+    bool isParallel( const LineBase2D & line )
     {
-        const PointBase2D<_Type> A = p2 - p1;
-        const PointBase2D<_Type> B = line.p1 - line.p2;
-        const PointBase2D<_Type> C = p1 - line.p1;
-
-        const double denominator = A.y * B.x - A.x * B.y;
+        const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
         return pvmath::isEqual<_Type>(denominator, 0);
     }
 
+    bool isIntersect( const LineBase2D & line ) const
+    {
+        return !parallel();
+    }
+    
     _Type distance( const PointBase2D<_Type> & point ) const
     {
         // Line equation in the Cartesian coordinate system is
         // y = a * x + b or A * x + B * y + C = 0
         // A distance from a point to a line can be calculated as:
         // |A * x0 + B * y0 + C| / sqrt(A * A + B * B)
-        if ( p1 == p2 ) // there is no line
-            return 0;
-        const _Type A = (p2.y - p1.y);
-        const _Type B = -(p2.x - p1.x);
-        const _Type C = (p2.x * p1.y - p1.x * p2.y);
-        
-        const _Type numerator = (A * point.x + B * point.y + C);
-        return (numerator < 0 ? -numerator : numerator) / sqrt( A * A + B * B );
+        const _Type distanceToLine = _direction.y * (point.x - _position.x) + _direction.x * (_position.y - point.y);
+        return (distanceToLine < 0 ? -distanceToLine : distanceToLine);
     }
-
-    PointBase2D<_Type> p1;
-    PointBase2D<_Type> p2;
+private:
+    PointBase2D<_Type> _position;
+    PointBase2D<_Type> _direction;
 };
 
 typedef PointBase2D<double> Point2d;
