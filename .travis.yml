@@ -29,7 +29,7 @@ matrix:
           update: true
           packages: valgrind
     - os: osx
-      env: QT_BASE=latest CMAKE_OPTIONS=""
+      env: QT_BASE=59 CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
 
 script:
