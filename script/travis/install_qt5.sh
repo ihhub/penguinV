@@ -13,7 +13,7 @@ if [[ $QT_BASE ]]; then
         cd $(brew --repository)/Library/Taps/homebrew/homebrew-core
         git fetch --unshallow
         git checkout 3b920b5 -- Formula/qt.rb # Homebrew qt 5.9.3
-        HOMEBREW_NO_AUTO_UPDATE=1 brew install qt5;
+        HOMEBREW_NO_AUTO_UPDATE=1 brew reinstall qt5;
         brew link --force qt5;
         export CMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake;
         cd ${current_dir}
