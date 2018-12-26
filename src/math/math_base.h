@@ -124,9 +124,9 @@ public:
     }
 
     // Angle is in radians
-    LineBase2D( const PointBase2D<_Type> & position_, _Type angle )
+    LineBase2D( const PointBase2D<_Type> & position_, _Type angle_ )
         : _position( position_ )
-        , _direction( std::cos(angle), std::sin(angle) )
+        , _direction( std::cos(angle_), std::sin(angle_) )
     {
     }
 
