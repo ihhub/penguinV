@@ -147,7 +147,7 @@ public:
         return *this;
     }
 
-    double angle() const
+    _Type angle() const
     {
         return std::atan2( _direction.y, _direction.x );
     }
