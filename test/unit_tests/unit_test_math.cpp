@@ -37,9 +37,19 @@ namespace pvmath
 
         return true;
     }
+    
+    bool lineConstructor()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const Point2d point1( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Point2d point2( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Line2d line( point1, point2 );
+        }
+    }
 }
 
 void addTests_Math( UnitTestFramework & framework )
 {
     framework.add(pvmath::houghTransform, "math::Hough Transform");
+    framework.add(pvmath::lineConstructor, "math::Line2d constructor");
 }
