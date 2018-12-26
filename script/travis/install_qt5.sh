@@ -10,6 +10,7 @@ if [[ $QT_BASE ]]; then
     else
         brew update;
         cd $(brew --repository)/Library/Taps/homebrew/homebrew-core
+        git fetch
         git checkout 3b920b5 Formula/qt.rb # Homebrew qt 5.9.3
         HOMEBREW_NO_AUTO_UPDATE=1 brew install qt5;
         brew link --force qt5;
