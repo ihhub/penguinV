@@ -45,6 +45,7 @@ namespace pvmath
             const Point2d point2( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
             const Line2d line( point1, point2 );
         }
+        return true;
     }
 }
 
