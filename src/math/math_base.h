@@ -171,7 +171,7 @@ public:
         return true;
     }
 
-    bool isParallel( const LineBase2D & line )
+    bool isParallel( const LineBase2D & line ) const
     {
         const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
         return pvmath::isEqual<_Type>(denominator, 0);
