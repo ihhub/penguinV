@@ -9,9 +9,9 @@ if [[ $QT_BASE ]]; then
         export CMAKE_PREFIX_PATH=/opt/qt59/lib/cmake;
     else
         brew update;
-        cd $( brew --prefix )
+        cd $(brew --repository)/Library/Taps/homebrew/homebrew-core
         git checkout 3b920b5 Library/Formula/qt.rb # Homebrew qt 5.9.3
-        brew install qt5;
+        HOMEBREW_NO_AUTO_UPDATE=1 brew install qt5;
         brew link --force qt5;
         export CMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake;
     fi
