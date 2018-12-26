@@ -136,7 +136,7 @@ public:
     }
 
     // This is translation (shift) function
-    LineBase2D operator + ( const PointBase2D<_Type> & offset )
+    LineBase2D operator + ( const PointBase2D<_Type> & offset ) const
     {
         return LineBase2D( _position + offset, angle() );
     }
