@@ -179,7 +179,7 @@ public:
 
     bool isIntersect( const LineBase2D & line ) const
     {
-        return !parallel();
+        return !parallel( line );
     }
     
     _Type distance( const PointBase2D<_Type> & point ) const
