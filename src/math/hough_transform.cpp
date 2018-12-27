@@ -4,7 +4,7 @@
 
 namespace
 {
-    const float minimumAngleStep = 0.001 * static_cast<float>( pvmath::pi ) / 180.0;
+    const float minimumAngleStep = 0.001f * static_cast<float>( pvmath::pi ) / 180.0f;
     const float minimumLineTolerance = 1e-5f;
 }
 
