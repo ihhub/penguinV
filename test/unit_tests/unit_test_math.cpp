@@ -20,7 +20,7 @@ namespace pvmath
             const _Type sinVal = sin( angle );
             const _Type cosVal = cos( angle );
 
-            for ( std::vector< PointBase2D<double> >::iterator p = point.begin(); p != point.end(); ++p ) {
+            for ( std::vector< PointBase2D<_Type> >::iterator p = point.begin(); p != point.end(); ++p ) {
                 const _Type x = Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01 ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, 0.01 );
                 const _Type y = Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, 0.01 );
 
