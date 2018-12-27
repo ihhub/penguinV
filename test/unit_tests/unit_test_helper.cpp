@@ -350,4 +350,16 @@ namespace Unit_Test
 
         return static_cast<double>(rand() % range) * stepVal + minimum;
     }
+
+    float randomValue( float minimum, float maximum, float stepVal )
+    {
+        if (minimum > maximum || stepVal < 0)
+            return minimum;
+
+        int range = static_cast<int>( (maximum - minimum) / stepVal );
+        if (range <= 0)
+            range = 1;
+
+        return static_cast<float>(rand() % range) * stepVal + minimum;
+    }
 }
