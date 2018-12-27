@@ -5,7 +5,7 @@
 
 namespace pvmath
 {
-    bool houghTransform()
+    bool houghTransform_double()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const double angle = toRadians( Unit_Test::randomValue(-180, 180, 1 ) );
@@ -14,12 +14,12 @@ namespace pvmath
             const double lineTolerance = Unit_Test::randomValue( 0.1, 5, 0.01 );
 
             const double noiseValue = lineTolerance / 2;
-            std::vector< Point2d > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
+            std::vector< PointBase2D<double> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
 
             const double sinVal = sin( angle );
             const double cosVal = cos( angle );
 
-            for ( std::vector< Point2d >::iterator p = point.begin(); p != point.end(); ++p ) {
+            for ( std::vector< PointBase2D<double> >::iterator p = point.begin(); p != point.end(); ++p ) {
                 const double x = Unit_Test::randomValue( -1000, 1000, 0.01 ) + Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
                 const double y = Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
 
@@ -27,8 +27,41 @@ namespace pvmath
                 p->y = x * sinVal + y * cosVal;
             }
 
-            std::vector< Point2d > pointOnLine;
-            std::vector< Point2d > pointOffLine;
+            std::vector< PointBase2D<double> > pointOnLine;
+            std::vector< PointBase2D<double> > pointOffLine;
+
+            if ( !Image_Function::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine ) ||
+                 !pointOffLine.empty() )
+                return false;
+        }
+
+        return true;
+    }
+
+    bool houghTransform_float()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const float angle = toRadians( Unit_Test::randomValue(-180, 180, 1 ) );
+            const float angleTolerance = Unit_Test::randomValue(0, std::abs(angle / 2.0), 0.1 );
+            const float angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
+            const float lineTolerance = Unit_Test::randomValue( 0.1, 5, 0.01 );
+
+            const float noiseValue = lineTolerance / 2;
+            std::vector< PointBase2D<float> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
+
+            const float sinVal = sin( angle );
+            const float cosVal = cos( angle );
+
+            for ( std::vector< PointBase2D<float> >::iterator p = point.begin(); p != point.end(); ++p ) {
+                const float x = Unit_Test::randomValue( -1000, 1000, 0.01 ) + Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
+                const float y = Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
+
+                p->x = x * cosVal - y * sinVal;
+                p->y = x * sinVal + y * cosVal;
+            }
+
+            std::vector< PointBase2D<float> > pointOnLine;
+            std::vector< PointBase2D<float> > pointOffLine;
 
             if ( !Image_Function::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine ) ||
                  !pointOffLine.empty() )
@@ -86,7 +119,8 @@ namespace pvmath
 
 void addTests_Math( UnitTestFramework & framework )
 {
-    framework.add(pvmath::houghTransform, "math::Hough Transform");
+    framework.add(pvmath::houghTransform_double, "math::Hough Transform double");
+    framework.add(pvmath::houghTransform_float, "math::Hough Transform float");
     framework.add(pvmath::lineConstructor, "math::Line2d constructor");
     framework.add(pvmath::parallelLine, "math::Line2d parallel lines");
     framework.add(pvmath::lineIntersection, "math::Line2d line intersection");
