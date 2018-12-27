@@ -115,6 +115,5 @@ namespace Unit_Test
         }
     }
 
-    double randomValue( double minimum, double maximum, double stepVal );
     float randomValue( float minimum, float maximum, float stepVal );
 }
