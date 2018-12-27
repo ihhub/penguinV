@@ -4,15 +4,15 @@
 
 namespace
 {
-    const float minimumAngleStep = 0.001 * pvmath::pi / 180.0;
-    const float minimumLineTolerance = 1e-5;
+    const float minimumAngleStep = 0.001 * static_cast<float>( pvmath::pi ) / 180.0;
+    const float minimumLineTolerance = 1e-5f;
 }
 
 namespace
 {
     template <typename _Type>
     bool runHoughTransform( const std::vector< PointBase2D<_Type> > & input, _Type initialAngle, _Type angleTolerance, _Type angleStep,
-                                    _Type lineTolerance, std::vector< PointBase2D<_Type> > & outOnLine, std::vector< PointBase2D<_Type> > & outOffLine )
+                            _Type lineTolerance, std::vector< PointBase2D<_Type> > & outOnLine, std::vector< PointBase2D<_Type> > & outOffLine )
     {
         // validate input data
         if ( input.size() < 2u )
