@@ -115,5 +115,16 @@ namespace Unit_Test
         }
     }
 
-    float randomValue( float minimum, float maximum, float stepVal );
+    template <typename data>
+    data randomValue( data minimum, data maximum, data stepVal )
+    {
+        if (minimum > maximum || stepVal < 0)
+            return minimum;
+
+        int range = static_cast<int>( (maximum - minimum) / stepVal );
+        if (range <= 0)
+            range = 1;
+
+        return static_cast<data>(rand() % range) * stepVal + minimum;
+    }
 }
