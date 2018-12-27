@@ -116,7 +116,7 @@ namespace Unit_Test
     }
 
     template <typename data>
-    data randomValue( data minimum, data maximum, data stepVal )
+    data randomFloatValue( data minimum, data maximum, data stepVal )
     {
         if (minimum > maximum || stepVal < 0)
             return minimum;
