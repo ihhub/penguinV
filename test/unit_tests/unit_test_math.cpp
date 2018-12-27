@@ -9,10 +9,10 @@ namespace pvmath
     bool houghTransformTemplate()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const _Type angle = toRadians( Unit_Test::randomValue(-180, 180, 1 ) );
-            const _Type angleTolerance = Unit_Test::randomValue(0, std::abs(angle / 2.0), 0.1 );
+            const _Type angle = toRadians( Unit_Test::randomValue<_Type>(-180, 180, 1 ) );
+            const _Type angleTolerance = Unit_Test::randomValue<_Type>(0, std::abs(angle / 2.0), 0.1 );
             const _Type angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
-            const _Type lineTolerance = Unit_Test::randomValue( 0.1, 5, 0.01 );
+            const _Type lineTolerance = Unit_Test::randomValue<_Type>( 0.1, 5, 0.01 );
 
             const _Type noiseValue = lineTolerance / 2;
             std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
@@ -21,8 +21,8 @@ namespace pvmath
             const _Type cosVal = cos( angle );
 
             for ( std::vector< PointBase2D<double> >::iterator p = point.begin(); p != point.end(); ++p ) {
-                const _Type x = Unit_Test::randomValue( -1000, 1000, 0.01 ) + Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
-                const _Type y = Unit_Test::randomValue( -noiseValue, noiseValue, 0.01 );
+                const _Type x = Unit_Test::randomValue<_Type>( -1000, 1000, 0.01 ) + Unit_Test::randomValue<_Type>( -noiseValue, noiseValue, 0.01 );
+                const _Type y = Unit_Test::randomValue<_Type>( -noiseValue, noiseValue, 0.01 );
 
                 p->x = x * cosVal - y * sinVal;
                 p->y = x * sinVal + y * cosVal;
