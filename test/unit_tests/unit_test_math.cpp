@@ -52,8 +52,8 @@ namespace pvmath
     bool lineConstructor()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
+            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
             const Line2d line( point1, point2 );
         }
         return true;
@@ -62,11 +62,11 @@ namespace pvmath
     bool parallelLine()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
+            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
             const Line2d line1( point1, point2 );
             
-            const Point2d offset( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Point2d offset( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
             const bool inverse = ( (i % 2) == 0 );
             const Line2d line2( (inverse ? point1 : point2) + offset, (inverse ? point2 : point1) + offset );
             if ( !line1.isParallel( line2 ) )
@@ -78,8 +78,8 @@ namespace pvmath
     bool lineIntersection()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomValue( -1000, 1000, 0.01 ), Unit_Test::randomValue( -1000, 1000, 0.01 ) );
+            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
+            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
             const Line2d line1( point1, point2 );
             
             if ( point1 == point2 )
