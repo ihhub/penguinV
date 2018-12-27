@@ -3,13 +3,6 @@
 #include <vector>
 #include "math_base.h"
 
-namespace
-{
-    template <typename _Type>
-    bool runHoughTransform( const std::vector< PointBase2D<_Type> > & input, _Type initialAngle, _Type angleTolerance, _Type angleStep,
-                                    _Type lineTolerance, std::vector< PointBase2D<_Type> > & outOnLine, std::vector< PointBase2D<_Type> > & outOffLine );
-}
-
 namespace Image_Function
 {
     bool HoughTransform( const std::vector< PointBase2D<double> > & input, double initialAngle, double angleTolerance, double angleStep,
