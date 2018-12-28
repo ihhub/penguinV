@@ -28,46 +28,31 @@ namespace Image_Function
     }
 
     template <typename TImage>
-    void VerifyRGBImage( const TImage & image1 )
+    void VerifyRGBImage( const TImage & image )
     {
-        if( image1.colorCount() != PenguinV_Image::RGB )
+        if( image.colorCount() != PenguinV_Image::RGB )
             throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
     }
 
-    template <typename TImage>
-    void VerifyRGBImage( const TImage & image1, const TImage & image2 )
+    template <typename TImage, typename... Args>
+    void VerifyRGBImage( const TImage & image, Args... args)
     {
-        if( image1.colorCount() != PenguinV_Image::RGB || image2.colorCount() != PenguinV_Image::RGB )
-            throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
+        VerifyRGBImage( image );
+        VerifyRGBImage( args... );
     }
 
     template <typename TImage>
-    void VerifyRGBImage( const TImage & image1, const TImage & image2, const TImage & image3 )
+    void VerifyGrayScaleImage( const TImage & image )
     {
-        if( image1.colorCount() != PenguinV_Image::RGB || image2.colorCount() != PenguinV_Image::RGB || image3.colorCount() != PenguinV_Image::RGB )
-            throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
-    }
-
-    template <typename TImage>
-    void VerifyGrayScaleImage( const TImage & image1 )
-    {
-        if( image1.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
             throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 
-    template <typename TImage>
-    void VerifyGrayScaleImage( const TImage & image1, const TImage & image2 )
+    template <typename TImage, typename... Args>
+    void VerifyGrayScaleImage( const TImage & image, Args... args)
     {
-        if( image1.colorCount() != PenguinV_Image::GRAY_SCALE || image2.colorCount() != PenguinV_Image::GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
-    }
-
-    template <typename TImage>
-    void VerifyGrayScaleImage( const TImage & image1, const TImage & image2, const TImage & image3 )
-    {
-        if( image1.colorCount() != PenguinV_Image::GRAY_SCALE || image2.colorCount() != PenguinV_Image::GRAY_SCALE ||
-            image3.colorCount() != PenguinV_Image::GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
+        VerifyGrayScaleImage( image );
+        VerifyGrayScaleImage( args... );
     }
 
     template <typename TImage>
