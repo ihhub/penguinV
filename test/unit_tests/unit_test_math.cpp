@@ -10,7 +10,7 @@ namespace pvmath
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
-            const _Type angleTolerance = Unit_Test::randomFloatValue<_Type>(0.0f, std::abs(angle / 2.0f), 0.1f );
+            const _Type angleTolerance = Unit_Test::randomFloatValue<_Type>( 0, 10, 0.1f ) + 0.1f;
             const _Type angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
             const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
 
