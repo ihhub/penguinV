@@ -14,7 +14,7 @@ namespace pvmath
             const _Type angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
             const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
 
-            const _Type noiseValue = lineTolerance / 3;
+            const _Type noiseValue = lineTolerance / 2;
             std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
 
             const _Type sinVal = sin( angle );
