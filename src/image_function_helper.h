@@ -218,7 +218,7 @@ namespace Image_Function_Helper
         typedef void  (*SobelForm2)( const Image & in, Image & out );
         typedef Image (*SobelForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
         typedef void  (*SobelForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                 uint32_t width, uint32_t height );
+                                     uint32_t width, uint32_t height );
 
         typedef void ( *AbsoluteDifference )(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
