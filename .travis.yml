@@ -34,8 +34,11 @@ matrix:
 
 before_script:
   # Let CMake generate build files
-  - mkdir -p build && cd build
-  - cmake .. ${CMAKE_OPTIONS}
+  - |
+    if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
+      mkdir -p build && cd build
+      cmake .. ${CMAKE_OPTIONS}
+    fi
 
 script:
   - |
