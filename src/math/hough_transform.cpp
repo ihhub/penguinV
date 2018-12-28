@@ -75,10 +75,13 @@ namespace
                 }
             }
 
-            if ( highestPointCount < onLinePointCount ) {
-                highestPointCount = onLinePointCount;
-                bestAngleId = angleId;
-                averageDistance = (distanceToLine[initialPointId + onLinePointCount - 1u] + distanceToLine[initialPointId]) / 2;
+            if ( highestPointCount <= onLinePointCount ) {
+                const _Type currentDistance = (distanceToLine[initialPointId + onLinePointCount - 1u] + distanceToLine[initialPointId]) / 2;
+                if ( highestPointCount < onLinePointCount || std::abs( currentDistance ) < std::abs( averageDistance ) ) {
+                    highestPointCount = onLinePointCount;
+                    bestAngleId = angleId;
+                    averageDistance = currentDistance;
+                }
             }
         }
 
