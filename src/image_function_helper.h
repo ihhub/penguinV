@@ -459,7 +459,7 @@ namespace Image_Function_Helper
 
     struct FunctionTableHolder
     {
-        FunctionTable::AbsoluteDifferenceForm3 AbsoluteDifference = nullptr;
+        FunctionTable::AbsoluteDifferenceForm4 AbsoluteDifference = nullptr;
         FunctionTable::AccumulateForm2         Accumulate         = nullptr;
         FunctionTable::BitwiseAndForm4         BitwiseAnd         = nullptr;
         FunctionTable::BitwiseOrForm4          BitwiseOr          = nullptr;
