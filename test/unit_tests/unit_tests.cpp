@@ -25,13 +25,8 @@ int main( int argc, char * argv[] )
     UnitTestFramework framework;
 
     // We add tests
-    addTests_Bitmap         ( framework );
-    addTests_Blob_Detection ( framework );
-    addTests_Edge_Detection ( framework );
-    addTests_Image_Buffer   ( framework );
-    addTests_Image_Function ( framework );
+    
     addTests_Math           ( framework );
-    addTests_FFT            ( framework );
 
     // Just run the framework what will handle all tests
     return framework.run();
