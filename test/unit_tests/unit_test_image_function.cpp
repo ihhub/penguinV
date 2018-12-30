@@ -65,7 +65,6 @@ namespace
     };
 }
 
-
 namespace Function_Template
 {
     using namespace PenguinV_Image;
@@ -1843,7 +1842,7 @@ struct Register_##functionWrapper                                               
 const Register_##functionWrapper registrator_##functionWrapper( isSupported );
 
 #define DECLARE_FUNCTION_BODY( functionCall )                       \
-    for( uint32_t i = 0; i < Function_Template::runCount(); ++i ) { \
+    for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {         \
         PrepareFunction(namespaceName);                             \
         const bool returnValue = functionCall;                      \
         CleanupFunction(namespaceName);                             \
