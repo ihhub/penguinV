@@ -65,7 +65,6 @@ namespace
     };
 }
 
-
 namespace Function_Template_Unit_Test
 {
     using namespace PenguinV_Image;
