@@ -32,6 +32,14 @@ matrix:
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
 
+before_script:
+  # Let CMake generate build files
+  - |
+    if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
+      mkdir -p build && cd build
+      cmake .. ${CMAKE_OPTIONS}
+    fi
+
 script:
   - |
     if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
@@ -41,10 +49,10 @@ script:
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
     else
-      mkdir -p build
-      cd build
-      cmake .. ${CMAKE_OPTIONS}
+      # Build and run tests
+      set -e
       cmake --build .
+      set +e
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
         ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
       else

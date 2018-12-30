@@ -4,14 +4,15 @@
 
 namespace
 {
-    const double minimumAngleStep = 0.001 * pvmath::pi / 180.0;
-    const double minimumLineTolerance = 1e-5;
+    const float minimumAngleStep = 0.001f * static_cast<float>( pvmath::pi ) / 180.0f;
+    const float minimumLineTolerance = 1e-5f;
 }
 
-namespace Image_Function
+namespace
 {
-    bool HoughTransform( const std::vector< Point2d > & input, double initialAngle, double angleTolerance, double angleStep,
-                         double lineTolerance, std::vector< Point2d > & outOnLine, std::vector< Point2d > & outOffLine )
+    template <typename _Type>
+    bool runHoughTransform( const std::vector< PointBase2D<_Type> > & input, _Type initialAngle, _Type angleTolerance, _Type angleStep,
+                            _Type lineTolerance, std::vector< PointBase2D<_Type> > & outOnLine, std::vector< PointBase2D<_Type> > & outOffLine )
     {
         // validate input data
         if ( input.size() < 2u )
@@ -31,25 +32,25 @@ namespace Image_Function
 
         // find a range of search
         const int angleStepPerSide = static_cast<int>((angleTolerance / angleStep) + 0.5);
-        const double lineToleranceRange = lineTolerance * 2;
+        const _Type lineToleranceRange = lineTolerance * 2;
 
         const size_t inputPointCount = input.size();
-        std::vector < double > distanceToLine ( inputPointCount );
+        std::vector < _Type > distanceToLine ( inputPointCount );
 
         int bestAngleId = -angleStepPerSide;
         size_t highestPointCount = 0u;
-        double averageDistance = 0;
+        _Type averageDistance = 0;
 
-        double angleVal = -(initialAngle - angleStep * angleStepPerSide); // this should be an opposite angle
+        _Type angleVal = -(initialAngle - angleStep * angleStepPerSide); // this should be an opposite angle
 
         for ( int angleId = -angleStepPerSide; angleId <= angleStepPerSide; ++angleId, angleVal -= angleStep ) {
-            const double cosVal = cos( angleVal );
-            const double sinVal = sin( angleVal );
+            const _Type cosVal = cos( angleVal );
+            const _Type sinVal = sin( angleVal );
 
             // find and sort distances
-            double * distanceVal = distanceToLine.data();
-            const Point2d * point = input.data();
-            const Point2d * pointEnd = point + inputPointCount;
+            _Type * distanceVal = distanceToLine.data();
+            const PointBase2D<_Type> * point = input.data();
+            const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
             for ( ; point != pointEnd; ++point, ++distanceVal )
                 (*distanceVal) = point->x * sinVal + point->y * cosVal;
@@ -61,7 +62,7 @@ namespace Image_Function
             size_t onLinePointCount = 1u;
 
             for ( size_t pointId = 0u, endPointId = 1u; endPointId < inputPointCount; ++pointId ) {
-                const double tolerance = lineToleranceRange + distanceToLine[pointId];
+                const _Type tolerance = lineToleranceRange + distanceToLine[pointId];
 
                 for ( ; endPointId < inputPointCount; ++endPointId ) {
                     if ( tolerance < distanceToLine[endPointId] )
@@ -74,10 +75,13 @@ namespace Image_Function
                 }
             }
 
-            if ( highestPointCount < onLinePointCount ) {
-                highestPointCount = onLinePointCount;
-                bestAngleId = angleId;
-                averageDistance = (distanceToLine[initialPointId + onLinePointCount - 1u] + distanceToLine[initialPointId]) / 2;
+            if ( highestPointCount <= onLinePointCount ) {
+                const _Type currentDistance = (distanceToLine[initialPointId + onLinePointCount - 1u] + distanceToLine[initialPointId]) / 2;
+                if ( highestPointCount < onLinePointCount || std::abs( currentDistance ) < std::abs( averageDistance ) ) {
+                    highestPointCount = onLinePointCount;
+                    bestAngleId = angleId;
+                    averageDistance = currentDistance;
+                }
             }
         }
 
@@ -86,16 +90,16 @@ namespace Image_Function
 
         angleVal = -(initialAngle + angleStep * bestAngleId);
 
-        const double minDistance = averageDistance - lineTolerance;
-        const double maxDistance = averageDistance + lineTolerance;
+        const _Type minDistance = averageDistance - lineTolerance;
+        const _Type maxDistance = averageDistance + lineTolerance;
 
         // sort points
-        const double cosVal = cos( angleVal );
-        const double sinVal = sin( angleVal );
+        const _Type cosVal = cos( angleVal );
+        const _Type sinVal = sin( angleVal );
 
-        double * distanceVal = distanceToLine.data();
-        const Point2d * point = input.data();
-        const Point2d * pointEnd = point + inputPointCount;
+        _Type * distanceVal = distanceToLine.data();
+        const PointBase2D<_Type> * point = input.data();
+        const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
         for ( ; point != pointEnd; ++point, ++distanceVal ) {
             (*distanceVal) = point->x * sinVal + point->y * cosVal;
@@ -107,5 +111,20 @@ namespace Image_Function
         }
 
         return true;
+    }
+}
+
+namespace Image_Function
+{
+    bool HoughTransform( const std::vector< PointBase2D<double> > & input, double initialAngle, double angleTolerance, double angleStep,
+                         double lineTolerance, std::vector< PointBase2D<double> > & outOnLine, std::vector< PointBase2D<double> > & outOffLine )
+    {
+        return runHoughTransform<double>(input, initialAngle, angleTolerance, angleStep, lineTolerance, outOnLine, outOffLine);
+    }
+
+    bool HoughTransform( const std::vector< PointBase2D<float> > & input, float initialAngle, float angleTolerance, float angleStep,
+                         float lineTolerance, std::vector< PointBase2D<float> > & outOnLine, std::vector< PointBase2D<float> > & outOffLine )
+    {
+        return runHoughTransform<float>(input, initialAngle, angleTolerance, angleStep, lineTolerance, outOnLine, outOffLine);
     }
 }

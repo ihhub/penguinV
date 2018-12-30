@@ -5,7 +5,9 @@
 
 namespace Image_Function
 {
-    // All input data for angles are in radians, line tolerance is in user-defined {Point2d} coordinate system units (usually pixels)
-    bool HoughTransform( const std::vector< Point2d > & input, double initialAngle, double angleTolerance, double angleStep, double lineTolerance,
-                         std::vector< Point2d > & outOnLine, std::vector< Point2d > & outOffLine );
+    bool HoughTransform( const std::vector< PointBase2D<double> > & input, double initialAngle, double angleTolerance, double angleStep,
+                         double lineTolerance, std::vector< PointBase2D<double> > & outOnLine, std::vector< PointBase2D<double> > & outOffLine );
+
+    bool HoughTransform( const std::vector< PointBase2D<float> > & input, float initialAngle, float angleTolerance, float angleStep,
+                         float lineTolerance, std::vector< PointBase2D<float> > & outOnLine, std::vector< PointBase2D<float> > & outOffLine );
 }

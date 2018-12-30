@@ -338,16 +338,4 @@ namespace Unit_Test
         if ( count > 0u )
             testRunCount = count;
     }
-
-    double randomValue( double minimum, double maximum, double stepVal )
-    {
-        if (minimum > maximum || stepVal < 0)
-            return minimum;
-
-        int range = static_cast<int>( (maximum - minimum) / stepVal );
-        if (range <= 0)
-            range = 1;
-
-        return static_cast<double>(rand() % range) * stepVal + minimum;
-    }
 }
