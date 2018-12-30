@@ -66,7 +66,7 @@ namespace
 }
 
 
-namespace Function_Template_Unit_Test
+namespace Function_Template
 {
     using namespace PenguinV_Image;
     using namespace Unit_Test;
@@ -1843,7 +1843,7 @@ struct Register_##functionWrapper                                               
 const Register_##functionWrapper registrator_##functionWrapper( isSupported );
 
 #define DECLARE_FUNCTION_BODY( functionCall )                       \
-    for( uint32_t i = 0; i < Function_Template_Unit_Test::runCount(); ++i ) { \
+    for( uint32_t i = 0; i < Function_Template::runCount(); ++i ) { \
         PrepareFunction(namespaceName);                             \
         const bool returnValue = functionCall;                      \
         CleanupFunction(namespaceName);                             \
@@ -1853,30 +1853,30 @@ const Register_##functionWrapper registrator_##functionWrapper( isSupported );
     return true;
 
 #define SET_FUNCTION_1_FORMS( function )                                                                 \
-    bool type1_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form1_##function( function ) ) } \
+    bool type1_##function() { DECLARE_FUNCTION_BODY( Function_Template::form1_##function( function ) ) } \
     FUNCTION_REGISTRATION( function, type1_##function, 1 )
 
 #define SET_FUNCTION_2_FORMS( function )                                                                 \
     SET_FUNCTION_1_FORMS( function )                                                                     \
-    bool type2_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form2_##function( function ) ) } \
+    bool type2_##function() { DECLARE_FUNCTION_BODY( Function_Template::form2_##function( function ) ) } \
     FUNCTION_REGISTRATION( function, type2_##function, 2 )
 
 #define SET_FUNCTION_3_FORMS( function )                                                                 \
     SET_FUNCTION_2_FORMS( function )                                                                     \
-    bool type3_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form3_##function( function ) ) } \
+    bool type3_##function() { DECLARE_FUNCTION_BODY( Function_Template::form3_##function( function ) ) } \
     FUNCTION_REGISTRATION( function, type3_##function, 3 )
 
 #define SET_FUNCTION_4_FORMS( function )                                                                 \
     SET_FUNCTION_3_FORMS( function )                                                                     \
-    bool type4_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form4_##function( function ) ) } \
+    bool type4_##function() { DECLARE_FUNCTION_BODY( Function_Template::form4_##function( function ) ) } \
     FUNCTION_REGISTRATION( function, type4_##function, 4 )
 
 #define SET_FUNCTION_8_FORMS( function )                                                                 \
     SET_FUNCTION_4_FORMS( function )                                                                     \
-    bool type5_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form5_##function( function ) ) } \
-    bool type6_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form6_##function( function ) ) } \
-    bool type7_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form7_##function( function ) ) } \
-    bool type8_##function() { DECLARE_FUNCTION_BODY( Function_Template_Unit_Test::form8_##function( function ) ) } \
+    bool type5_##function() { DECLARE_FUNCTION_BODY( Function_Template::form5_##function( function ) ) } \
+    bool type6_##function() { DECLARE_FUNCTION_BODY( Function_Template::form6_##function( function ) ) } \
+    bool type7_##function() { DECLARE_FUNCTION_BODY( Function_Template::form7_##function( function ) ) } \
+    bool type8_##function() { DECLARE_FUNCTION_BODY( Function_Template::form8_##function( function ) ) } \
     FUNCTION_REGISTRATION( function, type5_##function, 5 )                                               \
     FUNCTION_REGISTRATION( function, type6_##function, 6 )                                               \
     FUNCTION_REGISTRATION( function, type7_##function, 7 )                                               \
