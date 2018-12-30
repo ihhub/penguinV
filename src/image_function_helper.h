@@ -8,340 +8,490 @@ namespace Image_Function_Helper
 
     namespace FunctionTable
     {
-        typedef void ( *AbsoluteDifference )(const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *Accumulate )       (const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                            std::vector < uint32_t > & result);
-        typedef void ( *BitwiseAnd )       (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *BitwiseOr )        (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *BitwiseXor )       (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *ConvertToGrayScale )(const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *ConvertToRgb )     (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *Copy )             (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *ExtractChannel )   (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                                            uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId);
-        typedef void ( *Fill )             (Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value);
-        typedef void ( *Flip )             (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height, bool horizontal, bool vertical);
-        typedef void ( *GammaCorrection )  (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height, double a, double gamma);
-        typedef uint8_t ( *GetPixel )      (const Image & image, uint32_t x, uint32_t y);
-        typedef void ( *Histogram )        (const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                            std::vector < uint32_t > & histogram);
-        typedef void ( *Invert )           (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef bool ( *IsEqual )          (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *LookupTable )      (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height, const std::vector < uint8_t > & table);
-        typedef void ( *Maximum )          (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *Merge )            (const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2,
-                                            uint32_t startXIn2, uint32_t startYIn2, const Image & in3, uint32_t startXIn3, uint32_t startYIn3,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *Minimum )          (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef void ( *Normalize )        (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *ProjectionProfile )(const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                                            std::vector < uint32_t > & projection);
-        typedef void ( *Resize )           (const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut);
-        typedef void ( *RgbToBgr )         (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *SetPixel )         (Image & image, uint32_t x, uint32_t y, uint8_t value);
-        typedef void ( *SetPixel2 )        (Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value);
-        typedef void ( *Shift)             ( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                             uint32_t width, uint32_t height, double shiftX, double shiftY );
-        typedef void ( *Split )            (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
-                                            Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
-                                            uint32_t width, uint32_t height);
-        typedef void ( *Subtract )         (const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                                            Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height);
-        typedef uint32_t ( *Sum )          (const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height);
-        typedef void ( *Threshold )        (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height, uint8_t threshold);
-        typedef void ( *Threshold2 )       (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold);
-        typedef void ( *Transpose )        (const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                                            uint32_t width, uint32_t height);
+        // Function pointer definitions
+        typedef Image (*AbsoluteDifferenceForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*AbsoluteDifferenceForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*AbsoluteDifferenceForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                                  uint32_t width, uint32_t height );
+        typedef void  (*AbsoluteDifferenceForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef void (*AccumulateForm1)( const Image & image, std::vector < uint32_t > & result );
+        typedef void (*AccumulateForm2)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result );
+
+        typedef void (*BinaryDilateForm1)( Image & image, uint32_t dilationX, uint32_t dilationY );
+        typedef void (*BinaryDilateForm2)( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY );
+
+        typedef void (*BinaryErodeForm1)( Image & image, uint32_t erosionX, uint32_t erosionY );
+        typedef void (*BinaryErodeForm2)( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t erosionX, uint32_t erosionY );
+
+        typedef Image (*BitwiseAndForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*BitwiseAndForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*BitwiseAndForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                          uint32_t width, uint32_t height );
+        typedef void  (*BitwiseAndForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                          Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef Image (*BitwiseOrForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*BitwiseOrForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*BitwiseOrForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                         uint32_t width, uint32_t height );
+        typedef void  (*BitwiseOrForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                         Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef Image (*BitwiseXorForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*BitwiseXorForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*BitwiseXorForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                          uint32_t width, uint32_t height );
+        typedef void  (*BitwiseXorForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                          Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef Image (*ConvertToGrayScaleForm1)( const Image & in );
+        typedef void  (*ConvertToGrayScaleForm2)( const Image & in, Image & out );
+        typedef Image (*ConvertToGrayScaleForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*ConvertToGrayScaleForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                                  uint32_t width, uint32_t height );
+
+        typedef Image (*ConvertToRgbForm1)( const Image & in );
+        typedef void  (*ConvertToRgbForm2)( const Image & in, Image & out );
+        typedef Image (*ConvertToRgbForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*ConvertToRgbForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                            uint32_t width, uint32_t height );
+
+        typedef void  (*CopyForm1)( const Image & in, Image & out );
+        typedef Image (*CopyForm2)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*CopyForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                    uint32_t width, uint32_t height );
+
+        typedef Image (*ExtractChannelForm1)( const Image & in, uint8_t channelId );
+        typedef void  (*ExtractChannelForm2)( const Image & in, Image & out, uint8_t channelId );
+        typedef Image (*ExtractChannelForm3)( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId );
+        typedef void  (*ExtractChannelForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                                              uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId );
+
+        typedef void (*FillForm1)( Image & image, uint8_t value );
+        typedef void (*FillForm2)( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+
+        typedef Image (*FlipForm1)( const Image & in, bool horizontal, bool vertical );
+        typedef void  (*FlipForm2)( const Image & in, Image & out, bool horizontal, bool vertical );
+        typedef Image (*FlipForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                                    bool horizontal, bool vertical );
+        typedef void  (*FlipForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                    uint32_t width, uint32_t height, bool horizontal, bool vertical );
+
+        typedef Image (*GammaCorrectionForm1)( const Image & in, double a, double gamma );
+        typedef void  (*GammaCorrectionForm2)( const Image & in, Image & out, double a, double gamma );
+        typedef Image (*GammaCorrectionForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
+        typedef void  (*GammaCorrectionForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                               uint32_t width, uint32_t height, double a, double gamma );
+
+        typedef uint8_t (*GetPixelForm1)( const Image & image, uint32_t x, uint32_t y );
+
+        typedef uint8_t (*GetThresholdForm1)( const std::vector < uint32_t > & histogram );
+
+        typedef std::vector < uint32_t > (*HistogramForm1)( const Image & image );
+        typedef void                     (*HistogramForm2)( const Image & image, std::vector < uint32_t > & histogram );
+        typedef std::vector < uint32_t > (*HistogramForm3)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
+        typedef void                     (*HistogramForm4)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                                                            std::vector < uint32_t > & histogram );
+
+        typedef Image (*InvertForm1)( const Image & in );
+        typedef void  (*InvertForm2)( const Image & in, Image & out );
+        typedef Image (*InvertForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*InvertForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                      uint32_t width, uint32_t height );
+
+        typedef bool (*IsBinaryForm1)( const Image & image );
+        typedef bool (*IsBinaryForm2)( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height );
+
+        typedef bool (*IsEqualForm1)( const Image & in1, const Image & in2 );
+        typedef bool (*IsEqualForm2)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                      uint32_t width, uint32_t height );
+
+        typedef Image (*LookupTableForm1)( const Image & in, const std::vector < uint8_t > & table );
+        typedef void  (*LookupTableForm2)( const Image & in, Image & out, const std::vector < uint8_t > & table );
+        typedef Image (*LookupTableForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                                           const std::vector < uint8_t > & table );
+        typedef void  (*LookupTableForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                           uint32_t width, uint32_t height, const std::vector < uint8_t > & table );
+
+        typedef Image (*MaximumForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*MaximumForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*MaximumForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                       uint32_t width, uint32_t height );
+        typedef void  (*MaximumForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef Image (*MergeForm1)( const Image & in1, const Image & in2, const Image & in3 );
+        typedef void  (*MergeForm2)( const Image & in1, const Image & in2, const Image & in3, Image & out );
+        typedef Image (*MergeForm3)( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                                     const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height );
+        typedef void  (*MergeForm4)( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                                     const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                     uint32_t width, uint32_t height );
+
+        typedef Image (*MinimumForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*MinimumForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*MinimumForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                       uint32_t width, uint32_t height );
+        typedef void  (*MinimumForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef Image (*NormalizeForm1)( const Image & in );
+        typedef void  (*NormalizeForm2)( const Image & in, Image & out );
+        typedef Image (*NormalizeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*NormalizeForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
+        typedef std::vector < uint32_t > (*ProjectionProfileForm1)( const Image & image, bool horizontal );
+        typedef void                     (*ProjectionProfileForm2)( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+        typedef std::vector < uint32_t > (*ProjectionProfileForm3)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
+        typedef void                     (*ProjectionProfileForm4)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                                    std::vector < uint32_t > & projection );
+
+        typedef Image (*ResizeForm1)( const Image & in, uint32_t widthOut, uint32_t heightOut );
+        typedef void  (*ResizeForm2)( const Image & in, Image & out );
+        typedef Image (*ResizeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+                                      uint32_t widthOut, uint32_t heightOut );
+        typedef void  (*ResizeForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+                                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
+
+        typedef Image (*RgbToBgrForm1)( const Image & in );
+        typedef void  (*RgbToBgrForm2)( const Image & in, Image & out );
+        typedef Image (*RgbToBgrForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                        uint32_t width, uint32_t height );
+
+        typedef void (*Rotate)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+
+        typedef void (*SetPixelForm1)( Image & image, uint32_t x, uint32_t y, uint8_t value );
+        typedef void (*SetPixelForm2)( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
+
+        typedef Image (*ShiftForm1)( const Image & in, double shiftX, double shiftY );
+        typedef void  (*ShiftForm2)( const Image & in, Image & out, double shiftX, double shiftY );
+        typedef Image (*ShiftForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+        typedef void  (*ShiftForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                     uint32_t width, uint32_t height, double shiftX, double shiftY );
+
+        typedef void (*SplitForm1)( const Image & in, Image & out1, Image & out2, Image & out3 );
+        typedef void (*SplitForm2)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                                    Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                                    uint32_t width, uint32_t height );
+
+        typedef Image (*SubtractForm1)( const Image & in1, const Image & in2 );
+        typedef void  (*SubtractForm2)( const Image & in1, const Image & in2, Image & out );
+        typedef Image (*SubtractForm3)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                        uint32_t width, uint32_t height );
+        typedef void  (*SubtractForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                                        Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+        typedef uint32_t (*SumForm1)( const Image & image );
+        typedef uint32_t (*SumForm2)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
+
+        typedef Image (*ThresholdForm1)( const Image & in, uint8_t threshold );
+        typedef void  (*ThresholdForm2)( const Image & in, Image & out, uint8_t threshold );
+        typedef Image (*ThresholdForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold );
+        typedef void  (*ThresholdForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height, uint8_t threshold );
+
+        typedef Image (*ThresholdDoubleForm1)( const Image & in, uint8_t minThreshold, uint8_t maxThreshold );
+        typedef void  (*ThresholdDoubleForm2)( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
+        typedef Image (*ThresholdDoubleForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
+                                               uint8_t maxThreshold );
+        typedef void  (*ThresholdDoubleForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                               uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
+
+        typedef Image (*TransposeForm1)( const Image & in );
+        typedef void  (*TransposeForm2)( const Image & in, Image & out );
+        typedef Image (*TransposeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*TransposeForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
+        // Filters
+        typedef Image (*PrewittForm1)( const Image & in );
+        typedef void  (*PrewittForm2)( const Image & in, Image & out );
+        typedef Image (*PrewittForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*PrewittForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                       uint32_t width, uint32_t height );
+
+        typedef Image (*SobelForm1)( const Image & in );
+        typedef void  (*SobelForm2)( const Image & in, Image & out );
+        typedef Image (*SobelForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*SobelForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                     uint32_t width, uint32_t height );
     }
 
-    Image AbsoluteDifference( FunctionTable::AbsoluteDifference absoluteDifference,
+    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
                               const Image & in1, const Image & in2 );
 
-    void AbsoluteDifference( FunctionTable::AbsoluteDifference absoluteDifference,
+    void AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
                              const Image & in1, const Image & in2, Image & out );
 
-    Image AbsoluteDifference( FunctionTable::AbsoluteDifference absoluteDifference,
+    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
                               const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                               uint32_t width, uint32_t height );
 
-    void Accumulate( FunctionTable::Accumulate accumulate,
+    void Accumulate( FunctionTable::AccumulateForm2 accumulate,
                      const Image & image, std::vector < uint32_t > & result );
 
-    Image BitwiseAnd( FunctionTable::BitwiseAnd bitwiseAnd,
+    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
                       const Image & in1, const Image & in2 );
 
-    void BitwiseAnd( FunctionTable::BitwiseAnd bitwiseAnd,
+    void BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
                      const Image & in1, const Image & in2, Image & out );
 
-    Image BitwiseAnd( FunctionTable::BitwiseAnd bitwiseAnd,
+    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
                       const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height );
 
-    Image BitwiseOr( FunctionTable::BitwiseOr bitwiseOr,
+    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
                      const Image & in1, const Image & in2 );
 
-    void BitwiseOr( FunctionTable::BitwiseOr bitwiseOr,
+    void BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
                     const Image & in1, const Image & in2, Image & out );
 
-    Image BitwiseOr( FunctionTable::BitwiseOr bitwiseOr,
+    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
                      const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      uint32_t width, uint32_t height );
 
-    Image BitwiseXor( FunctionTable::BitwiseXor bitwiseXor,
+    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
                       const Image & in1, const Image & in2 );
 
-    void BitwiseXor( FunctionTable::BitwiseXor bitwiseXor,
+    void BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
                      const Image & in1, const Image & in2, Image & out );
 
-    Image BitwiseXor( FunctionTable::BitwiseXor bitwiseXor,
+    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
                       const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height );
 
-    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScale convertToGrayScale,
+    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
                               const Image & in );
 
-    void ConvertToGrayScale( FunctionTable::ConvertToGrayScale convertToGrayScale,
+    void ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
                              const Image & in, Image & out );
 
-    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScale convertToGrayScale,
+    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
                               const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    Image ConvertToRgb( FunctionTable::ConvertToRgb convertToRgb,
+    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
                         const Image & in );
 
-    void ConvertToRgb( FunctionTable::ConvertToRgb convertToRgb,
+    void ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
                        const Image & in, Image & out );
 
-    Image ConvertToRgb( FunctionTable::ConvertToRgb convertToRgb,
+    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
                         const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    Image Copy( FunctionTable::Copy copy,
+    Image Copy( FunctionTable::CopyForm3 copy,
                 const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    Image ExtractChannel( FunctionTable::ExtractChannel extractChannel,
+    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
                           const Image & in, uint8_t channelId );
 
-    void ExtractChannel( FunctionTable::ExtractChannel extractChannel,
+    void ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
                          const Image & in, Image & out, uint8_t channelId );
 
-    Image ExtractChannel( FunctionTable::ExtractChannel extractChannel,
+    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
                           const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId );
 
-    Image Flip( FunctionTable::Flip flip,
+    Image Flip( FunctionTable::FlipForm4 flip,
                 const Image & in, bool horizontal, bool vertical );
 
-    void Flip( FunctionTable::Flip flip,
+    void Flip( FunctionTable::FlipForm4 flip,
                const Image & in, Image & out, bool horizontal, bool vertical );
 
-    Image Flip( FunctionTable::Flip flip,
+    Image Flip( FunctionTable::FlipForm4 flip,
                 const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
                 bool horizontal, bool vertical );
 
-    Image GammaCorrection( FunctionTable::GammaCorrection gammaCorrection,
+    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
                            const Image & in, double a, double gamma );
 
-    void GammaCorrection( FunctionTable::GammaCorrection gammaCorrection,
+    void GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
                           const Image & in, Image & out, double a, double gamma );
 
-    Image GammaCorrection( FunctionTable::GammaCorrection gammaCorrection,
+    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
                            const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
 
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
-    std::vector < uint32_t > Histogram( FunctionTable::Histogram histogram,
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
                                         const Image & image );
 
-    void Histogram( FunctionTable::Histogram histogram,
+    void Histogram( FunctionTable::HistogramForm4 histogram,
                     const Image & image, std::vector < uint32_t > & histogramTable );
 
-    std::vector < uint32_t > Histogram( FunctionTable::Histogram histogram,
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
                                         const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
 
-    Image Invert( FunctionTable::Invert invert,
+    Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in );
 
-    void Invert( FunctionTable::Invert invert,
+    void Invert( FunctionTable::InvertForm4 invert,
                  const Image & in, Image & out );
 
-    Image Invert( FunctionTable::Invert invert,
+    Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    Image LookupTable( FunctionTable::LookupTable lookupTable,
+    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, const std::vector < uint8_t > & table );
 
-    void LookupTable( FunctionTable::LookupTable lookupTable,
+    void LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                       const Image & in, Image & out, const std::vector < uint8_t > & table );
 
-    Image LookupTable( FunctionTable::LookupTable lookupTable,
+    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
                        const std::vector < uint8_t > & table );
 
-    Image Maximum( FunctionTable::Maximum maximum,
+    Image Maximum( FunctionTable::MaximumForm4 maximum,
                    const Image & in1, const Image & in2 );
 
-    void Maximum( FunctionTable::Maximum maximum,
+    void Maximum( FunctionTable::MaximumForm4 maximum,
                   const Image & in1, const Image & in2, Image & out );
 
-    Image Maximum( FunctionTable::Maximum maximum,
+    Image Maximum( FunctionTable::MaximumForm4 maximum,
                    const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height );
 
-    Image Merge( FunctionTable::Merge merge,
+    Image Merge( FunctionTable::MergeForm4 merge,
                  const Image & in1, const Image & in2, const Image & in3 );
 
-    void Merge( FunctionTable::Merge merge,
+    void Merge( FunctionTable::MergeForm4 merge,
                 const Image & in1, const Image & in2, const Image & in3, Image & out );
 
-    Image Merge( FunctionTable::Merge merge,
+    Image Merge( FunctionTable::MergeForm4 merge,
                  const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
                  const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height );
 
-    Image Minimum( FunctionTable::Minimum minimum,
+    Image Minimum( FunctionTable::MinimumForm4 minimum,
                    const Image & in1, const Image & in2 );
 
-    void Minimum( FunctionTable::Minimum minimum,
+    void Minimum( FunctionTable::MinimumForm4 minimum,
                   const Image & in1, const Image & in2, Image & out );
 
-    Image Minimum( FunctionTable::Minimum minimum,
+    Image Minimum( FunctionTable::MinimumForm4 minimum,
                    const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height );
 
-    Image Normalize( FunctionTable::Normalize normalize,
+    Image Normalize( FunctionTable::NormalizeForm4 normalize,
                      const Image & in );
 
-    void Normalize( FunctionTable::Normalize normalize,
+    void Normalize( FunctionTable::NormalizeForm4 normalize,
                     const Image & in, Image & out );
 
-    Image Normalize( FunctionTable::Normalize normalize,
+    Image Normalize( FunctionTable::NormalizeForm4 normalize,
                      const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfile projectionProfile,
+    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
                                                 const Image & image, bool horizontal );
 
-    void ProjectionProfile( FunctionTable::ProjectionProfile projectionProfile,
+    void ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
                             const Image & image, bool horizontal, std::vector < uint32_t > & projection );
 
-    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfile projectionProfile,
+    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
                                                 const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
 
-    Image Resize( FunctionTable::Resize resize,
+    Image Resize( FunctionTable::ResizeForm4 resize,
                   const Image & in, uint32_t widthOut, uint32_t heightOut );
 
-    void Resize( FunctionTable::Resize resize,
+    void Resize( FunctionTable::ResizeForm4 resize,
                  const Image & in, Image & out );
 
-    Image Resize( FunctionTable::Resize resize,
+    Image Resize( FunctionTable::ResizeForm4 resize,
                   const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
                   uint32_t widthOut, uint32_t heightOut );
 
-    Image RgbToBgr( FunctionTable::RgbToBgr rgbToBgr,
+    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in );
 
-    void RgbToBgr( FunctionTable::RgbToBgr rgbToBgr,
+    void RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                   const Image & in, Image & out );
 
-    Image RgbToBgr( FunctionTable::RgbToBgr rgbToBgr,
+    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
-    Image Shift( FunctionTable::Shift shift,
+    Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY );
-    void  Shift( FunctionTable::Shift shift,
+
+    void  Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, Image & out, double shiftX, double shiftY );
-    Image Shift( FunctionTable::Shift shift,
+
+    Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
 
-    Image Subtract( FunctionTable::Subtract subtract,
+    Image Subtract( FunctionTable::SubtractForm4 subtract,
                     const Image & in1, const Image & in2 );
 
-    void Subtract( FunctionTable::Subtract subtract,
+    void Subtract( FunctionTable::SubtractForm4 subtract,
                    const Image & in1, const Image & in2, Image & out );
 
-    Image Subtract( FunctionTable::Subtract subtract,
+    Image Subtract( FunctionTable::SubtractForm4 subtract,
                     const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     uint32_t width, uint32_t height );
 
-    Image Threshold( FunctionTable::Threshold threshold,
+    Image Threshold( FunctionTable::ThresholdForm4 threshold,
                      const Image & in, uint8_t thresholdValue );
 
-    void Threshold( FunctionTable::Threshold threshold,
+    void Threshold( FunctionTable::ThresholdForm4 threshold,
                     const Image & in, Image & out, uint8_t thresholdValue );
 
-    Image Threshold( FunctionTable::Threshold threshold,
+    Image Threshold( FunctionTable::ThresholdForm4 threshold,
                      const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t thresholdValue );
 
-    Image Threshold( FunctionTable::Threshold2 threshold,
+    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
                      const Image & in, uint8_t minThreshold, uint8_t maxThreshold );
 
-    void Threshold( FunctionTable::Threshold2 threshold,
+    void Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
                     const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold );
 
-    Image Threshold( FunctionTable::Threshold2 threshold,
+    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
                      const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
                      uint8_t maxThreshold );
 
-    Image Transpose( FunctionTable::Transpose transpose,
+    Image Transpose( FunctionTable::TransposeForm4 transpose,
                      const Image & in );
 
-    void Transpose( FunctionTable::Transpose transpose,
+    void Transpose( FunctionTable::TransposeForm4 transpose,
                     const Image & in, Image & out );
 
-    Image Transpose( FunctionTable::Transpose transpose,
+    Image Transpose( FunctionTable::TransposeForm4 transpose,
                      const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
     struct FunctionTableHolder
     {
-        FunctionTable::AbsoluteDifference AbsoluteDifference = nullptr;
-        FunctionTable::Accumulate         Accumulate         = nullptr;
-        FunctionTable::BitwiseAnd         BitwiseAnd         = nullptr;
-        FunctionTable::BitwiseOr          BitwiseOr          = nullptr;
-        FunctionTable::BitwiseXor         BitwiseXor         = nullptr;
-        FunctionTable::ConvertToGrayScale ConvertToGrayScale = nullptr;
-        FunctionTable::ConvertToRgb       ConvertToRgb       = nullptr;
-        FunctionTable::Copy               Copy               = nullptr;
-        FunctionTable::ExtractChannel     ExtractChannel     = nullptr;
-        FunctionTable::Fill               Fill               = nullptr;
-        FunctionTable::Flip               Flip               = nullptr;
-        FunctionTable::GammaCorrection    GammaCorrection    = nullptr;
-        FunctionTable::GetPixel           GetPixel           = nullptr;
-        FunctionTable::Histogram          Histogram          = nullptr;
-        FunctionTable::Invert             Invert             = nullptr;
-        FunctionTable::IsEqual            IsEqual            = nullptr;
-        FunctionTable::LookupTable        LookupTable        = nullptr;
-        FunctionTable::Maximum            Maximum            = nullptr;
-        FunctionTable::Merge              Merge              = nullptr;
-        FunctionTable::Minimum            Minimum            = nullptr;
-        FunctionTable::Normalize          Normalize          = nullptr;
-        FunctionTable::ProjectionProfile  ProjectionProfile  = nullptr;
-        FunctionTable::Resize             Resize             = nullptr;
-        FunctionTable::RgbToBgr           RgbToBgr           = nullptr;
-        FunctionTable::SetPixel           SetPixel           = nullptr;
-        FunctionTable::SetPixel2          SetPixel2          = nullptr;
-        FunctionTable::Shift              Shift              = nullptr;
-        FunctionTable::Split              Split              = nullptr;
-        FunctionTable::Subtract           Subtract           = nullptr;
-        FunctionTable::Sum                Sum                = nullptr;
-        FunctionTable::Threshold          Threshold          = nullptr;
-        FunctionTable::Threshold2         Threshold2         = nullptr;
-        FunctionTable::Transpose          Transpose          = nullptr;
+        FunctionTable::AbsoluteDifferenceForm4 AbsoluteDifference = nullptr;
+        FunctionTable::AccumulateForm2         Accumulate         = nullptr;
+        FunctionTable::BitwiseAndForm4         BitwiseAnd         = nullptr;
+        FunctionTable::BitwiseOrForm4          BitwiseOr          = nullptr;
+        FunctionTable::BitwiseXorForm4         BitwiseXor         = nullptr;
+        FunctionTable::ConvertToGrayScaleForm4 ConvertToGrayScale = nullptr;
+        FunctionTable::ConvertToRgbForm4       ConvertToRgb       = nullptr;
+        FunctionTable::CopyForm3               Copy               = nullptr;
+        FunctionTable::ExtractChannelForm4     ExtractChannel     = nullptr;
+        FunctionTable::FillForm2               Fill               = nullptr;
+        FunctionTable::FlipForm4               Flip               = nullptr;
+        FunctionTable::GammaCorrectionForm4    GammaCorrection    = nullptr;
+        FunctionTable::GetPixelForm1           GetPixel           = nullptr;
+        FunctionTable::HistogramForm4          Histogram          = nullptr;
+        FunctionTable::InvertForm4             Invert             = nullptr;
+        FunctionTable::IsEqualForm2            IsEqual            = nullptr;
+        FunctionTable::LookupTableForm4        LookupTable        = nullptr;
+        FunctionTable::MaximumForm4            Maximum            = nullptr;
+        FunctionTable::MergeForm4              Merge              = nullptr;
+        FunctionTable::MinimumForm4            Minimum            = nullptr;
+        FunctionTable::NormalizeForm4          Normalize          = nullptr;
+        FunctionTable::ProjectionProfileForm4  ProjectionProfile  = nullptr;
+        FunctionTable::ResizeForm4             Resize             = nullptr;
+        FunctionTable::RgbToBgrForm4           RgbToBgr           = nullptr;
+        FunctionTable::SetPixelForm1           SetPixel           = nullptr;
+        FunctionTable::SetPixelForm2           SetPixel2          = nullptr;
+        FunctionTable::ShiftForm4              Shift              = nullptr;
+        FunctionTable::SplitForm2              Split              = nullptr;
+        FunctionTable::SubtractForm4           Subtract           = nullptr;
+        FunctionTable::SumForm2                Sum                = nullptr;
+        FunctionTable::ThresholdForm4          Threshold          = nullptr;
+        FunctionTable::ThresholdDoubleForm4    Threshold2         = nullptr;
+        FunctionTable::TransposeForm4          Transpose          = nullptr;
     };
 
     // Register function table for specific image type. This function must be called within source file (*.cpp) during startup of the library
