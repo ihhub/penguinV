@@ -23,7 +23,7 @@ clone_folder: C:\projects\penguinv
 
 # scripts to run before build
 before_build:
-  - cmd: call script\appveyor\cuda_install.cmd
+#  - cmd: call script\appveyor\cuda_install.cmd
 
 build_script:
   - set PENGUINV_UNIT_TEST_RUN_COUNT=500
