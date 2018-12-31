@@ -84,7 +84,7 @@ namespace Image_Function
               startYOut + kernelSize / 2, kernelSize / 2, height - (kernelSize - 1) );
 
         std::vector < uint8_t > data( kernelSize * kernelSize );
-        const size_t dataMedianPosition = static_cast<ptrdiff_t>( data.size() / 2 ); // it's valid as signed max value is in 2 times less than unsigned
+        const size_t dataMedianPosition = static_cast<int32_t>( data.size() / 2 ); // it's valid as signed max value is in 2 times less than unsigned
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
