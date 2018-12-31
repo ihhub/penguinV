@@ -1410,12 +1410,16 @@ namespace Image_Function
         const uint32_t limitX = in.width()  - 1u; // we need 2 subsequent pixels so we cannot use last pixel
         const uint32_t limitY = in.height() - 1u;
 
-        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ? (-shiftXIntegral - startXIn) : 0u;
-        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + shiftXIntegral) ? (startXIn + width + shiftXIntegral - limitX) : 0u;
+        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ?
+                                        (static_cast<uint32_t>(-shiftXIntegral) - startXIn) : 0u;
+        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + static_cast<uint32_t>(shiftXIntegral)) ?
+                                        (startXIn + width + static_cast<uint32_t>(shiftXIntegral) - limitX) : 0u;
         const uint32_t realWidth = width - emptyLeftArea - emptyRightArea;
 
-        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ? (-shiftYIntegral - startYIn) : 0u;
-        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + shiftYIntegral) ? (startYIn + height + shiftYIntegral - limitY) : 0u;
+        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ?
+                                         (static_cast<uint32_t>(-shiftYIntegral) - startYIn) : 0u;
+        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + static_cast<uint32_t>(shiftYIntegral)) ?
+                                         (startYIn + height + static_cast<uint32_t>(shiftYIntegral) - limitY) : 0u;
         const uint32_t realHeight = height - emptyTopArea - emptyBottomArea;
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -1424,7 +1428,7 @@ namespace Image_Function
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
-        inY += shiftXIntegral + shiftYIntegral * rowSizeIn;
+        inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
 
         const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
         for( ; outY != outYEnd; outY+=rowSizeOut )
