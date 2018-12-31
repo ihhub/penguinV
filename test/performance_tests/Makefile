@@ -3,6 +3,8 @@ PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
 SRCS :=  \
 	$(LIB_DIR)/math/math_base.cpp \
+	$(LIB_DIR)/math/hough_transform.cpp \
+	$(LIB_DIR)/math/hough_transform_simd.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
@@ -17,7 +19,8 @@ SRCS :=  \
 	performance_test_filtering.cpp \
 	performance_test_framework.cpp \
 	performance_test_helper.cpp \
-	performance_test_image_function.cpp
+	performance_test_image_function.cpp \
+	performance_test_math.cpp
 TARGET := performance_tests
 
 CXX := g++
