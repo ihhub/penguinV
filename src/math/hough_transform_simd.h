@@ -3,7 +3,7 @@
 #include <vector>
 #include "math_base.h"
 
-namespace Image_Function
+namespace Image_Function_Simd
 {
     bool HoughTransform( const std::vector< PointBase2D<double> > & input, double initialAngle, double angleTolerance, double angleStep,
                          double lineTolerance, std::vector< PointBase2D<double> > & outOnLine, std::vector< PointBase2D<double> > & outOffLine );

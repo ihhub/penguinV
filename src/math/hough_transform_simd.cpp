@@ -1,6 +1,27 @@
 #include "hough_transform.h"
+#include "../image_function_helper.h"
+#include "../penguinv/cpu_identification.h"
+
+#ifdef PENGUINV_AVX_SET
+#include <immintrin.h>
+#endif
+
+#ifdef PENGUINV_SSE_SET
+#include <emmintrin.h>
+#endif
+
+#ifdef PENGUINV_NEON_SET
+#include <arm_neon.h>
+#endif
 
 #include <algorithm>
+
+namespace
+{
+    const uint32_t avx_size = 32u;
+    const uint32_t sse_size = 16u;
+    const uint32_t neon_size = 16u;
+}
 
 namespace
 {
@@ -12,9 +33,9 @@ namespace
 {
 
     template <typename _Type>
-    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal )
+    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount )
     {
-        _Type * distanceVal = distanceToLine.data();
+        _Type * distanceVal = distance.data();
         const PointBase2D<_Type> * point = input.data();
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
@@ -23,16 +44,65 @@ namespace
     }
 
     template <typename _Type>
-    void FindDistanceSimd( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal )
+    void FindDistanceSimd( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount, simd::SIMDType simdType )
     {
-        FindDistance( input, distance, cosVal, sinVal );
+        FindDistance( input, distance, cosVal, sinVal, inputPointCount );
     }
 
     template <>
-    void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal )
+    void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount, simd::SIMDType simdType )
     {
         // some special code here to handle SIMD like
         if ( simd::avx_function ) {
+        }
+        else if ( simd::sse_function ) {
+        }
+        else if ( simd::neon_function ){
+        }
+        else {
+            FindDistance( input, distance, cosVal, sinVal, inputPointCount );
+        }
+    }
+
+    template <>
+    void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount, simd::SIMDType simdType )
+    {
+        // some special code here to handle SIMD like
+        if ( simd::avx_function ) {
+            #ifdef PENGUINV_AVX_SET
+            const uint32_t simdWidth = inputPointCount / (avx_size*2);
+            const uint32_t totalSimdWidth = simdWidth * (avx_size*2);
+            const uint32_t nonSimdWidth = inputPointCount - totalSimdWidth;
+
+            const double * point = input.data();
+            const double * PointEndSimd = point + totalSimdWidth;
+
+            const double * dst = distance.data()
+
+            const __m256d coeff = _mm256_set_pd (cosval, sinval, cosval, sinval)
+
+            for(;point != PointEndSimd; point += avx_size, dst += 4)
+            {
+                __m256d src1 = _mm256_load_pd(point);
+                point += avx_size;
+                __m256d src2 = _mm256_load_pd(point);
+
+                src1 = _mm256_mul_pd (src1, coeff);
+                src2 = _mm256_mul_pd (src2, coeff);
+
+                __m256d resul = _mm256_hadd_pd (src1, src2);
+                resul = _mm256_permute4x64_pd (resul, 0b11011000);
+
+                _mm256_store_pd(dst, resul);
+            }
+
+            if(nonSimdWidth > 0)
+            {
+                const double * PointEnd = PointEndSimd + nonSimdWidth;
+                for ( ; point != pointEnd; ++point, ++dst)
+                    (*dst) = point->x * sinVal + point->y * cosVal;
+            }
+            #endif
         }
         else if ( simd::sse_function ) {
         }
@@ -40,23 +110,7 @@ namespace
         {
         }
         else {
-            FindDistance( input, distance, cosVal, sinVal );
-        }
-    }
-
-    template <>
-    void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal )
-    {
-        // some special code here to handle SIMD like
-        if ( simd::avx_function ) {
-        }
-        else if ( simd::sse_function ) {
-        }
-        else if ( simd::neon_function )
-        {
-        }
-        else {
-            FindDistance( input, distance, cosVal, sinVal );
+            FindDistance( input, distance, cosVal, sinVal, inputPointCount );
         }
     }
 
@@ -98,12 +152,14 @@ namespace
             const _Type sinVal = sin( angleVal );
 
             // find and sort distances
-            _Type * distanceVal = distanceToLine.data();
-            const PointBase2D<_Type> * point = input.data();
-            const PointBase2D<_Type> * pointEnd = point + inputPointCount;
-
-            for ( ; point != pointEnd; ++point, ++distanceVal )
-                (*distanceVal) = point->x * sinVal + point->y * cosVal;
+            if(std::is_standard_layout<PointBase2D<_Type>>::value)
+            {
+                FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, simd::actualSimdType())
+            }
+            else
+            {
+                FindDistance<_Type>( input, distanceToLine, cosVal, sinVal )
+            }
 
             std::sort( distanceToLine.begin(), distanceToLine.end() );
 
