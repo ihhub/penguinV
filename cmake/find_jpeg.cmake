@@ -15,6 +15,17 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
 
+    # Download yasm
+    set(YASM_INSTALL ${CMAKE_BINARY_DIR}/yasm)
+    set(YASM_INCLUDE_DIR ${YASM_INSTALL}/include)
+    set(YASM_LIBRARIES ${YASM_INSTALL}/lib/libyasm.a)
+    ExternalProject_Add(YASM
+    URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+    CMAKE_ARGS -DBUILD_SHARED_LIBS=OFF
+                -DCMAKE_BUILD_TYPE=RELEASE
+                -DCMAKE_INSTALL_PREFIX=${YASM_INSTALL}
+    TEST_COMMAND "")
+
     set(JPEG_INSTALL ${CMAKE_BINARY_DIR}/jpeg)
     set(JPEG_BUILD_DIR ${CMAKE_BINARY_DIR}/jpeg/build)
     set(JPEG_LIB_DIR ${JPEG_INSTALL}/lib)
@@ -23,17 +34,17 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     if(WIN32)
         if(MSVC)
             set(JPEG_STATIC_LIBRARIES
-                debug ${JPEG_LIB_DIR}/libturbojpeg_staticd.lib
-                optimized ${JPEG_LIB_DIR}/libturbojpeg_static.lib)
+                debug ${JPEG_LIB_DIR}/turbojpeg-staticd.lib
+                optimized ${JPEG_LIB_DIR}/turbojpeg-static.lib)
         else()
             if(CMAKE_BUILD_TYPE EQUAL Debug)
-                set(JPEG_STATIC_LIBRARIES ${PNG_LIB_DIR}/libturbojpegstaticd.lib)
+                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/turbojpeg-staticd.lib)
             else()
-                set(JPEG_STATIC_LIBRARIES ${PNG_LIB_DIR}/libturbojpeg_static.lib)
+                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/turbojpeg-static.lib)
             endif()
         endif()
     else()
-        set(JPEG_STATIC_LIBRARIES ${PNG_LIB_DIR}/libturbojpeg.a)
+        set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libturbojpeg.a)
     endif()
 
     ExternalProject_Add(jpeg
@@ -47,13 +58,14 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         CMAKE_CACHE_ARGS
             -DCMAKE_BUILD_TYPE:STRING=Release
             -DCMAKE_INSTALL_PREFIX:STRING=${JPEG_INSTALL}
-            -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON)
+            -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+            -DCMAKE_ASM_NASM_COMPILER=${YASM_INSTALL}/bin/yasm)
 
     ExternalProject_Get_Property(jpeg install_dir)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
-    set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/libturbojpeg__static.lib)
-    set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/libturbojpeg__static.lib)
-    set(JPEG_LIBRARY_DEBUG ${install_dir}/lib/libturbojpeg_staticd.lib)
+    set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/turbojpeg-static.lib)
+    set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/turbojpeg-static.lib)
+    set(JPEG_LIBRARY_DEBUG ${install_dir}/lib/turbojpeg-staticd.lib)
     set(JPEG_INCLUDE_DIRS ${install_dir}/include)
     # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
     # This is quite unhelpful because those directories are only generated at build time
