@@ -5,6 +5,7 @@ SRCS :=  \
     $(LIB_DIR)/file/bmp_image.cpp \
     $(LIB_DIR)/file/png_image.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
+    $(LIB_DIR)/math/hough_transform_simd.cpp \
     $(LIB_DIR)/math/fft_base.cpp \
     $(LIB_DIR)/math/math_base.cpp \
     $(LIB_DIR)/penguinv/penguinv.cpp \
@@ -36,7 +37,7 @@ CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 LIBS := -pthread -lpng
-FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
+FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native -g
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)
 BUILD_DIR=build

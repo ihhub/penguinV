@@ -2,6 +2,9 @@
 
 #include "unit_test_helper.h"
 #include "../../src/math/hough_transform.h"
+#include "../../src/math/hough_transform_simd.h"
+#include "../../src/penguinv/cpu_identification.h"
+#include "../../src/image_function_helper.h"
 
 namespace pvmath
 {
@@ -142,12 +145,13 @@ namespace pvmath
 void addTests_Math( UnitTestFramework & framework )
 {
     framework.add(pvmath::houghTransform_double, "math::Hough Transform (double)");
+    framework.add(pvmath::houghTransform_float, "math::Hough Transform (float)");
     #ifdef PENGUINV_AVX_SET
     simd::EnableSimd( false );
     simd::EnableAvx( true );
     framework.add(pvmath::houghTransformSimd_double, "math::Hough Transform AVX (double)");
+    framework.add(pvmath::houghTransformSimd_float, "math::Hough Transform AVX (float)");
     #endif
-    framework.add(pvmath::houghTransform_float, "math::Hough Transform (float)");
     framework.add(pvmath::lineConstructor, "math::Line2d constructor");
     framework.add(pvmath::parallelLine, "math::Line2d parallel lines");
     framework.add(pvmath::lineIntersection, "math::Line2d line intersection");
