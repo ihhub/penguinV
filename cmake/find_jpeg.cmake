@@ -1,6 +1,6 @@
 include(ExternalProject)
-option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libpng" ON)
-option(PENGUINV_USE_EXTERNAL_JPEG "Download libpng and build from source" OFF)
+option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
+option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
     find_package(JPEG)
