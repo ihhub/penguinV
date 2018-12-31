@@ -156,7 +156,7 @@ static void kf_bfly5(
     Fout4=Fout0+4*m;
 
     tw=st->twiddles;
-    for ( u=0; u<m; ++u ) {
+    for ( u=0; u<(size_t)m; ++u ) {
         C_FIXDIV( *Fout0,5); C_FIXDIV( *Fout1,5); C_FIXDIV( *Fout2,5); C_FIXDIV( *Fout3,5); C_FIXDIV( *Fout4,5);
         scratch[0] = *Fout0;
 
