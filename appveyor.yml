@@ -30,7 +30,7 @@ build_script:
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
-  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DPENGUINV_ENABLE_JPEG_SUPPORT=ON -DPENGUINV_USE_EXTERNAL_JPEG=ON ..
   - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
   - cmd: cmake --build . --config %configuration%
 
