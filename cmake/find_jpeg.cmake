@@ -35,22 +35,21 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     if(WIN32)
         if(MSVC)
             set(JPEG_STATIC_LIBRARIES
-                debug ${JPEG_LIB_DIR}/turbojpeg-staticd.lib
-                optimized ${JPEG_LIB_DIR}/turbojpeg-static.lib)
+                debug ${JPEG_LIB_DIR}/jpeg-staticd.lib
+                optimized ${JPEG_LIB_DIR}/jpeg-static.lib)
         else()
             if(CMAKE_BUILD_TYPE EQUAL Debug)
-                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/turbojpeg-staticd.lib)
+                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/jpeg-staticd.lib)
             else()
-                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/turbojpeg-static.lib)
+                set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/jpeg-static.lib)
             endif()
         endif()
     else()
-        set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libturbojpeg.a)
+        set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libjpeg.a)
     endif()
 
     ExternalProject_Add(jpeg
         PREFIX jpeg
-        #DEPENDS yasm
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz/
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         BINARY_DIR ${JPEG_BUILD_DIR}
@@ -62,7 +61,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
             -DCMAKE_VERBOSE_MAKEFILE=TRUE
             -DENABLE_SHARED=FALSE
             -DENABLE_STATIC=TRUE
-            -DWITH_TURBOJPEG=TRUE
+            -DWITH_TURBOJPEG=FALSE
             -DWITH_SIMD=FALSE
             -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
@@ -70,9 +69,9 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
 
     ExternalProject_Get_Property(jpeg install_dir)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
-    set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/turbojpeg-static.lib)
-    set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/turbojpeg-static.lib)
-    set(JPEG_LIBRARY_DEBUG ${install_dir}/lib/turbojpeg-staticd.lib)
+    set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_DEBUG ${install_dir}/lib/jpeg-staticd.lib)
     set(JPEG_INCLUDE_DIRS ${install_dir}/include)
     # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
     # This is quite unhelpful because those directories are only generated at build time
