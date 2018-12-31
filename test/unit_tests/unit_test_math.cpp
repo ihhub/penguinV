@@ -39,6 +39,40 @@ namespace pvmath
         return true;
     }
 
+    template <typename _Type>
+    bool houghTransformSimdTemplate()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
+            const _Type angleTolerance = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>( 0, 10, 0.1f ) + 0.1f ) );
+            const _Type angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
+            const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
+
+            const _Type noiseValue = lineTolerance / 2;
+            std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
+
+            const _Type sinVal = sin( angle );
+            const _Type cosVal = cos( angle );
+
+            for ( typename std::vector< PointBase2D<_Type> >::iterator p = point.begin(); p != point.end(); ++p ) {
+                const _Type x = Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
+                const _Type y = Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
+
+                p->x = x * cosVal - y * sinVal;
+                p->y = x * sinVal + y * cosVal;
+            }
+
+            std::vector< PointBase2D<_Type> > pointOnLine;
+            std::vector< PointBase2D<_Type> > pointOffLine;
+
+            if ( !Image_Function_Simd::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine ) ||
+                 !pointOffLine.empty() )
+                return false;
+        }
+
+        return true;
+    }
+
     bool houghTransform_double()
     {
         return houghTransformTemplate<double>();
@@ -47,6 +81,16 @@ namespace pvmath
     bool houghTransform_float()
     {
         return houghTransformTemplate<float>();
+    }
+
+    bool houghTransformSimd_double()
+    {
+        return houghTransformSimdTemplate<double>();
+    }
+    
+    bool houghTransformSimd_float()
+    {
+        return houghTransformSimdTemplate<float>();
     }
     
     bool lineConstructor()
@@ -98,6 +142,11 @@ namespace pvmath
 void addTests_Math( UnitTestFramework & framework )
 {
     framework.add(pvmath::houghTransform_double, "math::Hough Transform (double)");
+    #ifdef PENGUINV_AVX_SET
+    simd::EnableSimd( false );
+    simd::EnableAvx( true );
+    framework.add(pvmath::houghTransformSimd_double, "math::Hough Transform AVX (double)");
+    #endif
     framework.add(pvmath::houghTransform_float, "math::Hough Transform (float)");
     framework.add(pvmath::lineConstructor, "math::Line2d constructor");
     framework.add(pvmath::parallelLine, "math::Line2d parallel lines");

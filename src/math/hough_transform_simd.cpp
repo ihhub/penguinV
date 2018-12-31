@@ -67,7 +67,6 @@ namespace
     template <>
     void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount, simd::SIMDType simdType )
     {
-        // some special code here to handle SIMD like
         if ( simd::avx_function ) {
             #ifdef PENGUINV_AVX_SET
             const uint32_t simdWidth = inputPointCount / (avx_size*2);
