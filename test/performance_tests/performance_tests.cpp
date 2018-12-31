@@ -15,9 +15,9 @@ int main()
     PerformanceTestFramework framework;
 
     // We add tests
-    //addTests_Blob_Detection     ( framework );
-    //addTests_Filtering          ( framework );
-    //addTests_Image_Function     ( framework );
+    addTests_Blob_Detection     ( framework );
+    addTests_Filtering          ( framework );
+    addTests_Image_Function     ( framework );
     addTests_math               ( framework );
 
     // Just run the framework what will handle all tests
