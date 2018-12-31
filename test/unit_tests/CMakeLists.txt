@@ -71,6 +71,17 @@ else()
     target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_PNG_SUPPORT)
 endif()
 
+include(find_jpeg)
+if(${PENGUINV_ENABLE_JPEG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_JPEG})
+        target_link_libraries(unit_tests PRIVATE JPEG_EXTERNAL)
+    else()
+        target_link_libraries(unit_tests PRIVATE JPEG::JPEG)
+    endif()
+else()
+    target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_JPEG_SUPPORT)
+endif()
+
 if (WIN32)
     # Quiet warnings related to fopen on MSVC
     target_compile_definitions(unit_tests PRIVATE _CRT_SECURE_NO_WARNINGS)
