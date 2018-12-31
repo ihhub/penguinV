@@ -19,7 +19,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     set(YASM_INSTALL ${CMAKE_BINARY_DIR}/yasm)
     set(YASM_INCLUDE_DIR ${YASM_INSTALL}/include)
     set(YASM_LIBRARIES ${YASM_INSTALL}/lib/libyasm.a)
-    ExternalProject_Add(YASM
+    ExternalProject_Add(yasm
     URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
     CMAKE_ARGS
         -DBUILD_SHARED_LIBS=OFF
@@ -50,6 +50,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
 
     ExternalProject_Add(jpeg
         PREFIX jpeg
+        DEPENDS yasm
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz/
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         BINARY_DIR ${JPEG_BUILD_DIR}
