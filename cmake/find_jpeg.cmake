@@ -38,8 +38,8 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
 
     ExternalProject_Add(jpeg
         PREFIX jpeg
-        URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1-jws.zip/
-        URL_MD5 d9ade5bcdbd0c505bcbcd60e4233d3d2
+        URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz/
+        URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         BINARY_DIR ${JPEG_BUILD_DIR}
         BUILD_BYPRODUCTS ${JPEG_STATIC_LIBRARIES}
         DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
