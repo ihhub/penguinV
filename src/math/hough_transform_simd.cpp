@@ -1,4 +1,4 @@
-#include "hough_transform.h"
+#include "hough_transform_simd.h"
 #include "../image_function_helper.h"
 #include "../penguinv/cpu_identification.h"
 
@@ -244,11 +244,20 @@ namespace
         const _Type sinVal = sin( angleVal );
 
         _Type * distanceVal = distanceToLine.data();
+        
+        if(std::is_standard_layout<PointBase2D<_Type>>::value)
+        {
+            FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
+        }
+        else
+        {
+            FindDistance<_Type>( input, distanceToLine, cosVal, sinVal, inputPointCount );
+        }
+
         const PointBase2D<_Type> * point = input.data();
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
         for ( ; point != pointEnd; ++point, ++distanceVal ) {
-            (*distanceVal) = point->x * sinVal + point->y * cosVal;
 
             if ( ((*distanceVal) < minDistance) || ((*distanceVal) > maxDistance) )
                 outOffLine.push_back( (*point) );
