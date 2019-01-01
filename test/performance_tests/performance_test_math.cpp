@@ -45,7 +45,7 @@ namespace
     
     std::pair < double, double > HoughTransformAVX()
     {
-        return HoughTransform_Simd( Image_Function::HoughTransform );
+        return HoughTransform( Image_Function_Simd::HoughTransform );
     }
 }
 
