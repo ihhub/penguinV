@@ -15,6 +15,7 @@
 #endif
 
 #include <algorithm>
+#include <cmath>
 
 namespace
 {
@@ -188,8 +189,8 @@ namespace
         _Type angleVal = -(initialAngle - angleStep * angleStepPerSide); // this should be an opposite angle
 
         for ( int angleId = -angleStepPerSide; angleId <= angleStepPerSide; ++angleId, angleVal -= angleStep ) {
-            const _Type cosVal = cos( angleVal );
-            const _Type sinVal = sin( angleVal );
+            const _Type cosVal = std::cos( angleVal );
+            const _Type sinVal = std::sin( angleVal );
 
             // find and sort distances
             if(std::is_standard_layout<PointBase2D<_Type>>::value)
@@ -240,8 +241,8 @@ namespace
         const _Type maxDistance = averageDistance + lineTolerance;
 
         // sort points
-        const _Type cosVal = cos( angleVal );
-        const _Type sinVal = sin( angleVal );
+        const _Type cosVal = std::cos( angleVal );
+        const _Type sinVal = std::sin( angleVal );
 
         _Type * distanceVal = distanceToLine.data();
         
