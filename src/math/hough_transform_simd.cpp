@@ -242,7 +242,6 @@ namespace
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
         for ( ; point != pointEnd; ++point, ++distanceVal ) {
-
             if ( ((*distanceVal) < minDistance) || ((*distanceVal) > maxDistance) )
                 outOffLine.push_back( (*point) );
             else
