@@ -235,7 +235,7 @@ namespace
         const _Type sinVal = std::sin( angleVal );
 
         _Type * distanceVal = distanceToLine.data();
-        
+
         FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
 
         const PointBase2D<_Type> * point = input.data();
