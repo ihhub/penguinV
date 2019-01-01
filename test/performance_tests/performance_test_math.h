@@ -2,4 +2,4 @@
 
 #include "performance_test_framework.h"
 
-void addTests_math( PerformanceTestFramework & framework );
+void addTests_Math( PerformanceTestFramework & framework );

@@ -239,7 +239,7 @@ namespace
 
         _Type * distanceVal = distanceToLine.data();
 
-        FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
+        FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount);
 
         const PointBase2D<_Type> * point = input.data();
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;

@@ -49,7 +49,7 @@ namespace
     }
 }
 
-void addTests_math( PerformanceTestFramework & framework )
+void addTests_Math( PerformanceTestFramework & framework )
 {
     ADD_TEST( framework, HoughTransformCPU );
     #ifdef PENGUINV_AVX_SET

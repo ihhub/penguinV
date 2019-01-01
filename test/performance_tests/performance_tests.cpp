@@ -18,7 +18,7 @@ int main()
     addTests_Blob_Detection     ( framework );
     addTests_Filtering          ( framework );
     addTests_Image_Function     ( framework );
-    addTests_math               ( framework );
+    addTests_Math               ( framework );
 
     // Just run the framework what will handle all tests
     framework.run();
