@@ -7,36 +7,29 @@
 
 namespace
 {
-    std::pair < double, double > HoughTransform( )
+    typedef bool (*houghFunction)( const std::vector< Point2d > &, double, double, double, double,
+                                   std::vector< Point2d > &, std::vector< Point2d > & );
+    
+    std::pair < double, double > HoughTransform( houghFunction hough )
     {
         Performance_Test::TimerContainer timer;
 
         const double angle = 0;
-        const double angleTolerance = static_cast<double>( pvmath::toRadians( 10.0 ) );
-        const double angleStep = static_cast<double>( pvmath::toRadians( 0.2 ) );
+        const double angleTolerance = pvmath::toRadians( 10.0 );
+        const double angleStep = pvmath::toRadians( 0.2 );
         const double lineTolerance = 1;
 
-        const double sinVal = sin( angle );
-        const double cosVal = cos( angle );
-
-        std::vector< PointBase2D<double> > point( 1000 );
-        double i = 0;
-
-        for ( typename std::vector< PointBase2D<double> >::iterator p = point.begin(); p != point.end(); ++p, i++ ) {
-                const double x = i;
-                const double y = 0;
-
-                p->x = x * cosVal - y * sinVal;
-                p->y = x * sinVal + y * cosVal;
-            }
+        std::vector< Point2d > point( 1000 );
+        for ( size_t i = 0; i < point.size(); ++i )
+                point[i] = Poin2d( i, 0 );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
             { // destroy the object within the scope
-                std::vector< PointBase2D<double> > pointOnLine;
-                std::vector< PointBase2D<double> > pointOffLine;
-                Image_Function::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
+                std::vector< Poin2d > pointOnLine;
+                std::vector< Poin2d > pointOffLine;
+                hough( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
             }
 
             timer.stop();
@@ -45,51 +38,23 @@ namespace
         return timer.mean();
     }
 
-    std::pair < double, double > HoughTransform_AVX( )
+    std::pair < double, double > HoughTransformCPU()
     {
-        Performance_Test::TimerContainer timer;
-
-        const double angle = 0;
-        const double angleTolerance = static_cast<double>( pvmath::toRadians( 10.0 ) );
-        const double angleStep = static_cast<double>( pvmath::toRadians( 0.2 ) );
-        const double lineTolerance = 1;
-
-        const double sinVal = sin( angle );
-        const double cosVal = cos( angle );
-
-        std::vector< PointBase2D<double> > point( 1000 );
-        double i = 0;
-
-        for ( typename std::vector< PointBase2D<double> >::iterator p = point.begin(); p != point.end(); ++p, i++ ) {
-                const double x = i;
-                const double y = 0;
-
-                p->x = x * cosVal - y * sinVal;
-                p->y = x * sinVal + y * cosVal;
-            }
-
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            timer.start();
-
-            { // destroy the object within the scope
-                std::vector< PointBase2D<double> > pointOnLine;
-                std::vector< PointBase2D<double> > pointOffLine;
-                Image_Function_Simd::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
-            }
-
-            timer.stop();
-        }
-
-        return timer.mean();
+        return HoughTransform( Image_Function::HoughTransform );
+    }
+    
+    std::pair < double, double > HoughTransformAVX()
+    {
+        return HoughTransform_Simd( Image_Function::HoughTransform );
     }
 }
 
 void addTests_math( PerformanceTestFramework & framework )
 {
-    ADD_TEST( framework, HoughTransform );
+    ADD_TEST( framework, HoughTransformCPU );
     #ifdef PENGUINV_AVX_SET
     simd::EnableSimd( false );
     simd::EnableAvx( true );
-    ADD_TEST( framework, HoughTransform_AVX );
+    ADD_TEST( framework, HoughTransformAVX );
     #endif
 }
