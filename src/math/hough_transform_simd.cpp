@@ -56,7 +56,9 @@ namespace
     template <>
     void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount, simd::SIMDType simdType )
     {
-        if ( simdType == simd::avx_function ) {
+        bool std_layout_check = std::is_standard_layout<PointBase2D<float>>::value;
+
+        if ( simdType == simd::avx_function && std_layout_check ) {
             #ifdef PENGUINV_AVX_SET
             const uint32_t simdWidth = (inputPointCount*2) / (avx_float*2);
             const uint32_t totalSimdWidth = simdWidth * (avx_float*2);
@@ -95,9 +97,9 @@ namespace
             }
             #endif
         }
-        else if ( simdType == simd::sse_function ) {
+        else if ( simdType == simd::sse_function && std_layout_check ) {
         }
-        else if ( simdType == simd::neon_function ){
+        else if ( simdType == simd::neon_function && std_layout_check ){
         }
         else {
             FindDistance( input, distance, cosVal, sinVal, inputPointCount );
@@ -107,7 +109,9 @@ namespace
     template <>
     void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount, simd::SIMDType simdType )
     {
-        if ( simdType == simd::avx_function ) {
+        bool std_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
+
+        if ( simdType == simd::avx_function && std_layout_check ) {
             #ifdef PENGUINV_AVX_SET
             const uint32_t simdWidth = (inputPointCount*2) / (avx_double*2);
             const uint32_t totalSimdWidth = simdWidth * (avx_double*2);
@@ -145,9 +149,9 @@ namespace
             }
             #endif
         }
-        else if ( simdType == simd::sse_function ) {
+        else if ( simdType == simd::sse_function && std_layout_check ) {
         }
-        else if ( simdType == simd::neon_function )
+        else if ( simdType == simd::neon_function && std_layout_check )
         {
         }
         else {
@@ -193,14 +197,7 @@ namespace
             const _Type sinVal = std::sin( angleVal );
 
             // find and sort distances
-            if(std::is_standard_layout<PointBase2D<_Type>>::value)
-            {
-                FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
-            }
-            else
-            {
-                FindDistance<_Type>( input, distanceToLine, cosVal, sinVal, inputPointCount );
-            }
+            FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
 
             std::sort( distanceToLine.begin(), distanceToLine.end() );
 
@@ -246,14 +243,7 @@ namespace
 
         _Type * distanceVal = distanceToLine.data();
         
-        if(std::is_standard_layout<PointBase2D<_Type>>::value)
-        {
-            FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
-        }
-        else
-        {
-            FindDistance<_Type>( input, distanceToLine, cosVal, sinVal, inputPointCount );
-        }
+        FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
 
         const PointBase2D<_Type> * point = input.data();
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;
