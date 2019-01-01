@@ -74,10 +74,10 @@ namespace
                 src1 = _mm256_mul_ps (src1, coeff);
                 src2 = _mm256_mul_ps (src2, coeff);
 
-                __m256 resul = _mm256_hadd_ps (src1, src2);
-                resul = _mm256_permutevar8x32_ps (resul, ctrl);
+                __m256 result = _mm256_hadd_ps (src1, src2);
+                result = _mm256_permutevar8x32_ps (result, ctrl);
 
-                _mm256_storeu_ps(distanceVal, resul);
+                _mm256_storeu_ps(distanceVal, result);
             }
 
             if(nonSimdWidth > 0)
@@ -126,10 +126,10 @@ namespace
                 src1 = _mm256_mul_pd (src1, coeff);
                 src2 = _mm256_mul_pd (src2, coeff);
 
-                __m256d resul = _mm256_hadd_pd (src1, src2);
-                resul = _mm256_permute4x64_pd (resul, 0b11011000);
+                __m256d result = _mm256_hadd_pd (src1, src2);
+                result = _mm256_permute4x64_pd (result, 0b11011000);
 
-                _mm256_storeu_pd(distanceVal, resul);
+                _mm256_storeu_pd(distanceVal, result);
             }
 
             if(nonSimdWidth > 0)
