@@ -25,17 +25,10 @@ namespace
     const uint32_t sse_float = 4u;
     const uint32_t neon_double = 2u;
     const uint32_t neon_float = 4u;
-}
 
-namespace
-{
     const float minimumAngleStep = 0.001f * static_cast<float>( pvmath::pi ) / 180.0f;
     const float minimumLineTolerance = 1e-5f;
-}
-
-namespace
-{
-
+    
     template <typename _Type>
     void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount )
     {
