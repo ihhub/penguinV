@@ -3,6 +3,7 @@ set(SRCS
     ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/file/png_image.cpp
     ${LIB_DIR}/math/hough_transform.cpp
+    ${LIB_DIR}/math/hough_transform_simd.cpp
     ${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
     ${LIB_DIR}/thirdparty/kissfft/kiss_fft.c

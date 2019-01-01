@@ -1,6 +1,8 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/math/math_base.cpp
+    ${LIB_DIR}/math/hough_transform.cpp
+    ${LIB_DIR}/math/hough_transform_simd.cpp
 	${LIB_DIR}/blob_detection.cpp
     ${LIB_DIR}/filtering.cpp
     ${LIB_DIR}/function_pool.cpp
@@ -12,6 +14,7 @@ set(SRCS
     ${LIB_DIR}/penguinv/penguinv.cpp
     performance_tests.cpp
     performance_test_blob_detection.cpp
+    performance_test_math.cpp
     performance_test_filtering.cpp
     performance_test_framework.cpp
     performance_test_helper.cpp
