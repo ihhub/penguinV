@@ -41,15 +41,16 @@ namespace
     }
 
     template <typename _Type>
-    void FindDistanceSimd( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount, simd::SIMDType simdType )
+    void FindDistanceSimd( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount )
     {
         FindDistance( input, distance, cosVal, sinVal, inputPointCount );
     }
 
     template <>
-    void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount, simd::SIMDType simdType )
+    void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount )
     {
         bool std_layout_check = std::is_standard_layout<PointBase2D<float>>::value;
+        simd::SIMDType simdType = simd::actualSimdType();
 
         if ( simdType == simd::avx_function && std_layout_check ) {
             #ifdef PENGUINV_AVX_SET
@@ -100,9 +101,10 @@ namespace
     }
 
     template <>
-    void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount, simd::SIMDType simdType )
+    void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount )
     {
         bool std_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
+        simd::SIMDType simdType = simd::actualSimdType();
 
         if ( simdType == simd::avx_function && std_layout_check ) {
             #ifdef PENGUINV_AVX_SET
@@ -190,7 +192,7 @@ namespace
             const _Type sinVal = std::sin( angleVal );
 
             // find and sort distances
-            FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount, simd::actualSimdType());
+            FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount);
 
             std::sort( distanceToLine.begin(), distanceToLine.end() );
 
