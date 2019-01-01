@@ -19,6 +19,8 @@
 
 namespace
 {
+    const bool float_layout_check  = std::is_standard_layout<PointBase2D<float>>::value;
+    const bool double_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
     const uint32_t avx_double = 4u;
     const uint32_t avx_float = 8u;
     const uint32_t sse_double = 2u;
@@ -49,10 +51,10 @@ namespace
     template <>
     void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount )
     {
-        bool std_layout_check = std::is_standard_layout<PointBase2D<float>>::value;
+        
         simd::SIMDType simdType = simd::actualSimdType();
 
-        if ( simdType == simd::avx_function && std_layout_check ) {
+        if ( simdType == simd::avx_function && float_layout_check ) {
             #ifdef PENGUINV_AVX_SET
             const uint32_t simdWidth = (inputPointCount*2) / (avx_float*2);
             const uint32_t totalSimdWidth = simdWidth * (avx_float*2);
@@ -91,9 +93,9 @@ namespace
             }
             #endif
         }
-        else if ( simdType == simd::sse_function && std_layout_check ) {
+        else if ( simdType == simd::sse_function && float_layout_check ) {
         }
-        else if ( simdType == simd::neon_function && std_layout_check ){
+        else if ( simdType == simd::neon_function && float_layout_check ){
         }
         else {
             FindDistance( input, distance, cosVal, sinVal, inputPointCount );
@@ -103,10 +105,9 @@ namespace
     template <>
     void FindDistanceSimd< double >( const std::vector< PointBase2D< double > > & input, std::vector < double> & distance, double cosVal, double sinVal, const size_t inputPointCount )
     {
-        bool std_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
         simd::SIMDType simdType = simd::actualSimdType();
 
-        if ( simdType == simd::avx_function && std_layout_check ) {
+        if ( simdType == simd::avx_function && double_layout_check ) {
             #ifdef PENGUINV_AVX_SET
             const uint32_t simdWidth = (inputPointCount*2) / (avx_double*2);
             const uint32_t totalSimdWidth = simdWidth * (avx_double*2);
@@ -144,9 +145,9 @@ namespace
             }
             #endif
         }
-        else if ( simdType == simd::sse_function && std_layout_check ) {
+        else if ( simdType == simd::sse_function && double_layout_check ) {
         }
-        else if ( simdType == simd::neon_function && std_layout_check )
+        else if ( simdType == simd::neon_function && double_layout_check )
         {
         }
         else {
