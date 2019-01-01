@@ -60,12 +60,12 @@ namespace pvmath
 
     bool houghTransformSimd_double()
     {
-        return houghTransformSimdTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
+        return houghTransformTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
     }
     
     bool houghTransformSimd_float()
     {
-        return houghTransformSimdTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
+        return houghTransformTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
     }
     
     bool lineConstructor()
