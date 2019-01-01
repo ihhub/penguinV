@@ -33,7 +33,6 @@ int main( int argc, char * argv[] )
     addTests_Math           ( framework );
     addTests_FFT            ( framework );
 
-
     // Just run the framework what will handle all tests
     return framework.run();
 }
