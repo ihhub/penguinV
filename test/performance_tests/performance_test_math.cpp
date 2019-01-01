@@ -21,14 +21,14 @@ namespace
 
         std::vector< Point2d > point( 1000 );
         for ( size_t i = 0; i < point.size(); ++i )
-                point[i] = Poin2d( i, 0 );
+                point[i] = Point2d( i, 0 );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();
 
             { // destroy the object within the scope
-                std::vector< Poin2d > pointOnLine;
-                std::vector< Poin2d > pointOffLine;
+                std::vector< Point2d > pointOnLine;
+                std::vector< Point2d > pointOffLine;
                 hough( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
             }
 
