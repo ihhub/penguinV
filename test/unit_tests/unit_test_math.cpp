@@ -8,11 +8,14 @@
 
 namespace pvmath
 {
-    typedef bool (*houghFunction)( const std::vector< Point2d > &, double, double, double, double,
-                                   std::vector< Point2d > &, std::vector< Point2d > & );
+    typedef bool (*houghFunctionFloat)( const std::vector< Point2DBase<float> > &, float, float, float, float,
+                                        std::vector< Point2DBase<float> > &, std::vector< Point2DBase<float> > & );
     
-    template <typename _Type>
-    bool houghTransformTemplate( houghFunction hough )
+    typedef bool (*houghFunctionDouble)( const std::vector< Point2DBase<double> > &, double, double, double, double,
+                                         std::vector< Point2DBase<double> > &, std::vector< Point2DBase<double> > & );
+    
+    template <typename _Type, typename _Hough>
+    bool houghTransformTemplate( _Hough hough )
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
@@ -47,22 +50,22 @@ namespace pvmath
 
     bool houghTransform_double()
     {
-        return houghTransformTemplate<double>( Image_Function::HoughTransform );
+        return houghTransformTemplate<double, houghFunctionDouble>( Image_Function::HoughTransform );
     }
     
     bool houghTransform_float()
     {
-        return houghTransformTemplate<float>( Image_Function::HoughTransform );
+        return houghTransformTemplate<float, houghFunctionFloat>( Image_Function::HoughTransform );
     }
 
     bool houghTransformSimd_double()
     {
-        return houghTransformSimdTemplate<double>( Image_Function_Simd::HoughTransform );
+        return houghTransformSimdTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
     }
     
     bool houghTransformSimd_float()
     {
-        return houghTransformSimdTemplate<float>( Image_Function_Simd::HoughTransform );
+        return houghTransformSimdTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
     }
     
     bool lineConstructor()
