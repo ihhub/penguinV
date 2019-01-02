@@ -22,7 +22,7 @@ namespace
         const uint32_t pointCount = 10000u;
         std::vector< Point2d > point( pointCount );
         for ( uint32_t i = 0; i <pointCount; ++i )
-                point[i] = Point2d( static_cast< double >( i ), 0 );
+            point[i] = Point2d( static_cast< double >( i ), 0 );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             std::vector< Point2d > pointOnLine;
