@@ -32,11 +32,11 @@ namespace
     const float minimumLineTolerance = 1e-5f;
     
     template <typename _Type>
-    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount )
+    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal )
     {
         _Type * distanceVal = distance.data();
         const PointBase2D<_Type> * point = input.data();
-        const PointBase2D<_Type> * pointEnd = point + inputPointCount;
+        const PointBase2D<_Type> * pointEnd = point + input.size();
 
         for ( ; point != pointEnd; ++point, ++distanceVal )
             (*distanceVal) = point->x * sinVal + point->y * cosVal;
@@ -51,7 +51,6 @@ namespace
     template <>
     void FindDistanceSimd< float >( const std::vector< PointBase2D< float > > & input, std::vector < float > & distance, float cosVal, float sinVal, const size_t inputPointCount )
     {
-        
         simd::SIMDType simdType = simd::actualSimdType();
 
         if ( simdType == simd::avx_function && float_layout_check ) {
@@ -66,9 +65,9 @@ namespace
             float * distanceVal = distance.data();
 
             const __m256 coeff = _mm256_set_ps(cosVal, sinVal, cosVal, sinVal, cosVal, sinVal, cosVal, sinVal);
-            const __m256i ctrl = _mm256_set_epi32(7,6,3,2,5,4,1,0);
+            const __m256i ctrl = _mm256_set_epi32(7, 6, 3, 2, 5, 4, 1, 0);
 
-            for(;point != PointEndSimd; point += avx_float, distanceVal += avx_float)
+            for( ;point != PointEndSimd; point += avx_float, distanceVal += avx_float )
             {
                 __m256 src1 = _mm256_loadu_ps(point);
                 point += avx_float;
@@ -83,12 +82,12 @@ namespace
                 _mm256_storeu_ps(distanceVal, result);
             }
 
-            if(nonSimdWidth > 0)
+            if( nonSimdWidth > 0 )
             {
-                const PointBase2D<float> * pointStruct = input.data() + totalSimdWidth/2;
+                const PointBase2D<float> * pointStruct = input.data() + totalSimdWidth / 2;
                 const PointBase2D<float> * PointEnd = input.data() + inputPointCount;
 
-                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal)
+                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal )
                     (*distanceVal) = pointStruct->x * sinVal + pointStruct->y * cosVal;
             }
             #endif
@@ -98,7 +97,7 @@ namespace
         else if ( simdType == simd::neon_function && float_layout_check ){
         }
         else {
-            FindDistance( input, distance, cosVal, sinVal, inputPointCount );
+            FindDistance( input, distance, cosVal, sinVal );
         }
     }
 
@@ -120,27 +119,27 @@ namespace
 
             const __m256d coeff = _mm256_set_pd(cosVal, sinVal, cosVal, sinVal);
 
-            for(;point != PointEndSimd; point += avx_double, distanceVal += avx_double)
+            for( ;point != PointEndSimd; point += avx_double, distanceVal += avx_double )
             {
                 __m256d src1 = _mm256_loadu_pd(point);
                 point += avx_double;
                 __m256d src2 = _mm256_loadu_pd(point);
 
-                src1 = _mm256_mul_pd (src1, coeff);
-                src2 = _mm256_mul_pd (src2, coeff);
+                src1 = _mm256_mul_pd(src1, coeff);
+                src2 = _mm256_mul_pd(src2, coeff);
 
-                __m256d result = _mm256_hadd_pd (src1, src2);
-                result = _mm256_permute4x64_pd (result, 0b11011000);
+                __m256d result = _mm256_hadd_pd(src1, src2);
+                result = _mm256_permute4x64_pd(result, 0b11011000);
 
                 _mm256_storeu_pd(distanceVal, result);
             }
 
-            if(nonSimdWidth > 0)
+            if( nonSimdWidth > 0 )
             {
-                const PointBase2D<double> * pointStruct = input.data() + totalSimdWidth/2;
+                const PointBase2D<double> * pointStruct = input.data() + totalSimdWidth / 2;
                 const PointBase2D<double> * PointEnd = input.data() + inputPointCount;
 
-                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal)
+                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal )
                     (*distanceVal) = pointStruct->x * sinVal + pointStruct->y * cosVal;
             }
             #endif
@@ -151,7 +150,7 @@ namespace
         {
         }
         else {
-            FindDistance( input, distance, cosVal, sinVal, inputPointCount );
+            FindDistance( input, distance, cosVal, sinVal );
         }
     }
 
