@@ -24,9 +24,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     CMAKE_CACHE_ARGS
         -DBUILD_SHARED_LIBS:BOOL=OFF
         -DCMAKE_BUILD_TYPE:STRING=RELEASE
-        -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL}
-    INSTALL_COMMAND ""
-    TEST_COMMAND "")
+        -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
 
     if (WIN32)
         set(YASM_BINARY ${YASM_INSTALL}/bin/yasm.exe)
@@ -57,6 +55,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
 
     ExternalProject_Add(jpeg-turbo
         PREFIX jpeg-turbo
+        DEPENDS yasm
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         INSTALL_DIR ${JPEG_INSTALL}
