@@ -71,7 +71,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
             -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
 
-    ExternalProject_Get_Property(jpeg install_dir)
+    ExternalProject_Get_Property(jpeg-turbo install_dir)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
     set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/jpeg-static.lib)
     set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/jpeg-static.lib)
