@@ -10,7 +10,7 @@ namespace
     typedef bool (*houghFunction)( const std::vector< Point2d > &, double, double, double, double,
                                    std::vector< Point2d > &, std::vector< Point2d > & );
     
-    std::pair < double, double > HoughTransform( houghFunction hough )
+    std::pair < double, double > HoughTransformTemplate( houghFunction hough )
     {
         Performance_Test::TimerContainer timer;
 
@@ -38,23 +38,25 @@ namespace
         return timer.mean();
     }
 
-    std::pair < double, double > HoughTransformCPU()
+    std::pair < double, double > HoughTransform()
     {
-        return HoughTransform( Image_Function::HoughTransform );
+        return HoughTransformTemplate( Image_Function::HoughTransform );
     }
     
-    std::pair < double, double > HoughTransformAVX()
+    std::pair < double, double > HoughTransformAvx()
     {
-        return HoughTransform( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( false );
+        simd::EnableAvx( true );
+        const std::pair < double, double > result = HoughTransformTemplate( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( true );
+        return result;
     }
 }
 
 void addTests_Math( PerformanceTestFramework & framework )
 {
-    ADD_TEST( framework, HoughTransformCPU );
-    #ifdef PENGUINV_AVX_SET
-    simd::EnableSimd( false );
-    simd::EnableAvx( true );
-    ADD_TEST( framework, HoughTransformAVX );
-    #endif
+    ADD_TEST( framework, HoughTransform );
+#ifdef PENGUINV_AVX_SET
+    ADD_TEST( framework, HoughTransformAvx );
+#endif
 }
