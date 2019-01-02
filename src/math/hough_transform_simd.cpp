@@ -55,9 +55,9 @@ namespace
 
         if ( simdType == simd::avx_function && float_layout_check ) {
             #ifdef PENGUINV_AVX_SET
-            const uint32_t simdWidth = (inputPointCount*2) / (avx_float*2);
-            const uint32_t totalSimdWidth = simdWidth * (avx_float*2);
-            const uint32_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
+            const size_t simdWidth = (inputPointCount*2) / (avx_float*2);
+            const size_t totalSimdWidth = simdWidth * (avx_float*2);
+            const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
 
             const float * point = reinterpret_cast<const float*>(input.data());
             const float * PointEndSimd = point + totalSimdWidth;
@@ -102,9 +102,9 @@ namespace
 
         if ( simdType == simd::avx_function && double_layout_check ) {
             #ifdef PENGUINV_AVX_SET
-            const uint32_t simdWidth = (inputPointCount*2) / (avx_double*2);
-            const uint32_t totalSimdWidth = simdWidth * (avx_double*2);
-            const uint32_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
+            const size_t simdWidth = (inputPointCount*2) / (avx_double*2);
+            const size_t totalSimdWidth = simdWidth * (avx_double*2);
+            const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
 
             const double * point = reinterpret_cast<const double*>(input.data());
             const double * PointEndSimd = point + totalSimdWidth;
