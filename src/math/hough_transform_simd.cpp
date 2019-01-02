@@ -56,8 +56,8 @@ namespace
     {
         simd::SIMDType simdType = simd::actualSimdType();
 
+#ifdef PENGUINV_AVX_SET
         if ( simdType == simd::avx_function && float_layout_check ) {
-            #ifdef PENGUINV_AVX_SET
             const size_t simdWidth = (inputPointCount*2) / (avx_float*2);
             const size_t totalSimdWidth = simdWidth * (avx_float*2);
             const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
@@ -71,8 +71,7 @@ namespace
             const __m256 coeff = _mm256_loadu_ps( coefficients );
             const __m256i ctrl = _mm256_set_epi32(7, 6, 3, 2, 5, 4, 1, 0);
 
-            for( ;point != PointEndSimd; point += avx_float, distanceVal += avx_float )
-            {
+            for( ;point != PointEndSimd; point += avx_float, distanceVal += avx_float ) {
                 __m256 src1 = _mm256_loadu_ps(point);
                 point += avx_float;
                 __m256 src2 = _mm256_loadu_ps(point);
@@ -88,15 +87,24 @@ namespace
 
             if( nonSimdWidth > 0 )
                 FindDistance( input, distance, cosVal, sinVal, totalSimdWidth / 2 );
-            #endif
+
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else if ( simdType == simd::sse_function && float_layout_check ) {
+#endif
+
+#ifdef PENGUINV_SSE_SET
+        if ( simdType == simd::sse_function && float_layout_check ) {
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else if ( simdType == simd::neon_function && float_layout_check ){
+#endif
+
+#ifdef PENGUINV_NEON_SET
+        if ( simdType == simd::neon_function && float_layout_check ) {
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else {
-            FindDistance( input, distance, cosVal, sinVal );
-        }
+#endif
+
+        FindDistance( input, distance, cosVal, sinVal ); // no SIMD found, run original CPU code
     }
 
     template <>
@@ -104,8 +112,8 @@ namespace
     {
         simd::SIMDType simdType = simd::actualSimdType();
 
+#ifdef PENGUINV_AVX_SET
         if ( simdType == simd::avx_function && double_layout_check ) {
-            #ifdef PENGUINV_AVX_SET
             const size_t simdWidth = (inputPointCount*2) / (avx_double*2);
             const size_t totalSimdWidth = simdWidth * (avx_double*2);
             const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
@@ -118,8 +126,7 @@ namespace
             const double coefficients[8] = { cosVal, sinVal, cosVal, sinVal };
             const __m256d coeff = _mm256_loadu_pd( coefficients );
 
-            for( ;point != PointEndSimd; point += avx_double, distanceVal += avx_double )
-            {
+            for( ;point != PointEndSimd; point += avx_double, distanceVal += avx_double ) {
                 __m256d src1 = _mm256_loadu_pd(point);
                 point += avx_double;
                 __m256d src2 = _mm256_loadu_pd(point);
@@ -135,16 +142,24 @@ namespace
 
             if( nonSimdWidth > 0 )
                 FindDistance( input, distance, cosVal, sinVal, totalSimdWidth / 2 );
-            #endif
+
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else if ( simdType == simd::sse_function && double_layout_check ) {
+#endif
+
+#ifdef PENGUINV_SSE_SET
+        if ( simdType == simd::sse_function && double_layout_check ) {
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else if ( simdType == simd::neon_function && double_layout_check )
-        {
+#endif
+
+#ifdef PENGUINV_NEON_SET
+        if ( simdType == simd::neon_function && double_layout_check ) {
+            return; // we have to return after execution to do not proceed to the rest of the code
         }
-        else {
-            FindDistance( input, distance, cosVal, sinVal );
-        }
+#endif
+
+        FindDistance( input, distance, cosVal, sinVal ); // no SIMD found, run original CPU code
     }
 
     template <typename _Type>
@@ -229,10 +244,9 @@ namespace
         const _Type cosVal = std::cos( angleVal );
         const _Type sinVal = std::sin( angleVal );
 
-        _Type * distanceVal = distanceToLine.data();
-
         FindDistanceSimd<_Type>(input, distanceToLine, cosVal, sinVal, inputPointCount);
 
+        _Type * distanceVal = distanceToLine.data();
         const PointBase2D<_Type> * point = input.data();
         const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
