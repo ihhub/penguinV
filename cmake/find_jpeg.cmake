@@ -25,7 +25,14 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         -DBUILD_SHARED_LIBS:BOOL=OFF
         -DCMAKE_BUILD_TYPE:STRING=RELEASE
         -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL}
+    INSTALL_COMMAND ""
     TEST_COMMAND "")
+
+    if (WIN32)
+        set(YASM_BINARY ${YASM_INSTALL}/bin/yasm.exe)
+    else()
+        set(YASM_BINARY ${YASM_INSTALL}/bin/yasm)
+    endif()
 
     set(JPEG_INSTALL ${CMAKE_BINARY_DIR}/jpeg)
     set(JPEG_BUILD_DIR ${CMAKE_BINARY_DIR}/jpeg/build)
@@ -48,24 +55,20 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libjpeg.a)
     endif()
 
-    ExternalProject_Add(jpeg
-        PREFIX jpeg
-        URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz/
+    ExternalProject_Add(jpeg-turbo
+        PREFIX jpeg-turbo
+        URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
-        BINARY_DIR ${JPEG_BUILD_DIR}
-        BUILD_BYPRODUCTS ${JPEG_STATIC_LIBRARIES}
-        DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
-        INSTALL_DIR ${JPEG_INSTALL}
         CMAKE_ARGS
-            -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_VERBOSE_MAKEFILE=TRUE
+            -DCMAKE_DEBUG_POSTFIX=d
             -DENABLE_SHARED=FALSE
-            -DENABLE_STATIC=TRUE
-            -DWITH_TURBOJPEG=FALSE
             -DWITH_SIMD=FALSE
+            -DENABLE_STATIC=TRUE
+            -DWITH_TURBOJPEG=TRUE
+            -DWITH_JPEG8=TRUE
             -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
-            -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
-            -DCMAKE_ASM_NASM_COMPILER=${YASM_INSTALL}/bin/yasm)
+            -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
+            -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
 
     ExternalProject_Get_Property(jpeg install_dir)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
