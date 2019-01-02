@@ -68,7 +68,7 @@ namespace
             float * distanceVal = distance.data();
 
             const float coefficients[8] = { cosVal, sinVal, cosVal, sinVal, cosVal, sinVal, cosVal, sinVal };
-            const __m256 coeff = _mm256_load_ps( coefficients );
+            const __m256 coeff = _mm256_loadu_ps( coefficients );
             const __m256i ctrl = _mm256_set_epi32(7, 6, 3, 2, 5, 4, 1, 0);
 
             for( ;point != PointEndSimd; point += avx_float, distanceVal += avx_float )
