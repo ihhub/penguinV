@@ -45,7 +45,7 @@ namespace
     template <typename _Type>
     void FindDistanceSimd( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, const size_t inputPointCount )
     {
-        FindDistance( input, distance, cosVal, sinVal, inputPointCount );
+        FindDistance( input, distance, cosVal, sinVal );
     }
 
     template <>
