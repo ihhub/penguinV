@@ -35,7 +35,7 @@ namespace
     void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, size_t offset = 0u )
     {
         if ( offset >= input.size() )
-            return;
+            throw imageException
 
         _Type * distanceVal = distance.data() + offset;
         const PointBase2D<_Type> * point = input.data() + offset;
