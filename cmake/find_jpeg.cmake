@@ -59,6 +59,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         PREFIX jpeg-turbo
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+        INSTALL_DIR ${JPEG_INSTALL}
         CMAKE_ARGS
             -DCMAKE_DEBUG_POSTFIX=d
             -DENABLE_SHARED=FALSE
