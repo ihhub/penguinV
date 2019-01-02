@@ -1,6 +1,4 @@
 #include "hough_transform_simd.h"
-#include "../image_function_helper.h"
-#include "../penguinv/cpu_identification.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>
@@ -16,6 +14,9 @@
 
 #include <algorithm>
 #include <cmath>
+
+#include "../image_function_helper.h"
+#include "../penguinv/cpu_identification.h"
 
 namespace
 {
