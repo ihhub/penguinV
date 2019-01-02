@@ -58,8 +58,9 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         DEPENDS yasm
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+        BUILD_COMMAND ""
         INSTALL_DIR ${JPEG_INSTALL}
-        INSTALL_COMMAND "cmake --build . --target install"
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install --config ${CMAKE_BUILD_TYPE}
         CMAKE_ARGS
             -DCMAKE_DEBUG_POSTFIX=d
             -DENABLE_SHARED=FALSE
@@ -67,7 +68,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
             -DENABLE_STATIC=TRUE
             -DWITH_TURBOJPEG=TRUE
             -DWITH_JPEG8=TRUE
-            -DCMAKE_INSTALL_PREFIX:STRING=${JPEG_INSTALL}
+            -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
             -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
 
