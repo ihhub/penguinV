@@ -24,13 +24,12 @@ namespace
                 point[i] = Point2d( i, 0 );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
+            std::vector< Point2d > pointOnLine;
+            std::vector< Point2d > pointOffLine;
+            
             timer.start();
 
-            { // destroy the object within the scope
-                std::vector< Point2d > pointOnLine;
-                std::vector< Point2d > pointOffLine;
-                hough( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
-            }
+            hough( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
 
             timer.stop();
         }
