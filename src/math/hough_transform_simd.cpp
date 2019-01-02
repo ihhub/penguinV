@@ -36,7 +36,7 @@ namespace
     {
         _Type * distanceVal = distance.data() + offset;
         const PointBase2D<_Type> * point = input.data() + offset;
-        const PointBase2D<_Type> * pointEnd = point + input.size();
+        const PointBase2D<_Type> * pointEnd = input.data() + input.size();
 
         for ( ; point != pointEnd; ++point, ++distanceVal )
             (*distanceVal) = point->x * sinVal + point->y * cosVal;
