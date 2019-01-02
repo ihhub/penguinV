@@ -32,10 +32,10 @@ namespace
     const float minimumLineTolerance = 1e-5f;
     
     template <typename _Type>
-    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal )
+    void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, size_t offset = 0u )
     {
         _Type * distanceVal = distance.data();
-        const PointBase2D<_Type> * point = input.data();
+        const PointBase2D<_Type> * point = input.data() + offset;
         const PointBase2D<_Type> * pointEnd = point + input.size();
 
         for ( ; point != pointEnd; ++point, ++distanceVal )
@@ -83,13 +83,7 @@ namespace
             }
 
             if( nonSimdWidth > 0 )
-            {
-                const PointBase2D<float> * pointStruct = input.data() + totalSimdWidth / 2;
-                const PointBase2D<float> * PointEnd = input.data() + inputPointCount;
-
-                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal )
-                    (*distanceVal) = pointStruct->x * sinVal + pointStruct->y * cosVal;
-            }
+                FindDistance( input, distance, cosVal, sinVal, totalSimdWidth / 2 );
             #endif
         }
         else if ( simdType == simd::sse_function && float_layout_check ) {
@@ -135,13 +129,7 @@ namespace
             }
 
             if( nonSimdWidth > 0 )
-            {
-                const PointBase2D<double> * pointStruct = input.data() + totalSimdWidth / 2;
-                const PointBase2D<double> * PointEnd = input.data() + inputPointCount;
-
-                for ( ; pointStruct != PointEnd; ++pointStruct, ++distanceVal )
-                    (*distanceVal) = pointStruct->x * sinVal + pointStruct->y * cosVal;
-            }
+                FindDistance( input, distance, cosVal, sinVal, totalSimdWidth / 2 );
             #endif
         }
         else if ( simdType == simd::sse_function && double_layout_check ) {
