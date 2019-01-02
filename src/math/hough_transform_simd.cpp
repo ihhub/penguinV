@@ -58,7 +58,7 @@ namespace
 
 #ifdef PENGUINV_AVX_SET
         if ( simdType == simd::avx_function && float_layout_check ) {
-            const size_t simdWidth = (inputPointCount*2) / (avx_float*2);
+            const size_t simdWidth = inputPointCount / avx_float;
             const size_t totalSimdWidth = simdWidth * (avx_float*2);
             const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
 
@@ -114,7 +114,7 @@ namespace
 
 #ifdef PENGUINV_AVX_SET
         if ( simdType == simd::avx_function && double_layout_check ) {
-            const size_t simdWidth = (inputPointCount*2) / (avx_double*2);
+            const size_t simdWidth = inputPointCount / avx_double;
             const size_t totalSimdWidth = simdWidth * (avx_double*2);
             const size_t nonSimdWidth = (inputPointCount*2) - totalSimdWidth;
 
