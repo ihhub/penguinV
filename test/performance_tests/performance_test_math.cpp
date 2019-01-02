@@ -19,7 +19,7 @@ namespace
         const double angleStep = pvmath::toRadians( 0.2 );
         const double lineTolerance = 1;
 
-        std::vector< Point2d > point( 1000 );
+        std::vector< Point2d > point( 10000 );
         for ( size_t i = 0; i < point.size(); ++i )
                 point[i] = Point2d( i, 0 );
 
