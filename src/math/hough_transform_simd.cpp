@@ -21,12 +21,12 @@ namespace
 {
     const bool float_layout_check  = std::is_standard_layout<PointBase2D<float>>::value;
     const bool double_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
-    const uint32_t avx_double = 4u;
-    const uint32_t avx_float = 8u;
-    const uint32_t sse_double = 2u;
-    const uint32_t sse_float = 4u;
-    const uint32_t neon_double = 2u;
-    const uint32_t neon_float = 4u;
+    const size_t avx_double = 4u;
+    const size_t avx_float = 8u;
+    const size_t sse_double = 2u;
+    const size_t sse_float = 4u;
+    const size_t neon_double = 2u;
+    const size_t neon_float = 4u;
 
     const float minimumAngleStep = 0.001f * static_cast<float>( pvmath::pi ) / 180.0f;
     const float minimumLineTolerance = 1e-5f;
