@@ -48,24 +48,32 @@ namespace pvmath
         return true;
     }
 
-    bool houghTransform_double()
+    bool houghTransformDouble()
     {
         return houghTransformTemplate<double, houghFunctionDouble>( Image_Function::HoughTransform );
     }
     
-    bool houghTransform_float()
+    bool houghTransformFloat()
     {
         return houghTransformTemplate<float, houghFunctionFloat>( Image_Function::HoughTransform );
     }
 
-    bool houghTransformSimd_double()
+    bool houghTransformAvxDouble()
     {
-        return houghTransformTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( false );
+        simd::EnableAvx( true );
+        const bool result = houghTransformTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( true );
+        return result;
     }
     
-    bool houghTransformSimd_float()
+    bool houghTransformAvxFloat()
     {
-        return houghTransformTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( false );
+        simd::EnableAvx( true );
+        const bool result = houghTransformTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( true );
+        return result;
     }
     
     bool lineConstructor()
@@ -116,14 +124,12 @@ namespace pvmath
 
 void addTests_Math( UnitTestFramework & framework )
 {
-    framework.add(pvmath::houghTransform_double, "math::Hough Transform (double)");
-    framework.add(pvmath::houghTransform_float, "math::Hough Transform (float)");
-    #ifdef PENGUINV_AVX_SET
-    simd::EnableSimd( false );
-    simd::EnableAvx( true );
-    framework.add(pvmath::houghTransformSimd_double, "math::Hough Transform AVX (double)");
-    framework.add(pvmath::houghTransformSimd_float, "math::Hough Transform AVX (float)");
-    #endif
+    framework.add(pvmath::houghTransformDouble, "math::Hough Transform (double)");
+    framework.add(pvmath::houghTransformFloat, "math::Hough Transform (float)");
+#ifdef PENGUINV_AVX_SET
+    framework.add(pvmath::houghTransformAvxDouble, "math::Hough Transform (avx, double)");
+    framework.add(pvmath::houghTransformAvxFloat, "math::Hough Transform (avx, float)");
+#endif
     framework.add(pvmath::lineConstructor, "math::Line2d constructor");
     framework.add(pvmath::parallelLine, "math::Line2d parallel lines");
     framework.add(pvmath::lineIntersection, "math::Line2d line intersection");
