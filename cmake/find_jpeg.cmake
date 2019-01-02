@@ -53,31 +53,29 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libjpeg.a)
     endif()
 
-    ExternalProject_Add(jpeg-turbo
-        PREFIX jpeg-turbo
+    ExternalProject_Add(jpeg
+        PREFIX jpeg
         DEPENDS yasm
         URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         INSTALL_DIR ${JPEG_INSTALL}
-        INSTALL_COMMAND ""
         CMAKE_ARGS
             -DCMAKE_DEBUG_POSTFIX=d
             -DENABLE_SHARED=FALSE
             -DWITH_SIMD=FALSE
             -DENABLE_STATIC=TRUE
-            -DWITH_TURBOJPEG=TRUE
+            -DWITH_TURBOJPEG=FALSE
             -DWITH_JPEG8=TRUE
             -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
-            -DCMAKE_SKIP_INSTALL_ALL_DEPENDENCY:BOOL=TRUE
             -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
             -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
 
-    ExternalProject_Get_Property(jpeg-turbo install_dir)
+    ExternalProject_Get_Property(jpeg-turbo INSTALL_DIR)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
-    set(JPEG_LIBRARY_RELEASE ${install_dir}/lib/jpeg-static.lib)
-    set(JPEG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/jpeg-static.lib)
-    set(JPEG_LIBRARY_DEBUG ${install_dir}/lib/jpeg-staticd.lib)
-    set(JPEG_INCLUDE_DIRS ${install_dir}/include)
+    set(JPEG_LIBRARY_RELEASE ${INSTALL_DIR}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_RELWITHDEBINFO ${INSTALL_DIR}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_DEBUG ${INSTALL_DIR}/lib/jpeg-staticd.lib)
+    set(JPEG_INCLUDE_DIRS ${INSTALL_DIR}/include)
     # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
     # This is quite unhelpful because those directories are only generated at build time
     file(MAKE_DIRECTORY ${JPEG_INCLUDE_DIRS}) # Workaround
