@@ -1,4 +1,5 @@
 #include "hough_transform_simd.h"
+#include "../penguinv/cpu_identification.h"
 
 #ifdef PENGUINV_AVX_SET
 #include <immintrin.h>
@@ -16,7 +17,6 @@
 #include <cmath>
 
 #include "../image_function_helper.h"
-#include "../penguinv/cpu_identification.h"
 
 namespace
 {
@@ -36,7 +36,7 @@ namespace
     void FindDistance( const std::vector< PointBase2D< _Type > > & input, std::vector < _Type > & distance, _Type cosVal, _Type sinVal, size_t offset = 0u )
     {
         if ( offset >= input.size() )
-            throw imageException
+            throw imageException( "distance offset is superior to the input size" );
 
         _Type * distanceVal = distance.data() + offset;
         const PointBase2D<_Type> * point = input.data() + offset;
