@@ -35,7 +35,7 @@ TARGET := unit_tests
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-LIBS := -pthread -lpng
+LIBS := -pthread -lpng -ljpeg
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)
