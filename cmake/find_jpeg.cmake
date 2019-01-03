@@ -7,8 +7,6 @@ if(PENGUINV_ENABLE_JPEG_SUPPORT)
     if(NOT JPEG_FOUND)
         set(PENGUINV_USE_EXTERNAL_JPEG ON CACHE BOOL "" FORCE)
         message(STATUS "libjpeg has not been found in the system and will be downloaded")
-    else()
-        message(STATUS "Using system JPEG library: ${JPEG_LIBRARIES}")
     endif()
 endif()
 
