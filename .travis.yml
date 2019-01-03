@@ -7,7 +7,7 @@ addons:
     packages:
       - libpng-dev
       - libjpeg8-dev
-      - libjpeg-turbo8
+      - libjpeg-turbo8-dev
       - ocl-icd-opencl-dev
       - opencl-headers
 
