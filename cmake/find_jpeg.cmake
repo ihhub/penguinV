@@ -60,9 +60,8 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
         BUILD_COMMAND ""
         INSTALL_DIR ${JPEG_INSTALL}
-        INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install --config ${CMAKE_BUILD_TYPE}
+        INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install --config Release
         CMAKE_ARGS
-            -DCMAKE_BUILD_TYPE=Release
             -DENABLE_SHARED=FALSE
             -DWITH_SIMD=FALSE
             -DENABLE_STATIC=TRUE
