@@ -7,6 +7,8 @@ if(PENGUINV_ENABLE_JPEG_SUPPORT)
     if(NOT JPEG_FOUND)
         set(PENGUINV_USE_EXTERNAL_JPEG ON CACHE BOOL "" FORCE)
         message(STATUS "libjpeg has not been found in the system and will be downloaded")
+    else()
+        message(STATUS "Using system JPEG library: ${JPEG_LIBRARIES}")
     endif()
 endif()
 
@@ -27,7 +29,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
             -DCMAKE_BUILD_TYPE:STRING=RELEASE
             -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
 
-    if (WIN32)
+    if(WIN32)
         set(YASM_BINARY ${YASM_INSTALL}/bin/yasm.exe)
     else()
         set(YASM_BINARY ${YASM_INSTALL}/bin/yasm)
