@@ -63,10 +63,10 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         INSTALL_DIR ${JPEG_INSTALL}
         INSTALL_COMMAND ${CMAKE_COMMAND} --build . --target install --config Release
         CMAKE_ARGS
-            -DENABLE_SHARED=FALSE
-            -DWITH_SIMD=FALSE
+            -DWITH_SIMD=TRUE
+            -DENABLE_SHARED=TRUE
             -DENABLE_STATIC=TRUE
-            -DWITH_TURBOJPEG=FALSE
+            -DWITH_TURBOJPEG=TRUE
             -DWITH_JPEG8=TRUE
             -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_CONFIGURATION_TYPES=Release
