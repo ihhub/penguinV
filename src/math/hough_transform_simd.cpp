@@ -20,14 +20,14 @@
 
 namespace
 {
-    const bool float_layout_check  = std::is_standard_layout<PointBase2D<float>>::value;
-    const bool double_layout_check = std::is_standard_layout<PointBase2D<double>>::value;
-    const size_t avx_double = 4u;
-    const size_t avx_float = 8u;
-    const size_t sse_double = 2u;
-    const size_t sse_float = 4u;
-    const size_t neon_double = 2u;
-    const size_t neon_float = 4u;
+    const bool isFloatAvailable  = std::is_standard_layout<PointBase2D<float>>::value;
+    const bool isDoubleAvailable = std::is_standard_layout<PointBase2D<double>>::value;
+    const size_t avxDouble  = 4u;
+    const size_t avxFloat   = 8u;
+    const size_t sseDouble  = 2u;
+    const size_t sseFloat   = 4u;
+    const size_t neonDouble = 2u;
+    const size_t neonFloat  = 4u;
 
     const float minimumAngleStep = 0.001f * static_cast<float>( pvmath::pi ) / 180.0f;
     const float minimumLineTolerance = 1e-5f;
@@ -58,9 +58,9 @@ namespace
         const simd::SIMDType simdType = simd::actualSimdType();
 
 #ifdef PENGUINV_AVX_SET
-        if ( simdType == simd::avx_function && float_layout_check ) {
-            const size_t simdWidth = input.size() / avx_float;
-            const size_t totalSimdWidth = simdWidth * (avx_float * 2);
+        if ( isFloatAvailable && simdType == simd::avx_function ) {
+            const size_t simdWidth = input.size() / avxFloat;
+            const size_t totalSimdWidth = simdWidth * (avxFloat * 2);
             const size_t nonSimdWidth = (input.size() * 2) - totalSimdWidth;
 
             const float * point = reinterpret_cast<const float*>(input.data());
@@ -72,9 +72,9 @@ namespace
             const __m256 coeff = _mm256_loadu_ps( coefficients );
             const __m256i ctrl = _mm256_set_epi32(7, 6, 3, 2, 5, 4, 1, 0);
 
-            for( ;point != PointEndSimd; point += avx_float, distanceVal += avx_float ) {
+            for( ;point != PointEndSimd; point += avxFloat, distanceVal += avxFloat ) {
                 __m256 src1 = _mm256_loadu_ps(point);
-                point += avx_float;
+                point += avxFloat;
                 __m256 src2 = _mm256_loadu_ps(point);
 
                 src1 = _mm256_mul_ps(src1, coeff);
@@ -94,13 +94,13 @@ namespace
 #endif
 
 #ifdef PENGUINV_SSE_SET
-        if ( simdType == simd::sse_function && float_layout_check ) {
+        if ( isFloatAvailable && simdType == simd::sse_function ) {
             return; // we have to return after execution to do not proceed to the rest of the code
         }
 #endif
 
 #ifdef PENGUINV_NEON_SET
-        if ( simdType == simd::neon_function && float_layout_check ) {
+        if ( isFloatAvailable && simdType == simd::neon_function ) {
             return; // we have to return after execution to do not proceed to the rest of the code
         }
 #endif
@@ -114,9 +114,9 @@ namespace
         const simd::SIMDType simdType = simd::actualSimdType();
 
 #ifdef PENGUINV_AVX_SET
-        if ( simdType == simd::avx_function && double_layout_check ) {
-            const size_t simdWidth = input.size() / avx_double;
-            const size_t totalSimdWidth = simdWidth * (avx_double * 2);
+        if ( isDoubleAvailable && simdType == simd::avx_function ) {
+            const size_t simdWidth = input.size() / avxDouble;
+            const size_t totalSimdWidth = simdWidth * (avxDouble * 2);
             const size_t nonSimdWidth = (input.size() * 2) - totalSimdWidth;
 
             const double * point = reinterpret_cast<const double*>(input.data());
@@ -127,9 +127,9 @@ namespace
             const double coefficients[8] = { cosVal, sinVal, cosVal, sinVal };
             const __m256d coeff = _mm256_loadu_pd( coefficients );
 
-            for( ;point != PointEndSimd; point += avx_double, distanceVal += avx_double ) {
+            for( ;point != PointEndSimd; point += avxDouble, distanceVal += avxDouble ) {
                 __m256d src1 = _mm256_loadu_pd(point);
-                point += avx_double;
+                point += avxDouble;
                 __m256d src2 = _mm256_loadu_pd(point);
 
                 src1 = _mm256_mul_pd(src1, coeff);
@@ -149,13 +149,13 @@ namespace
 #endif
 
 #ifdef PENGUINV_SSE_SET
-        if ( simdType == simd::sse_function && double_layout_check ) {
+        if ( isDoubleAvailable && simdType == simd::sse_function ) {
             return; // we have to return after execution to do not proceed to the rest of the code
         }
 #endif
 
 #ifdef PENGUINV_NEON_SET
-        if ( simdType == simd::neon_function && double_layout_check ) {
+        if ( isDoubleAvailable && simdType == simd::neon_function ) {
             return; // we have to return after execution to do not proceed to the rest of the code
         }
 #endif
