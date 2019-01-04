@@ -7,27 +7,31 @@
 
 namespace
 {
-    typedef bool (*houghFunction)( const std::vector< Point2d > &, double, double, double, double,
-                                   std::vector< Point2d > &, std::vector< Point2d > & );
+    typedef bool (*houghFunctionFloat)( const std::vector< PointBase2D<float> > &, float, float, float, float,
+                                        std::vector< PointBase2D<float> > &, std::vector< PointBase2D<float> > & );
+
+    typedef bool (*houghFunctionDouble)( const std::vector< PointBase2D<double> > &, double, double, double, double,
+                                         std::vector< PointBase2D<double> > &, std::vector< PointBase2D<double> > & );
     
-    std::pair < double, double > HoughTransformTemplate( houghFunction hough )
+    template <typename _Type, typename _Hough>
+    std::pair < double, double > HoughTransformTemplate( _Hough hough )
     {
         Performance_Test::TimerContainer timer;
 
-        const double angle = 0;
-        const double angleTolerance = pvmath::toRadians( 10.0 );
-        const double angleStep = pvmath::toRadians( 0.2 );
-        const double lineTolerance = 1;
+        const _Type angle = 0;
+        const _Type angleTolerance = static_cast< _Type >( pvmath::toRadians( 10.0 ) );
+        const _Type angleStep = static_cast< _Type >( pvmath::toRadians( 0.2 ) );
+        const _Type lineTolerance = 1;
 
         const uint32_t pointCount = 10000u;
-        std::vector< Point2d > point( pointCount );
-        for ( uint32_t i = 0; i <pointCount; ++i )
-            point[i] = Point2d( static_cast< double >( i ), 0 );
+        std::vector< PointBase2D<_Type> > point( pointCount );
+        for ( uint32_t i = 0; i < pointCount; ++i )
+            point[i] = PointBase2D<_Type>( static_cast< _Type >( i ), 0 );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
-            std::vector< Point2d > pointOnLine;
-            std::vector< Point2d > pointOffLine;
-            
+            std::vector< PointBase2D<_Type> > pointOnLine;
+            std::vector< PointBase2D<_Type> > pointOffLine;
+
             timer.start();
 
             hough( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine );
@@ -38,16 +42,30 @@ namespace
         return timer.mean();
     }
 
-    std::pair < double, double > HoughTransform()
+    std::pair < double, double > HoughTransformFloat()
     {
-        return HoughTransformTemplate( Image_Function::HoughTransform );
+        return HoughTransformTemplate<float, houghFunctionFloat>( Image_Function::HoughTransform );
     }
-    
-    std::pair < double, double > HoughTransformAvx()
+
+    std::pair < double, double > HoughTransformDouble()
+    {
+        return HoughTransformTemplate<double, houghFunctionDouble>( Image_Function::HoughTransform );
+    }
+
+    std::pair < double, double > HoughTransformAvxFloat()
     {
         simd::EnableSimd( false );
         simd::EnableAvx( true );
-        const std::pair < double, double > result = HoughTransformTemplate( Image_Function_Simd::HoughTransform );
+        const std::pair < double, double > result = HoughTransformTemplate<float, houghFunctionFloat>( Image_Function_Simd::HoughTransform );
+        simd::EnableSimd( true );
+        return result;
+    }
+
+    std::pair < double, double > HoughTransformAvxDouble()
+    {
+        simd::EnableSimd( false );
+        simd::EnableAvx( true );
+        const std::pair < double, double > result = HoughTransformTemplate<double, houghFunctionDouble>( Image_Function_Simd::HoughTransform );
         simd::EnableSimd( true );
         return result;
     }
@@ -55,8 +73,10 @@ namespace
 
 void addTests_Math( PerformanceTestFramework & framework )
 {
-    ADD_TEST( framework, HoughTransform );
+    ADD_TEST( framework, HoughTransformFloat );
+    ADD_TEST( framework, HoughTransformDouble );
 #ifdef PENGUINV_AVX_SET
-    ADD_TEST( framework, HoughTransformAvx );
+    ADD_TEST( framework, HoughTransformAvxFloat );
+    ADD_TEST( framework, HoughTransformAvxDouble );
 #endif
 }
