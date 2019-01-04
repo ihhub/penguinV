@@ -1,5 +1,5 @@
 #include "unit_test_math.h"
-
+#include <cmath>
 #include "unit_test_helper.h"
 #include "../../src/math/hough_transform.h"
 #include "../../src/math/hough_transform_simd.h"
@@ -26,8 +26,8 @@ namespace pvmath
             const _Type noiseValue = lineTolerance / 2;
             std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
 
-            const _Type sinVal = sin( angle );
-            const _Type cosVal = cos( angle );
+            const _Type sinVal = std::sin( angle );
+            const _Type cosVal = std::cos( angle );
 
             for ( typename std::vector< PointBase2D<_Type> >::iterator p = point.begin(); p != point.end(); ++p ) {
                 const _Type x = Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
