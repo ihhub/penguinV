@@ -155,6 +155,7 @@
     <ClCompile Include="..\..\src\image_function_simd.cpp" />
     <ClCompile Include="..\..\src\math\fft_base.cpp" />
     <ClCompile Include="..\..\src\math\hough_transform.cpp" />
+    <ClCompile Include="..\..\src\math\hough_transform_simd.cpp" />
     <ClCompile Include="..\..\src\math\math_base.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\..\src\thirdparty\kissfft\kiss_fft.c" />
@@ -185,6 +186,7 @@
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\math\hough_transform.h" />
+    <ClInclude Include="..\..\src\math\hough_transform_simd.h" />
     <ClInclude Include="..\..\src\math\math_base.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
