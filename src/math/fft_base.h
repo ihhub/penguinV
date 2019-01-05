@@ -36,6 +36,10 @@ namespace FFT
         {
         }
 
+        virtual ~BaseComplexData()
+        {
+        }
+
         BaseComplexData & operator=( const BaseComplexData & data )
         {
             _copy( data );
@@ -136,6 +140,7 @@ namespace FFT
     {
     public:
         BaseFFTExecutor();
+        virtual ~BaseFFTExecutor();
 
         void initialize( uint32_t width_, uint32_t height_ ); // Calls virtual functions
 

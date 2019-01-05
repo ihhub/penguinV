@@ -84,7 +84,7 @@ namespace Image_Function
               startYOut + kernelSize / 2, kernelSize / 2, height - (kernelSize - 1) );
 
         std::vector < uint8_t > data( kernelSize * kernelSize );
-        const size_t dataMedianPosition = data.size() / 2;
+        const int32_t dataMedianPosition = static_cast<int32_t>( data.size() / 2 ); // it's valid as signed max value is in 2 times less than unsigned
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -366,7 +366,7 @@ namespace Image_Function
             const int32_t posY2 = posY * posY;
 
             for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
-                *x = doubleSigmaPiInv * expf( -(posX * posX + posY2) / doubleSigma );
+                *x = doubleSigmaPiInv * expf( -static_cast<float>(posX * posX + posY2) / doubleSigma );
                 sum += *x;
             }
         }

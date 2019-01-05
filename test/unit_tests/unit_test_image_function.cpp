@@ -1407,8 +1407,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = uniformImage( intensity );
 
-        const double shiftX = randomValue<int>( input.width()  / 2 ) - input.width()  / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( input.height() / 2 ) - input.height() / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftX = randomFloatValue<double>( -static_cast<double>( input.width()  / 4 ), input.width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -static_cast<double>( input.height() / 4 ), input.height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         const PenguinV_Image::Image output = Shift( input, shiftX, shiftY );
 
@@ -1420,8 +1420,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const double shiftX = randomValue<int>( input[0].width()  / 2 ) - input[0].width()  / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( input[0].height() / 2 ) - input[0].height() / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftX = randomFloatValue<double>( -static_cast<double>( input[0].width()  / 4 ), input[0].width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -static_cast<double>( input[0].height() / 4 ), input[0].height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         Shift( input[0], input[1], shiftX, shiftY );
 
@@ -1436,10 +1436,10 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint32_t maxShiftX = roiX < (input.width()  - roiWidth  - roiX) ? roiX : (input.width()  - roiWidth  - roiX);
-        const uint32_t maxShiftY = roiY < (input.height() - roiHeight - roiY) ? roiY : (input.height() - roiHeight - roiY);
-        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+        const double maxShiftX = roiX < (input.width()  - roiWidth  - roiX) ? roiX : (input.width()  - roiWidth  - roiX);
+        const double maxShiftY = roiY < (input.height() - roiHeight - roiY) ? roiY : (input.height() - roiHeight - roiY);
+        const double shiftX = randomFloatValue<double>( -maxShiftX / 4, maxShiftX / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -maxShiftY / 4, maxShiftY / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         const PenguinV_Image::Image output = Shift( input, roiX, roiY, roiWidth, roiHeight, shiftX, shiftY );
 
@@ -1455,10 +1455,10 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint32_t maxShiftX = roiX[0] < (image[0].width()  - roiWidth  - roiX[0]) ? roiX[0] : (image[0].width()  - roiWidth  - roiX[0]);
-        const uint32_t maxShiftY = roiY[0] < (image[0].height() - roiHeight - roiY[0]) ? roiY[0] : (image[0].height() - roiHeight - roiY[0]);
-        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+        const double maxShiftX = roiX[0] < (image[0].width()  - roiWidth  - roiX[0]) ? roiX[0] : (image[0].width()  - roiWidth  - roiX[0]);
+        const double maxShiftY = roiY[0] < (image[0].height() - roiHeight - roiY[0]) ? roiY[0] : (image[0].height() - roiHeight - roiY[0]);
+        const double shiftX = randomFloatValue<double>( -maxShiftX / 4, maxShiftX / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -maxShiftY / 4 , maxShiftY / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         Shift( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, shiftX, shiftY );
 
