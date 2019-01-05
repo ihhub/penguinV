@@ -11,10 +11,10 @@ namespace pvmath
 {
     typedef bool (*houghFunctionFloat)( const std::vector< PointBase2D<float> > &, float, float, float, float,
                                         std::vector< PointBase2D<float> > &, std::vector< PointBase2D<float> > & );
-    
+
     typedef bool (*houghFunctionDouble)( const std::vector< PointBase2D<double> > &, double, double, double, double,
                                          std::vector< PointBase2D<double> > &, std::vector< PointBase2D<double> > & );
-    
+
     template <typename _Type, typename _Hough>
     bool houghTransformTemplate( _Hough hough )
     {
