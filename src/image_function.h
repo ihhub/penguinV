@@ -99,6 +99,11 @@ namespace Image_Function
     void                     Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                         std::vector < uint32_t > & histogram );
 
+    std::vector < uint32_t > Histogram( const Image & image, const Image & mask );
+    void                     Histogram( const Image & image, const Image & mask, std::vector < uint32_t > & histogram );
+    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height );
+    void                     Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram );
+
     // Invert function is Bitwise NOT operation. But to make function name more user-friendly we named it like this
     Image Invert( const Image & in );
     void  Invert( const Image & in, Image & out );

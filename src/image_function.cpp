@@ -747,6 +747,30 @@ namespace Image_Function
         }
     }
 
+    std::vector < uint32_t > Histogram( const Image & image, const Image & mask )
+    {
+        const Image maskedImage = BitwiseAnd( image, mask );
+        return Image_Function_Helper::Histogram( Histogram, maskedImage );
+    }
+
+    void Histogram( const Image & image, const Image & mask, std::vector < uint32_t > & histogram )
+    {
+        const Image maskedImage = BitwiseAnd( image, mask );
+        Image_Function_Helper::Histogram( Histogram, maskedImage, histogram );
+    }
+
+    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height )
+    {
+        const Image maskedImage = BitwiseAnd( image, x, y, mask, maskX, maskY, width, height );
+        return Image_Function_Helper::Histogram( Histogram, maskedImage);
+    }
+
+    void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    {
+        const Image maskedImage = BitwiseAnd( image, x, y, mask, maskX, maskY, width, height );
+        Image_Function_Helper::Histogram( Histogram, maskedImage, histogram );
+    }
+
     Image Invert( const Image & in )
     {
         return Image_Function_Helper::Invert( Invert, in );
