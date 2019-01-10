@@ -3,6 +3,7 @@
 #include <cmath>
 #include "unit_test_helper.h"
 #include "../../src/math/hough_transform.h"
+#include "../../src/math/haar_transform.h"
 
 namespace pvmath
 {
@@ -40,14 +41,51 @@ namespace pvmath
         return true;
     }
 
-    bool houghTransform_double()
+    template <typename _Type>
+    bool haarTransformTemplate()
+    {
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width  = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
+            const uint32_t height = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2;
+            std::vector< _Type > input ( width * height );
+            std::vector< _Type > direct( width * height );
+
+            for ( size_t id = 0; id < input.size(); ++id ) {
+                input [id] = Unit_Test::randomFloatValue<_Type>( 0, 255, 1.0f );
+                direct[id] = Unit_Test::randomFloatValue<_Type>( 0, 255, 1.0f );
+            }
+
+            std::vector< _Type > inverse ( width * height );
+            Image_Function::HaarDirectTransform ( input, direct, width, height );
+            Image_Function::HaarInverseTransform( direct, inverse, width, height );
+
+            for ( size_t id = 0; id < input.size(); ++id ) {
+                if (std::fabs(input[id] - inverse[id]) > 0.001f)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool houghTransformDouble()
     {
         return houghTransformTemplate<double>();
     }
 
-    bool houghTransform_float()
+    bool houghTransformFloat()
     {
         return houghTransformTemplate<float>();
+    }
+
+    bool haarTransformDouble()
+    {
+        return haarTransformTemplate<double>();
+    }
+
+    bool haarTransformFloat()
+    {
+        return haarTransformTemplate<float>();
     }
 
     bool lineConstructor()
@@ -96,8 +134,10 @@ namespace pvmath
 
 void addTests_Math( UnitTestFramework & framework )
 {
-    framework.add(pvmath::houghTransform_double, "math::Hough Transform (double)");
-    framework.add(pvmath::houghTransform_float, "math::Hough Transform (float)");
+    framework.add(pvmath::houghTransformDouble, "math::Hough Transform (double)");
+    framework.add(pvmath::houghTransformFloat, "math::Hough Transform (float)");
+    framework.add(pvmath::haarTransformDouble, "math::Haar Transform (double)");
+    framework.add(pvmath::haarTransformFloat, "math::Haar Transform (float)");
     framework.add(pvmath::lineConstructor, "math::Line2d constructor");
     framework.add(pvmath::parallelLine, "math::Line2d parallel lines");
     framework.add(pvmath::lineIntersection, "math::Line2d line intersection");
