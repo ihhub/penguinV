@@ -95,6 +95,13 @@ namespace Image_Function_Helper
         typedef void                     (*HistogramForm4)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                                             std::vector < uint32_t > & histogram );
 
+        typedef std::vector < uint32_t > (*HistogramForm5)( const Image & image, const Image & mask );
+        typedef void                     (*HistogramForm6)( const Image & image, const Image & mask, std::vector < uint32_t > & histogram );
+        typedef std::vector < uint32_t > (*HistogramForm7)( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                                            uint32_t width, uint32_t height );
+        typedef void                     (*HistogramForm8)( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                                            uint32_t width, uint32_t height, std::vector < uint32_t > & histogram );
+
         typedef Image (*InvertForm1)( const Image & in );
         typedef void  (*InvertForm2)( const Image & in, Image & out );
         typedef Image (*InvertForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
@@ -323,6 +330,16 @@ namespace Image_Function_Helper
 
     std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
                                         const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height );
+
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
+                                        const Image & image, const Image & mask );
+
+    void Histogram( FunctionTable::HistogramForm8 histogram,
+                    const Image & image, const Image & mask, std::vector < uint32_t > & histogramTable );
+
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
+                                        const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                        uint32_t width, uint32_t height );
 
     Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in );
