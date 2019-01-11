@@ -776,7 +776,7 @@ namespace Image_Function
         const uint32_t rowSizeMask = mask.rowSize();
 
         const uint8_t * imageY     = image.data() + y * rowSize + x;
-        const uint8_t * imageYMask = mask.data() + yMask * rowSizeMask + xMask;
+        const uint8_t * imageYMask = mask.data() + maskY * rowSizeMask + maskX;
         const uint8_t * imageYEnd  = imageY + height * rowSize;
 
         for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
