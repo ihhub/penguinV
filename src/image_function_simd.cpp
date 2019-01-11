@@ -943,17 +943,17 @@ namespace sse
         }
     }
 
-    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, uint32_t RGB_simdSize, 
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
                    const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        simd ctrl = _mm_set_epi8(15, 12, 13, 14, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2);
+        const simd ctrl = _mm_set_epi8(15, 12, 13, 14, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2);
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + totalSimdWidth;
 
-            for( ; outX != outXEnd; outX += RGB_simdSize, inX += RGB_simdSize ) {
+            for( ; outX != outXEnd; outX += simdWidth, inX += simdWidth ) {
                 const simd * src = reinterpret_cast<const simd*> (inX);
                 simd * dst = reinterpret_cast<simd*> (outX);
                 simd result = _mm_loadu_si128( src );
@@ -1992,21 +1992,21 @@ if ( simdType == neon_function ) { \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t RGB_simdSize = (simdSize/3)*3;
+        const uint32_t RGB_simdSize = (simdSize / colorCount) * colorCount;
 
         uint32_t simdWidth = width / RGB_simdSize;
         uint32_t totalSimdWidth = simdWidth * RGB_simdSize;
         uint32_t nonSimdWidth = width - totalSimdWidth;
 
         // to prevent unallowed access to memory
-        if(nonSimdWidth < (simdSize%3))
+        if( nonSimdWidth < (simdSize % colorCount) )
         {
             simdWidth -= 1;
             totalSimdWidth -= RGB_simdSize;
             nonSimdWidth += RGB_simdSize;
         }
 
-        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, RGB_simdSize, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, RGB_simdSize, totalSimdWidth, nonSimdWidth ); )
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
