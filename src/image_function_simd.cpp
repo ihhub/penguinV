@@ -34,6 +34,7 @@ namespace
             table.Maximum            = &Image_Function_Simd::Maximum;
             table.Minimum            = &Image_Function_Simd::Minimum;
             table.ProjectionProfile  = &Image_Function_Simd::ProjectionProfile;
+            table.RgbToBgr           = &Image_Function_Simd::RgbToBgr;
             table.Subtract           = &Image_Function_Simd::Subtract;
             table.Sum                = &Image_Function_Simd::Sum;
             table.Threshold          = &Image_Function_Simd::Threshold;
@@ -937,6 +938,35 @@ namespace sse
                 _mm_storeu_si128( reinterpret_cast <simd*>(output), simdSum );
                 
                 (*out) += output[0] + output[1] + output[2] + output[3];
+            }
+        }
+    }
+
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, uint32_t RGB_simdSize, 
+                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd ctrl = _mm_set_epi8(15, 12, 13, 14, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2);
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + totalSimdWidth;
+
+            for( ; outX != outXEnd; outX += RGB_simdSize, inX += RGB_simdSize ) {
+                const simd * src = reinterpret_cast<const simd*> (inX);
+                simd * dst = reinterpret_cast<simd*> (outX);
+                simd result = _mm_loadu_si128( src );
+                result = _mm_shuffle_epi8(result, ctrl);
+                _mm_storeu_si128( dst, result );
+            }
+            if(nonSimdWidth > 0)
+            {
+                const uint8_t * outXEndNonSimd = outXEnd + nonSimdWidth;
+                for( ; outX != outXEndNonSimd; outX += colorCount, inX += colorCount ) {
+                    *(outX + 2) = *(inX);
+                    *(outX + 1) = *(inX + 1);
+                    *(outX) = *(inX + 2);
+                }
             }
         }
     }
@@ -1935,6 +1965,49 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
     }
 
+    void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                   uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+        const uint8_t colorCount = RGB;
+
+        if( (simdType == cpu_function) || (simdType == neon_function) || (simdType == avx_function) || ((width * height * colorCount) < simdSize) ) {
+            AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
+
+            Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyRGBImage     ( in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        width = width * colorCount;
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        const uint32_t RGB_simdSize = (simdSize/3)*3;
+
+        uint32_t simdWidth = width / RGB_simdSize;
+        uint32_t totalSimdWidth = simdWidth * RGB_simdSize;
+        uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        // to prevent unallowed access to memory
+        if(nonSimdWidth < (simdSize%3))
+        {
+            simdWidth -= 1;
+            totalSimdWidth -= RGB_simdSize;
+            nonSimdWidth += RGB_simdSize;
+        }
+
+        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, RGB_simdSize, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -2258,6 +2331,27 @@ namespace Image_Function_Simd
                             std::vector < uint32_t > & projection )
     {
         simd::ProjectionProfile( image, x, y, width, height, horizontal, projection, simd::actualSimdType() );
+    }
+
+    Image RgbToBgr( const Image & in )
+    {
+        return Image_Function_Helper::RgbToBgr( RgbToBgr, in );
+    }
+
+    void RgbToBgr( const Image & in, Image & out )
+    {
+        Image_Function_Helper::RgbToBgr( RgbToBgr, in, out );
+    }
+
+    Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::RgbToBgr( RgbToBgr, in, startXIn, startYIn, width, height );
+    }
+
+    void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                   uint32_t width, uint32_t height )
+    {
+        simd:RgbToBgr(in, startXIn, startYIn, out, startXOut, startYOut, width, height);
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
