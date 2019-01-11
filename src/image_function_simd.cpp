@@ -11,6 +11,7 @@
 
 #ifdef PENGUINV_SSE_SET
 #include <emmintrin.h>
+#include <tmmintrin.h>
 #endif
 
 #ifdef PENGUINV_NEON_SET
