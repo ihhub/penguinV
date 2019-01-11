@@ -452,6 +452,39 @@ namespace Image_Function_Helper
         return histogramTable;
     }
 
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
+                                        const Image & image, const Image & mask )
+    {
+        Image_Function::ParameterValidation( image, mask );
+
+        std::vector < uint32_t > histogramTable;
+
+        histogram( image, 0, 0, mask, 0, 0, image.width(), image.height(), histogramTable );
+
+        return histogramTable;
+    }
+
+    void Histogram( FunctionTable::HistogramForm8 histogram,
+                    const Image & image, const Image & mask, std::vector < uint32_t > & histogramTable )
+    {
+        Image_Function::ParameterValidation( image, mask );
+
+        histogram( image, 0, 0, mask, 0, 0, image.width(), image.height(), histogramTable );
+    }
+
+    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
+                                        const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                        uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
+
+        std::vector < uint32_t > histogramTable;
+
+        histogram( image, x, y, mask, maskX, maskY, width, height, histogramTable );
+
+        return histogramTable;
+    }
+
     Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in )
     {
