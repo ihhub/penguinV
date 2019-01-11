@@ -749,26 +749,46 @@ namespace Image_Function
 
     std::vector < uint32_t > Histogram( const Image & image, const Image & mask )
     {
-        const Image maskedImage = BitwiseAnd( image, mask );
-        return Image_Function_Helper::Histogram( Histogram, maskedImage );
+        return Image_Function_Helper::Histogram( Histogram, image, mask );
     }
 
     void Histogram( const Image & image, const Image & mask, std::vector < uint32_t > & histogram )
     {
-        const Image maskedImage = BitwiseAnd( image, mask );
-        Image_Function_Helper::Histogram( Histogram, maskedImage, histogram );
+        Image_Function_Helper::Histogram( Histogram, image, mask, histogram );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height )
+    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                        uint32_t width, uint32_t height )
     {
-        const Image maskedImage = BitwiseAnd( image, x, y, mask, maskX, maskY, width, height );
-        return Image_Function_Helper::Histogram( Histogram, maskedImage);
+        return Image_Function_Helper::Histogram( Histogram, image, x, y, mask, maskX, maskY, width, height );
     }
 
-    void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height,
+                    std::vector < uint32_t > & histogram )
     {
-        const Image maskedImage = BitwiseAnd( image, x, y, mask, maskX, maskY, width, height );
-        Image_Function_Helper::Histogram( Histogram, maskedImage, histogram );
+        ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
+        VerifyGrayScaleImage( image, mask );
+
+        histogram.resize( 256u );
+        std::fill( histogram.begin(), histogram.end(), 0u );
+
+        const uint32_t rowSize     = image.rowSize();
+        const uint32_t rowSizeMask = mask.rowSize();
+
+        const uint8_t * imageY     = image.data() + y * rowSize + x;
+        const uint8_t * imageYMask = mask.data() + yMask * rowSizeMask + xMask;
+        const uint8_t * imageYEnd  = imageY + height * rowSize;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+            const uint8_t * imageX     = imageY;
+            const uint8_t * imageXMask = imageYMask;
+            const uint8_t * imageXEnd  = imageX + width;
+
+            for( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
+                if( (*imageXMask) > 0 )
+                    ++histogram[*imageX];
+            }
+        }
     }
 
     Image Invert( const Image & in )
