@@ -2352,7 +2352,7 @@ namespace Image_Function_Simd
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                    uint32_t width, uint32_t height )
     {
-        simd::RgbToBgr(in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+        simd::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
