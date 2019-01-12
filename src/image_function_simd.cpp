@@ -960,7 +960,8 @@ namespace sse
                 result = _mm_shuffle_epi8(result, ctrl);
                 _mm_storeu_si128( dst, result );
             }
-            if(nonSimdWidth > 0)
+
+            if( nonSimdWidth > 0 )
             {
                 const uint8_t * outXEndNonSimd = outXEnd + nonSimdWidth;
                 for( ; outX != outXEndNonSimd; outX += colorCount, inX += colorCount ) {
@@ -1992,21 +1993,20 @@ if ( simdType == neon_function ) { \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        const uint32_t RGB_simdSize = (simdSize / colorCount) * colorCount;
+        const uint32_t rgbSimdSize = (simdSize / colorCount) * colorCount;
 
-        uint32_t simdWidth = width / RGB_simdSize;
-        uint32_t totalSimdWidth = simdWidth * RGB_simdSize;
+        const uint32_t simdWidth = width / rgbSimdSize;
+        uint32_t totalSimdWidth = simdWidth * rgbSimdSize;
         uint32_t nonSimdWidth = width - totalSimdWidth;
 
         // to prevent unallowed access to memory
         if( nonSimdWidth < (simdSize % colorCount) )
         {
-            simdWidth -= 1;
-            totalSimdWidth -= RGB_simdSize;
-            nonSimdWidth += RGB_simdSize;
+            totalSimdWidth -= rgbSimdSize;
+            nonSimdWidth += rgbSimdSize;
         }
 
-        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, RGB_simdSize, totalSimdWidth, nonSimdWidth ); )
+        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
