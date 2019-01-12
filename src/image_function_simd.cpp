@@ -944,7 +944,7 @@ namespace sse
     }
 
     void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
-                   const uint8_t colorCount, uint32_t simdSize, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const simd ctrl = _mm_set_epi8(15, 12, 13, 14, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2);
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
@@ -953,7 +953,7 @@ namespace sse
 
             const uint8_t * outXEnd = outX + totalSimdWidth;
 
-            for( ; outX != outXEnd; outX += simdSize, inX += simdSize ) {
+            for( ; outX != outXEnd; outX += simdWidth, inX += simdWidth ) {
                 const simd * src = reinterpret_cast<const simd*> (inX);
                 simd * dst = reinterpret_cast<simd*> (outX);
                 simd result = _mm_loadu_si128( src );
