@@ -404,6 +404,7 @@ namespace image_function_sse
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
     SET_FUNCTION( ProjectionProfile  )
+    SET_FUNCTION( RgbToBgr           )
     SET_FUNCTION( Subtract           )
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
