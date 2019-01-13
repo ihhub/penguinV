@@ -1999,8 +1999,8 @@ if ( simdType == neon_function ) { \
     {
         uint32_t simdSize = getSimdSize( simdType );
 
-        // for neon work by packet of 64 bit
-        if(neon_function)
+        // for neon, because the algorithm used work with packet of 64 bit
+        if(simdType == neon_function)
         {
             simdSize = 8u;
         }
