@@ -1,21 +1,21 @@
 #include <stdio.h>
 
 #include "unit_test_bitmap.h"
-#include "unit_test_helper.h"
+#include "../test_helper.h"
 #include "../../src/file/bmp_image.h"
 
 namespace bitmap_operation
 {
     bool WhiteGrayScaleImage()
     {
-        const PenguinV_Image::Image original = Unit_Test::whiteImage();
+        const PenguinV_Image::Image original = Test_Helper::whiteImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
         remove("bitmap.bmp");
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
+            original.colorCount() != loaded.colorCount() || !Test_Helper::verifyImage( loaded, 255u ) )
             return false;
 
         return true;
@@ -23,14 +23,14 @@ namespace bitmap_operation
 
     bool BlackGrayScaleImage()
     {
-        const PenguinV_Image::Image original = Unit_Test::blackImage();
+        const PenguinV_Image::Image original = Test_Helper::blackImage();
         Bitmap_Operation::Save( "bitmap.bmp", original );
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load( "bitmap.bmp" );
         remove("bitmap.bmp");
 
         if( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
+            original.colorCount() != loaded.colorCount() || !Test_Helper::verifyImage( loaded, 0u ) )
             return false;
 
         return true;
@@ -38,7 +38,7 @@ namespace bitmap_operation
 
     bool RandomRGBImage()
     {
-        const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
+        const PenguinV_Image::Image original = Test_Helper::randomRGBImage();
         Bitmap_Operation::Save("bitmap.bmp", original);
 
         const PenguinV_Image::Image loaded = Bitmap_Operation::Load("bitmap.bmp");

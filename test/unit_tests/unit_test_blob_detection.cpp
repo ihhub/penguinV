@@ -1,5 +1,5 @@
 #include "unit_test_blob_detection.h"
-#include "unit_test_helper.h"
+#include "../test_helper.h"
 #include "../../src/blob_detection.h"
 #include "../../src/image_function.h"
 
@@ -7,14 +7,14 @@ namespace blob_detection
 {
     bool Detect1Blob()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            PenguinV_Image::Image image = Unit_Test::blackImage();
+        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {
+            PenguinV_Image::Image image = Test_Helper::blackImage();
 
             uint32_t roiX, roiY;
             uint32_t roiWidth, roiHeight;
-            Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+            Test_Helper::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 1, 256 ) );
+            Test_Helper::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 1, 256 ) );
 
             Blob_Detection::BlobDetection detection;
             detection.find( image );

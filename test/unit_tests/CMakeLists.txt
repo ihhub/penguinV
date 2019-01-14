@@ -27,7 +27,6 @@ set(SRCS
     unit_test_edge_detection.cpp
     unit_test_fft.cpp
     unit_test_framework.cpp
-    unit_test_helper.cpp
     unit_test_image_buffer.cpp
     unit_test_image_function.cpp
     unit_test_math.cpp)

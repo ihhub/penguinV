@@ -8,7 +8,7 @@
 #include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
 #include "unit_test_image_function.h"
-#include "unit_test_helper.h"
+#include "../test_helper.h"
 
 namespace
 {
@@ -16,7 +16,7 @@ namespace
     {
         if ( namespaceName == "function_pool" ) {
             simd::EnableSimd( true );
-            ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
+            ThreadPoolMonoid::instance().resize( Test_Helper::randomValue<uint8_t>( 1, 8 ) );
         }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );
@@ -68,7 +68,7 @@ namespace
 namespace Function_Template
 {
     using namespace PenguinV_Image;
-    using namespace Unit_Test;
+    using namespace Test_Helper;
     using namespace Image_Function_Helper::FunctionTable;
 
     bool form1_AbsoluteDifference(AbsoluteDifferenceForm1 AbsoluteDifference)
@@ -1842,7 +1842,7 @@ struct Register_##functionWrapper                                               
 const Register_##functionWrapper registrator_##functionWrapper( isSupported );
 
 #define DECLARE_FUNCTION_BODY( functionCall )                       \
-    for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {         \
+    for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {         \
         PrepareFunction(namespaceName);                             \
         const bool returnValue = functionCall;                      \
         CleanupFunction(namespaceName);                             \

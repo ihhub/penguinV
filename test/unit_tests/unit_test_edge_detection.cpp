@@ -1,17 +1,17 @@
 #include "unit_test_edge_detection.h"
-#include "unit_test_helper.h"
+#include "../test_helper.h"
 #include "../../src/edge_detection.h"
 
 namespace edge_detection
 {
     bool DetectHorizontalEdge()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            PenguinV_Image::Image image = Unit_Test::blackImage();
+        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {
+            PenguinV_Image::Image image = Test_Helper::blackImage();
 
             uint32_t roiX, roiY;
             uint32_t roiWidth, roiHeight;
-            Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+            Test_Helper::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiXEnd = roiX + roiWidth;
             const bool isValidLeftEdge  = ( roiX > 1u ) && ( roiX    + 1u < image.width() );
@@ -20,7 +20,7 @@ namespace edge_detection
             if ( !isValidLeftEdge && !isValidRightEdge )
                 continue;
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
+            Test_Helper::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetection edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT) );
@@ -47,12 +47,12 @@ namespace edge_detection
 
     bool DetectVerticalEdge()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            PenguinV_Image::Image image = Unit_Test::blackImage();
+        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {
+            PenguinV_Image::Image image = Test_Helper::blackImage();
 
             uint32_t roiX, roiY;
             uint32_t roiWidth, roiHeight;
-            Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+            Test_Helper::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiYEnd = roiY + roiHeight;
             const bool isValidTopEdge    = ( roiY > 1u ) && ( roiY    + 1u < image.height() );
@@ -61,7 +61,7 @@ namespace edge_detection
             if ( !isValidTopEdge && !isValidBottomEdge )
                 continue;
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
+            Test_Helper::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetection edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM) );

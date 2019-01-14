@@ -10,6 +10,7 @@ namespace Test_Helper
     PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
+    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference = PenguinV_Image::Image());
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
