@@ -1,7 +1,8 @@
 #pragma once 
 
+#include <cstdlib>
+#include <vector>
 #include "../src/image_buffer.h"
-#include "../src/cuda/cuda_types.cuh"
 
 namespace Test_Helper 
 {
@@ -11,13 +12,11 @@ namespace Test_Helper
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image randomImage();
+    PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
     PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
     std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     std::vector < PenguinV_Image::Image > uniformImages( const std::vector < uint8_t > & intensityValue, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     uint32_t runCount();
-    data randomValue( int maximum )
-    data randomValue( data minimum, int maximum )
 
     // Generate pixel intensity values
     uint8_t intensityValue();
