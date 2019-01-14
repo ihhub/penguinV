@@ -1474,6 +1474,34 @@ namespace neon
         }
     }
 
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
+                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8_t ctrl_array[8] = {2, 1, 0, 5, 4, 3, 6, 7};
+        const uint8x8_t ctrl = vld1_u8( ctrl_array );
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + totalSimdWidth;
+
+            for( ; outX != outXEnd; outX += simdWidth, inX += simdWidth ) {
+                uint8x8_t result = vld1_u8( inX );
+                result = vtbl1_u8( result, ctrl );
+                vst1_u8( outX, result );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * outXEndNonSimd = outXEnd + nonSimdWidth;
+                for( ; outX != outXEndNonSimd; outX += colorCount, inX += colorCount ) {
+                    *(outX + 2) = *(inX);
+                    *(outX + 1) = *(inX + 1);
+                    *(outX) = *(inX + 2);
+                }
+            }
+        }
+    }
+
     void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1969,10 +1997,14 @@ if ( simdType == neon_function ) { \
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                    uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint32_t simdSize = getSimdSize( simdType );
+        uint32_t simdSize = getSimdSize( simdType );
+
+        if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
+            simdSize = 8u;
+
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == neon_function) || (simdType == avx_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || (simdType == avx_function) || ((width * colorCount) < simdSize) ) {
             AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -2004,6 +2036,7 @@ if ( simdType == neon_function ) { \
         }
 
         SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
