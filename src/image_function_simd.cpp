@@ -1999,15 +1999,12 @@ if ( simdType == neon_function ) { \
     {
         uint32_t simdSize = getSimdSize( simdType );
 
-        // for neon, because the algorithm used work with packet of 64 bit
-        if(simdType == neon_function)
-        {
+        if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
             simdSize = 8u;
-        }
 
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || ((width * height * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || (simdType == avx_function) || ((width * colorCount) < simdSize) ) {
             AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
