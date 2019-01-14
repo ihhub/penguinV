@@ -1,4 +1,5 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
+set(TEST_LIB ${CMAKE_SOURCE_DIR}/test)
 set(SRCS
     ${LIB_DIR}/math/math_base.cpp
 	${LIB_DIR}/blob_detection.cpp
@@ -10,6 +11,8 @@ set(SRCS
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/image_function_simd.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
+    ${TEST_LIB}/test_helper.h
+    ${TEST_LIB}/test_helper.cpp
     performance_tests.cpp
     performance_test_blob_detection.cpp
     performance_test_filtering.cpp
