@@ -9,9 +9,9 @@ namespace
         return Test_Helper::randomValue<uint32_t>( 1, 2048 );
     }
 
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value, const PenguinV_Image::Image & reference )
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value)
     {
-        PenguinV_Image::Image image = reference.generate( width, height, colorCount );
+        PenguinV_Image::Image image( width, height, colorCount );
 
         image.fill( value );
 
@@ -45,7 +45,27 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value);
+    }
+
+    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
+    {
+        return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
+    }
+
+    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
+    {
+        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value);
+    }
+
+    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height )
+    {
+        return uniformRGBImage( width, height, randomValue<uint8_t>( 256 ) );
+    }
+
+    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
+    {
+        return generateImage( width, height, PenguinV_Image::RGB, value);
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
@@ -55,7 +75,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value, reference );
+        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value);
     }
 
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
@@ -139,6 +159,26 @@ namespace Test_Helper
             image[i] = reference.generate( image[0].width(), image[0].height() );
             image[i].fill( intensityValue[i] );
         }
+
+        return image;
+    }
+
+    std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+    {
+        std::vector < PenguinV_Image::Image > image( count );
+
+        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
+            *im = uniformImage( width, height );
+
+        return image;
+    }
+
+    std::vector< PenguinV_Image::Image > uniformRGBImages( uint32_t count, uint32_t width, uint32_t height )
+    {
+        std::vector < PenguinV_Image::Image > image( count );
+
+        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
+            *im = uniformRGBImage( width, height );
 
         return image;
     }

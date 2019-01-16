@@ -133,6 +133,7 @@ namespace Performance_Test
         return timer.mean();
     }
 
+    /*
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
     {
         return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
@@ -173,6 +174,7 @@ namespace Performance_Test
         return image;
     }
 
+    */
     uint32_t runCount()
     {
         return 128;

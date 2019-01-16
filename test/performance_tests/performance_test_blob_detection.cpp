@@ -1,6 +1,7 @@
 #include "../../src/blob_detection.h"
 #include "performance_test_blob_detection.h"
 #include "performance_test_helper.h"
+#include "../test_helper.h"
 
 namespace
 {
@@ -8,9 +9,9 @@ namespace
     {
         Performance_Test::TimerContainer timer;
 
-        PenguinV_Image::Image image = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image image = Test_Helper::uniformImage( size, size, Test_Helper::randomValue<uint8_t>( 1, 256 ) );
 
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
+        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {
             timer.start();
 
             { // destroy the object within the scope
