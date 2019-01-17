@@ -6,6 +6,8 @@ addons:
   apt:
     packages:
       - libpng-dev
+      - libjpeg-dev
+      - yasm
       - ocl-icd-opencl-dev
       - opencl-headers
 

@@ -181,7 +181,7 @@ public:
     {
         return !isParallel( line );
     }
-    
+
     _Type distance( const PointBase2D<_Type> & point ) const
     {
         // Line equation in the Cartesian coordinate system is
@@ -191,6 +191,55 @@ public:
         const _Type distanceToLine = _direction.y * (point.x - _position.x) + _direction.x * (_position.y - point.y);
         return (distanceToLine < 0 ? -distanceToLine : distanceToLine);
     }
+
+    template <template <typename, typename...> class _container>
+    static LineBase2D bestFittingLine( const _container< PointBase2D<_Type> > & points )
+    {
+        if ( points.size() < 2 )
+            return LineBase2D();
+
+        _Type sumX  = 0;
+        _Type sumY  = 0;
+        _Type sumXX = 0;
+        _Type sumYY = 0;
+        _Type sumXY = 0;
+
+        for ( typename _container< PointBase2D<_Type> >::const_iterator point = points.begin(); point != points.end(); ++point ) {
+            const _Type x = point->x;
+            const _Type y = point->y;
+            sumX  += x;
+            sumXX += x * x;
+            sumY  += y;
+            sumYY += y * y;
+            sumXY += x * y;
+        }
+
+        const _Type size = static_cast<_Type>( points.size() );
+        sumX  /= size;
+        sumY  /= size;
+        sumXX /= size;
+        sumYY /= size;
+        sumXY /= size;
+
+        const PointBase2D<_Type> position( sumX, sumY );
+
+        const _Type sigmaX = sumXX - sumX * sumX;
+        const _Type sigmaY = sumYY - sumY * sumY;
+
+        PointBase2D<_Type> direction;
+
+        if ( sigmaX > sigmaY ) {
+            direction.y = sumXY - sumX * sumY;
+            direction.x = sumXX - sumX * sumX;
+        }
+        else {
+            direction.x = sumXY - sumX * sumY;
+            direction.y = sumYY - sumY * sumY;
+        }
+
+        return LineBase2D( position, std::atan2( direction.y, direction.x ) );
+    }
+
 private:
     PointBase2D<_Type> _position;
     PointBase2D<_Type> _direction;

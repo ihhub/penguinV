@@ -64,6 +64,12 @@ namespace Image_Function_Simd
     void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                 std::vector < uint32_t > & projection );
 
+    Image RgbToBgr( const Image & in );
+    void  RgbToBgr( const Image & in, Image & out );
+    Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height );
+
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

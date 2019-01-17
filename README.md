@@ -20,7 +20,7 @@ The project in is active process of development so new features are coming soon!
 
 Contribution
 ---------------------------
-Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki page.
+We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki page.
 
 Requirements
 ---------------------------

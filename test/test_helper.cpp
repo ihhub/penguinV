@@ -230,7 +230,7 @@ namespace Test_Helper
     }
 
     bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const std::vector < uint8_t > & value )
+                      const std::vector < uint8_t > & value, bool isAnyValue )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
@@ -242,18 +242,30 @@ namespace Test_Helper
             const uint8_t * outputX = outputY;
             const uint8_t * endX    = outputX + width * image.colorCount();
 
-            for( ; outputX != endX; ++outputX ) {
-                bool equal = false;
+            if( isAnyValue ) {
+                for( ; outputX != endX; ++outputX ) {
+                    bool equal = false;
 
-                for( std::vector < uint8_t >::const_iterator v = value.begin(); v != value.end(); ++v ) {
-                    if( (*outputX) == (*v) ) {
-                        equal = true;
-                        break;
+                    for( std::vector < uint8_t >::const_iterator v = value.begin(); v != value.end(); ++v ) {
+                        if( (*outputX) == (*v) ) {
+                            equal = true;
+                            break;
+                        }
                     }
-                }
 
-                if( !equal )
-                    return false;
+                    if( !equal )
+                        return false;
+                }
+            }
+            else {
+                size_t id = 0;
+                for( ; outputX != endX; ++outputX ) {
+                    if( (*outputX) != value[id++] )
+                        return false;
+
+                    if( id == value.size() )
+                        id = 0;
+                }
             }
         }
 
@@ -265,9 +277,9 @@ namespace Test_Helper
         return verifyImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value )
+    bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value, bool isAnyValue )
     {
-        return verifyImage( image, 0, 0, image.width(), image.height(), value );
+        return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
 
     void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
@@ -280,8 +292,10 @@ namespace Test_Helper
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
 
-        uint8_t * outputY = image.data() + y * image.rowSize() + x;
+        uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
         const uint8_t * endY    = outputY + image.rowSize() * height;
+
+        width = width * image.colorCount();
 
         size_t id = 0;
 
