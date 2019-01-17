@@ -2,6 +2,7 @@ set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SRCS
     ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/file/png_image.cpp
+    ${LIB_DIR}/math/haar_transform.cpp
     ${LIB_DIR}/math/hough_transform.cpp
     ${LIB_DIR}/math/math_base.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
@@ -69,6 +70,17 @@ if(${PENGUINV_ENABLE_PNG_SUPPORT})
     endif()
 else()
     target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_PNG_SUPPORT)
+endif()
+
+include(find_jpeg)
+if(${PENGUINV_ENABLE_JPEG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_JPEG})
+        target_link_libraries(unit_tests PRIVATE JPEG_EXTERNAL)
+    else()
+        target_link_libraries(unit_tests PRIVATE ${JPEG_LIBRARIES})
+    endif()
+else()
+    target_compile_definitions(unit_tests PRIVATE PENGUINV_DISABLE_JPEG_SUPPORT)
 endif()
 
 if (WIN32)

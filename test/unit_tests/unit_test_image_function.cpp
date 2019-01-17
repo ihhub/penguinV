@@ -1368,6 +1368,72 @@ namespace Function_Template
         return verifyImage( output, roiX[1], roiY[1], roiWidth[1], roiHeight[1], intensity[0] );
     }
 
+    bool form1_RgbToBgr(RgbToBgrForm1 RgbToBgr)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const PenguinV_Image::Image output = RgbToBgr( input );
+
+        std::swap( intensity[0], intensity[2] );
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form2_RgbToBgr(RgbToBgrForm2 RgbToBgr)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        PenguinV_Image::Image output = input.generate( input.width(), input.height(), input.colorCount(), input.alignment() );
+        fillImage( output, 0, 0, output.width(), output.height(), intensityValue() );
+
+        RgbToBgr( input, output );
+
+        std::swap( intensity[0], intensity[2] );
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form3_RgbToBgr(RgbToBgrForm3 RgbToBgr)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+        const PenguinV_Image::Image output = RgbToBgr( input, roiX, roiY, roiWidth, roiHeight );
+
+        std::swap( intensity[0], intensity[2] );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity, false );
+    }
+
+    bool form4_RgbToBgr(RgbToBgrForm4 RgbToBgr)
+    {
+        std::vector < PenguinV_Image::Image > image = { uniformRGBImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( image[0], roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+        RgbToBgr( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        std::swap( intensity[0], intensity[2] );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity, false );
+    }
+
     bool form1_SetPixel(SetPixelForm1 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1407,8 +1473,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = uniformImage( intensity );
 
-        const double shiftX = randomValue<int>( input.width()  / 2 ) - input.width()  / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( input.height() / 2 ) - input.height() / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftX = randomFloatValue<double>( -static_cast<double>( input.width()  / 4 ), input.width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -static_cast<double>( input.height() / 4 ), input.height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         const PenguinV_Image::Image output = Shift( input, shiftX, shiftY );
 
@@ -1420,8 +1486,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const double shiftX = randomValue<int>( input[0].width()  / 2 ) - input[0].width()  / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( input[0].height() / 2 ) - input[0].height() / 4 + randomValue<int>( 100 ) / 100.0;
+        const double shiftX = randomFloatValue<double>( -static_cast<double>( input[0].width()  / 4 ), input[0].width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -static_cast<double>( input[0].height() / 4 ), input[0].height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         Shift( input[0], input[1], shiftX, shiftY );
 
@@ -1436,10 +1502,10 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint32_t maxShiftX = roiX < (input.width()  - roiWidth  - roiX) ? roiX : (input.width()  - roiWidth  - roiX);
-        const uint32_t maxShiftY = roiY < (input.height() - roiHeight - roiY) ? roiY : (input.height() - roiHeight - roiY);
-        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+        const double maxShiftX = roiX < (input.width()  - roiWidth  - roiX) ? roiX : (input.width()  - roiWidth  - roiX);
+        const double maxShiftY = roiY < (input.height() - roiHeight - roiY) ? roiY : (input.height() - roiHeight - roiY);
+        const double shiftX = randomFloatValue<double>( -maxShiftX / 4, maxShiftX / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -maxShiftY / 4, maxShiftY / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         const PenguinV_Image::Image output = Shift( input, roiX, roiY, roiWidth, roiHeight, shiftX, shiftY );
 
@@ -1455,10 +1521,10 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint32_t maxShiftX = roiX[0] < (image[0].width()  - roiWidth  - roiX[0]) ? roiX[0] : (image[0].width()  - roiWidth  - roiX[0]);
-        const uint32_t maxShiftY = roiY[0] < (image[0].height() - roiHeight - roiY[0]) ? roiY[0] : (image[0].height() - roiHeight - roiY[0]);
-        const double shiftX = randomValue<int>( maxShiftX / 2 ) - maxShiftX / 4 + randomValue<int>( 100 ) / 100.0;
-        const double shiftY = randomValue<int>( maxShiftY / 2 ) - maxShiftY / 4 + randomValue<int>( 100 ) / 100.0;
+        const double maxShiftX = roiX[0] < (image[0].width()  - roiWidth  - roiX[0]) ? roiX[0] : (image[0].width()  - roiWidth  - roiX[0]);
+        const double maxShiftY = roiY[0] < (image[0].height() - roiHeight - roiY[0]) ? roiY[0] : (image[0].height() - roiHeight - roiY[0]);
+        const double shiftX = randomFloatValue<double>( -maxShiftX / 4, maxShiftX / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
+        const double shiftY = randomFloatValue<double>( -maxShiftY / 4 , maxShiftY / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
 
         Shift( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, shiftX, shiftY );
 
@@ -1911,6 +1977,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Resize )
+    SET_FUNCTION_4_FORMS( RgbToBgr )
     SET_FUNCTION_2_FORMS( SetPixel )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
@@ -1989,6 +2056,7 @@ namespace neon
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
+    SET_FUNCTION_4_FORMS( RgbToBgr )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
@@ -2012,6 +2080,7 @@ namespace sse
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
+    SET_FUNCTION_4_FORMS( RgbToBgr )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )

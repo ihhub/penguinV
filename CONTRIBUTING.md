@@ -26,7 +26,7 @@
 
 * Ask any question in the issues section as well. 
 
-#### **Do you want to contribute to the documentation?**
+#### **Do you want to contribute to the project?**
 
 penguinV is a volunteer effort. We encourage you to pitch in and [join the team](https://github.com/ihhub/penguinV/wiki/Contributors)! If you see that your name is not present in the list, please be free to contact us and report about such terrible mistake.
 

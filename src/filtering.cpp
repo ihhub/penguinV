@@ -84,8 +84,10 @@ namespace Image_Function
               startYOut + kernelSize / 2, kernelSize / 2, height - (kernelSize - 1) );
 
         std::vector < uint8_t > data( kernelSize * kernelSize );
-        const size_t dataMedianPosition = data.size() / 2;
-
+        uint8_t * dataFirstValue = data.data();
+        uint8_t * medianValue    = dataFirstValue + data.size() / 2;
+        uint8_t * dataLastValue  = dataFirstValue + data.size();
+        
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -117,9 +119,8 @@ namespace Image_Function
                         *value = *inXRead;
                 }
 
-                std::nth_element( data.begin(), data.begin() + dataMedianPosition, data.end() );
-
-                (*outX) = data[dataMedianPosition];
+                std::nth_element( dataFirstValue, medianValue, dataLastValue );
+                (*outX) = *medianValue;
             }
         }
     }
@@ -366,7 +367,7 @@ namespace Image_Function
             const int32_t posY2 = posY * posY;
 
             for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
-                *x = doubleSigmaPiInv * expf( -(posX * posX + posY2) / doubleSigma );
+                *x = doubleSigmaPiInv * expf( -static_cast<float>(posX * posX + posY2) / doubleSigma );
                 sum += *x;
             }
         }
