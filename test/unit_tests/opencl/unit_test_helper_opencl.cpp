@@ -4,7 +4,7 @@
 #include "../../../src/image_exception.h"
 #include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
-#include "../unit_test_helper.h"
+#include "../../test_helper.h"
 #include "unit_test_helper_opencl.h"
 
 namespace

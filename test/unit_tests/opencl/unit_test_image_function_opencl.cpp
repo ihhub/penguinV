@@ -1,7 +1,7 @@
 #include <cmath>
 #include <numeric>
 #include "../../../src/opencl/image_function_opencl.h"
-#include "../unit_test_helper.h"
+#include "../../test_helper.h"
 #include "unit_test_helper_opencl.h"
 #include "unit_test_image_function_opencl.h"
 

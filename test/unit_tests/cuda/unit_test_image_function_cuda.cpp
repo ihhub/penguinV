@@ -1,7 +1,7 @@
 #include <cmath>
 #include <numeric>
 #include "../../../src/cuda/image_function_cuda.cuh"
-#include "../unit_test_helper.h"
+#include "../../test_helper.h"
 #include "unit_test_helper_cuda.cuh"
 #include "unit_test_image_function_cuda.h"
 

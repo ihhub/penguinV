@@ -5,7 +5,7 @@
 #include "../../../src/cuda/cuda_types.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
 #include "../../../src/cuda/image_buffer_cuda.cuh"
-#include "../unit_test_helper.h"
+#include "../../test_helper.h"
 #include "unit_test_helper_cuda.cuh"
 
 namespace
