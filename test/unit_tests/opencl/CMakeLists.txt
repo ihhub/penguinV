@@ -1,11 +1,13 @@
 set(MAIN_LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(UNIT_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 set(SRCS
     ${MAIN_LIB_DIR}/opencl/opencl_device.cpp
     ${MAIN_LIB_DIR}/opencl/opencl_helper.cpp
     ${MAIN_LIB_DIR}/image_function.cpp
     ${MAIN_LIB_DIR}/image_function_helper.cpp
     ${MAIN_LIB_DIR}/opencl/image_function_opencl.cpp
+    ${TEST_DIR}/test_helper.cpp
     ${UNIT_TEST_DIR}/unit_test_framework.cpp
     unit_test_helper_opencl.cpp
     unit_test_image_function_opencl.cpp
