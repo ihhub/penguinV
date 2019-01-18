@@ -37,7 +37,6 @@ namespace
 
 namespace Test_Helper 
 {
-
     PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
     {
         return uniformImage( randomValue<uint8_t>( 256 ), reference );
@@ -392,5 +391,4 @@ namespace Test_Helper
         if ( count > 0u )
             testRunCount = count;
     }
-
 }
