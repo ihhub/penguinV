@@ -11,7 +11,6 @@ set(SRCS
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/image_function_simd.cpp
     ${LIB_DIR}/penguinv/penguinv.cpp
-    ${TEST_LIB}/test_helper.h
     ${TEST_LIB}/test_helper.cpp
     performance_tests.cpp
     performance_test_blob_detection.cpp
