@@ -37,10 +37,9 @@ namespace
 
 namespace Test_Helper 
 {
-
-    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference ) 
+    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
     {
-      return uniformImage( randomValue<uint8_t>( 256 ), reference );
+        return uniformImage( randomValue<uint8_t>( 256 ), reference );
     }
 
     PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference )
@@ -392,5 +391,4 @@ namespace Test_Helper
         if ( count > 0u )
             testRunCount = count;
     }
-
 }
