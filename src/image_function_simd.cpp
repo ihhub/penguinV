@@ -763,6 +763,38 @@ namespace sse
         }
     }
 
+    void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                       uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd ctrl1 = _mm_setr_epi8( 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5 );
+        const simd ctrl2 = _mm_setr_epi8( 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10 );
+        const simd ctrl3 = _mm_setr_epi8( 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15 );
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd * src = reinterpret_cast<const simd*>(inY);
+            simd       * dst = reinterpret_cast<simd*>(outY);
+
+            const simd * srcEnd = src + simdWidth;
+
+            for( ; src != srcEnd; ++src ) {
+                const simd src1 = _mm_loadu_si128( src );
+
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl1 ) );
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl2 ) );
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl3 ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * inX  = inY + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth*colorCount;
+
+                const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                for( ; inX != inXEnd; outX += colorCount, ++inX )
+                    memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+            }
+        }
+    }
+
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1004,7 +1036,7 @@ namespace sse
         }
     }
 
-    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY,const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         uint32_t sum = 0;
         simd simdSum = _mm_setzero_si128();
@@ -1857,6 +1889,42 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                       uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+        const uint8_t colorCount = RGB;
+
+        if( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+            AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
+
+            Image_Function::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyRGBImage     ( out );
+
+        if( in.colorCount() == RGB ) {
+            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        SSE_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -2279,6 +2347,27 @@ namespace Image_Function_Simd
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         simd::BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    Image ConvertToRgb( const Image & in )
+    {
+        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in );
+    }
+
+    void ConvertToRgb( const Image & in, Image & out )
+    {
+        Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, out );
+    }
+
+    Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, startXIn, startYIn, width, height );
+    }
+
+    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                       uint32_t width, uint32_t height )
+    {
+        simd::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image Invert( const Image & in )
