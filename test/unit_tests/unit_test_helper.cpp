@@ -6,9 +6,11 @@
 
 namespace
 {
+    using namespace Test_Helper;
+
     uint32_t randomSize()
     {
-        return Test_Helper::randomValue<uint32_t>( 1, 2048 );
+        return randomValue<uint32_t>( 1, 2048 );
     }
 
     void fillRandomData( PenguinV_Image::Image & image )
@@ -21,7 +23,7 @@ namespace
             const uint8_t * outXEnd = outX + image.width() * image.colorCount();
 
             for( ; outX != outXEnd; ++outX )
-                (*outX) = Test_Helper::randomValue<uint8_t>( 256 );
+                (*outX) = randomValue<uint8_t>( 256 );
         }
     }
 
@@ -30,14 +32,17 @@ namespace
 
 namespace Unit_Test
 {
+
+    using namespace Test_Helper;
+
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
-        return Test_Helper::uniformImage( 0u, reference );
+        return uniformImage( 0u, reference );
     }
 
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference )
     {
-        return Test_Helper::uniformImage( 255u, reference );
+        return uniformImage( 255u, reference );
     }
 
     PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
@@ -89,14 +94,14 @@ namespace Unit_Test
     {
         std::vector < data > fillArray( size );
 
-        std::for_each( fillArray.begin(), fillArray.end(), [&]( data & value ) { value = Test_Helper::randomValue<data>( maximumValue ); } );
+        std::for_each( fillArray.begin(), fillArray.end(), [&]( data & value ) { value = randomValue<data>( maximumValue ); } );
 
         return fillArray;
     }
 
     uint8_t intensityValue()
     {
-        return Test_Helper::randomValue<uint8_t>( 255 );
+        return randomValue<uint8_t>( 255 );
     }
 
     std::vector < uint8_t > intensityArray( uint32_t size )
@@ -214,11 +219,11 @@ namespace Unit_Test
 
     void generateRoi( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
     {
-        width  = Test_Helper::randomValue<uint32_t>( 1, image.width()  + 1 );
-        height = Test_Helper::randomValue<uint32_t>( 1, image.height() + 1 );
+        width  = randomValue<uint32_t>( 1, image.width()  + 1 );
+        height = randomValue<uint32_t>( 1, image.height() + 1 );
 
-        x = Test_Helper::randomValue<uint32_t>( image.width()  - width );
-        y = Test_Helper::randomValue<uint32_t>( image.height() - height );
+        x = randomValue<uint32_t>( image.width()  - width );
+        y = randomValue<uint32_t>( image.height() - height );
     }
 
     void generateRoi( const std::vector < PenguinV_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
@@ -251,22 +256,22 @@ namespace Unit_Test
                 maximumHeight = im->second;
         }
 
-        width  = Test_Helper::randomValue<uint32_t>( 1, maximumWidth  + 1 );
-        height = Test_Helper::randomValue<uint32_t>( 1, maximumHeight + 1 );
+        width  = randomValue<uint32_t>( 1, maximumWidth  + 1 );
+        height = randomValue<uint32_t>( 1, maximumHeight + 1 );
 
         x.resize( imageSize.size() );
         y.resize( imageSize.size() );
 
         for( size_t i = 0; i < imageSize.size(); ++i ) {
-            x[i] = Test_Helper::randomValue<uint32_t>( imageSize[i].first  - width );
-            y[i] = Test_Helper::randomValue<uint32_t>( imageSize[i].second - height );
+            x[i] = randomValue<uint32_t>( imageSize[i].first  - width );
+            y[i] = randomValue<uint32_t>( imageSize[i].second - height );
         }
     }
 
     void generateOffset( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
     {
-        x = Test_Helper::randomValue<uint32_t>( image.width()  - width );
-        y = Test_Helper::randomValue<uint32_t>( image.height() - height );
+        x = randomValue<uint32_t>( image.width()  - width );
+        y = randomValue<uint32_t>( image.height() - height );
     }
 
     std::pair <uint32_t, uint32_t> imageSize( const PenguinV_Image::Image & image )
