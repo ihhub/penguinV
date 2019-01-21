@@ -2,6 +2,7 @@
 #include <numeric>
 #include "../../../src/opencl/image_function_opencl.h"
 #include "../unit_test_helper.h"
+#include "../../test_helper.h"
 #include "unit_test_helper_opencl.h"
 #include "unit_test_image_function_opencl.h"
 
@@ -13,6 +14,7 @@ namespace
 namespace image_function_opencl
 {
     using namespace Unit_Test;
+    using namespace Test_Helper;
 
     bool AbsoluteDifference2ParametersTest()
     {
