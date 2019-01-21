@@ -766,25 +766,21 @@ namespace sse
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                        uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        const simd ctrl_1 = _mm_setr_epi8( 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5);
-        const simd ctrl_2 = _mm_setr_epi8( 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10);
-        const simd ctrl_3 = _mm_setr_epi8( 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15);
+        const simd ctrl1 = _mm_setr_epi8( 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5 );
+        const simd ctrl2 = _mm_setr_epi8( 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10 );
+        const simd ctrl3 = _mm_setr_epi8( 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15 );
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const simd * src  = reinterpret_cast<const simd*>(inY);
+            const simd * src = reinterpret_cast<const simd*>(inY);
             simd       * dst = reinterpret_cast<simd*>(outY);
 
             const simd * srcEnd = src + simdWidth;
 
             for( ; src != srcEnd; ++src ) {
-                const simd src_1 = _mm_loadu_si128( src );
+                const simd src1 = _mm_loadu_si128( src );
 
-                const simd dst_1 = _mm_shuffle_epi8 (src_1, ctrl_1);
-                const simd dst_2 = _mm_shuffle_epi8 (src_1, ctrl_2);
-                const simd dst_3 = _mm_shuffle_epi8 (src_1, ctrl_3);
-
-                _mm_storeu_si128( dst++, dst_1 );
-                _mm_storeu_si128( dst++, dst_2 );
-                _mm_storeu_si128( dst++, dst_3 );
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl1 ) );
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl2 ) );
+                _mm_storeu_si128( dst++, _mm_shuffle_epi8( src1, ctrl3 ) );
             }
 
             if( nonSimdWidth > 0 ) {
