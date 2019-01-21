@@ -71,7 +71,7 @@ namespace Function_Template
     #define TEST_FUNCTION_LOOP( testFunction, namespaceName )          \
         SetupFunction( namespaceName );                                \
         Performance_Test::TimerContainer timer;                        \
-        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) { \
+        for( uint32_t i = 0; i < Test_Helper::runCount(); ++i ) {      \
             timer.start();                                             \
             testFunction;                                              \
             timer.stop();                                              \
