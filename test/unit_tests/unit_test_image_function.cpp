@@ -860,6 +860,86 @@ namespace Function_Template
             std::accumulate( histogram.begin(), histogram.end(), 0u ) == roiWidth * roiHeight;
     }
 
+    bool form5_Histogram(HistogramForm5 Histogram)
+    {
+        const uint8_t intensity = intensityValue();
+        const PenguinV_Image::Image image = uniformImage( intensity );
+
+        if ( image.height() / 2 == 0 )
+            return true;
+
+        PenguinV_Image::Image mask = image.generate( image.width(), image.height(), image.colorCount() );
+        fillImage( mask, 0, 0, mask.width(), mask.height() / 2, 255 );
+        fillImage( mask, 0, mask.height() / 2, mask.width(), mask.height() - mask.height() / 2, 0 );
+
+        const std::vector < uint32_t > histogram = Histogram( image, mask );
+
+        return histogram.size() == 256u && histogram[intensity] == image.width() * (image.height() / 2) &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == image.width() * (image.height() / 2);
+    }
+
+    bool form6_Histogram(HistogramForm6 Histogram)
+    {
+        const uint8_t intensity = intensityValue();
+        const PenguinV_Image::Image image = uniformImage( intensity );
+
+        if ( image.height() / 2 == 0 )
+            return true;
+
+        PenguinV_Image::Image mask = image.generate( image.width(), image.height(), image.colorCount() );
+        fillImage( mask, 0, 0, mask.width(), mask.height() / 2, 255 );
+        fillImage( mask, 0, mask.height() / 2, mask.width(), mask.height() - mask.height() / 2, 0 );
+
+        std::vector < uint32_t > histogram;
+        Histogram( image, mask, histogram );
+
+        return histogram.size() == 256u && histogram[intensity] == image.width() * (image.height() / 2) &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == image.width() * (image.height() / 2);
+    }
+
+    bool form7_Histogram(HistogramForm7 Histogram)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        if ( roiHeight / 2 == 0 )
+            return true;
+
+        fillImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight / 2, 255 );
+        fillImage( image[1], roiX[1], roiY[1] + roiHeight / 2, roiWidth, roiHeight - roiHeight / 2, 0 );
+
+        const std::vector < uint32_t > histogram = Histogram( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        return histogram.size() == 256u && histogram[intensity[0]] == roiWidth * (roiHeight / 2) &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == roiWidth * (roiHeight / 2);
+    }
+
+    bool form8_Histogram(HistogramForm8 Histogram)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        if ( roiHeight / 2 == 0 )
+            return true;
+
+        fillImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight / 2, 255 );
+        fillImage( image[1], roiX[1], roiY[1] + roiHeight / 2, roiWidth, roiHeight - roiHeight / 2, 0 );
+
+        std::vector < uint32_t > histogram;
+        Histogram( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, histogram );
+
+        return histogram.size() == 256u && histogram[intensity[0]] == roiWidth * (roiHeight / 2) &&
+            std::accumulate( histogram.begin(), histogram.end(), 0u ) == roiWidth * (roiHeight / 2);
+    }
+
     bool form1_Invert(InvertForm1 Invert)
     {
         const uint8_t intensity = intensityValue();
@@ -1968,7 +2048,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( Flip )
     SET_FUNCTION_4_FORMS( GammaCorrection )
     SET_FUNCTION_1_FORMS( GetThreshold )
-    SET_FUNCTION_4_FORMS( Histogram )
+    SET_FUNCTION_8_FORMS( Histogram )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_2_FORMS( IsEqual )
     SET_FUNCTION_4_FORMS( LookupTable )
@@ -2076,6 +2156,7 @@ namespace sse
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
+    SET_FUNCTION_4_FORMS( ConvertToRgb )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
