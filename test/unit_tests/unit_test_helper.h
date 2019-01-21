@@ -10,17 +10,11 @@ namespace Unit_Test
     // Generate images
     // reference is used to generate a specific type of images aka CPU, CUDA, OpenCL.
     // For CPU memory based image you could skip reference parameter
-    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
     PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
     PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference = PenguinV_Image::Image());
-    std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    std::vector < PenguinV_Image::Image > uniformImages( const std::vector < uint8_t > & intensityValue, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
 
     // Generate pixel intensity values
     uint8_t intensityValue();
