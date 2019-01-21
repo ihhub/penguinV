@@ -1,4 +1,5 @@
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/test)
 set(SRCS
     ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/file/png_image.cpp
@@ -19,6 +20,7 @@ set(SRCS
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/image_function_simd.cpp
     ${LIB_DIR}/thread_pool.cpp
+    ${TEST_DIR}/test_helper.cpp
     unit_tests.cpp
     unit_test_bitmap.cpp
     unit_test_blob_detection.cpp

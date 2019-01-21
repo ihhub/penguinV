@@ -39,34 +39,14 @@ namespace
 
 namespace Unit_Test
 {
-    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
-    {
-        return uniformImage( randomValue<uint8_t>( 256 ), reference );
-    }
-
-    PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference )
-    {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
-    }
-
-    PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
-    {
-        return uniformRGBImage( randomValue<uint8_t>( 256 ), reference );
-    }
-
-    PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference )
-    {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value, reference );
-    }
-
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 0u, reference );
+        return Test_Helper::uniformImage( 0u, reference );
     }
 
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 255u, reference );
+        return Test_Helper::uniformImage( 255u, reference );
     }
 
     PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
@@ -109,37 +89,6 @@ namespace Unit_Test
         PenguinV_Image::Image image = reference.generate(randomSize(), randomSize(), PenguinV_Image::RGB);
 
         fillRandomData( image );
-
-        return image;
-    }
-
-    std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference )
-    {
-        if( images == 0 )
-            throw imageException( "Invalid parameter" );
-
-        std::vector<uint8_t> intesity( images );
-        for( size_t i = 0; i < intesity.size(); ++i )
-            intesity[i] = randomValue<uint8_t>( 256 );
-
-        return uniformImages( intesity, reference );
-    }
-
-    std::vector < PenguinV_Image::Image > uniformImages( const std::vector<uint8_t> & intensityValue, const PenguinV_Image::Image & reference )
-    {
-        if( intensityValue.size() == 0 )
-            throw imageException( "Invalid parameter" );
-
-        std::vector < PenguinV_Image::Image > image;
-
-        image.push_back( uniformImage( intensityValue[0], reference ) );
-
-        image.resize( intensityValue.size() );
-
-        for( size_t i = 1; i < image.size(); ++i ) {
-            image[i] = reference.generate( image[0].width(), image[0].height() );
-            image[i].fill( intensityValue[i] );
-        }
 
         return image;
     }

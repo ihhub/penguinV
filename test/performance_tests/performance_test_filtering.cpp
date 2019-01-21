@@ -1,6 +1,7 @@
 #include "../../src/filtering.h"
 #include "performance_test_filtering.h"
 #include "performance_test_helper.h"
+#include "../test_helper.h"
 
 namespace
 {
@@ -25,7 +26,7 @@ namespace
     {
         Performance_Test::TimerContainer timer;
 
-        PenguinV_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image input = Test_Helper::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
         PenguinV_Image::Image output( input.width(), input.height() );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
