@@ -775,18 +775,16 @@ namespace sse
 
             const simd * srcEnd = src + simdWidth;
 
-            for( ; src != srcEnd; ++dst, ++src ) {
+            for( ; src != srcEnd; ++src ) {
                 const simd src_1 = _mm_loadu_si128( src );
 
                 const simd dst_1 = _mm_shuffle_epi8 (src_1, ctrl_1);
                 const simd dst_2 = _mm_shuffle_epi8 (src_1, ctrl_2);
                 const simd dst_3 = _mm_shuffle_epi8 (src_1, ctrl_3);
 
-                _mm_storeu_si128( dst, dst_1 );
-                ++dst;
-                _mm_storeu_si128( dst, dst_2 );
-                ++dst;
-                _mm_storeu_si128( dst, dst_3 );
+                _mm_storeu_si128( dst++, dst_1 );
+                _mm_storeu_si128( dst++, dst_2 );
+                _mm_storeu_si128( dst++, dst_3 );
             }
 
             if( nonSimdWidth > 0 ) {
