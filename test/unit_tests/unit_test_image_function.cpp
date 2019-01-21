@@ -17,7 +17,7 @@ namespace
     {
         if ( namespaceName == "function_pool" ) {
             simd::EnableSimd( true );
-            ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
+            ThreadPoolMonoid::instance().resize( Test_Helper::randomValue<uint8_t>( 1, 8 ) );
         }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );
@@ -125,7 +125,7 @@ namespace Function_Template
 
     bool form1_Accumulate(AccumulateForm1 Accumulate)
     {
-        const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
+        const std::vector < uint8_t > intensity = intensityArray( Test_Helper::randomValue<uint8_t>( 1, 16 ) );
         std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
 
         std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
@@ -141,7 +141,7 @@ namespace Function_Template
 
     bool form2_Accumulate(AccumulateForm2 Accumulate)
     {
-        const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
+        const std::vector < uint8_t > intensity = intensityArray( Test_Helper::randomValue<uint8_t>( 1, 16 ) );
         std::vector < PenguinV_Image::Image > input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
@@ -164,14 +164,14 @@ namespace Function_Template
 
     bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
     {
-        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 255u );
         fillData.push_back(0u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
         PenguinV_Image::Image output = input;
 
-        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
 
         BinaryDilate(output, dilationX, dilationY);
 
@@ -180,7 +180,7 @@ namespace Function_Template
 
     bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
     {
-        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
+        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 255u );
         fillData.push_back(0u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
@@ -191,8 +191,8 @@ namespace Function_Template
         if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 0u) ) // full ROI is black, nothing to dilate
             return true;
 
-        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
         
         BinaryDilate( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
@@ -201,14 +201,14 @@ namespace Function_Template
 
     bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
     {
-        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 0u );
         fillData.push_back(255u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
         PenguinV_Image::Image output = input;
 
-        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
 
         BinaryErode(output, dilationX, dilationY);
 
@@ -217,7 +217,7 @@ namespace Function_Template
 
     bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
     {
-        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
+        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 0u );
         fillData.push_back(255u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
@@ -228,8 +228,8 @@ namespace Function_Template
         if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 255u) ) // full ROI is white, nothing to erode
             return true;
 
-        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
 
         BinaryErode( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
@@ -557,8 +557,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = input.width() % 2;
         const uint32_t yCorrection = input.height() % 2;
 
@@ -600,8 +600,8 @@ namespace Function_Template
         const uint8_t intensityFill = intensityValue();
         std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = input[0].width() % 2;
         const uint32_t yCorrection = input[0].height() % 2;
 
@@ -643,8 +643,8 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -690,8 +690,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -730,8 +730,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
 
-        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
 
         const PenguinV_Image::Image output = GammaCorrection( input, a, gamma );
 
@@ -746,8 +746,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
 
-        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
 
         GammaCorrection( input[0], input[1], a, gamma );
 
@@ -765,8 +765,8 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
 
         const PenguinV_Image::Image output = GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
@@ -785,8 +785,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
 
         GammaCorrection( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, a, gamma );
 
@@ -1330,7 +1330,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1345,7 +1345,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1364,7 +1364,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1382,7 +1382,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
@@ -1398,8 +1398,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
 
-        uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
-        uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputWidth  = Test_Helper::randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputHeight = Test_Helper::randomValue<uint32_t>( 1, 2048 );
 
         const PenguinV_Image::Image output = Resize( input, outputWidth, outputHeight );
 
@@ -1422,8 +1422,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
 
-        uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
-        uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputWidth  = Test_Helper::randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputHeight = Test_Helper::randomValue<uint32_t>( 1, 2048 );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1519,8 +1519,8 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image image  = Test_Helper::uniformImage( intensity[0] );
-        const uint32_t x = randomValue<uint32_t>( 0, image.width() );
-        const uint32_t y = randomValue<uint32_t>( 0, image.height() );
+        const uint32_t x = Test_Helper::randomValue<uint32_t>( 0, image.width() );
+        const uint32_t y = Test_Helper::randomValue<uint32_t>( 0, image.height() );
 
         SetPixel( image, x, y, intensity[1] );
 
@@ -1531,12 +1531,12 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image image  = Test_Helper::uniformImage( intensity[0] );
-        std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
+        std::vector< uint32_t > X( Test_Helper::randomValue<uint32_t>( 1, 100 ) );
         std::vector< uint32_t > Y( X.size() );
 
         for (size_t j = 0; j < X.size(); j++) {
-            X[j] = randomValue<uint32_t>( 0, image.width() );
-            Y[j] = randomValue<uint32_t>( 0, image.height() );
+            X[j] = Test_Helper::randomValue<uint32_t>( 0, image.width() );
+            Y[j] = Test_Helper::randomValue<uint32_t>( 0, image.height() );
         }
 
         SetPixel( image, X, Y, intensity[1] );
@@ -1693,7 +1693,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
 
-        const uint8_t threshold = randomValue <uint8_t>( 255 );
+        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
 
         const PenguinV_Image::Image output = Threshold( input, threshold );
 
@@ -1705,7 +1705,7 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
 
-        const uint8_t threshold = randomValue <uint8_t>( 255 );
+        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
 
         Threshold( input[0], input[1], threshold );
 
@@ -1720,7 +1720,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t threshold = randomValue <uint8_t>( 255 );
+        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
@@ -1739,7 +1739,7 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t threshold = randomValue <uint8_t>( 255 );
+        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
@@ -1751,8 +1751,8 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
 
-        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
 
         const PenguinV_Image::Image output = Threshold( input, minThreshold, maxThreshold );
 
@@ -1764,8 +1764,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
 
-        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
 
         Threshold( input[0], input[1], minThreshold, maxThreshold );
 
@@ -1780,8 +1780,8 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold, maxThreshold );
 
@@ -1801,8 +1801,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, minThreshold, maxThreshold );
 

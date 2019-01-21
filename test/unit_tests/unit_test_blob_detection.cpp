@@ -1,5 +1,6 @@
 #include "unit_test_blob_detection.h"
 #include "unit_test_helper.h"
+#include "../test_helper.h"
 #include "../../src/blob_detection.h"
 #include "../../src/image_function.h"
 
@@ -14,7 +15,7 @@ namespace blob_detection
             uint32_t roiWidth, roiHeight;
             Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 1, 256 ) );
+            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 1, 256 ) );
 
             Blob_Detection::BlobDetection detection;
             detection.find( image );

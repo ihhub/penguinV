@@ -134,7 +134,7 @@ namespace Function_Template
     std::pair < double, double > template_Fill( FillForm1 Fill, const std::string & namespaceName, uint32_t size )
     {
         PenguinV_Image::Image image = Test_Helper::uniformImage( size, size );
-        uint8_t value = Performance_Test::randomValue<uint8_t>( 256 );
+        uint8_t value = Test_Helper::randomValue<uint8_t>( 256 );
 
         TEST_FUNCTION_LOOP( Fill( image, value ), namespaceName )
     }
@@ -142,8 +142,8 @@ namespace Function_Template
     std::pair < double, double > template_GammaCorrection( GammaCorrectionForm2 GammaCorrection, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( 2, size, size );
-        double a     = Performance_Test::randomValue <uint32_t>( 100 ) / 100.0;
-        double gamma = Performance_Test::randomValue <uint32_t>( 300 ) / 100.0;
+        double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
+        double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
 
         TEST_FUNCTION_LOOP( GammaCorrection( image[0], image[1], a, gamma ), namespaceName )
     }
@@ -233,7 +233,7 @@ namespace Function_Template
     std::pair < double, double > template_Threshold( ThresholdForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( 2, size, size );
-        uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
+        uint8_t threshold = Test_Helper::randomValue<uint8_t>( 256 );
 
         TEST_FUNCTION_LOOP( Threshold( image[0], image[1], threshold ), namespaceName )
     }
@@ -241,8 +241,8 @@ namespace Function_Template
     std::pair < double, double > template_ThresholdDouble( ThresholdDoubleForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( 2, size, size );
-        uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
-        uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
+        uint8_t minThreshold = Test_Helper::randomValue<uint8_t>( 256 );
+        uint8_t maxThreshold = Test_Helper::randomValue<uint8_t>( minThreshold, 256 );
 
         TEST_FUNCTION_LOOP( Threshold( image[0], image[1], minThreshold, maxThreshold ), namespaceName )
     }

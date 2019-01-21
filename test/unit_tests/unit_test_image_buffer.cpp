@@ -1,4 +1,5 @@
 #include "unit_test_helper.h"
+#include "../test_helper.h"
 #include "unit_test_image_buffer.h"
 #include "../../src/image_function.h"
 
@@ -13,10 +14,10 @@ namespace template_image
     bool Constructor()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+            const uint32_t width      = Test_Helper::randomValue<uint32_t>( 2048 );
+            const uint32_t height     = Test_Helper::randomValue<uint32_t>( 2048 );
+            const uint8_t  colorCount = Test_Helper::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Test_Helper::randomValue<uint8_t >( 1, 32 );
 
             if( !Unit_Test::equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
                                        Unit_Test::rowSize( width, colorCount, alignment ), colorCount, alignment ) )
@@ -32,7 +33,7 @@ namespace template_image
             PenguinV_Image::ImageTemplate < uint8_t > image;
 
             uint8_t fakeArray[1];
-            uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 2 );
+            uint8_t fakeValue = Test_Helper::randomValue<uint8_t>( 2 );
             if( fakeValue == 1 )
                 fakeValue = 0;
 
@@ -49,13 +50,13 @@ namespace template_image
     bool _CopyConstructor()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+            const uint32_t width      = Test_Helper::randomValue<uint32_t>( 1024 );
+            const uint32_t height     = Test_Helper::randomValue<uint32_t>( 1024 );
+            const uint8_t  colorCount = Test_Helper::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Test_Helper::randomValue<uint8_t >( 1, 32 );
 
             PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-            image.fill( Unit_Test::randomValue<uint8_t>( 256u ) );
+            image.fill( Test_Helper::randomValue<uint8_t>( 256u ) );
 
             const PenguinV_Image::ImageTemplate < _Type > image_copy( image );
 
@@ -70,13 +71,13 @@ namespace template_image
     bool _AssignmentOperator()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+            const uint32_t width      = Test_Helper::randomValue<uint32_t>( 1024 );
+            const uint32_t height     = Test_Helper::randomValue<uint32_t>( 1024 );
+            const uint8_t  colorCount = Test_Helper::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  alignment  = Test_Helper::randomValue<uint8_t >( 1, 32 );
 
             PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-            image.fill( Unit_Test::randomValue<uint8_t>( 256u ) );
+            image.fill( Test_Helper::randomValue<uint8_t>( 256u ) );
 
             PenguinV_Image::ImageTemplate < _Type > image_copy;
 

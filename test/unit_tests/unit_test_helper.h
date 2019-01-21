@@ -83,32 +83,6 @@ namespace Unit_Test
     uint32_t runCount(); // fixed value for all test loops
     void setRunCount( uint32_t count );
 
-    // Return random value for specific range or variable type
-    template <typename data>
-    data randomValue( uint32_t maximum )
-    {
-        if( maximum == 0 )
-            return 0;
-        else
-            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
-    }
-
-    template <typename data>
-    data randomValue( data minimum, uint32_t maximum )
-    {
-        if( maximum == 0 ) {
-            return 0;
-        }
-        else {
-            data value = static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
-
-            if( value < minimum )
-                value = minimum;
-
-            return value;
-        }
-    }
-
     template <typename data>
     data randomFloatValue( data minimum, data maximum, data stepVal )
     {
