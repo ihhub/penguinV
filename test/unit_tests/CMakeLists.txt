@@ -20,7 +20,6 @@ set(SRCS
     ${LIB_DIR}/image_function_helper.cpp
     ${LIB_DIR}/image_function_simd.cpp
     ${LIB_DIR}/thread_pool.cpp
-    ${TEST_LIB}/test_helper.h
     ${TEST_LIB}/test_helper.cpp
     unit_tests.cpp
     unit_test_bitmap.cpp
