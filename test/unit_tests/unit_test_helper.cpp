@@ -33,8 +33,6 @@ namespace
 namespace Unit_Test
 {
 
-    using namespace Test_Helper;
-
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
         return uniformImage( 0u, reference );

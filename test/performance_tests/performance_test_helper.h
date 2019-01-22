@@ -5,9 +5,12 @@
 #include <list>
 #include <vector>
 #include "../../src/image_buffer.h"
+#include "../test_helper.h"
 
 namespace Performance_Test
 {
+
+  using namespace Test_Helper;
     // A class to measure time of individual test
     class BaseTimerContainer
     {
