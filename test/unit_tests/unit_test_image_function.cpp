@@ -12,7 +12,6 @@
 
 namespace
 {
-
     void PrepareFunction( const std::string& namespaceName )
     {
         if ( namespaceName == "function_pool" ) {
