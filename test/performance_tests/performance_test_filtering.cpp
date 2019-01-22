@@ -4,8 +4,6 @@
 
 namespace
 {
-
-
     typedef void ( *filterFunction )( const PenguinV_Image::Image & input, PenguinV_Image::Image & output );
 
     void MedianFilter3x3( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
