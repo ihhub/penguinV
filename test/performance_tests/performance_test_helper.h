@@ -9,8 +9,7 @@
 
 namespace Performance_Test
 {
-
-  using namespace Test_Helper;
+    using namespace Test_Helper;
     // A class to measure time of individual test
     class BaseTimerContainer
     {
