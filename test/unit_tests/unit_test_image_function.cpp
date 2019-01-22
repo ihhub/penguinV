@@ -13,13 +13,11 @@
 namespace
 {
 
-    using namespace Unit_Test;
-
     void PrepareFunction( const std::string& namespaceName )
     {
         if ( namespaceName == "function_pool" ) {
             simd::EnableSimd( true );
-            ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
+            ThreadPoolMonoid::instance().resize( Unit_Test::randomValue<uint8_t>( 1, 8 ) );
         }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );

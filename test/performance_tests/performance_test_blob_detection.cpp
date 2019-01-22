@@ -4,13 +4,11 @@
 
 namespace
 {
-    using namespace Performance_Test;
-  
     std::pair < double, double > SolidImage( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
 
-        PenguinV_Image::Image image = uniformImage( size, size, randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image image = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();

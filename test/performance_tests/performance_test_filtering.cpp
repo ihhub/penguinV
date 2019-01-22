@@ -5,7 +5,6 @@
 namespace
 {
 
-    using namespace Performance_Test;
 
     typedef void ( *filterFunction )( const PenguinV_Image::Image & input, PenguinV_Image::Image & output );
 
@@ -28,7 +27,7 @@ namespace
     {
         Performance_Test::TimerContainer timer;
 
-        PenguinV_Image::Image input = uniformImage( size, size, randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image input = Performance_Test::uniformImage( size, size, Performance_Test::randomValue<uint8_t>( 1, 256 ) );
         PenguinV_Image::Image output( input.width(), input.height() );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
