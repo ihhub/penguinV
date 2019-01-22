@@ -8,8 +8,7 @@
 // A bunch of functions to help writing unit tests
 namespace Unit_Test
 {
-
-  using namespace Test_Helper;
+    using namespace Test_Helper;
 
     // Generate images
     // reference is used to generate a specific type of images aka CPU, CUDA, OpenCL.
