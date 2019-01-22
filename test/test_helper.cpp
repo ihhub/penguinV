@@ -1,7 +1,7 @@
 #include "test_helper.h"
 
-namespace {
-
+namespace
+{
     uint32_t randomSize()
     {
         return Test_Helper::randomValue<uint32_t>( 1, 2048 );
@@ -26,8 +26,8 @@ namespace {
     }
 }
 
-namespace Test_Helper {
-
+namespace Test_Helper
+{
     PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
     {
         return uniformImage( randomValue<uint8_t>( 256 ), reference );
@@ -45,7 +45,7 @@ namespace Test_Helper {
 
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value);
+        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value );
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
@@ -91,7 +91,7 @@ namespace Test_Helper {
     std::vector < PenguinV_Image::Image > uniformImages( uint32_t images, const PenguinV_Image::Image & reference )
     {
         if( images == 0 )
-            throw imageException( "Invalid parameter" );
+            throw imageException( "Invalid parameter: number of images is 0" );
 
         std::vector<uint8_t> intesity( images );
         for( size_t i = 0; i < intesity.size(); ++i )
@@ -118,6 +118,5 @@ namespace Test_Helper {
 
         return image;
     }
-
 }
 
