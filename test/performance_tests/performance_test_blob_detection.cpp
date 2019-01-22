@@ -1,15 +1,16 @@
 #include "../../src/blob_detection.h"
 #include "performance_test_blob_detection.h"
 #include "performance_test_helper.h"
-#include "../test_helper.h"
 
 namespace
 {
+    using namespace Performance_Test;
+  
     std::pair < double, double > SolidImage( uint32_t size )
     {
         Performance_Test::TimerContainer timer;
 
-        PenguinV_Image::Image image = Test_Helper::uniformImage( size, size, Test_Helper::randomValue<uint8_t>( 1, 256 ) );
+        PenguinV_Image::Image image = uniformImage( size, size, randomValue<uint8_t>( 1, 256 ) );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();

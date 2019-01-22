@@ -1,6 +1,5 @@
 #include <math.h>
 #include <numeric>
-#include "../test_helper.h"
 #include "../../src/filtering.h"
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
@@ -13,11 +12,14 @@
 
 namespace
 {
+
+    using namespace Unit_Test;
+
     void PrepareFunction( const std::string& namespaceName )
     {
         if ( namespaceName == "function_pool" ) {
             simd::EnableSimd( true );
-            ThreadPoolMonoid::instance().resize( Test_Helper::randomValue<uint8_t>( 1, 8 ) );
+            ThreadPoolMonoid::instance().resize( randomValue<uint8_t>( 1, 8 ) );
         }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );
@@ -75,7 +77,7 @@ namespace Function_Template
     bool form1_AbsoluteDifference(AbsoluteDifferenceForm1 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = AbsoluteDifference( input[0], input[1] );
 
@@ -86,7 +88,7 @@ namespace Function_Template
     bool form2_AbsoluteDifference(AbsoluteDifferenceForm2 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -96,7 +98,7 @@ namespace Function_Template
     bool form3_AbsoluteDifference(AbsoluteDifferenceForm3 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        const std::vector < PenguinV_Image::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -111,7 +113,7 @@ namespace Function_Template
     bool form4_AbsoluteDifference(AbsoluteDifferenceForm4 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ), Test_Helper::uniformImage( intensity[2] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -125,8 +127,8 @@ namespace Function_Template
 
     bool form1_Accumulate(AccumulateForm1 Accumulate)
     {
-        const std::vector < uint8_t > intensity = intensityArray( Test_Helper::randomValue<uint8_t>( 1, 16 ) );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
 
@@ -141,11 +143,11 @@ namespace Function_Template
 
     bool form2_Accumulate(AccumulateForm2 Accumulate)
     {
-        const std::vector < uint8_t > intensity = intensityArray( Test_Helper::randomValue<uint8_t>( 1, 16 ) );
+        const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
         std::vector < PenguinV_Image::Image > input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { input.push_back( Test_Helper::uniformImage( value ) ); } );
+        { input.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -164,14 +166,14 @@ namespace Function_Template
 
     bool form1_BinaryDilate(BinaryDilateForm1 BinaryDilate)
     {
-        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 255u );
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
         fillData.push_back(0u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
         PenguinV_Image::Image output = input;
 
-        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
 
         BinaryDilate(output, dilationX, dilationY);
 
@@ -180,7 +182,7 @@ namespace Function_Template
 
     bool form2_BinaryDilate(BinaryDilateForm2 BinaryDilate)
     {
-        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 255u );
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 255u );
         fillData.push_back(0u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
@@ -191,8 +193,8 @@ namespace Function_Template
         if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 0u) ) // full ROI is black, nothing to dilate
             return true;
 
-        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
         
         BinaryDilate( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
@@ -201,14 +203,14 @@ namespace Function_Template
 
     bool form1_BinaryErode(BinaryErodeForm1 BinaryErode)
     {
-        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 0u );
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
         fillData.push_back(255u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
         PenguinV_Image::Image output = input;
 
-        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
 
         BinaryErode(output, dilationX, dilationY);
 
@@ -217,7 +219,7 @@ namespace Function_Template
 
     bool form2_BinaryErode(BinaryErodeForm2 BinaryErode)
     {
-        std::vector< uint8_t > fillData( Test_Helper::randomValue<uint32_t>(20, 200), 0u );
+        std::vector< uint8_t > fillData( randomValue<uint32_t>(20, 200), 0u );
         fillData.push_back(255u);
 
         const PenguinV_Image::Image input = randomImage( fillData );
@@ -228,8 +230,8 @@ namespace Function_Template
         if ( !verifyImage(output, roiX, roiY, roiWidth, roiHeight, 255u) ) // full ROI is white, nothing to erode
             return true;
 
-        const uint32_t dilationX = Test_Helper::randomValue<uint32_t>(1, 5);
-        const uint32_t dilationY = Test_Helper::randomValue<uint32_t>(1, 5);
+        const uint32_t dilationX = randomValue<uint32_t>(1, 5);
+        const uint32_t dilationY = randomValue<uint32_t>(1, 5);
 
         BinaryErode( output, roiX, roiY, roiWidth, roiHeight, dilationX, dilationY );
 
@@ -239,7 +241,7 @@ namespace Function_Template
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = BitwiseAnd( input[0], input[1] );
 
@@ -249,7 +251,7 @@ namespace Function_Template
     bool form2_BitwiseAnd(BitwiseAndForm2 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         BitwiseAnd( image[0], image[1], image[2] );
 
@@ -259,7 +261,7 @@ namespace Function_Template
     bool form3_BitwiseAnd(BitwiseAndForm3 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        const std::vector < PenguinV_Image::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -273,7 +275,7 @@ namespace Function_Template
     bool form4_BitwiseAnd(BitwiseAndForm4 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ), Test_Helper::uniformImage( intensity[2] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -287,7 +289,7 @@ namespace Function_Template
     bool form1_BitwiseOr(BitwiseOrForm1 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = BitwiseOr( input[0], input[1] );
 
@@ -297,7 +299,7 @@ namespace Function_Template
     bool form2_BitwiseOr(BitwiseOrForm2 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         BitwiseOr( image[0], image[1], image[2] );
 
@@ -307,7 +309,7 @@ namespace Function_Template
     bool form3_BitwiseOr(BitwiseOrForm3 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        const std::vector < PenguinV_Image::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -321,7 +323,7 @@ namespace Function_Template
     bool form4_BitwiseOr(BitwiseOrForm4 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ), Test_Helper::uniformImage( intensity[2] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -335,7 +337,7 @@ namespace Function_Template
     bool form1_BitwiseXor(BitwiseXorForm1 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = BitwiseXor( input[0], input[1] );
 
@@ -345,7 +347,7 @@ namespace Function_Template
     bool form2_BitwiseXor(BitwiseXorForm2 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         BitwiseXor( image[0], image[1], image[2] );
 
@@ -355,7 +357,7 @@ namespace Function_Template
     bool form3_BitwiseXor(BitwiseXorForm3 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        const std::vector < PenguinV_Image::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -369,7 +371,7 @@ namespace Function_Template
     bool form4_BitwiseXor(BitwiseXorForm4 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ), Test_Helper::uniformImage( intensity[2] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -383,7 +385,7 @@ namespace Function_Template
     bool form1_ConvertToGrayScale(ConvertToGrayScaleForm1 ConvertToGrayScale)
     {
         const std::vector < uint8_t > intensity = intensityArray( 1 );
-        const PenguinV_Image::Image input = Test_Helper::uniformRGBImage( intensity[0] );
+        const PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
 
         const PenguinV_Image::Image output = ConvertToGrayScale( input );
 
@@ -393,7 +395,7 @@ namespace Function_Template
     bool form2_ConvertToGrayScale(ConvertToGrayScaleForm2 ConvertToGrayScale)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input = Test_Helper::uniformRGBImage( intensity[0] );
+        const PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         PenguinV_Image::Image output( input.width(), input.height() );
 
         output.fill( intensity[1] );
@@ -406,7 +408,7 @@ namespace Function_Template
     bool form3_ConvertToGrayScale(ConvertToGrayScaleForm3 ConvertToGrayScale)
     {
         const std::vector < uint8_t > intensity = intensityArray( 1 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformRGBImage( intensity[0] );
+        const PenguinV_Image::Image input  = uniformRGBImage( intensity[0] );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -419,8 +421,8 @@ namespace Function_Template
     bool form4_ConvertToGrayScale(ConvertToGrayScaleForm4 ConvertToGrayScale)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformRGBImage( intensity[0] );
-        PenguinV_Image::Image output = Test_Helper::uniformImage   ( intensity[1] );
+        const PenguinV_Image::Image input  = uniformRGBImage( intensity[0] );
+        PenguinV_Image::Image output = uniformImage   ( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -439,7 +441,7 @@ namespace Function_Template
     bool form1_ConvertToRgb(ConvertToRgbForm1 ConvertToRgb)
     {
         const std::vector < uint8_t > intensity = intensityArray( 1 );
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
+        const PenguinV_Image::Image input = uniformImage( intensity[0] );
 
         const PenguinV_Image::Image output = ConvertToRgb( input );
 
@@ -449,7 +451,7 @@ namespace Function_Template
     bool form2_ConvertToRgb(ConvertToRgbForm2 ConvertToRgb)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
+        const PenguinV_Image::Image input = uniformImage( intensity[0] );
         PenguinV_Image::Image output( input.width(), input.height(), PenguinV_Image::RGB );
 
         output.fill( intensity[1] );
@@ -462,7 +464,7 @@ namespace Function_Template
     bool form3_ConvertToRgb(ConvertToRgbForm3 ConvertToRgb)
     {
         const std::vector < uint8_t > intensity = intensityArray( 1 );
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
+        const PenguinV_Image::Image input = uniformImage( intensity[0] );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -475,8 +477,8 @@ namespace Function_Template
     bool form4_ConvertToRgb(ConvertToRgbForm4 ConvertToRgb)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformImage   ( intensity[0] );
-        PenguinV_Image::Image output = Test_Helper::uniformRGBImage( intensity[1] );
+        const PenguinV_Image::Image input  = uniformImage   ( intensity[0] );
+        PenguinV_Image::Image output = uniformRGBImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -495,7 +497,7 @@ namespace Function_Template
     bool form1_Copy(CopyForm1 Copy)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         Copy( input[0], input[1] );
 
@@ -505,7 +507,7 @@ namespace Function_Template
     bool form2_Copy(CopyForm2 Copy)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -518,7 +520,7 @@ namespace Function_Template
     bool form3_Copy(CopyForm3 Copy)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -532,7 +534,7 @@ namespace Function_Template
     bool form1_Fill(FillForm1 Fill)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image image = Test_Helper::uniformImage( intensity[0] );
+        PenguinV_Image::Image image = uniformImage( intensity[0] );
 
         Fill( image, intensity[1] );
 
@@ -542,7 +544,7 @@ namespace Function_Template
     bool form2_Fill(FillForm2 Fill)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image image = Test_Helper::uniformImage( intensity[0] );
+        PenguinV_Image::Image image = uniformImage( intensity[0] );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
@@ -555,10 +557,10 @@ namespace Function_Template
     bool form1_Flip(FlipForm1 Flip)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
+        PenguinV_Image::Image input = uniformImage( intensity[0] );
 
-        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = input.width() % 2;
         const uint32_t yCorrection = input.height() % 2;
 
@@ -598,10 +600,10 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const uint8_t intensityFill = intensityValue();
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = input[0].width() % 2;
         const uint32_t yCorrection = input[0].height() % 2;
 
@@ -638,13 +640,13 @@ namespace Function_Template
     bool form3_Flip(FlipForm3 Flip)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input = Test_Helper::uniformImage( intensity[0] );
+        PenguinV_Image::Image input = uniformImage( intensity[0] );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -684,14 +686,14 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const uint8_t intensityFill = intensityValue();
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (Test_Helper::randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -728,10 +730,10 @@ namespace Function_Template
     bool form1_GammaCorrection(GammaCorrectionForm1 GammaCorrection)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
-        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
         const PenguinV_Image::Image output = GammaCorrection( input, a, gamma );
 
@@ -744,10 +746,10 @@ namespace Function_Template
     bool form2_GammaCorrection(GammaCorrectionForm2 GammaCorrection)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
         GammaCorrection( input[0], input[1], a, gamma );
 
@@ -760,13 +762,13 @@ namespace Function_Template
     bool form3_GammaCorrection(GammaCorrectionForm3 GammaCorrection)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
         const PenguinV_Image::Image output = GammaCorrection( input, roiX, roiY, roiWidth, roiHeight, a, gamma );
 
@@ -779,14 +781,14 @@ namespace Function_Template
     bool form4_GammaCorrection(GammaCorrectionForm4 GammaCorrection)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const double a     = Test_Helper::randomValue <uint32_t>( 100 ) / 100.0;
-        const double gamma = Test_Helper::randomValue <uint32_t>( 300 ) / 100.0;
+        const double a     = randomValue <uint32_t>( 100 ) / 100.0;
+        const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
         GammaCorrection( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, a, gamma );
 
@@ -812,7 +814,7 @@ namespace Function_Template
     bool form1_Histogram(HistogramForm1 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         const std::vector < uint32_t > histogram = Histogram( image );
 
@@ -823,7 +825,7 @@ namespace Function_Template
     bool form2_Histogram(HistogramForm2 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         std::vector < uint32_t > histogram;
         Histogram( image, histogram );
@@ -835,7 +837,7 @@ namespace Function_Template
     bool form3_Histogram(HistogramForm3 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -849,7 +851,7 @@ namespace Function_Template
     bool form4_Histogram(HistogramForm4 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -864,7 +866,7 @@ namespace Function_Template
     bool form5_Histogram(HistogramForm5 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         if ( image.height() / 2 == 0 )
             return true;
@@ -882,7 +884,7 @@ namespace Function_Template
     bool form6_Histogram(HistogramForm6 Histogram)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         if ( image.height() / 2 == 0 )
             return true;
@@ -901,7 +903,7 @@ namespace Function_Template
     bool form7_Histogram(HistogramForm7 Histogram)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -922,7 +924,7 @@ namespace Function_Template
     bool form8_Histogram(HistogramForm8 Histogram)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -944,7 +946,7 @@ namespace Function_Template
     bool form1_Invert(InvertForm1 Invert)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         const PenguinV_Image::Image output = Invert( input );
 
@@ -954,7 +956,7 @@ namespace Function_Template
     bool form2_Invert(InvertForm2 Invert)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         Invert( input[0], input[1] );
 
@@ -964,7 +966,7 @@ namespace Function_Template
     bool form3_Invert(InvertForm3 Invert)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -977,7 +979,7 @@ namespace Function_Template
     bool form4_Invert(InvertForm4 Invert)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -991,7 +993,7 @@ namespace Function_Template
     bool form1_IsEqual(IsEqualForm1 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         return (intensity[0] == intensity[1]) == (IsEqual( input[0], input[1] ));
     }
@@ -999,7 +1001,7 @@ namespace Function_Template
     bool form2_IsEqual(IsEqualForm2 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1055,7 +1057,7 @@ namespace Function_Template
     bool form3_LookupTable(LookupTableForm3 LookupTable)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input = Test_Helper::uniformImage();
+        PenguinV_Image::Image input = uniformImage();
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1080,8 +1082,8 @@ namespace Function_Template
     bool form4_LookupTable(LookupTableForm4 LookupTable)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input  = Test_Helper::uniformImage();
-        PenguinV_Image::Image output = Test_Helper::uniformImage();
+        PenguinV_Image::Image input  = uniformImage();
+        PenguinV_Image::Image output = uniformImage();
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1113,7 +1115,7 @@ namespace Function_Template
     bool form1_Maximum(MaximumForm1 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = Maximum( input[0], input[1] );
 
@@ -1124,7 +1126,7 @@ namespace Function_Template
     bool form2_Maximum(MaximumForm2 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         Maximum( image[0], image[1], image[2] );
 
@@ -1137,7 +1139,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { input.push_back( Test_Helper::uniformImage( value ) ); } );
+        { input.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1155,7 +1157,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { image.push_back( Test_Helper::uniformImage( value ) ); } );
+        { image.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1170,7 +1172,7 @@ namespace Function_Template
     bool form1_Minimum(MinimumForm1 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = Minimum( input[0], input[1] );
 
@@ -1181,7 +1183,7 @@ namespace Function_Template
     bool form2_Minimum(MinimumForm2 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         Minimum( image[0], image[1], image[2] );
 
@@ -1194,7 +1196,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { input.push_back( Test_Helper::uniformImage( value ) ); } );
+        { input.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1212,7 +1214,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { image.push_back( Test_Helper::uniformImage( value ) ); } );
+        { image.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1270,7 +1272,7 @@ namespace Function_Template
     bool form3_Normalize(NormalizeForm3 Normalize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input = Test_Helper::uniformImage();
+        PenguinV_Image::Image input = uniformImage();
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1295,8 +1297,8 @@ namespace Function_Template
     bool form4_Normalize(NormalizeForm4 Normalize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image input  = Test_Helper::uniformImage();
-        PenguinV_Image::Image output = Test_Helper::uniformImage();
+        PenguinV_Image::Image input  = uniformImage();
+        PenguinV_Image::Image output = uniformImage();
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1328,9 +1330,9 @@ namespace Function_Template
     bool form1_ProjectionProfile(ProjectionProfileForm1 ProjectionProfile)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1343,9 +1345,9 @@ namespace Function_Template
     bool form2_ProjectionProfile(ProjectionProfileForm2 ProjectionProfile)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1359,12 +1361,12 @@ namespace Function_Template
     bool form3_ProjectionProfile(ProjectionProfileForm3 ProjectionProfile)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1377,12 +1379,12 @@ namespace Function_Template
     bool form4_ProjectionProfile(ProjectionProfileForm4 ProjectionProfile)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image image = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image image = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (Test_Helper::randomValue<int>(2) == 0);
+        const bool horizontal = (randomValue<int>(2) == 0);
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
@@ -1396,10 +1398,10 @@ namespace Function_Template
     bool form1_Resize(ResizeForm1 Resize)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
-        uint32_t outputWidth  = Test_Helper::randomValue<uint32_t>( 1, 2048 );
-        uint32_t outputHeight = Test_Helper::randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
 
         const PenguinV_Image::Image output = Resize( input, outputWidth, outputHeight );
 
@@ -1409,8 +1411,8 @@ namespace Function_Template
     bool form2_Resize(ResizeForm2 Resize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformImage( intensity[0] );
-        PenguinV_Image::Image output = Test_Helper::uniformImage( intensity[1] );
+        const PenguinV_Image::Image input  = uniformImage( intensity[0] );
+        PenguinV_Image::Image output = uniformImage( intensity[1] );
 
         Resize( input, output );
 
@@ -1420,10 +1422,10 @@ namespace Function_Template
     bool form3_Resize(ResizeForm3 Resize)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
-        uint32_t outputWidth  = Test_Helper::randomValue<uint32_t>( 1, 2048 );
-        uint32_t outputHeight = Test_Helper::randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputWidth  = randomValue<uint32_t>( 1, 2048 );
+        uint32_t outputHeight = randomValue<uint32_t>( 1, 2048 );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1436,8 +1438,8 @@ namespace Function_Template
     bool form4_Resize(ResizeForm4 Resize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformImage( intensity[0] );
-        PenguinV_Image::Image output = Test_Helper::uniformImage( intensity[1] );
+        const PenguinV_Image::Image input  = uniformImage( intensity[0] );
+        PenguinV_Image::Image output = uniformImage( intensity[1] );
 
         std::vector < uint32_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
 
@@ -1451,7 +1453,7 @@ namespace Function_Template
 
     bool form1_RgbToBgr(RgbToBgrForm1 RgbToBgr)
     {
-        PenguinV_Image::Image input = Test_Helper::uniformRGBImage( intensityValue() );
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
@@ -1465,7 +1467,7 @@ namespace Function_Template
 
     bool form2_RgbToBgr(RgbToBgrForm2 RgbToBgr)
     {
-        PenguinV_Image::Image input = Test_Helper::uniformRGBImage( intensityValue() );
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
@@ -1482,7 +1484,7 @@ namespace Function_Template
 
     bool form3_RgbToBgr(RgbToBgrForm3 RgbToBgr)
     {
-        PenguinV_Image::Image input = Test_Helper::uniformRGBImage( intensityValue() );
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
@@ -1499,7 +1501,7 @@ namespace Function_Template
 
     bool form4_RgbToBgr(RgbToBgrForm4 RgbToBgr)
     {
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformRGBImage( intensityValue() ), Test_Helper::uniformRGBImage( intensityValue() ) };
+        std::vector < PenguinV_Image::Image > image = { uniformRGBImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         std::vector < uint32_t > roiX, roiY;
@@ -1518,9 +1520,9 @@ namespace Function_Template
     bool form1_SetPixel(SetPixelForm1 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image image  = Test_Helper::uniformImage( intensity[0] );
-        const uint32_t x = Test_Helper::randomValue<uint32_t>( 0, image.width() );
-        const uint32_t y = Test_Helper::randomValue<uint32_t>( 0, image.height() );
+        PenguinV_Image::Image image  = uniformImage( intensity[0] );
+        const uint32_t x = randomValue<uint32_t>( 0, image.width() );
+        const uint32_t y = randomValue<uint32_t>( 0, image.height() );
 
         SetPixel( image, x, y, intensity[1] );
 
@@ -1530,13 +1532,13 @@ namespace Function_Template
     bool form2_SetPixel(SetPixelForm2 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        PenguinV_Image::Image image  = Test_Helper::uniformImage( intensity[0] );
-        std::vector< uint32_t > X( Test_Helper::randomValue<uint32_t>( 1, 100 ) );
+        PenguinV_Image::Image image  = uniformImage( intensity[0] );
+        std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
         std::vector< uint32_t > Y( X.size() );
 
         for (size_t j = 0; j < X.size(); j++) {
-            X[j] = Test_Helper::randomValue<uint32_t>( 0, image.width() );
-            Y[j] = Test_Helper::randomValue<uint32_t>( 0, image.height() );
+            X[j] = randomValue<uint32_t>( 0, image.width() );
+            Y[j] = randomValue<uint32_t>( 0, image.height() );
         }
 
         SetPixel( image, X, Y, intensity[1] );
@@ -1552,7 +1554,7 @@ namespace Function_Template
     bool form1_Shift(ShiftForm1 Shift)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         const double shiftX = randomFloatValue<double>( -static_cast<double>( input.width()  / 4 ), input.width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
         const double shiftY = randomFloatValue<double>( -static_cast<double>( input.height() / 4 ), input.height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
@@ -1565,7 +1567,7 @@ namespace Function_Template
     bool form2_Shift(ShiftForm2 Shift)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const double shiftX = randomFloatValue<double>( -static_cast<double>( input[0].width()  / 4 ), input[0].width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
         const double shiftY = randomFloatValue<double>( -static_cast<double>( input[0].height() / 4 ), input[0].height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
@@ -1578,7 +1580,7 @@ namespace Function_Template
     bool form3_Shift(ShiftForm3 Shift)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1596,7 +1598,7 @@ namespace Function_Template
     bool form4_Shift(ShiftForm4 Shift)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1615,7 +1617,7 @@ namespace Function_Template
     bool form1_Subtract(SubtractForm1 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        const std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
         const PenguinV_Image::Image output = Subtract( input[0], input[1] );
 
@@ -1626,7 +1628,7 @@ namespace Function_Template
     bool form2_Subtract(SubtractForm2 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
 
         Subtract( image[0], image[1], image[2] );
 
@@ -1639,7 +1641,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { input.push_back( Test_Helper::uniformImage( value ) ); } );
+        { input.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1657,7 +1659,7 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { image.push_back( Test_Helper::uniformImage( value ) ); } );
+        { image.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1672,7 +1674,7 @@ namespace Function_Template
     bool form1_Sum(SumForm1 Sum)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         return Sum( input ) == intensity * input.width() * input.height();
     }
@@ -1680,7 +1682,7 @@ namespace Function_Template
     bool form2_Sum(SumForm2 Sum)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1691,9 +1693,9 @@ namespace Function_Template
     bool form1_Threshold(ThresholdForm1 Threshold)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
-        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t threshold = randomValue <uint8_t>( 255 );
 
         const PenguinV_Image::Image output = Threshold( input, threshold );
 
@@ -1703,9 +1705,9 @@ namespace Function_Template
     bool form2_Threshold(ThresholdForm2 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t threshold = randomValue <uint8_t>( 255 );
 
         Threshold( input[0], input[1], threshold );
 
@@ -1715,12 +1717,12 @@ namespace Function_Template
     bool form3_Threshold(ThresholdForm3 Threshold)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t threshold = randomValue <uint8_t>( 255 );
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, threshold );
 
@@ -1733,13 +1735,13 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { image.push_back( Test_Helper::uniformImage( value ) ); } );
+        { image.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t threshold = Test_Helper::randomValue <uint8_t>( 255 );
+        const uint8_t threshold = randomValue <uint8_t>( 255 );
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, threshold );
 
@@ -1749,10 +1751,10 @@ namespace Function_Template
     bool form5_Threshold(ThresholdDoubleForm1 Threshold)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
-        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
         const PenguinV_Image::Image output = Threshold( input, minThreshold, maxThreshold );
 
@@ -1762,10 +1764,10 @@ namespace Function_Template
     bool form6_Threshold(ThresholdDoubleForm2 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > input = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
         Threshold( input[0], input[1], minThreshold, maxThreshold );
 
@@ -1775,13 +1777,13 @@ namespace Function_Template
     bool form7_Threshold(ThresholdDoubleForm3 Threshold)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
         const PenguinV_Image::Image output = Threshold( input, roiX, roiY, roiWidth, roiHeight, minThreshold, maxThreshold );
 
@@ -1795,14 +1797,14 @@ namespace Function_Template
         std::vector < PenguinV_Image::Image > image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
-        { image.push_back( Test_Helper::uniformImage( value ) ); } );
+        { image.push_back( uniformImage( value ) ); } );
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t minThreshold = Test_Helper::randomValue <uint8_t>( 255 );
-        const uint8_t maxThreshold = Test_Helper::randomValue <uint8_t>( minThreshold, 255 );
+        const uint8_t minThreshold = randomValue <uint8_t>( 255 );
+        const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
         Threshold( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, minThreshold, maxThreshold );
 
@@ -1813,7 +1815,7 @@ namespace Function_Template
     bool form1_Transpose(TransposeForm1 Transpose)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         const PenguinV_Image::Image output = Transpose( input );
 
@@ -1823,7 +1825,7 @@ namespace Function_Template
     bool form2_Transpose(TransposeForm2 Transpose)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformImage( intensity[0] );
+        const PenguinV_Image::Image input  = uniformImage( intensity[0] );
         PenguinV_Image::Image output( input.height(), input.width() );
 
         output.fill( intensity[1] );
@@ -1836,7 +1838,7 @@ namespace Function_Template
     bool form3_Transpose(TransposeForm3 Transpose)
     {
         const uint8_t intensity = intensityValue();
-        const PenguinV_Image::Image input = Test_Helper::uniformImage( intensity );
+        const PenguinV_Image::Image input = uniformImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1849,8 +1851,8 @@ namespace Function_Template
     bool form4_Transpose(TransposeForm4 Transpose)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = Test_Helper::uniformImage( intensity[0] );
-        PenguinV_Image::Image output = Test_Helper::uniformImage( intensity[1] );
+        const PenguinV_Image::Image input  = uniformImage( intensity[0] );
+        PenguinV_Image::Image output = uniformImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -1871,7 +1873,7 @@ namespace Function_Template
     // Filters
     bool form1_Prewitt(PrewittForm1 Prewitt)
     {
-        const PenguinV_Image::Image input = Test_Helper::uniformImage();
+        const PenguinV_Image::Image input = uniformImage();
         if ( (input.width() < 3) || (input.height() < 3) )
             return true;
 
@@ -1883,7 +1885,7 @@ namespace Function_Template
     bool form2_Prewitt(PrewittForm2 Prewitt)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
         if ( (image[0].width() < 3) || (image[0].height() < 3) )
             return true;
 
@@ -1894,7 +1896,7 @@ namespace Function_Template
 
     bool form3_Prewitt(PrewittForm3 Prewitt)
     {
-        const PenguinV_Image::Image input = Test_Helper::uniformImage();
+        const PenguinV_Image::Image input = uniformImage();
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1909,7 +1911,7 @@ namespace Function_Template
     bool form4_Prewitt(PrewittForm4 Prewitt)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1924,7 +1926,7 @@ namespace Function_Template
 
     bool form1_Sobel(SobelForm1 Sobel)
     {
-        const PenguinV_Image::Image input = Test_Helper::uniformImage();
+        const PenguinV_Image::Image input = uniformImage();
         if ( (input.width() < 3) || (input.height() < 3) )
             return true;
 
@@ -1936,7 +1938,7 @@ namespace Function_Template
     bool form2_Sobel(SobelForm2 Sobel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = Test_Helper::uniformImages( intensity );
+        std::vector < PenguinV_Image::Image > image = uniformImages( intensity );
         if ( (image[0].width() < 3) || (image[0].height() < 3) )
             return true;
 
@@ -1947,7 +1949,7 @@ namespace Function_Template
 
     bool form3_Sobel(SobelForm3 Sobel)
     {
-        const PenguinV_Image::Image input = Test_Helper::uniformImage();
+        const PenguinV_Image::Image input = uniformImage();
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -1962,7 +1964,7 @@ namespace Function_Template
     bool form4_Sobel(SobelForm4 Sobel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < PenguinV_Image::Image > image = { Test_Helper::uniformImage( intensity[0] ), Test_Helper::uniformImage( intensity[1] ) };
+        std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;

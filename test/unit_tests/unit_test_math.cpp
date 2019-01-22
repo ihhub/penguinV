@@ -2,7 +2,6 @@
 
 #include <cmath>
 #include "unit_test_helper.h"
-#include "../test_helper.h"
 #include "../../src/math/hough_transform.h"
 #include "../../src/math/haar_transform.h"
 
@@ -14,11 +13,11 @@ namespace pvmath
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
             const _Type angleTolerance = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>( 0, 10, 0.1f ) + 0.1f ) );
-            const _Type angleStep = angleTolerance / Test_Helper::randomValue( 1, 50 );
+            const _Type angleStep = angleTolerance / Unit_Test::randomValue( 1, 50 );
             const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
 
             const _Type noiseValue = lineTolerance / 2;
-            std::vector< PointBase2D<_Type> > point( Test_Helper::randomValue<uint32_t>( 50u, 100u ) );
+            std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
 
             const _Type sinVal = std::sin( angle );
             const _Type cosVal = std::cos( angle );
@@ -46,8 +45,8 @@ namespace pvmath
     bool haarTransformTemplate()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width  = Test_Helper::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
-            const uint32_t height = Test_Helper::randomValue<uint32_t>( 16u, 256u ) * 2;
+            const uint32_t width  = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
+            const uint32_t height = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2;
             std::vector< _Type > input ( width * height );
             std::vector< _Type > direct( width * height );
 

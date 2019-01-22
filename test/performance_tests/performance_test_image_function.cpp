@@ -6,7 +6,6 @@
 #include "../../src/penguinv/cpu_identification.h"
 #include "performance_test_image_function.h"
 #include "performance_test_helper.h"
-#include "../test_helper.h"
 
 namespace
 {

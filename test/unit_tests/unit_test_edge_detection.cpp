@@ -1,6 +1,5 @@
 #include "unit_test_edge_detection.h"
 #include "unit_test_helper.h"
-#include "../test_helper.h"
 #include "../../src/edge_detection.h"
 
 namespace edge_detection
@@ -21,7 +20,7 @@ namespace edge_detection
             if ( !isValidLeftEdge && !isValidRightEdge )
                 continue;
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 64, 256 ) );
+            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetection edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT) );
@@ -62,7 +61,7 @@ namespace edge_detection
             if ( !isValidTopEdge && !isValidBottomEdge )
                 continue;
 
-            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Test_Helper::randomValue<uint8_t>( 64, 256 ) );
+            Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetection edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM) );
