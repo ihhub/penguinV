@@ -6,11 +6,9 @@
 
 namespace
 {
-    using namespace Test_Helper;
-
     uint32_t randomSize()
     {
-        return randomValue<uint32_t>( 1, 2048 );
+        return Unit_Test::randomValue<uint32_t>( 1, 2048 );
     }
 
     void fillRandomData( PenguinV_Image::Image & image )
@@ -23,7 +21,7 @@ namespace
             const uint8_t * outXEnd = outX + image.width() * image.colorCount();
 
             for( ; outX != outXEnd; ++outX )
-                (*outX) = randomValue<uint8_t>( 256 );
+                (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
         }
     }
 
