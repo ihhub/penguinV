@@ -7,18 +7,10 @@ namespace
         return Test_Helper::randomValue<uint32_t>( 1, 2048 );
     }
 
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value, const PenguinV_Image::Image & reference )
+    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value,
+                                         const PenguinV_Image::Image & reference = PenguinV_Image::Image() )
     {
         PenguinV_Image::Image image = reference.generate( width, height, colorCount );
-
-        image.fill( value );
-
-        return image;
-    }
-
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
-    {
-        PenguinV_Image::Image image( width, height, colorCount );
 
         image.fill( value );
 
