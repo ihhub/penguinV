@@ -21,7 +21,9 @@ for:
   matrix:
     only:
       - configuration: Python
-  build_script: echo issue-173
+  build_script:
+    - cd src
+    - python setup.py build_ext --inplace
 
 platform:
   - x64
