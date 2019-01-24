@@ -19,11 +19,10 @@ configuration:
 for:
 -
   matrix:
-    - PYTHONHOME: C:\Python37
     only:
       - configuration: PythonModule
   init:
-    - set %PYTHONHOME%;%PATH%
+    - set PATH=C:\Python37;%PATH%
     - msbuild /version
     - python --version
   install:
