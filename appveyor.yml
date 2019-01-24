@@ -23,7 +23,7 @@ for:
     only:
       - configuration: PythonModule
   init:
-    - - set %PYTHONHOME%;%PATH%
+    - set %PYTHONHOME%;%PATH%
     - msbuild /version
     - python --version
   install:
