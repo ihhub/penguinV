@@ -11,27 +11,24 @@ version: 1.0.{build}
 # Build worker image (VM template)
 image: Visual Studio 2015
 
-environment:
-  matrix:
-    - PYTHON_VERSION: 3.7
-
 # build configuration, i.e. Debug, Release, etc.
 configuration:
 #  - Release
-  - Python
+  - PythonModule
 
 for:
 -
   matrix:
     only:
-      - configuration: Python
+      - configuration: PythonModule
   install:
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
-  build_script:
+  before_build:
     - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
     - cmd: call script\appveyor\vs_toolset.cmd
+  build_script:
     - cmd: cd C:\projects\penguinv\src\python
-    - cmd: python setup.py build_ext --inplace
+    - cmd: python3 setup.py build_ext --inplace
 
 platform:
   - x64
