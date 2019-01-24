@@ -19,20 +19,15 @@ configuration:
 for:
 -
   matrix:
+    - PYTHON_VERSION: 3.7
     only:
       - configuration: Python
-      - PYTHON: C:\Python37
-        PYTHON_VERSION: 3.7.2
-        PYTHON_ARCH: 32
-  init:
-    - "echo %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
   install:
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   before_build:
-    - cmd: call script\appveyor\vs_toolset.cmd
     - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
+    - cmd: call script\appveyor\vs_toolset.cmd
   build_script:
-    - cmd: msbuild /version
     - cmd: cd C:\projects\penguinv\src\python
     - cmd: python setup.py build_ext --inplace
 
