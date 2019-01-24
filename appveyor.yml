@@ -20,13 +20,13 @@ for:
 -
   matrix:
     only:
-      - image: Visual Studio 2015
       - configuration: Python
   install:
     - python --version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   build_script:
-    - call script\appveyor\vs_toolset.cmd
+    #- call script\appveyor\vs_toolset.cmd
+    - set VS90COMNTOOLS=%VS140COMNTOOLS%
     - cd C:\projects\penguinv\src\python
     - python setup.py build_ext --inplace
 
