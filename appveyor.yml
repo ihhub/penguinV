@@ -20,6 +20,7 @@ for:
 -
   matrix:
     only:
+      - image: Visual Studio 2015
       - configuration: Python
   install:
     - python --version
