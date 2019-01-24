@@ -27,7 +27,6 @@ for:
     - python --version
   install:
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
-  before_build:
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
     - cmd: python setup.py build_ext --inplace
@@ -41,10 +40,10 @@ clone_folder: C:\projects\penguinv
 
 # scripts to run before build
 before_build:
-  - cmd: call script\appveyor\cuda_install.cmd
+  - cmd: if "%configuration%"=="Release" call script\appveyor\cuda_install.cmd
 
 build_script:
-  - set PENGUINV_UNIT_TEST_RUN_COUNT=500
+  - set PENGUINV_UNIT_TEST_RUN_COUNT=10
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
