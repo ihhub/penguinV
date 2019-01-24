@@ -24,16 +24,16 @@ for:
       - PYTHON: C:\Python37
         PYTHON_VERSION: 3.7
         PYTHON_ARCH: 32
-    install:
-      - python --version
-      - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
-    before_build:
-      - cmd: call script\appveyor\vs_toolset.cmd
-      - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
-    build_script:
-      - cmd: msbuild /version
-      - cmd: cd C:\projects\penguinv\src\python
-      - cmd: python setup.py build_ext --inplace
+  install:
+    - python --version
+    - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
+  before_build:
+    - cmd: call script\appveyor\vs_toolset.cmd
+    - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
+  build_script:
+    - cmd: msbuild /version
+    - cmd: cd C:\projects\penguinv\src\python
+    - cmd: python setup.py build_ext --inplace
 
 platform:
   - x64
