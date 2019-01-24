@@ -11,6 +11,10 @@ version: 1.0.{build}
 # Build worker image (VM template)
 image: Visual Studio 2015
 
+environment:
+  matrix:
+    - PYTHON_VERSION: 3.7
+
 # build configuration, i.e. Debug, Release, etc.
 configuration:
 #  - Release
