@@ -22,7 +22,7 @@ for:
     only:
       - configuration: Python
   build_script:
-    - cd src
+    - cd C:\projects\penguinv\src
     - python setup.py build_ext --inplace
 
 platform:
