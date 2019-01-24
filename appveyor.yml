@@ -25,13 +25,7 @@ for:
     - python --version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   build_script:
-    - cmd: >-
-        if "%platform%"=="x86" (
-          call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-       ) else (
-          call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-          call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-       )
+    - call script\appveyor\vs_toolset.cmd
     - cd C:\projects\penguinv\src\python
     - python setup.py build_ext --inplace
 
