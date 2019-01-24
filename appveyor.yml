@@ -21,6 +21,8 @@ for:
   matrix:
     only:
       - configuration: Python
+  install:
+    - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   build_script:
     - cd C:\projects\penguinv\src\python
     - python setup.py build_ext --inplace
