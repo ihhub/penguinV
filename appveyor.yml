@@ -12,7 +12,16 @@ version: 1.0.{build}
 image: Visual Studio 2015
 
 # build configuration, i.e. Debug, Release, etc.
-configuration: Release
+configuration:
+  - Release
+  - Python
+
+for:
+-
+  matrix:
+    only:
+      - configuration: Python
+  build_script: echo issue-173
 
 platform:
   - x64
