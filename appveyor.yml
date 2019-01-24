@@ -19,19 +19,20 @@ configuration:
 for:
 -
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     only:
       - configuration: Python
-  install:
-    - python --version
-    - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
-  before_build:
-    - cmd: call script\appveyor\vs_toolset.cmd
-    - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
-  build_script:
-    - cmd: msbuild /version
-    - cmd: cd C:\projects\penguinv\src\python
-    - cmd: python setup.py build_ext --inplace
+    environment:
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    install:
+      - python --version
+      - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
+    before_build:
+      - cmd: call script\appveyor\vs_toolset.cmd
+      - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
+    build_script:
+      - cmd: msbuild /version
+      - cmd: cd C:\projects\penguinv\src\python
+      - cmd: python setup.py build_ext --inplace
 
 platform:
   - x64
