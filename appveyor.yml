@@ -13,7 +13,7 @@ image: Visual Studio 2015
 
 # build configuration, i.e. Debug, Release, etc.
 configuration:
-#  - Release
+  - Release
   - PythonModule
 
 for:
@@ -27,8 +27,6 @@ for:
     - python --version
   install:
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
-  before_build:
-    # - cmd: call script\appveyor\vs_toolset.cmd
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
     - cmd: python setup.py build_ext --inplace
@@ -42,7 +40,7 @@ clone_folder: C:\projects\penguinv
 
 # scripts to run before build
 before_build:
-#  - cmd: call script\appveyor\cuda_install.cmd
+  - cmd: call script\appveyor\cuda_install.cmd
 
 build_script:
   - set PENGUINV_UNIT_TEST_RUN_COUNT=500
@@ -55,4 +53,4 @@ build_script:
 
 test_script:
 # OpenCL unit test is excluded as it fails with Exception: Exit code 0xc0000135 on Appveyor
-#  - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test" --extra-verbose
+  - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test" --extra-verbose
