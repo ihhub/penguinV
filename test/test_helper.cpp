@@ -20,24 +20,14 @@ namespace
 
 namespace Test_Helper
 {
-    PenguinV_Image::Image uniformImage( const PenguinV_Image::Image & reference )
+    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return uniformImage( randomValue<uint8_t>( 256 ), reference );
+        return uniformImage( randomValue<uint8_t>( 256 ), width, height, reference );
     }
 
-    PenguinV_Image::Image uniformImage( uint8_t value, const PenguinV_Image::Image & reference )
+    PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
-    }
-
-    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
-    {
-        return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
-    }
-
-    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
-    {
-        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value );
+        return generateImage( width ? width : randomSize(), height ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
@@ -99,7 +89,7 @@ namespace Test_Helper
 
         std::vector < PenguinV_Image::Image > image;
 
-        image.push_back( uniformImage( intensityValue[0], reference ) );
+        image.push_back( uniformImage( intensityValue[0], 0, 0, reference ) );
 
         image.resize( intensityValue.size() );
 

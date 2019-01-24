@@ -32,12 +32,12 @@ namespace Unit_Test
 
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 0u, reference );
+        return uniformImage( 0u, 0, 0, reference );
     }
 
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference )
     {
-        return uniformImage( 255u, reference );
+        return uniformImage( 255u, 0, 0, reference );
     }
 
     PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
