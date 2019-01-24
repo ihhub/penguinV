@@ -19,8 +19,13 @@ configuration:
 for:
 -
   matrix:
+    - PYTHONHOME: C:\Python37
     only:
       - configuration: PythonModule
+  init:
+    - - set %PYTHONHOME%;%PATH%
+    - msbuild /version
+    - python --version
   install:
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   before_build:
@@ -28,7 +33,7 @@ for:
     - cmd: call script\appveyor\vs_toolset.cmd
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
-    - cmd: python3 setup.py build_ext --inplace
+    - cmd: python setup.py build_ext --inplace
 
 platform:
   - x64
