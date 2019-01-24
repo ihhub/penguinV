@@ -19,7 +19,6 @@ configuration:
 for:
 -
   matrix:
-    PYTHON_VERSION: 3.7
     only:
       - configuration: Python
   install:
