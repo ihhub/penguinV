@@ -24,11 +24,13 @@ for:
   install:
     - python --version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
+  before_build:
+    - cmd: call script\appveyor\vs_toolset.cmd
+    - cmd: set VS90COMNTOOLS=%VS140COMNTOOLS%
   build_script:
-    - call script\appveyor\vs_toolset.cmd
-    - set VS90COMNTOOLS=%VS140COMNTOOLS%
-    - cd C:\projects\penguinv\src\python
-    - python setup.py build_ext --inplace
+    - cmd: msbuild /version
+    - cmd: cd C:\projects\penguinv\src\python
+    - cmd: python setup.py build_ext --inplace
 
 platform:
   - x64
