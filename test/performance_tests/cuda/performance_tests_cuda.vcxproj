@@ -159,6 +159,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\performance_test_framework.cpp" />
     <ClCompile Include="..\performance_test_helper.cpp" />
+    <ClCompile Include="..\..\test_helper.cpp" />
     <ClCompile Include="performance_tests_cuda.cpp" />
     <ClCompile Include="performance_test_helper_cuda.cu" />
     <ClCompile Include="performance_test_image_function_cuda.cpp" />
@@ -177,6 +178,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
     <ClInclude Include="..\performance_test_framework.h" />
     <ClInclude Include="..\performance_test_helper.h" />
+    <ClInclude Include="..\..\test_helper.h" />
     <ClInclude Include="performance_test_helper_cuda.cuh" />
     <ClInclude Include="performance_test_image_function_cuda.h" />
   </ItemGroup>
