@@ -176,7 +176,7 @@
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
-    <ClCompile Include="..\test_helper.h" />
+    <ClInclude Include="..\test_helper.h" />
     <ClInclude Include="performance_test_blob_detection.h" />
     <ClInclude Include="performance_test_filtering.h" />
     <ClInclude Include="performance_test_framework.h" />
