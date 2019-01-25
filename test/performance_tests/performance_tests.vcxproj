@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\src\math\math_base.cpp" />
     <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="..\..\src\thread_pool.cpp" />
+    <ClCompile Include="..\test_helper.cpp" />
     <ClCompile Include="performance_tests.cpp" />
     <ClCompile Include="performance_test_blob_detection.cpp" />
     <ClCompile Include="performance_test_filtering.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
+    <ClCompile Include="..\test_helper.h" />
     <ClInclude Include="performance_test_blob_detection.h" />
     <ClInclude Include="performance_test_filtering.h" />
     <ClInclude Include="performance_test_framework.h" />
