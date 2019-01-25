@@ -40,5 +40,4 @@ namespace Performance_Test
     std::pair < double, double > runPerformanceTest(performanceFunction function, uint32_t size );
 
     uint32_t runCount(); // fixed value for all test loops
-
 }
