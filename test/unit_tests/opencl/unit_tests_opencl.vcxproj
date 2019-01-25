@@ -162,6 +162,7 @@
     <ClCompile Include="..\..\..\src\opencl\opencl_helper.cpp" />
     <ClCompile Include="..\unit_test_framework.cpp" />
     <ClCompile Include="..\unit_test_helper.cpp" />
+    <ClCompile Include="..\..\test_helper.cpp" />
     <ClCompile Include="unit_tests_opencl.cpp" />
     <ClCompile Include="unit_test_helper_opencl.cpp" />
     <ClCompile Include="unit_test_image_function_opencl.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="..\..\..\src\opencl\opencl_memory.h" />
     <ClInclude Include="..\unit_test_framework.h" />
     <ClInclude Include="..\unit_test_helper.h" />
+    <ClInclude Include="..\..\test_helper.h" />
     <ClInclude Include="unit_test_helper_opencl.h" />
     <ClInclude Include="unit_test_image_function_opencl.h" />
   </ItemGroup>

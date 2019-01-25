@@ -6,7 +6,7 @@
 
 %{
 #include "../image_buffer.h"
-#include "../FileOperation/bitmap.h"
+#include "../file/bmp_image.h"
 #include "../image_function.h"
 %}
 

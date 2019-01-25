@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\src\thirdparty\kissfft\kiss_fft.c" />
     <ClCompile Include="..\..\src\thirdparty\kissfft\kiss_fftnd.c" />
     <ClCompile Include="..\..\src\thread_pool.cpp" />
+    <ClCompile Include="..\test_helper.cpp" />
     <ClCompile Include="unit_tests.cpp" />
     <ClCompile Include="unit_test_bitmap.cpp" />
     <ClCompile Include="unit_test_blob_detection.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fft.h" />
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fftnd.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
+    <ClInclude Include="..\test_helper.h" />
     <ClInclude Include="unit_test_bitmap.h" />
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_edge_detection.h" />

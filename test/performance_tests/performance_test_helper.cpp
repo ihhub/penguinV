@@ -61,15 +61,6 @@ namespace
             } while( removed && (data.size() > sizeLimit) );
         }
     }
-
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value )
-    {
-        PenguinV_Image::Image image( width, height, colorCount );
-
-        image.fill( value );
-
-        return image;
-    }
 }
 
 namespace Performance_Test
@@ -131,46 +122,6 @@ namespace Performance_Test
         Performance_Test::TimerContainer timer;
         function( timer, size  );
         return timer.mean();
-    }
-
-    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
-    {
-        return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
-    }
-
-    PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
-    {
-        return generateImage( width, height, PenguinV_Image::GRAY_SCALE, value);
-    }
-
-    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height )
-    {
-        return uniformRGBImage( width, height, randomValue<uint8_t>( 256 ) );
-    }
-
-    PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
-    {
-        return generateImage( width, height, PenguinV_Image::RGB, value);
-    }
-
-    std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
-    {
-        std::vector < PenguinV_Image::Image > image( count );
-
-        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
-            *im = uniformImage( width, height );
-
-        return image;
-    }
-
-    std::vector< PenguinV_Image::Image > uniformRGBImages( uint32_t count, uint32_t width, uint32_t height )
-    {
-        std::vector < PenguinV_Image::Image > image( count );
-
-        for( std::vector< PenguinV_Image::Image >::iterator im = image.begin(); im != image.end(); ++im )
-            *im = uniformRGBImage( width, height );
-
-        return image;
     }
 
     uint32_t runCount()

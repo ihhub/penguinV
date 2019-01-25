@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join('..', '..', 'src', 'python'))
 
 # Now get the module.
 
-import penguinV 
+import penguinV
 
 def saveGrayScaleCopy(filenameToOpen, filenameToSave):
     ''' Saves a Gray Scale Thresholded version of a bitmap file.
@@ -37,16 +37,17 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
     image = penguinV.Threshold(image, threshold_value)
 
     penguinV.Save(filenameToSave, image)
-  
+
 ########################
-### main execution 
+### main execution
 ########################
 
 try:
 
     saveGrayScaleCopy( filenameToOpen = os.path.join('..', '_image', 'mercury.bmp'),
                        filenameToSave = 'result.bmp'
-                     ) 
+                     )
+    print('Output image was saved into result.bmp file')
 
 except penguinV.ImageException as err:
 

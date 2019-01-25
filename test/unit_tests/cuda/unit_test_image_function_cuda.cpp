@@ -172,7 +172,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
-            const PenguinV_Image::Image input = uniformImage( intensity[0], reference );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             const PenguinV_Image::Image output = Image_Function_Cuda::ConvertToRgb( input );
 
@@ -187,7 +187,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const PenguinV_Image::Image input = uniformImage( intensity[0], reference );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
             PenguinV_Image::ImageCuda output( input.width(), input.height(), PenguinV_Image::RGB );
 
             output.fill( intensity[1] );
@@ -205,7 +205,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = uniformImage( intensity, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -247,7 +247,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image image = uniformImage( intensity, reference );
+            const PenguinV_Image::Image image = uniformImage( intensity, 0, 0, reference );
 
             const std::vector < uint32_t > histogram = Image_Function_Cuda::Histogram( image );
 
@@ -263,7 +263,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image image = uniformImage( intensity, reference );
+            const PenguinV_Image::Image image = uniformImage( intensity, 0, 0, reference );
 
             std::vector < uint32_t > histogram;
             Image_Function_Cuda::Histogram( image, histogram );
@@ -280,7 +280,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = uniformImage( intensity, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const PenguinV_Image::Image output = Image_Function_Cuda::Invert( input );
 
@@ -456,7 +456,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = uniformImage( intensity, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -490,7 +490,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const PenguinV_Image::Image input = uniformImage( intensity, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );

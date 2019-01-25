@@ -38,6 +38,7 @@
     <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
     <ClInclude Include="..\unit_test_framework.h" />
     <ClInclude Include="..\unit_test_helper.h" />
+    <ClInclude Include="..\..\test_helper.h" />
     <ClInclude Include="unit_test_helper_cuda.cuh" />
     <ClInclude Include="unit_test_image_function_cuda.h" />
   </ItemGroup>
@@ -48,6 +49,7 @@
     <ClCompile Include="..\unit_test_helper.cpp" />
     <ClCompile Include="unit_tests_cuda.cpp" />
     <ClCompile Include="unit_test_image_function_cuda.cpp" />
+    <ClCompile Include="..\..\test_helper.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{34D221B7-E0DF-40CF-A35B-90158E0AB9CE}</ProjectGuid>
