@@ -30,6 +30,8 @@ for:
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
     - cmd: python setup.py build_ext --inplace
+  test_script:
+    - cmd: python bitmap_operation.py
 
 platform:
   - x64
