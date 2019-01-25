@@ -27,7 +27,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return generateImage( width ? width : randomSize(), height ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
+        return generateImage( (width == 0u) ? width : randomSize(), (height == 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
@@ -76,7 +76,7 @@ namespace Test_Helper
             throw imageException( "Invalid parameter: number of images is 0" );
 
         std::vector<uint8_t> intesity( images );
-        for( size_t i = 0; i < intesity.size(); ++i )
+        for( size_t i = 0u; i < intesity.size(); ++i )
             intesity[i] = randomValue<uint8_t>( 256 );
 
         return uniformImages( intesity, reference );
@@ -93,7 +93,7 @@ namespace Test_Helper
 
         image.resize( intensityValue.size() );
 
-        for( size_t i = 1; i < image.size(); ++i ) {
+        for( size_t i = 1u; i < image.size(); ++i ) {
             image[i] = reference.generate( image[0].width(), image[0].height() );
             image[i].fill( intensityValue[i] );
         }
