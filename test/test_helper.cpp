@@ -16,6 +16,8 @@ namespace
 
         return image;
     }
+
+    uint32_t testRunCount = 1001;  // some magic number for loop. Higher value = higher chance to verify all possible situations
 }
 
 namespace Test_Helper
@@ -100,5 +102,17 @@ namespace Test_Helper
 
         return image;
     }
+
+    uint32_t runCount()
+    {
+        return testRunCount;
+    }
+
+    void setRunCount( uint32_t count )
+    {
+        if ( count > 0u )
+            testRunCount = count;
+    }
+
 }
 

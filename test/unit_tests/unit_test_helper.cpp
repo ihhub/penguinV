@@ -23,8 +23,6 @@ namespace
                 (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
         }
     }
-
-    uint32_t testRunCount = 1001;  // some magic number for loop. Higher value = higher chance to verify all possible situations
 }
 
 namespace Unit_Test
@@ -283,14 +281,4 @@ namespace Unit_Test
         return size;
     }
 
-    uint32_t runCount()
-    {
-        return testRunCount;
-    }
-
-    void setRunCount( uint32_t count )
-    {
-        if ( count > 0u )
-            testRunCount = count;
-    }
 }
