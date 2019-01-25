@@ -27,7 +27,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return generateImage( (width == 0u) ? width : randomSize(), (height == 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
+        return generateImage( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
