@@ -108,10 +108,14 @@ namespace Test_Helper
         return testRunCount;
     }
 
-    void setRunCount( uint32_t count )
+    void setRunCount( int argc, char* argv[], uint32_t count )
     {
-        if ( count > 0u )
-            testRunCount = count;
+        testRunCount = count;
+        if ( argc >= 2 ) {
+            const int testCount = std::atoi( argv[1] );
+            if ( testCount > 0 )
+                testRunCount = static_cast<uint32_t>( testCount );
+        }
     }
 
 }

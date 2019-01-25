@@ -20,7 +20,7 @@ namespace Test_Helper
 
     // Iteration count for tests
     uint32_t runCount(); // fixed value for all test loops
-    void setRunCount( uint32_t count );
+    void setRunCount( int argc, char* argv[], uint32_t count );
 
     // Return random value for specific range or variable type
     template <typename data>
