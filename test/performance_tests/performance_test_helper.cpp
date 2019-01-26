@@ -123,9 +123,4 @@ namespace Performance_Test
         function( timer, size  );
         return timer.mean();
     }
-
-    uint32_t runCount()
-    {
-        return 128;
-    }
 }

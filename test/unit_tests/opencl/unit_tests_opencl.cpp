@@ -2,14 +2,14 @@
 #include <iostream>
 #include "unit_test_image_function_opencl.h"
 #include "../unit_test_framework.h"
+#include "../unit_test_helper.h"
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
 
-int main()
+int main( int argc, char * argv[] )
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
-
     try 
     {
         // The main purpose of this application is to test everything within library
@@ -18,6 +18,8 @@ int main()
             std::cout << "No GPU devices in the system" << std::endl;
             return 0;
         }
+
+        Unit_Test::setRunCount( argc, argv, 1001 );
 
         multiCL::OpenCLDeviceManager & deviceManager = multiCL::OpenCLDeviceManager::instance();
         deviceManager.initializeDevices();
@@ -42,7 +44,7 @@ int main()
 
         return returnValue;
     } 
-    catch ( const imageException &ex ) {
+    catch ( const imageException & ex ) {
         std::cout << "Exception " << ex.what() << " raised during OpenCL unit tests." << std::endl;
         return 0;
     }

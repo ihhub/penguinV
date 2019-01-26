@@ -12,11 +12,7 @@
 
 int main( int argc, char * argv[] )
 {
-    if ( argc >= 2 ) {
-        const int testCount = std::atoi( argv[1] );
-        if ( testCount > 0 )
-            Unit_Test::setRunCount( static_cast<uint32_t>( testCount ) );
-    }
+    Unit_Test::setRunCount( argc, argv, 1001 );
 
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
