@@ -10,8 +10,7 @@ int main( int argc, char* argv[] )
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
-
-    Performance_Test::setRunCount( argc, argv, 128 ); 
+    Performance_Test::setRunCount( argc, argv, 128 );
 
     // We create a framework
     PerformanceTestFramework framework;
