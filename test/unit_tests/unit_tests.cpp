@@ -12,7 +12,7 @@
 
 int main( int argc, char * argv[] )
 {
-    Unit_Test::setRunCount( argc, argv, 1001 ); // Magic "default" runCount taken from unit_test_helper
+    Unit_Test::setRunCount( argc, argv, 1001 );
 
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
