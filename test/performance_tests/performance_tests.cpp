@@ -4,11 +4,15 @@
 #include "performance_test_filtering.h"
 #include "performance_test_framework.h"
 #include "performance_test_image_function.h"
+#include "performance_test_helper.h"
 
-int main()
+int main( int argc, char* argv[])
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
+    
+    // Default "magic" number for run count taken from perf test helper
+    Performance_Test::setRunCount( argc, argv, 128); 
 
     // We create a framework
     PerformanceTestFramework framework;

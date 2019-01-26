@@ -38,6 +38,4 @@ namespace Performance_Test
 
     typedef void(*performanceFunction)( TimerContainer &, uint32_t);
     std::pair < double, double > runPerformanceTest(performanceFunction function, uint32_t size );
-
-    uint32_t runCount(); // fixed value for all test loops
 }
