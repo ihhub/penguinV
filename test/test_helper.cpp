@@ -117,6 +117,5 @@ namespace Test_Helper
                 testRunCount = static_cast<uint32_t>( testCount );
         }
     }
-
 }
 
