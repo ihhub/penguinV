@@ -123,5 +123,4 @@ namespace Performance_Test
         function( timer, size  );
         return timer.mean();
     }
-
 }
