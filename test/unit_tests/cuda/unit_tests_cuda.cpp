@@ -2,10 +2,11 @@
 #include <iostream>
 #include "unit_test_image_function_cuda.h"
 #include "../unit_test_framework.h"
+#include "../unit_test_helper.h"
 #include "../../../src/cuda/cuda_device.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
 
-int main()
+int main( int argc, char* argv[] )
 {
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
@@ -13,6 +14,8 @@ int main()
         std::cout << "No CUDA devices in the system" << std::endl;
         return 0;
     }
+
+    Unit_Test::setRunCount( argc, argv, 1001 );
 
     multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
     deviceManager.initializeDevices();
