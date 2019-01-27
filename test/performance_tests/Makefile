@@ -58,9 +58,6 @@ $(BIN)/%.o: $(TEST_DIR)/%.cpp
 $(BIN)/%.o: $(TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: $(TEST_DIR)/**/**/%.c
-	$(CXX) $(CFLAGS) $(INCDIRS) -c $< -o $@
-
 run: $(TARGET)
 	@echo "Running performance tests ..."
 	@./$(TARGET)
