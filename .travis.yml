@@ -30,6 +30,9 @@ matrix:
         apt:
           update: true
           packages: valgrind
+    - os: linux
+      python: '3.7'
+      env: SWIG
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
@@ -50,6 +53,9 @@ script:
       export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+    elif [[ $SWIG ]]; then
+      python $TRAVIS_BUILD_DIR\src\python\setup.py build_ext --inplace
+      python $TRAVIS_BUILD_DIR\examples\python\bitmap_operation.py
     else
       # Build and run tests
       set -e
