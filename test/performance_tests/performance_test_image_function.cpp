@@ -376,6 +376,7 @@ namespace image_function_neon
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( ConvertToRgb       )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )

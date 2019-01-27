@@ -1325,6 +1325,46 @@ namespace neon
         }
     }
 
+    void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                       uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8_t ctrl1_array[8] = {0, 0, 0, 1, 1, 1, 2, 2};
+        const uint8_t ctrl2_array[8] = {2, 3, 3, 3, 4, 4, 4, 5};
+        const uint8_t ctrl3_array[8] = {5, 5, 6, 6, 6, 7, 7, 7};
+
+        const uint8x8_t ctrl1 = vld1_u8( ctrl1_array );
+        const uint8x8_t ctrl2 = vld1_u8( ctrl2_array );
+        const uint8x8_t ctrl3 = vld1_u8( ctrl3_array );
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * src = inY;
+            uint8_t       * dst = outY;
+
+            const uint8_t * srcEnd = src + simdWidth;
+
+            for( ; src != srcEnd; ++src ) {
+                const uint8x8_t src1 = vld1_u8( src );
+
+                vst1_u8( dst, vtbl1_u8( src1, ctrl1 ) );
+                dst += 8;
+                vst1_u8( dst, vtbl1_u8( src1, ctrl2 ) );
+                dst += 8;
+                vst1_u8( dst, vtbl1_u8( src1, ctrl3 ) );
+                dst += 8;
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * inX  = inY + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth*colorCount;
+
+                const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                for( ; inX != inXEnd; outX += colorCount, ++inX )
+                    memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+            }
+        }
+    }
+
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1892,10 +1932,13 @@ if ( simdType == neon_function ) { \
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                        uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint32_t simdSize = getSimdSize( simdType );
+        uint32_t simdSize = getSimdSize( simdType );
+        if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
+            simdSize = 8u;
+        
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
             AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -1923,6 +1966,7 @@ if ( simdType == neon_function ) { \
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
         SSE_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,

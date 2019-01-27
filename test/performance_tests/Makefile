@@ -1,6 +1,7 @@
 
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../src
+TEST_DIR := $(PWD)/..
 SRCS :=  \
 	$(LIB_DIR)/math/math_base.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
@@ -12,6 +13,7 @@ SRCS :=  \
 	$(LIB_DIR)/image_function_helper.cpp \
 	$(LIB_DIR)/image_function_simd.cpp \
 	$(LIB_DIR)/penguinv/penguinv.cpp \
+	$(TEST_DIR)/test_helper.cpp \
 	performance_tests.cpp \
 	performance_test_blob_detection.cpp \
 	performance_test_filtering.cpp \
@@ -48,6 +50,12 @@ $(BIN)/%.o: $(LIB_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(LIB_DIR)/**/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
+$(BIN)/%.o: $(TEST_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
+$(BIN)/%.o: $(TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)

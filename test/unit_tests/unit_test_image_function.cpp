@@ -2132,6 +2132,7 @@ namespace neon
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
+    SET_FUNCTION_4_FORMS( ConvertToRgb )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
