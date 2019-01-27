@@ -55,8 +55,8 @@ script:
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
     elif [[ "$SWIG" == "ON" ]]; then
-      python $TRAVIS_BUILD_DIR\src\python\setup.py build_ext --inplace
-      python $TRAVIS_BUILD_DIR\examples\python\bitmap_operation.py
+      python $TRAVIS_BUILD_DIR/src/python/setup.py build_ext --inplace
+      python $TRAVIS_BUILD_DIR/examples/python/bitmap_operation.py
     else
       # Build and run tests
       set -e
