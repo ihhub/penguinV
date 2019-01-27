@@ -35,10 +35,11 @@ matrix:
       env: SWIG=ON
       before_script:
         - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
-        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - tar xzf swig-rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - ./autogen.sh
         - ./configure --prefix=${HOME}/swig/
-        - sudo make
-        - sudo make install
+        - make
+        - make install
         - export PATH=${HOME}/swig/bin:$PATH
         - swig -version
     - os: osx
