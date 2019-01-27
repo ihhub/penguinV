@@ -33,11 +33,12 @@ matrix:
     - os: linux
       python: '3.7'
       env: SWIG=ON
-      before_script: swig -version
-      addons:
-        apt:
-          update: true
-          packages: swig
+      before_script:
+        - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
+        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - ./autogen.sh && ./configure --prefix "${HOME}"/swig/
+        - make >/dev/null && make install >/dev/null
+        - swig -version
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
@@ -59,8 +60,8 @@ script:
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
     elif [[ "$SWIG" == "ON" ]]; then
-      python $TRAVIS_BUILD_DIR/src/python/setup.py build_ext --inplace
-      python $TRAVIS_BUILD_DIR/examples/python/bitmap_operation.py
+      cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
+      cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
     else
       # Build and run tests
       set -e
