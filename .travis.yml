@@ -35,7 +35,7 @@ matrix:
       env: SWIG=ON
       before_script:
         - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
-        - tar xzf swig-rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
         - ./autogen.sh
         - ./configure --prefix=${HOME}/swig/
         - make
