@@ -1,12 +1,14 @@
 PWD := $(shell pwd)
 MAIN_LIB_DIR := $(PWD)/../../../src
 UNIT_TEST_DIR := $(PWD)/..
+TEST_DIR := $(PWD)/../..
 SRCS :=  \
 	$(MAIN_LIB_DIR)/opencl/opencl_device.cpp \
 	$(MAIN_LIB_DIR)/opencl/opencl_helper.cpp \
 	$(MAIN_LIB_DIR)/image_function.cpp \
 	$(MAIN_LIB_DIR)/image_function_helper.cpp \
 	$(MAIN_LIB_DIR)/opencl/image_function_opencl.cpp \
+	$(TEST_DIR)/test_helper.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	unit_test_helper_opencl.cpp \
@@ -42,13 +44,10 @@ $(TARGET): $(OBJFILES)
 $(BIN)/%.o: ./%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: ./**/%.cpp
+$(BIN)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(UNIT_TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(UNIT_TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(MAIN_LIB_DIR)/%.cpp

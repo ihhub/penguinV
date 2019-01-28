@@ -7,7 +7,7 @@ SRCS :=  \
 	$(LIB_DIR)/blob_detection.cpp \
 	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
-    $(LIB_DIR)/function_pool_task.cpp \
+	$(LIB_DIR)/function_pool_task.cpp \
 	$(LIB_DIR)/thread_pool.cpp \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \
@@ -43,9 +43,6 @@ $(TARGET): $(OBJFILES)
 $(BIN)/%.o: ./%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: ./**/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
 $(BIN)/%.o: $(LIB_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
@@ -53,9 +50,6 @@ $(BIN)/%.o: $(LIB_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)

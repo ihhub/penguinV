@@ -58,9 +58,6 @@ $(TARGET): $(OBJFILES)
 $(BIN)/%.o: ./%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: ./**/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
 $(BIN)/%.o: $(LIB_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
@@ -71,9 +68,6 @@ $(BIN)/%.o: $(LIB_DIR)/**/**/%.c
 	$(CXX) $(CFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(TEST_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)
