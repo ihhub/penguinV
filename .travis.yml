@@ -30,6 +30,21 @@ matrix:
         apt:
           update: true
           packages: valgrind
+    - os: linux
+      python: '3.7'
+      env: SWIG=ON
+      before_script:
+        - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
+        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - ./autogen.sh
+        - ./configure --prefix=${HOME}/swig/
+        - make
+        - make install
+        - export PATH=${HOME}/swig/bin:$PATH
+        - swig -version
+      script:
+        - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
+        - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
     - os: osx
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
