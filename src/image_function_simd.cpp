@@ -31,6 +31,7 @@ namespace
             table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             table.Invert             = &Image_Function_Simd::Invert;
             table.Maximum            = &Image_Function_Simd::Maximum;
             table.Minimum            = &Image_Function_Simd::Minimum;
