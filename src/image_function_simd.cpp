@@ -390,6 +390,38 @@ namespace avx
         }
     }
 
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
+                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd ctrl = _mm256_setr_epi8(2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 14, 13, 12, 15, 
+                                           16, 17, 20, 19, 18, 23, 22, 21, 26, 25, 24, 29, 28, 27, 30, 31);
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + totalSimdWidth;
+
+            for( ; outX != outXEnd; outX += simdWidth, inX += simdWidth ) {
+                const simd * src = reinterpret_cast<const simd*> (inX);
+                simd * dst = reinterpret_cast<simd*> (outX);
+                simd result = _mm256_loadu_si256( src );
+                result = _mm256_shuffle_epi8( result, ctrl );
+                _mm256_storeu_si256( dst, result );
+                *(outX + 15) = *(inX + 17);
+                *(outX + 17) = *(inX + 15);
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * outXEndNonSimd = outXEnd + nonSimdWidth;
+                for( ; outX != outXEndNonSimd; outX += colorCount, inX += colorCount ) {
+                    *(outX + 2) = *(inX);
+                    *(outX + 1) = *(inX + 1);
+                    *(outX) = *(inX + 2);
+                }
+            }
+        }
+    }
+
     void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2116,7 +2148,7 @@ if ( simdType == neon_function ) { \
 
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || ((width * colorCount) < simdSize) ) {
+        if( (simdType == cpu_function) || ((width * colorCount) < simdSize) ) {
             AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -2147,6 +2179,7 @@ if ( simdType == neon_function ) { \
             nonSimdWidth += rgbSimdSize;
         }
 
+        AVX_CODE( avx::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
     }
