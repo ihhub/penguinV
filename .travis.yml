@@ -1,7 +1,5 @@
 sudo: required
 
-language: cpp
-
 addons:
   apt:
     packages:
@@ -12,6 +10,7 @@ addons:
       - opencl-headers
 
 matrix:
+  language: cpp
   include:
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
