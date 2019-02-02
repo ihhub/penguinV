@@ -1,5 +1,7 @@
 sudo: required
 
+language: cpp
+
 addons:
   apt:
     packages:
@@ -10,7 +12,6 @@ addons:
       - opencl-headers
 
 matrix:
-  language: cpp
   include:
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
@@ -30,7 +31,8 @@ matrix:
           update: true
           packages: valgrind
     - os: linux
-      python: '3.7'
+      language: python
+      python: 3.7
       env: SWIG=ON
       before_script:
         - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
@@ -41,6 +43,7 @@ matrix:
         - make install
         - export PATH=${HOME}/swig/bin:$PATH
         - swig -version
+        - python --version
       script:
         - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
         - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
