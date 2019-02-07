@@ -13,24 +13,24 @@ image: Visual Studio 2015
 
 environment:
   matrix:
-    - id: Release_x86
-      configuration: Release
-      platform: x86
-    - id: Release_x64
-      configuration: Release
-      platform: x64
-    - id: Python2.7
-      PYTHON: "C:\\Python27-x64"
+    # - configuration: Release
+    #   platform: x86
+    #   APPVEYOR_JOB_NAME: Release_x86
+    # - configuration: Release
+    #   platform: x64
+    #   APPVEYOR_JOB_NAME: Release_x64
+    -  PYTHON: "C:\\Python27-x64"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    - id: Python3.7
-      PYTHON: "C:\\Python37-x64"
+      APPVEYOR_JOB_NAME: Python2.7
+    - PYTHON: "C:\\Python37-x64"
+      APPVEYOR_JOB_NAME: Python3.7
 
 for:
 -
   matrix:
     only:
-      - id: Python2.7
-      - id: Python3.7
+      - APPVEYOR_JOB_NAME: Python2.7
+      - APPVEYOR_JOB_NAME: Python3.7
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
