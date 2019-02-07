@@ -18,32 +18,26 @@ configuration:
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python27"
-      PYTHON_ARCH: "32"
-      VS: "Visual Studio 14 2015"
-    - PYTHON: "C:\\Python37"
-      PYTHON_ARCH: "32"
-      VS: "Visual Studio 14 2015"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python37-x64"
 
 matrix:
   exclude:
     - configuration: Release
-      PYTHON: "C:\\Python27"
-    - configuration: Release
-      PYTHON: "C:\\Python37"
 
 for:
 -
   matrix:
     only:
       - configuration: PythonModule
+        platform: x64
   init:
-    - echo %PYTHON% %PYTHON_VERSION%
-  install:
+    - if "%PYTHON%"=="C:\\Python27-x64" set VS90COMNTOOLS=%VS140COMNTOOLS%
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-    - msbuild /version
-    - python --version
+    - echo %PYTHON% %PYTHON_VERSION%
     - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  install:
+    - msbuild /version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
