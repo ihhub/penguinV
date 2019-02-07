@@ -18,7 +18,9 @@ configuration:
 
 environment:
   matrix:
-    - PYTHON: "C:\\Python27"
+    - PYTHON: "C:\\Python27-x64"
+      WINDOWS_SDK_VERSION: "v7.1"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - PYTHON: "C:\\Python37-x64"
 
 matrix:
@@ -34,14 +36,13 @@ for:
     only:
       - configuration: PythonModule
   init:
-    - if "%PYTHON%"=="C:\\Python27" set VS90COMNTOOLS=%VS140COMNTOOLS%
-    - if "%PYTHON%"=="C:\\Python27" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
-    - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
   install:
     - msbuild /version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
+  before_build:
+    - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
     - cmd: python setup.py build_ext --inplace
