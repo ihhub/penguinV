@@ -11,31 +11,26 @@ version: 1.0.{build}
 # Build worker image (VM template)
 image: Visual Studio 2015
 
-# build configuration, i.e. Debug, Release, etc.
-configuration:
-  - Release
-  - PythonModule
-
 environment:
   matrix:
-    - PYTHON: "C:\\Python27-x64"
+    - id: Release_x86
+      configuration: Release
+      platform: x86
+    - id: Release_x64
+      configuration: Release
       platform: x64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    - PYTHON: "C:\\Python37-x64"
-      platform: x64
-
-matrix:
-  exclude:
-    - configuration: Release
+    - id: Python2.7
       PYTHON: "C:\\Python27-x64"
-    - configuration: Release
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - id: Python3.7
       PYTHON: "C:\\Python37-x64"
 
 for:
 -
   matrix:
     only:
-      - configuration: PythonModule
+      - id: Python2.7
+      - id: Python3.7
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
@@ -49,10 +44,6 @@ for:
   test_script:
     - cmd: cd C:\projects\penguinv\examples\python
     - cmd: python bitmap_operation.py
-
-platform:
-  - x64
-  - x86
 
 # clone directory
 clone_folder: C:\projects\penguinv
