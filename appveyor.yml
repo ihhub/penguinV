@@ -16,17 +16,18 @@ configuration:
   - Release
   - PythonModule
 
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python37-x64"
+
 matrix:
   exclude:
     - configuration: Release
-    - platform: x86
-      configuration: PythonModule
+      PYTHON: "C:\\Python27-x64"
 
 for:
 -
-  environment:
-    PYTHON: "C:\\Python27-x64"
-    PYTHON: "C:\\Python37-x64"
   matrix:
     only:
       - configuration: PythonModule
