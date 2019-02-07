@@ -30,7 +30,6 @@ for:
   matrix:
     only:
       - configuration: PythonModule
-        platform: x64
   init:
     - if "%PYTHON%"=="C:\\Python27-x64" set VS90COMNTOOLS=%VS140COMNTOOLS%
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
