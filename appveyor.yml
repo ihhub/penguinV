@@ -25,6 +25,7 @@ matrix:
   exclude:
     - configuration: Release
       PYTHON: "C:\\Python27"
+    - configuration: Release
       PYTHON: "C:\\Python37-x64"
 
 for:
