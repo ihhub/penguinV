@@ -20,15 +20,14 @@ image: Visual Studio 2015
 for:
 -
   matrix:
-    only:
-      - configuration: Python27
-        PYTHON: "C:\\Python27"
-        PYTHON_ARCH: "32"
-        VS: "Visual Studio 14 2015"
-      - configuration: Python37
-        PYTHON: "C:\\Python37"
-        PYTHON_ARCH: "32"
-        VS: "Visual Studio 14 2015"
+    - configuration: Python27
+      PYTHON: "C:\\Python27"
+      PYTHON_ARCH: "32"
+      VS: "Visual Studio 14 2015"
+    - configuration: Python37
+      PYTHON: "C:\\Python37"
+      PYTHON_ARCH: "32"
+      VS: "Visual Studio 14 2015"
   init:
     - echo %PYTHON% %PYTHON_VERSION%
   install:
