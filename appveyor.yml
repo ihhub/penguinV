@@ -13,19 +13,20 @@ image: Visual Studio 2015
 
 # build configuration, i.e. Debug, Release, etc.
 configuration:
-#   - Release
-  - Python37
-  - Python27
-
+  - Release
+  - PythonModule
+  
 for:
 -
   matrix:
     only:
-      - configuration: Python27
+      - configuration: PythonModule
+      environment:
         PYTHON: "C:\\Python27"
         PYTHON_ARCH: "32"
         VS: "Visual Studio 14 2015"
       - configuration: Python37
+      environment:
         PYTHON: "C:\\Python37"
         PYTHON_ARCH: "32"
         VS: "Visual Studio 14 2015"
