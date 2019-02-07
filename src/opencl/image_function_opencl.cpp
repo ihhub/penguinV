@@ -700,31 +700,40 @@ namespace Image_Function_OpenCL
 
     Image Flip( const Image & in, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out = in.generate( in.width(), in.height(), in.colorCount(), in.alignment() );
-
-        Flip( in, out, horizontal, vertical );
-
-        return out;
+        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
     }
 
     void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
+    }
+
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
+    }
+
+    void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if( !horizontal && !vertical ) {
-            Copy( in, out );
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
             const multiCL::OpenCLProgram & program = GetProgram();
             multiCL::OpenCLKernel kernel( program, "flipOpenCL");
 
-            const uint32_t rowSizeIn = in.rowSize();
+            const uint32_t rowSizeIn  = in.rowSize();
             const uint32_t rowSizeOut = out.rowSize();
 
-            kernel.setArgument( in.data(), 0, rowSizeIn, out.data(), 0, rowSizeOut, in.width(), in.height(), horizontal, vertical );
+            const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn;
+            const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
+
+            kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, in.width(), in.height(), horizontal, vertical );
 
             multiCL::launchKernel2D( kernel, in.width(), in.height() );
         }
