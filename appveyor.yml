@@ -14,18 +14,24 @@ image: Visual Studio 2015
 # build configuration, i.e. Debug, Release, etc.
 configuration:
   - Release
-  - PythonModule
+  - Python37
+  - Python27
 
 for:
 -
   matrix:
     only:
-      - configuration: PythonModule
+      - configuration: Python37
+        PYTHON: "C:\\Python37"
+      - configuration: Python27
+        PYTHON: "C:\\Python27"
   init:
-    - set PATH=C:\Python37;%PATH%
+    - echo %PYTHON% %PYTHON_VERSION%
+  install:
+    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - msbuild /version
     - python --version
-  install:
+    - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   build_script:
     - cmd: cd C:\projects\penguinv\src\python
@@ -46,7 +52,7 @@ before_build:
   - cmd: if "%configuration%"=="Release" call script\appveyor\cuda_install.cmd
 
 build_script:
-  - set PENGUINV_UNIT_TEST_RUN_COUNT=500
+  - set PENGUINV_UNIT_TEST_RUN_COUNT=5
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
