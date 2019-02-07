@@ -16,11 +16,6 @@ configuration:
   - Release
   - PythonModule
 
-environment:
-  matrix:
-    - PYTHON: "C:\\Python27-x64"
-    - PYTHON: "C:\\Python37-x64"
-
 matrix:
   exclude:
     - configuration: Release
@@ -30,8 +25,13 @@ for:
   matrix:
     only:
       - configuration: PythonModule
+      - environment:
+          PYTHON: "C:\\Python27-x64"
+          PYTHON: "C:\\Python37-x64"
   init:
     - if "%PYTHON%"=="C:\\Python27-x64" set VS90COMNTOOLS=%VS140COMNTOOLS%
+    - if "%PYTHON%"=="C:\\Python27-x64" call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+    - if "%PYTHON%"=="C:\\Python27-x64" call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - echo %PYTHON% %PYTHON_VERSION%
     - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
