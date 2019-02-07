@@ -34,12 +34,11 @@ for:
   matrix:
     only:
       - configuration: PythonModule
-  platform: Any CPU
+        platform: x64
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
   install:
-    - msbuild /version
     - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output
   before_build:
     - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
