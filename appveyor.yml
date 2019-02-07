@@ -34,7 +34,9 @@ for:
   matrix:
     only:
       - configuration: PythonModule
-        platform: x64
+    except:
+      - configuration: PythonModule
+        platform: x86
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
