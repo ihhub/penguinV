@@ -26,8 +26,8 @@ for:
     only:
       - configuration: PythonModule
   environment:
-    PYTHON: "C:\\Python27-x64"
-    PYTHON: "C:\\Python37-x64"
+    - PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python37-x64"
   init:
     - if "%PYTHON%"=="C:\\Python27-x64" set VS90COMNTOOLS=%VS140COMNTOOLS%
     - if "%PYTHON%"=="C:\\Python27-x64" call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
