@@ -19,7 +19,6 @@ configuration:
 environment:
   matrix:
     - PYTHON: "C:\\Python27-x64"
-      WINDOWS_SDK_VERSION: "v7.1"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - PYTHON: "C:\\Python37-x64"
 
@@ -35,6 +34,7 @@ for:
   matrix:
     only:
       - configuration: PythonModule
+  platform: Any CPU
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
