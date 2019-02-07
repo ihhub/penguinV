@@ -19,7 +19,7 @@ environment:
     # - configuration: Release
     #   platform: x64
     #   APPVEYOR_JOB_NAME: Release_x64
-    -  PYTHON: "C:\\Python27-x64"
+    - PYTHON: "C:\\Python27-x64"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       APPVEYOR_JOB_NAME: Python2.7
     - PYTHON: "C:\\Python37-x64"
