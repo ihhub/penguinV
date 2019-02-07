@@ -19,8 +19,10 @@ configuration:
 environment:
   matrix:
     - PYTHON: "C:\\Python27-x64"
+      platform: x64
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - PYTHON: "C:\\Python37-x64"
+      platform: x64
 
 matrix:
   exclude:
@@ -34,7 +36,6 @@ for:
   matrix:
     only:
       - configuration: PythonModule
-      - platform: x64
   init:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - python --version
