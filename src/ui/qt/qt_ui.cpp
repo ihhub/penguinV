@@ -44,3 +44,23 @@ void UiWindowQt::drawLine( const Point2d & start, const Point2d & end, const Pai
     _window.setPixmap( _pixmap );
     _display();
 }
+
+void UiWindowQt::drawEllipse(const Point2d & center, const int xDiameter, const int yDiameter, const PaintColor &color)
+{
+    QPainter paint( &_pixmap );
+    paint.setPen( QColor( color.red, color.green, color.blue, color.alpha ) );
+    paint.drawEllipse(static_cast<int>(center.x)-(xDiameter/2),static_cast<int>(center.y)-(yDiameter/2),xDiameter,yDiameter);
+
+    _window.setPixmap( _pixmap );
+    _display();
+}
+
+void UiWindowQt::drawRectangle(const Point2d & start, const int width, const int height, const PaintColor &color)
+{
+    QPainter paint( &_pixmap );
+    paint.setPen( QColor( color.red, color.green, color.blue, color.alpha ) );
+    paint.drawRect(static_cast<int>(start.x),static_cast<int>(start.y),width,height);
+
+    _window.setPixmap( _pixmap );
+    _display();
+}
