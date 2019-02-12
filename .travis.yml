@@ -54,7 +54,7 @@ matrix:
 
 before_install:
   - |
-    if [[ "$CHECK_FORMAT" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+    if [[ "$CHECK_FORMAT" == "ON" && "$TRAVIS_PULL_REQUEST" ]]; then
       curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o script/clang-format-diff.py;
     fi
 
@@ -69,7 +69,7 @@ before_script:
 script:
   - |
     if [[ "$CHECK_FORMAT" == "ON" ]]; then
-      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+      if [[ "$TRAVIS_PULL_REQUEST" ]]; then
         echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
         $TRAVIS_BUILD_DIR/script/check_code_format.sh
       else
