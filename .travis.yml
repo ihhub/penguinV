@@ -63,8 +63,10 @@ before_script:
   # Let CMake generate build files
   - |
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
+      cd ${TRAVIS_BUILD_DIR}
       mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
+      cd ${TRAVIS_BUILD_DIR}
     fi
 
 script:
@@ -87,7 +89,7 @@ script:
     else
       # Build and run tests
       set -e
-      cmake --build .
+      cmake --build ${TRAVIS_BUILD_DIR}/build
       set +e
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
         ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only

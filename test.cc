@@ -2,8 +2,7 @@ void test()
 {
     switch (x) {
     case 0:
-    case 1:
-        do_something(); break;
+    case 1: do_something(); break;
     case 2:
         do_something_else(); break;
     default: break;
