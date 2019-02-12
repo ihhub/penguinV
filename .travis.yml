@@ -13,6 +13,7 @@ addons:
 
 matrix:
   include:
+    - env: CHECK_FORMAT=ON
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
@@ -51,6 +52,12 @@ matrix:
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
 
+before_install:
+  - |
+    if [[ "$CHECK_FORMAT" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o script/clang-format-diff.py;
+    fi
+
 before_script:
   # Let CMake generate build files
   - |
@@ -60,6 +67,14 @@ before_script:
     fi
 
 script:
+  - |
+    if [[ "$CHECK_FORMAT" == "ON" ]]; then
+      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+        echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
+        ./script/check_code_format.sh
+      else
+        echo "Skipping clang-format check since this is not a pull request."
+      fi
   - |
     if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
       export EXCLUDE_PATTERN_1=" not found in expected header ";
