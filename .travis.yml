@@ -63,10 +63,8 @@ before_script:
   # Let CMake generate build files
   - |
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
-      cd ${TRAVIS_BUILD_DIR}
       mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
-      cd ${TRAVIS_BUILD_DIR}
     fi
 
 script:
@@ -78,16 +76,19 @@ script:
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
     elif [[ "$CHECK_FORMAT" == "ON" ]]; then
+      current_dir = $PWD
+      cd ${TRAVIS_BUILD_DIR}
       if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
         echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
         bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
       else
         echo "Skipping clang-format check since this is not a pull request."
       fi
+      cd $current_dir
     else
       # Build and run tests
       set -e
-      cmake --build ${TRAVIS_BUILD_DIR}/build
+      cmake --build .
       set +e
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
         ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
