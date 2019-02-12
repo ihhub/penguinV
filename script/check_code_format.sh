@@ -26,10 +26,10 @@ if [ -z "${FILES_TO_CHECK}" ]; then
 fi
 
 FORMAT_DIFF=$(git diff -U0 HEAD^ -- ${FILES_TO_CHECK} | python $TRAVIS_BUILD_DIR/script/clang-format-diff.py -p1 -style=llvm)
+echo "${FORMAT_DIFF}"
 
 if [ -z "${FORMAT_DIFF}" ]; then
   echo "All source code in PR properly formatted."
-  echo "${FORMAT_DIFF}"
   exit 0
 else
   echo "Found formatting errors!"

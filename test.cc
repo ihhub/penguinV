@@ -26,3 +26,5 @@ void test()
         r();
     }
 }
+
+void do_something() { if condition; };
