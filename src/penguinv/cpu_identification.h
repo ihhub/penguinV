@@ -3,7 +3,7 @@
 // This file is very important to setup penguinV library to have the best performance
 // Please be very carefull in setting these parameters!!!
 
-#ifdef _WIN32 // Windows
+#if defined (_MSC_VER) // Windows
 
 #include "cpu_id_windows.h"
 
@@ -18,7 +18,7 @@
             #endif
         #endif
     #endif
-#elif defined(__APPLE__) || defined(__linux__) // MacOS and Linux
+#elif defined(__APPLE__) || defined(__linux__) || defined (__MINGW32__)// MacOS and Linux
 
 #include "cpu_id_unix.h"
 
