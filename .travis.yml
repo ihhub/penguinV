@@ -75,6 +75,7 @@ script:
       else
         echo "Skipping clang-format check since this is not a pull request."
       fi
+    fi
   - |
     if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
       export EXCLUDE_PATTERN_1=" not found in expected header ";
