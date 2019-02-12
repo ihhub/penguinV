@@ -10,6 +10,7 @@ addons:
       - yasm
       - ocl-icd-opencl-dev
       - opencl-headers
+      - clang-format-3.9
 
 matrix:
   include:
