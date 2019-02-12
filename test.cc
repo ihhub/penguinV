@@ -11,8 +11,7 @@ void test()
     if (condition)
         do_something_completely_different();
 
-    if (x == 
-    y) 
+    if (x==y) 
     {
         q();
     }
@@ -27,4 +26,6 @@ void test()
     }
 }
 
+void do_something() { if condition; };
+void do_something() { if condition; };
 void do_something() { if condition; };
