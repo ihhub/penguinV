@@ -55,7 +55,7 @@ matrix:
 before_install:
   - |
     if [[ "$CHECK_FORMAT" == "ON" && "$TRAVIS_PULL_REQUEST" ]]; then
-      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o script/clang-format-diff.py;
+      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
     fi
 
 before_script:
