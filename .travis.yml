@@ -71,7 +71,7 @@ script:
     if [[ "$CHECK_FORMAT" == "ON" ]]; then
       if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
         echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
-        ./script/check_code_format.sh
+        $TRAVIS_BUILD_DIR/script/check_code_format.sh
       else
         echo "Skipping clang-format check since this is not a pull request."
       fi
