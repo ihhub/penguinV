@@ -16,10 +16,13 @@ void test()
     {
         q();
     }
-    else if (x > y) {
+    else if (x 
+    > y) 
+    {
         w();
     }
-    else {
+    else 
+    {
         r();
     }
 }
