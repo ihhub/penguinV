@@ -14,7 +14,6 @@ addons:
 
 matrix:
   include:
-    - env: CHECK_FORMAT=ON
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
@@ -55,7 +54,7 @@ matrix:
 
 before_install:
   - |
-    if [[ "$CHECK_FORMAT" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+    if [[ "$STATIC_ANALYSIS" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
       curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
     fi
 
@@ -75,8 +74,6 @@ script:
       export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
-    elif [[ "$CHECK_FORMAT" == "ON" ]]; then
-      current_dir = $PWD
       cd ${TRAVIS_BUILD_DIR}
       if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
         echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
@@ -84,7 +81,6 @@ script:
       else
         echo "Skipping clang-format check since this is not a pull request."
       fi
-      cd $current_dir
     else
       # Build and run tests
       set -e
