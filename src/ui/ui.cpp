@@ -33,6 +33,16 @@ void UiWindow::drawLine( const Point2d &, const Point2d &, const PaintColor & )
     _display();
 }
 
+void UiWindow::drawEllipse( const Point2d &, double, double, const PaintColor & )
+{
+    _display();
+}
+
+void UiWindow::drawRectangle( const Point2d &, double, double, const PaintColor & )
+{
+    _display();
+}
+
 void UiWindow::_display()
 {
 }
