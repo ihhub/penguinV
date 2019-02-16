@@ -45,13 +45,11 @@ void UiWindowQt::drawLine( const Point2d & start, const Point2d & end, const Pai
     _display();
 }
 
-void UiWindowQt::drawEllipse( const Point2d & center, double xDiameter, double yDiameter, const PaintColor & color )
+void UiWindowQt::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
     QPainter paint( &_pixmap );
     paint.setPen( QColor( color.red, color.green, color.blue, color.alpha ) );
-    paint.drawEllipse( static_cast<int>(center.x - (xDiameter / 2)), static_cast<int>(center.y - (yDiameter / 2)),
-                       static_cast<int>(xDiameter), static_cast<int>(yDiameter) );
-
+    paint.drawEllipse( QPointF(center.x, center.y), xRadius, yRadius );
     _window.setPixmap( _pixmap );
     _display();
 }
