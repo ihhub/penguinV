@@ -99,9 +99,13 @@ namespace multiCL
             }
             else
             {
+#if defined(CL_VERSION_1_2)
                 const cl_int error = clEnqueueFillBuffer( OpenCLDeviceManager::instance().device().queue()(), data, pattern, patternSize, offset, size, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
                     throw imageException( "Cannot fill a memory for GPU device" );
+#else
+                throw imageException( "clEnqueueFillBuffer is not supported in OpenCL with version 1.1 and lower" );
+#endif
             }
         }
     }
