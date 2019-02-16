@@ -15,7 +15,7 @@ namespace multiCL
 {
     class OpenCLDeviceManager;
 
-    // This is a shortcut (facade) namespace to access memory allocator for GPU devices
+    // This is a shortcut (facade) namespace to access memory allocator for devices
     namespace MemoryManager
     {
         // Returns memory allocator for current thread
@@ -169,27 +169,29 @@ namespace multiCL
     public:
         static OpenCLDeviceManager & instance();
 
-        void initializeDevices(); // initializes all GPU devices available in system
-        void initializeDevice( uint32_t deviceId ); // initializes a GPU device with specified ID
-        void closeDevice( uint32_t deviceId ); // closes initialized GPU device with specified ID
-        void closeDevices(); // closes all GPU devices initialized by manager
+        void initializeDevices(); // initializes all devices available in system
+        void initializeDevice( uint32_t deviceId ); // initializes a device with specified ID
+        void closeDevice( uint32_t deviceId ); // closes initialized device with specified ID
+        void closeDevices(); // closes all devices initialized by manager
 
-        uint32_t deviceCount() const; // initialized GPU devices via manager
-        uint32_t supportedDeviceCount() const; // maximum available GPU devices in the system
+        uint32_t deviceCount() const; // initialized devices via manager
+        uint32_t supportedDeviceCount() const; // maximum available devices in the system
 
-        OpenCLDevice & device(); // returns GPU device within current thread
-        const OpenCLDevice & device() const; // returns GPU device within current thread
+        OpenCLDevice & device(); // returns device within current thread
+        const OpenCLDevice & device() const; // returns device within current thread
 
-        OpenCLDevice & device( uint32_t deviceId ); // returns GPU device with specified ID
-        const OpenCLDevice & device( uint32_t deviceId ) const; // returns GPU device with specified ID
+        OpenCLDevice & device( uint32_t deviceId ); // returns device with specified ID
+        const OpenCLDevice & device( uint32_t deviceId ) const; // returns device with specified ID
 
-        void setActiveDevice( uint32_t deviceId ); // set GPU device with specified ID as a active device in current thread
+        void setActiveDevice( uint32_t deviceId ); // set device with specified ID as a active device in current thread
+
+        void resetSupportedDevice( bool enableCpuSupport, bool enableGpuSupport ); // by default CPU support is OFF, GPU support is ON.
 
     private:
         OpenCLDeviceManager();
         ~OpenCLDeviceManager();
 
         std::vector < cl_device_id > _supportedDeviceId;
-        std::list<OpenCLDevice *> _device; // a list of initialized GPU devices
+        std::list<OpenCLDevice *> _device; // a list of initialized devices
     };
 }
