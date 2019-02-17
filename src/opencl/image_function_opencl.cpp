@@ -193,6 +193,18 @@ namespace
             }
         }
 
+        __kernel void intensityRangeOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, volatile __global uint * range )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = offset + y * rowSize + x;
+                atomic_min( &range[0], data[id] );
+                atomic_max( &range[1], data[id] );
+            }
+        }
+
         __kernel void invertOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height )
         {
             const size_t x = get_global_id(0);
@@ -982,6 +994,66 @@ namespace Image_Function_OpenCL
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
+    }
+
+    Image Normalize( const Image & in )
+    {
+        return Image_Function_Helper::Normalize( Normalize, in );
+    }
+
+    void Normalize( const Image & in, Image & out )
+    {
+        Image_Function_Helper::Normalize( Normalize, in, out );
+    }
+
+    Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Normalize( Normalize, in, startXIn, startYIn, width, height );
+    }
+
+    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        const multiCL::OpenCLProgram & program = GetProgram();
+        multiCL::OpenCLKernel kernel( program, "intensityRangeOpenCL");
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        std::vector< uint32_t > range = { 255, 0 };
+
+        cl_mem rangeOpenCL = multiCL::MemoryManager::memory().allocate<uint32_t>( range.size() );
+        multiCL::writeBuffer( rangeOpenCL, sizeof( uint32_t ) * range.size(), range.data() );
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, rangeOpenCL );
+
+        multiCL::launchKernel2D( kernel, width, height );
+
+        multiCL::readBuffer( rangeOpenCL, sizeof( uint32_t ) * range.size(), range.data() );
+        multiCL::MemoryManager::memory().free( rangeOpenCL );
+
+        if( (range[0] == 0 && range[1] == 255) || (range[0] == range[1]) ) {
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        }
+        else {
+            const double correction = 255.0 / (range[1] - range[0]);
+
+            // We precalculate all values and store them in lookup table
+            std::vector < uint8_t > value( 256 );
+
+            for( uint16_t i = 0; i < 256; ++i )
+                value[i] = static_cast <uint8_t>((i - range[0]) * correction + 0.5);
+
+            LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+        }
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
