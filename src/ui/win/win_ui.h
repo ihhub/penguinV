@@ -20,6 +20,8 @@ public:
     virtual void setImage( const PenguinV_Image::Image & image );
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
+	virtual void drawEllipse(const Point2d & center, double xRadius, double yRadius, const PaintColor & color);
+	virtual void drawRectangle(const Point2d & topLeftCorner, double width, double height, const PaintColor & color);
 protected:
     virtual void _display();
 private:
@@ -52,8 +54,25 @@ private:
         PaintColor color;
     };
 
+	struct EllipseToDraw
+	{
+		explicit EllipseToDraw( const Point2d & center_, double xRadius_, double yRadius_, const PaintColor & color_ = PaintColor() )
+			: center(center_)
+			, xRadius(xRadius_)
+			, yRadius(yRadius_)
+			, color(color_)
+		{
+		}
+
+		Point2d center;
+		double xRadius;
+		double yRadius;
+		PaintColor color;
+	};
+
     std::vector < PointToDraw > _point;
     std::vector < LineToDraw  > _line;
+	std::vector < EllipseToDraw > _ellipse;
 
     friend class WindowsUi::UiWindowWinInfo;
 
