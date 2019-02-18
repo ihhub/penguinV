@@ -99,9 +99,13 @@ namespace multiCL
             }
             else
             {
+#if defined(CL_VERSION_1_2)
                 const cl_int error = clEnqueueFillBuffer( OpenCLDeviceManager::instance().device().queue()(), data, pattern, patternSize, offset, size, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot fill a memory for GPU device" );
+                    throw imageException( "Cannot fill a memory for a device" );
+#else
+                throw imageException( "clEnqueueFillBuffer is not supported in OpenCL with version 1.1 and lower" );
+#endif
             }
         }
     }
@@ -447,29 +451,7 @@ namespace multiCL
 
     OpenCLDeviceManager::OpenCLDeviceManager()
     {
-        cl_uint platformCount = 0u;
-        std::vector <cl_platform_id> platformId;
-        if( openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) && (platformCount > 0u) ) {
-            platformId.resize( platformCount );
-            if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platformId.data(), NULL ) ) ) {
-                platformId.clear();
-            }
-        }
-
-        uint32_t supportedDeviceCount = 0u;
-        for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
-            uint32_t deviceCount = 0u;
-            if( openCLSafeCheck( clGetDeviceIDs( *platform, CL_DEVICE_TYPE_GPU, 0, NULL, &deviceCount ) ) ) {
-                _supportedDeviceId.resize( supportedDeviceCount + deviceCount );
-
-                if( !openCLSafeCheck( clGetDeviceIDs( *platform, CL_DEVICE_TYPE_GPU, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
-                    _supportedDeviceId.resize( supportedDeviceCount );
-                    continue;
-                }
-
-                supportedDeviceCount += deviceCount;
-            }
-        }
+        resetSupportedDevice( false, true );
     }
 
     OpenCLDeviceManager::~OpenCLDeviceManager()
@@ -575,5 +557,37 @@ namespace multiCL
             throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
 
         setDefaultDeviceId( deviceId );
+    }
+
+    void OpenCLDeviceManager::resetSupportedDevice( bool enableCpuSupport, bool enableGpuSupport )
+    {
+        closeDevices();
+        _supportedDeviceId.clear();
+
+        cl_uint platformCount = 0u;
+        std::vector <cl_platform_id> platformId;
+        if( openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) && (platformCount > 0u) ) {
+            platformId.resize( platformCount );
+            if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platformId.data(), NULL ) ) ) {
+                platformId.clear();
+            }
+        }
+
+        const cl_device_type deviceType =  (enableCpuSupport ? CL_DEVICE_TYPE_CPU : 0) | (enableGpuSupport ? CL_DEVICE_TYPE_GPU : 0);
+
+        uint32_t supportedDeviceCount = 0u;
+        for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
+            uint32_t deviceCount = 0u;
+            if( openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, 0, NULL, &deviceCount ) ) ) {
+                _supportedDeviceId.resize( supportedDeviceCount + deviceCount );
+
+                if( !openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
+                    _supportedDeviceId.resize( supportedDeviceCount );
+                    continue;
+                }
+
+                supportedDeviceCount += deviceCount;
+            }
+        }
     }
 }
