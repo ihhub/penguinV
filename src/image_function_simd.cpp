@@ -829,14 +829,13 @@ namespace sse
         }
     }
 
-    void Flip(Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, 
-              const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, 
-              const uint32_t totalSimdWidth, const uint32_t nonSimdWidth)
+    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, 
+               const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, 
+               const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
     {
         const simd ctrl = _mm_setr_epi8( 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 );
 
         if( horizontal && !vertical ) {
-
             uint8_t * outYSimd = out.data() + startYOut * rowSizeOut + startXOut + width - simdSize;
             uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
 
@@ -859,16 +858,13 @@ namespace sse
                 }
             }
         }
-
         else if( !horizontal && vertical ) {
             uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
 
             for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
                 memcpy( outY, inY, sizeof( uint8_t ) * width );
         }
-
         else {
-
             uint8_t * outYSimd = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - simdSize;
             uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
 
