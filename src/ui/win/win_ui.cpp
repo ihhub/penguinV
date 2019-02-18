@@ -67,17 +67,17 @@ namespace WindowsUi
                 DeleteObject( hPen );
             }
 
-			for (std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse) {
+			for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
 				const int xTopLeft = static_cast<int>( ( ellipse->center.x - ellipse->xRadius ) * xFactor);
 				const int yTopLeft = static_cast<int>( ( ellipse->center.y - ellipse->yRadius ) * yFactor);
 				const int xBottomRight = static_cast<int>( ( ellipse->center.x + ellipse->xRadius ) * xFactor);
 				const int yBottomRight = static_cast<int>( ( ellipse->center.y + ellipse->yRadius ) * yFactor);
 
-				HPEN hPen = CreatePen(PS_SOLID, 1, RGB(ellipse->color.red, ellipse->color.green, ellipse->color.blue));
-				HGDIOBJ hOldPen = SelectObject(hdc, hPen);
-				Arc(hdc, xTopLeft, yTopLeft, xBottomRight, yBottomRight, 0, 0, 0, 0);
-				SelectObject(hdc, hOldPen);
-				DeleteObject(hPen);
+				HPEN hPen = CreatePen( PS_SOLID, 1, RGB( ellipse->color.red, ellipse->color.green, ellipse->color.blue ) );
+				HGDIOBJ hOldPen = SelectObject( hdc, hPen );
+				Arc( hdc, xTopLeft, yTopLeft, xBottomRight, yBottomRight, 0, 0, 0, 0 );
+				SelectObject( hdc, hOldPen );
+				DeleteObject( hPen );
 			}
         }
 
@@ -276,7 +276,7 @@ void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const Pa
 
 void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
-	_ellipse.emplace_back(center, xRadius, yRadius, color);
+	_ellipse.emplace_back( center, xRadius, yRadius, color );
 
 	_display();
 }
@@ -287,10 +287,10 @@ void UiWindowWin::drawRectangle( const Point2d & topLeftCorner, double width, do
 	const Point2d bottomLeftCorner = Point2d( topLeftCorner.x, topLeftCorner.y + height );
 	const Point2d bottomRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y + height );
 
-	_line.emplace_back(topLeftCorner, topRightCorner, color);
-	_line.emplace_back(topLeftCorner, bottomLeftCorner, color);
-	_line.emplace_back(topRightCorner, bottomRightCorner, color);
-	_line.emplace_back(bottomLeftCorner, bottomRightCorner, color);
+	_line.emplace_back( topLeftCorner, topRightCorner, color );
+	_line.emplace_back( topLeftCorner, bottomLeftCorner, color );
+	_line.emplace_back( topRightCorner, bottomRightCorner, color );
+	_line.emplace_back( bottomLeftCorner, bottomRightCorner, color );
 
 	_display();
 }
