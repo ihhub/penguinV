@@ -67,18 +67,18 @@ namespace WindowsUi
                 DeleteObject( hPen );
             }
 
-			for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
-				const int xTopLeft = static_cast<int>( ( ellipse->center.x - ellipse->xRadius ) * xFactor);
-				const int yTopLeft = static_cast<int>( ( ellipse->center.y - ellipse->yRadius ) * yFactor);
-				const int xBottomRight = static_cast<int>( ( ellipse->center.x + ellipse->xRadius ) * xFactor);
-				const int yBottomRight = static_cast<int>( ( ellipse->center.y + ellipse->yRadius ) * yFactor);
+            for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
+                const int _xTopLeft = static_cast<int>( ellipse->xTopLeft * xFactor);
+                const int _yTopLeft = static_cast<int>( ellipse->yTopLeft * yFactor);
+                const int _xBottomRight = static_cast<int>( ellipse->xBottomRight * xFactor);
+                const int _yBottomRight = static_cast<int>( ellipse->yBottomRight * yFactor);
 
-				HPEN hPen = CreatePen( PS_SOLID, 1, RGB( ellipse->color.red, ellipse->color.green, ellipse->color.blue ) );
-				HGDIOBJ hOldPen = SelectObject( hdc, hPen );
-				Arc( hdc, xTopLeft, yTopLeft, xBottomRight, yBottomRight, 0, 0, 0, 0 );
-				SelectObject( hdc, hOldPen );
-				DeleteObject( hPen );
-			}
+                HPEN hPen = CreatePen( PS_SOLID, 1, RGB( ellipse->color.red, ellipse->color.green, ellipse->color.blue ) );
+                HGDIOBJ hOldPen = SelectObject( hdc, hPen );
+                Arc( hdc, _xTopLeft, _yTopLeft, _xBottomRight, _yBottomRight, 0, 0, 0, 0 );
+                SelectObject( hdc, hOldPen );
+                DeleteObject( hPen );
+            }
         }
 
     private:
@@ -276,23 +276,23 @@ void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const Pa
 
 void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
-	_ellipse.emplace_back( center, xRadius, yRadius, color );
+    _ellipse.emplace_back(center.x - xRadius, center.y - yRadius, center.x + xRadius, center.y + yRadius, color );
 
-	_display();
+    _display();
 }
 
 void UiWindowWin::drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color )
 {
-	const Point2d topRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y );
-	const Point2d bottomLeftCorner = Point2d( topLeftCorner.x, topLeftCorner.y + height );
-	const Point2d bottomRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y + height );
+    const Point2d topRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y );
+    const Point2d bottomLeftCorner = Point2d( topLeftCorner.x, topLeftCorner.y + height );
+    const Point2d bottomRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y + height );
 
-	_line.emplace_back( topLeftCorner, topRightCorner, color );
-	_line.emplace_back( topLeftCorner, bottomLeftCorner, color );
-	_line.emplace_back( topRightCorner, bottomRightCorner, color );
-	_line.emplace_back( bottomLeftCorner, bottomRightCorner, color );
+    _line.emplace_back( topLeftCorner, topRightCorner, color );
+    _line.emplace_back( topLeftCorner, bottomLeftCorner, color );
+    _line.emplace_back( topRightCorner, bottomRightCorner, color );
+    _line.emplace_back( bottomLeftCorner, bottomRightCorner, color );
 
-	_display();
+    _display();
 }
 
 void UiWindowWin::_free()

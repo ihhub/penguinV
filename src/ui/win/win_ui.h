@@ -20,8 +20,8 @@ public:
     virtual void setImage( const PenguinV_Image::Image & image );
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
-	virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );
-	virtual void drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color );
+    virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );
+    virtual void drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color );
 protected:
     virtual void _display();
 private:
@@ -30,7 +30,7 @@ private:
 
     struct PointToDraw
     {
-        explicit PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
+        PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : point( point_ )
             , color( color_ )
         {
@@ -42,7 +42,7 @@ private:
 
     struct LineToDraw
     {
-        explicit LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
+        LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : start( start_ )
             , end  ( end_   )
             , color( color_ )
@@ -54,25 +54,27 @@ private:
         PaintColor color;
     };
 
-	struct EllipseToDraw
-	{
-		explicit EllipseToDraw( const Point2d & center_, double xRadius_, double yRadius_, const PaintColor & color_ = PaintColor() )
-			: center(center_)
-			, xRadius(xRadius_)
-			, yRadius(yRadius_)
-			, color(color_)
-		{
-		}
+    struct EllipseToDraw
+    {
+		EllipseToDraw( double xTopLeft_, double yTopLeft_, double xBottomRight_, double yBottomRight_, const PaintColor & color_ = PaintColor() )
+            : xTopLeft(xTopLeft_)
+            , yTopLeft(yTopLeft_)
+            , xBottomRight(xBottomRight_)
+			, yBottomRight(yBottomRight_)
+            , color(color_)
+        {
+        }
 
-		Point2d center;
-		double xRadius;
-		double yRadius;
-		PaintColor color;
-	};
+        double xTopLeft;
+        double yTopLeft;
+        double xBottomRight;
+		double yBottomRight;
+        PaintColor color;
+    };
 
     std::vector < PointToDraw > _point;
     std::vector < LineToDraw  > _line;
-	std::vector < EllipseToDraw > _ellipse;
+    std::vector < EllipseToDraw > _ellipse;
 
     friend class WindowsUi::UiWindowWinInfo;
 
