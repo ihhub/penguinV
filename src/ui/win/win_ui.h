@@ -56,19 +56,15 @@ private:
 
     struct EllipseToDraw
     {
-        EllipseToDraw( double xTopLeft_, double yTopLeft_, double xBottomRight_, double yBottomRight_, const PaintColor & color_ = PaintColor() )
-            : xTopLeft(xTopLeft_)
-            , yTopLeft(yTopLeft_)
-            , xBottomRight(xBottomRight_)
-            , yBottomRight(yBottomRight_)
+        EllipseToDraw( const Point2d & TopLeft_ = Point2d(), const Point2d & BottomRight_ = Point2d(), const PaintColor & color_ = PaintColor() )
+            : topLeft(TopLeft_)
+            , bottomRight(BottomRight_)
             , color(color_)
         {
         }
 
-        double xTopLeft;
-        double yTopLeft;
-        double xBottomRight;
-        double yBottomRight;
+        Point2d topLeft;
+        Point2d bottomRight;
         PaintColor color;
     };
 
