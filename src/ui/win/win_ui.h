@@ -56,20 +56,24 @@ private:
 
     struct EllipseToDraw
     {
-        EllipseToDraw( const Point2d & TopLeft_ = Point2d(), const Point2d & BottomRight_ = Point2d(), const PaintColor & color_ = PaintColor() )
-            : topLeft(TopLeft_)
-            , bottomRight(BottomRight_)
-            , color(color_)
+        EllipseToDraw( double left_ = 0, double top_ = 0, double right_ = 0, double bottom_ = 0, const PaintColor & color_ = PaintColor() )
+            : left  (left_)
+            , top   (top_)
+            , right (right_)
+            , bottom(bottom_)
+            , color (color_)
         {
         }
 
-        Point2d topLeft;
-        Point2d bottomRight;
+        double left;
+        double top;
+        double right;
+        double bottom;
         PaintColor color;
     };
 
-    std::vector < PointToDraw > _point;
-    std::vector < LineToDraw  > _line;
+    std::vector < PointToDraw   > _point;
+    std::vector < LineToDraw    > _line;
     std::vector < EllipseToDraw > _ellipse;
 
     friend class WindowsUi::UiWindowWinInfo;
