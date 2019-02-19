@@ -283,9 +283,9 @@ void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yR
 
 void UiWindowWin::drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color )
 {
-    const Point2d topRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y );
-    const Point2d bottomLeftCorner = Point2d( topLeftCorner.x, topLeftCorner.y + height );
-    const Point2d bottomRightCorner = Point2d( topLeftCorner.x + width, topLeftCorner.y + height );
+    const Point2d topRightCorner( topLeftCorner.x + width, topLeftCorner.y );
+    const Point2d bottomLeftCorner( topLeftCorner.x, topLeftCorner.y + height );
+    const Point2d bottomRightCorner( topLeftCorner.x + width, topLeftCorner.y + height );
 
     _line.emplace_back( topLeftCorner, topRightCorner, color );
     _line.emplace_back( topLeftCorner, bottomLeftCorner, color );
