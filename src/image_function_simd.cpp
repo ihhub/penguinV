@@ -32,6 +32,7 @@ namespace
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
             table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
+            table.Flip               = &Image_Function_Simd::Flip;
             table.Invert             = &Image_Function_Simd::Invert;
             table.Maximum            = &Image_Function_Simd::Maximum;
             table.Minimum            = &Image_Function_Simd::Minimum;
@@ -824,6 +825,66 @@ namespace sse
 
                 for( ; inX != inXEnd; outX += colorCount, ++inX )
                     memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+            }
+        }
+    }
+
+    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, 
+               const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, 
+               const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
+    {
+        const simd ctrl = _mm_setr_epi8( 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 );
+
+        if( horizontal && !vertical ) {
+            uint8_t * outYSimd = out.data() + startYOut * rowSizeOut + startXOut + width - simdSize;
+            uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut, outYSimd += rowSizeOut ) {
+                const simd * inXSimd    = reinterpret_cast<const simd*>(inY);
+                simd       * outXSimd   = reinterpret_cast<simd*>(outYSimd);
+                const simd * inXEndSimd = inXSimd + simdWidth;
+
+                for( ; inXSimd != inXEndSimd; ++inXSimd, --outXSimd )
+                    _mm_storeu_si128( outXSimd, _mm_shuffle_epi8( _mm_loadu_si128( inXSimd ), ctrl ) );
+                        
+                if(nonSimdWidth > 0)
+                {
+                    const uint8_t * inX    = inY + totalSimdWidth;
+                    uint8_t       * outX   = outY - totalSimdWidth;
+                    const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                    for( ; inX != inXEnd; ++inX, --outX )
+                        (*outX) = (*inX);
+                }
+            }
+        }
+        else if( !horizontal && vertical ) {
+            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
+                memcpy( outY, inY, sizeof( uint8_t ) * width );
+        }
+        else {
+            uint8_t * outYSimd = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - simdSize;
+            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut, outYSimd -= rowSizeOut ) {
+                const simd * inXSimd    = reinterpret_cast<const simd*>(inY);
+                simd       * outXSimd   = reinterpret_cast<simd*>(outYSimd);
+                const simd * inXEndSimd = inXSimd + simdWidth;
+
+                for( ; inXSimd != inXEndSimd; ++inXSimd, --outXSimd )
+                    _mm_storeu_si128( outXSimd, _mm_shuffle_epi8( _mm_loadu_si128( inXSimd ), ctrl ) );
+                        
+                if(nonSimdWidth > 0)
+                {
+                    const uint8_t * inX    = inY + totalSimdWidth;
+                    uint8_t       * outX   = outY - totalSimdWidth;
+                    const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                    for( ; inX != inXEnd; ++inX, --outX )
+                        (*outX) = (*inX);
+                }
             }
         }
     }
@@ -2002,6 +2063,40 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, bool horizontal, bool vertical, SIMDType simdType )
+    {
+        uint32_t simdSize = getSimdSize( simdType );
+
+        if( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+            AVX_CODE( Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, sse_function ); )
+
+            Image_Function::Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
+            return;
+        }
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        if( !horizontal && !vertical ) {
+            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        }
+        else {
+            const uint32_t rowSizeIn  = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            const uint8_t * inY    = in.data() + startYIn * rowSizeIn + startXIn;
+            const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+            const uint32_t simdWidth = width / simdSize;
+            const uint32_t totalSimdWidth = simdWidth * simdSize;
+            const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+            SSE_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
+                                 vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        }
+    }
+
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -2446,6 +2541,28 @@ namespace Image_Function_Simd
                        uint32_t width, uint32_t height )
     {
         simd::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    Image Flip( const Image & in, bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+    {
+        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
+    }
+
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    {
+        simd::Flip(in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, simd::actualSimdType());
     }
 
     Image Invert( const Image & in )
