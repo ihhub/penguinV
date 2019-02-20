@@ -57,11 +57,11 @@ private:
     struct EllipseToDraw
     {
         EllipseToDraw( double left_ = 0, double top_ = 0, double right_ = 0, double bottom_ = 0, const PaintColor & color_ = PaintColor() )
-            : left  (left_)
-            , top   (top_)
-            , right (right_)
-            , bottom(bottom_)
-            , color (color_)
+            : left  ( left_   )
+            , top   ( top_    )
+            , right ( right_  )
+            , bottom( bottom_ )
+            , color ( color_  )
         {
         }
 
