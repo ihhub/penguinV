@@ -20,6 +20,8 @@ public:
     virtual void setImage( const PenguinV_Image::Image & image );
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
+    virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );
+    virtual void drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color );
 protected:
     virtual void _display();
 private:
@@ -28,7 +30,7 @@ private:
 
     struct PointToDraw
     {
-        explicit PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
+        PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : point( point_ )
             , color( color_ )
         {
@@ -40,7 +42,7 @@ private:
 
     struct LineToDraw
     {
-        explicit LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
+        LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : start( start_ )
             , end  ( end_   )
             , color( color_ )
@@ -52,8 +54,27 @@ private:
         PaintColor color;
     };
 
-    std::vector < PointToDraw > _point;
-    std::vector < LineToDraw  > _line;
+    struct EllipseToDraw
+    {
+        EllipseToDraw( double left_ = 0, double top_ = 0, double right_ = 0, double bottom_ = 0, const PaintColor & color_ = PaintColor() )
+            : left  ( left_   )
+            , top   ( top_    )
+            , right ( right_  )
+            , bottom( bottom_ )
+            , color ( color_  )
+        {
+        }
+
+        double left;
+        double top;
+        double right;
+        double bottom;
+        PaintColor color;
+    };
+
+    std::vector < PointToDraw   > _point;
+    std::vector < LineToDraw    > _line;
+    std::vector < EllipseToDraw > _ellipse;
 
     friend class WindowsUi::UiWindowWinInfo;
 

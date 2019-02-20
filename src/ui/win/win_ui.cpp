@@ -66,6 +66,19 @@ namespace WindowsUi
                 SelectObject( hdc, hOldPen );
                 DeleteObject( hPen );
             }
+
+            for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
+                const int left = static_cast<int>( ellipse->left * xFactor );
+                const int top = static_cast<int>( ellipse->top * yFactor );
+                const int right = static_cast<int>( ellipse->right * xFactor );
+                const int bottom = static_cast<int>( ellipse->bottom * yFactor );
+
+                HPEN hPen = CreatePen( PS_SOLID, 1, RGB( ellipse->color.red, ellipse->color.green, ellipse->color.blue ) );
+                HGDIOBJ hOldPen = SelectObject( hdc, hPen );
+                Arc( hdc, left, top, right, bottom, 0, 0, 0, 0 );
+                SelectObject( hdc, hOldPen );
+                DeleteObject( hPen );
+            }
         }
 
     private:
@@ -257,6 +270,27 @@ void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )
 void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
     _line.emplace_back( start, end, color );
+
+    _display();
+}
+
+void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
+{
+    _ellipse.emplace_back( center.x - xRadius, center.y - yRadius, center.x + xRadius, center.y + yRadius, color );
+
+    _display();
+}
+
+void UiWindowWin::drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color )
+{
+    const Point2d topRightCorner( topLeftCorner.x + width, topLeftCorner.y );
+    const Point2d bottomLeftCorner( topLeftCorner.x, topLeftCorner.y + height );
+    const Point2d bottomRightCorner( topLeftCorner.x + width, topLeftCorner.y + height );
+
+    _line.emplace_back( topLeftCorner, topRightCorner, color );
+    _line.emplace_back( topLeftCorner, bottomLeftCorner, color );
+    _line.emplace_back( topRightCorner, bottomRightCorner, color );
+    _line.emplace_back( bottomLeftCorner, bottomRightCorner, color );
 
     _display();
 }
