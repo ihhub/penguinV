@@ -24,13 +24,13 @@ int main()
         // Second way to do
         method2();
     }
-    catch (const std::exception& ex)
+    catch ( const std::exception& ex )
     { // uh-oh, something went wrong!
         std::cout << "Exception " << ex.what() << " raised. Closing the application..."
                   << std::endl;
         return 1;
     }
-    catch (...)
+    catch ( ... )
     { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
@@ -46,24 +46,23 @@ void method1()
     // Please take note that the image must be in the same folder as this
     // application or project (for Visual Studio) Otherwise you can change the
     // path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load("mercury.bmp");
+    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
     // If the image is empty it means that the image doesn't exist or the file is
     // not readable
-    if (image.empty())
-        throw imageException("Cannot load the image");
+    if ( image.empty() )
+        throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if (image.colorCount() != PenguinV_Image::GRAY_SCALE)
-        image = Image_Function::ConvertToGrayScale(image);
+    if ( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
-    image
-        = Image_Function::Threshold(image,
-                                    Image_Function::GetThreshold(Image_Function::Histogram(image)));
+    image = Image_Function::Threshold( image, Image_Function::GetThreshold(
+                                                  Image_Function::Histogram( image ) ) );
 
     // Save result
-    Bitmap_Operation::Save("result1.bmp", image);
+    Bitmap_Operation::Save( "result1.bmp", image );
 }
 
 void method2()
@@ -72,22 +71,21 @@ void method2()
     // Please take note that the image must be in the same folder as this
     // application or project (for Visual Studio) Otherwise you can change the
     // path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load("mercury.bmp");
+    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
 
     // If the image is empty it means that the image doesn't exist or the file is
     // not readable
-    if (image.empty())
-        throw imageException("Cannot load the image");
+    if ( image.empty() )
+        throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if (image.colorCount() != PenguinV_Image::GRAY_SCALE)
-        image = Image_Function::ConvertToGrayScale(image);
+    if ( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold and directly save result
     // in file
-    Bitmap_Operation::Save("result2.bmp",
-                           image
-                           = Image_Function::Threshold(image,
-                                                       Image_Function::GetThreshold(
-                                                           Image_Function::Histogram(image))));
+    Bitmap_Operation::Save( "result2.bmp",
+                            image = Image_Function::Threshold( image, Image_Function::GetThreshold(
+                                                                          Image_Function::Histogram(
+                                                                              image ) ) ) );
 }
