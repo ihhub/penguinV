@@ -1459,6 +1459,62 @@ namespace neon
         }
     }
 
+    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, 
+               const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, 
+               const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
+    {
+        if( horizontal && !vertical ) {
+            uint8_t * outYSimd = out.data() + startYOut * rowSizeOut + startXOut + width - 8;
+            uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut, outYSimd += rowSizeOut ) {
+                const uint8_t * inXSimd    = inY;
+                uint8_t       * outXSimd   = outYSimd;
+                const uint8_t * inXEndSimd = inXSimd + simdWidth * 8;
+
+                for( ; inXSimd != inXEndSimd; inXSimd += 8, outXSimd -= 8 )
+                    vst1_u8( outXSimd, vrev64_u8( vld1_u8( inXSimd ) ) );
+                        
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * inX    = inY + totalSimdWidth;
+                    uint8_t       * outX   = outY - totalSimdWidth;
+                    const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                    for( ; inX != inXEnd; ++inX, --outX )
+                        (*outX) = (*inX);
+                }
+            }
+        }
+        else if( !horizontal && vertical ) {
+            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
+                memcpy( outY, inY, sizeof( uint8_t ) * width );
+        }
+        else {
+            uint8_t * outYSimd = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 8;
+            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
+
+            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut, outYSimd -= rowSizeOut ) {
+                const uint8_t * inXSimd    = inY;
+                uint8_t       * outXSimd   = outYSimd;
+                const uint8_t * inXEndSimd = inXSimd + simdWidth * 8;
+
+                for( ; inXSimd != inXEndSimd; inXSimd += 8, outXSimd -= 8 )
+                    vst1_u8( outXSimd, vrev64_u8( vld1_u8( inXSimd ) ) );
+                        
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * inX    = inY + totalSimdWidth;
+                    uint8_t       * outX   = outY - totalSimdWidth;
+                    const uint8_t * inXEnd = inX + nonSimdWidth;
+
+                    for( ; inX != inXEnd; ++inX, --outX )
+                        (*outX) = (*inX);
+                }
+            }
+        }
+    }
+
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2068,7 +2124,10 @@ if ( simdType == neon_function ) { \
     {
         uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
+            simdSize = 8u;
+
+        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
             AVX_CODE( Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, sse_function ); )
 
             Image_Function::Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
@@ -2094,6 +2153,8 @@ if ( simdType == neon_function ) { \
 
             SSE_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
                                  vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+            NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
+                                   vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
         }
     }
 
