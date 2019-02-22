@@ -50,7 +50,7 @@ MaxEmptyLinesToKeep: 1
 NamespaceIndentation: Inner
 PenaltyBreakBeforeFirstCallParameter: 19937
 PenaltyReturnTypeOnItsOwnLine: 19937
-PointerAlignment: Left
+PointerAlignment: Middle
 ReflowComments: true
 SortIncludes: true
 SortUsingDeclarations: true
