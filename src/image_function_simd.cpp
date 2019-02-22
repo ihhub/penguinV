@@ -1475,8 +1475,7 @@ namespace neon
                 for( ; inXSimd != inXEndSimd; inXSimd += 8, outXSimd -= 8 )
                     vst1_u8( outXSimd, vrev64_u8( vld1_u8( inXSimd ) ) );
                         
-                if(nonSimdWidth > 0)
-                {
+                if( nonSimdWidth > 0 ) {
                     const uint8_t * inX    = inY + totalSimdWidth;
                     uint8_t       * outX   = outY - totalSimdWidth;
                     const uint8_t * inXEnd = inX + nonSimdWidth;
@@ -1504,8 +1503,7 @@ namespace neon
                 for( ; inXSimd != inXEndSimd; inXSimd += 8, outXSimd -= 8 )
                     vst1_u8( outXSimd, vrev64_u8( vld1_u8( inXSimd ) ) );
                         
-                if(nonSimdWidth > 0)
-                {
+                if( nonSimdWidth > 0 ) {
                     const uint8_t * inX    = inY + totalSimdWidth;
                     uint8_t       * outX   = outY - totalSimdWidth;
                     const uint8_t * inXEnd = inX + nonSimdWidth;
@@ -2156,7 +2154,7 @@ if ( simdType == neon_function ) { \
             SSE_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
                                  vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
             NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
-                                 vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+                                   vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
         }
     }
 
