@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "image_function_simd.h"
 
 #include "image_function.h"
@@ -1678,51 +1680,30 @@ if ( simdType == neon_function ) { \
 #define NEON_CODE( code )
 #endif
 
+    using namespace PenguinV_Image;
 
-    template <typename Type, typename TImage, typename... Args>
-    bool widthCondition(const Type & width, TImage image)
+    bool IsFullImageRow(uint32_t width, const Image & image )
     {
         return image.rowSize() == width;
     }
 
-    template <typename Type>
-    bool widthCondition(const Type & width)
+    template <typename... Args>
+    bool IsFullImageRow(uint32_t width, const Image & image, Args... args)
     {
-        return true;
+        if( !IsFullImageRow( width, image ) )
+            return false;
+
+        return IsFullImageRow( width, args... );
     }
 
-    template <typename Type, typename TImage, typename... Args>
-    bool widthCondition(const Type & width, TImage image, Args... args)
+    template <typename... Args>
+    void OptimiseROI(uint32_t & width, uint32_t & height, const Image & image, Args... args)
     {
-        return image.rowSize() == width && widthCondition(width, args...);
-    }
-
-    template <typename Type>
-    void OptimiseROI( Type & height, Type & width )
-    {
-        // variable overflow check
-        if(width < std::numeric_limits<uint32_t>::max()/height)
-        {
+        if( IsFullImageRow(width, image, args...) && ( width < (std::numeric_limits<uint32_t>::max() / height) ) ) {
             width = width * height;
-            height = 1;
+            height = 1u;
         }
     }
-
-    template <typename Type, typename TImage, typename... Args>
-    void OptimiseROI(Type & height, Type & width, TImage image)
-    {
-        if(widthCondition(width, image))
-            OptimiseROI( height, width );
-    }
-
-    template <typename Type, typename TImage, typename... Args>
-    void OptimiseROI(Type & height, Type & width, TImage image, Args... args)
-    {
-        if(widthCondition(width, image, args...))
-            OptimiseROI( height, width );
-    }
-
-    using namespace PenguinV_Image;
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
