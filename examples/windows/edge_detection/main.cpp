@@ -11,7 +11,6 @@ int main()
     try // <---- do not forget to put your code into try.. catch block!
     {
         const PenguinV_Image::Image original = Bitmap_Operation::Load( "mercury.bmp" );
-        Bitmap_Operation::Save( "loaded.bmp", original );
 
         if ( original.empty() ) // if the image is empty it means that the image doesn't exist or the file is not readable
             throw imageException( "Cannot load the image" );

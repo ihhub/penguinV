@@ -73,7 +73,7 @@ namespace multiCL
             cl_uint deviceCount = 0u;
 
             if( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, CL_DEVICE_TYPE_GPU, 0, NULL, &deviceCount ) ) )
-                return false;
+                continue;
 
             if( deviceCount > 0u )
                 return true;

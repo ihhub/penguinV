@@ -138,6 +138,13 @@ namespace Function_Template
         TEST_FUNCTION_LOOP( Fill( image, value ), namespaceName )
     }
 
+    std::pair < double, double > template_Flip( FlipForm2 Flip, const std::string & namespaceName, uint32_t size )
+    {
+        std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
+
+        TEST_FUNCTION_LOOP( Flip( image[0], image[1], true, true), namespaceName )
+    }
+
     std::pair < double, double > template_GammaCorrection( GammaCorrectionForm2 GammaCorrection, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
@@ -290,8 +297,9 @@ namespace image_function
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
-    SET_FUNCTION( ConvertToRgb     )
+    SET_FUNCTION( ConvertToRgb       )
     SET_FUNCTION( ConvertToGrayScale )
+    SET_FUNCTION( Flip               )
     SET_FUNCTION( Fill               )
     SET_FUNCTION( GammaCorrection    )
     SET_FUNCTION( Histogram          )
@@ -321,7 +329,7 @@ namespace function_pool
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
-    SET_FUNCTION( ConvertToRgb     )
+    SET_FUNCTION( ConvertToRgb       )
     SET_FUNCTION( ConvertToGrayScale )
     SET_FUNCTION( GammaCorrection    )
     SET_FUNCTION( Histogram          )
@@ -378,6 +386,7 @@ namespace image_function_neon
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( ConvertToRgb       )
+    SET_FUNCTION( Flip               )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
@@ -404,6 +413,7 @@ namespace image_function_sse
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( ConvertToRgb       )
+    SET_FUNCTION( Flip               )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
     SET_FUNCTION( Minimum            )
