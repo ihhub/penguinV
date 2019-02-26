@@ -1,5 +1,10 @@
 extends: default
 
+ignore: |
+  appveyor.yml
+  .gitignore
+  .travis.yml
+
 rules:
   braces: enable
   brackets: enable
@@ -26,7 +31,3 @@ rules:
   trailing-spaces: enable
   truthy:
     level: error
-  ignore: |
-    appveyor.yml
-    .gitignore
-    .travis.yml
