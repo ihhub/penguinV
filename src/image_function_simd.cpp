@@ -1,5 +1,5 @@
 #include "image_function_simd.h"
-
+#include <limits>
 #include "image_function.h"
 #include "image_function_helper.h"
 #include "parameter_validation.h"
@@ -1902,6 +1902,29 @@ if ( simdType == neon_function ) { \
 
     using namespace PenguinV_Image;
 
+    bool IsFullImageRow( uint32_t width, const Image & image )
+    {
+        return image.rowSize() == width;
+    }
+
+    template <typename... Args>
+    bool IsFullImageRow( uint32_t width, const Image & image, Args... args )
+    {
+        if( !IsFullImageRow( width, image ) )
+            return false;
+
+        return IsFullImageRow( width, args... );
+    }
+
+    template <typename... Args>
+    void OptimiseRoi( uint32_t & width, uint32_t & height, const Image & image, Args... args )
+    {
+        if( IsFullImageRow(width, image, args...) && ( width < (std::numeric_limits<uint32_t>::max() / height) ) ) {
+            width = width * height;
+            height = 1u;
+        }
+    }
+
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -1916,6 +1939,8 @@ if ( simdType == neon_function ) { \
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+        OptimiseRoi( width, height, in1, in2, out );
 
         width = width * colorCount;
 
@@ -1953,6 +1978,8 @@ if ( simdType == neon_function ) { \
 
         if( result.size() != width * height * colorCount )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
+        
+        OptimiseRoi( width, height, image );
 
         const uint32_t rowSize = image.rowSize();
 
@@ -1985,6 +2012,8 @@ if ( simdType == neon_function ) { \
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+        OptimiseRoi( width, height, in1, in2, out );
 
         width = width * colorCount;
 
@@ -2022,6 +2051,8 @@ if ( simdType == neon_function ) { \
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
+        OptimiseRoi( width, height, in1, in2, out );
+
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -2057,6 +2088,8 @@ if ( simdType == neon_function ) { \
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+        OptimiseRoi( width, height, in1, in2, out );
 
         width = width * colorCount;
 
@@ -2173,6 +2206,8 @@ if ( simdType == neon_function ) { \
 
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
+        OptimiseRoi( width, height, in, out );
+
         width = width * colorCount;
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -2206,6 +2241,8 @@ if ( simdType == neon_function ) { \
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+        OptimiseRoi( width, height, in1, in2, out );
 
         width = width * colorCount;
 
@@ -2242,6 +2279,8 @@ if ( simdType == neon_function ) { \
         }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+
+        OptimiseRoi( width, height, in1, in2, out );
 
         width = width * colorCount;
 
@@ -2315,6 +2354,8 @@ if ( simdType == neon_function ) { \
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( in, out );
 
+        OptimiseRoi( width, height, in, out );
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -2356,6 +2397,8 @@ if ( simdType == neon_function ) { \
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
+        OptimiseRoi( width, height, in1, in2, out );
+
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -2392,6 +2435,8 @@ if ( simdType == neon_function ) { \
 
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
+
+        OptimiseRoi( width, height, image );
 
         const uint32_t rowSize = image.rowSize();
 
@@ -2433,6 +2478,8 @@ if ( simdType == neon_function ) { \
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
+        OptimiseRoi( width, height, in, out );
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -2464,6 +2511,8 @@ if ( simdType == neon_function ) { \
 
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
+
+        OptimiseRoi( width, height, in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
