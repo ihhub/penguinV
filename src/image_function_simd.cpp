@@ -1842,7 +1842,7 @@ if ( simdType == neon_function ) { \
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
- 
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
