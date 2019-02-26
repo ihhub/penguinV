@@ -28,3 +28,9 @@ rules:
   line-length:
     max: 170
     level: warning
+  ignore: |
+    appveyor.yml
+    .gitignore
+    .travis.yml
+    
+  
