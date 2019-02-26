@@ -6,12 +6,12 @@ rules:
   colons: enable
   commas: enable
   comments:
-    level: warning
+    level: error
   comments-indentation:
-    level: warning
+    level: error
   document-end: disable
   document-start:
-    level: warning
+    level: error
   empty-lines: enable
   empty-values: enable
   hyphens: enable
@@ -25,7 +25,7 @@ rules:
   quoted-strings: disable
   trailing-spaces: enable
   truthy:
-    level: warning
+    level: error
   ignore: |
     appveyor.yml
     .gitignore
