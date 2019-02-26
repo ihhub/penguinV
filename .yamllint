@@ -28,6 +28,6 @@ rules:
   new-lines: enable
   octal-values: enable
   quoted-strings: disable
-  trailing-spaces: enable
+  trailing-spaces: {}
   truthy:
     level: error
