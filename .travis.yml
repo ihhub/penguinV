@@ -10,6 +10,7 @@ addons:
       - yasm
       - ocl-icd-opencl-dev
       - opencl-headers
+      - clang-format-3.9
 
 matrix:
   include:
@@ -51,6 +52,12 @@ matrix:
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
 
+before_install:
+  - |
+    if [[ "$STATIC_ANALYSIS" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
+    fi
+
 before_script:
   # Let CMake generate build files
   - |
@@ -67,6 +74,13 @@ script:
       export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
       git clone https://github.com/myint/cppclean;
       ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+      cd ${TRAVIS_BUILD_DIR}
+      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+        echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
+        bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
+      else
+        echo "Skipping clang-format check since this is not a pull request."
+      fi
     else
       # Build and run tests
       set -e
