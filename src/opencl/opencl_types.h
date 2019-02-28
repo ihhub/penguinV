@@ -42,21 +42,21 @@ namespace multiCL
         {
             _copy( in );
 
-            return (*this);
+            return *this;
         }
 
         Type & operator=( Type && in )
         {
             _swap( in );
 
-            return (*this);
+            return *this;
         }
 
         Type & operator=( const TData & in )
         {
             _copyFrom( in );
 
-            return (*this);
+            return *this;
         }
 
         cl_mem data()
@@ -175,14 +175,14 @@ namespace multiCL
         {
             _copy( in );
 
-            return (*this);
+            return *this;
         }
 
         Array & operator=( Array && in )
         {
             _swap( in );
 
-            return (*this);
+            return *this;
         }
 
         Array & operator=( const std::vector <TData> & data )
@@ -190,7 +190,7 @@ namespace multiCL
             _allocate( data.size() );
             _copyFrom( data );
 
-            return (*this);
+            return *this;
         }
 
         cl_mem data()
@@ -280,7 +280,7 @@ namespace multiCL
             return out;
         }
 
-        Array ( const Array & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
+        Array( const Array & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
         {}
     };
 }
