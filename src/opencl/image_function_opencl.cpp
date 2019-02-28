@@ -4,11 +4,11 @@
 #include <math.h>
 #include <memory>
 #include <mutex>
+#include "../image_function_helper.h"
+#include "../parameter_validation.h"
 #include "opencl_device.h"
 #include "opencl_helper.h"
 #include "opencl_types.h"
-#include "../image_function_helper.h"
-#include "../parameter_validation.h"
 
 namespace
 {
