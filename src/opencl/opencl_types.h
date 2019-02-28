@@ -130,7 +130,7 @@ namespace multiCL
             return out;
         }
 
-        Type( const Type & ) // copy constructor is disable to avoid a situation of assigning this type as a kernel argument
+        Type( const Type & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
         { }
     };
 
@@ -281,7 +281,7 @@ namespace multiCL
             return out;
         }
 
-        Array ( const Array & ) // copy constructor is disable to avoid a situation of assigning this type as a kernel argument
+        Array ( const Array & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
         { }
     };
 }
