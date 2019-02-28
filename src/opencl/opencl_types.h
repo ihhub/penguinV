@@ -131,8 +131,7 @@ namespace multiCL
         }
 
         Type( const Type & ) // copy constructor is disable to avoid a situation of assigning this type as a kernel argument
-        {
-        }
+        { }
     };
 
     // A class which contains an array of values of specific type
@@ -283,7 +282,6 @@ namespace multiCL
         }
 
         Array ( const Array & ) // copy constructor is disable to avoid a situation of assigning this type as a kernel argument
-        {
-        }
+        { }
     };
 }
