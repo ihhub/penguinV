@@ -105,7 +105,8 @@ namespace multiCL
         void _copyFrom( const TData & in )
         {
             if( _data != NULL ) {
-                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &in, 0, NULL, NULL );
+                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
+                                                     &in, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
                     throw imageException( "Cannot copy a memory into OpenCL device" );
             }
@@ -119,7 +120,8 @@ namespace multiCL
             TData out;
 
             if( _data != NULL ) {
-                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &out, 0, NULL, NULL );
+                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
+                                                    &out, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
                     throw imageException( "Cannot copy a memory from OpenCL device" );
             }
@@ -261,7 +263,8 @@ namespace multiCL
         void _copyFrom( const std::vector <TData> & data )
         {
             if( _data != NULL && _size == data.size() ) {
-                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), data.data(), 0, NULL, NULL );
+                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
+                                                     data.data(), 0, NULL, NULL );
                 if( error != CL_SUCCESS )
                     throw imageException( "Cannot copy a memory into OpenCL device" );
             }
@@ -272,7 +275,8 @@ namespace multiCL
             std::vector <TData> out( _size );
 
             if( _data != NULL ) {
-                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), out.data(), 0, NULL, NULL );
+                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
+                                                    out.data(), 0, NULL, NULL );
                 if( error != CL_SUCCESS )
                     throw imageException( "Cannot copy a memory from OpenCL device" );
             }
