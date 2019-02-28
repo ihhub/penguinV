@@ -146,7 +146,7 @@ namespace multiCL
             , _size( 0 )
         {}
 
-        Array( const std::vector <TData> & data )
+        Array( const std::vector<TData> & data )
             : _data( NULL )
             , _size( 0 )
         {
@@ -187,7 +187,7 @@ namespace multiCL
             return *this;
         }
 
-        Array & operator=( const std::vector <TData> & data )
+        Array & operator=( const std::vector<TData> & data )
         {
             _allocate( data.size() );
             _copyFrom( data );
@@ -206,7 +206,7 @@ namespace multiCL
         }
 
         // Use this function if you want to retrieve a value from device to host
-        std::vector <TData> get() const
+        std::vector<TData> get() const
         {
             return _copyTo();
         }
@@ -260,7 +260,7 @@ namespace multiCL
             std::swap( _size, in._size );
         }
 
-        void _copyFrom( const std::vector <TData> & data )
+        void _copyFrom( const std::vector<TData> & data )
         {
             if( _data != NULL && _size == data.size() ) {
                 cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
@@ -270,9 +270,9 @@ namespace multiCL
             }
         }
 
-        std::vector <TData> _copyTo() const
+        std::vector<TData> _copyTo() const
         {
-            std::vector <TData> out( _size );
+            std::vector<TData> out( _size );
 
             if( _data != NULL ) {
                 cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
