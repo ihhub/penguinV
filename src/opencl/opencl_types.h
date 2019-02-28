@@ -161,7 +161,7 @@ namespace multiCL
             _allocate( size );
         }
 
-        Array ( Array && in )
+        Array( Array && in )
             : _data( NULL )
             , _size( 0 )
         {
