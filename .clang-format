@@ -32,7 +32,7 @@ BraceWrapping:
     SplitEmptyNamespace: false
 BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: true
-BreakConstructorInitializers: BeforeColon
+BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: false
 ColumnLimit: 170
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
