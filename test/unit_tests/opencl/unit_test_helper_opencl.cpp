@@ -2,9 +2,9 @@
 #include <memory>
 
 #include "../../../src/image_exception.h"
+#include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/opencl_types.h"
-#include "../../../src/opencl/image_buffer_opencl.h"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_opencl.h"
 
@@ -81,7 +81,7 @@ namespace Unit_Test
 
             multiCL::launchKernel2D( kernel, width, height );
 
-            return (differenceCount.get() == width * height);
+            return ( differenceCount.get() == width * height );
         }
 
         bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value )
@@ -104,7 +104,7 @@ namespace Unit_Test
 
             multiCL::MemoryManager::memory().free( valueOpenCL );
 
-            return (differenceCount.get() == width * height);
+            return ( differenceCount.get() == width * height );
         }
     }
 }
