@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 namespace Image_Function
 {
     template <typename TImage>
@@ -108,5 +110,29 @@ namespace Image_Function
             startX2 + width > image2.width() || startY2 + height > image2.height() ||
             startX3 + width > image3.width() || startY3 + height > image3.height() )
             throw imageException( "Bad input parameters in image function" );
+    }
+
+    template <typename TImage>
+    bool IsFullImageRow( uint32_t width, const TImage & image )
+    {
+        return image.rowSize() == width;
+    }
+
+    template <typename TImage, typename... Args>
+    bool IsFullImageRow( uint32_t width, const TImage & image, Args... args )
+    {
+        if( !IsFullImageRow( width, image ) )
+            return false;
+
+        return IsFullImageRow( width, args... );
+    }
+
+    template <typename TImage, typename... Args>
+    void OptimiseRoi( uint32_t & width, uint32_t & height, const TImage & image, Args... args )
+    {
+        if( IsFullImageRow(width, image, args...) && ( width < (std::numeric_limits<uint32_t>::max() / height) ) ) {
+            width = width * height;
+            height = 1u;
+        }
     }
 }

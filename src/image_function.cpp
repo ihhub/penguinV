@@ -184,6 +184,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -193,8 +197,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -216,11 +218,13 @@ namespace Image_Function
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
     {
         ParameterValidation( image, x, y, width, height );
-        VerifyGrayScaleImage( image );
 
         const uint8_t colorCount = image.colorCount();
+        width = width * colorCount;
 
-        if( result.size() != width * height * colorCount )
+        OptimiseRoi( width, height, image );
+
+        if( result.size() != width * height )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
 
         const uint32_t rowSize = image.rowSize();
@@ -229,7 +233,7 @@ namespace Image_Function
         const uint8_t * imageYEnd = imageY + height * rowSize;
         std::vector < uint32_t >::iterator v = result.begin();
 
-        width = width * colorCount;
+        
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
@@ -286,6 +290,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -295,8 +303,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -332,6 +338,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -341,8 +351,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -378,6 +386,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -387,8 +399,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -516,10 +526,12 @@ namespace Image_Function
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
-
-        width = width * colorCount;
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
@@ -585,12 +597,14 @@ namespace Image_Function
         ParameterValidation( image, x, y, width, height );
 
         const uint8_t colorCount = image.colorCount();
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, image );
+
         const uint32_t rowSize = image.rowSize();
 
         uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
-
-        width = width * colorCount;
 
         for( ; imageY != imageYEnd; imageY += rowSize )
             memset( imageY, value, sizeof( uint8_t ) * width );
@@ -729,6 +743,7 @@ namespace Image_Function
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
+        OptimiseRoi( width, height, image );
 
         histogram.resize( 256u );
         std::fill( histogram.begin(), histogram.end(), 0u );
@@ -768,6 +783,7 @@ namespace Image_Function
     {
         ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
         VerifyGrayScaleImage( image, mask );
+        OptimiseRoi( width, height, image, mask );
 
         histogram.resize( 256u );
         std::fill( histogram.begin(), histogram.end(), 0u );
@@ -812,6 +828,10 @@ namespace Image_Function
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -819,8 +839,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
@@ -870,6 +888,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
         const uint8_t colorCount = CommonColorCount( in1, in2 );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2 );
+
         const uint32_t rowSize1  = in1.rowSize();
         const uint32_t rowSize2  = in2.rowSize();
 
@@ -877,8 +899,6 @@ namespace Image_Function
         const uint8_t * in2Y = in2.data() + startY2 * rowSize2 + startX2 * colorCount;
 
         const uint8_t * in1YEnd = in1Y + height * rowSize1;
-
-        width = width * colorCount;
 
         for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -918,7 +938,11 @@ namespace Image_Function
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        const uint8_t colorCount  = CommonColorCount( in, out );
+        const uint8_t colorCount = CommonColorCount( in, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -926,8 +950,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
@@ -962,6 +984,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -971,8 +997,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -1069,6 +1093,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -1078,8 +1106,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -1285,11 +1311,12 @@ namespace Image_Function
         VerifyRGBImage     ( in, out );
 
         const uint8_t colorCount = RGB;
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
-
-        width = width * colorCount;
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
@@ -1577,6 +1604,10 @@ namespace Image_Function
         ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in1, out );
+
         const uint32_t rowSize1   = in1.rowSize();
         const uint32_t rowSize2   = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -1586,8 +1617,6 @@ namespace Image_Function
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
@@ -1610,6 +1639,7 @@ namespace Image_Function
     {
         ParameterValidation( image, x, y, width, height );
         VerifyGrayScaleImage( image );
+        OptimiseRoi( width, height, image );
 
         const uint32_t rowSize = image.rowSize();
 
@@ -1649,6 +1679,7 @@ namespace Image_Function
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
+        OptimiseRoi( width, height, in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -1690,6 +1721,7 @@ namespace Image_Function
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
+        OptimiseRoi( width, height, in, out );
 
         if( minThreshold > maxThreshold )
             throw imageException( "Minimum threshold value is bigger than maximum threshold value" );
