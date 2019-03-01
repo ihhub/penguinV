@@ -4,10 +4,11 @@
 #include <math.h>
 #include <memory>
 #include <mutex>
-#include "opencl_device.h"
-#include "opencl_helper.h"
 #include "../image_function_helper.h"
 #include "../parameter_validation.h"
+#include "opencl_device.h"
+#include "opencl_helper.h"
+#include "opencl_types.h"
 
 namespace
 {
@@ -818,8 +819,7 @@ namespace Image_Function_OpenCL
         histogram.resize( 256u );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
-        cl_mem histogramOpenCL = multiCL::MemoryManager::memory().allocate<uint32_t>( histogram.size() );
-        multiCL::writeBuffer( histogramOpenCL, sizeof( uint32_t ) * histogram.size(), histogram.data() );
+        multiCL::Array< uint32_t > histogramOpenCL( histogram );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "histogramOpenCL");
@@ -827,12 +827,11 @@ namespace Image_Function_OpenCL
         const uint32_t rowSize = image.rowSize();
         const uint32_t offset = x * rowSize + y;
 
-        kernel.setArgument( image.data(), offset, rowSize, width, height, histogramOpenCL );
+        kernel.setArgument( image.data(), offset, rowSize, width, height, histogramOpenCL.data() );
 
         multiCL::launchKernel2D( kernel, width, height );
 
-        multiCL::readBuffer( histogramOpenCL, sizeof( uint32_t ) * histogram.size(), histogram.data() );
-        multiCL::MemoryManager::memory().free( histogramOpenCL );
+        histogram = histogramOpenCL.get();
     }
 
     Image Invert( const Image & in )
@@ -897,8 +896,7 @@ namespace Image_Function_OpenCL
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        cl_mem tableOpenCL = multiCL::MemoryManager::memory().allocate<uint8_t>( table.size() );
-        multiCL::writeBuffer( tableOpenCL, sizeof(uint8_t) * table.size(), table.data() );
+        multiCL::Array< uint8_t > tableOpenCL( table );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL");
@@ -909,11 +907,9 @@ namespace Image_Function_OpenCL
         const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
 
-        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, tableOpenCL );
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, tableOpenCL.data() );
 
         multiCL::launchKernel2D( kernel, width, height );
-
-        multiCL::MemoryManager::memory().free( tableOpenCL );
     }
 
     Image Maximum( const Image & in1, const Image & in2 )
@@ -1030,15 +1026,13 @@ namespace Image_Function_OpenCL
 
         std::vector< uint32_t > range = { 255, 0 };
 
-        cl_mem rangeOpenCL = multiCL::MemoryManager::memory().allocate<uint32_t>( range.size() );
-        multiCL::writeBuffer( rangeOpenCL, sizeof( uint32_t ) * range.size(), range.data() );
+        multiCL::Array< uint32_t > rangeOpenCL( range );
 
-        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, rangeOpenCL );
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, rangeOpenCL.data() );
 
         multiCL::launchKernel2D( kernel, width, height );
 
-        multiCL::readBuffer( rangeOpenCL, sizeof( uint32_t ) * range.size(), range.data() );
-        multiCL::MemoryManager::memory().free( rangeOpenCL );
+        range = rangeOpenCL.get();
 
         if( (range[0] == 0 && range[1] == 255) || (range[0] == range[1]) ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );

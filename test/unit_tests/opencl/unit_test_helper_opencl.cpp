@@ -2,8 +2,9 @@
 #include <memory>
 
 #include "../../../src/image_exception.h"
-#include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
+#include "../../../src/opencl/opencl_helper.h"
+#include "../../../src/opencl/opencl_types.h"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_opencl.h"
 
@@ -67,9 +68,7 @@ namespace Unit_Test
     {
         bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
         {
-            uint32_t count = 0;
-            cl_mem differenceCount = multiCL::MemoryManager::memory().allocate<uint32_t>( 1 );
-            multiCL::writeBuffer( differenceCount, sizeof( uint32_t ), &count );
+            multiCL::Type< uint32_t > differenceCount( 0u );
 
             const multiCL::OpenCLProgram & program = GetProgram();
             multiCL::OpenCLKernel kernel( program, "isEqualOpenCL" );
@@ -78,21 +77,16 @@ namespace Unit_Test
             const uint32_t width = image.width() * image.colorCount();
             const uint32_t height = image.height();
 
-            kernel.setArgument( image.data(), value, rowSize, width, height, differenceCount );
+            kernel.setArgument( image.data(), value, rowSize, width, height, differenceCount.data() );
 
             multiCL::launchKernel2D( kernel, width, height );
 
-            multiCL::readBuffer( differenceCount, sizeof( uint32_t ), &count );
-            multiCL::MemoryManager::memory().free( differenceCount );
-
-            return (count == width * height);
+            return ( differenceCount.get() == width * height );
         }
 
         bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value )
         {
-            uint32_t count = 0;
-            cl_mem differenceCount = multiCL::MemoryManager::memory().allocate<uint32_t>( 1 );
-            multiCL::writeBuffer( differenceCount, sizeof( uint32_t ), &count );
+            multiCL::Type< uint32_t > differenceCount( 0u );
 
             cl_mem valueOpenCL = multiCL::MemoryManager::memory().allocate<uint8_t>( value.size() );
             multiCL::writeBuffer( valueOpenCL, sizeof( uint8_t ) * value.size(), value.data() );
@@ -104,16 +98,13 @@ namespace Unit_Test
             const uint32_t width = image.width() * image.colorCount();
             const uint32_t height = image.height();
 
-            kernel.setArgument( image.data(), valueOpenCL, static_cast<uint32_t>( value.size() ), rowSize, width, height, differenceCount );
+            kernel.setArgument( image.data(), valueOpenCL, static_cast<uint32_t>( value.size() ), rowSize, width, height, differenceCount.data() );
 
             multiCL::launchKernel2D( kernel, width, height );
 
             multiCL::MemoryManager::memory().free( valueOpenCL );
 
-            multiCL::readBuffer( differenceCount, sizeof( uint32_t ), &count );
-            multiCL::MemoryManager::memory().free( differenceCount );
-
-            return (count == width * height);
+            return ( differenceCount.get() == width * height );
         }
     }
 }
