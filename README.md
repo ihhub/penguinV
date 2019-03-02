@@ -9,7 +9,7 @@ PenguinV is a simple and easy to use C++ image processing library with focus on 
 
 - heterogeneous system support (CPU and GPUs)
 - optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
-- Python support
+- [Python support](https://github.com/ihhub/penguinV/tree/master/src/python)
 - [multithreading support](#multithreading-support)
 - cross-platform
 - compactness
@@ -20,7 +20,8 @@ The project in is active process of development so new features are coming soon!
 
 Contribution
 ---------------------------
-We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki page.
+We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
+Not sure what to start with? Feel free to refer to <kbd>[`good first issue`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[`help wanted`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
 
 Requirements
 ---------------------------
@@ -32,7 +33,7 @@ The library is distributed in the form of source code. To use the library you ne
 
 How to compile an example
 ---------------------------
-Open README.md file in any of example directories and follow instructions.
+Open README.md file in any of [example](https://github.com/ihhub/penguinV/tree/master/examples) directories and follow instructions.
 
 Multithreading support
 ---------------------------
@@ -40,12 +41,12 @@ The library contains it's own thread pool which creates multiple tasks to run im
 
 GPU support
 ---------------------------
-All source code and descriptions related to CUDA or OpenCL are located in separate **src/cuda** and **src/opencl** directories respectively. Read full description about CUDA or OpenCL support in **README** file in the directory.
+All source code and descriptions related to CUDA or OpenCL are located in separate [**src/cuda**](https://github.com/ihhub/penguinV/tree/master/src/cuda) and [**src/opencl**](https://github.com/ihhub/penguinV/tree/master/src/opencl) directories respectively. Read full description about CUDA or OpenCL support in **README** file in the directory.
 
 License
 ---------------------------
-This project is under 3-clause BSD License. Please refer to file **LICENSE** for more details.
+This project is under 3-clause BSD License. Please refer to file [**LICENSE**](https://github.com/ihhub/penguinV/blob/master/LICENSE) for more details.
 
 API description
 ---------------------------
-Directory **doc** contains latest and valid information and description of library's API.
+Directory [**doc**](https://github.com/ihhub/penguinV/tree/master/doc) contains latest and valid information and description of library's API.
