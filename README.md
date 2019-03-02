@@ -9,7 +9,7 @@ PenguinV is a simple and easy to use C++ image processing library with focus on 
 
 - heterogeneous system support (CPU and GPUs)
 - optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
-- Python support
+- [Python support](https://github.com/ihhub/penguinV/tree/master/src/python)
 - [multithreading support](#multithreading-support)
 - cross-platform
 - compactness
@@ -21,7 +21,7 @@ The project in is active process of development so new features are coming soon!
 Contribution
 ---------------------------
 We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
-Not sure what to star with? Feel free to refer to [`good first issue`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or [`help wanted`](https://github.com/ihhub/pen*guinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) tags.
+Not sure what to start with? Feel free to refer to <kbd>[`good first issue`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[`help wanted`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
 
 Requirements
 ---------------------------
