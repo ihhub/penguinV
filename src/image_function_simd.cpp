@@ -1955,7 +1955,7 @@ if ( simdType == neon_function ) { \
 
         if( result.size() != width * height )
             throw imageException( "Array size is not equal to image ROI (width * height) size" );
-        
+
         Image_Function::OptimiseRoi( width, height, image );
 
         const uint32_t rowSize = image.rowSize();
