@@ -233,8 +233,6 @@ namespace Image_Function
         const uint8_t * imageYEnd = imageY + height * rowSize;
         std::vector < uint32_t >::iterator v = result.begin();
 
-        
-
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + width;
