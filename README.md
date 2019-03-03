@@ -21,7 +21,7 @@ The project in is active process of development so new features are coming soon!
 Contribution
 ---------------------------
 We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
-Not sure what to start with? Feel free to refer to <kbd>[`good first issue`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[`help wanted`](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
+Not sure what to start with? Feel free to refer to <kbd>[good first issue](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[help wanted](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
 
 Requirements
 ---------------------------
