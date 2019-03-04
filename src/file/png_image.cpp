@@ -58,8 +58,8 @@ namespace Png_Operation
         png_init_io( png, file );
         png_read_info( png, info );
 
-        const uint32_t width    = png_get_image_width ( png, info );
-        const uint32_t height   = png_get_image_height( png, info );
+        const uint32_t width    = static_cast<uint32_t>( png_get_image_width ( png, info ) );
+        const uint32_t height   = static_cast<uint32_t>( png_get_image_height( png, info ) );
         const uint8_t colorType = png_get_color_type  ( png, info );
         const uint8_t bitDepth  = png_get_bit_depth   ( png, info );
 
