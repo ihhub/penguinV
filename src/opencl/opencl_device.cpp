@@ -573,7 +573,7 @@ namespace multiCL
             }
         }
 
-        const cl_device_type deviceType =  (enableCpuSupport ? CL_DEVICE_TYPE_CPU : 0) | (enableGpuSupport ? CL_DEVICE_TYPE_GPU : 0);
+        const cl_device_type deviceType =  (enableCpuSupport ? CL_DEVICE_TYPE_CPU : 0u) + (enableGpuSupport ? CL_DEVICE_TYPE_GPU : 0u);
 
         uint32_t supportedDeviceCount = 0u;
         for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
