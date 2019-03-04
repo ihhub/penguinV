@@ -69,7 +69,7 @@ protected:
     size_t createTasks()
     {
         // create random number of tasks
-        _repeatCount.resize( (rand() % 32) + 1 );
+        _repeatCount.resize( static_cast<size_t>( rand() % 32 ) + 1u );
 
         for( std::vector < int >::iterator count = _repeatCount.begin(); count != _repeatCount.end(); ++count )
             *count = rand() % 256 + 64;
