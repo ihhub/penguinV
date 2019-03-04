@@ -671,7 +671,7 @@ namespace sse
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
-                    (*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
             }
         }
     }
@@ -1122,9 +1122,9 @@ namespace sse
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
                     if( (*in2X) > (*in1X) )
-                        (*outX) = 0;
+                        (*outX) = 0u;
                     else
-                        (*outX) = (*in1X) - (*in2X);
+                        (*outX) = static_cast<uint8_t>( (*in1X) - (*in2X) );
                 }
             }
         }
