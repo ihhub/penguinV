@@ -83,7 +83,7 @@ namespace avx
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
-                    (*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
             }
         }
     }
