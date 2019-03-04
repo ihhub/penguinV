@@ -421,6 +421,9 @@ namespace multiCL
 
     void OpenCLDevice::setQueueCount( size_t queueCount )
     {
+        if( queueCount > 255u ) // no real device needs more than 255 queues
+            queueCount = 255u;
+
         if( queueCount != _queue.size() ) {
             if( queueCount > _queue.size() ) {
                 while( queueCount != _queue.size() )
@@ -430,7 +433,7 @@ namespace multiCL
                 if( _currentQueueId >= queueCount )
                     _currentQueueId = 0;
 
-                for( std::vector< OpenCLQueue * >::iterator queueId = _queue.begin() + queueCount; queueId != _queue.end(); ++queueId )
+                for( std::vector< OpenCLQueue * >::iterator queueId = _queue.begin() + static_cast<uint8_t>( queueCount ); queueId != _queue.end(); ++queueId )
                     delete (*queueId);
 
                 _queue.resize( queueCount );
