@@ -17,11 +17,31 @@ matrix:
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
+      script:
+        - |
+          if [[ $CUDA ]]; then
+            cd ../test/unit_tests/cuda;
+            make;
+          fi
     - os: linux
       env: QT_BASE=59 CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
     - os: linux
       env: STATIC_ANALYSIS=ON
+      script:
+        - export EXCLUDE_PATTERN_1=" not found in expected header ";
+        - export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
+        - export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
+        - git clone https://github.com/myint/cppclean;
+        - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+        - cd ${TRAVIS_BUILD_DIR}
+        - |
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
+            bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
+          else
+            echo "Skipping clang-format check since this is not a pull request."
+          fi
     - os: linux
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
@@ -68,32 +88,12 @@ before_script:
 
 script:
   - |
-    if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
-      export EXCLUDE_PATTERN_1=" not found in expected header ";
-      export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
-      export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
-      git clone https://github.com/myint/cppclean;
-      ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
-      cd ${TRAVIS_BUILD_DIR}
-      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-        echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
-        bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
-      else
-        echo "Skipping clang-format check since this is not a pull request."
-      fi
+    # Build and run tests
+    set -e
+    cmake --build .
+    set +e
+    if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
     else
-      # Build and run tests
-      set -e
-      cmake --build .
-      set +e
-      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
-      else
-        ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-      fi
-    fi
-  - |
-    if [[ $CUDA ]]; then
-      cd ../test/unit_tests/cuda;
-      make;
+      ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
     fi
