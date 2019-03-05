@@ -79,7 +79,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = AbsoluteDifference( input[0], input[1] );
 
         return equalSize( input[0], output ) &&
-            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
+            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) );
     }
 
     bool form2_AbsoluteDifference(AbsoluteDifferenceForm2 AbsoluteDifference)
@@ -89,7 +89,7 @@ namespace Function_Template
 
         AbsoluteDifference( image[0], image[1], image[2] );
 
-        return verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
+        return verifyImage( image[2], static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) );
     }
 
     bool form3_AbsoluteDifference(AbsoluteDifferenceForm3 AbsoluteDifference)
@@ -104,7 +104,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = AbsoluteDifference( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
         return equalSize( output, roiWidth, roiHeight ) &&
-            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
+            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) );
     }
 
     bool form4_AbsoluteDifference(AbsoluteDifferenceForm4 AbsoluteDifference)
@@ -119,7 +119,7 @@ namespace Function_Template
         AbsoluteDifference( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
         return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] );
+                            static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) );
     }
 
     bool form1_Accumulate(AccumulateForm1 Accumulate)
@@ -1619,7 +1619,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = Subtract( input[0], input[1] );
 
         return equalSize( input[0], output ) &&
-            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
+            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
     }
 
     bool form2_Subtract(SubtractForm2 Subtract)
@@ -1629,7 +1629,7 @@ namespace Function_Template
 
         Subtract( image[0], image[1], image[2] );
 
-        return verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
+        return verifyImage( image[2], static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
     }
 
     bool form3_Subtract(SubtractForm3 Subtract)
@@ -1647,7 +1647,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = Subtract( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
         return equalSize( output, roiWidth, roiHeight ) &&
-            verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
+            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
     }
 
     bool form4_Subtract(SubtractForm4 Subtract)
@@ -1665,7 +1665,7 @@ namespace Function_Template
         Subtract( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
         return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                          intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 );
+                            static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
     }
 
     bool form1_Sum(SumForm1 Sum)

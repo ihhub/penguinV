@@ -53,7 +53,7 @@ int main()
                 const uint32_t height = randomValue<uint32_t>(image->height() - y);
 
                 // fill an area with some random value what is bigger than background value
-                Image_Function::Fill( *image, x, y, width, height, randomValue<uint8_t>(128u) + 64u );
+                Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>( randomValue<uint8_t>(128u) + 64u ) );
             }
         }
 

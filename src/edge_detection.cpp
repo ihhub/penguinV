@@ -256,8 +256,8 @@ void EdgeDetection::getDerivatives( const std::vector < int > & image, std::vect
 void EdgeDetection::removeSimilarPoints( std::vector < double > & edge ) const
 {
     for ( size_t i = 1u; i < edge.size(); ) {
-        if ( (edge[i] - edge[i - 1]) < 1.0 )
-            edge.erase( edge.begin() + i );
+        if ( (edge[i] - edge[i - 1u]) < 1.0 )
+            edge.erase( edge.begin() + static_cast< std::vector< double >::difference_type >( i ) ); // it's safe to do
         else
             ++i;
     }
