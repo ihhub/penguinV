@@ -15,8 +15,6 @@ set(SRCS
 set(TARGET_NAME performance_tests_cuda)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
-if(CUDA_FOUND)
-    cuda_add_executable(${TARGET_NAME} ${SRCS})
-    target_link_libraries(${TARGET_NAME} PRIVATE ${CUDA_LIBRARIES})
-    add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
-endif()
+cuda_add_executable(${TARGET_NAME} ${SRCS})
+target_link_libraries(${TARGET_NAME} PRIVATE ${CUDA_LIBRARIES})
+add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})

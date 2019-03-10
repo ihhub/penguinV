@@ -19,6 +19,13 @@ set(SRCS
     performance_test_helper.cpp
     performance_test_image_function.cpp)
 
+option(PENGUINV_BUILD_CUDA "Build CUDA performance tests" ON)
+if(${PENGUINV_BUILD_CUDA})
+    if(CUDA_FOUND)
+        add_subdirectory(cuda)
+    endif(CUDA_FOUND)
+endif()
+
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL performance tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     if(OpenCL_FOUND)
