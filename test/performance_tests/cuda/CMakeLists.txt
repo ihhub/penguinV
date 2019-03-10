@@ -11,10 +11,7 @@ set(SRCS
     performance_tests_cuda.cpp
     performance_test_helper_cuda.cu
     performance_test_image_function_cuda.cpp)
-
-set(TARGET_NAME performance_tests_cuda)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
-
+set(TARGET_NAME performance_tests_cuda)
 cuda_add_executable(${TARGET_NAME} ${SRCS})
-target_link_libraries(${TARGET_NAME} PRIVATE ${CUDA_LIBRARIES})
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
