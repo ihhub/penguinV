@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(penguinV CXX CUDA)
+project(penguinV)
 include(CTest)
 
 if(NOT CMAKE_MODULE_PATH)
@@ -13,6 +13,8 @@ find_package(OpenCL)
 find_package(Qt5Widgets)
 
 option(PENGUINV_BUILD_CUDA "Build CUDA related code of penguinV" ON)
+set(CUDA_TOOLKIT_ROOT_DIR $ENV{CUDA_TOOLKIT_ROOT_DIR} CACHE PATH "CUDA Toolkit location.")
+message(STATUS ${CUDA_TOOLKIT_ROOT_DIR})
 if(${PENGUINV_BUILD_CUDA} AND NOT CMAKE_VERSION VERSION_LESS "3.10.0")
   enable_language(CUDA)
 elseif(${PENGUINV_BUILD_CUDA})
