@@ -14,5 +14,5 @@ set(SRCS
     unit_test_image_function_cuda.cpp)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME unit_tests_cuda)
-add_executable(${TARGET_NAME} ${SRCS})
+cuda_add_executable(${TARGET_NAME} ${SRCS})
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
