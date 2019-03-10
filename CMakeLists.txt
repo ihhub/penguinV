@@ -13,15 +13,7 @@ find_package(OpenCL)
 find_package(Qt5Widgets)
 
 option(PENGUINV_BUILD_CUDA "Build CUDA related code of penguinV" ON)
-if(NOT CUDA_TOOLKIT_ROOT_DIR)
-    find_path(CUDA_TOOLKIT_ROOT_DIR
-        NAMES nvcc nvcc.exe
-        PATHS ENV CUDA_BIN_PATH CUDA_TOOLKIT_ROOT_DIR
-        DOC "CUDA Toolkit location."
-        NO_DEFAULT_PATH)
-    set(CUDA_TOOLKIT_ROOT_DIR ${CUDA_TOOLKIT_ROOT_DIR} CACHE PATH "CUDA Toolkit location." FORCE)
-    message(STATUS "CUDA_TOOLKIT_ROOT_DIR is set to ${CUDA_TOOLKIT_ROOT_DIR}")
-endif(NOT CUDA_TOOLKIT_ROOT_DIR)
+message(STATUS "CUDA_BIN_PATH is set to $ENV{CUDA_BIN_PATH}")
 if(${PENGUINV_BUILD_CUDA} AND NOT CMAKE_VERSION VERSION_LESS "3.10.0")
   enable_language(CUDA)
 elseif(${PENGUINV_BUILD_CUDA})
