@@ -13,9 +13,7 @@ find_package(OpenCL)
 find_package(Qt5Widgets)
 
 option(PENGUINV_BUILD_CUDA "Build CUDA related code of penguinV" ON)
-if(${PENGUINV_BUILD_CUDA} AND NOT CMAKE_VERSION VERSION_LESS "3.10.0")
-    enable_language(CUDA)
-elseif(${PENGUINV_BUILD_CUDA})
+if(${PENGUINV_BUILD_CUDA})
     find_package(CUDA REQUIRED)
 endif()
 

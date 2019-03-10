@@ -57,7 +57,7 @@ build_script:
   - cmd: cd C:\projects\penguinv
   - cmd: md build
   - cmd: cd build
-  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" -DCUDA_TOOLKIT_ROOT_DIR=$ENV{CUDA_DIR} ..
+  - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
   - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
   - cmd: cmake --build . --config %configuration%
 
