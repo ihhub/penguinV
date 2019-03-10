@@ -14,7 +14,6 @@ find_package(Qt5Widgets)
 
 option(PENGUINV_BUILD_CUDA "Build CUDA related code of penguinV" ON)
 if(${PENGUINV_BUILD_CUDA} AND NOT CMAKE_VERSION VERSION_LESS "3.10.0")
-    set(CMAKE_CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
     enable_language(CUDA)
 elseif(${PENGUINV_BUILD_CUDA})
     find_package(CUDA REQUIRED)
