@@ -11,6 +11,11 @@ set(SRCS
     performance_tests_cuda.cpp
     performance_test_helper_cuda.cu
     performance_test_image_function_cuda.cpp)
+
+set(CMAKE_CUDA_STANDARD 11)
+set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+set(CMAKE_CUDA_EXTENSIONS ON)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME performance_tests_cuda)
 
