@@ -21,10 +21,6 @@ set(SRCS
 
 option(PENGUINV_BUILD_CUDA "Build CUDA performance tests" ON)
 if(${PENGUINV_BUILD_CUDA})
-    if(NOT DEFINED CMAKE_CUDA_STANDARD)
-        set(CMAKE_CUDA_STANDARD 11)
-        set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-    endif()
     if(CUDA_FOUND)
         add_subdirectory(cuda)
     endif(CUDA_FOUND)
