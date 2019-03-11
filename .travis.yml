@@ -17,9 +17,6 @@ matrix:
     - os: linux
       env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install: source script/travis/install_cuda.sh
-      script:
-        - cd ../test/unit_tests/cuda;
-        - make;
     - os: linux
       env: QT_BASE=59 CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh

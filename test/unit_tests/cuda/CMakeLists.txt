@@ -14,5 +14,12 @@ set(SRCS
     unit_test_image_function_cuda.cpp)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME unit_tests_cuda)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CUDA_STANDARD ${CMAKE_CXX_STANDARD})
+if (NOT MSVC)
+    target_compile_options(${TARGET_NAME} INTERFACE -Wno-deprecated-gpu-targets)
+endif()
+
 cuda_add_executable(${TARGET_NAME} ${SRCS})
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
