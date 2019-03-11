@@ -15,6 +15,5 @@ set(SRCS
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME unit_tests_cuda)
-list(APPEND CUDA_NVCC_FLAGS -std=c++11 -O2 -Wno-deprecated-gpu-targets)
 cuda_add_executable(${TARGET_NAME} ${SRCS})
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
