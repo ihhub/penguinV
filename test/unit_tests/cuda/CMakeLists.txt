@@ -16,6 +16,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME unit_tests_cuda)
 
 cuda_add_executable(${TARGET_NAME} ${SRCS})
+target_compile_features(${TARGET_NAME} INTERFACE cxx_std_11)
 if (NOT MSVC)
     target_compile_options(${TARGET_NAME} INTERFACE -Wno-deprecated-gpu-targets)
 endif()
