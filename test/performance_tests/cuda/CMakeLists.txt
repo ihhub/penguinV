@@ -12,16 +12,8 @@ set(SRCS
     performance_test_helper_cuda.cu
     performance_test_image_function_cuda.cpp)
 
-set(CMAKE_CUDA_STANDARD 11)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_EXTENSIONS ON)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(TARGET_NAME performance_tests_cuda)
-
+list(APPEND CUDA_NVCC_FLAGS -std=c++11 -O2 -Wno-deprecated-gpu-targets)
 cuda_add_executable(${TARGET_NAME} ${SRCS})
-target_compile_features(${TARGET_NAME} PUBLIC cxx_std_11)
-if (NOT MSVC)
-    target_compile_options(${TARGET_NAME} INTERFACE -Wno-deprecated-gpu-targets)
-endif()
 add_test(NAME ${TARGET_NAME} COMMAND ${TARGET_NAME})
