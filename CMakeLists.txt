@@ -17,8 +17,12 @@ find_package(OpenCL)
 find_package(Qt5Widgets)
 find_package(CUDA)
 if(CUDA_FOUND)
-    list(APPEND CUDA_NVCC_FLAGS -std=c++11 -O2)
-    set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+    # There is some bug in CMake (FindCUDA.cmake) that causes it to mess up the -std=c++11 option 
+    # if you let it propagate it to nvcc in some cases.
+    if(NOT MSVC)
+        set(CUDA_PROPAGATE_HOST_FLAGS OFF)
+        list(APPEND CUDA_NVCC_FLAGS -std=c++11)
+    endif()
 endif()
 
 option(PENGUINV_BUILD_TEST "Build tests of penguinV" ON)
