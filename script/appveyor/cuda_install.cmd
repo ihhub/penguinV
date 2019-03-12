@@ -14,6 +14,6 @@ echo "Failed to install CUDA"
 exit /B 1
 )
 
-set PATH=%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin;%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v8.0\libnvvp;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin;%PATH%
-
+set CUDA_DIR=%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v8.0
+set PATH=%CUDA_DIR%\bin;%CUDA_DIR%\libnvvp;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin;%PATH%
 nvcc -V
