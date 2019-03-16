@@ -23,6 +23,11 @@ public:
     {
     }
 
+    explicit imageException( const std::string & message )
+        : _name( message.data() )
+    {
+    }
+
     imageException( const imageException & ex )
         : std::exception( ex )
         , _name         ( ex._name )
