@@ -8,7 +8,6 @@ subsystem:
 	-$(MAKE) -C image_function
 	-$(MAKE) -C filters
 	-$(MAKE) -C opencl/image_function
-	-$(MAKE) -C thread_pool
 
 .PHONY: clean
 clean:
@@ -18,4 +17,3 @@ clean:
 	-$(MAKE) clean -C image_function
 	-$(MAKE) clean -C filters
 	-$(MAKE) clean -C opencl/image_function
-	-$(MAKE) clean -C thread_pool
