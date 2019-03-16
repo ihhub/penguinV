@@ -88,7 +88,7 @@ namespace
     template <typename _T>
     void verifyFunction(_T func, const char * functionName)
     {
-        if (func == nullptr) {
+        if ( func == nullptr ) {
             const std::string error( std::string("Function ") + std::string(functionName) + std::string(" is not defined") );
             throw imageException(error.data());
         }
