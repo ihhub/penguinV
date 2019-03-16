@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <vector>
 #include "image_buffer.h"
 
@@ -510,13 +511,34 @@ namespace Image_Function_Helper
         FunctionTable::ThresholdDoubleForm4    Threshold2         = nullptr;
         FunctionTable::TransposeForm4          Transpose          = nullptr;
     };
+}
+
+class ImageTypeManager
+{
+public:
+    static ImageTypeManager & instance();
 
     // Register function table for specific image type. This function must be called within source file (*.cpp) during startup of the library
     // forceSetup flag is needed for SIMD function table set as we are not sure in which order normal CPU and SIMD global function code would be called
-    void registerFunctionTable( const Image & image, const FunctionTableHolder & table, bool forceSetup = false );
+    void setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup = false );
+    const Image_Function_Helper::FunctionTableHolder & functionTable( uint8_t type );
 
-    const FunctionTableHolder & getFunctionTableHolder( const Image & image );
-}
+    void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out );
+    Image_Function_Helper::FunctionTable::CopyForm1 convert( uint8_t typeIn, uint8_t typeOut );
+
+    PenguinV_Image::Image image( uint8_t type ) const;
+    std::vector< uint8_t > imageTypes();
+
+    void enableIntertypeConversion( bool enable );
+    bool isIntertypeConversionEnabled();
+private:
+    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > _functionTableMap;
+    std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 > _intertypeConvertMap;
+    std::map< uint8_t, PenguinV_Image::Image > _image;
+    bool _enabledIntertypeConversion;
+
+    ImageTypeManager();
+};
 
 // This namespace is a helper namespace for SIMD instruction based code
 namespace simd

@@ -35,8 +35,8 @@ namespace Image_Function_Cuda
     void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-    ImageCuda ConvertToCuda( const Image & in );
-    void  ConvertToCuda( const Image & in, ImageCuda & out );
+    Image ConvertToCuda( const Image & in );
+    void  ConvertToCuda( const Image & in, Image & out );
     Image ConvertFromCuda( const Image & in );
     void  ConvertFromCuda( const Image & in, Image & out );
 
