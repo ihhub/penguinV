@@ -8,8 +8,8 @@
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
 
-void cpuCode( const char * filePath );
-void gpuCode( const char * filePath );
+void cpuCode( const std::string & filePath );
+void gpuCode( const std::string & filePath );
 
 int main( int argc, char* argv[] )
 {
@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
             return 0;
         }
 
-        char * filePath = "mercury.bmp"; // default image path
+        std::string filePath = "mercury.bmp"; // default image path
         if ( argc > 1 ) // Check input data
             filePath = argv[1];
 
@@ -45,7 +45,7 @@ int main( int argc, char* argv[] )
     return 0;
 }
 
-void cpuCode( const char * filePath )
+void cpuCode( const std::string & filePath )
 {
     // Load an image from storage
     PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
@@ -65,7 +65,7 @@ void cpuCode( const char * filePath )
     Bitmap_Operation::Save( "result_CPU.bmp", image );
 }
 
-void gpuCode( const char * filePath )
+void gpuCode( const std::string & filePath )
 {
     // Load an image from storage
     PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );

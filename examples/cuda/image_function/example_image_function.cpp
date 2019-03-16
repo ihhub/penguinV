@@ -8,8 +8,8 @@
 #include "../../../src/cuda/image_buffer_cuda.cuh"
 #include "../../../src/cuda/image_function_cuda.cuh"
 
-void cpuCode( const char * filePath );
-void gpuCode( const char * filePath );
+void cpuCode( const std::string & filePath );
+void gpuCode( const std::string &  filePath );
 
 int main( int argc, char* argv[] )
 {
@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
             return 0;
         }
 
-        char * filePath = "mercury.bmp"; // default image path
+        std::string filePath = "mercury.bmp"; // default image path
         if ( argc > 1 ) // Check input data
             filePath = argv[1];
 
@@ -43,7 +43,7 @@ int main( int argc, char* argv[] )
     return 0;
 }
 
-void cpuCode( const char * filePath )
+void cpuCode( const std::string & filePath )
 {
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
@@ -65,7 +65,7 @@ void cpuCode( const char * filePath )
     Bitmap_Operation::Save( "result1.bmp", image );
 }
 
-void gpuCode( const char * filePath )
+void gpuCode( const std::string & filePath )
 {
     // Load an image from storage
     PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );

@@ -6,7 +6,7 @@
 
 int main( int argc, char* argv[] )
 {
-    char * filePath = "lena.bmp"; // default image path
+    std::string filePath = "lena.bmp"; // default image path
     if ( argc > 1 ) // Check input data
         filePath = argv[1];
 
