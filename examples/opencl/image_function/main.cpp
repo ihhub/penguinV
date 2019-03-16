@@ -8,20 +8,11 @@
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
 
-void cpuBased();
-void gpuBased();
+void cpuCode( const char * filePath );
+void gpuCode( const char * filePath );
 
-int main()
+int main( int argc, char* argv[] )
 {
-    // This example application is made to show how to use bitmap file operations
-    // and comparison between CPU based code and GPU based code
-    // as well as basic image processing operations.
-    // Conditions:
-    // - "Houston, we received the image of Mercury!"
-    // We have an image of Mercury (24-bit color image). We want to load it,
-    // convert to gray-scale, extract the planet on image by applying thresholding and
-    // save image on storage
-
     try // <---- do not forget to put your code into try.. catch block!
     {
         // First thing we should check whether the system contains GPU device
@@ -30,17 +21,23 @@ int main()
             return 0;
         }
 
+        char * filePath = "mercury.bmp"; // default image path
+        if ( argc > 1 ) // Check input data
+            filePath = argv[1];
+
         // CPU code
-        cpuBased();
+        cpuCode( filePath );
         // GPU code
-        gpuBased();
+        gpuCode( filePath );
     }
     catch( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        std::cout << ex.what() << ". Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 1;
     }
     catch( ... ) { // uh-oh, something terrible happen!
-        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        std::cout << "Generic exception raised. Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 2;
     }
 
@@ -48,16 +45,14 @@ int main()
     return 0;
 }
 
-void cpuBased()
+void cpuCode( const char * filePath )
 {
     // Load an image from storage
-    // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
-    // Otherwise you can change the path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
+    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
-        throw imageException( "Cannot load the image" );
+        throw imageException( std::string("Cannot load ") + filePath );
 
     // Convert to gray-scale image if it's not
     if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
@@ -70,8 +65,15 @@ void cpuBased()
     Bitmap_Operation::Save( "result_CPU.bmp", image );
 }
 
-void gpuBased()
+void gpuCode( const char * filePath )
 {
+    // Load an image from storage
+    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+
+    // If the image is empty it means that the image doesn't exist or the file is not readable
+    if( image.empty() )
+        throw imageException( std::string("Cannot load ") + filePath );
+
     multiCL::OpenCLDeviceManager & deviceManager = multiCL::OpenCLDeviceManager::instance();
     deviceManager.initializeDevices();
     for ( uint32_t deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId) {
@@ -79,15 +81,6 @@ void gpuBased()
         // It is recommended to use preallocated buffers for GPU memory usage
         // So we preallocate 32 MB of GPU memory for our usage
         multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
-
-        // Load an image from storage
-        // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
-        // Otherwise you can change the path where the image stored
-        PenguinV_Image::Image image = Bitmap_Operation::Load( "mercury.bmp" );
-
-        // If the image is empty it means that the image doesn't exist or the file is not readable
-        if( image.empty() )
-            throw imageException( "Cannot load the image" );
 
         // Copy image from GPU space to GPU space
         PenguinV_Image::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
