@@ -6,7 +6,7 @@
 #include "../../../src/file/bmp_image.h"
 #include "../../../src/ui/win/win_ui.h"
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     try // <---- do not forget to put your code into try.. catch block!
     {

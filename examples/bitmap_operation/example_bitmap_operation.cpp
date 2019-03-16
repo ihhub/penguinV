@@ -4,7 +4,7 @@
 #include "../../src/image_function.h"
 #include "../../src/file/bmp_image.h"
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     std::string filePath = "lena.bmp"; // default image path
     if ( argc > 1 ) // Check input data

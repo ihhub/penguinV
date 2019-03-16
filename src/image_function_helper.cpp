@@ -941,7 +941,7 @@ ImageTypeManager & ImageTypeManager::instance()
 void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup )
 {
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::iterator oldTable = _functionTableMap.find( type );
-    if (oldTable != _functionTableMap.end())
+    if ( oldTable != _functionTableMap.end() )
         setupTable( oldTable->second, table, forceSetup );
     else
         _functionTableMap[type] = table;
@@ -950,7 +950,7 @@ void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Help
 const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTable( uint8_t type )
 {
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator table = _functionTableMap.find( type );
-    if (table == _functionTableMap.end())
+    if ( table == _functionTableMap.end() )
         throw imageException( "Function table is not initialised" );
 
     return table->second;
@@ -958,7 +958,7 @@ const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTab
 
 void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out )
 {
-    if( in.type() == out.type() )
+    if ( in.type() == out.type() )
         throw imageException( "Cannot register same type images for intertype copy" );
 
     _intertypeConvertMap[std::pair<uint8_t, uint8_t>( in.type(), out.type() )] = Copy;
@@ -980,7 +980,7 @@ Image_Function_Helper::FunctionTable::CopyForm1 ImageTypeManager::convert( uint8
 PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
 {
     std::map< uint8_t, PenguinV_Image::Image >::const_iterator image = _image.find( type );
-    if (image == _image.cend())
+    if ( image == _image.cend() )
         throw imageException( "Image is not registered" );
 
     return image->second;

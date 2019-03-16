@@ -9,9 +9,9 @@
 #include "../../../src/cuda/image_function_cuda.cuh"
 
 void cpuCode( const std::string & filePath );
-void gpuCode( const std::string &  filePath );
+void gpuCode( const std::string & filePath );
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     try // <---- do not forget to put your code into try.. catch block!
     {
@@ -76,7 +76,7 @@ void gpuCode( const std::string & filePath )
 
     multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
     deviceManager.initializeDevices();
-    for ( int deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId) {
+    for ( int deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId ) {
         deviceManager.setActiveDevice( deviceId );
         // It is recommended to use preallocated buffers for GPU memory usage
         // So we preallocate 32 MB of GPU memory for our usage
@@ -86,7 +86,7 @@ void gpuCode( const std::string & filePath )
         PenguinV_Image::Image imageGPU = Image_Function_Cuda::ConvertToCuda( image );
 
         // Convert to gray-scale image if it's not
-        if( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if ( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
             imageGPU = Image_Function_Cuda::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold

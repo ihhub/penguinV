@@ -5,7 +5,7 @@
 #include "../../src/image_function.h"
 #include "../../src/file/bmp_image.h"
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     // This example application is made to show how filters work and what which results they produce
 
@@ -18,7 +18,7 @@ int main( int argc, char* argv[] )
         // Load an image
         PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
 
-         // If the image is empty it means that the image doesn't exist or the file is not readable
+        // If the image is empty it means that the image doesn't exist or the file is not readable
         if( image.empty() )
             throw imageException( std::string("Cannot load ") + filePath );
 

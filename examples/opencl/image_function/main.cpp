@@ -11,7 +11,7 @@
 void cpuCode( const std::string & filePath );
 void gpuCode( const std::string & filePath );
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     try // <---- do not forget to put your code into try.. catch block!
     {

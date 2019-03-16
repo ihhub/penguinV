@@ -56,7 +56,7 @@ namespace
         PenguinV_Image::Image & operator ()( PenguinV_Image::Image & image )
         {
             if ( image.type() != _type ) {
-                _output.push_back( new ReferenceOwner(image) );
+                _output.push_back( new ReferenceOwner( image ) );
                 _outputClone.push_back( _clone( image ) );
                 return _outputClone.back();
             }
