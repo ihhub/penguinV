@@ -84,12 +84,8 @@ namespace multiCL
 
     void openCLCheck( cl_int error )
     {
-        if( error != CL_SUCCESS ) {
-            char errorMessage[64];
-            sprintf( errorMessage, "Failed to run OpenCL function with error %d", error );
-
-            throw imageException( errorMessage );
-        }
+        if( error != CL_SUCCESS )
+            throw imageException( std::string( "Failed to run OpenCL function with error ") + std::to_string( error ) );
     }
 
     bool openCLSafeCheck( cl_int error )

@@ -43,7 +43,7 @@ namespace
             table.Threshold          = &Image_Function_Simd::Threshold;
             table.Threshold2         = &Image_Function_Simd::Threshold;
 
-            Image_Function_Helper::registerFunctionTable( PenguinV_Image::Image(), table, true );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table, true );
         }
     };
 

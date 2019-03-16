@@ -33,7 +33,9 @@ namespace
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, PenguinV_Image::ImageCuda(), PenguinV_Image::Image() );
         }
     };
 
@@ -471,16 +473,16 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
-    ImageCuda ConvertToCuda( const Image & in )
+    Image ConvertToCuda( const Image & in )
     {
-        ImageCuda out( in.width(), in.height(), in.colorCount() );
+        Image out = ImageCuda().generate( in.width(), in.height(), in.colorCount() );
 
         ConvertToCuda( in, out );
 
         return out;
     }
 
-    void ConvertToCuda( const Image & in, ImageCuda & out )
+    void ConvertToCuda( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );

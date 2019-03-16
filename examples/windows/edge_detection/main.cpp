@@ -6,14 +6,18 @@
 #include "../../../src/file/bmp_image.h"
 #include "../../../src/ui/win/win_ui.h"
 
-int main()
+int main( int argc, char * argv[] )
 {
     try // <---- do not forget to put your code into try.. catch block!
     {
-        const PenguinV_Image::Image original = Bitmap_Operation::Load( "mercury.bmp" );
+        std::string filePath = "mercury.bmp"; // default image path
+        if ( argc > 1 ) // Check input data
+            filePath = argv[1];
+
+        const PenguinV_Image::Image original = Bitmap_Operation::Load( filePath );
 
         if ( original.empty() ) // if the image is empty it means that the image doesn't exist or the file is not readable
-            throw imageException( "Cannot load the image" );
+            throw imageException( std::string("Cannot load ") + filePath );
 
         PenguinV_Image::Image image( original );
         if ( image.colorCount() != PenguinV_Image::GRAY_SCALE ) // convert to gray-scale image if it's not
@@ -46,11 +50,13 @@ int main()
         window.show();
     }
     catch ( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        std::cout << ex.what() << ". Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 1;
     }
     catch ( ... ) { // uh-oh, something terrible happen!
-        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        std::cout << "Generic exception raised. Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 2;
     }
 

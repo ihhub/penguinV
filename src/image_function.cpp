@@ -45,7 +45,7 @@ namespace
             table.Threshold2         = &Image_Function::Threshold;
             table.Transpose          = &Image_Function::Transpose;
 
-            Image_Function_Helper::registerFunctionTable( PenguinV_Image::Image(), table );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table );
         }
     };
 

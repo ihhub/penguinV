@@ -37,7 +37,9 @@ namespace
             table.Threshold          = &Image_Function_OpenCL::Threshold;
             table.Threshold2         = &Image_Function_OpenCL::Threshold;
 
-            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageOpenCL(), table );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageOpenCL().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertToOpenCL, PenguinV_Image::Image(), PenguinV_Image::ImageOpenCL() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertFromOpenCL, PenguinV_Image::ImageOpenCL(), PenguinV_Image::Image() );
         }
     };
 
@@ -472,16 +474,16 @@ namespace Image_Function_OpenCL
         multiCL::launchKernel2D( kernel, width, height );
     }
 
-    ImageOpenCL ConvertToOpenCL( const Image & in )
+    Image ConvertToOpenCL( const Image & in )
     {
-        ImageOpenCL out( in.width(), in.height(), in.colorCount() );
+        PenguinV_Image::Image out = PenguinV_Image::ImageOpenCL().generate( in.width(), in.height(), in.colorCount() );
 
         ConvertToOpenCL( in, out );
 
         return out;
     }
 
-    void ConvertToOpenCL( const Image & in, ImageOpenCL & out )
+    void ConvertToOpenCL( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
