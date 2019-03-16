@@ -74,11 +74,13 @@ int main()
         std::cout << "Total time is " << getElapsedTime( startTime ) << " seconds" << std::endl;
     }
     catch( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        std::cout << ex.what() << ". Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 1;
     }
     catch( ... ) { // uh-oh, something terrible happen!
-        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        std::cout << "Generic exception raised. Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 2;
     }
 
