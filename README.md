@@ -5,9 +5,9 @@ penguinV
 PenguinV is a simple and easy to use C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
 
 - heterogeneous system support (CPUs and GPUs)
-- optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
+- CUDA, OpenCL and SIMD (SSE, AVX, NEON) support
 - [Python support](https://github.com/ihhub/penguinV/tree/master/src/python)
-- optional [multithreading support](#multithreading-support)
+- [multithreading support](#multithreading-support)
 - cross-platform (Windows, Linux, MacOS)
 - compactness
 - ability to process separate parts of an image (ROI)
