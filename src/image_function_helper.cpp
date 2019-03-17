@@ -61,7 +61,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         absoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -82,7 +82,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         absoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -102,7 +102,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -123,7 +123,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -135,7 +135,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -156,7 +156,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -168,7 +168,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -189,7 +189,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -265,7 +265,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height );
+        Image out = in.generate( width, height, in.colorCount() );
 
         copy( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -481,7 +481,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out = in.generate( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height(), in.colorCount() );
 
         invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -501,7 +501,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height );
+        Image out = in.generate( width, height, in.colorCount() );
 
         invert( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -546,7 +546,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -567,7 +567,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -613,7 +613,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -634,7 +634,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -738,7 +738,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out = in.generate( in.width(), in.height(), PenguinV_Image::RGB );
+        Image out = in.generate( in.width(), in.height(), RGB );
 
         rgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
@@ -758,7 +758,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height, PenguinV_Image::RGB );
+        Image out = in.generate( width, height, RGB );
 
         rgbToBgr( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -800,7 +800,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -821,7 +821,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
