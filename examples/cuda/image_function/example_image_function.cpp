@@ -31,11 +31,13 @@ int main( int argc, char * argv[] )
         gpuCode( filePath );
     }
     catch( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        std::cout << ex.what() << ". Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 1;
     }
     catch( ... ) { // uh-oh, something terrible happen!
-        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        std::cout << "Generic exception raised. Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 2;
     }
 
@@ -68,7 +70,7 @@ void cpuCode( const std::string & filePath )
 void gpuCode( const std::string & filePath )
 {
     // Load an image from storage
-    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+    const PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
@@ -90,7 +92,7 @@ void gpuCode( const std::string & filePath )
             imageGPU = Image_Function_Cuda::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold
-        image = Image_Function_Cuda::Threshold( imageGPU, Image_Function_Cuda::GetThreshold( Image_Function_Cuda::Histogram( imageGPU ) ) );
+        imageGPU = Image_Function_Cuda::Threshold( imageGPU, Image_Function_Cuda::GetThreshold( Image_Function_Cuda::Histogram( imageGPU ) ) );
 
         // Save result
         Bitmap_Operation::Save( "result_" + deviceManager.device().name() + ".bmp", Image_Function_Cuda::ConvertFromCuda( imageGPU ) );
