@@ -38,8 +38,8 @@ rgd = BitwiseOr( image, rgb );
 
 The trick behind the code is that you have a **single interface** for CPU as well as for GPU!
 
-![one](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/1_original.png) ![two](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/2_red_channel.png) ![three](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/3_red_threshold.png) ![four](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/4_blob.png)
-![five](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/5_logical_and.png) ![six](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/6_result.png)
+![one](data/readme/1_original.png) ![two](data/readme/2_red_channel.png) ![three](data/readme/3_red_threshold.png) ![four](data/readme/4_blob.png)
+![five](data/readme/5_logical_and.png) ![six](data/readme/6_result.png)
 
 Contribution
 ---------------------------
