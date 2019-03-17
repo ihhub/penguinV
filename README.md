@@ -36,7 +36,7 @@ rgd = BitwiseAnd( image, rgb );
 rgd = BitwiseOr( image, rgb );
 ```
 
-Such code could be executed on CPU as well as on GPU. The trick behind that you could a single interface for everything!
+The trick behind the code is that you have a **single interface** for CPU as well as for GPU!
 
 ![one](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/1_original.png) ![two](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/2_red_channel.png) ![three](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/3_red_threshold.png) ![four](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/4_blob.png)
 ![five](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/5_logical_and.png) ![six](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/6_result.png)
