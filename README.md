@@ -2,21 +2,42 @@ penguinV
 ======
  [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) [![CodeFactor](https://www.codefactor.io/repository/github/ihhub/penguinv/badge)](https://www.codefactor.io/repository/github/ihhub/penguinv)
 
-PenguinV is a simple and easy to use C++ image processing library with focus on heterogeneous systems. It is designed to have simple programming syntax and to deliver best performance. Some core features of the library are:
+PenguinV is a simple and easy to use C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
 
-- heterogeneous system support (CPU and GPUs)
+- heterogeneous system support (CPUs and GPUs)
 - optional GPU (CUDA, OpenCL) and SIMD (SSE, AVX, NEON) support
 - [Python support](https://github.com/ihhub/penguinV/tree/master/src/python)
 - [multithreading support](#multithreading-support)
 - cross-platform
 - compactness
-- ability to process separate parts of an image
+- ability to process separate parts of an image (ROI)
 - user-defined image types and more.
 
 The project in is active process of development so new features are coming soon!
 
-How it works
+What can it do?
 ---------------------------
+You can develop a software within minutes of your time to obtain **high performance** and **accuracy**. You can control which device (CPU or GPU) would execute your code or give such control to the library.
+
+Example code for below images could look like this:
+```cpp
+Image red = ExtractChannel( image, 0 ); // 0 is red channel
+Image binary = Threshold( red, // threshold
+                          GetThreshold( // get weighted threshold
+                              Histogram( red ) ) ) ); // get image histogram
+
+BlobDetection detection;
+...
+detection.find( binary );
+...
+Image rgb = ConvertToRgb( binary );
+rgd = BitwiseAnd( image, rgb );
+...
+rgd = BitwiseOr( image, rgb );
+```
+
+Such code could be executed on CPU as well as on GPU. The trick behind that you could a single interface for everything!
+
 ![one](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/1_original.png) ![two](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/2_red_channel.png) ![three](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/3_red_threshold.png) ![four](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/4_blob.png)
 ![five](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/5_logical_and.png) ![six](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/6_result.png)
 
