@@ -17,7 +17,7 @@ The project in is active process of development so new features are coming soon!
 
 What can it do?
 ---------------------------
-You can develop a software within minutes of your time to obtain **high performance** and **accuracy**. You can control which device (CPU or GPU) would execute your code or give such control to the library.
+You can develop a software within minutes of your time to obtain **high performance** and **accuracy**. It is up to developer to decide which device (CPU or GPU) would execute the code or give such control to the library.
 
 Example code for below images could look like this:
 ```cpp
