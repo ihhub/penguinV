@@ -149,13 +149,13 @@ namespace
     }
 
     __global__ void extractChannelCuda( const uint8_t * in, uint32_t rowSizeIn, uint8_t colorCount, uint8_t * out, uint32_t rowSizeOut,
-                                        uint32_t width, uint32_t height, uint8_t channelId )
+                                        uint32_t width, uint32_t height )
     {
         const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if ( x < width && y < height )
-            out[y * rowSizeOut + x] = in[y * rowSizeIn + x * colorCount + channelId];
+            out[y * rowSizeOut + x] = in[y * rowSizeIn + x * colorCount];
     }
 
     __global__ void fillCuda( uint8_t * data, uint32_t rowSize, uint32_t width, uint32_t height, uint8_t value )
@@ -678,7 +678,7 @@ namespace Image_Function_Cuda
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         launchKernel2D( extractChannelCuda, width, height,
-                        inY, rowSizeIn, colorCount, outY, rowSizeOut, width, height, channelId );
+                        inY, rowSizeIn, colorCount, outY, rowSizeOut, width, height );
     }
 
     void Fill( Image & image, uint8_t value )
