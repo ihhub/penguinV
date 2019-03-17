@@ -15,6 +15,11 @@ PenguinV is a simple and easy to use C++ image processing library with focus on 
 
 The project in is active process of development so new features are coming soon!
 
+How it works
+---------------------------
+![one](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/1_original.png) ![two](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/2_red_channel.png) ![three](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/3_red_threshold.png) ![four](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/4_blob.png)
+![five](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/5_logical_and.png) ![six](https://github.com/ihhub/penguinV/blob/readme_changes/data/readme/6_result.png)
+
 Contribution
 ---------------------------
 We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
