@@ -187,7 +187,7 @@ void EdgeDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint3
                 dataX = data.data();
 
                 for ( ; imageY != imageYEnd; imageY += rowSize, ++dataX )
-                    *dataX = *imageY;
+                    *dataX += *imageY;
             }
 
             std::vector< double > edgePositive;
