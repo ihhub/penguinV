@@ -55,7 +55,7 @@ class EdgeDetection
 {
 public:
     void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() );
-    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() );
+	void find(const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter());
 
     const std::vector < PointBase2D<T> > & positiveEdge() const;
     const std::vector < PointBase2D<T> > & negativeEdge() const;

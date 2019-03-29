@@ -165,17 +165,17 @@ void EdgeDetection<T>::find( const PenguinV_Image::Image & image, uint32_t x, ui
 
             if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveXEdge<T>( edgePositive, positiveEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createPositiveXEdge<T>( edgePositive, positiveEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / (T)2.0 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeXEdge<T>( edgeNegative, negativeEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createNegativeXEdge<T>( edgeNegative, negativeEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / (T)2.0 );
             }
             else {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeXEdge<T>( edgeNegative, positiveEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createNegativeXEdge<T>( edgeNegative, positiveEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / (T)2.0 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveXEdge<T>( edgePositive, negativeEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createPositiveXEdge<T>( edgePositive, negativeEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / (T)2.0 );
             }
         }
     }
@@ -207,17 +207,17 @@ void EdgeDetection<T>::find( const PenguinV_Image::Image & image, uint32_t x, ui
 
             if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveYEdge<T>( edgePositive, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
+                    createPositiveYEdge<T>( edgePositive, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / (T)2.0, y );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeYEdge<T>( edgeNegative, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
+                    createNegativeYEdge<T>( edgeNegative, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / (T)2.0, y + height - 1 );
             }
             else {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeYEdge<T>( edgeNegative, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
+                    createNegativeYEdge<T>( edgeNegative, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / (T)2.0, y + height - 1 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveYEdge<T>( edgePositive, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
+                    createPositiveYEdge<T>( edgePositive, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / (T)2.0, y );
             }
         }
     }
