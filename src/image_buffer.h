@@ -62,6 +62,12 @@ namespace PenguinV_Image
             return (*this);
         }
 
+        bool operator==( const ImageTemplate & image ) const
+        {
+            return _data == image._data && _width == image._width && _height == image._height && _colorCount == image._colorCount &&
+                   _alignment == image._alignment && _type == image._type;
+        }
+
         virtual ~ImageTemplate()
         {
             clear();

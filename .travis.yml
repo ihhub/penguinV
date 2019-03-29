@@ -22,6 +22,25 @@ matrix:
       before_install: source script/travis/install_qt5.sh
     - os: linux
       env: STATIC_ANALYSIS=ON
+      before_install:
+        - |
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
+          fi
+      script:
+        - export EXCLUDE_PATTERN_1=" not found in expected header ";
+        - export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
+        - export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
+        - git clone https://github.com/myint/cppclean;
+        - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+        - cd ${TRAVIS_BUILD_DIR}
+        - |
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
+            bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
+          else
+            echo "Skipping clang-format check since this is not a pull request."
+          fi
     - os: linux
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
@@ -52,12 +71,6 @@ matrix:
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
 
-before_install:
-  - |
-    if [[ "$STATIC_ANALYSIS" == "ON" && "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-      curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
-    fi
-
 before_script:
   # Let CMake generate build files
   - |
@@ -68,32 +81,12 @@ before_script:
 
 script:
   - |
-    if [[ "$STATIC_ANALYSIS" == "ON" ]]; then
-      export EXCLUDE_PATTERN_1=" not found in expected header ";
-      export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
-      export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
-      git clone https://github.com/myint/cppclean;
-      ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
-      cd ${TRAVIS_BUILD_DIR}
-      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-        echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
-        bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
-      else
-        echo "Skipping clang-format check since this is not a pull request."
-      fi
+    # Build and run tests
+    set -e
+    cmake --build .
+    set +e
+    if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
     else
-      # Build and run tests
-      set -e
-      cmake --build .
-      set +e
-      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
-      else
-        ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-      fi
-    fi
-  - |
-    if [[ $CUDA ]]; then
-      cd ../test/unit_tests/cuda;
-      make;
+      ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
     fi

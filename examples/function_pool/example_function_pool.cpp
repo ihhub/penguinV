@@ -53,7 +53,7 @@ int main()
                 const uint32_t height = randomValue<uint32_t>(image->height() - y);
 
                 // fill an area with some random value what is bigger than background value
-                Image_Function::Fill( *image, x, y, width, height, randomValue<uint8_t>(128u) + 64u );
+                Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>( randomValue<uint8_t>(128u) + 64u ) );
             }
         }
 
@@ -74,11 +74,13 @@ int main()
         std::cout << "Total time is " << getElapsedTime( startTime ) << " seconds" << std::endl;
     }
     catch( const std::exception & ex ) { // uh-oh, something went wrong!
-        std::cout << "Exception " << ex.what() << " raised. Closing the application..." << std::endl;
+        std::cout << ex.what() << ". Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 1;
     }
     catch( ... ) { // uh-oh, something terrible happen!
-        std::cout << "Generic exception raised. Closing the application..." << std::endl;
+        std::cout << "Generic exception raised. Press any button to continue." << std::endl;
+        std::cin.ignore();
         return 2;
     }
 

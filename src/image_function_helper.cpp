@@ -1,19 +1,10 @@
 #include "image_function_helper.h"
 
-#include <map>
-#include <mutex>
-
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
 
 namespace
 {
-    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > & functionTableMap()
-    {
-        static std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > map;
-        return map;
-    }
-
     template <typename _Function>
     void setFunction( _Function & F1, const _Function & F2, bool forceSetup )
     {
@@ -70,7 +61,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         absoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -91,7 +82,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         absoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -111,7 +102,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -132,7 +123,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -144,7 +135,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -165,7 +156,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -177,7 +168,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         bitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -198,7 +189,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         bitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -274,7 +265,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height );
+        Image out = in.generate( width, height, in.colorCount() );
 
         copy( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -490,7 +481,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out = in.generate( in.width(), in.height() );
+        Image out = in.generate( in.width(), in.height(), in.colorCount() );
 
         invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -510,7 +501,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height );
+        Image out = in.generate( width, height, in.colorCount() );
 
         invert( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -555,7 +546,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -576,7 +567,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         maximum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -622,7 +613,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -643,7 +634,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         minimum( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -747,7 +738,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in );
 
-        Image out = in.generate( in.width(), in.height(), PenguinV_Image::RGB );
+        Image out = in.generate( in.width(), in.height(), RGB );
 
         rgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
@@ -767,7 +758,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = in.generate( width, height, PenguinV_Image::RGB );
+        Image out = in.generate( width, height, RGB );
 
         rgbToBgr( in, startXIn, startYIn, out, 0, 0, width, height );
 
@@ -809,7 +800,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        Image out = in1.generate( in1.width(), in1.height() );
+        Image out = in1.generate( in1.width(), in1.height(), in1.colorCount() );
 
         subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
 
@@ -830,7 +821,7 @@ namespace Image_Function_Helper
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        Image out = in1.generate( width, height );
+        Image out = in1.generate( width, height, in1.colorCount() );
 
         subtract( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
@@ -934,28 +925,85 @@ namespace Image_Function_Helper
 
         return out;
     }
+}
 
-    void registerFunctionTable( const Image & image, const FunctionTableHolder & table, bool forceSetup )
-    {
-        static std::mutex mapGuard;
+ImageTypeManager::ImageTypeManager()
+    : _enabledIntertypeConversion( false )
+{
+}
 
-        mapGuard.lock();
-        std::map< uint8_t, FunctionTableHolder >::iterator oldTable = functionTableMap().find( image.type() );
-        if (oldTable != functionTableMap().end())
-            setupTable( oldTable->second, table, forceSetup );
-        else
-            functionTableMap()[image.type()] = table;
-        mapGuard.unlock();
-    }
+ImageTypeManager & ImageTypeManager::instance()
+{
+    static ImageTypeManager manager;
+    return manager;
+}
 
-    const FunctionTableHolder & getFunctionTableHolder( const Image & image )
-    {
-        std::map< uint8_t, FunctionTableHolder >::const_iterator table = functionTableMap().find( image.type() );
-        if (table == functionTableMap().end())
-            throw imageException( "Function table is not initialised" );
+void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup )
+{
+    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::iterator oldTable = _functionTableMap.find( type );
+    if ( oldTable != _functionTableMap.end() )
+        setupTable( oldTable->second, table, forceSetup );
+    else
+        _functionTableMap[type] = table;
+}
 
-        return table->second;
-    }
+const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTable( uint8_t type )
+{
+    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator table = _functionTableMap.find( type );
+    if ( table == _functionTableMap.end() )
+        throw imageException( "Function table is not initialised" );
+
+    return table->second;
+}
+
+void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out )
+{
+    if ( in.type() == out.type() )
+        throw imageException( "Cannot register same type images for intertype copy" );
+
+    _intertypeConvertMap[std::pair<uint8_t, uint8_t>( in.type(), out.type() )] = Copy;
+
+    _image[in.type()] = in.generate();
+    _image[out.type()] = out.generate();
+}
+
+Image_Function_Helper::FunctionTable::CopyForm1 ImageTypeManager::convert( uint8_t typeIn, uint8_t typeOut )
+{
+    std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
+        _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( typeIn, typeOut ) );
+    if ( copy == _intertypeConvertMap.cend() )
+        throw imageException( "Copy function between different image types is not registered" );
+
+    return copy->second;
+}
+
+PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
+{
+    std::map< uint8_t, PenguinV_Image::Image >::const_iterator image = _image.find( type );
+    if ( image == _image.cend() )
+        throw imageException( "Image is not registered" );
+
+    return image->second;
+}
+
+std::vector< uint8_t > ImageTypeManager::imageTypes()
+{
+    std::vector< uint8_t > type;
+
+    for ( std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator item = _functionTableMap.cbegin(); item != _functionTableMap.cend(); ++item )
+        type.push_back( item->first );
+
+    return type;
+}
+
+void ImageTypeManager::enableIntertypeConversion( bool enable )
+{
+    _enabledIntertypeConversion = enable;
+}
+
+bool ImageTypeManager::isIntertypeConversionEnabled()
+{
+    return _enabledIntertypeConversion;
 }
 
 namespace simd

@@ -32,6 +32,13 @@ set(SRCS
     unit_test_image_function.cpp
     unit_test_math.cpp)
 
+option(PENGUINV_BUILD_UNIT_TEST_CUDA "Build CUDA unit tests" ON)
+    if(${PENGUINV_BUILD_UNIT_TEST_CUDA})
+        if(CUDA_FOUND)
+            add_subdirectory(cuda)
+        endif(CUDA_FOUND)
+endif()
+
 option(PENGUINV_BUILD_UNIT_TEST_OPENCL "Build OpenCL unit tests" ON)
 if(${PENGUINV_BUILD_UNIT_TEST_OPENCL})
     if(OpenCL_FOUND)

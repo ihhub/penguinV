@@ -33,7 +33,9 @@ namespace
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            Image_Function_Helper::registerFunctionTable( PenguinV_Image::ImageCuda(), table );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, PenguinV_Image::ImageCuda(), PenguinV_Image::Image() );
         }
     };
 
@@ -147,13 +149,13 @@ namespace
     }
 
     __global__ void extractChannelCuda( const uint8_t * in, uint32_t rowSizeIn, uint8_t colorCount, uint8_t * out, uint32_t rowSizeOut,
-                                        uint32_t width, uint32_t height, uint8_t channelId )
+                                        uint32_t width, uint32_t height )
     {
         const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if ( x < width && y < height )
-            out[y * rowSizeOut + x] = in[y * rowSizeIn + x * colorCount + channelId];
+            out[y * rowSizeOut + x] = in[y * rowSizeIn + x * colorCount];
     }
 
     __global__ void fillCuda( uint8_t * data, uint32_t rowSize, uint32_t width, uint32_t height, uint8_t value )
@@ -471,16 +473,16 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
-    ImageCuda ConvertToCuda( const Image & in )
+    Image ConvertToCuda( const Image & in )
     {
-        ImageCuda out( in.width(), in.height(), in.colorCount() );
+        Image out = ImageCuda().generate( in.width(), in.height(), in.colorCount() );
 
         ConvertToCuda( in, out );
 
         return out;
     }
 
-    void ConvertToCuda( const Image & in, ImageCuda & out )
+    void ConvertToCuda( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -676,7 +678,7 @@ namespace Image_Function_Cuda
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         launchKernel2D( extractChannelCuda, width, height,
-                        inY, rowSizeIn, colorCount, outY, rowSizeOut, width, height, channelId );
+                        inY, rowSizeIn, colorCount, outY, rowSizeOut, width, height );
     }
 
     void Fill( Image & image, uint8_t value )
