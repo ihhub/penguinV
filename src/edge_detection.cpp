@@ -367,3 +367,6 @@ void EdgeDetection<T>::getEdgePoints( std::vector < T > & edge, const std::vecto
         }
     }
 }
+
+template class EdgeDetection<float>;
+template class EdgeDetection<double>;

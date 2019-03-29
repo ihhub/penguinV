@@ -72,5 +72,3 @@ private:
                         const EdgeParameter & edgeParameter ) const;
     void removeSimilarPoints( std::vector < T > & edge ) const;
 };
-
-#include "../../../src/edge_detection.cpp"
