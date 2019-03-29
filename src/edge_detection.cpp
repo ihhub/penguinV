@@ -1,3 +1,5 @@
+#pragma once
+
 #include "edge_detection.h"
 
 #include <algorithm>
@@ -7,46 +9,53 @@
 
 namespace
 {
-    void leaveFirstElement( std::vector< double > & data )
+	template<typename T = double>
+    void leaveFirstElement( std::vector< T > & data )
     {
         if ( data.size() > 1u )
             data.resize( 1u );
     }
 
-    void leaveLastElement( std::vector< double > & data )
+	template<typename T = double>
+    void leaveLastElement( std::vector< T > & data )
     {
         if ( data.size() > 1u ) {
-            std::vector< double > temp;
+            std::vector< T > temp;
             temp.push_back( data.back() );
             std::swap( data, temp );
         }
     }
 
-    void createPositiveXEdge( const std::vector< double > & data, std::vector < Point2d > & point, double x, double y )
+	template<typename T = double>
+    void createPositiveXEdge( const std::vector< T > & data, std::vector < PointBase2D<T> > & point, T x, T y )
     {
-        for ( std::vector < double >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
-            point.push_back( Point2d( (*dataX) + x, y ) );
+        for ( std::vector < T >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+            point.push_back( PointBase2D<T>( (*dataX) + x, y ) );
     }
 
-    void createNegativeXEdge( const std::vector< double > & data, std::vector < Point2d > & point, double x, double y )
+	template<typename T = double>
+    void createNegativeXEdge( const std::vector< T > & data, std::vector < PointBase2D<T> > & point, T x, T y )
     {
-        for ( std::vector < double >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
-            point.push_back( Point2d( x - (*dataX), y ) );
+        for ( std::vector < T >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+            point.push_back( PointBase2D<T>( x - (*dataX), y ) );
     }
 
-    void createPositiveYEdge( const std::vector< double > & data, std::vector < Point2d > & point, double x, double y )
+	template<typename T = double>
+    void createPositiveYEdge( const std::vector< T > & data, std::vector < PointBase2D<T> > & point, T x, T y )
     {
-        for ( std::vector < double >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
-            point.push_back( Point2d( x, y + (*dataY) ) );
+        for ( std::vector < T >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+            point.push_back( PointBase2D<T>( x, y + (*dataY) ) );
     }
 
-    void createNegativeYEdge( const std::vector< double > & data, std::vector < Point2d > & point, double x, double y )
+	template<typename T = double>
+    void createNegativeYEdge( const std::vector< T > & data, std::vector < PointBase2D<T> > & point, T x, T y )
     {
-        for ( std::vector < double >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
-            point.push_back( Point2d( x, y - (*dataY) ) );
+        for ( std::vector < T >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+            point.push_back( PointBase2D<T>( x, y - (*dataY) ) );
     }
 
-    bool findPoint( const std::vector< int > & data, const std::vector< int > & second, std::vector< double > & edge,
+	template<typename T = double>
+    bool findPoint( const std::vector< int > & data, const std::vector< int > & second, std::vector< T > & edge,
                     uint32_t leftSideOffset, uint32_t rightSideOffset, int minimumContrast, bool checkContrast,
                     uint32_t leftSideContrastCheck, uint32_t rightSideContrastCheck, uint32_t position, uint32_t size )
     {
@@ -75,9 +84,9 @@ namespace
 
         if ( !checkContrast ) {
             if ( second[position] != second[position + 1] )
-                edge.push_back( position + static_cast<double>(second[position]) / (second[position] - second[position + 1u]) );
+                edge.push_back( position + static_cast<T>(second[position]) / (second[position] - second[position + 1u]) );
             else
-                edge.push_back( position + 0.5 );
+                edge.push_back( position + (T)0.5 );
             return true;
         }
 
@@ -108,12 +117,14 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-void EdgeDetection::find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter )
+template<typename T = double>
+void EdgeDetection<T>::find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter )
 {
     find( image, 0, 0, image.width(), image.height(), edgeParameter );
 }
 
-void EdgeDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter )
+template<typename T = double>
+void EdgeDetection<T>::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter )
 {
     Image_Function::VerifyGrayScaleImage( image );
     Image_Function::ParameterValidation( image, x, y, width, height );
@@ -147,24 +158,24 @@ void EdgeDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint3
                 for ( ; imageX != imageXEnd; ++imageX, ++dataX )
                     *dataX += *imageX;
             }
-
-            std::vector< double > edgePositive;
-            std::vector< double > edgeNegative;
+			
+            std::vector< T > edgePositive;
+            std::vector< T > edgeNegative;
             findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT) );
 
             if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveXEdge( edgePositive, positiveEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createPositiveXEdge<T>( edgePositive, positiveEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeXEdge( edgeNegative, negativeEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createNegativeXEdge<T>( edgeNegative, negativeEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
             }
             else {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeXEdge( edgeNegative, positiveEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createNegativeXEdge<T>( edgeNegative, positiveEdgePoint, x + width - 1, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveXEdge( edgePositive, negativeEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
+                    createPositiveXEdge<T>( edgePositive, negativeEdgePoint, x, y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
             }
         }
     }
@@ -190,29 +201,30 @@ void EdgeDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint3
                     *dataX = *imageY;
             }
 
-            std::vector< double > edgePositive;
-            std::vector< double > edgeNegative;
+            std::vector< T > edgePositive;
+            std::vector< T > edgeNegative;
             findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM) );
 
             if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveYEdge( edgePositive, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
+                    createPositiveYEdge<T>( edgePositive, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeYEdge( edgeNegative, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
+                    createNegativeYEdge<T>( edgeNegative, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
             }
             else {
                 if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createNegativeYEdge( edgeNegative, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
+                    createNegativeYEdge<T>( edgeNegative, positiveEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y + height - 1 );
 
                 if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                    createPositiveYEdge( edgePositive, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
+                    createPositiveYEdge<T>( edgePositive, negativeEdgePoint, x + rowId + (edgeParameter.groupFactor - 1) / 2.0, y );
             }
         }
     }
 }
 
-void EdgeDetection::findEdgePoints( std::vector < double > & positive, std::vector < double > & negative, std::vector < int > & data,
+template<typename T = double>
+void EdgeDetection<T>::findEdgePoints( std::vector < T > & positive, std::vector < T > & negative, std::vector < int > & data,
                                     std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection )
 {
     getDerivatives( data, first, second );
@@ -234,17 +246,20 @@ void EdgeDetection::findEdgePoints( std::vector < double > & positive, std::vect
     }
 }
 
-const std::vector < Point2d > & EdgeDetection::positiveEdge() const
+template<typename T = double>
+const std::vector < PointBase2D<T> > & EdgeDetection<T>::positiveEdge() const
 {
     return positiveEdgePoint;
 }
 
-const std::vector < Point2d > & EdgeDetection::negativeEdge() const
+template<typename T = double>
+const std::vector < PointBase2D<T> > & EdgeDetection<T>::negativeEdge() const
 {
     return negativeEdgePoint;
 }
 
-void EdgeDetection::getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const
+template<typename T = double>
+void EdgeDetection<T>::getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const
 {
     // input array range is [0; n)
     // first deriviative range is [0; n - 1)
@@ -253,17 +268,19 @@ void EdgeDetection::getDerivatives( const std::vector < int > & image, std::vect
     std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
 }
 
-void EdgeDetection::removeSimilarPoints( std::vector < double > & edge ) const
+template<typename T = double>
+void EdgeDetection<T>::removeSimilarPoints( std::vector < T > & edge ) const
 {
     for ( size_t i = 1u; i < edge.size(); ) {
-        if ( (edge[i] - edge[i - 1]) < 1.0 )
-            edge.erase( edge.begin() + i );
+        if ( (edge[i] - edge[i - 1u]) < 1.0 )
+            edge.erase( edge.begin() + static_cast< std::vector< T >::difference_type >( i ) ); // it's safe to do
         else
             ++i;
     }
 }
 
-void EdgeDetection::getEdgePoints( std::vector < double > & edge, const std::vector < int > & data, const std::vector < int > & first, const std::vector < int > & second,
+template<typename T = double>
+void EdgeDetection<T>::getEdgePoints( std::vector < T > & edge, const std::vector < int > & data, const std::vector < int > & first, const std::vector < int > & second,
                                    const EdgeParameter & edgeParameter ) const
 {
     const uint32_t dataSize = static_cast<uint32_t>( data.size() ); // we know that initial size is uint32_t

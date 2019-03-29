@@ -25,23 +25,28 @@ int main()
         // In such case we set a range of pixels to verify that found edge point is really an edge
         edgeParameter.contrastCheckLeftSideOffset  = 3u; // in pixels
         edgeParameter.contrastCheckRightSideOffset = 3u; // in pixels
-
-        EdgeDetection edgeDetection;
+        
+        EdgeDetection<float> edgeDetection;
         edgeDetection.find( image, edgeParameter );
 
-        const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();
-        const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();
+		const std::vector<PointBase2D<float>> & negativeEdge = edgeDetection.negativeEdge();
+		const std::vector<PointBase2D<float>> & positiveEdge = edgeDetection.positiveEdge();
+
+        //const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();//Point2d -> Point2f
+        //const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();//Point2d -> Point2f
 
         UiWindowWin window( original, "Edge detection" );
-
+		
         const PaintColor positiveColor( 20, 255, 20 ); // green
         const PaintColor negativeColor( 255, 20, 20 ); // red
 
-        for ( std::vector<Point2d>::const_iterator point = positiveEdge.cbegin(); point != positiveEdge.cend(); ++point )
-            window.drawPoint( *point, positiveColor );
+        for ( std::vector<PointBase2D<float>>::const_iterator point = positiveEdge.cbegin(); point != positiveEdge.cend(); ++point )//Point2d -> Point2f
+			//window.drawPoint( *point, positiveColor); // For double
+			window.drawPoint( Point2d((*point).getX(), (*point).getY()), positiveColor );
 
-        for ( std::vector<Point2d>::const_iterator point = negativeEdge.cbegin(); point != negativeEdge.cend(); ++point )
-            window.drawPoint( *point, negativeColor );
+        for ( std::vector<PointBase2D<float>>::const_iterator point = negativeEdge.cbegin(); point != negativeEdge.cend(); ++point )//Point2d -> Point2f
+			//window.drawPoint( *point, negativeColor); // For double
+			window.drawPoint( Point2d((*point).getX(), (*point).getY()), negativeColor );
 
         window.show();
     }

@@ -50,24 +50,27 @@ struct EdgeParameter
     void verify() const; // self-verification that all parameters are correct
 };
 
+template<typename T = double>
 class EdgeDetection
 {
 public:
     void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() );
     void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() );
 
-    const std::vector < Point2d > & positiveEdge() const;
-    const std::vector < Point2d > & negativeEdge() const;
+    const std::vector < PointBase2D<T> > & positiveEdge() const;
+    const std::vector < PointBase2D<T> > & negativeEdge() const;
 
 private:
-    std::vector < Point2d > positiveEdgePoint;
-    std::vector < Point2d > negativeEdgePoint;
+    std::vector < PointBase2D<T> > positiveEdgePoint;
+    std::vector < PointBase2D<T> > negativeEdgePoint;
 
-    void findEdgePoints( std::vector < double > & positive, std::vector < double > & negative, std::vector < int > & data,
+    void findEdgePoints( std::vector < T > & positive, std::vector < T > & negative, std::vector < int > & data,
                          std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection );
 
     void getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const;
-    void getEdgePoints( std::vector < double > & edge, const std::vector < int > & image, const std::vector < int > & first, const std::vector < int > & second,
+    void getEdgePoints( std::vector < T > & edge, const std::vector < int > & image, const std::vector < int > & first, const std::vector < int > & second,
                         const EdgeParameter & edgeParameter ) const;
-    void removeSimilarPoints( std::vector < double > & edge ) const;
+    void removeSimilarPoints( std::vector < T > & edge ) const;
 };
+
+#include "../../../src/edge_detection.cpp"
