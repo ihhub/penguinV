@@ -39,7 +39,7 @@ void UiWindowX11::_display()
         return;
 
     XEvent e;
-    while ( 1 ) {
+    while ( true ) {
         XNextEvent( _uiDisplay, &e );
         if ( e.type == Expose )
             XPutImage( _uiDisplay, _window, DefaultGC( _uiDisplay, _screen ), _image, 0, 0, 0, 0, _width, _height );
@@ -50,6 +50,9 @@ void UiWindowX11::_display()
 
 void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
 {
+    if ( image.empty() )
+        return;
+
     _data.resize( _width * _height * 4 );
     const uint32_t rowSize = image.rowSize();
 
