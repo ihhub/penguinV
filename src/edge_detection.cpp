@@ -117,13 +117,13 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter )
 {
     find( image, 0, 0, image.width(), image.height(), edgeParameter );
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter )
 {
     Image_Function::VerifyGrayScaleImage( image );
@@ -223,7 +223,7 @@ void EdgeDetection<T>::find( const PenguinV_Image::Image & image, uint32_t x, ui
     }
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::findEdgePoints( std::vector < T > & positive, std::vector < T > & negative, std::vector < int > & data,
                                     std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection )
 {
@@ -246,19 +246,19 @@ void EdgeDetection<T>::findEdgePoints( std::vector < T > & positive, std::vector
     }
 }
 
-template<typename T = double>
+template<typename T>
 const std::vector < PointBase2D<T> > & EdgeDetection<T>::positiveEdge() const
 {
     return positiveEdgePoint;
 }
 
-template<typename T = double>
+template<typename T>
 const std::vector < PointBase2D<T> > & EdgeDetection<T>::negativeEdge() const
 {
     return negativeEdgePoint;
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const
 {
     // input array range is [0; n)
@@ -268,7 +268,7 @@ void EdgeDetection<T>::getDerivatives( const std::vector < int > & image, std::v
     std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::removeSimilarPoints( std::vector < T > & edge ) const
 {
     for ( size_t i = 1u; i < edge.size(); ) {
@@ -279,7 +279,7 @@ void EdgeDetection<T>::removeSimilarPoints( std::vector < T > & edge ) const
     }
 }
 
-template<typename T = double>
+template<typename T>
 void EdgeDetection<T>::getEdgePoints( std::vector < T > & edge, const std::vector < int > & data, const std::vector < int > & first, const std::vector < int > & second,
                                    const EdgeParameter & edgeParameter ) const
 {
