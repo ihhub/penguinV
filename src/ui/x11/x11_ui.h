@@ -12,14 +12,13 @@ protected:
     virtual void _display();
 private:
     std::vector<char> _data;
-    Display* _uiDisplay;
+    Display * _uiDisplay;
     int _screen;
     Window _window;
-    XImage* _image;
+    XImage * _image;
     Atom _deleteWindowEvent;
     uint32_t _width;
     uint32_t _height;
 
     void _setupImage( const PenguinV_Image::Image & image );
 };
-
