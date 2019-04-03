@@ -61,16 +61,6 @@ struct PointBase2D
         return PointBase2D( x - point.x, y - point.y );
     }
 
-	const _Type & getX() const
-	{
-		return x;
-	}
-
-	const _Type & getY() const
-	{
-		return y;
-	}
-
     _Type x;
     _Type y;
 };
@@ -111,11 +101,6 @@ struct PointBase3D : public PointBase2D<_Type>
     {
         return PointBase3D( PointBase2D<_Type>::x - point.x, PointBase2D<_Type>::y - point.y, z - point.z );
     }
-
-	const _Type & getZ() const
-	{
-		return z;
-	}
 
     _Type z;
 };
