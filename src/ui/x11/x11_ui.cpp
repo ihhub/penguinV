@@ -66,12 +66,8 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
             const uint8_t * imageXEnd = imageX + _width;
 
             for ( ; imageX != imageXEnd; ++imageX ) {
-                *imageData = *imageX;
-                ++imageData;
-                *imageData = *imageX;
-                ++imageData;
-                *imageData = *imageX;
-                ++imageData;
+                memset( imageData, *imageX, 3u );
+                imageData += 3;
                 *imageData = 0;
                 ++imageData;
             }
@@ -83,15 +79,8 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
             const uint8_t * imageXEnd = imageX + _width * image.colorCount();
 
             for ( ; imageX != imageXEnd; ) {
-                *imageData = *imageX;
-                ++imageData;
-                ++imageX;
-                *imageData = *imageX;
-                ++imageData;
-                ++imageX;
-                *imageData = *imageX;
-                ++imageData;
-                ++imageX;
+                memcpy( imageData, imageX, 3u );
+                imageData += 3;
                 *imageData = 0;
                 ++imageData;
             }
