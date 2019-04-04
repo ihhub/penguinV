@@ -7,6 +7,7 @@ UiWindowX11::UiWindowX11( const PenguinV_Image::Image & image, const std::string
     , _screen( 0 )
     , _window( 0 )
     , _image( nullptr )
+    , _deleteWindowEvent( 0 )
     , _width( image.width() )
     , _height( image.height() )
 {
