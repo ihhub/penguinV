@@ -41,11 +41,11 @@ int main( int argc, char * argv[] )
         const PaintColor positiveColor( 20, 255, 20 ); // green
         const PaintColor negativeColor( 255, 20, 20 ); // red
 
-        for ( std::vector<Point2d>::const_iterator point = positiveEdge.cbegin(); point != positiveEdge.cend(); ++point )//Point2d -> Point2f
-            window.drawPoint( *point, positiveColor);
+        for ( std::vector<Point2d>::const_iterator point = positiveEdge.cbegin(); point != positiveEdge.cend(); ++point )
+            window.drawPoint( *point, positiveColor );
 
-        for ( std::vector<Point2d>::const_iterator point = negativeEdge.cbegin(); point != negativeEdge.cend(); ++point )//Point2d -> Point2f
-            window.drawPoint( *point, negativeColor);
+        for ( std::vector<Point2d>::const_iterator point = negativeEdge.cbegin(); point != negativeEdge.cend(); ++point )
+            window.drawPoint( *point, negativeColor );
 
         window.show();
     }
