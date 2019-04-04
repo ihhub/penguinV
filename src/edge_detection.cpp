@@ -1,8 +1,9 @@
+#include "edge_detection.h"
+
 #include <algorithm>
 #include <functional>
 #include <numeric>
 #include "parameter_validation.h"
-#include "edge_detection.h"
 
 namespace
 {
