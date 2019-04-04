@@ -3,7 +3,6 @@
 #include <vector>
 #include "image_buffer.h"
 #include "math/math_base.h"
-#include "edge_detection_helper.h"
 
 struct EdgeParameter
 {
@@ -50,6 +49,20 @@ struct EdgeParameter
 
     void verify() const; // self-verification that all parameters are correct
 };
+
+template<typename _Type>
+class EdgeDetection;
+
+class EdgeDetectionHelper
+{
+public:
+    static void find(EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter);
+
+    static void find(EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter);
+private:
+    EdgeDetectionHelper() {} // No need for creating an instance of the class
+};
+
 
 template<typename _Type = double>
 class EdgeDetection
