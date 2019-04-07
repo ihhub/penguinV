@@ -4,6 +4,7 @@
 
 namespace edge_detection
 {
+    template <typename _Type>
     bool DetectHorizontalEdge()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
@@ -22,21 +23,21 @@ namespace edge_detection
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
-            EdgeDetection edgeDetection;
+            EdgeDetection<_Type> edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT) );
 
-            const std::vector< Point2d > & positive = edgeDetection.positiveEdge();
-            const std::vector< Point2d > & negative = edgeDetection.negativeEdge();
+            const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();
+            const std::vector< PointBase2D<_Type> > & negative = edgeDetection.negativeEdge();
 
             if ( ( isValidLeftEdge && (positive.size() != roiHeight) ) || ( isValidRightEdge && (negative.size() != roiHeight) ) )
                 return false;
 
-            for ( std::vector< Point2d >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->x - roiX ) > 1.0 )
                     return false;
             }
 
-            for ( std::vector< Point2d >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->x - roiXEnd ) > 1.0 )
                     return false;
             }
@@ -45,6 +46,7 @@ namespace edge_detection
         return true;
     }
 
+    template <typename _Type>
     bool DetectVerticalEdge()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
@@ -63,21 +65,21 @@ namespace edge_detection
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
-            EdgeDetection edgeDetection;
+            EdgeDetection<_Type> edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM) );
 
-            const std::vector< Point2d > & positive = edgeDetection.positiveEdge();
-            const std::vector< Point2d > & negative = edgeDetection.negativeEdge();
+            const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();
+            const std::vector< PointBase2D<_Type> > & negative = edgeDetection.negativeEdge();
 
             if ( ( isValidTopEdge && (positive.size() != roiWidth) ) || ( isValidBottomEdge && (negative.size() != roiWidth) ) )
                 return false;
 
-            for ( std::vector< Point2d >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->y - roiY ) > 1.0 )
                     return false;
             }
 
-            for ( std::vector< Point2d >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->y - roiYEnd ) > 1.0 )
                     return false;
             }
@@ -89,6 +91,8 @@ namespace edge_detection
 
 void addTests_Edge_Detection( UnitTestFramework & framework )
 {
-    framework.add( edge_detection::DetectHorizontalEdge, "edge_detection::Detect horizontal edges" );
-    framework.add( edge_detection::DetectVerticalEdge, "edge_detection::Detect vertical edges" );
+    framework.add( edge_detection::DetectHorizontalEdge<double>, "edge_detection::Detect horizontal edges (double)" );
+    framework.add( edge_detection::DetectHorizontalEdge<float>, "edge_detection::Detect horizontal edges (float)" );
+    framework.add( edge_detection::DetectVerticalEdge<double>, "edge_detection::Detect vertical edges (double)" );
+    framework.add( edge_detection::DetectVerticalEdge<float>, "edge_detection::Detect vertical edges (float)" );
 }
