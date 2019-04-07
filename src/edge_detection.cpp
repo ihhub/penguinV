@@ -26,28 +26,28 @@ namespace
     template<typename _Type>
     void createPositiveXEdge( const std::vector< _Type > & data, std::vector < PointBase2D<_Type> > & point, _Type x, _Type y )
     {
-        for ( std::vector < _Type >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+        for ( typename std::vector < _Type >::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
             point.push_back( PointBase2D<_Type>( (*dataX) + x, y ) );
     }
 
     template<typename _Type>
     void createNegativeXEdge( const std::vector< _Type > & data, std::vector < PointBase2D<_Type> > & point, _Type x, _Type y )
     {
-        for ( std::vector <_Type>::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+        for ( typename std::vector <_Type>::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
             point.push_back( PointBase2D<_Type>( x - (*dataX), y ) );
     }
 
     template<typename _Type>
     void createPositiveYEdge( const std::vector< _Type > & data, std::vector < PointBase2D<_Type> > & point, _Type x, _Type y )
     {
-        for ( std::vector < _Type >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+        for ( typename std::vector < _Type >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
             point.push_back( PointBase2D<_Type>( x, y + (*dataY) ) );
     }
 
     template<typename _Type>
     void createNegativeYEdge( const std::vector< _Type > & data, std::vector < PointBase2D<_Type> > & point, _Type x, _Type y )
     {
-        for ( std::vector < _Type >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+        for ( typename std::vector < _Type >::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
             point.push_back( PointBase2D<_Type>( x, y - (*dataY) ) );
     }
 
@@ -126,7 +126,7 @@ namespace
     {
         for ( size_t i = 1u; i < edge.size(); ) {
             if ( (edge[i] - edge[i - 1u]) < 1.0 )
-                edge.erase( edge.begin() + static_cast<std::vector< _Type >::difference_type>(i) ); // it's safe to do
+                edge.erase( edge.begin() + static_cast<typename std::vector< _Type >::difference_type>(i) ); // it's safe to do
             else
                 ++i;
         }
