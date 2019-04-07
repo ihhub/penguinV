@@ -91,48 +91,6 @@ namespace
     }
 
     template<typename _Type>
-    void findEdgePoints( std::vector < _Type > & positive, std::vector < _Type > & negative, std::vector < int > & data,
-                         std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection )
-    {
-        getDerivatives( data, first, second );
-        getEdgePoints( positive, data, first, second, edgeParameter );
-        removeSimilarPoints( positive );
-
-        std::reverse( data.begin(), data.end() );
-        getDerivatives( data, first, second );
-        getEdgePoints( negative, data, first, second, edgeParameter );
-        removeSimilarPoints( negative );
-        if ( (forwardDirection && edgeParameter.edge == EdgeParameter::FIRST) || (!forwardDirection && edgeParameter.edge == EdgeParameter::LAST) ) {
-            leaveFirstElement( positive );
-            leaveLastElement( negative );
-        }
-        else if ( (forwardDirection && edgeParameter.edge == EdgeParameter::LAST) || (!forwardDirection && edgeParameter.edge == EdgeParameter::FIRST) ) {
-            leaveLastElement( positive );
-            leaveFirstElement( negative );
-        }
-    }
-
-    void getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second )
-    {
-        // input array range is [0; n)
-        // first deriviative range is [0; n - 1)
-        // second deriviative range is [1; n - 1)
-        std::transform( image.begin() + 1u, image.end(), image.begin(), first.begin(), std::minus<int>() );
-        std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
-    }
-
-    template<typename _Type>
-    void removeSimilarPoints( std::vector < _Type > & edge )
-    {
-        for ( size_t i = 1u; i < edge.size(); ) {
-            if ( (edge[i] - edge[i - 1u]) < 1.0 )
-                edge.erase( edge.begin() + static_cast<typename std::vector< _Type >::difference_type>(i) ); // it's safe to do
-            else
-                ++i;
-        }
-    }
-
-    template<typename _Type>
     void getEdgePoints( std::vector < _Type > & edge, const std::vector < int > & data, const std::vector < int > & first, const std::vector < int > & second, const EdgeParameter & edgeParameter )
     {
         const uint32_t dataSize = static_cast<uint32_t>(data.size()); // we know that initial size is uint32_t
@@ -217,6 +175,48 @@ namespace
                            edgeParameter.contrastCheckLeftSideOffset, edgeParameter.contrastCheckRightSideOffset,
                            i, dataSize );
             }
+        }
+    }
+
+    template<typename _Type>
+    void removeSimilarPoints( std::vector < _Type > & edge )
+    {
+        for ( size_t i = 1u; i < edge.size(); ) {
+            if ( (edge[i] - edge[i - 1u]) < 1.0 )
+                edge.erase( edge.begin() + static_cast<typename std::vector< _Type >::difference_type>(i) ); // it's safe to do
+            else
+                ++i;
+        }
+    }
+
+    void getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second )
+    {
+        // input array range is [0; n)
+        // first deriviative range is [0; n - 1)
+        // second deriviative range is [1; n - 1)
+        std::transform( image.begin() + 1u, image.end(), image.begin(), first.begin(), std::minus<int>() );
+        std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
+    }
+
+    template<typename _Type>
+    void findEdgePoints( std::vector < _Type > & positive, std::vector < _Type > & negative, std::vector < int > & data,
+                         std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection )
+    {
+        getDerivatives( data, first, second );
+        getEdgePoints( positive, data, first, second, edgeParameter );
+        removeSimilarPoints( positive );
+
+        std::reverse( data.begin(), data.end() );
+        getDerivatives( data, first, second );
+        getEdgePoints( negative, data, first, second, edgeParameter );
+        removeSimilarPoints( negative );
+        if ( (forwardDirection && edgeParameter.edge == EdgeParameter::FIRST) || (!forwardDirection && edgeParameter.edge == EdgeParameter::LAST) ) {
+            leaveFirstElement( positive );
+            leaveLastElement( negative );
+        }
+        else if ( (forwardDirection && edgeParameter.edge == EdgeParameter::LAST) || (!forwardDirection && edgeParameter.edge == EdgeParameter::FIRST) ) {
+            leaveLastElement( positive );
+            leaveFirstElement( negative );
         }
     }
 
