@@ -32,12 +32,12 @@ namespace edge_detection
             if ( ( isValidLeftEdge && (positive.size() != roiHeight) ) || ( isValidRightEdge && (negative.size() != roiHeight) ) )
                 return false;
 
-            for ( std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->x - roiX ) > 1.0 )
                     return false;
             }
 
-            for ( std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->x - roiXEnd ) > 1.0 )
                     return false;
             }
@@ -74,12 +74,12 @@ namespace edge_detection
             if ( ( isValidTopEdge && (positive.size() != roiWidth) ) || ( isValidBottomEdge && (negative.size() != roiWidth) ) )
                 return false;
 
-            for ( std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->y - roiY ) > 1.0 )
                     return false;
             }
 
-            for ( std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->y - roiYEnd ) > 1.0 )
                     return false;
             }
