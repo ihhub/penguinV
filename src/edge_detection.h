@@ -50,32 +50,20 @@ struct EdgeParameter
     void verify() const; // self-verification that all parameters are correct
 };
 
-template<typename _Type>
-class EdgeDetection;
+class EdgeDetectionHelper;
 
-class EdgeDetectionHelper
-{
-public:
-    static void find(EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter);
-
-    static void find(EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter);
-private:
-    EdgeDetectionHelper() {} // No need for creating an instance of the class
-};
-
-
-template<typename _Type = double>
+template <typename _Type = double>
 class EdgeDetection
 {
 public:
     void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
-        find(image, 0, 0, image.width(), image.height(), edgeParameter);
+        find( image, 0, 0, image.width(), image.height(), edgeParameter );
     }
 
-    void find(const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter())
+    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
-        EdgeDetectionHelper::find(*this, image, x, y, width, height, edgeParameter);
+        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
     }
 
     const std::vector < PointBase2D<_Type> > & positiveEdge() const
@@ -93,4 +81,14 @@ public:
 private:
     std::vector < PointBase2D<_Type> > positiveEdgePoint;
     std::vector < PointBase2D<_Type> > negativeEdgePoint;
+};
+
+class EdgeDetectionHelper
+{
+public:
+    static void find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                      const EdgeParameter & edgeParameter );
+
+    static void find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                      const EdgeParameter & edgeParameter );
 };
