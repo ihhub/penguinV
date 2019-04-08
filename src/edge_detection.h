@@ -50,24 +50,46 @@ struct EdgeParameter
     void verify() const; // self-verification that all parameters are correct
 };
 
+template <typename _Type>
+class EdgeDetection;
+
+class EdgeDetectionHelper
+{
+public:
+    static void find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                      const EdgeParameter & edgeParameter );
+
+    static void find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                      const EdgeParameter & edgeParameter );
+};
+
+template <typename _Type = double>
 class EdgeDetection
 {
 public:
-    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() );
-    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() );
+    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
+    {
+        find( image, 0, 0, image.width(), image.height(), edgeParameter );
+    }
 
-    const std::vector < Point2d > & positiveEdge() const;
-    const std::vector < Point2d > & negativeEdge() const;
+    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
+    {
+        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
+    }
+
+    const std::vector < PointBase2D<_Type> > & positiveEdge() const
+    {
+        return positiveEdgePoint;
+    }
+
+    const std::vector < PointBase2D<_Type> > & negativeEdge() const
+    {
+        return negativeEdgePoint;
+    }
+
+    friend class EdgeDetectionHelper;
 
 private:
-    std::vector < Point2d > positiveEdgePoint;
-    std::vector < Point2d > negativeEdgePoint;
-
-    void findEdgePoints( std::vector < double > & positive, std::vector < double > & negative, std::vector < int > & data,
-                         std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection );
-
-    void getDerivatives( const std::vector < int > & image, std::vector < int > & first, std::vector < int > & second ) const;
-    void getEdgePoints( std::vector < double > & edge, const std::vector < int > & image, const std::vector < int > & first, const std::vector < int > & second,
-                        const EdgeParameter & edgeParameter ) const;
-    void removeSimilarPoints( std::vector < double > & edge ) const;
+    std::vector < PointBase2D<_Type> > positiveEdgePoint;
+    std::vector < PointBase2D<_Type> > negativeEdgePoint;
 };
