@@ -11,6 +11,7 @@
         #define PENGUINV_NEON_SET
     #else
         #define PENGUINV_SSE_SET
+        #define PENGUINV_SSSE3_SET
 
         #ifdef _MSC_VER
             #if _MSC_VER >= 1700
@@ -26,6 +27,10 @@
         #define PENGUINV_NEON_SET
     #elif __SSE2__
         #define PENGUINV_SSE_SET
+
+        #ifdef __SSSE3__
+            #define PENGUINV_SSSE3_SET
+        #endif
 
         #ifdef __AVX2__
             #define PENGUINV_AVX_SET
@@ -52,6 +57,12 @@
 #ifdef PENGUINV_AVX_SET
     #ifndef PENGUINV_SSE_SET
         #error "None of existing processors can support AVX but not SSE. Please check SIMD instruction set verification code"
+    #endif
+#endif
+
+#ifdef PENGUINV_SSSE3_SET
+    #ifndef PENGUINV_SSE_SET
+        #error "SSSE3 technology cannot exist without SSE. Please check SIMD instruction set verification code"
     #endif
 #endif
 
