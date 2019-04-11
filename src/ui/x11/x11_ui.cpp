@@ -76,7 +76,7 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
     }
     else {
         if ( image.colorCount() != PenguinV_Image::RGB )
-            throw imageException( "Color image has different than 3 color channels." ); 
+            throw imageException( "Color image has different than 3 color channels." );
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + _width * 3u;
