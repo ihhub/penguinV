@@ -797,6 +797,7 @@ namespace sse
         }
     }
 
+#ifdef PENGUINV_SSSE3_SET
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                        uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -828,7 +829,9 @@ namespace sse
             }
         }
     }
+#endif
 
+#ifdef PENGUINV_SSSE3_SET
     void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, 
                const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, 
                const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
@@ -888,6 +891,7 @@ namespace sse
             }
         }
     }
+#endif
 
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
@@ -1069,6 +1073,7 @@ namespace sse
         }
     }
 
+#ifdef PENGUINV_SSSE3_SET
     void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
                    const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1097,6 +1102,7 @@ namespace sse
             }
         }
     }
+#endif
 
     void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
@@ -1886,8 +1892,20 @@ if ( simdType == sse_function ) { \
     code;                         \
     return;                       \
 }
+
+#ifdef PENGUINV_SSSE3_SET
+#define SSSE3_CODE( code )        \
+if ( simdType == sse_function ) { \
+    code;                         \
+    return;                       \
+}
+#else
+#define	SSSE3_CODE( code )
+#endif
+
 #else
 #define SSE_CODE( code )
+#define SSSE3_CODE( code )
 #endif
 
 #ifdef PENGUINV_NEON_SET
@@ -2121,7 +2139,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-        SSE_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        SSSE3_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
@@ -2157,8 +2175,8 @@ if ( simdType == neon_function ) { \
             const uint32_t totalSimdWidth = simdWidth * simdSize;
             const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-            SSE_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
-                                 vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+            SSSE3_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
+                                   vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
             NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
                                    vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
         }
@@ -2348,7 +2366,7 @@ if ( simdType == neon_function ) { \
         }
 
         AVX_CODE( avx::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
-        SSE_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
+        SSSE3_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
     }
 
