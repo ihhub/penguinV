@@ -3,6 +3,7 @@
 #include <vector>
 #include "image_buffer.h"
 #include "math/math_base.h"
+#include "filtering.h"
 
 struct EdgeParameter
 {
@@ -50,6 +51,14 @@ struct EdgeParameter
     void verify() const; // self-verification that all parameters are correct
 };
 
+// Optional parameter to apply before looking for first and second gradients on an image (findEdgePoints)
+enum Filter
+{
+    NONE = 0,
+    MEDIAN,
+    GAUSSIAN
+};
+
 template <typename _Type>
 class EdgeDetection;
 
@@ -57,24 +66,24 @@ class EdgeDetectionHelper
 {
 public:
     static void find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const EdgeParameter & edgeParameter );
+                      const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize );
 
     static void find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const EdgeParameter & edgeParameter );
+                      const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize );
 };
 
 template <typename _Type = double>
 class EdgeDetection
 {
 public:
-    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
+    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter(), Filter filterToApply = NONE, uint32_t filterKernelSize = 3u )
     {
-        find( image, 0, 0, image.width(), image.height(), edgeParameter );
+        find( image, 0, 0, image.width(), image.height(), edgeParameter, filterToApply, filterKernelSize );
     }
 
-    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
+    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter(), Filter filterToApply = NONE, uint32_t filterKernelSize = 3u )
     {
-        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
+        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter, filterToApply, filterKernelSize );
     }
 
     const std::vector < PointBase2D<_Type> > & positiveEdge() const

@@ -2,7 +2,11 @@
 #include <algorithm>
 #include <functional>
 #include <numeric>
+#include <cmath>
 #include "parameter_validation.h"
+
+
+#include "../src/ui/win/win_ui.h"
 
 namespace
 {
@@ -328,6 +332,162 @@ namespace
             }
         }
     }
+    //__START_____________________________________________________________________________________________________________________
+    inline uint32_t factorial(const uint32_t n)
+    {
+        if (n == 0u || n == 1u)
+            return 1u;
+        else
+            return n * factorial(n - 1u);
+    }
+
+    // Gaussian function is actually the distribution function of the normal distribution
+    // so we can use Pascal's triangle to get kernel values
+    template<typename _Type>
+    void getPascalTriangleLine(typename std::vector< _Type > & line, const uint32_t & line_index)
+    {
+        if (!line.empty())
+            line.clear();
+
+        line.resize(line_index + 1);
+        uint32_t sum = static_cast<uint32_t>(pow(2u, line_index));
+
+        for (uint32_t i = 0u; i < line_index + 1; ++i)
+        {
+            line[i] = factorial(line_index) / static_cast<_Type>((factorial(i) * factorial(line_index - i))) / sum;
+        }
+    }
+
+    const uint32_t circle(const int32_t row_col, const int32_t value)
+    {
+        if (value < 0u)
+            return value + row_col;
+        if (value >= row_col)
+            return value - row_col;
+        return value;
+    }
+
+    void circularConvolution(const PenguinV_Image::Image & src, PenguinV_Image::Image & dst, const std::vector<float> & kernel)
+    {
+        int32_t height = static_cast<int32_t>(src.height());
+        int32_t width  = static_cast<int32_t>(src.width());
+
+        // Temp image
+        PenguinV_Image::Image tmp;
+        tmp.resize(width, height);
+
+        int32_t deviation_start, deviation_end;
+
+        // if 'x' or 'y' go beyond the border, we take an element on the oppisite side of the image 
+        // by adding either width() or height(), thus we have 'x_altered' and 'y_altered' 
+        int32_t x_altered, y_altered;
+
+        if (kernel.size() % 2)
+        {
+            deviation_start = kernel.size() / 2 * (-1);
+            deviation_end = kernel.size() / 2;
+        }
+        else
+        {
+            deviation_start = kernel.size() / 2 * (-1);
+            deviation_end = kernel.size() / 2 - 1;
+        }
+
+        for (int32_t y = 0; y < height; ++y)
+            for (int32_t x = 0; x < width; ++x)
+            {
+                float sum = 0.0f;
+
+                for (int32_t k = deviation_start; k < deviation_end; ++k)
+                {
+                    x_altered = circle(width, x - k);
+                    y_altered = circle(height, y - k);
+
+                    sum += kernel[k - deviation_start] * src.data()[x + y_altered * width];
+                    sum += kernel[k - deviation_start] * src.data()[x_altered + y * width];
+                }
+
+                tmp.data()[x + y * width] = sum;
+            }
+
+        dst = std::move(tmp);
+    }
+    //__END_____________________________________________________________________________________________________________________
+    void GetGaussianKernel1D(std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma)
+    {
+        if (width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0)
+            throw imageException("Incorrect input parameters for Gaussian filter kernel");
+
+        filter.resize(width * height);
+
+        std::fill(filter.begin(), filter.end(), 0.0f);
+
+        static const float pi = 3.1415926536f;
+        const float doubleSigma = sigma * 2;
+        const float doubleSigmaPiInv = 1.0f / (doubleSigma * pi);
+        const uint32_t twiceKernelSizePlusOne = 2 * kernelSize + 1;
+
+        float * y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
+        const float * endY = y + twiceKernelSizePlusOne * width;
+
+        float sum = 0;
+
+        for (int32_t posY = -static_cast<int32_t>(kernelSize); y != endY; y += width, ++posY) {
+            float * x = y;
+            const float * endX = x + twiceKernelSizePlusOne;
+            const int32_t posY2 = posY * posY;
+
+            for (int32_t posX = -static_cast<int32_t>(kernelSize); x != endX; ++x, ++posX) {
+                *x = doubleSigmaPiInv * expf(-static_cast<float>(posX * posX) / doubleSigma);
+                sum += *x;
+            }
+        }
+
+        const float normalization = 1.0f / sum;
+
+        y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
+
+        for (int32_t posY = -static_cast<int32_t>(kernelSize); y != endY; y += width, ++posY) {
+            float * x = y;
+            const float * endX = x + twiceKernelSizePlusOne;
+
+            for (int32_t posX = -static_cast<int32_t>(kernelSize); x != endX; ++x, ++posX) {
+                *x *= normalization;
+            }
+        }
+    }
+
+    PenguinV_Image::Image applyFiltering( PenguinV_Image::Image & image, Filter filterToApply, uint32_t filterKernelSize )
+    {
+        switch (filterToApply)
+        {
+        case (NONE):
+            break;
+
+        case (MEDIAN):
+            return Image_Function::Median( image, filterKernelSize );
+            break;
+
+        case (GAUSSIAN):
+            //__START_____________________________________________________________________________________________________________
+            PenguinV_Image::Image dst;
+            std::vector<float> kernel;
+
+            getPascalTriangleLine(kernel, filterKernelSize - 1u);
+            circularConvolution(image, image, kernel);
+            
+            UiWindowWin wTest(image, "Test");
+            wTest.show();
+            
+            return image;
+            //__END_____________________________________________________________________________________________________________
+
+
+            break;
+        }
+        
+        return image;
+    }
 }
 
 EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
@@ -354,13 +514,19 @@ void EdgeParameter::verify() const
 }
 
 void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter )
+                                const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize )
 {
-    findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    PenguinV_Image::Image imageCopy( image );
+    imageCopy = applyFiltering( imageCopy, filterToApply, filterKernelSize );
+
+    findEdgePoints( imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
 
 void EdgeDetectionHelper::find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter )
+                                const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize )
 {
-    findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    PenguinV_Image::Image imageCopy( image );
+    imageCopy = applyFiltering( imageCopy, filterToApply, filterKernelSize );
+
+    findEdgePoints( imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
