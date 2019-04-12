@@ -167,7 +167,7 @@ UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string
     if ( !registrator.registered )
         throw imageException( "Unable to create Windows API class" );
 
-	#ifdef UNICODE
+#ifdef UNICODE
     const std::wstring titleName = std::wstring( title.begin(), title.end() );
 #else
     const std::string & titleName = title;
@@ -249,7 +249,7 @@ void UiWindowWin::setImage( const PenguinV_Image::Image & image )
         }
     }
 
-	RECT clientRoi;
+    RECT clientRoi;
     GetClientRect( _window, &clientRoi );
     RECT windowRoi;
     GetWindowRect( _window, &windowRoi );
