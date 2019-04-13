@@ -167,8 +167,6 @@ UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string
     if ( !registrator.registered )
         throw imageException( "Unable to create Windows API class" );
 
-    UiWindowWin::setImage( image );
-
 #ifdef UNICODE
     const std::wstring titleName = std::wstring( title.begin(), title.end() );
 #else
@@ -180,15 +178,7 @@ UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string
     if ( _window == nullptr )
         throw imageException( "Unable to create Windows API window" );
 
-    RECT clientRoi;
-    GetClientRect( _window, &clientRoi );
-    RECT windowRoi;
-    GetWindowRect( _window, &windowRoi );
-
-    // Resize window to fit image 1 to 1
-    MoveWindow( _window, windowRoi.left, windowRoi.top,
-                windowRoi.right - windowRoi.left - (clientRoi.right - clientRoi.left) + image.width(),
-                windowRoi.bottom - windowRoi.top - (clientRoi.bottom - clientRoi.top) + image.height(), FALSE );
+    UiWindowWin::setImage( image );
 }
 
 UiWindowWin::~UiWindowWin()
@@ -258,6 +248,16 @@ void UiWindowWin::setImage( const PenguinV_Image::Image & image )
                 break;
         }
     }
+
+    RECT clientRoi;
+    GetClientRect( _window, &clientRoi );
+    RECT windowRoi;
+    GetWindowRect( _window, &windowRoi );
+
+    // Resize window to fit image 1 to 1
+    MoveWindow( _window, windowRoi.left, windowRoi.top,
+                windowRoi.right - windowRoi.left - (clientRoi.right - clientRoi.left) + image.width(),
+                windowRoi.bottom - windowRoi.top - (clientRoi.bottom - clientRoi.top) + image.height(), FALSE );
 }
 
 void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )
