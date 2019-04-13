@@ -12,12 +12,15 @@ namespace
 
     void fillRandomData( PenguinV_Image::Image & image )
     {
-        uint8_t * outY = image.data();
+        const uint32_t rowSize  = image.rowSize();
+        uint8_t * outY          = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();
 
-        for( ; outY != outYEnd; outY += image.rowSize() ) {
+        const uint32_t width = image.width() * image.colorCount();
+
+        for( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + image.width() * image.colorCount();
+            const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX )
                 (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
@@ -54,19 +57,23 @@ namespace Unit_Test
 
         PenguinV_Image::Image image( randomSize(), randomSize() );
 
-        uint8_t * outY = image.data();
+        const uint32_t rowSize  = image.rowSize();
+        uint8_t * outY          = image.data();
         const uint8_t * outYEnd = outY + image.height() * image.rowSize();
+
+        const uint32_t width = image.width();
+        const size_t valueSize = value.size();
 
         size_t id = 0;
 
-        for( ; outY != outYEnd; outY += image.rowSize() ) {
+        for( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + image.width();
+            const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX ) {
                 (*outX) = value[id++];
-                if( id == value.size() )
-                    id = 0;
+                if( id == valueSize )
+                    id = 0u;
             }
         }
 
@@ -112,12 +119,16 @@ namespace Unit_Test
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
 
-        const uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
-        const uint8_t * endY    = outputY + image.rowSize() * height;
+        width = width * image.colorCount();
+        Image_Function::OptimiseRoi( width, height, image );
 
-        for( ; outputY != endY; outputY += image.rowSize() ) {
+        const uint32_t rowSize  = image.rowSize();
+        const uint8_t * outputY = image.data() + y * rowSize + x * image.colorCount();
+        const uint8_t * endY    = outputY + rowSize * height;
+
+        for( ; outputY != endY; outputY += rowSize ) {
             const uint8_t * outputX = outputY;
-            const uint8_t * endX    = outputX + width * image.colorCount();
+            const uint8_t * endX    = outputX + width;
 
             for( ; outputX != endX; ++outputX ) {
                 if( (*outputX) != value )
@@ -134,12 +145,15 @@ namespace Unit_Test
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
 
-        const uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
-        const uint8_t * endY    = outputY + image.rowSize() * height;
+        const uint32_t rowSize  = image.rowSize();
+        const uint8_t * outputY = image.data() + y * rowSize + x * image.colorCount();
+        const uint8_t * endY    = outputY + rowSize * height;
 
-        for( ; outputY != endY; outputY += image.rowSize() ) {
+        width = width * image.colorCount();
+
+        for( ; outputY != endY; outputY += rowSize ) {
             const uint8_t * outputX = outputY;
-            const uint8_t * endX    = outputX + width * image.colorCount();
+            const uint8_t * endX    = outputX + width;
 
             if( isAnyValue ) {
                 for( ; outputX != endX; ++outputX ) {
@@ -191,20 +205,22 @@ namespace Unit_Test
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
 
-        uint8_t * outputY = image.data() + y * image.rowSize() + x * image.colorCount();
-        const uint8_t * endY    = outputY + image.rowSize() * height;
+        const uint32_t rowSize = image.rowSize();
+        uint8_t * outputY      = image.data() + y * rowSize + x * image.colorCount();
+        const uint8_t * endY   = outputY + rowSize * height;
 
         width = width * image.colorCount();
+        const size_t valueSize = value.size();
 
         size_t id = 0;
 
-        for( ; outputY != endY; outputY += image.rowSize() ) {
-            uint8_t * outputX = outputY;
-            const uint8_t * endX    = outputX + width;
+        for( ; outputY != endY; outputY += rowSize ) {
+            uint8_t * outputX    = outputY;
+            const uint8_t * endX = outputX + width;
 
             for( ; outputX != endX; ++outputX ) {
                 (*outputX) = value[id++];
-                if( id == value.size() )
+                if( id == valueSize )
                     id = 0;
             }
         }
