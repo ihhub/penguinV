@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\edge_detection.cpp" />
+    <ClCompile Include="..\..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
     <ClCompile Include="..\..\..\src\math\math_base.cpp" />
     <ClCompile Include="..\..\..\src\ui\ui.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\..\src\filtering.h" />
     <ClInclude Include="..\..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\..\src\image_exception.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
