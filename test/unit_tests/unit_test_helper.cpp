@@ -18,7 +18,7 @@ namespace
 
         const uint32_t width = image.width() * image.colorCount();
 
-        for( ; outY != outYEnd; outY += rowSize ) {
+        for ( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
@@ -66,13 +66,13 @@ namespace Unit_Test
 
         size_t id = 0;
 
-        for( ; outY != outYEnd; outY += rowSize ) {
+        for ( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX ) {
                 (*outX) = value[id++];
-                if( id == valueSize )
+                if ( id == valueSize )
                     id = 0u;
             }
         }
@@ -126,7 +126,7 @@ namespace Unit_Test
         const uint8_t * outputY = image.data() + y * rowSize + x * image.colorCount();
         const uint8_t * endY    = outputY + rowSize * height;
 
-        for( ; outputY != endY; outputY += rowSize ) {
+        for ( ; outputY != endY; outputY += rowSize ) {
             const uint8_t * outputX = outputY;
             const uint8_t * endX    = outputX + width;
 
@@ -151,7 +151,7 @@ namespace Unit_Test
 
         width = width * image.colorCount();
 
-        for( ; outputY != endY; outputY += rowSize ) {
+        for ( ; outputY != endY; outputY += rowSize ) {
             const uint8_t * outputX = outputY;
             const uint8_t * endX    = outputX + width;
 
@@ -214,13 +214,13 @@ namespace Unit_Test
 
         size_t id = 0;
 
-        for( ; outputY != endY; outputY += rowSize ) {
+        for ( ; outputY != endY; outputY += rowSize ) {
             uint8_t * outputX    = outputY;
             const uint8_t * endX = outputX + width;
 
             for( ; outputX != endX; ++outputX ) {
                 (*outputX) = value[id++];
-                if( id == valueSize )
+                if ( id == valueSize )
                     id = 0;
             }
         }
