@@ -456,12 +456,12 @@ namespace Image_Function
 
         width = width * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t  * inX  = inY;
             uint16_t       * outX = outY;
             const uint16_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 *outX = (*inX) << 8;
         }
     }
@@ -512,12 +512,12 @@ namespace Image_Function
 
         width = width * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint16_t * inX  = inY;
             uint8_t        * outX = outY;
             const uint8_t  * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 *outX = (*inX) >> 8;
         }
     }
