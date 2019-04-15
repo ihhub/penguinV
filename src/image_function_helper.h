@@ -157,6 +157,10 @@ namespace Image_Function_Helper
         typedef void                     (*ProjectionProfileForm4)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                                     std::vector < uint32_t > & projection );
 
+        typedef void (*ReplaceChannelForm1)( const Image & channel, Image & rgb, uint8_t channelId );
+        typedef void (*ReplaceChannelForm2)( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                                             uint32_t width, uint32_t height, uint8_t channelId );
+
         typedef Image (*ResizeForm1)( const Image & in, uint32_t widthOut, uint32_t heightOut );
         typedef void  (*ResizeForm2)( const Image & in, Image & out );
         typedef Image (*ResizeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
