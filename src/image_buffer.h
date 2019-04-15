@@ -393,6 +393,7 @@ namespace PenguinV_Image
     };
 
     typedef ImageTemplate <uint8_t> Image;
+    typedef ImageTemplate <uint16_t> Image16Bit;
 
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
