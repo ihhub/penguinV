@@ -1,4 +1,7 @@
 #include "x11_ui.h"
+
+#ifndef _WIN32 // Not for Windows
+
 #include "../../image_exception.h"
 
 UiWindowX11::UiWindowX11( const PenguinV_Image::Image & image, const std::string & title )
@@ -42,8 +45,18 @@ void UiWindowX11::_display()
     XEvent e;
     while ( true ) {
         XNextEvent( _uiDisplay, &e );
-        if ( e.type == Expose )
-            XPutImage( _uiDisplay, _window, DefaultGC( _uiDisplay, _screen ), _image, 0, 0, 0, 0, _width, _height );
+        if ( e.type == Expose ) {
+            GC defaultGC = DefaultGC( _uiDisplay, _screen );
+            XPutImage( _uiDisplay, _window, defaultGC, _image, 0, 0, 0, 0, _width, _height );
+            
+            for ( size_t i = 0u; i < _point.size(); ++i ) {
+                const Point2d & point = _point[i].first;
+                const PaintColor & color = _point[i].second;
+                XSetForeground(_uiDisplay, defaultGC, (color.red << 16) + (color.green << 8) + color.blue);
+                XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(point.x - 1), static_cast<int>(point.y - 1),
+                           static_cast<int>(point.x + 1), static_cast<int>(point.y + 1) );
+            }
+        }
         else if ( (e.type == ClientMessage) && (static_cast<unsigned int>(e.xclient.data.l[0]) == _deleteWindowEvent) )
             break;
     }
@@ -94,3 +107,10 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
     _image = XCreateImage( _uiDisplay, DefaultVisual( _uiDisplay, defaultScreen ), DefaultDepth( _uiDisplay, defaultScreen ), ZPixmap,
                            0, _data.data(), _width, _height, 32, 0 );
 }
+
+void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
+{
+    _point.push_back( std::make_pair( point, color ) );
+}
+
+#endif
