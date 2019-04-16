@@ -1377,13 +1377,13 @@ namespace Image_Function
 
         width = width * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; outX += colorCount, ++inX )
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
                 *outX = *inX;
         }
     }
