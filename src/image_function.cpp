@@ -160,7 +160,7 @@ namespace
     }
 }
 
-namespace Image_Function
+namespace cpu
 {
     Image AbsoluteDifference( const Image & in1, const Image & in2 )
     {
