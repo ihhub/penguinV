@@ -162,22 +162,6 @@ namespace
 
 namespace cpu
 {
-    Image AbsoluteDifference( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2 );
-    }
-
-    void AbsoluteDifference( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2, out );
-    }
-
-    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, startX1, startY1, in2, startX2, startY2, width, height );
-    }
-
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
@@ -210,11 +194,6 @@ namespace cpu
         }
     }
 
-    void Accumulate( const Image & image, std::vector < uint32_t > & result )
-    {
-        Image_Function_Helper::Accumulate( Accumulate, image, result );
-    }
-
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
     {
         ParameterValidation( image, x, y, width, height );
@@ -240,46 +219,6 @@ namespace cpu
             for( ; imageX != imageXEnd; ++imageX, ++v )
                 *v += (*imageX);
         }
-    }
-
-    void BinaryDilate( Image & image, uint32_t dilationX, uint32_t dilationY )
-    {
-        ParameterValidation( image );
-
-        BinaryDilate( image, 0, 0, image.width(), image.height(), dilationX, dilationY );
-    }
-
-    void BinaryDilate( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY )
-    {
-        Dilate( image, x, y, width, height, dilationX, dilationY, 255u );
-    }
-
-    void BinaryErode( Image & image, uint32_t erosionX, uint32_t erosionY )
-    {
-        ParameterValidation( image );
-
-        BinaryErode( image, 0, 0, image.width(), image.height(), erosionX, erosionY );
-    }
-
-    void BinaryErode( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t erosionX, uint32_t erosionY )
-    {
-        Dilate( image, x, y, width, height, erosionX, erosionY, 0u );
-    }
-
-    Image BitwiseAnd( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
-    }
-
-    void BitwiseAnd( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2, out );
-    }
-
-    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -314,22 +253,6 @@ namespace cpu
         }
     }
 
-    Image BitwiseOr( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2 );
-    }
-
-    void BitwiseOr( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2, out );
-    }
-
-    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, startX1, startY1, in2, startX2, startY2, width, height );
-    }
-
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
@@ -360,22 +283,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in1X) | (*in2X);
         }
-    }
-
-    Image BitwiseXor( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2 );
-    }
-
-    void BitwiseXor( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2, out );
-    }
-
-    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -410,31 +317,7 @@ namespace cpu
         }
     }
 
-    Image16Bit ConvertTo16Bit( const Image & in )
-    {
-        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
-        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
-
-        return out;
-    }
-
-    void ConvertTo16Bit( const Image & in, Image16Bit & out )
-    {
-        ParameterValidation( in );
-        ParameterValidation( out );
-
-        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
-    }
-
-    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
-        ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
-    }
+    
 
     void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height )
@@ -464,32 +347,6 @@ namespace cpu
             for ( ; outX != outXEnd; ++outX, ++inX )
                 *outX = (*inX) << 8;
         }
-    }
-
-    Image ConvertTo8Bit( const Image16Bit & in )
-    {
-        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
-        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
-
-        return out;
-    }
-
-    void ConvertTo8Bit( const Image16Bit & in, Image & out )
-    {
-        ParameterValidation( in );
-        ParameterValidation( out );
-
-        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
-    }
-
-    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-
-        Image out = Image().generate( width, height, in.colorCount() );
-        ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
-
-        return out;
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -522,21 +379,6 @@ namespace cpu
         }
     }
 
-    Image ConvertToGrayScale( const Image & in )
-    {
-        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in );
-    }
-
-    void ConvertToGrayScale( const Image & in, Image & out )
-    {
-        Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, out );
-    }
-
-    Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, startXIn, startYIn, width, height );
-    }
-
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                              uint32_t width, uint32_t height )
     {
@@ -567,21 +409,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, inX += colorCount )
                 (*outX) = static_cast <uint8_t>((*(inX) + *(inX + 1) + *(inX + 2)) / 3u); // average of red, green and blue components
         }
-    }
-
-    Image ConvertToRgb( const Image & in )
-    {
-        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in );
-    }
-
-    void ConvertToRgb( const Image & in, Image & out )
-    {
-        Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, out );
-    }
-
-    Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, startXIn, startYIn, width, height );
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -618,18 +445,6 @@ namespace cpu
         }
     }
 
-    void Copy( const Image & in, Image & out )
-    {
-        ParameterValidation( in, out );
-
-        out = in;
-    }
-
-    Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Copy( Copy, in, startXIn, startYIn, width, height );
-    }
-
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height )
     {
@@ -650,21 +465,6 @@ namespace cpu
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
             memcpy( outY, inY, sizeof( uint8_t ) * width );
-    }
-
-    Image ExtractChannel( const Image & in, uint8_t channelId )
-    {
-        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, channelId );
-    }
-
-    void ExtractChannel( const Image & in, Image & out, uint8_t channelId )
-    {
-        Image_Function_Helper::ExtractChannel( ExtractChannel, in, out, channelId );
-    }
-
-    Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
-    {
-        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, x, y, width, height, channelId );
     }
 
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
@@ -697,11 +497,6 @@ namespace cpu
         }
     }
 
-    void Fill( Image & image, uint8_t value )
-    {
-        image.fill( value );
-    }
-
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         ParameterValidation( image, x, y, width, height );
@@ -718,22 +513,6 @@ namespace cpu
 
         for( ; imageY != imageYEnd; imageY += rowSize )
             memset( imageY, value, sizeof( uint8_t ) * width );
-    }
-
-    Image Flip( const Image & in, bool horizontal, bool vertical )
-    {
-        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
-    }
-
-    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
-    {
-        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
-    }
-
-    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                bool horizontal, bool vertical )
-    {
-        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
     }
 
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -785,21 +564,6 @@ namespace cpu
         }
     }
 
-    Image GammaCorrection( const Image & in, double a, double gamma )
-    {
-        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, a, gamma );
-    }
-
-    void GammaCorrection( const Image & in, Image & out, double a, double gamma )
-    {
-        Image_Function_Helper::GammaCorrection( GammaCorrection, in, out, a, gamma );
-    }
-
-    Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
-    {
-        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, startXIn, startYIn, width, height, a, gamma );
-    }
-
     void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                           uint32_t width, uint32_t height, double a, double gamma )
     {
@@ -819,34 +583,6 @@ namespace cpu
         }
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
-    }
-
-    uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
-    {
-        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Position of point [x, y] is out of image" );
-
-        return *(image.data() + y * image.rowSize() + x);
-    }
-
-    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
-    {
-        return Image_Function_Helper::GetThreshold( histogram );
-    }
-
-    std::vector < uint32_t > Histogram( const Image & image )
-    {
-        return Image_Function_Helper::Histogram( Histogram, image );
-    }
-
-    void Histogram( const Image & image, std::vector < uint32_t > & histogram )
-    {
-        Image_Function_Helper::Histogram( Histogram, image, histogram );
-    }
-
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Histogram( Histogram, image, x, y, width, height );
     }
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
@@ -870,22 +606,6 @@ namespace cpu
             for( ; imageX != imageXEnd; ++imageX )
                 ++histogram[*imageX];
         }
-    }
-
-    std::vector < uint32_t > Histogram( const Image & image, const Image & mask )
-    {
-        return Image_Function_Helper::Histogram( Histogram, image, mask );
-    }
-
-    void Histogram( const Image & image, const Image & mask, std::vector < uint32_t > & histogram )
-    {
-        Image_Function_Helper::Histogram( Histogram, image, mask, histogram );
-    }
-
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
-                                        uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Histogram( Histogram, image, x, y, mask, maskX, maskY, width, height );
     }
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height,
@@ -917,21 +637,6 @@ namespace cpu
         }
     }
 
-    Image Invert( const Image & in )
-    {
-        return Image_Function_Helper::Invert( Invert, in );
-    }
-
-    void Invert( const Image & in, Image & out )
-    {
-        Image_Function_Helper::Invert( Invert, in, out );
-    }
-
-    Image Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Invert( Invert, in, startXIn, startYIn, width, height );
-    }
-
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height )
     {
@@ -961,13 +666,6 @@ namespace cpu
         }
     }
 
-    bool IsBinary( const Image & image )
-    {
-        ParameterValidation( image );
-
-        return IsBinary( image, 0u, 0u, image.width(), image.height() );
-    }
-
     bool IsBinary( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         ParameterValidation( image, startX, startY, width, height );
@@ -983,13 +681,6 @@ namespace cpu
         }
 
         return (counter < 3u);
-    }
-
-    bool IsEqual( const Image & in1, const Image & in2 )
-    {
-        ParameterValidation( in1, in2 );
-
-        return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
 
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -1024,22 +715,6 @@ namespace cpu
         return true;
     }
 
-    Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
-    {
-        return Image_Function_Helper::LookupTable( LookupTable, in, table );
-    }
-
-    void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
-    {
-        Image_Function_Helper::LookupTable( LookupTable, in, out, table );
-    }
-
-    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                       const std::vector < uint8_t > & table )
-    {
-        return Image_Function_Helper::LookupTable( LookupTable, in, startXIn, startYIn, width, height, table );
-    }
-
     void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
@@ -1072,22 +747,6 @@ namespace cpu
         }
     }
 
-    Image Maximum( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::Maximum( Maximum, in1, in2 );
-    }
-
-    void Maximum( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::Maximum( Maximum, in1, in2, out );
-    }
-
-    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Maximum( Maximum, in1, startX1, startY1, in2, startX2, startY2, width, height );
-    }
-
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
@@ -1118,23 +777,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in2X) < (*in1X) ? (*in1X) : (*in2X);
         }
-    }
-
-    Image Merge( const Image & in1, const Image & in2, const Image & in3 )
-    {
-        return Image_Function_Helper::Merge( Merge, in1, in2, in3 );
-    }
-
-    void Merge( const Image & in1, const Image & in2, const Image & in3, Image & out )
-    {
-        Image_Function_Helper::Merge( Merge, in1, in2, in3, out );
-    }
-
-    Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
-                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Merge( Merge, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2,
-                                             in3, startXIn3, startYIn3, width, height  );
     }
 
     void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
@@ -1181,22 +823,6 @@ namespace cpu
         }
     }
 
-    Image Minimum( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::Minimum( Minimum, in1, in2 );
-    }
-
-    void Minimum( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::Minimum( Minimum, in1, in2, out );
-    }
-
-    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Minimum( Minimum, in1, startX1, startY1, in2, startX2, startY2, width, height );
-    }
-
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
@@ -1227,21 +853,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in2X) > (*in1X) ? (*in1X) : (*in2X);
         }
-    }
-
-    Image Normalize( const Image & in )
-    {
-        return Image_Function_Helper::Normalize( Normalize, in );
-    }
-
-    void Normalize( const Image & in, Image & out )
-    {
-        Image_Function_Helper::Normalize( Normalize, in, out );
-    }
-
-    Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Normalize( Normalize, in, startXIn, startYIn, width, height );
     }
 
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -1287,21 +898,6 @@ namespace cpu
 
             LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
         }
-    }
-
-    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
-    {
-        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
-    }
-
-    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
-    {
-        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
-    }
-
-    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
-    {
-        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
     }
 
     void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
@@ -4446,6 +4042,30 @@ namespace Image_Function
         simd::Accumulate(image, x, y, width, height, result, simd::actualSimdType());
     }
 
+    void BinaryDilate( Image & image, uint32_t dilationX, uint32_t dilationY )
+    {
+        ParameterValidation( image );
+
+        BinaryDilate( image, 0, 0, image.width(), image.height(), dilationX, dilationY );
+    }
+
+    void BinaryDilate( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY )
+    {
+        Dilate( image, x, y, width, height, dilationX, dilationY, 255u );
+    }
+
+    void BinaryErode( Image & image, uint32_t erosionX, uint32_t erosionY )
+    {
+        ParameterValidation( image );
+
+        BinaryErode( image, 0, 0, image.width(), image.height(), erosionX, erosionY );
+    }
+
+    void BinaryErode( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t erosionX, uint32_t erosionY )
+    {
+        Dilate( image, x, y, width, height, erosionX, erosionY, 0u );
+    }
+
     Image BitwiseAnd( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2 );
@@ -4512,6 +4132,165 @@ namespace Image_Function
         simd::BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
+    Image16Bit ConvertTo16Bit( const Image & in )
+    {
+        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, Image16Bit & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
+        ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint16_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t  * inX  = inY;
+            uint16_t       * outX = outY;
+            const uint16_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) << 8;
+        }
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in )
+    {
+        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, Image & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = Image().generate( width, height, in.colorCount() );
+        ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint16_t * inX  = inY;
+            uint8_t        * outX = outY;
+            const uint8_t  * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) >> 8;
+        }
+    }
+
+    Image ConvertToGrayScale( const Image & in )
+    {
+        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in );
+    }
+
+    void ConvertToGrayScale( const Image & in, Image & out )
+    {
+        Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, out );
+    }
+
+    Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, startXIn, startYIn, width, height );
+    }
+
+    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                             uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyGrayScaleImage( out );
+
+        if( in.colorCount() == GRAY_SCALE ) {
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX, inX += colorCount )
+                (*outX) = static_cast <uint8_t>((*(inX) + *(inX + 1) + *(inX + 2)) / 3u); // average of red, green and blue components
+        }
+    }
+
     Image ConvertToRgb( const Image & in )
     {
         return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in );
@@ -4531,6 +4310,108 @@ namespace Image_Function
                        uint32_t width, uint32_t height )
     {
         simd::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    void Copy( const Image & in, Image & out )
+    {
+        ParameterValidation( in, out );
+
+        out = in;
+    }
+
+    Image Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Copy( Copy, in, startXIn, startYIn, width, height );
+    }
+
+    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        const uint8_t colorCount  = CommonColorCount( in, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
+            memcpy( outY, inY, sizeof( uint8_t ) * width );
+    }
+
+     Image ExtractChannel( const Image & in, uint8_t channelId )
+    {
+        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, channelId );
+    }
+
+    void ExtractChannel( const Image & in, Image & out, uint8_t channelId )
+    {
+        Image_Function_Helper::ExtractChannel( ExtractChannel, in, out, channelId );
+    }
+
+    Image ExtractChannel( const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        return Image_Function_Helper::ExtractChannel( ExtractChannel, in, x, y, width, height, channelId );
+    }
+
+    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyGrayScaleImage( out );
+
+        if( channelId >= in.colorCount() )
+            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount + channelId;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX, inX += colorCount )
+                (*outX) = *(inX);
+        }
+    }
+
+    void Fill( Image & image, uint8_t value )
+    {
+        image.fill( value );
+    }
+
+    void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    {
+        ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize = image.rowSize();
+
+        uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
+        const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        for( ; imageY != imageYEnd; imageY += rowSize )
+            memset( imageY, value, sizeof( uint8_t ) * width );
     }
 
     Image Flip( const Image & in, bool horizontal, bool vertical )
@@ -4555,6 +4436,138 @@ namespace Image_Function
         simd::Flip(in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, simd::actualSimdType());
     }
 
+    Image GammaCorrection( const Image & in, double a, double gamma )
+    {
+        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, a, gamma );
+    }
+
+    void GammaCorrection( const Image & in, Image & out, double a, double gamma )
+    {
+        Image_Function_Helper::GammaCorrection( GammaCorrection, in, out, a, gamma );
+    }
+
+    Image GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+    {
+        return Image_Function_Helper::GammaCorrection( GammaCorrection, in, startXIn, startYIn, width, height, a, gamma );
+    }
+
+    void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                          uint32_t width, uint32_t height, double a, double gamma )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        if( a < 0 || gamma < 0 )
+            throw imageException( "Gamma correction parameters are invalid" );
+
+        // We precalculate all values and store them in lookup table
+        std::vector < uint8_t > value( 256, 255u );
+
+        for( uint16_t i = 0; i < 256; ++i ) {
+            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
+
+            if( data < 256 )
+                value[i] = static_cast<uint8_t>(data);
+        }
+
+        LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+    }
+
+    uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
+    {
+        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
+            throw imageException( "Position of point [x, y] is out of image" );
+
+        return *(image.data() + y * image.rowSize() + x);
+    }
+
+    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
+    {
+        return Image_Function_Helper::GetThreshold( histogram );
+    }
+
+    std::vector < uint32_t > Histogram( const Image & image )
+    {
+        return Image_Function_Helper::Histogram( Histogram, image );
+    }
+
+    void Histogram( const Image & image, std::vector < uint32_t > & histogram )
+    {
+        Image_Function_Helper::Histogram( Histogram, image, histogram );
+    }
+
+    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Histogram( Histogram, image, x, y, width, height );
+    }
+
+    void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    {
+        ParameterValidation( image, x, y, width, height );
+        VerifyGrayScaleImage( image );
+        OptimiseRoi( width, height, image );
+
+        histogram.resize( 256u );
+        std::fill( histogram.begin(), histogram.end(), 0u );
+
+        const uint32_t rowSize = image.rowSize();
+
+        const uint8_t * imageY = image.data() + y * rowSize + x;
+        const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        for( ; imageY != imageYEnd; imageY += rowSize ) {
+            const uint8_t * imageX    = imageY;
+            const uint8_t * imageXEnd = imageX + width;
+
+            for( ; imageX != imageXEnd; ++imageX )
+                ++histogram[*imageX];
+        }
+    }
+
+    std::vector < uint32_t > Histogram( const Image & image, const Image & mask )
+    {
+        return Image_Function_Helper::Histogram( Histogram, image, mask );
+    }
+
+    void Histogram( const Image & image, const Image & mask, std::vector < uint32_t > & histogram )
+    {
+        Image_Function_Helper::Histogram( Histogram, image, mask, histogram );
+    }
+
+    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
+                                        uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Histogram( Histogram, image, x, y, mask, maskX, maskY, width, height );
+    }
+
+    void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height,
+                    std::vector < uint32_t > & histogram )
+    {
+        ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
+        VerifyGrayScaleImage( image, mask );
+        OptimiseRoi( width, height, image, mask );
+
+        histogram.resize( 256u );
+        std::fill( histogram.begin(), histogram.end(), 0u );
+
+        const uint32_t rowSize     = image.rowSize();
+        const uint32_t rowSizeMask = mask.rowSize();
+
+        const uint8_t * imageY     = image.data() + y * rowSize + x;
+        const uint8_t * imageYMask = mask.data() + maskY * rowSizeMask + maskX;
+        const uint8_t * imageYEnd  = imageY + height * rowSize;
+
+        for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+            const uint8_t * imageX     = imageY;
+            const uint8_t * imageXMask = imageYMask;
+            const uint8_t * imageXEnd  = imageX + width;
+
+            for( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
+                if( (*imageXMask) > 0 )
+                    ++histogram[*imageX];
+            }
+        }
+    }
+
     Image Invert( const Image & in )
     {
         return Image_Function_Helper::Invert( Invert, in );
@@ -4574,6 +4587,117 @@ namespace Image_Function
                  uint32_t width, uint32_t height )
     {
         simd::Invert( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    bool IsBinary( const Image & image )
+    {
+        ParameterValidation( image );
+
+        return IsBinary( image, 0u, 0u, image.width(), image.height() );
+    }
+
+    bool IsBinary( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( image, startX, startY, width, height );
+        VerifyGrayScaleImage( image );
+
+        const std::vector< uint32_t > histogram = Histogram( image, startX, startY, width, height );
+
+        size_t counter = 0u;
+
+        for( std::vector< uint32_t >::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
+            if( (*value) > 0u )
+                ++counter;
+        }
+
+        return (counter < 3u);
+    }
+
+    bool IsEqual( const Image & in1, const Image & in2 )
+    {
+        ParameterValidation( in1, in2 );
+
+        return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+    }
+
+    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                  uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+        const uint8_t colorCount = CommonColorCount( in1, in2 );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in1, in2 );
+
+        const uint32_t rowSize1  = in1.rowSize();
+        const uint32_t rowSize2  = in2.rowSize();
+
+        const uint8_t * in1Y = in1.data() + startY1 * rowSize1 + startX1 * colorCount;
+        const uint8_t * in2Y = in2.data() + startY2 * rowSize2 + startX2 * colorCount;
+
+        const uint8_t * in1YEnd = in1Y + height * rowSize1;
+
+        for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
+            const uint8_t * in1X = in1Y;
+            const uint8_t * in2X = in2Y;
+            const uint8_t * in1XEnd = in1X + width;
+
+            for( ; in1X != in1XEnd; ++in1X, ++in2X ) {
+                if( (*in1X) != (*in2X) )
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
+    {
+        return Image_Function_Helper::LookupTable( LookupTable, in, table );
+    }
+
+    void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
+    {
+        Image_Function_Helper::LookupTable( LookupTable, in, out, table );
+    }
+
+    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                       const std::vector < uint8_t > & table )
+    {
+        return Image_Function_Helper::LookupTable( LookupTable, in, startXIn, startYIn, width, height, table );
+    }
+
+    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                      uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        if( table.size() != 256u )
+            throw imageException( "Lookup table size is not equal to 256" );
+
+        const uint8_t colorCount = CommonColorCount( in, out );
+        width = width * colorCount;
+
+        OptimiseRoi( width, height, in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX, ++inX )
+                (*outX) = table[*inX];
+        }
     }
 
     Image Maximum( const Image & in1, const Image & in2 )
@@ -4598,6 +4722,67 @@ namespace Image_Function
         simd::Maximum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
+    Image Merge( const Image & in1, const Image & in2, const Image & in3 )
+    {
+        return Image_Function_Helper::Merge( Merge, in1, in2, in3 );
+    }
+
+    void Merge( const Image & in1, const Image & in2, const Image & in3, Image & out )
+    {
+        Image_Function_Helper::Merge( Merge, in1, in2, in3, out );
+    }
+
+    Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Merge( Merge, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2,
+                                             in3, startXIn3, startYIn3, width, height  );
+    }
+
+    void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height )
+    {
+        ParameterValidation ( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
+        ParameterValidation ( out, startXOut, startYOut, width, height );
+        VerifyGrayScaleImage( in1, in2, in3 );
+        VerifyRGBImage      ( out );
+
+        const uint8_t colorCount = RGB;
+
+        if( colorCount != out.colorCount() )
+            throw imageException( "Color image is not 3-colored image" );
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+        const uint32_t rowSizeIn3 = in3.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        width = width * colorCount;
+
+        const uint8_t * in1Y = in1.data() + startYIn1 * rowSizeIn1 + startXIn1;
+        const uint8_t * in2Y = in2.data() + startYIn2 * rowSizeIn2 + startXIn2;
+        const uint8_t * in3Y = in3.data() + startYIn3 * rowSizeIn3 + startXIn3;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3 ) {
+            const uint8_t * in1X = in1Y;
+            const uint8_t * in2X = in2Y;
+            const uint8_t * in3X = in3Y;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ) {
+                *(outX++) = *(in1X++);
+                *(outX++) = *(in2X++);
+                *(outX++) = *(in3X++);
+            }
+        }
+    }
+
     Image Minimum( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::Minimum( Minimum, in1, in2 );
@@ -4620,6 +4805,66 @@ namespace Image_Function
         simd::Minimum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
+    Image Normalize( const Image & in )
+    {
+        return Image_Function_Helper::Normalize( Normalize, in );
+    }
+
+    void Normalize( const Image & in, Image & out )
+    {
+        Image_Function_Helper::Normalize( Normalize, in, out );
+    }
+
+    Image Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Normalize( Normalize, in, startXIn, startYIn, width, height );
+    }
+
+    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        const uint8_t colorCount = CommonColorCount( in, out );
+        const uint32_t rowSizeIn = in.rowSize();
+
+        const uint8_t * inY    = in.data()  + startYIn  * rowSizeIn + startXIn * colorCount;
+        const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+        uint8_t minimum = 255;
+        uint8_t maximum = 0;
+
+        const uint32_t realWidth = width * colorCount;
+
+        for( ; inY != inYEnd; inY += rowSizeIn ) {
+            const uint8_t * inX = inY;
+            const uint8_t * inXEnd = inX + realWidth;
+
+            for( ; inX != inXEnd; ++inX ) {
+                if( minimum > (*inX) )
+                    minimum = (*inX);
+
+                if( maximum < (*inX) )
+                    maximum = (*inX);
+            }
+        }
+
+        if( (minimum == 0 && maximum == 255) || (minimum == maximum) ) {
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        }
+        else {
+            const double correction = 255.0 / (maximum - minimum);
+
+            // We precalculate all values and store them in lookup table
+            std::vector < uint8_t > value( 256 );
+
+            for( uint16_t i = 0; i < 256; ++i )
+                value[i] = static_cast <uint8_t>((i - minimum) * correction + 0.5);
+
+            LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+        }
+    }
+
     std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
     {
         return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
@@ -4636,6 +4881,97 @@ namespace Image_Function
                             std::vector < uint32_t > & projection )
     {
         simd::ProjectionProfile( image, x, y, width, height, horizontal, projection, simd::actualSimdType() );
+    }
+
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId )
+    {
+        ParameterValidation( channel, rgb );
+
+        ReplaceChannel( channel, 0, 0, rgb, 0, 0, channel.width(), channel.height(), channelId );
+    }
+
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        VerifyGrayScaleImage( channel );
+        VerifyRGBImage( rgb );
+
+        if ( channelId >= RGB )
+            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+
+        const uint32_t rowSizeIn  = channel.rowSize();
+        const uint32_t rowSizeOut = rgb.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
+        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
+                *outX = *inX;
+        }
+    }
+
+    Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
+    {
+        return Image_Function_Helper::Resize( Resize, in, widthOut, heightOut );
+    }
+
+    void Resize( const Image & in, Image & out )
+    {
+        Image_Function_Helper::Resize( Resize, in, out );
+    }
+
+    Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+                  uint32_t widthOut, uint32_t heightOut )
+    {
+        return Image_Function_Helper::Resize( Resize, in, startXIn, startYIn, widthIn, heightIn, widthOut, heightOut );
+    }
+
+    void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
+                 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+    {
+        ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
+        ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+        VerifyGrayScaleImage( in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
+
+        uint32_t idY = 0;
+
+        // Precalculation of X position
+        std::vector < uint32_t > positionX( widthOut );
+        for( uint32_t x = 0; x < widthOut; ++x )
+            positionX[x] = x * widthIn / widthOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+            const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + widthOut;
+
+            const uint32_t * idX = positionX.data();
+
+            for( ; outX != outXEnd; ++outX, ++idX )
+                (*outX) = *(inX + (*idX));
+        }
     }
 
     Image RgbToBgr( const Image & in )
