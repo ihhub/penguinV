@@ -944,13 +944,6 @@ namespace cpu
         }
     }
 
-    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId )
-    {
-        ParameterValidation( channel, rgb );
-
-        ReplaceChannel( channel, 0, 0, rgb, 0, 0, channel.width(), channel.height(), channelId );
-    }
-
     void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
                          uint32_t width, uint32_t height, uint8_t channelId )
     {
@@ -982,22 +975,6 @@ namespace cpu
             for ( ; outX != outXEnd; outX += colorCount, ++inX )
                 *outX = *inX;
         }
-    }
-
-    Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
-    {
-        return Image_Function_Helper::Resize( Resize, in, widthOut, heightOut );
-    }
-
-    void Resize( const Image & in, Image & out )
-    {
-        Image_Function_Helper::Resize( Resize, in, out );
-    }
-
-    Image Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                  uint32_t widthOut, uint32_t heightOut )
-    {
-        return Image_Function_Helper::Resize( Resize, in, startXIn, startYIn, widthIn, heightIn, widthOut, heightOut );
     }
 
     void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
@@ -1033,21 +1010,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++idX )
                 (*outX) = *(inX + (*idX));
         }
-    }
-
-    Image RgbToBgr( const Image & in )
-    {
-        return Image_Function_Helper::RgbToBgr( RgbToBgr, in );
-    }
-
-    void RgbToBgr( const Image & in, Image & out )
-    {
-        Image_Function_Helper::RgbToBgr( RgbToBgr, in, out );
-    }
-
-    Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::RgbToBgr( RgbToBgr, in, startXIn, startYIn, width, height );
     }
 
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -1178,21 +1140,6 @@ namespace cpu
         }
     }
 
-    Image Shift( const Image & in, double shiftX, double shiftY )
-    {
-        return Image_Function_Helper::Shift( Shift, in, shiftX, shiftY );
-    }
-
-    void Shift( const Image & in, Image & out, double shiftX, double shiftY )
-    {
-        Image_Function_Helper::Shift( Shift, in, out, shiftX, shiftY );
-    }
-
-    Image Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
-    {
-        return Image_Function_Helper::Shift( Shift, in, startXIn, startYIn, width, height, shiftX, shiftY );
-    }
-
     void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height, double shiftX, double shiftY )
     {
@@ -1279,14 +1226,6 @@ namespace cpu
             memset( outY, 0, width );
     }
 
-    void Split( const Image & in, Image & out1, Image & out2, Image & out3 )
-    {
-        ParameterValidation( out1, out2, out3 );
-        ParameterValidation( in, out1 );
-
-        Split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
-    }
-
     void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
@@ -1328,22 +1267,6 @@ namespace cpu
         }
     }
 
-    Image Subtract( const Image & in1, const Image & in2 )
-    {
-        return Image_Function_Helper::Subtract( Subtract, in1, in2 );
-    }
-
-    void Subtract( const Image & in1, const Image & in2, Image & out )
-    {
-        Image_Function_Helper::Subtract( Subtract, in1, in2, out );
-    }
-
-    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Subtract( Subtract, in1, startX1, startY1, in2, startX2, startY2, width, height );
-    }
-
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
@@ -1376,11 +1299,6 @@ namespace cpu
         }
     }
 
-    uint32_t Sum( const Image & image )
-    {
-        return Sum( image, 0, 0, image.width(), image.height() );
-    }
-
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
         ParameterValidation( image, x, y, width, height );
@@ -1403,21 +1321,6 @@ namespace cpu
         }
 
         return sum;
-    }
-
-    Image Threshold( const Image & in, uint8_t threshold )
-    {
-        return Image_Function_Helper::Threshold( Threshold, in, threshold );
-    }
-
-    void Threshold( const Image & in, Image & out, uint8_t threshold )
-    {
-        Image_Function_Helper::Threshold( Threshold, in, out, threshold );
-    }
-
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t threshold )
-    {
-        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, threshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -1444,22 +1347,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = (*inX) < threshold ? 0 : 255;
         }
-    }
-
-    Image Threshold( const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
-    {
-        return Image_Function_Helper::Threshold( Threshold, in, minThreshold, maxThreshold );
-    }
-
-    void Threshold( const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
-    {
-        Image_Function_Helper::Threshold( Threshold, in, out, minThreshold, maxThreshold );
-    }
-
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
-                     uint8_t maxThreshold )
-    {
-        return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, minThreshold, maxThreshold );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -1489,21 +1376,6 @@ namespace cpu
             for( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
         }
-    }
-
-    Image Transpose( const Image & in )
-    {
-        return Image_Function_Helper::Transpose( Transpose, in );
-    }
-
-    void Transpose( const Image & in, Image & out )
-    {
-        Image_Function_Helper::Transpose( Transpose, in, out );
-    }
-
-    Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
-    {
-        return Image_Function_Helper::Transpose( Transpose, in, startXIn, startYIn, width, height );
     }
 
     void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -4995,6 +4867,251 @@ namespace Image_Function
         simd::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
+    void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+    {
+        ParameterValidation( in, out );
+        VerifyGrayScaleImage( in, out );
+
+        const double cosAngle = cos( angle );
+        const double sinAngle = sin( angle );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t width  = in.width();
+        const uint32_t height = in.height();
+
+        const uint8_t * inY  = in.data();
+        uint8_t       * outY = out.data();
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        double inXPos = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
+        double inYPos = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
+            uint8_t       * outX = outY;
+            const uint8_t * outXEnd = outX + width;
+
+            double posX = inXPos;
+            double posY = inYPos;
+
+            for( ; outX != outXEnd; ++outX, posX += cosAngle, posY -= sinAngle ) {
+                if( posX < 0 || posY < 0 ) {
+                    (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
+                }
+                else {
+                    uint32_t x = static_cast<uint32_t>(posX);
+                    uint32_t y = static_cast<uint32_t>(posY);
+
+                    if( x >= width - 1 || y >= height - 1 ) {
+                        (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
+                    }
+                    else {
+                        const uint8_t * inX = inY + y * rowSizeIn + x;
+
+                        // we use bilinear approximation to find pixel intensity value
+
+                        double coeffX = posX - x;
+                        double coeffY = posY - y;
+
+                        // Take a weighted mean of four pixels. Use offset of 0.5
+                        // so that integer conversion leads to rounding instead of 
+                        // simple truncation.
+
+                        double sum = (*inX) * (1 - coeffX) * (1 - coeffY) +
+                            *(inX + 1) * (coeffX) * (1 - coeffY) +
+                            *(inX + rowSizeIn) * (1 - coeffX) * (coeffY) +
+                            *(inX + rowSizeIn + 1) * (coeffX) * (coeffY) + 
+                            0.5;
+
+                        (*outX) = static_cast<uint8_t>(sum);
+                    }
+                }
+            }
+        }
+    }
+
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
+    {
+        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
+            throw imageException( "Position of point [x, y] is out of image" );
+
+        *(image.data() + y * image.rowSize() + x) = value;
+    }
+
+    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
+    {
+        if( image.empty() || X.empty() || X.size() != Y.size() || image.colorCount() != GRAY_SCALE )
+            throw imageException( "Bad input parameters in image function" );
+
+        const uint32_t rowSize = image.rowSize();
+        uint8_t * data = image.data();
+
+        std::vector < uint32_t >::const_iterator x   = X.begin();
+        std::vector < uint32_t >::const_iterator y   = Y.begin();
+        std::vector < uint32_t >::const_iterator end = X.end();
+
+        const uint32_t width  = image.width();
+        const uint32_t height = image.height();
+
+        for( ; x != end; ++x, ++y ) {
+            if( (*x) >= width || (*y) >= height )
+                throw imageException( "Position of point [x, y] is out of image" );
+
+            *(data + (*y) * rowSize + (*x)) = value;
+        }
+    }
+
+    Image Shift( const Image & in, double shiftX, double shiftY )
+    {
+        return Image_Function_Helper::Shift( Shift, in, shiftX, shiftY );
+    }
+
+    void Shift( const Image & in, Image & out, double shiftX, double shiftY )
+    {
+        Image_Function_Helper::Shift( Shift, in, out, shiftX, shiftY );
+    }
+
+    Image Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
+    {
+        return Image_Function_Helper::Shift( Shift, in, startXIn, startYIn, width, height, shiftX, shiftY );
+    }
+
+    void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, double shiftX, double shiftY )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyGrayScaleImage( in, out );
+
+        if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
+            throw imageException("Shift value by value bigger than ROI");
+
+        // take a note that we use an opposite values
+        int32_t shiftXIntegral = -static_cast<int32_t>( shiftX );
+        int32_t shiftYIntegral = -static_cast<int32_t>( shiftY );
+
+        shiftX = shiftX + shiftXIntegral;
+        shiftY = shiftY + shiftYIntegral;
+
+        if ( shiftX > 0.0 )
+            --shiftXIntegral;
+
+        if ( shiftY > 0.0 )
+            --shiftYIntegral;
+
+        const double coeffX = ( shiftX < 0.0 ) ? (1.0 + shiftX) : shiftX;
+        const double coeffY = ( shiftY < 0.0 ) ? (1.0 + shiftY) : shiftY;
+
+        // 2^23 = 8388608, 2^23 * 256 is a integer limit
+        const uint32_t coeff0 = static_cast<uint32_t>((      coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff1 = static_cast<uint32_t>((1.0 - coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff2 = static_cast<uint32_t>((1.0 - coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+        const uint32_t coeff3 = static_cast<uint32_t>((      coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+
+        const uint32_t limitX = in.width()  - 1u; // we need 2 subsequent pixels so we cannot use last pixel
+        const uint32_t limitY = in.height() - 1u;
+
+        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ?
+                                        (static_cast<uint32_t>(-shiftXIntegral) - startXIn) : 0u;
+        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + static_cast<uint32_t>(shiftXIntegral)) ?
+                                        (startXIn + width + static_cast<uint32_t>(shiftXIntegral) - limitX) : 0u;
+        const uint32_t realWidth = width - emptyLeftArea - emptyRightArea;
+
+        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ?
+                                         (static_cast<uint32_t>(-shiftYIntegral) - startYIn) : 0u;
+        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + static_cast<uint32_t>(shiftYIntegral)) ?
+                                         (startYIn + height + static_cast<uint32_t>(shiftYIntegral) - limitY) : 0u;
+        const uint32_t realHeight = height - emptyTopArea - emptyBottomArea;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
+
+        const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut )
+            memset( outY, 0, width );
+
+        inY += emptyTopArea * rowSizeIn;
+
+        outYEnd = outY + realHeight * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut, inY+=rowSizeIn ) {
+            const uint8_t * inX = inY;
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + emptyLeftArea + realWidth;
+
+            memset( outX, 0, emptyLeftArea );
+            inX += emptyLeftArea;
+
+            for( ; outX != outXEnd; ++outX ) {
+                uint32_t data  = (*(inX))  * coeff0;
+                data += (*(inX+rowSizeIn)) * coeff3;
+                data += (*(++inX))         * coeff1; // here we increment inX
+                data += (*(inX+rowSizeIn)) * coeff2;
+
+                *outX = static_cast<uint8_t>((data + 8192) >> 14); // 8192 is 0.5 after calculations
+            }
+
+            memset( outX, 0, emptyRightArea );
+        }
+
+        outYEnd = outY + emptyBottomArea * rowSizeOut;
+        for( ; outY != outYEnd; outY+=rowSizeOut )
+            memset( outY, 0, width );
+    }
+
+    void Split( const Image & in, Image & out1, Image & out2, Image & out3 )
+    {
+        ParameterValidation( out1, out2, out3 );
+        ParameterValidation( in, out1 );
+
+        Split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
+    }
+
+    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                uint32_t width, uint32_t height )
+    {
+        ParameterValidation ( in, startXIn, startYIn, width, height );
+        ParameterValidation ( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        VerifyRGBImage      ( in );
+        VerifyGrayScaleImage( out1, out2, out3 );
+
+        const uint8_t colorCount = RGB;
+
+        const uint32_t rowSizeIn   = in.rowSize();
+        const uint32_t rowSizeOut1 = out1.rowSize();
+        const uint32_t rowSizeOut2 = out2.rowSize();
+        const uint32_t rowSizeOut3 = out3.rowSize();
+
+        width = width * colorCount;
+
+        const uint8_t * inY = in.data() + startYIn * rowSizeIn + startXIn * colorCount;
+        uint8_t * out1Y = out1.data() + startYOut1 * rowSizeOut1 + startXOut1;
+        uint8_t * out2Y = out2.data() + startYOut2 * rowSizeOut2 + startXOut2;
+        uint8_t * out3Y = out3.data() + startYOut3 * rowSizeOut3 + startXOut3;
+
+        const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+        for( ; inY != inYEnd; inY += rowSizeIn, out1Y += rowSizeOut1, out2Y += rowSizeOut2, out3Y += rowSizeOut3 ) {
+            const uint8_t * inX = inY;
+            uint8_t * out1X = out1Y;
+            uint8_t * out2X = out2Y;
+            uint8_t * out3X = out3Y;
+
+            const uint8_t * inXEnd = inX + width;
+
+            for( ; inX != inXEnd; ) {
+                *(out1X++) = *(inX++);
+                *(out2X++) = *(inX++);
+                *(out3X++) = *(inX++);
+            }
+        }
+    }
+
     Image Subtract( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::Subtract( Subtract, in1, in2 );
@@ -5068,6 +5185,47 @@ namespace Image_Function
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         simd::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold, simd::actualSimdType() );
+    }
+
+    Image Transpose( const Image & in )
+    {
+        return Image_Function_Helper::Transpose( Transpose, in );
+    }
+
+    void Transpose( const Image & in, Image & out )
+    {
+        Image_Function_Helper::Transpose( Transpose, in, out );
+    }
+
+    Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Transpose( Transpose, in, startXIn, startYIn, width, height );
+    }
+
+    void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, height, width );
+        VerifyGrayScaleImage( in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + width * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
+            const uint8_t * inY  = inX;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + height;
+
+            for( ; outX != outXEnd; ++outX, inY += rowSizeIn )
+                (*outX) = *(inY);
+        }
     }
 }
 
