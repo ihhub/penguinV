@@ -26,7 +26,7 @@ private:
     uint32_t _width;
     uint32_t _height;
 
-    std::vector< std::pair<Point2d, PaintColor> > _point;
+    std::vector< std::pair<Point2d, uint32_t> > _point;
 
     void _setupImage( const PenguinV_Image::Image & image );
 };
