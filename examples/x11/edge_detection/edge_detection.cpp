@@ -1,4 +1,4 @@
-// Example application of blob detection utilization
+// Example application of edge detection utilization with X11 UI
 #include <iostream>
 #include "../../../src/edge_detection.h"
 #include "../../../src/image_buffer.h"
