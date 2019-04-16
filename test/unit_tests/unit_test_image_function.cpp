@@ -4,7 +4,6 @@
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
 #include "../../src/image_function_helper.h"
-#include "../../src/image_function_simd.h"
 #include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
 #include "unit_test_image_function.h"
@@ -2143,7 +2142,7 @@ namespace function_pool
 #ifdef PENGUINV_AVX_SET
 namespace avx
 {
-    using namespace Image_Function_Simd;
+    using namespace Image_Function;
 
     const bool isSupported = isAvxAvailable;
     const std::string namespaceName = "image_function_avx";
@@ -2167,7 +2166,7 @@ namespace avx
 #ifdef PENGUINV_NEON_SET
 namespace neon
 {
-    using namespace Image_Function_Simd;
+    using namespace Image_Function;
 
     const bool isSupported = isNeonAvailable;
     const std::string namespaceName = "image_function_neon";
@@ -2193,7 +2192,7 @@ namespace neon
 #ifdef PENGUINV_SSE_SET
 namespace sse
 {
-    using namespace Image_Function_Simd;
+    using namespace Image_Function;
 
     const bool isSupported = isSseAvailable;
     const std::string namespaceName = "image_function_sse";

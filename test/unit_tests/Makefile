@@ -20,7 +20,6 @@ SRCS :=  \
     $(LIB_DIR)/function_pool_task.cpp \
     $(LIB_DIR)/image_function.cpp \
     $(LIB_DIR)/image_function_helper.cpp \
-    $(LIB_DIR)/image_function_simd.cpp \
     $(LIB_DIR)/thread_pool.cpp \
     $(TEST_DIR)/test_helper.cpp \
     unit_tests.cpp \
