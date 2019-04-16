@@ -1348,6 +1348,46 @@ namespace Image_Function
         }
     }
 
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId )
+    {
+        ParameterValidation( channel, rgb );
+
+        ReplaceChannel( channel, 0, 0, rgb, 0, 0, channel.width(), channel.height(), channelId );
+    }
+
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        VerifyGrayScaleImage( channel );
+        VerifyRGBImage( rgb );
+
+        if ( channelId >= RGB )
+            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+
+        const uint32_t rowSizeIn  = channel.rowSize();
+        const uint32_t rowSizeOut = rgb.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
+        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
+                *outX = *inX;
+        }
+    }
+
     Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
     {
         return Image_Function_Helper::Resize( Resize, in, widthOut, heightOut );

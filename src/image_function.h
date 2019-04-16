@@ -173,6 +173,10 @@ namespace Image_Function
     void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                 std::vector < uint32_t > & projection );
 
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId );
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId );
+
     // Image resizing (scaling) is based on nearest-neighbour interpolation method
     Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut );
     void  Resize( const Image & in, Image & out );
