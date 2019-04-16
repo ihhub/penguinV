@@ -29,11 +29,15 @@ namespace
             simd::EnableSimd( false );
             simd::EnableNeon( true );
         }
+        else if( namespaceName == "image_function" )
+        {
+            simd::EnableSimd( false );
+        }
     }
 
     void CleanupFunction(const std::string& namespaceName)
     {
-        if ( (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") )
+        if ( (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") || (namespaceName == "image_function") )
             simd::EnableSimd( true );
     }
 
