@@ -48,7 +48,7 @@ void UiWindowX11::_display()
         if ( e.type == Expose ) {
             GC defaultGC = DefaultGC( _uiDisplay, _screen );
             XPutImage( _uiDisplay, _window, defaultGC, _image, 0, 0, 0, 0, _width, _height );
-            
+
             for ( size_t i = 0u; i < _point.size(); ++i ) {
                 const Point2d & point = _point[i].first;
                 const PaintColor & color = _point[i].second;
