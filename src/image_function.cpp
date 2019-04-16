@@ -388,7 +388,7 @@ namespace cpu
         Image_Function::VerifyGrayScaleImage( out );
 
         if( in.colorCount() == GRAY_SCALE ) {
-            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
 
@@ -420,7 +420,7 @@ namespace cpu
         Image_Function::VerifyRGBImage     ( out );
 
         if( in.colorCount() == RGB ) {
-            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
 
@@ -592,7 +592,7 @@ namespace cpu
                 value[i] = static_cast<uint8_t>(data);
         }
 
-        LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
+        Image_Function::LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
