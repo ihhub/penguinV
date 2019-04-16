@@ -51,8 +51,7 @@ void UiWindowX11::_display()
 
             for ( size_t i = 0u; i < _point.size(); ++i ) {
                 const Point2d & point = _point[i].first;
-                const PaintColor & color = _point[i].second;
-                XSetForeground(_uiDisplay, defaultGC, (color.red << 16) + (color.green << 8) + color.blue);
+                XSetForeground( _uiDisplay, defaultGC, _point[i].second );
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(point.x - 1), static_cast<int>(point.y - 1),
                            static_cast<int>(point.x + 1), static_cast<int>(point.y + 1) );
             }
@@ -110,7 +109,7 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
 
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 {
-    _point.push_back( std::make_pair( point, color ) );
+    _point.push_back( std::make_pair( point, (color.red << 16) + (color.green << 8) + color.blue ) );
 }
 
 #endif
