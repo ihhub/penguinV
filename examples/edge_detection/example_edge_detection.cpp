@@ -1,10 +1,14 @@
-// Example application of edge detection utilization with X11 UI
+// Example application of edge detection utilization with Windows UI API
 #include <iostream>
-#include "../../../src/edge_detection.h"
-#include "../../../src/image_buffer.h"
-#include "../../../src/image_function.h"
-#include "../../../src/file/bmp_image.h"
-#include "../../../src/ui/x11/x11_ui.h"
+#include "../../src/edge_detection.h"
+#include "../../src/image_buffer.h"
+#include "../../src/image_function.h"
+#include "../../src/file/bmp_image.h"
+#if defined (_MSC_VER)
+#include "../../src/ui/win/win_ui.h"
+#else
+#include "../../src/ui/x11/x11_ui.h"
+#endif
 
 int main( int argc, char * argv[] )
 {
@@ -36,7 +40,11 @@ int main( int argc, char * argv[] )
         const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();
         const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();
 
+#if defined (_MSC_VER)
+        UiWindowWin window( original, "Edge detection" );
+#else
         UiWindowX11 window( original, "Edge detection" );
+#endif
 
         const PaintColor positiveColor( 20, 255, 20 ); // green
         const PaintColor negativeColor( 255, 20, 20 ); // red

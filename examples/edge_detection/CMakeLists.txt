@@ -1,5 +1,5 @@
 add_executable(example_edge_detection
-    ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/example_edge_detection.cpp
     ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/ui/ui.cpp
     ${LIB_DIR}/ui/win/win_ui.cpp
