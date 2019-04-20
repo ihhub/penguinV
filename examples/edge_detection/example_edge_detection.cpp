@@ -1,4 +1,4 @@
-// Example application of edge detection utilization with Windows UI API
+// Example application of edge detection utilization
 #include <iostream>
 #include "../../src/edge_detection.h"
 #include "../../src/image_buffer.h"
