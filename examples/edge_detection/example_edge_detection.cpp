@@ -34,7 +34,7 @@ int main( int argc, char * argv[] )
         edgeParameter.contrastCheckLeftSideOffset  = 3u; // in pixels
         edgeParameter.contrastCheckRightSideOffset = 3u; // in pixels
 
-        EdgeDetection edgeDetection;
+        EdgeDetection<> edgeDetection;
         edgeDetection.find( image, edgeParameter );
 
         const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();

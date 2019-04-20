@@ -410,6 +410,118 @@ namespace Image_Function
         }
     }
 
+    Image16Bit ConvertTo16Bit( const Image & in )
+    {
+        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, Image16Bit & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
+        ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint16_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t  * inX  = inY;
+            uint16_t       * outX = outY;
+            const uint16_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) << 8;
+        }
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in )
+    {
+        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, Image & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = Image().generate( width, height, in.colorCount() );
+        ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint16_t * inX  = inY;
+            uint8_t        * outX = outY;
+            const uint8_t  * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) >> 8;
+        }
+    }
+
     Image ConvertToGrayScale( const Image & in )
     {
         return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in );
@@ -1233,6 +1345,46 @@ namespace Image_Function
                 for( ; imageX != imageXEnd; ++imageX )
                     (*data) += (*imageX);
             }
+        }
+    }
+
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId )
+    {
+        ParameterValidation( channel, rgb );
+
+        ReplaceChannel( channel, 0, 0, rgb, 0, 0, channel.width(), channel.height(), channelId );
+    }
+
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        VerifyGrayScaleImage( channel );
+        VerifyRGBImage( rgb );
+
+        if ( channelId >= RGB )
+            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+
+        const uint32_t rowSizeIn  = channel.rowSize();
+        const uint32_t rowSizeOut = rgb.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
+        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
+                *outX = *inX;
         }
     }
 

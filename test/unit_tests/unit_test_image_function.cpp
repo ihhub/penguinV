@@ -1392,6 +1392,49 @@ namespace Function_Template
             std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value == v; } );
     }
 
+    bool form1_ReplaceChannel(ReplaceChannelForm1 ReplaceChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        const PenguinV_Image::Image input = uniformImage( intensity[0] );
+        PenguinV_Image::Image output( input.width(), input.height(), PenguinV_Image::RGB );
+
+        output.fill( intensity[1] );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        ReplaceChannel( input, output, channelId );
+
+        std::vector<uint8_t> verificationArray( 3, intensity[1] );
+        verificationArray[channelId] = intensity[0];
+
+        return verifyImage( output, verificationArray, false );
+    }
+
+    bool form2_ReplaceChannel(ReplaceChannelForm2 ReplaceChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 2 );
+        const PenguinV_Image::Image input  = uniformImage   ( intensity[0] );
+        PenguinV_Image::Image output = uniformRGBImage( intensity[1] );
+
+        std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+
+        size[0] = imageSize( input );
+        size[1] = imageSize( output );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        ReplaceChannel( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, channelId );
+
+        std::vector<uint8_t> verificationArray( 3, intensity[1] );
+        verificationArray[channelId] = intensity[0];
+
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, verificationArray, false );
+    }
+
     bool form1_Resize(ResizeForm1 Resize)
     {
         const uint8_t intensity = intensityValue();
@@ -2056,6 +2099,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( Minimum )
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
+    SET_FUNCTION_2_FORMS( ReplaceChannel )
     SET_FUNCTION_4_FORMS( Resize )
     SET_FUNCTION_4_FORMS( RgbToBgr )
     SET_FUNCTION_2_FORMS( SetPixel )
