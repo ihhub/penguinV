@@ -4,7 +4,7 @@
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
 #include "../../src/file/bmp_image.h"
-#if defined (_MSC_VER)
+#if defined (_WIN32)
 #include "../../src/ui/win/win_ui.h"
 #else
 #include "../../src/ui/x11/x11_ui.h"
@@ -40,7 +40,7 @@ int main( int argc, char * argv[] )
         const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();
         const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();
 
-#if defined (_MSC_VER)
+#if defined (_WIN32)
         UiWindowWin window( original, "Edge detection" );
 #else
         UiWindowX11 window( original, "Edge detection" );
