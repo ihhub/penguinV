@@ -765,6 +765,17 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image Rotate( FunctionTable::RotateForm2 rotate,
+                  const Image & in, double centerX, double centerY, double angle )
+    {
+        Image_Function::ParameterValidation( in );
+        Image out = in.generate( in.width(), in.height() );
+
+        rotate( in, centerX, centerY, out, centerX, centerY, angle );
+
+        return out;
+    }
+
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY )
     {
