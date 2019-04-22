@@ -164,27 +164,10 @@ namespace cpu
 {
     using namespace PenguinV_Image;
 
-    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                             uint8_t * outY, const uint8_t * outYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in1, in2, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in1, in2, out );
-
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
-        const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
@@ -196,22 +179,8 @@ namespace cpu
         }
     }
 
-    void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, std::vector<uint32_t> & result, uint32_t width )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-
-        const uint8_t colorCount = image.colorCount();
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, image );
-
-        if( result.size() != width * height )
-            throw imageException( "Array size is not equal to image ROI (width * height) size" );
-
-        const uint32_t rowSize = image.rowSize();
-
-        const uint8_t * imageY    = image.data() + y * rowSize + x * colorCount;
-        const uint8_t * imageYEnd = imageY + height * rowSize;
         std::vector < uint32_t >::iterator v = result.begin();
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
@@ -223,27 +192,10 @@ namespace cpu
         }
     }
 
-    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                     uint8_t * outY, const uint8_t * outYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in1, in2, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in1, in2, out );
-
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
-        const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
@@ -255,27 +207,10 @@ namespace cpu
         }
     }
 
-    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseOr( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                    uint8_t * outY, const uint8_t * outYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in1, in2, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in1, in2, out );
-
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
-        const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
@@ -287,27 +222,10 @@ namespace cpu
         }
     }
 
-    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                     uint8_t * outY, const uint8_t * outYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in1, in2, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in1, in2, out );
-
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
-        const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
@@ -321,26 +239,9 @@ namespace cpu
 
     
 
-    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
-                         uint32_t width, uint32_t height )
+    void ConvertTo16Bit( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint16_t * outY, const uint16_t * outYEnd, 
+                         uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
-        if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t colorCount = in.colorCount();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint16_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
-
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t  * inX  = inY;
             uint16_t       * outX = outY;
@@ -351,26 +252,9 @@ namespace cpu
         }
     }
 
-    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                        uint32_t width, uint32_t height )
+    void ConvertTo8Bit( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint16_t * inY, uint8_t * outY, const uint8_t * outYEnd, 
+                         uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
-        if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t colorCount = in.colorCount();
-
-        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
-
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint16_t * inX  = inY;
             uint8_t        * outX = outY;
@@ -381,27 +265,9 @@ namespace cpu
         }
     }
 
-    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                             uint32_t width, uint32_t height )
+    void ConvertToGrayScale( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
+                             const uint8_t colorCount, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( out );
-
-        if( in.colorCount() == GRAY_SCALE ) {
-            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            return;
-        }
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t colorCount = RGB;
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t       * outX = outY;
@@ -413,29 +279,9 @@ namespace cpu
         }
     }
 
-    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                       uint32_t width, uint32_t height )
+    void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                       const uint8_t colorCount, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( out );
-
-        if( in.colorCount() == RGB ) {
-            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            return;
-        }
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t colorCount = RGB;
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -447,47 +293,15 @@ namespace cpu
         }
     }
 
-    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-               uint32_t width, uint32_t height )
+    void Copy( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in, out );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
             memcpy( outY, inY, sizeof( uint8_t ) * width );
     }
 
-    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    void ExtractChannel( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         const uint8_t colorCount, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( out );
-
-        if( channelId >= in.colorCount() )
-            throw imageException( "Channel ID for color image is greater than channel count in input image" );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t colorCount = in.colorCount();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount + channelId;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -499,20 +313,8 @@ namespace cpu
         }
     }
 
-    void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    void Fill( uint8_t * imageY, const uint8_t * imageYEnd, const uint32_t rowSize, uint8_t value, uint32_t width )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-
-        const uint8_t colorCount = image.colorCount();
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, image );
-
-        const uint32_t rowSize = image.rowSize();
-
-        uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
-        const uint8_t * imageYEnd = imageY + height * rowSize;
-
         for( ; imageY != imageYEnd; imageY += rowSize )
             memset( imageY, value, sizeof( uint8_t ) * width );
     }
@@ -3283,6 +3085,18 @@ if ( simdType == neon_function ) { \
 #define NEON_CODE( code )
 #endif
 
+#define CPU_CODE( code )           \
+if ( simdType == cpu_function ) {  \
+    code;                          \
+    return;                        \
+}
+
+#define SIMD_CHECK( code, condition )    \
+if ( (condition) < simdSize ) {          \
+    code;                                \
+    return;                              \
+}
+
     using namespace PenguinV_Image;
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -3290,13 +3104,6 @@ if ( simdType == neon_function ) { \
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
-
-        if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
-            AVX_CODE( AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::AbsoluteDifference( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-            return;
-        }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
@@ -3313,6 +3120,9 @@ if ( simdType == neon_function ) { \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        CPU_CODE( cpu::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width ); )
+        SIMD_CHECK( cpu::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width );, width)
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
@@ -3326,11 +3136,6 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
-
-        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
-            cpu::Accumulate(image, x, y, width, height, result);
-            return;
-        }
 
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
@@ -3348,6 +3153,9 @@ if ( simdType == neon_function ) { \
 
         uint32_t * outY = result.data();
 
+        CPU_CODE( cpu::Accumulate( rowSize, imageY, imageYEnd, outY, result, width ); )
+        SIMD_CHECK( cpu::Accumulate( rowSize, imageY, imageYEnd, outY, result, width );, width * height )
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
@@ -3363,13 +3171,6 @@ if ( simdType == neon_function ) { \
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
-            AVX_CODE( BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::BitwiseAnd( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-            return;
-        }
-
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
@@ -3384,6 +3185,9 @@ if ( simdType == neon_function ) { \
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        CPU_CODE( cpu::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width ); )
+        SIMD_CHECK( cpu::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width );, width )
 
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
@@ -3400,13 +3204,6 @@ if ( simdType == neon_function ) { \
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
-            AVX_CODE( BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::BitwiseOr( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-            return;
-        }
-
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
@@ -3421,6 +3218,9 @@ if ( simdType == neon_function ) { \
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        AVX_CODE( cpu::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width ); )
+        SIMD_CHECK( cpu::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width );, width )
 
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
@@ -3437,13 +3237,6 @@ if ( simdType == neon_function ) { \
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
-            AVX_CODE( BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-            return;
-        }
-
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
@@ -3459,6 +3252,9 @@ if ( simdType == neon_function ) { \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        CPU_CODE( cpu::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width ); )
+        SIMD_CHECK( cpu::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width );, width )
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
@@ -3466,6 +3262,76 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint16_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        cpu::ConvertTo16Bit( rowSizeIn, rowSizeOut, inY, outY, outYEnd, width );
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        cpu::ConvertTo8Bit( rowSizeIn, rowSizeOut, inY, outY, outYEnd, width );
+    }
+
+     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                             uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( out );
+
+        if( in.colorCount() == GRAY_SCALE ) {
+            Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        cpu::ConvertToGrayScale( rowSizeIn, rowSizeOut, inY, outY, outYEnd, colorCount, width );
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3476,13 +3342,6 @@ if ( simdType == neon_function ) { \
             simdSize = 8u;
         
         const uint8_t colorCount = RGB;
-
-        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
-            AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            return;
-        }
 
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
@@ -3500,12 +3359,79 @@ if ( simdType == neon_function ) { \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
+            AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
+
+            cpu::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, width );
+            return;
+        }
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
         SSSE3_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
+    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        const uint8_t colorCount  = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
+        Image_Function::OptimiseRoi( width, height, in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        cpu::Copy( outY, outYEnd, inY, rowSizeOut, rowSizeIn, width );
+    }
+
+    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( out );
+
+        if( channelId >= in.colorCount() )
+            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount + channelId;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        cpu::ExtractChannel( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, width );
+    }
+
+    void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+        width = width * colorCount;
+
+        Image_Function::OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize = image.rowSize();
+
+        uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
+        const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        cpu::Fill( imageY, imageYEnd, rowSize, value, width );
     }
 
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -4037,7 +3963,7 @@ namespace Image_Function
     void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height )
     {
-        cpu::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        simd::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image ConvertTo8Bit( const Image16Bit & in )
@@ -4069,7 +3995,7 @@ namespace Image_Function
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                         uint32_t width, uint32_t height )
     {
-        cpu::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        simd::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image ConvertToGrayScale( const Image & in )
@@ -4090,7 +4016,7 @@ namespace Image_Function
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                              uint32_t width, uint32_t height )
     {
-       cpu::ConvertToGrayScale( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+       simd::ConvertToGrayScale( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image ConvertToRgb( const Image & in )
@@ -4129,7 +4055,7 @@ namespace Image_Function
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height )
     {
-        cpu::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        simd::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
      Image ExtractChannel( const Image & in, uint8_t channelId )
@@ -4150,7 +4076,7 @@ namespace Image_Function
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        cpu::ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );
+        simd::ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId, simd::actualSimdType() );
     }
 
     void Fill( Image & image, uint8_t value )
@@ -4160,7 +4086,7 @@ namespace Image_Function
 
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
-        cpu::Fill( image, x, y, width, height, value );
+        simd::Fill( image, x, y, width, height, value, simd::actualSimdType() );
     }
 
     Image Flip( const Image & in, bool horizontal, bool vertical )
