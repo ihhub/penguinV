@@ -591,7 +591,7 @@ namespace Function_Template
 
         ExtractChannel( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, channelId );
 
-        return verifyImage( output, roiX[3], roiY[3], roiWidth, roiHeight, intensity[channelId] );
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[channelId] );
     }
 
     bool form1_Fill(FillForm1 Fill)
