@@ -1487,6 +1487,11 @@ namespace Image_Function
         }
     }
 
+    Image Rotate( const Image & in, double centerX, double centerY, double angle )
+    {
+        return Image_Function_Helper::Rotate( Rotate, in, centerX, centerY, angle );
+    }
+
     void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
     {
         ParameterValidation( in, out );

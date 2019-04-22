@@ -528,6 +528,72 @@ namespace Function_Template
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
     }
 
+    bool form1_ExtractChannel(ExtractChannelForm1 ExtractChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        const PenguinV_Image::Image output = ExtractChannel( input, channelId );
+
+        return verifyImage( output, intensity[channelId] ) && (output.colorCount() == PenguinV_Image::GRAY_SCALE);
+    }
+
+    bool form2_ExtractChannel(ExtractChannelForm2 ExtractChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        PenguinV_Image::Image output = uniformImage( input.width(), input.height() );
+
+        ExtractChannel( input, output, channelId );
+
+        return verifyImage( output, intensity[channelId] ) && (output.colorCount() == PenguinV_Image::GRAY_SCALE);
+    }
+
+    bool form3_ExtractChannel(ExtractChannelForm3 ExtractChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        uint32_t roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+        const PenguinV_Image::Image output = ExtractChannel( input, roiX, roiY, roiWidth, roiHeight, channelId );
+
+        return verifyImage( output, intensity[channelId] ) && equalSize( output, roiWidth, roiHeight ) && (output.colorCount() == PenguinV_Image::GRAY_SCALE);
+    }
+
+    bool form4_ExtractChannel(ExtractChannelForm4 ExtractChannel)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        PenguinV_Image::Image output = uniformImage();
+
+        std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
+        size[0] = imageSize( input );
+        size[1] = imageSize( output );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+        ExtractChannel( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, channelId );
+
+        return verifyImage( output, roiX[3], roiY[3], roiWidth, roiHeight, intensity[channelId] );
+    }
+
     bool form1_Fill(FillForm1 Fill)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1166,6 +1232,76 @@ namespace Function_Template
                           intensity[0] > intensity[1] ? intensity[0] : intensity[1] );
     }
 
+    bool form1_Merge(MergeForm1 Merge)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
+
+        const PenguinV_Image::Image output = Merge( input[0], input[1], input[2] );
+
+        return verifyImage( output, intensity, false ) && equalSize( output, input[0].width(), input[0].height() ) && (output.colorCount() == PenguinV_Image::RGB);
+    }
+
+    bool form2_Merge(MergeForm2 Merge)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
+        PenguinV_Image::Image output( input[0].width(), input[0].height(), PenguinV_Image::RGB ); 
+
+        Merge( input[0], input[1], input[2], output );
+
+        return verifyImage( output, intensity, false ) && (output.colorCount() == PenguinV_Image::RGB);
+    }
+
+    bool form3_Merge(MergeForm3 Merge)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        std::vector < PenguinV_Image::Image > input;
+        std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
+        { input.push_back( uniformImage( value ) ); } );
+
+        std::vector < std::pair <uint32_t, uint32_t> > size( 3 );
+        size[0] = imageSize( input[0] );
+        size[1] = imageSize( input[1] );
+        size[2] = imageSize( input[2] );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        const PenguinV_Image::Image output = Merge( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], input[2], roiX[2], roiY[2], roiWidth, roiHeight );
+
+        return verifyImage( output, intensity, false ) && equalSize( output, roiWidth, roiHeight ) && (output.colorCount() == PenguinV_Image::RGB);
+    }
+
+    bool form4_Merge(MergeForm4 Merge)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        std::vector < PenguinV_Image::Image > input;
+        std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
+        { input.push_back( uniformImage( value ) ); } );
+
+        PenguinV_Image::Image output = uniformRGBImage( intensityValue() );
+
+        std::vector < std::pair <uint32_t, uint32_t> > size( 4 );
+        size[0] = imageSize( input[0] );
+        size[1] = imageSize( input[1] );
+        size[2] = imageSize( input[2] );
+        size[3] = imageSize( output );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        Merge( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], input[2], roiX[2], roiY[2], output, roiX[3], roiY[3], roiWidth, roiHeight );
+
+        return verifyImage( output, roiX[3], roiY[3], roiWidth, roiHeight, intensity, false );
+    }
+
     bool form1_Minimum(MinimumForm1 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -1413,7 +1549,7 @@ namespace Function_Template
     bool form2_ReplaceChannel(ReplaceChannelForm2 ReplaceChannel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const PenguinV_Image::Image input  = uniformImage   ( intensity[0] );
+        const PenguinV_Image::Image input = uniformImage( intensity[0] );
         PenguinV_Image::Image output = uniformRGBImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -1652,6 +1788,50 @@ namespace Function_Template
         Shift( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, shiftX, shiftY );
 
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] );
+    }
+
+    bool form1_Split(SplitForm1 Split)
+    {
+        const std::vector < uint8_t > intensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        std::vector < PenguinV_Image::Image > output = uniformImages( 3, input.width(), input.height() );
+        Split( input, output[0], output[1], output[2] );
+
+        return verifyImage( output[0], intensity[0] ) && verifyImage( output[1], intensity[1] ) && verifyImage( output[2], intensity[2] );
+    }
+
+    bool form2_Split(SplitForm2 Split)
+    {
+        const std::vector < uint8_t > inputIntensity = intensityArray( 3 );
+        PenguinV_Image::Image input = uniformRGBImage( inputIntensity[0] );
+        fillImage( input, 0, 0, input.width(), input.height(), inputIntensity );
+
+        const std::vector < uint8_t > outputIntensity = intensityArray( 3 );
+        std::vector < PenguinV_Image::Image > output;
+
+        std::for_each( outputIntensity.begin(), outputIntensity.end(), [&]( uint8_t value )
+        { output.push_back( uniformImage( value ) ); } );
+
+        std::vector < std::pair <uint32_t, uint32_t> > size( 4 );
+
+        size[0] = imageSize( input );
+        size[1] = imageSize( output[0] );
+        size[2] = imageSize( output[1] );
+        size[3] = imageSize( output[2] );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( size, roiX, roiY, roiWidth, roiHeight );
+
+        const uint8_t channelId = randomValue<uint8_t>( 3 );
+
+        Split( input, roiX[0], roiY[0], output[0], roiX[1], roiY[1], output[1], roiX[2], roiY[2], output[2], roiX[3], roiY[3], roiWidth, roiHeight );
+
+        return verifyImage( output[0], roiX[1], roiY[1], roiWidth, roiHeight, inputIntensity[0] ) &&
+               verifyImage( output[1], roiX[2], roiY[2], roiWidth, roiHeight, inputIntensity[1] ) &&
+               verifyImage( output[2], roiX[3], roiY[3], roiWidth, roiHeight, inputIntensity[2] );
     }
 
     bool form1_Subtract(SubtractForm1 Subtract)
@@ -2087,6 +2267,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( ConvertToGrayScale )
     SET_FUNCTION_4_FORMS( ConvertToRgb )
     SET_FUNCTION_3_FORMS( Copy )
+    SET_FUNCTION_4_FORMS( ExtractChannel )
     SET_FUNCTION_2_FORMS( Fill )
     SET_FUNCTION_4_FORMS( Flip )
     SET_FUNCTION_4_FORMS( GammaCorrection )
@@ -2096,6 +2277,7 @@ namespace image_function
     SET_FUNCTION_2_FORMS( IsEqual )
     SET_FUNCTION_4_FORMS( LookupTable )
     SET_FUNCTION_4_FORMS( Maximum )
+    SET_FUNCTION_4_FORMS( Merge )
     SET_FUNCTION_4_FORMS( Minimum )
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
@@ -2103,6 +2285,7 @@ namespace image_function
     SET_FUNCTION_4_FORMS( Resize )
     SET_FUNCTION_4_FORMS( RgbToBgr )
     SET_FUNCTION_2_FORMS( SetPixel )
+    SET_FUNCTION_2_FORMS( Split )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )

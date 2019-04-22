@@ -191,7 +191,8 @@ namespace Image_Function
     void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
 
-    void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+    Image Rotate( const Image & in, double centerX, double centerY, double angle );
+    void  Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
