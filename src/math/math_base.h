@@ -167,7 +167,7 @@ public:
 
         const PointBase2D<_Type> offset = _position - line._position;
         const _Type na = (line._direction.y * offset.x - line._direction.x * offset.y) / denominator;
-        point = _position + _direction * na;
+        point = _position + PointBase2D<_Type>( _direction.x * na, _direction.y * na );
         return true;
     }
 
