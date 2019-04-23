@@ -23,7 +23,7 @@ namespace edge_detection
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
-            EdgeDetection<_Type> edgeDetection;
+            EdgeDetectionBase<_Type> edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT) );
 
             const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();
@@ -65,7 +65,7 @@ namespace edge_detection
 
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
-            EdgeDetection<_Type> edgeDetection;
+            EdgeDetectionBase<_Type> edgeDetection;
             edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM) );
 
             const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();

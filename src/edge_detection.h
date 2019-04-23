@@ -51,20 +51,20 @@ struct EdgeParameter
 };
 
 template <typename _Type>
-class EdgeDetection;
+class EdgeDetectionBase;
 
 class EdgeDetectionHelper
 {
 public:
-    static void find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    static void find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const EdgeParameter & edgeParameter );
 
-    static void find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    static void find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const EdgeParameter & edgeParameter );
 };
 
-template <typename _Type = double>
-class EdgeDetection
+template <typename _Type>
+class EdgeDetectionBase
 {
 public:
     void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
@@ -74,6 +74,8 @@ public:
 
     void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
+        positiveEdgePoint.clear();
+        negativeEdgePoint.clear();
         EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
     }
 
@@ -93,3 +95,5 @@ private:
     std::vector < PointBase2D<_Type> > positiveEdgePoint;
     std::vector < PointBase2D<_Type> > negativeEdgePoint;
 };
+
+typedef EdgeDetectionBase<double> EdgeDetection;
