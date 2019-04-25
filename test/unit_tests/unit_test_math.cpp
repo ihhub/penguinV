@@ -8,7 +8,7 @@
 namespace pvmath
 {
     template <typename _Type>
-    bool houghTransformTemplate()
+    bool houghTransform()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
@@ -42,7 +42,7 @@ namespace pvmath
     }
 
     template <typename _Type>
-    bool haarTransformTemplate()
+    bool haarTransform()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const uint32_t width  = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
@@ -68,64 +68,48 @@ namespace pvmath
         return true;
     }
 
-    bool houghTransformDouble()
-    {
-        return houghTransformTemplate<double>();
-    }
-
-    bool houghTransformFloat()
-    {
-        return houghTransformTemplate<float>();
-    }
-
-    bool haarTransformDouble()
-    {
-        return haarTransformTemplate<double>();
-    }
-
-    bool haarTransformFloat()
-    {
-        return haarTransformTemplate<float>();
-    }
-
+    template <typename _Type>
     bool lineConstructor()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Line2d line( point1, point2 );
+            const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const LineBase2D<_Type> line( point1, point2 );
         }
         return true;
     }
 
+    template <typename _Type>
     bool parallelLine()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Line2d line1( point1, point2 );
+            const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const LineBase2D<_Type> line1( point1, point2 );
 
-            const Point2d offset( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
+            const PointBase2D<_Type> offset( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const bool inverse = ( (i % 2) == 0 );
-            const Line2d line2( (inverse ? point1 : point2) + offset, (inverse ? point2 : point1) + offset );
+            const LineBase2D<_Type> line2( (inverse ? point1 : point2) + offset, (inverse ? point2 : point1) + offset );
             if ( !line1.isParallel( line2 ) )
                 return false;
         }
         return true;
     }
 
+    template <typename _Type>
     bool lineIntersection()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const Point2d point1( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Point2d point2( Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ), Unit_Test::randomFloatValue<double>( -1000, 1000, 0.01 ) );
-            const Line2d line1( point1, point2 );
+            const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const LineBase2D<_Type> line1( point1, point2 );
 
             if ( point1 == point2 )
                 continue;
 
-            const Line2d line2( Point2d( -point1.y, point1.x ), Point2d( -point2.y, point2.x ) );
-            if ( !line1.isIntersect( line2 ) )
+            const LineBase2D<_Type> line2( PointBase2D<_Type>( -point1.y, point1.x ), PointBase2D<_Type>( -point2.y, point2.x ) );
+            PointBase2D<_Type> intersectPoint;
+            if ( !line1.isIntersect( line2 ) || !line1.intersection(line2, intersectPoint) )
                 return false;
         }
         return true;
@@ -134,11 +118,14 @@ namespace pvmath
 
 void addTests_Math( UnitTestFramework & framework )
 {
-    framework.add(pvmath::houghTransformDouble, "math::Hough Transform (double)");
-    framework.add(pvmath::houghTransformFloat, "math::Hough Transform (float)");
-    framework.add(pvmath::haarTransformDouble, "math::Haar Transform (double)");
-    framework.add(pvmath::haarTransformFloat, "math::Haar Transform (float)");
-    framework.add(pvmath::lineConstructor, "math::Line2d constructor");
-    framework.add(pvmath::parallelLine, "math::Line2d parallel lines");
-    framework.add(pvmath::lineIntersection, "math::Line2d line intersection");
+    framework.add(pvmath::houghTransform<double>, "math::Hough Transform (double)");
+    framework.add(pvmath::houghTransform<float>, "math::Hough Transform (float)");
+    framework.add(pvmath::haarTransform<double>, "math::Haar Transform (double)");
+    framework.add(pvmath::haarTransform<float>, "math::Haar Transform (float)");
+    framework.add(pvmath::lineConstructor<double>, "math::Line2d constructor (double)");
+    framework.add(pvmath::lineConstructor<float>, "math::Line2d constructor (float)");
+    framework.add(pvmath::parallelLine<double>, "math::Line2d parallel lines (double)");
+    framework.add(pvmath::parallelLine<float>, "math::Line2d parallel lines (float)");
+    framework.add(pvmath::lineIntersection<double>, "math::Line2d line intersection (double)");
+    framework.add(pvmath::lineIntersection<float>, "math::Line2d line intersection (float)");
 }
