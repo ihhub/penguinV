@@ -12,11 +12,15 @@ namespace
 
     void fillRandomData( PenguinV_Image::Image & image )
     {
+        uint32_t height = image.height();
+        uint32_t width = image.width();
+
+        width = width * image.colorCount();
+        Image_Function::OptimiseRoi( width, height, image );
+
         const uint32_t rowSize  = image.rowSize();
         uint8_t * outY          = image.data();
-        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
-
-        const uint32_t width = image.width() * image.colorCount();
+        const uint8_t * outYEnd = outY + height * rowSize;
 
         for ( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
@@ -30,7 +34,6 @@ namespace
 
 namespace Unit_Test
 {
-
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
     {
         return uniformImage( 0u, 0, 0, reference );
@@ -57,12 +60,17 @@ namespace Unit_Test
 
         PenguinV_Image::Image image( randomSize(), randomSize() );
 
+        uint32_t height = image.height();
+        uint32_t width = image.width();
+
+        const size_t valueSize = value.size();
+
+        if ( valueSize <= width && (width % static_cast<uint32_t>(valueSize)) == 0 )
+            Image_Function::OptimiseRoi( width, height, image );
+
         const uint32_t rowSize  = image.rowSize();
         uint8_t * outY          = image.data();
-        const uint8_t * outYEnd = outY + image.height() * image.rowSize();
-
-        const uint32_t width = image.width();
-        const size_t valueSize = value.size();
+        const uint8_t * outYEnd = outY + height * rowSize;
 
         size_t id = 0;
 
