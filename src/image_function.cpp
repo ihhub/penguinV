@@ -517,20 +517,9 @@ namespace cpu
         }
     }
 
-    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                            std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t rowSize, uint8_t colorCount, uint32_t width, 
+                            uint32_t height, bool horizontal, std::vector < uint32_t > & projection )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-
-        const uint8_t colorCount = image.colorCount();
-
-        projection.resize( horizontal ? width * colorCount : height );
-        std::fill( projection.begin(), projection.end(), 0u );
-
-        const uint32_t rowSize = image.rowSize();
-
-        width = width * colorCount;
-
         if( horizontal ) {
             const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
             const uint8_t * imageXEnd = imageX + width;
@@ -561,28 +550,9 @@ namespace cpu
         }
     }
 
-    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
-                         uint32_t width, uint32_t height, uint8_t channelId )
+    void ReplaceChannel( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         const uint8_t colorCount, uint32_t width )
     {
-        Image_Function::ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
-        Image_Function::VerifyGrayScaleImage( channel );
-        Image_Function::VerifyRGBImage( rgb );
-
-        if ( channelId >= RGB )
-            throw imageException( "Channel ID is greater than number of channels in RGB image" );
-
-        const uint32_t rowSizeIn  = channel.rowSize();
-        const uint32_t rowSizeOut = rgb.rowSize();
-
-        const uint8_t colorCount = RGB;
-
-        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
-        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        width = width * colorCount;
-
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -594,23 +564,9 @@ namespace cpu
         }
     }
 
-    void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                 Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+    void Resize( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t widthIn, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                 uint32_t idY, uint32_t heightIn, uint32_t widthOut, uint32_t heightOut )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
-        Image_Function::VerifyGrayScaleImage( in, out );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
-
-        uint32_t idY = 0;
-
         // Precalculation of X position
         std::vector < uint32_t > positionX( widthOut );
         for( uint32_t x = 0; x < widthOut; ++x )
@@ -629,25 +585,9 @@ namespace cpu
         }
     }
 
-    void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                   uint32_t width, uint32_t height )
+    void RgbToBgr( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                   const uint8_t colorCount, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( in, out );
-
-        const uint8_t colorCount = RGB;
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in, out );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -662,27 +602,9 @@ namespace cpu
         }
     }
 
-    void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+    void Rotate( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                 const double cosAngle, const double sinAngle, double inXPos, double inYPos, uint32_t height, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, out );
-        Image_Function::VerifyGrayScaleImage( in, out );
-
-        const double cosAngle = cos( angle );
-        const double sinAngle = sin( angle );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint32_t width  = in.width();
-        const uint32_t height = in.height();
-
-        const uint8_t * inY  = in.data();
-        uint8_t       * outY = out.data();
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        double inXPos = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
-        double inYPos = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
             uint8_t       * outX = outY;
             const uint8_t * outXEnd = outX + width;
@@ -728,26 +650,15 @@ namespace cpu
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
     {
-        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Position of point [x, y] is out of image" );
-
         *(image.data() + y * image.rowSize() + x) = value;
     }
 
-    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
+    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value, 
+                   uint8_t * data, uint32_t rowSize, uint32_t height, uint32_t width )
     {
-        if( image.empty() || X.empty() || X.size() != Y.size() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function" );
-
-        const uint32_t rowSize = image.rowSize();
-        uint8_t * data = image.data();
-
         std::vector < uint32_t >::const_iterator x   = X.begin();
         std::vector < uint32_t >::const_iterator y   = Y.begin();
         std::vector < uint32_t >::const_iterator end = X.end();
-
-        const uint32_t width  = image.width();
-        const uint32_t height = image.height();
 
         for( ; x != end; ++x, ++y ) {
             if( (*x) >= width || (*y) >= height )
@@ -757,61 +668,11 @@ namespace cpu
         }
     }
 
-    void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                uint32_t width, uint32_t height, double shiftX, double shiftY )
+    void Shift( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                const uint32_t coeff0, const uint32_t coeff1, const uint32_t coeff2, const uint32_t coeff3,
+                const uint32_t emptyTopArea, const uint32_t emptyLeftArea, const uint32_t emptyRightArea, const uint32_t emptyBottomArea,
+                const uint32_t realHeight, const uint32_t realWidth, uint32_t height, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
-
-        if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
-            throw imageException("Shift value by value bigger than ROI");
-
-        // take a note that we use an opposite values
-        int32_t shiftXIntegral = -static_cast<int32_t>( shiftX );
-        int32_t shiftYIntegral = -static_cast<int32_t>( shiftY );
-
-        shiftX = shiftX + shiftXIntegral;
-        shiftY = shiftY + shiftYIntegral;
-
-        if ( shiftX > 0.0 )
-            --shiftXIntegral;
-
-        if ( shiftY > 0.0 )
-            --shiftYIntegral;
-
-        const double coeffX = ( shiftX < 0.0 ) ? (1.0 + shiftX) : shiftX;
-        const double coeffY = ( shiftY < 0.0 ) ? (1.0 + shiftY) : shiftY;
-
-        // 2^23 = 8388608, 2^23 * 256 is a integer limit
-        const uint32_t coeff0 = static_cast<uint32_t>((      coeffX) * (      coeffY) * 16384 + 0.5);
-        const uint32_t coeff1 = static_cast<uint32_t>((1.0 - coeffX) * (      coeffY) * 16384 + 0.5);
-        const uint32_t coeff2 = static_cast<uint32_t>((1.0 - coeffX) * (1.0 - coeffY) * 16384 + 0.5);
-        const uint32_t coeff3 = static_cast<uint32_t>((      coeffX) * (1.0 - coeffY) * 16384 + 0.5);
-
-        const uint32_t limitX = in.width()  - 1u; // we need 2 subsequent pixels so we cannot use last pixel
-        const uint32_t limitY = in.height() - 1u;
-
-        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ?
-                                        (static_cast<uint32_t>(-shiftXIntegral) - startXIn) : 0u;
-        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + static_cast<uint32_t>(shiftXIntegral)) ?
-                                        (startXIn + width + static_cast<uint32_t>(shiftXIntegral) - limitX) : 0u;
-        const uint32_t realWidth = width - emptyLeftArea - emptyRightArea;
-
-        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ?
-                                         (static_cast<uint32_t>(-shiftYIntegral) - startYIn) : 0u;
-        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + static_cast<uint32_t>(shiftYIntegral)) ?
-                                         (startYIn + height + static_cast<uint32_t>(shiftYIntegral) - limitY) : 0u;
-        const uint32_t realHeight = height - emptyTopArea - emptyBottomArea;
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
-
-        const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
         for( ; outY != outYEnd; outY+=rowSizeOut )
             memset( outY, 0, width );
 
@@ -843,31 +704,9 @@ namespace cpu
             memset( outY, 0, width );
     }
 
-    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
-                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
-                uint32_t width, uint32_t height )
+    void Split( uint32_t rowSizeOut1, uint32_t rowSizeOut2, uint32_t rowSizeOut3, uint32_t rowSizeIn, const uint8_t * inY, 
+                uint8_t * out1Y, uint8_t * out2Y, uint8_t * out3Y, const uint8_t * inYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation ( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation ( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
-        Image_Function::VerifyRGBImage      ( in );
-        Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
-
-        const uint8_t colorCount = RGB;
-
-        const uint32_t rowSizeIn   = in.rowSize();
-        const uint32_t rowSizeOut1 = out1.rowSize();
-        const uint32_t rowSizeOut2 = out2.rowSize();
-        const uint32_t rowSizeOut3 = out3.rowSize();
-
-        width = width * colorCount;
-
-        const uint8_t * inY = in.data() + startYIn * rowSizeIn + startXIn * colorCount;
-        uint8_t * out1Y = out1.data() + startYOut1 * rowSizeOut1 + startXOut1;
-        uint8_t * out2Y = out2.data() + startYOut2 * rowSizeOut2 + startXOut2;
-        uint8_t * out3Y = out3.data() + startYOut3 * rowSizeOut3 + startXOut3;
-
-        const uint8_t * inYEnd = inY + height * rowSizeIn;
-
         for( ; inY != inYEnd; inY += rowSizeIn, out1Y += rowSizeOut1, out2Y += rowSizeOut2, out3Y += rowSizeOut3 ) {
             const uint8_t * inX = inY;
             uint8_t * out1X = out1Y;
@@ -884,27 +723,10 @@ namespace cpu
         }
     }
 
-    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Subtract( uint32_t rowSize1, uint32_t rowSize2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                   uint8_t * outY, const uint8_t * outYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in1, in2, out );
-        width = width * colorCount;
-
-        Image_Function::OptimiseRoi( width, height, in1, in1, out );
-
-        const uint32_t rowSize1   = in1.rowSize();
-        const uint32_t rowSize2   = in2.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * in1Y = in1.data() + startY1   * rowSize1   + startX1   * colorCount;
-        const uint8_t * in2Y = in2.data() + startY2   * rowSize2   + startX2   * colorCount;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+       for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
@@ -916,17 +738,8 @@ namespace cpu
         }
     }
 
-    uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY,const uint8_t * imageYEnd, uint32_t width )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-        Image_Function::VerifyGrayScaleImage( image );
-        Image_Function::OptimiseRoi( width, height, image );
-
-        const uint32_t rowSize = image.rowSize();
-
-        const uint8_t * imageY    = image.data() + y * rowSize + x;
-        const uint8_t * imageYEnd = imageY + height * rowSize;
-
         uint32_t sum = 0;
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
@@ -940,21 +753,9 @@ namespace cpu
         return sum;
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t threshold )
+    void Threshold( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd, uint8_t threshold,
+                    uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
-        Image_Function::OptimiseRoi( width, height, in, out );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -966,24 +767,9 @@ namespace cpu
         }
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd, uint8_t minThreshold, 
+                    uint8_t maxThreshold, uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
-        Image_Function::OptimiseRoi( width, height, in, out );
-
-        if( minThreshold > maxThreshold )
-            throw imageException( "Minimum threshold value is bigger than maximum threshold value" );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + height * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -995,21 +781,9 @@ namespace cpu
         }
     }
 
-    void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+    void Transpose( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inX, uint8_t * outY, const uint8_t * outYEnd, uint8_t height,
+                    uint32_t width )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, height, width );
-        Image_Function::VerifyGrayScaleImage( in, out );
-
-        const uint32_t rowSizeIn  = in.rowSize();
-        const uint32_t rowSizeOut = out.rowSize();
-
-        const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
-        const uint8_t * outYEnd = outY + width * rowSizeOut;
-
         for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
             const uint8_t * inY  = inX;
             uint8_t       * outX = outY;
@@ -1360,7 +1134,7 @@ namespace avx
                 _mm256_storeu_si256( reinterpret_cast <simd*>(output), simdSum );
                 
                 (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
-            }
+            }Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
         }
     }
 
@@ -2495,51 +2269,51 @@ namespace neon
 
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
-    {
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const uint8_t * src1 = inY;
-            uint8_t       * dst  = outY;
+    {Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubezeIn ) {
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-            const uint8_t * src1End = src1 + totalSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-            for( ; src1 != src1End; src1 += simdSize, dst += simdSize )
-                vst1q_u8( dst, vmvnq_u8( vld1q_u8( src1 ) ) );
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubedSize )
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-            if( nonSimdWidth > 0 ) {
-                const uint8_t * inX  = inY  + totalSimdWidth;
-                uint8_t       * outX = outY + totalSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-                const uint8_t * outXEnd = outX + nonSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-                for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
-            }
-        }
-    }
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+    }Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-    void Maximum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
-    {
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-            const uint8_t * src1 = in1Y;
-            const uint8_t * src2 = in2Y;
-            uint8_t       * dst  = outY;
+    vElectro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube2_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubeizeIn1, in2Y += rowSizeIn2 ) {
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-            const uint8_t * src1End = src1 + totalSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-            for( ; src1 != src1End; src1 += simdSize, src2 += simdSize, dst += simdSize )
-                vst1q_u8( dst, vmaxq_u8( vld1q_u8( src1 ), vld1q_u8( src2 ) ) );
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubemdSize, dst += simdSize )
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube_u8( src2 ) ) );
 
-            if( nonSimdWidth > 0 ) {
-                const uint8_t * in1X = in1Y + totalSimdWidth;
-                const uint8_t * in2X = in2Y + totalSimdWidth;
-                uint8_t       * outX = outY + totalSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-                const uint8_t * outXEnd = outX + nonSimdWidth;
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) < (*in1X) )
-                        (*outX) = (*in1X);
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube {
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
                     else
                         (*outX) = (*in2X);
                 }
@@ -3563,12 +3337,6 @@ if ( (condition) < simdSize ) {          \
         const uint32_t simdSize = getSimdSize( simdType );
         const uint8_t colorCount = image.colorCount();
 
-        if( (simdType == cpu_function) || ((width * height * colorCount) < simdSize) ) {
-            AVX_CODE( ProjectionProfile( image, x, y, width, height, horizontal, projection, sse_function ); )
-
-            cpu::ProjectionProfile( image, x, y, width, height, horizontal, projection );
-            return;
-        }
         Image_Function::ParameterValidation( image, x, y, width, height );
         width = width * colorCount;
 
@@ -3578,7 +3346,10 @@ if ( (condition) < simdSize ) {          \
 
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * imageStart = image.data() + y * rowSize + x * colorCount; 
+        const uint8_t * imageStart = image.data() + y * rowSize + x * colorCount;
+
+        CPU_CODE( cpu::ProjectionProfile( image, x, y, rowSize, colorCount, width, height, horizontal, projection ); )
+        SIMD_CHECK( cpu::ProjectionProfile( image, x, y, rowSize, colorCount, width, height, horizontal, projection );, width * height )
 
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
@@ -3587,6 +3358,51 @@ if ( (condition) < simdSize ) {          \
         AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+    }
+
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        Image_Function::VerifyGrayScaleImage( channel );
+        Image_Function::VerifyRGBImage( rgb );
+
+        if ( channelId >= RGB )
+            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+
+        const uint32_t rowSizeIn  = channel.rowSize();
+        const uint32_t rowSizeOut = rgb.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
+        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        cpu::ReplaceChannel( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, width );
+    }
+
+    void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn, Image & out, 
+                 uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
+
+        uint32_t idY = 0;
+
+        cpu::Resize(outY, outYEnd, inY, widthIn, rowSizeOut, rowSizeIn, idY, heightIn, widthOut, heightOut);
     }
 
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3598,13 +3414,6 @@ if ( (condition) < simdSize ) {          \
             simdSize = 8u;
 
         const uint8_t colorCount = RGB;
-
-        if( (simdType == cpu_function) || ((width * colorCount) < simdSize) ) {
-            AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-            return;
-        }
 
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( in, out );
@@ -3619,6 +3428,9 @@ if ( (condition) < simdSize ) {          \
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        CPU_CODE( cpu::RgbToBgr( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, width); )
+        SIMD_CHECK( cpu::RgbToBgr( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, width);, width )
 
         const uint32_t rgbSimdSize = (simdSize / colorCount) * colorCount;
         const uint32_t simdWidth = width / rgbSimdSize;
@@ -3636,18 +3448,146 @@ if ( (condition) < simdSize ) {          \
         NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle,
+                 SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        const double cosAngle = cos( angle );
+        const double sinAngle = sin( angle );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t width  = in.width();
+        const uint32_t height = in.height();
+
+        const uint8_t * inY  = in.data();
+        uint8_t       * outY = out.data();
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        double inXPos = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
+        double inYPos = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+
+        cpu::Rotate( outY, outYEnd, inY, rowSizeOut, rowSizeIn, cosAngle, sinAngle, inXPos, inYPos, height, width);
+    }
+
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value, SIMDType simdType )
+    {
+        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
+            throw imageException( "Position of point [x, y] is out of image" );
+
+        cpu::SetPixel( image, x, y, value );
+    }
+
+    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value, SIMDType simdType )
+    {
+        if( image.empty() || X.empty() || X.size() != Y.size() || image.colorCount() != GRAY_SCALE )
+            throw imageException( "Bad input parameters in image function" );
+
+        const uint32_t rowSize = image.rowSize();
+        uint8_t * data = image.data();
+
+        const uint32_t width  = image.width();
+        const uint32_t height = image.height();
+
+        cpu::SetPixel(image, X, Y, value, data, rowSize, height, width);
+    }
+
+    void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, double shiftX, double shiftY, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
+            throw imageException("Shift value by value bigger than ROI");
+
+        // take a note that we use an opposite values
+        int32_t shiftXIntegral = -static_cast<int32_t>( shiftX );
+        int32_t shiftYIntegral = -static_cast<int32_t>( shiftY );
+
+        shiftX = shiftX + shiftXIntegral;
+        shiftY = shiftY + shiftYIntegral;
+
+        if ( shiftX > 0.0 )
+            --shiftXIntegral;
+
+        if ( shiftY > 0.0 )
+            --shiftYIntegral;
+
+        const double coeffX = ( shiftX < 0.0 ) ? (1.0 + shiftX) : shiftX;
+        const double coeffY = ( shiftY < 0.0 ) ? (1.0 + shiftY) : shiftY;
+
+        // 2^23 = 8388608, 2^23 * 256 is a integer limit
+        const uint32_t coeff0 = static_cast<uint32_t>((      coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff1 = static_cast<uint32_t>((1.0 - coeffX) * (      coeffY) * 16384 + 0.5);
+        const uint32_t coeff2 = static_cast<uint32_t>((1.0 - coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+        const uint32_t coeff3 = static_cast<uint32_t>((      coeffX) * (1.0 - coeffY) * 16384 + 0.5);
+
+        const uint32_t limitX = in.width()  - 1u; // we need 2 subsequent pixels so we cannot use last pixel
+        const uint32_t limitY = in.height() - 1u;
+
+        const uint32_t emptyLeftArea  = (shiftXIntegral < 0 && startXIn < static_cast<uint32_t>(-shiftXIntegral)) ?
+                                        (static_cast<uint32_t>(-shiftXIntegral) - startXIn) : 0u;
+        const uint32_t emptyRightArea = (shiftXIntegral > 0 && limitX < startXIn + width + static_cast<uint32_t>(shiftXIntegral)) ?
+                                        (startXIn + width + static_cast<uint32_t>(shiftXIntegral) - limitX) : 0u;
+        const uint32_t realWidth = width - emptyLeftArea - emptyRightArea;
+
+        const uint32_t emptyTopArea    = (shiftYIntegral < 0 && startYIn < static_cast<uint32_t>(-shiftYIntegral)) ?
+                                         (static_cast<uint32_t>(-shiftYIntegral) - startYIn) : 0u;
+        const uint32_t emptyBottomArea = (shiftYIntegral > 0 && limitY < startYIn + height + static_cast<uint32_t>(shiftYIntegral)) ?
+                                         (startYIn + height + static_cast<uint32_t>(shiftYIntegral) - limitY) : 0u;
+        const uint32_t realHeight = height - emptyTopArea - emptyBottomArea;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
+
+        const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
+        
+        cpu::Shift( outY, outYEnd, inY, rowSizeOut, rowSizeIn, coeff0, coeff1, coeff2, coeff3, emptyTopArea, emptyLeftArea, emptyRightArea,
+                    emptyBottomArea, realHeight, realWidth, height, width );
+    }
+
+    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation ( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation ( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        Image_Function::VerifyRGBImage      ( in );
+        Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
+
+        const uint8_t colorCount = RGB;
+
+        const uint32_t rowSizeIn   = in.rowSize();
+        const uint32_t rowSizeOut1 = out1.rowSize();
+        const uint32_t rowSizeOut2 = out2.rowSize();
+        const uint32_t rowSizeOut3 = out3.rowSize();
+
+        width = width * colorCount;
+
+        const uint8_t * inY = in.data() + startYIn * rowSizeIn + startXIn * colorCount;
+        uint8_t * out1Y = out1.data() + startYOut1 * rowSizeOut1 + startXOut1;
+        uint8_t * out2Y = out2.data() + startYOut2 * rowSizeOut2 + startXOut2;
+        uint8_t * out3Y = out3.data() + startYOut3 * rowSizeOut3 + startXOut3;
+
+        const uint8_t * inYEnd = inY + height * rowSizeIn;
+
+        cpu::Split(rowSizeOut1, rowSizeOut2, rowSizeOut3, rowSizeIn, inY, out1Y, out2Y, out3Y, inYEnd, width);
+    }
+
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
-
-        if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
-            AVX_CODE( Subtract( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, sse_function ); )
-
-            cpu::Subtract( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
-            return;
-        }
 
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
@@ -3664,6 +3604,9 @@ if ( (condition) < simdSize ) {          \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        CPU_CODE( cpu::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width ); )
+        SIMD_CHECK( cpu::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, width );, width )
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
@@ -3677,15 +3620,6 @@ if ( (condition) < simdSize ) {          \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
-            #ifdef PENGUINV_AVX_SET
-            if ( simdType == avx_function )
-                return Sum( image, x, y, width, height, sse_function );
-            #endif
-
-            return cpu::Sum( image, x, y, width, height );
-        }
-
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
@@ -3695,6 +3629,15 @@ if ( (condition) < simdSize ) {          \
 
         const uint8_t * imageY    = image.data() + y * rowSize + x;
         const uint8_t * imageYEnd = imageY + height * rowSize;
+
+        if( (simdType == cpu_function) || (width < simdSize) ) {
+            #ifdef PENGUINV_AVX_SET
+            if ( simdType == avx_function )
+                return Sum( rowSize, imageY, imageYEnd, width );
+            #endif
+
+            return cpu::Sum( rowSize, imageY, imageYEnd, width );
+        }
 
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
@@ -3721,13 +3664,6 @@ if ( (condition) < simdSize ) {          \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
-            AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold, sse_function ); )
-
-            cpu::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
-            return;
-        }
-
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
@@ -3740,6 +3676,9 @@ if ( (condition) < simdSize ) {          \
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        CPU_CODE( cpu::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, width ); )
+        SIMD_CHECK( cpu::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, width );, width )
 
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
@@ -3755,13 +3694,6 @@ if ( (condition) < simdSize ) {          \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
-            AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold, sse_function ); )
-
-            cpu::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
-            return;
-        }
-
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
@@ -3775,6 +3707,9 @@ if ( (condition) < simdSize ) {          \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        CPU_CODE( cpu::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, width ); )
+        SIMD_CHECK( cpu::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, width );, width )
+
         const uint32_t simdWidth = width / simdSize;
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
@@ -3782,6 +3717,24 @@ if ( (condition) < simdSize ) {          \
         AVX_CODE( avx::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
+    void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, height, width );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inX  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+
+        const uint8_t * outYEnd = outY + width * rowSizeOut;
+
+        cpu::Transpose( rowSizeIn, rowSizeOut, inX, outY, outYEnd, height, width );
     }
 }
 
@@ -4345,7 +4298,7 @@ namespace Image_Function
     void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
                          uint32_t width, uint32_t height, uint8_t channelId )
     {
-        cpu::ReplaceChannel( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height, channelId );
+        simd::ReplaceChannel( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height, channelId, simd::actualSimdType() );
     }
 
     Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
@@ -4367,7 +4320,7 @@ namespace Image_Function
     void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
     {
-        cpu::Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
+        simd::Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut, simd::actualSimdType() );
     }
 
     Image RgbToBgr( const Image & in )
@@ -4393,7 +4346,7 @@ namespace Image_Function
 
     void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
     {
-        cpu::Rotate( in, centerXIn, centerYIn, out, centerXOut, centerYOut, angle );
+        simd::Rotate( in, centerXIn, centerYIn, out, centerXOut, centerYOut, angle, simd::actualSimdType() );
     }
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
@@ -4406,7 +4359,7 @@ namespace Image_Function
 
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
     {
-        cpu::SetPixel( image, X, Y, value );
+        simd::SetPixel( image, X, Y, value, simd::actualSimdType() );
     }
 
     Image Shift( const Image & in, double shiftX, double shiftY )
@@ -4427,7 +4380,7 @@ namespace Image_Function
     void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height, double shiftX, double shiftY )
     {
-        cpu::Shift( in, startXIn, startYIn, out, startXOut, startYOut, width, height, shiftX, shiftY );
+        simd::Shift( in, startXIn, startYIn, out, startXOut, startYOut, width, height, shiftX, shiftY, simd::actualSimdType() );
     }
 
     void Split( const Image & in, Image & out1, Image & out2, Image & out3 )
@@ -4442,8 +4395,8 @@ namespace Image_Function
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        cpu::Split( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2,
-                    out3, startXOut3, startYOut3, width, height );
+        simd::Split( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2,
+                     out3, startXOut3, startYOut3, width, height, simd::actualSimdType() );
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
@@ -4539,6 +4492,6 @@ namespace Image_Function
     void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        cpu::Transpose( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        simd::Transpose( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 }
