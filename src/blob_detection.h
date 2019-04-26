@@ -166,6 +166,7 @@ namespace Blob_Detection
         Value < Point2d> _center;
         Value < double > _circularity;
         Value < double > _elongation;
+        Value < double > _guideAngle;
         Value <uint32_t> _height;
         Value < double > _length;
         Value <uint32_t> _width;
