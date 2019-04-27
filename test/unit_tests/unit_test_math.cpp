@@ -109,7 +109,7 @@ namespace pvmath
 
             const LineBase2D<_Type> line2( PointBase2D<_Type>( -point1.y, point1.x ), PointBase2D<_Type>( -point2.y, point2.x ) );
             PointBase2D<_Type> intersectPoint;
-            if ( !line1.isIntersect( line2 ) || !line1.intersection(line2, intersectPoint) )
+            if ( !line1.isIntersect( line2 ) || !line1.intersection( line2, intersectPoint ) )
                 return false;
         }
         return true;
@@ -118,14 +118,14 @@ namespace pvmath
 
 void addTests_Math( UnitTestFramework & framework )
 {
-    framework.add(pvmath::houghTransform<double>, "math::Hough Transform (double)");
-    framework.add(pvmath::houghTransform<float>, "math::Hough Transform (float)");
-    framework.add(pvmath::haarTransform<double>, "math::Haar Transform (double)");
-    framework.add(pvmath::haarTransform<float>, "math::Haar Transform (float)");
-    framework.add(pvmath::lineConstructor<double>, "math::Line2d constructor (double)");
-    framework.add(pvmath::lineConstructor<float>, "math::Line2d constructor (float)");
-    framework.add(pvmath::parallelLine<double>, "math::Line2d parallel lines (double)");
-    framework.add(pvmath::parallelLine<float>, "math::Line2d parallel lines (float)");
-    framework.add(pvmath::lineIntersection<double>, "math::Line2d line intersection (double)");
-    framework.add(pvmath::lineIntersection<float>, "math::Line2d line intersection (float)");
+    framework.add( pvmath::houghTransform<double>, "math::Hough Transform (double)" );
+    framework.add( pvmath::houghTransform<float>, "math::Hough Transform (float)" );
+    framework.add( pvmath::haarTransform<double>, "math::Haar Transform (double)" );
+    framework.add( pvmath::haarTransform<float>, "math::Haar Transform (float)" );
+    framework.add( pvmath::lineConstructor<double>, "math::Line2d constructor (double)" );
+    framework.add( pvmath::lineConstructor<float>, "math::Line2d constructor (float)" );
+    framework.add( pvmath::parallelLine<double>, "math::Line2d parallel lines (double)" );
+    framework.add( pvmath::parallelLine<float>, "math::Line2d parallel lines (float)" );
+    framework.add( pvmath::lineIntersection<double>, "math::Line2d line intersection (double)" );
+    framework.add( pvmath::lineIntersection<float>, "math::Line2d line intersection (float)" );
 }
