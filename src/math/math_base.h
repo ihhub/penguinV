@@ -174,7 +174,7 @@ public:
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
         const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
-        if (pvmath::isEqual<_Type>(denominator, 0, 10))
+        if ( pvmath::isEqual<_Type>( denominator, 0, 10 ) )
             return false; // they are parallel
 
         const PointBase2D<_Type> offset = _position - line._position;
@@ -186,7 +186,7 @@ public:
     bool isParallel( const LineBase2D & line ) const
     {
         const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
-        return pvmath::isEqual<_Type>(denominator, 0, 10);
+        return pvmath::isEqual<_Type>( denominator, 0, 10 );
     }
 
     bool isIntersect( const LineBase2D & line ) const
