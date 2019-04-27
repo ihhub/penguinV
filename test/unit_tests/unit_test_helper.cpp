@@ -13,9 +13,7 @@ namespace
     void fillRandomData( PenguinV_Image::Image & image )
     {
         uint32_t height = image.height();
-        uint32_t width = image.width();
-
-        width = width * image.colorCount();
+        uint32_t width = image.width() * image.colorCount();
         Image_Function::OptimiseRoi( width, height, image );
 
         const uint32_t rowSize  = image.rowSize();
