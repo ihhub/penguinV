@@ -4328,10 +4328,7 @@ namespace Image_Function
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
     {
-        if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Position of point [x, y] is out of image" );
-
-        *(image.data() + y * image.rowSize() + x) = value;
+        simd::SetPixel( image, x, y, value, simd::actualSimdType() );
     }
 
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
