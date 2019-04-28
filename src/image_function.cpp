@@ -2915,6 +2915,8 @@ if ( (condition) < simdSize ) {          \
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        width = width * colorCount;
+
         if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
             AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
