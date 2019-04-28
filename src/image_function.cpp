@@ -1134,7 +1134,7 @@ namespace avx
                 _mm256_storeu_si256( reinterpret_cast <simd*>(output), simdSum );
                 
                 (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
-            }Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+            }
         }
     }
 
@@ -2269,54 +2269,31 @@ namespace neon
 
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
-    {Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubezeIn ) {
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+    {
+        const char maskValue = static_cast<char>(0xffu);
+        const simd mask = _mm256_set_epi8(
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd * src1 = reinterpret_cast <const simd*> (inY);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
 
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubedSize )
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+            const simd * src1End = src1 + simdWidth;
 
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+            for( ; src1 != src1End; ++src1, ++dst )
+                _mm256_storeu_si256( dst, _mm256_andnot_si256( _mm256_loadu_si256( src1 ), mask ) );
 
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * inX  = inY  + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
 
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-    }Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
+                const uint8_t * outXEnd = outX + nonSimdWidth;
 
-    vElectro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube2_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
-    {Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubeizeIn1, in2Y += rowSizeIn2 ) {
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTubemdSize, dst += simdSize )
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube_u8( src2 ) ) );
-
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube {
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-     Electro SWING - Pisk - Who Dat Down Dare? [ AUDIO ] speakeasy jazz remixed - YouTube
-                    else
-                        (*outX) = (*in2X);
-                }
+                for( ; outX != outXEnd; ++outX, ++inX )
+                    (*outX) = ~(*inX);
             }
         }
     }
