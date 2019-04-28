@@ -20,5 +20,5 @@ elseif(UNIX AND NOT APPLE)
         ${LIB_DIR}/image_function.cpp
         ${LIB_DIR}/edge_detection.cpp)
     target_link_libraries(example_edge_detection
-        PRIVATE example_features_options example_features_warnings Threads::Threads)
+        PRIVATE example_features_options example_features_warnings Threads::Threads X11::X11)
 endif()
