@@ -278,33 +278,12 @@ namespace Blob_Detection
     void BlobInfo::_getLength()
     {
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
-            if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
 
-                int32_t maximumDistance = 0;
+            Point2d startPoint, endPoint;
+        	_getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
 
-                for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
-
-                    for( ; xx != end; ++xx, ++yy ) {
-                        int32_t distance = static_cast<int32_t>(*x - *xx) * static_cast<int32_t>(*x - *xx) +
-                            static_cast<int32_t>(*y - *yy) * static_cast<int32_t>(*y - *yy);
-
-                        if( maximumDistance < distance )
-                            maximumDistance = distance;
-                    }
-                }
-
-                _length.value = sqrt( static_cast<double>(maximumDistance) );
-            }
-            else {
-                _length.value = 0;
-            }
-
-            _length.found = true;
+		    _length.found = true;
+		    _guideAngle.found = true;
         }
     }
 
