@@ -142,6 +142,45 @@ namespace Blob_Detection
     {
         return _contourX.size() == _edgeX.size();
     }
+    
+    double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d & start, Point2da & end ) 
+    {
+        if( _contourX.size() > 1 ) {
+            std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
+            std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
+            std::vector < uint32_t >::const_iterator end = _contourX.cend();
+
+            uint32_t maximumDistance = 0;
+
+            for( ; x != (end - 1); ++x, ++y ) {
+                std::vector < uint32_t >::const_iterator xx = x + 1;
+                std::vector < uint32_t >::const_iterator yy = y + 1;
+
+                for( ; xx != end; ++xx, ++yy ) {
+                    uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
+
+                    if( maximumDistance < distance ) {
+                        maximumDistance = distance;
+
+                        start.x = *x;
+                        start.y = *y;
+
+                        end.x = *xx;
+                        end.y = *xx;
+                    }
+                }
+
+            }
+
+            length = sqrt( static_cast<double>(maximumDistance) );
+            _guideAngle.value = -atan2( static_cast<double>(endPoint.y - startPoint.y),
+                                        static_cast<double>(endPoint.x - startPoint.x) );
+        }else{
+            length = 0;
+            _guideAngle.value = 0;
+        }
+
+    }
 
     void BlobInfo::_getArea()
     {
