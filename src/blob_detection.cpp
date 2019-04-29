@@ -143,7 +143,7 @@ namespace Blob_Detection
         return _contourX.size() == _edgeX.size();
     }
     
-    double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d & start, Point2da & end ) 
+    double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d & start, Point2d & end ) 
     {
         if( _contourX.size() > 1 ) {
             std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
@@ -169,7 +169,6 @@ namespace Blob_Detection
                         end.y = *xx;
                     }
                 }
-
             }
 
             length = sqrt( static_cast<double>(maximumDistance) );
@@ -179,7 +178,6 @@ namespace Blob_Detection
             length = 0;
             _guideAngle.value = 0;
         }
-
     }
 
     void BlobInfo::_getArea()
@@ -233,12 +231,11 @@ namespace Blob_Detection
     {
        if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-
             	Point2d startPoint, endPoint;
             	_getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
 
-                const double _cos = cos( _guideAngle );
-                const double _sin = sin( _guideAngle );
+                const double _cos = cos( _guideAngle.value );
+                const double _sin = sin( _guideAngle.value );
 
                 std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
@@ -278,12 +275,11 @@ namespace Blob_Detection
     void BlobInfo::_getLength()
     {
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
-
             Point2d startPoint, endPoint;
-        	_getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
+            _getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
 
-		    _length.found = true;
-		    _guideAngle.found = true;
+            _length.found = true;
+            _guideAngle.found = true;
         }
     }
 
