@@ -231,43 +231,37 @@ namespace Blob_Detection
 
     void BlobInfo::_getElongation()
     {
-       double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d< uint32_t > & start, Point2DBase< uint32_t > & end ) {
-
+       if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
 
-                uint32_t maximumDistance = 0;
+            	Point2d startPoint, endPoint;
+            	_getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
 
-                for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
+                const double _cos = cos( _guideAngle );
+                const double _sin = sin( _guideAngle );
 
-                    for( ; xx != end; ++xx, ++yy ) {
-                        uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
+                std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
-                        if( maximumDistance < distance ) {
-                            maximumDistance = distance;
+                std::vector < uint32_t >::const_iterator xRotated   = _contourX.begin();
+                std::vector < double >::iterator yRotated           = contourYTemp.begin();
+                std::vector < uint32_t >::const_iterator endRotated = _contourX.end();
 
-                            start.x = *x;
-                            start.y = *y;
+                for( ; xRotated != endRotated; ++xRotated, ++yRotated )
+                    (*yRotated) = (*xRotated - startPoint.x) * _sin + (*yRotated - startPoint.y) * _cos;
 
-                            end.x = *xx;
-                            end.y = *xx;
-                        }
-                    }
+                double height = *(std::max_element( contourYTemp.begin(), contourYTemp.end() )) -
+                    *(std::min_element( contourYTemp.begin(), contourYTemp.end() ));
 
-                }
+                if( height < 1 )
+                    height = 1;
 
-                length = sqrt( static_cast<double>(maximumDistance) );
-                _guideAngle.value = -atan2( static_cast<double>(endPoint.y - startPoint.y),
-                                            static_cast<double>(endPoint.x - startPoint.x) );
-            }else{
-                length= 0;
-                _guideAngle.value = 0;
+                _elongation.value = _length.value / height;
+            }
+            else {
+                _elongation.value = 1;
             }
 
+            _elongation.found = true;
         }
     }
 
