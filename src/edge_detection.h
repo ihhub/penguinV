@@ -32,13 +32,22 @@ struct EdgeParameter
         ALL
     };
 
-    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL,
+    // Optional parameter to apply before looking for first and second gradients on an image (findEdgePoints)
+    enum filterType
+    {
+        NONE = 10,
+        MEDIAN,
+        GAUSSIAN
+    };
+
+    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL, filterType _filter = NONE,
                    uint32_t _groupFactor = 1u, uint32_t _skipFactor = 1u, uint32_t _contrastCheckLeftSideOffset = 0u,
                    uint32_t _contrastCheckRightSideOffset = 0u, uint8_t _minimumContrast = 10 );
 
     directionType direction;
     gradientType gradient;
     edgeType edge;
+    filterType filter;
     uint32_t groupFactor; // grouping per row or column (depending on direction) works as a median filter. Default is 1 - no grouping
     uint32_t skipFactor; // skip specific number of rows or columns to do not find edge points on all rows/columns. Default is 1 - no skipping
     // Specify a number of pixels from each side of potential edge point to get pixel intensity needed for contrast verification
@@ -51,14 +60,6 @@ struct EdgeParameter
     void verify() const; // self-verification that all parameters are correct
 };
 
-// Optional parameter to apply before looking for first and second gradients on an image (findEdgePoints)
-enum Filter
-{
-    NONE = 0,
-    MEDIAN,
-    GAUSSIAN
-};
-
 template <typename _Type>
 class EdgeDetection;
 
@@ -66,24 +67,24 @@ class EdgeDetectionHelper
 {
 public:
     static void find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize, double sigma );
+                      const EdgeParameter & edgeParameter );
 
     static void find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize, float sigma );
+                      const EdgeParameter & edgeParameter );
 };
 
 template <typename _Type = double>
 class EdgeDetection
 {
 public:
-    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter(), Filter filterToApply = NONE, uint32_t filterKernelSize = 3u, _Type sigma = 1.0f )
+    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
-        find( image, 0, 0, image.width(), image.height(), edgeParameter, filterToApply, filterKernelSize, sigma );
+        find( image, 0, 0, image.width(), image.height(), edgeParameter );
     }
 
-    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter(), Filter filterToApply = NONE, uint32_t filterKernelSize = 3u, _Type sigma = 1.0f )
+    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
-        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter, filterToApply, filterKernelSize, sigma );
+        EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
     }
 
     const std::vector < PointBase2D<_Type> > & positiveEdge() const

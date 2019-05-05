@@ -203,12 +203,6 @@ namespace
     void findEdgePoints( std::vector < _Type > & positive, std::vector < _Type > & negative, std::vector < int > & data,
                          std::vector < int > & first, std::vector < int > & second, const EdgeParameter & edgeParameter, bool forwardDirection )
     {
-        if (!positive.empty() && !negative.empty())
-        {
-            positive.clear();
-            negative.clear();
-        }
-
         getDerivatives( data, first, second );
         getEdgePoints( positive, data, first, second, edgeParameter );
         removeSimilarPoints( positive );
@@ -231,12 +225,6 @@ namespace
     void findEdgePoints( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter,
                          std::vector < PointBase2D<_Type> > & positiveEdgePoint, std::vector < PointBase2D<_Type> > & negativeEdgePoint )
     {
-        if (!positiveEdgePoint.empty() && !negativeEdgePoint.empty())
-        {
-            positiveEdgePoint.clear();
-            negativeEdgePoint.clear();
-        }
-
         Image_Function::VerifyGrayScaleImage( image );
         Image_Function::ParameterValidation( image, x, y, width, height );
         edgeParameter.verify();
@@ -424,35 +412,22 @@ namespace
     }
     
     template< typename _Type >
-    void getGaussianKernel1D(std::vector<_Type> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, _Type sigma)
+    std::vector<_Type> getGaussianKernel1D(uint32_t kernelSize, _Type sigma)
     {
-        if (width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0)
-            throw imageException("Incorrect input parameters for Gaussian filter kernel");
+        if (kernelSize == 0 || sigma < 0)
+            throw imageException("Incorrect input parameters for 1D Gaussian filter kernel");
 
-        filter.resize(kernelSize);
+        std::vector<_Type> filter(kernelSize * 2 + 1, 0.0f);
 
-        std::fill(filter.begin(), filter.end(), 0.0f);
-
-        static const float pi = 3.1415926536f;
+        const _Type pi = 3.1415926536f;
         const _Type doubleSigma = sigma * 2;
         const _Type doubleSigmaPiInv = 1.0f / (doubleSigma * pi);
 
-        _Type *x = filter.data();
+        _Type * x = filter.data();
         _Type sum = 0;
 
-        int32_t start;
-        int32_t end;
-
-        if (kernelSize % 2)
-        {
-            start = kernelSize / 2 * (-1);
-            end   = kernelSize / 2 + 1;
-        }
-        else
-        {
-            start = kernelSize / 2 * (-1);
-            end   = kernelSize / 2;
-        }
+        const int32_t start = -static_cast<int32_t>(kernelSize);
+        const int32_t end = static_cast<int32_t>(kernelSize) + 1;
 
         for (int32_t pos = start; pos < end; ++pos, ++x) {
             *x = doubleSigmaPiInv * exp(-static_cast<_Type>(pos * pos) / doubleSigma);
@@ -462,13 +437,14 @@ namespace
         const _Type normalization = 1.0f / sum;
         x = filter.data();
 
-        for (int32_t pos = start; pos < end; ++pos, ++x) {
-            *x *= normalization;
-        }
+        for (int32_t pos = start; pos < end; ++pos, ++x)
+            (*x) *= normalization;
+
+        return filter;
     }
 
     template< typename _Type >
-    PenguinV_Image::Image applyFiltering(PenguinV_Image::Image & image, Filter filterToApply, uint32_t filterKernelSize, _Type sigma)
+    PenguinV_Image::Image applyFiltering(PenguinV_Image::Image & image, filterType filterToApply, uint32_t filterKernelSize, _Type sigma)
     {
         switch (filterToApply)
         {
@@ -489,13 +465,24 @@ namespace
 
         return image;
     }
+
+    template< typename _Type >
+    void clearEdgePoints(EdgeDetection< _Type > & edgeDetection)
+    {
+        if (!edgeDetection.positiveEdgePoint.empty() && !edgeDetection.negativeEdgePoint.empty())
+        {
+            edgeDetection.positiveEdgePoint.clear();
+            edgeDetection.negativeEdgePoint.clear();
+        }
+    }
 }
 
-EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
+EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, filterType _filter, uint32_t _groupFactor, uint32_t _skipFactor,
                               uint32_t _contrastCheckLeftSideOffset, uint32_t _contrastCheckRightSideOffset, uint8_t _minimumContrast )
     : direction  ( _direction )
     , gradient   ( _gradient )
     , edge       ( _edge )
+    , filter     ( _filter )
     , groupFactor( _groupFactor )
     , skipFactor ( _skipFactor )
     , contrastCheckLeftSideOffset( _contrastCheckLeftSideOffset )
@@ -515,8 +502,10 @@ void EdgeParameter::verify() const
 }
 
 void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize, double sigma )
+                                const EdgeParameter & edgeParameter)
 {
+    clearEdgePoints<double>(edgeDetection);
+
     if (filterToApply)
     {
         PenguinV_Image::Image imageCopy(image);
@@ -529,8 +518,10 @@ void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const Pen
 }
 
 void EdgeDetectionHelper::find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter, Filter filterToApply, uint32_t filterKernelSize, float sigma )
+                                const EdgeParameter & edgeParameter)
 {
+    clearEdgePoints<float>(edgeDetection);
+
     if (filterToApply)
     {
         PenguinV_Image::Image imageCopy(image);
