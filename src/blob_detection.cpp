@@ -15,6 +15,41 @@ namespace
         EDGE       = 3u,
         CONTOUR    = 4u
     };
+    
+    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, Point2DBase< uint32_t > & start, Point2DBase< uint32_t > & end )
+    {
+        if ( _contourX.size() > 1 ) {
+            std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
+            std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
+            std::vector < uint32_t >::const_iterator end = _contourX.cend();
+
+            int32_t maximumDistance = 0;
+
+            for ( ; x != (end - 1); ++x, ++y ) {
+                std::vector < uint32_t >::const_iterator xx = x + 1;
+                std::vector < uint32_t >::const_iterator yy = y + 1;
+
+                for ( ; xx != end; ++xx, ++yy ) {
+                    const int32_t distance = static_cast<int32_t>(*x - *xx) * static_cast<int32_t>(*x - *xx) +
+                                             static_cast<int32_t>(*y - *yy) * static_cast<int32_t>(*y - *yy);
+
+                    if ( maximumDistance < distance ) {
+                        maximumDistance = distance;
+
+                        start.x = *x;
+                        start.y = *y;
+
+                        end.x = *xx;
+                        end.y = *xx;
+                    }
+                }
+            }
+            return sqrt( static_cast<double>(maximumDistance) );
+        }
+        else {
+            return 0;
+        }
+    }
 }
 
 namespace Blob_Detection
@@ -145,39 +180,7 @@ namespace Blob_Detection
     
     double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d & start, Point2d & end ) 
     {
-        if( _contourX.size() > 1 ) {
-            std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-            std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-            std::vector < uint32_t >::const_iterator end = _contourX.cend();
-
-            uint32_t maximumDistance = 0;
-
-            for( ; x != (end - 1); ++x, ++y ) {
-                std::vector < uint32_t >::const_iterator xx = x + 1;
-                std::vector < uint32_t >::const_iterator yy = y + 1;
-
-                for( ; xx != end; ++xx, ++yy ) {
-                    uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
-
-                    if( maximumDistance < distance ) {
-                        maximumDistance = distance;
-
-                        start.x = *x;
-                        start.y = *y;
-
-                        end.x = *xx;
-                        end.y = *xx;
-                    }
-                }
-            }
-
-            length = sqrt( static_cast<double>(maximumDistance) );
-            _guideAngle.value = -atan2( static_cast<double>(endPoint.y - startPoint.y),
-                                        static_cast<double>(endPoint.x - startPoint.x) );
-        }else{
-            length = 0;
-            _guideAngle.value = 0;
-        }
+        
     }
 
     void BlobInfo::_getArea()
@@ -229,13 +232,16 @@ namespace Blob_Detection
 
     void BlobInfo::_getElongation()
     {
-       if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
+        if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-            	Point2d startPoint, endPoint;
-            	_getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
+            	Point2DBase< uint32_t > startPoint;
+                Point2DBase< uint32_t > endPoint;
+            	const double length = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
+                const double angle = -atan2( static_cast<double>(endPoint.y - startPoint.y),
+                                             static_cast<double>(endPoint.x - startPoint.x) );
 
-                const double _cos = cos( _guideAngle.value );
-                const double _sin = sin( _guideAngle.value );
+                const double _cos = cos( angle );
+                const double _sin = sin( angle );
 
                 std::vector < double > contourYTemp( _contourY.begin(), _contourY.end() );
 
@@ -252,7 +258,7 @@ namespace Blob_Detection
                 if( height < 1 )
                     height = 1;
 
-                _elongation.value = _length.value / height;
+                _elongation.value = length / height;
             }
             else {
                 _elongation.value = 1;
@@ -275,11 +281,11 @@ namespace Blob_Detection
     void BlobInfo::_getLength()
     {
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
-            Point2d startPoint, endPoint;
-            _getLengthFromContour(_contourX, _contourY, _length.value, startPoint, endPoint);
+            Point2DBase< uint32_t > startPoint;
+            Point2DBase< uint32_t > endPoint;
+            _length.value = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
 
             _length.found = true;
-            _guideAngle.found = true;
         }
     }
 
