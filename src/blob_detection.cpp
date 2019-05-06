@@ -177,11 +177,6 @@ namespace Blob_Detection
     {
         return _contourX.size() == _edgeX.size();
     }
-    
-    double BlobInfo::_getLengthFromContour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, double & length, Point2d & start, Point2d & end ) 
-    {
-        
-    }
 
     void BlobInfo::_getArea()
     {
