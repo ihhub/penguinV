@@ -19,10 +19,10 @@ namespace
     double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, PointBase2D< uint32_t > & start,
                                  PointBase2D< uint32_t > & end )
     {
-        if ( _contourX.size() > 1 ) {
-            std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-            std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-            std::vector < uint32_t >::const_iterator end = _contourX.cend();
+        if ( contourX.size() > 1 ) {
+            std::vector < uint32_t >::const_iterator x   = contourX.cbegin();
+            std::vector < uint32_t >::const_iterator y   = contourY.cbegin();
+            std::vector < uint32_t >::const_iterator end = contourX.cend();
 
             int32_t maximumDistance = 0;
 
