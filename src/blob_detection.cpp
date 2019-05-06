@@ -16,7 +16,8 @@ namespace
         CONTOUR    = 4u
     };
     
-    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, Point2DBase< uint32_t > & start, Point2DBase< uint32_t > & end )
+    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, Point2DBase< uint32_t > & start,
+                                 Point2DBase< uint32_t > & end )
     {
         if ( _contourX.size() > 1 ) {
             std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
@@ -229,9 +230,9 @@ namespace Blob_Detection
     {
         if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-            	Point2DBase< uint32_t > startPoint;
+                Point2DBase< uint32_t > startPoint;
                 Point2DBase< uint32_t > endPoint;
-            	const double length = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
+                const double length = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
                 const double angle = -atan2( static_cast<double>(endPoint.y - startPoint.y),
                                              static_cast<double>(endPoint.x - startPoint.x) );
 
