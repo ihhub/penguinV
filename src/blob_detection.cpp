@@ -16,8 +16,8 @@ namespace
         CONTOUR    = 4u
     };
     
-    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, PointBase2D< uint32_t > & start,
-                                 PointBase2D< uint32_t > & end )
+    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, PointBase2D< uint32_t > & startPoint,
+                                 PointBase2D< uint32_t > & endPoint )
     {
         if ( contourX.size() > 1 ) {
             std::vector < uint32_t >::const_iterator x   = contourX.cbegin();
@@ -37,11 +37,11 @@ namespace
                     if ( maximumDistance < distance ) {
                         maximumDistance = distance;
 
-                        start.x = *x;
-                        start.y = *y;
+                        startPoint.x = *x;
+                        startPoint.y = *y;
 
-                        end.x = *xx;
-                        end.y = *xx;
+                        endPoint.x = *xx;
+                        endPoint.y = *xx;
                     }
                 }
             }
