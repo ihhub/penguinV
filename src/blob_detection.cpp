@@ -232,7 +232,7 @@ namespace Blob_Detection
             if( _contourX.size() > 1 ) {
                 PointBase2D< uint32_t > startPoint;
                 PointBase2D< uint32_t > endPoint;
-                const double length = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
+                const double length = getLengthFromCountour( _contourX, _contourY, startPoint, endPoint );
                 const double angle = -atan2( static_cast<double>(endPoint.y - startPoint.y),
                                              static_cast<double>(endPoint.x - startPoint.x) );
 
@@ -279,7 +279,7 @@ namespace Blob_Detection
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
             PointBase2D< uint32_t > startPoint;
             PointBase2D< uint32_t > endPoint;
-            _length.value = getLengthFromCountour( _contourX, _contourY, _length.value, startPoint, endPoint );
+            _length.value = getLengthFromCountour( _contourX, _contourY, startPoint, endPoint );
 
             _length.found = true;
         }
