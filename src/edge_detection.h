@@ -3,7 +3,6 @@
 #include <vector>
 #include "image_buffer.h"
 #include "math/math_base.h"
-#include "filtering.h"
 
 struct EdgeParameter
 {
@@ -40,7 +39,8 @@ struct EdgeParameter
         GAUSSIAN
     };
 
-    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL, filterType _filter = NONE,
+    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL, filterType _filter = NONE, 
+                   uint32_t _filterKernelSize = 3u, float _sigma = 1.0f,
                    uint32_t _groupFactor = 1u, uint32_t _skipFactor = 1u, uint32_t _contrastCheckLeftSideOffset = 0u,
                    uint32_t _contrastCheckRightSideOffset = 0u, uint8_t _minimumContrast = 10 );
 
@@ -48,6 +48,8 @@ struct EdgeParameter
     gradientType gradient;
     edgeType edge;
     filterType filter;
+    uint32_t filterKernelSize; 
+    float sigma;
     uint32_t groupFactor; // grouping per row or column (depending on direction) works as a median filter. Default is 1 - no grouping
     uint32_t skipFactor; // skip specific number of rows or columns to do not find edge points on all rows/columns. Default is 1 - no skipping
     // Specify a number of pixels from each side of potential edge point to get pixel intensity needed for contrast verification
