@@ -2,7 +2,7 @@ penguinV
 ======
  [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) [![CodeFactor](https://www.codefactor.io/repository/github/ihhub/penguinv/badge)](https://www.codefactor.io/repository/github/ihhub/penguinv)
 
-PenguinV is a simple and easy to use C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
+PenguinV is a simple and fast C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
 
 - heterogeneous system support (CPUs and GPUs)
 - CUDA, OpenCL and SIMD (SSE, AVX, NEON) support
