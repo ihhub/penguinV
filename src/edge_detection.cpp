@@ -405,7 +405,7 @@ namespace
                     sum += kernel[k - deviation_start] * src.data()[x_altered + y * width];
                 }
 
-                tmp.data()[x + y * width] = sum;
+                tmp.data()[x + y * width] = static_cast<uint8_t>(sum);
             }
 
         dst = std::move(tmp);
@@ -444,20 +444,20 @@ namespace
     }
 
     template< typename _Type >
-    PenguinV_Image::Image applyFiltering(PenguinV_Image::Image & image, filterType filterToApply, uint32_t filterKernelSize, _Type sigma)
+    PenguinV_Image::Image applyFiltering(PenguinV_Image::Image & image, const EdgeParameter & edgeParameter)
     {
-        switch (filterToApply)
+        switch (edgeParameter.filter)
         {
-        case (NONE):
+        case (edgeParameter.NONE):
             break;
 
-        case (MEDIAN):
-            return Image_Function::Median(image, filterKernelSize);
+        case (edgeParameter.MEDIAN):
+            //return Image_Function::Median(image, edgeParameter.filterKernelSize);
 
-        case (GAUSSIAN):
+        case (edgeParameter.GAUSSIAN):
             std::vector<_Type> kernel;
             
-            getGaussianKernel1D< _Type >(kernel, image.width(), image.height(), filterKernelSize, sigma);
+            kernel = getGaussianKernel1D< _Type >(edgeParameter.filterKernelSize, edgeParameter.sigma);
             circularConvolution< _Type >(image, image, kernel);
 
             return image;
@@ -465,26 +465,19 @@ namespace
 
         return image;
     }
-
-    template< typename _Type >
-    void clearEdgePoints(EdgeDetection< _Type > & edgeDetection)
-    {
-        if (!edgeDetection.positiveEdgePoint.empty() && !edgeDetection.negativeEdgePoint.empty())
-        {
-            edgeDetection.positiveEdgePoint.clear();
-            edgeDetection.negativeEdgePoint.clear();
-        }
-    }
 }
 
-EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, filterType _filter, uint32_t _groupFactor, uint32_t _skipFactor,
+EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, filterType _filter, 
+                              uint32_t _filterKernelSize, float _sigma, uint32_t _groupFactor, uint32_t _skipFactor,
                               uint32_t _contrastCheckLeftSideOffset, uint32_t _contrastCheckRightSideOffset, uint8_t _minimumContrast )
-    : direction  ( _direction )
-    , gradient   ( _gradient )
-    , edge       ( _edge )
-    , filter     ( _filter )
-    , groupFactor( _groupFactor )
-    , skipFactor ( _skipFactor )
+    : direction        ( _direction )
+    , gradient         ( _gradient )
+    , edge             ( _edge )
+    , filter           ( _filter )
+    , filterKernelSize ( _filterKernelSize )
+    , sigma            ( _sigma )
+    , groupFactor      ( _groupFactor )
+    , skipFactor       ( _skipFactor )
     , contrastCheckLeftSideOffset( _contrastCheckLeftSideOffset )
     , contrastCheckRightSideOffset( _contrastCheckRightSideOffset )
     , minimumContrast( _minimumContrast )
@@ -501,15 +494,13 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter)
+void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, 
+                                uint32_t width, uint32_t height, const EdgeParameter & edgeParameter)
 {
-    clearEdgePoints<double>(edgeDetection);
-
-    if (filterToApply)
+    if (edgeParameter.filter != edgeParameter.NONE)
     {
         PenguinV_Image::Image imageCopy(image);
-        imageCopy = applyFiltering<double>(imageCopy, filterToApply, filterKernelSize, sigma);
+        imageCopy = applyFiltering<double>(imageCopy, edgeParameter);
 
         findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
     }
@@ -517,15 +508,13 @@ void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const Pen
         findEdgePoints(image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
 }
 
-void EdgeDetectionHelper::find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                const EdgeParameter & edgeParameter)
+void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, 
+                                uint32_t width, uint32_t height, const EdgeParameter & edgeParameter)
 {
-    clearEdgePoints<float>(edgeDetection);
-
-    if (filterToApply)
+    if (edgeParameter.filter != edgeParameter.NONE)
     {
         PenguinV_Image::Image imageCopy(image);
-        imageCopy = applyFiltering<float>(imageCopy, filterToApply, filterKernelSize, sigma);
+        imageCopy = applyFiltering<float>(imageCopy, edgeParameter);
 
         findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
     }

@@ -12,23 +12,15 @@ namespace
     struct FilterKernel
     {
         explicit FilterKernel(float multiplier_)
-            : multiplier( multiplier_ )
         {
             const uint32_t size = 256u * sizeInBytes;
             for ( uint32_t i = 0; i < size; ++i ) {
-                for ( uint32_t j = i; j < size; ++j ) {
-                    kernel[i][j] = kernel[j][i] = gradient( i, j );
-                }
+                for ( uint32_t j = i; j < size; ++j )
+                    kernel[i][j] = kernel[j][i] = static_cast<uint8_t>(sqrtf( static_cast<float>(i * i + j * j) ) * multiplier_ + 0.5f);
             }
         }
 
-        uint8_t gradient(uint32_t gX, uint32_t gY) const
-        {
-            return static_cast<uint8_t>(sqrtf( static_cast<float>(gX * gX + gY * gY) ) * multiplier + 0.5f);
-        }
-
         uint8_t kernel[256u * sizeInBytes][256u * sizeInBytes];
-        const float multiplier;
     };
 }
 

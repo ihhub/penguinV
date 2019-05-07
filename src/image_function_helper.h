@@ -157,6 +157,10 @@ namespace Image_Function_Helper
         typedef void                     (*ProjectionProfileForm4)( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                                     std::vector < uint32_t > & projection );
 
+        typedef void (*ReplaceChannelForm1)( const Image & channel, Image & rgb, uint8_t channelId );
+        typedef void (*ReplaceChannelForm2)( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                                             uint32_t width, uint32_t height, uint8_t channelId );
+
         typedef Image (*ResizeForm1)( const Image & in, uint32_t widthOut, uint32_t heightOut );
         typedef void  (*ResizeForm2)( const Image & in, Image & out );
         typedef Image (*ResizeForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
@@ -170,7 +174,11 @@ namespace Image_Function_Helper
         typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                         uint32_t width, uint32_t height );
 
-        typedef void (*Rotate)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+        typedef Image (*RotateForm1)( const Image & in, double centerX, double centerY, double angle );
+        typedef void  (*RotateForm2)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+        typedef Image (*RotateForm3)( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
+        typedef void  (*RotateForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, double centerXIn, double centerYIn, Image & out, uint32_t startXOut,
+                                      uint32_t startYOut, double centerXOut, double centerYOut, uint32_t width, uint32_t height, double angle );
 
         typedef void (*SetPixelForm1)( Image & image, uint32_t x, uint32_t y, uint8_t value );
         typedef void (*SetPixelForm2)( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
@@ -427,6 +435,15 @@ namespace Image_Function_Helper
 
     Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, double centerX, double centerY, double angle );
+
+    void Rotate( FunctionTable::RotateForm4 rotate,
+                 const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
 
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY );

@@ -1,10 +1,14 @@
-// Example application of blob detection utilization
+// Example application of edge detection utilization
 #include <iostream>
-#include "../../../src/edge_detection.h"
-#include "../../../src/image_buffer.h"
-#include "../../../src/image_function.h"
-#include "../../../src/file/bmp_image.h"
-#include "../../../src/ui/win/win_ui.h"
+#include "../../src/edge_detection.h"
+#include "../../src/image_buffer.h"
+#include "../../src/image_function.h"
+#include "../../src/file/bmp_image.h"
+#if defined (_WIN32)
+#include "../../src/ui/win/win_ui.h"
+#else
+#include "../../src/ui/x11/x11_ui.h"
+#endif
 
 int main( int argc, char * argv[] )
 {
@@ -30,13 +34,17 @@ int main( int argc, char * argv[] )
         edgeParameter.contrastCheckLeftSideOffset  = 3u; // in pixels
         edgeParameter.contrastCheckRightSideOffset = 3u; // in pixels
 
-        EdgeDetection<> edgeDetection;
+        EdgeDetection edgeDetection;
         edgeDetection.find( image, edgeParameter );
 
         const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();
         const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();
 
+#if defined (_WIN32)
         UiWindowWin window( original, "Edge detection" );
+#else
+        UiWindowX11 window( original, "Edge detection" );
+#endif
 
         const PaintColor positiveColor( 20, 255, 20 ); // green
         const PaintColor negativeColor( 255, 20, 20 ); // red

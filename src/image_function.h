@@ -44,6 +44,18 @@ namespace Image_Function
     void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+    Image16Bit ConvertTo16Bit( const Image & in );
+    void       ConvertTo16Bit( const Image & in, Image16Bit & out );
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void       ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                               uint32_t width, uint32_t height );
+
+    Image ConvertTo8Bit( const Image16Bit & in );
+    void  ConvertTo8Bit( const Image16Bit & in, Image & out );
+    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void  ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height );
+
     Image ConvertToGrayScale( const Image & in );
     void  ConvertToGrayScale( const Image & in, Image & out );
     Image ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
@@ -161,6 +173,10 @@ namespace Image_Function
     void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                 std::vector < uint32_t > & projection );
 
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId );
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId );
+
     // Image resizing (scaling) is based on nearest-neighbour interpolation method
     Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut );
     void  Resize( const Image & in, Image & out );
@@ -175,7 +191,11 @@ namespace Image_Function
     void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
 
-    void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+    Image Rotate( const Image & in, double centerX, double centerY, double angle );
+    void  Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+    Image Rotate( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
+    void  Rotate( const Image & in, uint32_t startXIn, uint32_t startYIn, double centerXIn, double centerYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                  double centerXOut, double centerYOut, uint32_t width, uint32_t height, double angle );
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );

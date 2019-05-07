@@ -410,6 +410,118 @@ namespace Image_Function
         }
     }
 
+    Image16Bit ConvertTo16Bit( const Image & in )
+    {
+        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, Image16Bit & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
+        ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint16_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t  * inX  = inY;
+            uint16_t       * outX = outY;
+            const uint16_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) << 8;
+        }
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in )
+    {
+        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, Image & out )
+    {
+        ParameterValidation( in );
+        ParameterValidation( out );
+
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = Image().generate( width, height, in.colorCount() );
+        ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint16_t * inX  = inY;
+            uint8_t        * outX = outY;
+            const uint8_t  * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; ++outX, ++inX )
+                *outX = (*inX) >> 8;
+        }
+    }
+
     Image ConvertToGrayScale( const Image & in )
     {
         return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in );
@@ -1236,6 +1348,46 @@ namespace Image_Function
         }
     }
 
+    void ReplaceChannel( const Image & channel, Image & rgb, uint8_t channelId )
+    {
+        ParameterValidation( channel, rgb );
+
+        ReplaceChannel( channel, 0, 0, rgb, 0, 0, channel.width(), channel.height(), channelId );
+    }
+
+    void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
+                         uint32_t width, uint32_t height, uint8_t channelId )
+    {
+        ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        VerifyGrayScaleImage( channel );
+        VerifyRGBImage( rgb );
+
+        if ( channelId >= RGB )
+            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+
+        const uint32_t rowSizeIn  = channel.rowSize();
+        const uint32_t rowSizeOut = rgb.rowSize();
+
+        const uint8_t colorCount = RGB;
+
+        const uint8_t * inY  = channel.data() + startYChannel * rowSizeIn  + startXChannel;
+        uint8_t       * outY = rgb.data() + startYRgb * rowSizeOut + startXRgb * colorCount + channelId;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
+                *outX = *inX;
+        }
+    }
+
     Image Resize( const Image & in, uint32_t widthOut, uint32_t heightOut )
     {
         return Image_Function_Helper::Resize( Resize, in, widthOut, heightOut );
@@ -1335,9 +1487,25 @@ namespace Image_Function
         }
     }
 
+    Image Rotate( const Image & in, double centerX, double centerY, double angle )
+    {
+        return Image_Function_Helper::Rotate( Rotate, in, centerX, centerY, angle );
+    }
+
     void Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
     {
-        ParameterValidation( in, out );
+        Image_Function_Helper::Rotate( Rotate, in, centerXIn, centerYIn, out, centerXOut, centerYOut, angle );
+    }
+
+    Image Rotate( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle )
+    {
+        return Image_Function_Helper::Rotate( Rotate, in, x, y, centerX, centerY, width, height, angle );
+    }
+
+    void Rotate( const Image & in, uint32_t startXIn, uint32_t startYIn, double centerXIn, double centerYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                 double centerXOut, double centerYOut, uint32_t width, uint32_t height, double angle )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         VerifyGrayScaleImage( in, out );
 
         const double cosAngle = cos( angle );
@@ -1346,15 +1514,17 @@ namespace Image_Function
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t width  = in.width();
-        const uint32_t height = in.height();
-
         const uint8_t * inY  = in.data();
-        uint8_t       * outY = out.data();
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
         double inXPos = -(cosAngle * centerXOut + sinAngle * centerYOut) + centerXIn;
         double inYPos = -(-sinAngle * centerXOut + cosAngle * centerYOut) + centerYIn;
+
+        const double minX = startXIn;
+        const double minY = startYIn;
+        const uint32_t maxX = startXIn + width - 1u;
+        const uint32_t maxY = startYIn + height - 1u;
 
         for( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
             uint8_t       * outX = outY;
@@ -1364,33 +1534,28 @@ namespace Image_Function
             double posY = inYPos;
 
             for( ; outX != outXEnd; ++outX, posX += cosAngle, posY -= sinAngle ) {
-                if( posX < 0 || posY < 0 ) {
+                if( posX < minX || posY < minY ) {
                     (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
                 }
                 else {
-                    uint32_t x = static_cast<uint32_t>(posX);
-                    uint32_t y = static_cast<uint32_t>(posY);
+                    const uint32_t x = static_cast<uint32_t>(posX);
+                    const uint32_t y = static_cast<uint32_t>(posY);
 
-                    if( x >= width - 1 || y >= height - 1 ) {
+                    if( x >= maxX || y >= maxY ) {
                         (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
                     }
                     else {
                         const uint8_t * inX = inY + y * rowSizeIn + x;
 
                         // we use bilinear approximation to find pixel intensity value
-
-                        double coeffX = posX - x;
-                        double coeffY = posY - y;
+                        const double coeffX = posX - x;
+                        const double coeffY = posY - y;
 
                         // Take a weighted mean of four pixels. Use offset of 0.5
                         // so that integer conversion leads to rounding instead of 
                         // simple truncation.
-
-                        double sum = (*inX) * (1 - coeffX) * (1 - coeffY) +
-                            *(inX + 1) * (coeffX) * (1 - coeffY) +
-                            *(inX + rowSizeIn) * (1 - coeffX) * (coeffY) +
-                            *(inX + rowSizeIn + 1) * (coeffX) * (coeffY) + 
-                            0.5;
+                        const double sum = *(inX) * (1 - coeffX) * (1 - coeffY) + *(inX + 1) * (coeffX) * (1 - coeffY) +
+                                           *(inX + rowSizeIn) * (1 - coeffX) * (coeffY) + *(inX + rowSizeIn + 1) * (coeffX) * (coeffY) + 0.5;
 
                         (*outX) = static_cast<uint8_t>(sum);
                     }

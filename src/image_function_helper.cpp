@@ -765,6 +765,39 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, double centerX, double centerY, double angle )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyGrayScaleImage( in );
+        Image out = in.generate( in.width(), in.height() );
+
+        rotate( in, 0, 0, centerX, centerY, out, 0, 0, centerX, centerY, in.width(), in.height(), angle );
+
+        return out;
+    }
+
+    void Rotate( FunctionTable::RotateForm4 rotate,
+                 const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+        rotate( in, 0, 0, centerXIn, centerYIn, out, 0, 0, centerXOut, centerYOut, in.width(), in.height(), angle );
+    }
+
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle )
+    {
+        Image_Function::ParameterValidation( in, x, y, width, height );
+        Image_Function::VerifyGrayScaleImage( in );
+
+        Image out = in.generate( width, height, in.colorCount() );
+
+        rotate( in, x, y, centerX, centerY, out, 0, 0, centerX, centerY, width, height, angle );
+
+        return out;
+    }
+
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY )
     {
