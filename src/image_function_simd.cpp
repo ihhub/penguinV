@@ -14,6 +14,10 @@
 #include <tmmintrin.h>
 #endif
 
+#ifdef PENGUINV_SSSE3_SET
+#include <tmmintrin.h>
+#endif
+
 #ifdef PENGUINV_NEON_SET
 #include <arm_neon.h>
 #endif
