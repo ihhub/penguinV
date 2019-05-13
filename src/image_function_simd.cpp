@@ -11,6 +11,9 @@
 
 #ifdef PENGUINV_SSE_SET
 #include <emmintrin.h>
+#endif
+
+#ifdef PENGUINV_SSSE3_SET
 #include <tmmintrin.h>
 #endif
 
