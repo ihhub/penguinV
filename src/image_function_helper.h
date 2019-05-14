@@ -359,6 +359,9 @@ namespace Image_Function_Helper
     Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    bool IsEqual( FunctionTable::IsEqualForm2 isEqual,
+                  const Image & in1, const Image & in2 );
+
     Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, const std::vector < uint8_t > & table );
 
@@ -453,6 +456,9 @@ namespace Image_Function_Helper
 
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+
+    void Split( FunctionTable::SplitForm2 split,
+                const Image & in, Image & out1, Image & out2, Image & out3 );
 
     Image Subtract( FunctionTable::SubtractForm4 subtract,
                     const Image & in1, const Image & in2 );
