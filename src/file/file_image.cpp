@@ -40,10 +40,9 @@ namespace File_Operation
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
-               uint32_t width, uint32_t height )
+    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
- #ifdef PENGUINV_ENABLED_JPEG_SUPPORT
+#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
         const std::string jpegFileType = ".jpg";
         if ( path.size() >= jpegFileType.size() && path.compare( path.size() - jpegFileType.size(), jpegFileType.size(), jpegFileType ) == 0 ) {
             Jpeg_Operation::Save( path, image, startX, startY, width, height );
