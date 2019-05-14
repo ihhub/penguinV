@@ -1,8 +1,8 @@
 #include "file_image.h"
+#include "../image_exception.h"
 #include "bmp_image.h"
 #include "jpeg_image.h"
 #include "png_image.h"
-#include "../image_exception.h"
 
 namespace File_Operation
 {
