@@ -3,7 +3,6 @@
 
 namespace Bitmap_Operation
 {
-    // Below functions support only PenguinV_Image::Image and PenguinV_Image::ColorImage classes
     PenguinV_Image::Image Load( const std::string & path );
     void                  Load( const std::string & path, PenguinV_Image::Image & image );
 
