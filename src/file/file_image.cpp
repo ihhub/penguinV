@@ -63,7 +63,7 @@ namespace File_Operation
 
     void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-       if ( isJpegFile( path ) ) {
+        if ( isJpegFile( path ) ) {
             Jpeg_Operation::Save( path, image, startX, startY, width, height );
             return;
         }
