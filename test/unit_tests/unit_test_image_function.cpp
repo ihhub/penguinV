@@ -1269,8 +1269,6 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
-
         const PenguinV_Image::Image output = Merge( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], input[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
         return verifyImage( output, intensity, false ) && equalSize( output, roiWidth, roiHeight ) && (output.colorCount() == PenguinV_Image::RGB);
@@ -1294,8 +1292,6 @@ namespace Function_Template
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( size, roiX, roiY, roiWidth, roiHeight );
-
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
 
         Merge( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], input[2], roiX[2], roiY[2], output, roiX[3], roiY[3], roiWidth, roiHeight );
 
@@ -1824,8 +1820,6 @@ namespace Function_Template
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( size, roiX, roiY, roiWidth, roiHeight );
-
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
 
         Split( input, roiX[0], roiY[0], output[0], roiX[1], roiY[1], output[1], roiX[2], roiY[2], output[2], roiX[3], roiY[3], roiWidth, roiHeight );
 
