@@ -25,6 +25,10 @@ if(CUDA_FOUND)
     endif()
 endif()
 
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")
+    add_compile_options(-mfpu=neon-vfpv4)
+endif()
+
 option(PENGUINV_BUILD_TEST "Build tests of penguinV" ON)
 if(${PENGUINV_BUILD_TEST} AND (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
     enable_testing()
