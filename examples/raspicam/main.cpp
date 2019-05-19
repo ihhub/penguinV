@@ -98,7 +98,7 @@ int main( int argc, char **argv )
 
         camera.release();
     }
-    catch( imageException & ex ) { // uh-oh, something went wrong!
+    catch ( const std::exception & ex ) { // uh-oh, something went wrong!
         std::cout << "Exception " << ex.what() << " raised. Do your black magic to recover..." << std::endl;
         // your magic code must be here to recover from bad things
         return 1;
