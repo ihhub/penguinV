@@ -1,14 +1,14 @@
 #include "image_function_opencl.h"
 
-#include <cmath>
-#include <map>
-#include <memory>
-#include <mutex>
 #include "../image_function_helper.h"
 #include "../parameter_validation.h"
 #include "opencl_device.h"
 #include "opencl_helper.h"
 #include "opencl_types.h"
+#include <cmath>
+#include <map>
+#include <memory>
+#include <mutex>
 
 namespace
 {
@@ -19,23 +19,23 @@ namespace
         FunctionRegistrator()
         {
             table.AbsoluteDifference = &Image_Function_OpenCL::AbsoluteDifference;
-            table.BitwiseAnd         = &Image_Function_OpenCL::BitwiseAnd;
-            table.BitwiseOr          = &Image_Function_OpenCL::BitwiseOr;
-            table.BitwiseXor         = &Image_Function_OpenCL::BitwiseXor;
+            table.BitwiseAnd = &Image_Function_OpenCL::BitwiseAnd;
+            table.BitwiseOr = &Image_Function_OpenCL::BitwiseOr;
+            table.BitwiseXor = &Image_Function_OpenCL::BitwiseXor;
             table.ConvertToGrayScale = &Image_Function_OpenCL::ConvertToGrayScale;
-            table.ConvertToRgb       = &Image_Function_OpenCL::ConvertToRgb;
-            table.Copy               = &Image_Function_OpenCL::Copy;
-            table.ExtractChannel     = &Image_Function_OpenCL::ExtractChannel;
-            table.Fill               = &Image_Function_OpenCL::Fill;
-            table.GammaCorrection    = &Image_Function_OpenCL::GammaCorrection;
-            table.Histogram          = &Image_Function_OpenCL::Histogram;
-            table.Invert             = &Image_Function_OpenCL::Invert;
-            table.LookupTable        = &Image_Function_OpenCL::LookupTable;
-            table.Maximum            = &Image_Function_OpenCL::Maximum;
-            table.Minimum            = &Image_Function_OpenCL::Minimum;
-            table.Subtract           = &Image_Function_OpenCL::Subtract;
-            table.Threshold          = &Image_Function_OpenCL::Threshold;
-            table.Threshold2         = &Image_Function_OpenCL::Threshold;
+            table.ConvertToRgb = &Image_Function_OpenCL::ConvertToRgb;
+            table.Copy = &Image_Function_OpenCL::Copy;
+            table.ExtractChannel = &Image_Function_OpenCL::ExtractChannel;
+            table.Fill = &Image_Function_OpenCL::Fill;
+            table.GammaCorrection = &Image_Function_OpenCL::GammaCorrection;
+            table.Histogram = &Image_Function_OpenCL::Histogram;
+            table.Invert = &Image_Function_OpenCL::Invert;
+            table.LookupTable = &Image_Function_OpenCL::LookupTable;
+            table.Maximum = &Image_Function_OpenCL::Maximum;
+            table.Minimum = &Image_Function_OpenCL::Minimum;
+            table.Subtract = &Image_Function_OpenCL::Subtract;
+            table.Threshold = &Image_Function_OpenCL::Threshold;
+            table.Threshold2 = &Image_Function_OpenCL::Threshold;
 
             ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageOpenCL().type(), table );
             ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertToOpenCL, PenguinV_Image::Image(), PenguinV_Image::ImageOpenCL() );
@@ -293,24 +293,24 @@ namespace
         }
         )";
 
-    const multiCL::OpenCLProgram& GetProgram()
+    const multiCL::OpenCLProgram & GetProgram()
     {
-        static std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > > deviceProgram;
+        static std::map<cl_device_id, std::shared_ptr<multiCL::OpenCLProgram>> deviceProgram;
         static std::mutex mapGuard;
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
-        std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > >::const_iterator program = deviceProgram.find( device.deviceId() );
+        std::map<cl_device_id, std::shared_ptr<multiCL::OpenCLProgram>>::const_iterator program = deviceProgram.find( device.deviceId() );
         if ( program != deviceProgram.cend() )
-            return *(program->second);
+            return *( program->second );
 
         mapGuard.lock();
-        deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
+        deviceProgram[device.deviceId()] = std::shared_ptr<multiCL::OpenCLProgram>( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
         mapGuard.unlock();
 
-        return *(deviceProgram[device.deviceId()]);
+        return *( deviceProgram[device.deviceId()] );
     }
-}
+} // namespace
 
 namespace Image_Function_OpenCL
 {
@@ -324,19 +324,19 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, in2, out );
     }
 
-    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    Image AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width,
+                              uint32_t height )
     {
         return Image_Function_Helper::AbsoluteDifference( AbsoluteDifference, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                             Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out,
+                             uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "absoluteDifferenceOpenCL");
+        multiCL::OpenCLKernel kernel( program, "absoluteDifferenceOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -345,8 +345,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -364,19 +364,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, in2, out );
     }
 
-    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::BitwiseAnd( BitwiseAnd, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                     uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "bitwiseAndOpenCL");
+        multiCL::OpenCLKernel kernel( program, "bitwiseAndOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -385,8 +384,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -404,19 +403,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::BitwiseOr( BitwiseOr, in1, in2, out );
     }
 
-    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+    Image BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::BitwiseOr( BitwiseOr, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                    uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "bitwiseOrOpenCL");
+        multiCL::OpenCLKernel kernel( program, "bitwiseOrOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -425,8 +423,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -444,19 +442,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::BitwiseXor( BitwiseXor, in1, in2, out );
     }
 
-    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::BitwiseXor( BitwiseXor, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                     uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "bitwiseXorOpenCL");
+        multiCL::OpenCLKernel kernel( program, "bitwiseXorOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -465,8 +462,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -488,17 +485,14 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
 
-        if( in.width() != out.width() || in.height() != out.height() ||
-            in.colorCount() != out.colorCount())
+        if ( in.width() != out.width() || in.height() != out.height() || in.colorCount() != out.colorCount() )
             throw imageException( "Bad input parameters in image function" );
 
-        if (in.alignment() == 1u || (in.rowSize() == in.width() * in.colorCount()))
-        {
+        if ( in.alignment() == 1u || ( in.rowSize() == in.width() * in.colorCount() ) ) {
             const size_t size = in.rowSize() * in.height();
-            multiCL::writeBuffer( reinterpret_cast<cl_mem>( out.data() ), size * sizeof(uint8_t), in.data() );
+            multiCL::writeBuffer( reinterpret_cast<cl_mem>( out.data() ), size * sizeof( uint8_t ), in.data() );
         }
-        else
-        {
+        else {
             const size_t origin[3] = {0, 0, 0};
             const size_t region[3] = {in.width(), in.height(), 1};
 
@@ -520,22 +514,20 @@ namespace Image_Function_OpenCL
     {
         Image_Function::ParameterValidation( in, out );
 
-        if( in.width() != out.width() || in.height() != out.height() ||
-            in.colorCount() != out.colorCount())
+        if ( in.width() != out.width() || in.height() != out.height() || in.colorCount() != out.colorCount() )
             throw imageException( "Bad input parameters in image function" );
 
-        if (out.alignment() == 1u || (out.rowSize() == out.width() * out.colorCount()))
-        {
+        if ( out.alignment() == 1u || ( out.rowSize() == out.width() * out.colorCount() ) ) {
             const size_t size = in.rowSize() * in.height();
-            multiCL::readBuffer( reinterpret_cast<cl_mem>( const_cast<uint8_t*>( in.data() ) ), size * sizeof(uint8_t), out.data() );
+            multiCL::readBuffer( reinterpret_cast<cl_mem>( const_cast<uint8_t *>( in.data() ) ), size * sizeof( uint8_t ), out.data() );
         }
-        else
-        {
+        else {
             const size_t origin[3] = {0, 0, 0};
             const size_t region[3] = {out.width(), out.height(), 1};
 
-            multiCL::openCLCheck( clEnqueueReadImage( multiCL::OpenCLDeviceManager::instance().device().queue()(), reinterpret_cast<cl_mem>( const_cast<uint8_t*>( in.data() ) ),
-                                                      CL_TRUE, origin, region, out.rowSize(), 0, out.data(), 0, NULL, NULL ) );
+            multiCL::openCLCheck( clEnqueueReadImage( multiCL::OpenCLDeviceManager::instance().device().queue()(),
+                                                      reinterpret_cast<cl_mem>( const_cast<uint8_t *>( in.data() ) ), CL_TRUE, origin, region, out.rowSize(), 0,
+                                                      out.data(), 0, NULL, NULL ) );
         }
     }
 
@@ -554,24 +546,24 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::ConvertToGrayScale( ConvertToGrayScale, in, startXIn, startYIn, width, height );
     }
 
-    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                             uint32_t width, uint32_t height )
+    void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width,
+                             uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
+        if ( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
             Copy( in, out );
             return;
         }
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "convertToGrayScaleOpenCL");
+        multiCL::OpenCLKernel kernel( program, "convertToGrayScaleOpenCL" );
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn * in.colorCount();
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, in.colorCount(), out.data(), offsetOut, rowSizeOut, width, height );
@@ -594,23 +586,22 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::ConvertToRgb( ConvertToRgb, in, startXIn, startYIn, width, height );
     }
 
-    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                       uint32_t width, uint32_t height )
+    void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( out );
+        Image_Function::VerifyRGBImage( out );
 
-        if( in.colorCount() == PenguinV_Image::RGB ) {
+        if ( in.colorCount() == PenguinV_Image::RGB ) {
             Copy( in, out );
         }
         else {
             const multiCL::OpenCLProgram & program = GetProgram();
-            multiCL::OpenCLKernel kernel( program, "convertToRgbOpenCL");
+            multiCL::OpenCLKernel kernel( program, "convertToRgbOpenCL" );
 
             const uint32_t rowSizeIn = in.rowSize();
             const uint32_t rowSizeOut = out.rowSize();
 
-            const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+            const uint32_t offsetIn = startXIn * rowSizeIn + startYIn * in.colorCount();
             const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
 
             kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, out.colorCount(), width, height );
@@ -631,24 +622,22 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::Copy( Copy, in, startXIn, startYIn, width, height );
     }
 
-    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-               uint32_t width, uint32_t height )
+    void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "copyOpenCL");
-        
+        multiCL::OpenCLKernel kernel( program, "copyOpenCL" );
+
         const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * colorCount;
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
-        
-        
+
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
@@ -669,22 +658,22 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::ExtractChannel( ExtractChannel, in, x, y, width, height, channelId );
     }
 
-    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                         uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+    void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+                         uint8_t channelId )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if( channelId >= in.colorCount() )
+        if ( channelId >= in.colorCount() )
             throw imageException( "Channel ID for color image is greater than channel count in input image" );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "extractChannelOpenCL");
+        multiCL::OpenCLKernel kernel( program, "extractChannelOpenCL" );
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * in.colorCount();
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn * in.colorCount();
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * out.colorCount();
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, in.colorCount(), out.data(), offsetOut, rowSizeOut, width, height, channelId );
@@ -703,7 +692,7 @@ namespace Image_Function_OpenCL
         Image_Function::VerifyGrayScaleImage( image );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "fillOpenCL");
+        multiCL::OpenCLKernel kernel( program, "fillOpenCL" );
 
         const uint32_t rowSize = image.rowSize();
         const uint32_t offset = x * rowSize + y;
@@ -723,29 +712,28 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
     }
 
-    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                bool horizontal, bool vertical )
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
         return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
     }
 
-    void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+               bool horizontal, bool vertical )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if( !horizontal && !vertical ) {
+        if ( !horizontal && !vertical ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
             const multiCL::OpenCLProgram & program = GetProgram();
-            multiCL::OpenCLKernel kernel( program, "flipOpenCL");
+            multiCL::OpenCLKernel kernel( program, "flipOpenCL" );
 
-            const uint32_t rowSizeIn  = in.rowSize();
+            const uint32_t rowSizeIn = in.rowSize();
             const uint32_t rowSizeOut = out.rowSize();
 
-            const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn;
+            const uint32_t offsetIn = startYIn * rowSizeIn + startXIn;
             const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
 
             kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, in.width(), in.height(), horizontal, vertical );
@@ -769,23 +757,23 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::GammaCorrection( GammaCorrection, in, startXIn, startYIn, width, height, a, gamma );
     }
 
-    void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                          uint32_t width, uint32_t height, double a, double gamma )
+    void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+                          double a, double gamma )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if( a < 0 || gamma < 0 )
+        if ( a < 0 || gamma < 0 )
             throw imageException( "Bad input parameters in image function" );
 
         // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256 );
+        std::vector<uint8_t> value( 256 );
 
-        for( uint16_t i = 0; i < 256; ++i ) {
+        for ( uint16_t i = 0; i < 256; ++i ) {
             double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
 
-            if( data < 256 )
-                value[i] = static_cast<uint8_t>(data);
+            if ( data < 256 )
+                value[i] = static_cast<uint8_t>( data );
             else
                 value[i] = 255;
         }
@@ -793,27 +781,27 @@ namespace Image_Function_OpenCL
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
 
-    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
+    uint8_t GetThreshold( const std::vector<uint32_t> & histogram )
     {
         return Image_Function_Helper::GetThreshold( histogram );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image )
+    std::vector<uint32_t> Histogram( const Image & image )
     {
         return Image_Function_Helper::Histogram( Histogram, image );
     }
 
-    void Histogram( const Image & image, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, std::vector<uint32_t> & histogram )
     {
         Image_Function_Helper::Histogram( Histogram, image, histogram );
     }
 
-    std::vector < uint32_t > Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    std::vector<uint32_t> Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::Histogram( Histogram, image, x, y, width, height );
     }
 
-    void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
+    void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector<uint32_t> & histogram )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
@@ -821,10 +809,10 @@ namespace Image_Function_OpenCL
         histogram.resize( 256u );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
-        multiCL::Array< uint32_t > histogramOpenCL( histogram );
+        multiCL::Array<uint32_t> histogramOpenCL( histogram );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "histogramOpenCL");
+        multiCL::OpenCLKernel kernel( program, "histogramOpenCL" );
 
         const uint32_t rowSize = image.rowSize();
         const uint32_t offset = x * rowSize + y;
@@ -851,21 +839,20 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::Invert( Invert, in, startXIn, startYIn, width, height );
     }
 
-    void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                 uint32_t width, uint32_t height )
+    void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "invertOpenCL");
+        multiCL::OpenCLKernel kernel( program, "invertOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
         width = width * colorCount;
 
-        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
+        const uint32_t offsetIn = startYIn * rowSizeIn + startXIn * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
@@ -873,40 +860,39 @@ namespace Image_Function_OpenCL
         multiCL::launchKernel2D( kernel, width, height );
     }
 
-    Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
+    Image LookupTable( const Image & in, const std::vector<uint8_t> & table )
     {
         return Image_Function_Helper::LookupTable( LookupTable, in, table );
     }
 
-    void LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table )
+    void LookupTable( const Image & in, Image & out, const std::vector<uint8_t> & table )
     {
         Image_Function_Helper::LookupTable( LookupTable, in, out, table );
     }
 
-    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                       const std::vector < uint8_t > & table )
+    Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, const std::vector<uint8_t> & table )
     {
         return Image_Function_Helper::LookupTable( LookupTable, in, startXIn, startYIn, width, height, table );
     }
 
-    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                      uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
+    void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+                      const std::vector<uint8_t> & table )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if( table.size() != 256u )
+        if ( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        multiCL::Array< uint8_t > tableOpenCL( table );
+        multiCL::Array<uint8_t> tableOpenCL( table );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL");
+        multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL" );
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, tableOpenCL.data() );
@@ -924,19 +910,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::Maximum( Maximum, in1, in2, out );
     }
 
-    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::Maximum( Maximum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                  uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "maximumOpenCL");
+        multiCL::OpenCLKernel kernel( program, "maximumOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -945,8 +930,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -964,19 +949,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::Minimum( Minimum, in1, in2, out );
     }
 
-    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   uint32_t width, uint32_t height )
+    Image Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::Minimum( Minimum, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                  uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "minimumOpenCL");
+        multiCL::OpenCLKernel kernel( program, "minimumOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -985,8 +969,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -1009,26 +993,25 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::Normalize( Normalize, in, startXIn, startYIn, width, height );
     }
 
-    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height )
+    void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "intensityRangeOpenCL");
+        multiCL::OpenCLKernel kernel( program, "intensityRangeOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
         width = width * colorCount;
 
-        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
+        const uint32_t offsetIn = startYIn * rowSizeIn + startXIn * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
-        std::vector< uint32_t > range = { 255, 0 };
+        std::vector<uint32_t> range = {255, 0};
 
-        multiCL::Array< uint32_t > rangeOpenCL( range );
+        multiCL::Array<uint32_t> rangeOpenCL( range );
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, rangeOpenCL.data() );
 
@@ -1036,17 +1019,17 @@ namespace Image_Function_OpenCL
 
         range = rangeOpenCL.get();
 
-        if( (range[0] == 0 && range[1] == 255) || (range[0] == range[1]) ) {
+        if ( ( range[0] == 0 && range[1] == 255 ) || ( range[0] == range[1] ) ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
-            const double correction = 255.0 / (range[1] - range[0]);
+            const double correction = 255.0 / ( range[1] - range[0] );
 
             // We precalculate all values and store them in lookup table
-            std::vector < uint8_t > value( 256 );
+            std::vector<uint8_t> value( 256 );
 
-            for( uint16_t i = 0; i < 256; ++i )
-                value[i] = static_cast <uint8_t>((i - range[0]) * correction + 0.5);
+            for ( uint16_t i = 0; i < 256; ++i )
+                value[i] = static_cast<uint8_t>( ( i - range[0] ) * correction + 0.5 );
 
             LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
         }
@@ -1062,19 +1045,18 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::Subtract( Subtract, in1, in2, out );
     }
 
-    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                    uint32_t width, uint32_t height )
+    Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         return Image_Function_Helper::Subtract( Subtract, in1, startX1, startY1, in2, startX2, startY2, width, height );
     }
 
-    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
+    void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2, Image & out, uint32_t startXOut,
+                   uint32_t startYOut, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "subtractOpenCL");
+        multiCL::OpenCLKernel kernel( program, "subtractOpenCL" );
 
         const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -1083,8 +1065,8 @@ namespace Image_Function_OpenCL
         const uint32_t rowSizeIn2 = in2.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn1 = startY1   * rowSizeIn1 + startX1   * colorCount;
-        const uint32_t offsetIn2 = startY2   * rowSizeIn2 + startX2   * colorCount;
+        const uint32_t offsetIn1 = startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint32_t offsetIn2 = startY2 * rowSizeIn2 + startX2 * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
@@ -1107,19 +1089,19 @@ namespace Image_Function_OpenCL
         return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, threshold );
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t threshold )
+    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+                    uint8_t threshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "thresholdOpenCL");
+        multiCL::OpenCLKernel kernel( program, "thresholdOpenCL" );
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, threshold );
@@ -1137,29 +1119,28 @@ namespace Image_Function_OpenCL
         Image_Function_Helper::Threshold( Threshold, in, out, minThreshold, maxThreshold );
     }
 
-    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
-                     uint8_t maxThreshold )
+    Image Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         return Image_Function_Helper::Threshold( Threshold, in, startXIn, startYIn, width, height, minThreshold, maxThreshold );
     }
 
-    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
-                    uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height,
+                    uint8_t minThreshold, uint8_t maxThreshold )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const multiCL::OpenCLProgram & program = GetProgram();
-        multiCL::OpenCLKernel kernel( program, "thresholdDoubleOpenCL");
+        multiCL::OpenCLKernel kernel( program, "thresholdDoubleOpenCL" );
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
+        const uint32_t offsetIn = startXIn * rowSizeIn + startYIn;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, minThreshold, maxThreshold );
 
         multiCL::launchKernel2D( kernel, width, height );
     }
-}
+} // namespace Image_Function_OpenCL
