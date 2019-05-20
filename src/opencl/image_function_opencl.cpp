@@ -1,7 +1,7 @@
 #include "image_function_opencl.h"
 
+#include <cmath>
 #include <map>
-#include <math.h>
 #include <memory>
 #include <mutex>
 #include "../image_function_helper.h"

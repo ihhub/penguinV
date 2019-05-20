@@ -1,5 +1,5 @@
+#include <cmath>
 #include <cuda_runtime.h>
-#include <math.h>
 #include "filtering_cuda.cuh"
 #include "../image_buffer.h"
 #include "../image_exception.h"
