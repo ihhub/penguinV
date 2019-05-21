@@ -25,7 +25,7 @@ if(CUDA_FOUND)
     endif()
 endif()
 
-if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm*|ARM*)")
     add_compile_options(-mfpu=neon-vfpv4)
 endif()
 
