@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "filtering.h"
 #include "image_function.h"
 #include "parameter_validation.h"

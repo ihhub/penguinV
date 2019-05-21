@@ -1,5 +1,5 @@
+#include <cmath>
 #include <cuda_runtime.h>
-#include <math.h>
 #include "image_function_cuda.cuh"
 #include "../parameter_validation.h"
 #include "../image_function_helper.h"
