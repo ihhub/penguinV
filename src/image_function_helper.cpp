@@ -508,6 +508,14 @@ namespace Image_Function_Helper
         return out;
     }
 
+    bool IsEqual( FunctionTable::IsEqualForm2 isEqual,
+                  const Image & in1, const Image & in2 )
+    {
+        Image_Function::ParameterValidation( in1, in2 );
+
+        return isEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+    }
+
     Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, const std::vector < uint8_t > & table )
     {
@@ -826,6 +834,15 @@ namespace Image_Function_Helper
         shift( in, startXIn, startYIn, out, 0, 0, width, height, shiftX, shiftY );
 
         return out;
+    }
+
+    void Split( FunctionTable::SplitForm2 split,
+                const Image & in, Image & out1, Image & out2, Image & out3 )
+    {
+        Image_Function::ParameterValidation( in, out1, out2 );
+        Image_Function::ParameterValidation( in, out3 );
+
+        split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
     }
 
     Image Subtract( FunctionTable::SubtractForm4 subtract,
