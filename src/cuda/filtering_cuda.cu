@@ -1,9 +1,9 @@
+#include <cmath>
+#include <cuda_runtime.h>
+#include "filtering_cuda.cuh"
 #include "../image_buffer.h"
 #include "../image_exception.h"
 #include "../parameter_validation.h"
-#include "filtering_cuda.cuh"
-#include <cmath>
-#include <cuda_runtime.h>
 
 namespace Image_Function_Cuda
 {
@@ -18,11 +18,11 @@ namespace Image_Function_Cuda
         return out;
     }
 
-    void Gaussian( const Image & in, Image & out, uint32_t kernelSize, float sigma )
+    void Gaussian( const Image & in, Image & out, uint32_t kernelSize,  float sigma )
     {
         Image_Function::ParameterValidation( in, out );
 
-        if ( sigma < 0 )
+        if( sigma < 0 )
             throw imageException( "Sigma value cannot be negative" );
 
         FFT_Cuda::ComplexData image( in );
@@ -42,7 +42,7 @@ namespace Image_Function_Cuda
 
     FFT_Cuda::ComplexData GetGaussianKernel( uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
     {
-        if ( width < 3 || height < 3 || kernelSize == 0 || width < ( kernelSize * 2 + 1 ) || height < ( kernelSize * 2 + 1 ) || sigma < 0 )
+        if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
             throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
 
         const uint32_t size = width * height;
@@ -52,30 +52,30 @@ namespace Image_Function_Cuda
         static const float pi = 3.1415926536f;
         const float doubleSigma = sigma * 2;
 
-        float * y = data.data() + ( height / 2 - kernelSize ) * width + width / 2 - kernelSize;
-        const float * endY = y + ( 2 * kernelSize + 1 ) * width;
+        float * y = data.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
+        const float * endY = y + (2 * kernelSize + 1) * width;
 
         float sum = 0;
 
-        for ( int32_t posY = -static_cast<int32_t>( kernelSize ); y != endY; y += width, ++posY ) {
+        for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + 2 * kernelSize + 1;
 
-            for ( int32_t posX = -static_cast<int32_t>( kernelSize ); x != endX; ++x, ++posX ) {
-                *x = 1.0f / ( pi * doubleSigma ) * exp( -( posX * posX + posY * posY ) / doubleSigma );
+            for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
+                *x = 1.0f / (pi * doubleSigma) * exp( -(posX * posX + posY * posY) / doubleSigma );
                 sum += *x;
             }
         }
 
         const float normalization = 1.0f / sum;
 
-        y = data.data() + ( height / 2 - kernelSize ) * width + width / 2 - kernelSize;
+        y = data.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
 
-        for ( int32_t posY = -static_cast<int32_t>( kernelSize ); y != endY; y += width, ++posY ) {
+        for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + 2 * kernelSize + 1;
 
-            for ( int32_t posX = -static_cast<int32_t>( kernelSize ); x != endX; ++x, ++posX ) {
+            for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
                 *x *= normalization;
             }
         }
@@ -88,4 +88,4 @@ namespace Image_Function_Cuda
 
         return complexData;
     }
-} // namespace Image_Function_Cuda
+}
