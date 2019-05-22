@@ -42,7 +42,7 @@ namespace
         size_t highestPointCount = 0u;
         _Type averageDistance = 0;
 
-        _Type angleVal = -(initialAngle - angleStep * angleStepPerSide); // this should be an opposite angle
+        _Type angleVal = -(initialAngle - angleStep * static_cast<_Type>( angleStepPerSide) ); // this should be an opposite angle
 
         for ( int angleId = -angleStepPerSide; angleId <= angleStepPerSide; ++angleId, angleVal -= angleStep ) {
             const _Type cosVal = std::cos( angleVal );
@@ -89,7 +89,7 @@ namespace
         outOnLine.clear();
         outOffLine.clear();
 
-        angleVal = -(initialAngle + angleStep * bestAngleId);
+        angleVal = -(initialAngle + angleStep * static_cast<_Type>( bestAngleId ));
 
         const _Type minDistance = averageDistance - lineTolerance;
         const _Type maxDistance = averageDistance + lineTolerance;
