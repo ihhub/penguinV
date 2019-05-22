@@ -462,7 +462,7 @@ namespace Image_Function
             const uint16_t * outXEnd = outX + width;
 
             for ( ; outX != outXEnd; ++outX, ++inX )
-                *outX = (*inX) << 8;
+                *outX = static_cast<uint16_t>( (*inX) << 8 );
         }
     }
 
@@ -518,7 +518,7 @@ namespace Image_Function
             const uint8_t  * outXEnd = outX + width;
 
             for ( ; outX != outXEnd; ++outX, ++inX )
-                *outX = (*inX) >> 8;
+                *outX = static_cast<uint8_t>( (*inX) >> 8 );
         }
     }
 
