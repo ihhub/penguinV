@@ -1,14 +1,16 @@
-#ifdef PENGUINV_DISABLE_PNG_SUPPORT
-
 #include "png_image.h"
 #include "../image_exception.h"
 
+#ifndef PENGUINV_ENABLED_PNG_SUPPORT
+
 namespace Png_Operation
 {
-    PenguinV_Image::Image Load( const std::string & )
+    PenguinV_Image::Image Load( const std::string & path )
     {
-        throw imageException( "PNG is not supported" );
-        return PenguinV_Image::Image(); // to do not make compilation warning
+        PenguinV_Image::Image image;
+
+        Load( path, image );
+        return image;
     }
 
     void Load( const std::string &, PenguinV_Image::Image & )
@@ -32,8 +34,6 @@ namespace Png_Operation
 #include <stdlib.h>
 #include <png.h>
 
-#include "png_image.h"
-#include "../image_exception.h"
 #include "../parameter_validation.h"
 
 namespace Png_Operation

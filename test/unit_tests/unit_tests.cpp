@@ -1,5 +1,4 @@
 // This application is designed to run unit tests on penguinV library
-#include <cstdlib>
 #include "unit_test_bitmap.h"
 #include "unit_test_blob_detection.h"
 #include "unit_test_edge_detection.h"

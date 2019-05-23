@@ -83,7 +83,8 @@ namespace Image_Function
     template <typename TImage>
     void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() )
+        if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() ||
+            startX + width < width || startY + height < height )
             throw imageException( "Bad input parameters in image function" );
     }
 
@@ -93,8 +94,8 @@ namespace Image_Function
                               uint32_t width, uint32_t height )
     {
         if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() )
+            startX1 + width > image1.width() || startY1 + height > image1.height() || startX1 + width < width || startY1 + height < height ||
+            startX2 + width > image2.width() || startY2 + height > image2.height() || startX2 + width < width || startY2 + height < height )
             throw imageException( "Bad input parameters in image function" );
     }
 
@@ -106,9 +107,9 @@ namespace Image_Function
     {
         if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
             !IsCorrectColorCount( image3 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() ||
-            startX3 + width > image3.width() || startY3 + height > image3.height() )
+            startX1 + width > image1.width() || startY1 + height > image1.height() || startX1 + width < width || startY1 + height < height ||
+            startX2 + width > image2.width() || startY2 + height > image2.height() || startX2 + width < width || startY2 + height < height ||
+            startX3 + width > image3.width() || startY3 + height > image3.height() || startX3 + width < width || startY3 + height < height )
             throw imageException( "Bad input parameters in image function" );
     }
 

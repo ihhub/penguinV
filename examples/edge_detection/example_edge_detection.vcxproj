@@ -143,26 +143,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\edge_detection.cpp" />
-    <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\..\src\math\math_base.cpp" />
-    <ClCompile Include="..\..\..\src\ui\ui.cpp" />
-    <ClCompile Include="..\..\..\src\ui\win\win_ui.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="..\..\..\src\file\bmp_image.cpp" />
-    <ClCompile Include="..\..\..\src\image_function.cpp" />
+    <ClCompile Include="..\..\src\edge_detection.cpp" />
+    <ClCompile Include="..\..\src\image_function_helper.cpp" />
+    <ClCompile Include="..\..\src\math\math_base.cpp" />
+    <ClCompile Include="..\..\src\ui\ui.cpp" />
+    <ClCompile Include="..\..\src\ui\win\win_ui.cpp" />
+    <ClCompile Include="example_edge_detection.cpp" />
+    <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\edge_detection.h" />
-    <ClInclude Include="..\..\..\src\file\bmp_image.h" />
-    <ClInclude Include="..\..\..\src\image_buffer.h" />
-    <ClInclude Include="..\..\..\src\image_exception.h" />
-    <ClInclude Include="..\..\..\src\image_function.h" />
-    <ClInclude Include="..\..\..\src\image_function_helper.h" />
-    <ClInclude Include="..\..\..\src\math\math_base.h" />
-    <ClInclude Include="..\..\..\src\parameter_validation.h" />
-    <ClInclude Include="..\..\..\src\ui\ui.h" />
-    <ClInclude Include="..\..\..\src\ui\win\win_ui.h" />
+    <ClInclude Include="..\..\src\edge_detection.h" />
+    <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\image_buffer.h" />
+    <ClInclude Include="..\..\src\image_exception.h" />
+    <ClInclude Include="..\..\src\image_function.h" />
+    <ClInclude Include="..\..\src\image_function_helper.h" />
+    <ClInclude Include="..\..\src\math\math_base.h" />
+    <ClInclude Include="..\..\src\parameter_validation.h" />
+    <ClInclude Include="..\..\src\ui\ui.h" />
+    <ClInclude Include="..\..\src\ui\win\win_ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

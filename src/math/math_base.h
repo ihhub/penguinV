@@ -5,11 +5,17 @@
 namespace pvmath
 {
     const double pi = std::acos(-1);
-    const double epsilonDouble = 1e-10;
+    const double epsilonDouble = 1e-9;
     const double epsilonFloat  = 1e-5f;
 
     template <typename _Type>
     bool isEqual( const _Type & value1, const _Type & value2 )
+    {
+        return ( value1 == value2 );
+    }
+
+    template <typename _Type>
+    bool isEqual( const _Type & value1, const _Type & value2, const _Type )
     {
         return ( value1 == value2 );
     }
@@ -19,6 +25,12 @@ namespace pvmath
 
     template <>
     bool isEqual<float>( const float & value1, const float & value2 );
+
+    template <>
+    bool isEqual<double>( const double & value1, const double & value2, const double epsilonMultiplier );
+
+    template <>
+    bool isEqual<float>( const float & value1, const float & value2, const float epsilonMultiplier );
 
     double toRadians(double angleDegree);
     double toDegrees(double angleRadians);
@@ -162,19 +174,19 @@ public:
         // based on Graphics Gems III, Faster Line Segment Intersection, p. 199-202
         // http://www.realtimerendering.com/resources/GraphicsGems/gems.html#gemsiii
         const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
-        if (pvmath::isEqual<_Type>(denominator, 0))
+        if ( pvmath::isEqual<_Type>( denominator, 0, 10 ) )
             return false; // they are parallel
 
         const PointBase2D<_Type> offset = _position - line._position;
         const _Type na = (line._direction.y * offset.x - line._direction.x * offset.y) / denominator;
-        point = _position + _direction * na;
+        point = _position + PointBase2D<_Type>( _direction.x * na, _direction.y * na );
         return true;
     }
 
     bool isParallel( const LineBase2D & line ) const
     {
         const _Type denominator = _direction.y * line._direction.x - _direction.x * line._direction.y;
-        return pvmath::isEqual<_Type>(denominator, 0);
+        return pvmath::isEqual<_Type>( denominator, 0, 10 );
     }
 
     bool isIntersect( const LineBase2D & line ) const

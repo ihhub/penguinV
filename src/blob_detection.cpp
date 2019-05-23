@@ -15,6 +15,42 @@ namespace
         EDGE       = 3u,
         CONTOUR    = 4u
     };
+    
+    double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, PointBase2D< uint32_t > & startPoint,
+                                 PointBase2D< uint32_t > & endPoint )
+    {
+        if ( contourX.size() > 1 ) {
+            std::vector < uint32_t >::const_iterator x   = contourX.cbegin();
+            std::vector < uint32_t >::const_iterator y   = contourY.cbegin();
+            std::vector < uint32_t >::const_iterator end = contourX.cend();
+
+            int32_t maximumDistance = 0;
+
+            for ( ; x != (end - 1); ++x, ++y ) {
+                std::vector < uint32_t >::const_iterator xx = x + 1;
+                std::vector < uint32_t >::const_iterator yy = y + 1;
+
+                for ( ; xx != end; ++xx, ++yy ) {
+                    const int32_t distance = static_cast<int32_t>(*x - *xx) * static_cast<int32_t>(*x - *xx) +
+                                             static_cast<int32_t>(*y - *yy) * static_cast<int32_t>(*y - *yy);
+
+                    if ( maximumDistance < distance ) {
+                        maximumDistance = distance;
+
+                        startPoint.x = *x;
+                        startPoint.y = *y;
+
+                        endPoint.x = *xx;
+                        endPoint.y = *xx;
+                    }
+                }
+            }
+            return sqrt( static_cast<double>(maximumDistance) );
+        }
+        else {
+            return 0;
+        }
+    }
 }
 
 namespace Blob_Detection
@@ -194,36 +230,11 @@ namespace Blob_Detection
     {
         if( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
             if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
-
-                uint32_t maximumDistance = 0;
-
-                Point2d startPoint, endPoint;
-
-                for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
-
-                    for( ; xx != end; ++xx, ++yy ) {
-                        uint32_t distance = (*x - *xx) * (*x - *xx) + (*y - *yy) * (*y - *yy);
-
-                        if( maximumDistance < distance ) {
-                            maximumDistance = distance;
-
-                            startPoint.x = *x;
-                            startPoint.y = *y;
-
-                            endPoint.x = *xx;
-                            endPoint.y = *xx;
-                        }
-                    }
-                }
-
-                const double length = sqrt( static_cast<double>(maximumDistance) );
-                const double angle  = -atan2( static_cast<double>(endPoint.y - startPoint.y),
-                                              static_cast<double>(endPoint.x - startPoint.x) );
+                PointBase2D< uint32_t > startPoint;
+                PointBase2D< uint32_t > endPoint;
+                const double length = getLengthFromCountour( _contourX, _contourY, startPoint, endPoint );
+                const double angle = -atan2( static_cast<double>(endPoint.y - startPoint.y),
+                                             static_cast<double>(endPoint.x - startPoint.x) );
 
                 const double _cos = cos( angle );
                 const double _sin = sin( angle );
@@ -266,31 +277,9 @@ namespace Blob_Detection
     void BlobInfo::_getLength()
     {
         if( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
-            if( _contourX.size() > 1 ) {
-                std::vector < uint32_t >::const_iterator x   = _contourX.cbegin();
-                std::vector < uint32_t >::const_iterator y   = _contourY.cbegin();
-                std::vector < uint32_t >::const_iterator end = _contourX.cend();
-
-                int32_t maximumDistance = 0;
-
-                for( ; x != (end - 1); ++x, ++y ) {
-                    std::vector < uint32_t >::const_iterator xx = x + 1;
-                    std::vector < uint32_t >::const_iterator yy = y + 1;
-
-                    for( ; xx != end; ++xx, ++yy ) {
-                        int32_t distance = static_cast<int32_t>(*x - *xx) * static_cast<int32_t>(*x - *xx) +
-                            static_cast<int32_t>(*y - *yy) * static_cast<int32_t>(*y - *yy);
-
-                        if( maximumDistance < distance )
-                            maximumDistance = distance;
-                    }
-                }
-
-                _length.value = sqrt( static_cast<double>(maximumDistance) );
-            }
-            else {
-                _length.value = 0;
-            }
+            PointBase2D< uint32_t > startPoint;
+            PointBase2D< uint32_t > endPoint;
+            _length.value = getLengthFromCountour( _contourX, _contourY, startPoint, endPoint );
 
             _length.found = true;
         }

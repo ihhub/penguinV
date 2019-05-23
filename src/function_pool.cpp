@@ -354,46 +354,46 @@ namespace Function_Pool
                     penguinV::AbsoluteDifference(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseAnd:
                     penguinV::BitwiseAnd( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                           _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                          _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                          _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                           _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseOr:
                     penguinV::BitwiseOr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                          _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                          _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _BitwiseXor:
                     penguinV::BitwiseXor( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                           _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                          _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                          _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                           _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ConvertToGrayScale:
                     penguinV::ConvertToGrayScale( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                                  _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                                  _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                                   _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ConvertToRgb:
                     penguinV::ConvertToRgb( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                            _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                            _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                             _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ExtractChannel:
                     penguinV::ExtractChannel(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.extractChannelId );
                 case _GammaCorrection:
                     penguinV::GammaCorrection(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.coefficientA,
                         _dataIn.coefficientGamma );
                     break;
@@ -403,7 +403,7 @@ namespace Function_Pool
                     break;
                 case _Invert:
                     penguinV::Invert( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                      _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                      _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                       _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _IsEqual:
@@ -414,19 +414,19 @@ namespace Function_Pool
                     break;
                 case _LookupTable:
                     penguinV::LookupTable( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                           _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                           _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                            _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.lookupTable );
                     break;
                 case _Maximum:
                     penguinV::Maximum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                        _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                       _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                       _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Minimum:
                     penguinV::Minimum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                        _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                       _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                       _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _ProjectionProfile:
@@ -438,18 +438,18 @@ namespace Function_Pool
                 case _Resize:
                     penguinV::Resize( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                       _infoIn1->width[taskId], _infoIn1->height[taskId],
-                                      _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
-                                      _infoOut->width[taskId], _infoOut->height[taskId] );
+                                      _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
+                                      _infoOut1->width[taskId], _infoOut1->height[taskId] );
                     break;
                 case _RgbToBgr:
                     penguinV::RgbToBgr( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Subtract:
                     penguinV::Subtract( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
-                                        _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Sum:
@@ -459,12 +459,12 @@ namespace Function_Pool
                     break;
                 case _Threshold:
                     penguinV::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                          _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold );
                     break;
                 case _ThresholdDouble:
                     penguinV::Threshold( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
-                                         _infoOut->image, _infoOut->startX[taskId], _infoOut->startY[taskId],
+                                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                          _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold,
                                          _dataIn.maxThreshold );
                     break;

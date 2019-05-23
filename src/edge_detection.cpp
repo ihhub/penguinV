@@ -261,23 +261,21 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT) );
 
+                const _Type yPosition = static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+
                 if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createPositiveXEdge( edgePositive, positiveEdgePoint, static_cast<_Type>( x ),
-                                             static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0f ) );
+                        createPositiveXEdge( edgePositive, positiveEdgePoint, static_cast<_Type>( x ), yPosition );
 
                     if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createNegativeXEdge( edgeNegative, negativeEdgePoint, static_cast<_Type>( x + width - 1 ),
-                                             static_cast<_Type>( y + rowId + (edgeParameter.groupFactor - 1) / 2.0f ) );
+                        createNegativeXEdge( edgeNegative, negativeEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
                 }
                 else {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createNegativeXEdge( edgeNegative, positiveEdgePoint, static_cast<_Type>( x + width - 1 ),
-                                             static_cast<_Type>( y + rowId + (edgeParameter.groupFactor - 1) / 2.0f ) );
+                        createNegativeXEdge( edgeNegative, positiveEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
 
                     if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createPositiveXEdge( edgePositive, negativeEdgePoint, static_cast<_Type>( x ),
-                                             static_cast<_Type>( y + rowId + (edgeParameter.groupFactor - 1) / 2.0f ) );
+                        createPositiveXEdge( edgePositive, negativeEdgePoint, static_cast<_Type>( x ), yPosition );
                 }
             }
         }
@@ -307,23 +305,21 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM) );
 
+                const _Type xPosition =  static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+
                 if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createPositiveYEdge( edgePositive, positiveEdgePoint, static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f ),
-                                             static_cast<_Type>( y ) );
+                        createPositiveYEdge( edgePositive, positiveEdgePoint, xPosition, static_cast<_Type>( y ) );
 
                     if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createNegativeYEdge( edgeNegative, negativeEdgePoint, static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f ),
-                                             static_cast<_Type>( y + height - 1 ) );
+                        createNegativeYEdge( edgeNegative, negativeEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
                 }
                 else {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createNegativeYEdge( edgeNegative, positiveEdgePoint, static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f ),
-                                             static_cast<_Type>( y + height - 1 ) );
+                        createNegativeYEdge( edgeNegative, positiveEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
 
                     if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
-                        createPositiveYEdge( edgePositive, negativeEdgePoint, static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f ),
-                                             static_cast<_Type>( y ) );
+                        createPositiveYEdge( edgePositive, negativeEdgePoint, xPosition, static_cast<_Type>( y ) );
                 }
             }
         }
@@ -353,13 +349,13 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-void EdgeDetectionHelper::find( EdgeDetection<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
 
-void EdgeDetectionHelper::find( EdgeDetection<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );

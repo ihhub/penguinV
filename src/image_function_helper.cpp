@@ -508,6 +508,14 @@ namespace Image_Function_Helper
         return out;
     }
 
+    bool IsEqual( FunctionTable::IsEqualForm2 isEqual,
+                  const Image & in1, const Image & in2 )
+    {
+        Image_Function::ParameterValidation( in1, in2 );
+
+        return isEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+    }
+
     Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, const std::vector < uint8_t > & table )
     {
@@ -765,6 +773,39 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, double centerX, double centerY, double angle )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyGrayScaleImage( in );
+        Image out = in.generate( in.width(), in.height() );
+
+        rotate( in, 0, 0, centerX, centerY, out, 0, 0, centerX, centerY, in.width(), in.height(), angle );
+
+        return out;
+    }
+
+    void Rotate( FunctionTable::RotateForm4 rotate,
+                 const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyGrayScaleImage( in, out );
+        rotate( in, 0, 0, centerXIn, centerYIn, out, 0, 0, centerXOut, centerYOut, in.width(), in.height(), angle );
+    }
+
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle )
+    {
+        Image_Function::ParameterValidation( in, x, y, width, height );
+        Image_Function::VerifyGrayScaleImage( in );
+
+        Image out = in.generate( width, height, in.colorCount() );
+
+        rotate( in, x, y, centerX, centerY, out, 0, 0, centerX, centerY, width, height, angle );
+
+        return out;
+    }
+
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY )
     {
@@ -793,6 +834,15 @@ namespace Image_Function_Helper
         shift( in, startXIn, startYIn, out, 0, 0, width, height, shiftX, shiftY );
 
         return out;
+    }
+
+    void Split( FunctionTable::SplitForm2 split,
+                const Image & in, Image & out1, Image & out2, Image & out3 )
+    {
+        Image_Function::ParameterValidation( in, out1, out2 );
+        Image_Function::ParameterValidation( in, out3 );
+
+        split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
     }
 
     Image Subtract( FunctionTable::SubtractForm4 subtract,

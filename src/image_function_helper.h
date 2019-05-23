@@ -174,7 +174,11 @@ namespace Image_Function_Helper
         typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                         uint32_t width, uint32_t height );
 
-        typedef void (*Rotate)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+        typedef Image (*RotateForm1)( const Image & in, double centerX, double centerY, double angle );
+        typedef void  (*RotateForm2)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+        typedef Image (*RotateForm3)( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
+        typedef void  (*RotateForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, double centerXIn, double centerYIn, Image & out, uint32_t startXOut,
+                                      uint32_t startYOut, double centerXOut, double centerYOut, uint32_t width, uint32_t height, double angle );
 
         typedef void (*SetPixelForm1)( Image & image, uint32_t x, uint32_t y, uint8_t value );
         typedef void (*SetPixelForm2)( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
@@ -355,6 +359,9 @@ namespace Image_Function_Helper
     Image Invert( FunctionTable::InvertForm4 invert,
                   const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    bool IsEqual( FunctionTable::IsEqualForm2 isEqual,
+                  const Image & in1, const Image & in2 );
+
     Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
                        const Image & in, const std::vector < uint8_t > & table );
 
@@ -432,6 +439,15 @@ namespace Image_Function_Helper
     Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, double centerX, double centerY, double angle );
+
+    void Rotate( FunctionTable::RotateForm4 rotate,
+                 const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
+
+    Image Rotate( FunctionTable::RotateForm4 rotate,
+                  const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
+
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, double shiftX, double shiftY );
 
@@ -440,6 +456,9 @@ namespace Image_Function_Helper
 
     Image Shift( FunctionTable::ShiftForm4 shift,
                  const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY );
+
+    void Split( FunctionTable::SplitForm2 split,
+                const Image & in, Image & out1, Image & out2, Image & out3 );
 
     Image Subtract( FunctionTable::SubtractForm4 subtract,
                     const Image & in1, const Image & in2 );
