@@ -2204,6 +2204,7 @@ namespace sse
     SET_FUNCTION_4_FORMS( BitwiseOr )
     SET_FUNCTION_4_FORMS( BitwiseXor )
     SET_FUNCTION_4_FORMS( ConvertToRgb )
+    SET_FUNCTION_4_FORMS( ConvertTo16Bit )
     SET_FUNCTION_4_FORMS( Flip )
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )

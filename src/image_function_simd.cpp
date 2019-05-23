@@ -31,6 +31,7 @@ namespace
             table.BitwiseAnd         = &Image_Function_Simd::BitwiseAnd;
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
+            table.ConvertTo16Bit     = &Image_Function_Simd::ConvertTo16Bit;
             table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             table.Flip               = &Image_Function_Simd::Flip;
             table.Invert             = &Image_Function_Simd::Invert;
@@ -235,7 +236,7 @@ namespace avx
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = ~(*inX);table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             }
         }
     }
@@ -443,7 +444,7 @@ namespace avx
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
-
+table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
@@ -796,6 +797,36 @@ namespace sse
             }
         }
     }
+
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm_setzero_si128();
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast <const simd*> (inY);
+            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst, ++src )
+            {
+                const simd srcData = _mm_loadu_si128(src);
+
+                _mm_storeu_si128(dst, _mm_unpacklo_epi8(zero, srcData));
+                ++dst;
+                _mm_storeu_si128(dst, _mm_unpacklo_epi8(zero, srcData));
+            }
+            
+            if( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = (*inX) << 8;
+            }
+        }
+    }
+
 
 #ifdef PENGUINV_SSSE3_SET
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
@@ -2103,6 +2134,35 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint16_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                        uint32_t width, uint32_t height, SIMDType simdType )
     {
@@ -2617,6 +2677,38 @@ namespace Image_Function_Simd
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         simd::BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    Image16Bit ConvertTo16Bit( const Image & in )
+    {
+        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, Image16Bit & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
+        ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                         uint32_t width, uint32_t height )
+    {
+        simd::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image ConvertToRgb( const Image & in )

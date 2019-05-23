@@ -36,6 +36,12 @@ namespace Image_Function_Simd
                       uint32_t width, uint32_t height );
     void  BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+                      
+    Image16Bit ConvertTo16Bit( const Image & in );
+    void       ConvertTo16Bit( const Image & in, Image16Bit & out );
+    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void       ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                               uint32_t width, uint32_t height );
     
     Image ConvertToRgb( const Image & in );
     void  ConvertToRgb( const Image & in, Image & out );
