@@ -129,10 +129,10 @@ namespace Function_Pool
     void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
 
-	void Split(const Image & in, Image & out1, Image & out2, Image & out3);
-	void Split(const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
-			   Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
-			   uint32_t width, uint32_t height);
+    void Split( const Image & in, Image & out1, Image & out2, Image & out3 );
+    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                uint32_t width, uint32_t height );
 
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );
