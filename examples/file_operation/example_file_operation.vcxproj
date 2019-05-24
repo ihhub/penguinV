@@ -84,7 +84,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;PENGUINV_ENABLED_PNG_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -98,7 +98,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;PENGUINV_ENABLED_PNG_SUPPORT%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -114,7 +114,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;PENGUINV_ENABLED_PNG_SUPPORT%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;PENGUINV_ENABLED_PNG_SUPPORT%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -144,12 +144,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="example_bitmap_operation.cpp" />
+    <ClCompile Include="example_file_operation.cpp" />
+    <ClCompile Include="..\..\src\file\file_image.cpp" />
     <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\file\png_image.cpp" />
+    <ClCompile Include="..\..\src\file\jpeg_image.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\file\file_image.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\image_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
