@@ -290,13 +290,13 @@ namespace Function_Pool
             _process( _Subtract );
         }
 
-		void Split(const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
-			Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
-			uint32_t width, uint32_t height)
-		{
-			_setup(in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height);
-			_process(_Split);
-		}
+        void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                    Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                    uint32_t width, uint32_t height )
+        {
+            _setup( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+            _process( _Split );
+        }
 
         uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
         {
@@ -348,7 +348,7 @@ namespace Function_Pool
             _Resize,
             _RgbToBgr,
             _Subtract,
-			_Split,
+            _Split,
             _Sum,
             _Threshold,
             _ThresholdDouble
