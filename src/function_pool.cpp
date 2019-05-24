@@ -926,7 +926,7 @@ namespace Function_Pool
         Image_Function_Helper::Subtract( Subtract, in1, in2, out );
     }
 
-    void Split(const Image & in, Image & out1, Image & out2, Image & out3)
+    void Split (const Image & in, Image & out1, Image & out2, Image & out3 )
     {
         Image_Function::ParameterValidation( in, out1, out2 );
         Image_Function::ParameterValidation( in, out3 );
