@@ -5,13 +5,13 @@ Open example_bitmap_operation.vcxproj file in this directory to create solution 
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash
-	g++ -std=c++11 -Wall example_bitmap_operation.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/file/bmp_image.cpp -o application
+	g++ -std=c++11 -Wall -D PENGUINV_ENABLED_PNG_SUPPORT example_file_operation.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/file/file_image.cpp ../../src/file/bmp_image.cpp ../../src/file/png_image.cpp ../../src/file/jpeg_image.cpp -o application -lpng -ljpeg
 	```
 
 - make    
 In this directory you need to type/paste this text in terminal:    
 	```bash
-	make ./example_bitmap_operation
+	make ./example_file_operation
 	```
 
 - CMake    
@@ -22,5 +22,5 @@ From the project root directory, execute the following commands:
 mkdir build
 cd build
 cmake ..
-cmake --build ./examples/bitmap_operation --config Release
+cmake --build ./examples/file_operation --config Release
 ```

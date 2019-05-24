@@ -15,9 +15,9 @@ SRC += ../../src/file/bmp_image.cpp
 SRC += ../../src/file/png_image.cpp
 SRC += ../../src/file/jpeg_image.cpp
 
-example_bitmap_operation : $(SRC)
+example_file_operation : $(SRC)
 	g++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY: clean
 clean:
-	$(RM) example_bitmap_operation
+	$(RM) example_file_operation
