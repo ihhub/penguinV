@@ -290,6 +290,14 @@ namespace Function_Pool
             _process( _Subtract );
         }
 
+        void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                    Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                    uint32_t width, uint32_t height )
+        {
+            _setup( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+            _process( _Split );
+        }
+
         uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
         {
             _setup( image, x, y, width, height );
@@ -340,6 +348,7 @@ namespace Function_Pool
             _Resize,
             _RgbToBgr,
             _Subtract,
+            _Split,
             _Sum,
             _Threshold,
             _ThresholdDouble
@@ -451,6 +460,13 @@ namespace Function_Pool
                                         _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    break;
+                case _Split:
+                    penguinV::Split( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                     _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
+                                     _infoOut2->image, _infoOut2->startX[taskId], _infoOut2->startY[taskId],
+                                     _infoOut3->image, _infoOut3->startX[taskId], _infoOut3->startY[taskId],
+                                     _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Sum:
                     _dataOut.sum[taskId] = penguinV::Sum(
@@ -908,6 +924,28 @@ namespace Function_Pool
     void Subtract( const Image & in1, const Image & in2, Image & out )
     {
         Image_Function_Helper::Subtract( Subtract, in1, in2, out );
+    }
+
+    void Split (const Image & in, Image & out1, Image & out2, Image & out3 )
+    {
+        Image_Function::ParameterValidation( in, out1, out2 );
+        Image_Function::ParameterValidation( in, out3 );
+        Image_Function::VerifyRGBImage( in );
+        Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
+
+        Image_Function_Helper::Split( Split, in, out1, out2, out3 );
+    }
+
+    void Split( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out1, uint32_t startXOut1, uint32_t startYOut1,
+                Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
+                uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        Image_Function::VerifyRGBImage( in );
+        Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
+
+        FunctionTask().Split( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
     }
 
     Image Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
