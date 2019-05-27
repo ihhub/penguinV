@@ -1,89 +1,18 @@
 #include "penguinv.h"
 #include "../image_function_helper.h"
+#include "image_manager.h"
 
 namespace
 {
-    struct ReferenceOwner
+    PenguinV_Image::Image generateImage( uint8_t imageType )
     {
-        explicit ReferenceOwner( PenguinV_Image::Image & data_ )
-            : data( data_ )
-        {
-        }
-        PenguinV_Image::Image & data;
-    };
+        return ImageTypeManager::instance().image( imageType );
+    }
 
-    struct ConstReferenceOwner
+    void convertImage( const PenguinV_Image::Image & in, PenguinV_Image::Image & out )
     {
-        explicit ConstReferenceOwner( const PenguinV_Image::Image & data_ )
-            : data( data_ )
-        {
-        }
-        const PenguinV_Image::Image & data;
-    };
-
-    class ImageManager
-    {
-    public:
-        explicit ImageManager( uint8_t requiredType )
-            : _registrator( ImageTypeManager::instance() )
-            , _type( requiredType )
-        {
-        }
-
-        ~ImageManager()
-        {
-            for ( std::vector<ConstReferenceOwner *>::iterator data = _input.begin(); data != _input.end(); ++data )
-                delete *data;
-
-            for ( size_t i = 0u; i < _output.size(); ++i ) {
-                _restore( _outputClone[i], _output[i]->data );
-
-                delete _output[i];
-            }
-        }
-
-        const PenguinV_Image::Image & operator ()( const PenguinV_Image::Image & image )
-        {
-            if ( image.type() != _type ) {
-                _inputClone.push_back( _clone( image ) );
-                return _inputClone.back();
-            }
-            else {
-                return image;
-            }
-        }
-
-        PenguinV_Image::Image & operator ()( PenguinV_Image::Image & image )
-        {
-            if ( image.type() != _type ) {
-                _output.push_back( new ReferenceOwner( image ) );
-                _outputClone.push_back( _clone( image ) );
-                return _outputClone.back();
-            }
-            else {
-                return image;
-            }
-        }
-    private:
-        ImageTypeManager & _registrator;
-        std::vector< ConstReferenceOwner * > _input;
-        std::vector< ReferenceOwner * > _output;
-        std::vector< PenguinV_Image::Image > _inputClone;
-        std::vector< PenguinV_Image::Image > _outputClone;
-        uint8_t _type;
-
-        PenguinV_Image::Image _clone( const PenguinV_Image::Image & in )
-        {
-            PenguinV_Image::Image temp = _registrator.image( _type ).generate( in.width(), in.height(), in.colorCount() );
-            _registrator.convert( in.type(), _type )( in, temp );
-            return temp;
-        }
-
-        void _restore( const PenguinV_Image::Image & in, PenguinV_Image::Image & out )
-        {
-            _registrator.convert( in.type(), out.type() )( in, out );
-        }
-    };
+        ImageTypeManager::instance().convert( in, out );
+    }
 
     template <typename _T>
     void verifyFunction(_T func, const char * functionName)
@@ -110,7 +39,7 @@ namespace
         }                                                                                                    \
     }                                                                                                        \
     verifyFunction( func, #func_ );                                                                          \
-    ImageManager manager( imageType );
+    ImageManager<uint8_t> manager( imageType, generateImage, convertImage );
 }
 
 namespace penguinV
