@@ -251,3 +251,13 @@ namespace Image_Function
     void  Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                      uint32_t width, uint32_t height );
 }
+
+namespace TestNamespace1
+{
+
+}
+
+namespace TestNamespace2
+{
+
+} // TestNamespace2
