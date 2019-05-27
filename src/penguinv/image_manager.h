@@ -39,7 +39,7 @@ public:
 
     ~ImageManager()
     {
-        for ( std::vector<ConstReferenceOwner< _Type > *>::iterator data = _input.begin(); data != _input.end(); ++data )
+        for ( typename std::vector<ConstReferenceOwner< _Type > *>::iterator data = _input.begin(); data != _input.end(); ++data )
             delete *data;
 
         for ( size_t i = 0u; i < _output.size(); ++i ) {
