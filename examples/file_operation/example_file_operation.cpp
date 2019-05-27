@@ -1,8 +1,8 @@
 // Example application of library utilization for bitmaps
-#include <iostream>
+#include "../../src/file/file_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include "../../src/file/file_image.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {
@@ -10,35 +10,31 @@ int main( int argc, char * argv[] )
 
     if ( argc > 1 ) // Check input data
     {
-        for ( int i = 1; i < argc; ++i)
-            filePaths.push_back(argv[i]);
+        for ( int i = 1; i < argc; ++i )
+            filePaths.push_back( argv[i] );
     }
-
-    else
-    {
-        filePaths.push_back("../../data/lena.bmp");
-        filePaths.push_back("../../data/ape.png");
-//        filePaths.push_back("../../data/snail.jpg");
+    else {
+        filePaths.push_back( "lena.bmp" );
+        filePaths.push_back( "image.png" );
+        // filePaths.push_back("image.jpg");
     }
-
 
     try // <---- do not forget to put your code into try.. catch block!
     {
-            // Load an image from storage
-        for ( auto it = filePaths.begin(); it != filePaths.end(); ++it )
-        {
+        // Load an image from storage
+        for ( auto it = filePaths.begin(); it != filePaths.end(); ++it ) {
             PenguinV_Image::Image image = File_Operation::Load( *it );
 
             // If the image is empty it means that the image doesn't exist or the file is not readable
             if ( image.empty() )
-                throw imageException( std::string("Cannot load ") + *it);
+                throw imageException( std::string( "Cannot load " ) + *it );
 
             // Convert to gray-scale image if it's not
             if ( image.colorCount() != PenguinV_Image::GRAY_SCALE )
                 image = Image_Function::ConvertToGrayScale( image );
 
             // Threshold image with calculated optimal threshold
-            const std::vector< uint32_t > histogram = Image_Function::Histogram( image );
+            const std::vector<uint32_t> histogram = Image_Function::Histogram( image );
             const uint8_t thresholdValue = Image_Function::GetThreshold( histogram );
             image = Image_Function::Threshold( image, thresholdValue );
 

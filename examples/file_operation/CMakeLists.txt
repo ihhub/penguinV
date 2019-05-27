@@ -1,4 +1,3 @@
-add_definitions(-DPENGUINV_ENABLED_PNG_SUPPORT)
 add_executable(example_file_operation
     ${CMAKE_CURRENT_LIST_DIR}/example_file_operation.cpp
     ${LIB_DIR}/image_function_helper.cpp
@@ -7,8 +6,23 @@ add_executable(example_file_operation
     ${LIB_DIR}/file/bmp_image.cpp
     ${LIB_DIR}/file/png_image.cpp
     ${LIB_DIR}/file/jpeg_image.cpp)
-set_target_properties(example_file_operation PROPERTIES
-  ENABLE_EXPORTS 1
-)
 target_link_libraries(example_file_operation
-    PRIVATE example_features_options example_features_warnings png jpeg)
+    PRIVATE example_features_options example_features_warnings)
+
+if(${PENGUINV_ENABLE_JPEG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_JPEG})
+        target_link_libraries(example_file_operation PRIVATE JPEG_EXTERNAL)
+    else()
+        target_link_libraries(example_file_operation PRIVATE ${JPEG_LIBRARIES})
+    endif()
+endif()
+
+find_package(PNG)
+if(${PENGUINV_ENABLE_PNG_SUPPORT})
+    if(${PENGUINV_USE_EXTERNAL_PNG})
+        target_link_libraries(example_file_operation PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
+    else()
+        target_link_libraries(example_file_operation PRIVATE PNG::PNG)
+    endif()
+    target_compile_definitions(example_file_operation PRIVATE PENGUINV_ENABLED_PNG_SUPPORT)
+endif()
