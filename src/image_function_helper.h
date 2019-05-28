@@ -47,6 +47,18 @@ namespace Image_Function_Helper
         typedef void  (*BitwiseXorForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                                           Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+        typedef Image16Bit (*ConvertTo16BitForm1)( const Image & in );
+        typedef void       (*ConvertTo16BitForm2)( const Image & in, Image16Bit & out );
+        typedef Image16Bit (*ConvertTo16BitForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void       (*ConvertTo16BitForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+                                              uint32_t width, uint32_t height );
+
+        typedef Image (*ConvertTo8BitForm1)( const Image16Bit & in );
+        typedef void  (*ConvertTo8BitForm2)( const Image16Bit & in, Image & out );
+        typedef Image (*ConvertTo8BitForm3)( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*ConvertTo8BitForm4)( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                             uint32_t width, uint32_t height );
+
         typedef Image (*ConvertToGrayScaleForm1)( const Image & in );
         typedef void  (*ConvertToGrayScaleForm2)( const Image & in, Image & out );
         typedef Image (*ConvertToGrayScaleForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
@@ -280,6 +292,12 @@ namespace Image_Function_Helper
                       const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       uint32_t width, uint32_t height );
 
+    void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
+                         const Image & in, Image16Bit & out );
+
+    void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
+                        const Image16Bit & in, Image & out );
+
     Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
                               const Image & in );
 
@@ -505,6 +523,8 @@ namespace Image_Function_Helper
         FunctionTable::BitwiseAndForm4         BitwiseAnd         = nullptr;
         FunctionTable::BitwiseOrForm4          BitwiseOr          = nullptr;
         FunctionTable::BitwiseXorForm4         BitwiseXor         = nullptr;
+        FunctionTable::ConvertTo16BitForm4     ConvertTo16Bit     = nullptr;
+        FunctionTable::ConvertTo8BitForm4      ConvertTo8Bit      = nullptr;
         FunctionTable::ConvertToGrayScaleForm4 ConvertToGrayScale = nullptr;
         FunctionTable::ConvertToRgbForm4       ConvertToRgb       = nullptr;
         FunctionTable::CopyForm3               Copy               = nullptr;

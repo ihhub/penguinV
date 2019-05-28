@@ -28,6 +28,79 @@ namespace
                 (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
         }
     }
+
+    template <typename _Type>
+    bool imageVerification( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
+    {
+        if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
+            throw imageException( "Bad input parameters in image function" );
+
+        width = width * image.colorCount();
+        Image_Function::OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize = image.rowSize();
+        const _Type * outputY  = image.data() + y * rowSize + x * image.colorCount();
+        const _Type * endY     = outputY + rowSize * height;
+
+        for ( ; outputY != endY; outputY += rowSize ) {
+            const _Type * outputX = outputY;
+            const _Type * endX    = outputX + width;
+
+            for( ; outputX != endX; ++outputX ) {
+                if( (*outputX) != value )
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    template <typename _Type>
+    bool imageVerification( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                            const std::vector < _Type > & value, bool isAnyValue )
+    {
+        if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
+            throw imageException( "Bad input parameters in image function" );
+
+        const uint32_t rowSize = image.rowSize();
+        const _Type * outputY  = image.data() + y * rowSize + x * image.colorCount();
+        const _Type * endY     = outputY + rowSize * height;
+
+        width = width * image.colorCount();
+
+        for ( ; outputY != endY; outputY += rowSize ) {
+            const _Type * outputX = outputY;
+            const _Type * endX    = outputX + width;
+
+            if( isAnyValue ) {
+                for( ; outputX != endX; ++outputX ) {
+                    bool equal = false;
+
+                    for( std::vector < _Type >::const_iterator v = value.begin(); v != value.end(); ++v ) {
+                        if( (*outputX) == (*v) ) {
+                            equal = true;
+                            break;
+                        }
+                    }
+
+                    if( !equal )
+                        return false;
+                }
+            }
+            else {
+                size_t id = 0;
+                for( ; outputX != endX; ++outputX ) {
+                    if( (*outputX) != value[id++] )
+                        return false;
+
+                    if( id == value.size() )
+                        id = 0;
+                }
+            }
+        }
+
+        return true;
+    }
 }
 
 namespace Unit_Test
@@ -122,73 +195,13 @@ namespace Unit_Test
 
     bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
-        if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-            throw imageException( "Bad input parameters in image function" );
-
-        width = width * image.colorCount();
-        Image_Function::OptimiseRoi( width, height, image );
-
-        const uint32_t rowSize  = image.rowSize();
-        const uint8_t * outputY = image.data() + y * rowSize + x * image.colorCount();
-        const uint8_t * endY    = outputY + rowSize * height;
-
-        for ( ; outputY != endY; outputY += rowSize ) {
-            const uint8_t * outputX = outputY;
-            const uint8_t * endX    = outputX + width;
-
-            for( ; outputX != endX; ++outputX ) {
-                if( (*outputX) != value )
-                    return false;
-            }
-        }
-
-        return true;
+        return imageVerification<uint8_t>( image, x, y, width, height, value );
     }
 
     bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint8_t > & value, bool isAnyValue )
     {
-        if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-            throw imageException( "Bad input parameters in image function" );
-
-        const uint32_t rowSize  = image.rowSize();
-        const uint8_t * outputY = image.data() + y * rowSize + x * image.colorCount();
-        const uint8_t * endY    = outputY + rowSize * height;
-
-        width = width * image.colorCount();
-
-        for ( ; outputY != endY; outputY += rowSize ) {
-            const uint8_t * outputX = outputY;
-            const uint8_t * endX    = outputX + width;
-
-            if( isAnyValue ) {
-                for( ; outputX != endX; ++outputX ) {
-                    bool equal = false;
-
-                    for( std::vector < uint8_t >::const_iterator v = value.begin(); v != value.end(); ++v ) {
-                        if( (*outputX) == (*v) ) {
-                            equal = true;
-                            break;
-                        }
-                    }
-
-                    if( !equal )
-                        return false;
-                }
-            }
-            else {
-                size_t id = 0;
-                for( ; outputX != endX; ++outputX ) {
-                    if( (*outputX) != value[id++] )
-                        return false;
-
-                    if( id == value.size() )
-                        id = 0;
-                }
-            }
-        }
-
-        return true;
+        return imageVerification<uint8_t>( image, x, y, width, height, value, isAnyValue );
     }
 
     bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
@@ -197,6 +210,27 @@ namespace Unit_Test
     }
 
     bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value, bool isAnyValue )
+    {
+        return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
+    }
+
+    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value )
+    {
+        return imageVerification<uint16_t>( image, x, y, width, height, value );
+    }
+
+    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                      const std::vector < uint16_t > & value, bool isAnyValue )
+    {
+        return imageVerification<uint16_t>( image, x, y, width, height, value, isAnyValue );
+    }
+
+    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint16_t value )
+    {
+        return verifyImage( image, 0, 0, image.width(), image.height(), value );
+    }
+
+    bool verifyImage( const PenguinV_Image::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
@@ -230,15 +264,6 @@ namespace Unit_Test
                     id = 0;
             }
         }
-    }
-
-    void generateRoi( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
-    {
-        width  = randomValue<uint32_t>( 1, image.width()  + 1 );
-        height = randomValue<uint32_t>( 1, image.height() + 1 );
-
-        x = randomValue<uint32_t>( image.width()  - width );
-        y = randomValue<uint32_t>( image.height() - height );
     }
 
     void generateRoi( const std::vector < PenguinV_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
@@ -287,11 +312,6 @@ namespace Unit_Test
     {
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );
-    }
-
-    std::pair <uint32_t, uint32_t> imageSize( const PenguinV_Image::Image & image )
-    {
-        return std::pair <uint32_t, uint32_t>( image.width(), image.height() );
     }
 
     uint32_t rowSize( uint32_t width, uint8_t colorCount, uint8_t alignment )

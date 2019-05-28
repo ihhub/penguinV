@@ -24,6 +24,8 @@ namespace
         SET_FUNCTION(BitwiseAnd)
         SET_FUNCTION(BitwiseOr)
         SET_FUNCTION(BitwiseXor)
+        SET_FUNCTION(ConvertTo16Bit)
+        SET_FUNCTION(ConvertTo8Bit)
         SET_FUNCTION(ConvertToGrayScale)
         SET_FUNCTION(ConvertToRgb)
         SET_FUNCTION(Copy)
@@ -194,6 +196,24 @@ namespace Image_Function_Helper
         bitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
         return out;
+    }
+
+    void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
+                         const Image & in, Image16Bit & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        convertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
+                        const Image16Bit & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        convertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
     Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
