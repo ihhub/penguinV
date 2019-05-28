@@ -2312,6 +2312,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
     SET_FUNCTION_4_FORMS( Resize )
+    SET_FUNCTION_2_FORMS( Split )
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
