@@ -809,8 +809,7 @@ namespace sse
             simd        * dst    = reinterpret_cast <simd*> (outY);
             const simd  * dstEnd = dst + simdWidth;
 
-            for ( ; dst != dstEnd; ++dst, ++src )
-            {
+            for ( ; dst != dstEnd; ++dst, ++src ) {
                 const simd srcData = _mm_loadu_si128(src);
 
                 _mm_storeu_si128(dst, _mm_unpacklo_epi8(zero, srcData));
