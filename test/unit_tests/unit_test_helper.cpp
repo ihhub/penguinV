@@ -76,7 +76,7 @@ namespace
                 for( ; outputX != endX; ++outputX ) {
                     bool equal = false;
 
-                    for( std::vector < _Type >::const_iterator v = value.begin(); v != value.end(); ++v ) {
+                    for( typename std::vector < _Type >::const_iterator v = value.begin(); v != value.end(); ++v ) {
                         if( (*outputX) == (*v) ) {
                             equal = true;
                             break;
