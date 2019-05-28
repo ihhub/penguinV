@@ -239,7 +239,7 @@ namespace avx
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
+                    (*outX) = ~(*inX);
             }
         }
     }
@@ -447,7 +447,6 @@ namespace avx
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
-table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
