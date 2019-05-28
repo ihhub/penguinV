@@ -544,16 +544,16 @@ public:
     // Register function table for specific image type. This function must be called within source file (*.cpp) during startup of the library
     // forceSetup flag is needed for SIMD function table set as we are not sure in which order normal CPU and SIMD global function code would be called
     void setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup = false );
-    const Image_Function_Helper::FunctionTableHolder & functionTable( uint8_t type );
+    const Image_Function_Helper::FunctionTableHolder & functionTable( uint8_t type ) const;
 
     void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out );
-    Image_Function_Helper::FunctionTable::CopyForm1 convert( uint8_t typeIn, uint8_t typeOut );
+    void convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const;
 
     PenguinV_Image::Image image( uint8_t type ) const;
-    std::vector< uint8_t > imageTypes();
+    std::vector< uint8_t > imageTypes() const;
 
     void enableIntertypeConversion( bool enable );
-    bool isIntertypeConversionEnabled();
+    bool isIntertypeConversionEnabled() const;
 private:
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > _functionTableMap;
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 > _intertypeConvertMap;
