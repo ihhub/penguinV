@@ -309,7 +309,7 @@ namespace PenguinV_Image
 
         static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
-            memset( data, static_cast<int>(value), size );
+            std::fill( data, data + size / sizeof( TColorDepth ), value );
         }
 
         uint32_t _width;
