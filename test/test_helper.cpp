@@ -7,10 +7,11 @@ namespace
         return Test_Helper::randomValue<uint32_t>( 1, 2048 );
     }
 
-    PenguinV_Image::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, uint8_t value,
-                                         const PenguinV_Image::Image & reference = PenguinV_Image::Image() )
+    template <typename _Type>
+    PenguinV_Image::ImageTemplate<_Type> generateImage( uint32_t width, uint32_t height, uint8_t colorCount, _Type value,
+                                                        const PenguinV_Image::ImageTemplate<_Type> & reference = PenguinV_Image::ImageTemplate<_Type>() )
     {
-        PenguinV_Image::Image image = reference.generate( width, height, colorCount );
+        PenguinV_Image::ImageTemplate<_Type> image = reference.generate( width, height, colorCount );
 
         image.fill( value );
 
@@ -29,7 +30,12 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return generateImage( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
+        return generateImage<uint8_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
+    }
+
+    PenguinV_Image::Image16Bit uniformImage16Bit( uint16_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image16Bit & reference )
+    {
+        return generateImage<uint16_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), PenguinV_Image::GRAY_SCALE, value, reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
@@ -39,7 +45,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference )
     {
-        return generateImage( randomSize(), randomSize(), PenguinV_Image::RGB, value, reference );
+        return generateImage<uint8_t>( randomSize(), randomSize(), PenguinV_Image::RGB, value, reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height )
@@ -49,7 +55,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        return generateImage( width, height, PenguinV_Image::RGB, value);
+        return generateImage<uint8_t>( width, height, PenguinV_Image::RGB, value);
     }
 
     std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )

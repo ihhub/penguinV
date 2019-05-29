@@ -9,6 +9,8 @@ namespace Test_Helper
     // Functions to generate images
     PenguinV_Image::Image uniformImage( uint32_t width = 0, uint32_t height = 0,  const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width = 0, uint32_t height = 0, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
+    PenguinV_Image::Image16Bit uniformImage16Bit( uint16_t value, uint32_t width = 0, uint32_t height = 0,
+                                                  const PenguinV_Image::Image16Bit & reference = PenguinV_Image::Image16Bit() );
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height );
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value );
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );

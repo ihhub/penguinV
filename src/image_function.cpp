@@ -16,6 +16,8 @@ namespace
             table.BitwiseAnd         = &Image_Function::BitwiseAnd;
             table.BitwiseOr          = &Image_Function::BitwiseOr;
             table.BitwiseXor         = &Image_Function::BitwiseXor;
+            table.ConvertTo16Bit     = Image_Function::ConvertTo16Bit;
+            table.ConvertTo8Bit      = Image_Function::ConvertTo8Bit;
             table.ConvertToGrayScale = &Image_Function::ConvertToGrayScale;
             table.ConvertToRgb       = &Image_Function::ConvertToRgb;
             table.Copy               = &Image_Function::Copy;

@@ -24,6 +24,8 @@ namespace
         SET_FUNCTION(BitwiseAnd)
         SET_FUNCTION(BitwiseOr)
         SET_FUNCTION(BitwiseXor)
+        SET_FUNCTION(ConvertTo16Bit)
+        SET_FUNCTION(ConvertTo8Bit)
         SET_FUNCTION(ConvertToGrayScale)
         SET_FUNCTION(ConvertToRgb)
         SET_FUNCTION(Copy)
@@ -194,6 +196,24 @@ namespace Image_Function_Helper
         bitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, 0, 0, out.width(), out.height() );
 
         return out;
+    }
+
+    void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
+                         const Image & in, Image16Bit & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        convertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
+                        const Image16Bit & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        convertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
     Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
@@ -997,7 +1017,7 @@ void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Help
         _functionTableMap[type] = table;
 }
 
-const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTable( uint8_t type )
+const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTable( uint8_t type ) const
 {
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator table = _functionTableMap.find( type );
     if ( table == _functionTableMap.end() )
@@ -1017,14 +1037,14 @@ void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable:
     _image[out.type()] = out.generate();
 }
 
-Image_Function_Helper::FunctionTable::CopyForm1 ImageTypeManager::convert( uint8_t typeIn, uint8_t typeOut )
+void ImageTypeManager::convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const
 {
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
-        _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( typeIn, typeOut ) );
+        _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
     if ( copy == _intertypeConvertMap.cend() )
         throw imageException( "Copy function between different image types is not registered" );
 
-    return copy->second;
+    copy->second( in, out );
 }
 
 PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
@@ -1036,7 +1056,7 @@ PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
     return image->second;
 }
 
-std::vector< uint8_t > ImageTypeManager::imageTypes()
+std::vector< uint8_t > ImageTypeManager::imageTypes() const
 {
     std::vector< uint8_t > type;
 
@@ -1051,7 +1071,7 @@ void ImageTypeManager::enableIntertypeConversion( bool enable )
     _enabledIntertypeConversion = enable;
 }
 
-bool ImageTypeManager::isIntertypeConversionEnabled()
+bool ImageTypeManager::isIntertypeConversionEnabled() const
 {
     return _enabledIntertypeConversion;
 }
