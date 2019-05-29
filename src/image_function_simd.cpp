@@ -807,9 +807,9 @@ namespace sse
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd  * src    = reinterpret_cast <const simd*> (inY);
             simd        * dst    = reinterpret_cast <simd*> (outY);
-            const simd  * dstEnd = dst + simdWidth;
+            const simd  * srcEnd = src + simdWidth;
 
-            for ( ; dst != dstEnd; ++dst, ++src )
+            for ( ; src != srcEnd; ++dst, ++src )
             {
                 const simd srcData = _mm_loadu_si128(src);
 
