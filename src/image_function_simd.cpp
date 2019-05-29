@@ -2138,6 +2138,11 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
+        if ( simdType != sse_function ) {
+            Image_Function::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
         Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
