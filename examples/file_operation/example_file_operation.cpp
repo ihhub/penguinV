@@ -19,12 +19,14 @@ int main( int argc, char * argv[] )
     try // <---- do not forget to put your code into try.. catch block!
     {
         // Load an image from storage
-        for ( auto it = filePaths.begin(); it != filePaths.end(); ++it ) {
-            PenguinV_Image::Image image = File_Operation::Load( *it );
+        for ( size_t i = 0; i < filePaths.size(); ++i ) {
+            const std::string & path = filePaths[i];
+            
+            PenguinV_Image::Image image = File_Operation::Load( path );
 
             // If the image is empty it means that the image doesn't exist or the file is not readable
             if ( image.empty() )
-                throw imageException( std::string( "Cannot load " ) + *it );
+                throw imageException( std::string( "Cannot load " ) + path );
 
             // Convert to gray-scale image if it's not
             if ( image.colorCount() != PenguinV_Image::GRAY_SCALE )
@@ -36,7 +38,7 @@ int main( int argc, char * argv[] )
             image = Image_Function::Threshold( image, thresholdValue );
 
             // Save result
-            std::string ext = it->substr( it->length() - 3 );
+            const std::string ext = path.substr( path.length() - 3 );
             File_Operation::Save( "result." + ext, image );
         }
     }
