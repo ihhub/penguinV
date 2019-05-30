@@ -1,22 +1,19 @@
-// Example application of library utilization for bitmaps
+// Example application of library utilization with images
+#include <iostream>
 #include "../../src/file/file_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include <iostream>
 
 int main( int argc, char * argv[] )
 {
     std::vector<std::string> filePaths;
 
-    if ( argc > 1 ) // Check input data
-    {
+    if ( argc > 1 ) {
         for ( int i = 1; i < argc; ++i )
             filePaths.push_back( argv[i] );
     }
     else {
         filePaths.push_back( "lena.bmp" );
-        filePaths.push_back( "image.png" );
-        // filePaths.push_back("image.jpg");
     }
 
     try // <---- do not forget to put your code into try.. catch block!
