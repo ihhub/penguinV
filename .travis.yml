@@ -15,11 +15,11 @@ addons:
 matrix:
   include:
     - os: linux
-      env: CUDA=8.0.61-1 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
-      before_install: source script/travis/install_cuda.sh
-    - os: linux
-      env: QT_BASE=59 CMAKE_OPTIONS=""
-      before_install: source script/travis/install_qt5.sh
+      name: "CUDA8-Qt5.9"
+      env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
+      before_install:
+        - source script/travis/install_cuda.sh
+        - source script/travis/install_qt5.sh
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
