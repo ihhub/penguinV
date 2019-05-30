@@ -58,11 +58,16 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
+	 if (dilationX == 0u && dilationY == 0u) {
+	     return;
+	 }
 
         if( dilationX > width / 2 )
             dilationX = width / 2;
         if( dilationY > height / 2 )
             dilationY = height / 2;
+
+	 const uint32_t rowSize = image.rowSize();
 
         if( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);
@@ -70,7 +75,6 @@ namespace
             uint8_t ** startPos = new uint8_t *[2 * width];
             uint8_t ** endPos = startPos + width;
 
-            const uint32_t rowSize = image.rowSize();
             uint8_t * imageY    = image.data() + y * rowSize + x;
             uint8_t * imageYEnd = imageY + height * rowSize;
 
@@ -116,7 +120,6 @@ namespace
             uint8_t ** startPos = new uint8_t *[2 * height];
             uint8_t ** endPos = startPos + height;
 
-            const uint32_t rowSize = image.rowSize();
             uint8_t * imageX    = image.data() + y * rowSize + x;
             uint8_t * imageXEnd = imageX + width;
 
