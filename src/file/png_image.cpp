@@ -45,7 +45,7 @@ namespace Png_Operation
 
         FILE * file = fopen( path.data(), "rb" );
         if( !file )
-            throw imageException( "Cannot create file for reading" );
+            return PenguinV_Image::Image();
 
         png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
         if( !png )
