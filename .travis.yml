@@ -5,7 +5,7 @@ language: cpp
 addons:
   apt:
     sources:
-      - ppa:beineri/opt-qt596-fail
+      - sourceline: 'ppa:beineri/opt-qt596-fail'
     packages:
       - libgl-dev
       - libpng-dev
