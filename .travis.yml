@@ -12,6 +12,7 @@ addons:
       - ocl-icd-opencl-dev
       - opencl-headers
       - clang-format-3.9
+    update: true
 
 matrix:
   include:
