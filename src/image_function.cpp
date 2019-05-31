@@ -94,9 +94,9 @@ namespace
                             startPos[pairCount] = imageX - dilateX;
 
                         if( imageXEnd - imageX < dilateX ) {
-                            endPos[pairCount] = imageXEnd;
-							break;
-						}
+			     endPos[pairCount] = imageXEnd;
+			     break;
+			 }
                         else
                             endPos[pairCount] = imageX + dilateX;
 
@@ -143,9 +143,9 @@ namespace
                             startPos[pairCount] = imageY - dilationY * rowSize;
 
                         if( height - rowId < dilationY ) {
-							endPos[pairCount] = imageYEnd;
-							break;
-						}
+			     endPos[pairCount] = imageYEnd;
+			     break;
+			 }
                         else
                             endPos[pairCount] = imageY + dilationY * rowSize;
 
