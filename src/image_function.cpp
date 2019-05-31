@@ -96,9 +96,10 @@ namespace
                         if( imageXEnd - imageX < dilateX ) {
 			     endPos[pairCount] = imageXEnd;
 			     break;
-			 }
-                        else
+			}
+                        else {
                             endPos[pairCount] = imageX + dilateX;
+                        }
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
@@ -145,9 +146,10 @@ namespace
                         if( height - rowId < dilationY ) {
 			     endPos[pairCount] = imageYEnd;
 			     break;
-			 }
-                        else
+			}
+                        else {
                             endPos[pairCount] = imageY + dilationY * rowSize;
+                        }
 
                         previousValue = 0xFFu ^ previousValue;
                         ++pairCount;
