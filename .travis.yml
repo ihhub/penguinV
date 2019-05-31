@@ -5,6 +5,7 @@ language: cpp
 addons:
   apt:
     packages:
+      - libgl-dev
       - libpng-dev
       - libjpeg-dev
       - yasm
@@ -18,8 +19,8 @@ matrix:
       name: "CUDA8-Qt5.9"
       env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install:
-        - source script/travis/install_cuda.sh
-        - source script/travis/install_qt5.sh
+        - source script/travis/install_cuda.sh || travis_terminate 1
+        - source script/travis/install_qt5.sh || travis_terminate 1
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
