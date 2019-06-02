@@ -223,13 +223,13 @@ namespace avx
             const simd  * srcEnd = src + simdWidth;
 
             for ( ; src != srcEnd; ++src ) {
-                const simd srcData = _mm256_loadu_si256(src);
+                const simd srcData = _mm256_loadu_si256( src );
 
-                _mm256_storeu_si256(dst++, _mm256_unpacklo_epi8(zero, srcData));
-                _mm256_storeu_si256(dst++, _mm256_unpacklo_epi8(zero, srcData));
+                _mm256_storeu_si256( dst++, _mm256_unpacklo_epi8( zero, srcData ) );
+                _mm256_storeu_si256( dst++, _mm256_unpacklo_epi8( zero, srcData ) );
             }
             
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t  * inX  = inY + totalSimdWidth;
                 uint16_t       * outX = outY + totalSimdWidth;
                 const uint16_t * outXEnd = outX + nonSimdWidth;
