@@ -324,6 +324,42 @@ namespace
             }
         }
     }
+
+    void median1D(const std::vector<int> & data, std::vector<int> & out, uint32_t filterSize)
+    {
+        // Validation
+        if (data.empty())
+            throw imageException( "The data is required" );
+        if (filterSize < 3u)
+            throw imageException( "The size of a filter must be no smaller than 3" );
+        if (filterSize > data.size())
+            throw imageException( "The size of a filter must be smaller than the size of the input data" );
+
+        std::vector<int> filter;
+        bool             odd  = filterSize % 2;
+        uint32_t         half = filterSize / 2;
+        size_t           size = data.size();
+
+        out.clear();
+        out.resize(size);
+
+        // Calculating median values (at the edges by applying circular picking)
+        for (int32_t i = 0; i < static_cast<int32_t>(size); ++i)
+        {
+            filter.clear();
+
+            for (size_t j = 0u; j < filterSize; ++j)
+            {
+                int elemIndex = (i - half + size + j) % size;
+                filter.push_back(data[elemIndex]);
+            }
+
+            // Complexity N*log(N)^2
+            std::stable_sort(filter.begin(), filter.end());
+
+            out[i] = odd ? filter[half] : (filter[half - 1] + filter[half]) / 2;
+        }
+    }
 }
 
 EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
