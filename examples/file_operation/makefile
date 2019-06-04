@@ -10,10 +10,10 @@ SRC += ../../src/image_function.cpp
 SRC += ../../src/file/file_image.cpp
 SRC += ../../src/file/bmp_image.cpp
 SRC += ../../src/file/jpeg_image.cpp
+SRC += ../../src/file/png_image.cpp
 
 ifneq ($(PNG_EXISTS),)
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
-SRC += ../../src/file/png_image.cpp
 LDFLAGS += -lpng
 
 dep_error:
