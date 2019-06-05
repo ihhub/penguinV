@@ -21,7 +21,7 @@ int main( int argc, char * argv[] )
         // Load an image from storage
         for ( size_t i = 0; i < filePaths.size(); ++i ) {
             const std::string & path = filePaths[i];
-            
+
             PenguinV_Image::Image image = File_Operation::Load( path );
 
             // If the image is empty it means that the image doesn't exist or the file is not readable
