@@ -10,25 +10,31 @@ namespace
         return ( path.size() >= fileExtension.size() && path.compare( path.size() - fileExtension.size(), fileExtension.size(), fileExtension ) == 0 );
     }
 
+#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
+    bool isJpegFile( const std::string & )
+    {
+        return false;
+    }
+#else
     bool isJpegFile( const std::string & path )
     {
-#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
         const static std::string fileExtension = ".jpg";
         return isSameFileExtension( path, fileExtension );
-#else
-        return false;
-#endif
     }
+#endif
 
+#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+    bool isPngFile( const std::string & )
+    {
+        return false;
+    }
+#else
     bool isPngFile( const std::string & path )
     {
-#ifdef PENGUINV_ENABLED_PNG_SUPPORT
         const static std::string fileExtension = ".png";
         return isSameFileExtension( path, fileExtension );
-#else
-        return false;
-#endif
     }
+#endif
 }
 
 namespace File_Operation
