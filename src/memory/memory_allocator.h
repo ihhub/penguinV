@@ -9,12 +9,9 @@
 class BaseMemoryAllocator
 {
 public:
-    explicit BaseMemoryAllocator( size_t availableSpace = 0 )
-        : _size         ( 0 )
-        , _availableSize( availableSpace )
+    BaseMemoryAllocator()
+        : _size( 0 )
     {
-        if ( _availableSize == 0 )
-            throw std::logic_error( "Available size cannot be 0" );
     }
 
     virtual ~BaseMemoryAllocator()
@@ -29,9 +26,6 @@ public:
     {
         if ( size == 0 )
             throw std::logic_error( "Memory size cannot be 0" );
-
-        if ( size > _availableSize )
-            throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
 
         if ( size == _size )
             return;
@@ -57,12 +51,6 @@ public:
             usedSize += value;
             size -= value;
         }
-    }
-
-    // this function returns maximum availbale space which could be allocated by allocator
-    size_t availableSize() const
-    {
-        return _availableSize;
     }
 protected:
     void _free()
@@ -159,8 +147,6 @@ protected:
     std::vector < std::set < size_t > > _freeChunck;
 
 private:
-    const size_t _availableSize; // maximum available memory size
-
     virtual void _allocate( size_t size ) = 0; // true memory allocation
     virtual void _deallocate() = 0; // true memory deallocation
 };

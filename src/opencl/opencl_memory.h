@@ -8,21 +8,19 @@
 
 #include <cstdint>
 #include <map>
-#include <set>
-#include <vector>
 #include "../memory/memory_allocator.h"
 #include "../image_exception.h"
 
 namespace multiCL
 {
-    // Class for memory allocation on GPU devices
+    // Class for memory allocation on OpenCL devices
     class MemoryAllocator : public BaseMemoryAllocator
     {
     public:
         MemoryAllocator( cl_context context, size_t availableSpace )
-            : BaseMemoryAllocator( availableSpace )
-            , _context      ( context )
+            : _context      ( context )
             , _data         ( NULL )
+            , _availableSize( availableSpace ) 
         {
         }
 
@@ -31,10 +29,8 @@ namespace multiCL
             _free();
         }
 
-        // this function returns a memory structure pointer to an allocated memory
-        // if memory size on allocated chuck of memory is enough for requested size
-        // so the function just assigns a pointer to preallocated memory
-        // otherwise the function will allocate a new chuck of memory just for this pointer
+        // Returns a memory structure pointer to an allocated memory. If memory size of allocated memory chuck is enough for requested size
+        // then assign a pointer to preallocated memory, otherwise allocate a new chuck of memory just for this pointer
         template <typename _DataType>
         cl_mem allocate( size_t size = 1 )
         {
@@ -51,7 +47,7 @@ namespace multiCL
                     cl_int error;
                     cl_mem memory = clCreateSubBuffer( _data, CL_MEM_READ_WRITE, CL_BUFFER_CREATE_TYPE_REGION, &region, &error );
                     if( error != CL_SUCCESS )
-                        throw imageException( "Cannot allocate a subbuffer memory for GPU device" );
+                        throw imageException( "Cannot allocate a subbuffer memory for OpenCL device" );
 
                     _allocatedChunck.insert( std::pair< cl_mem, std::pair < size_t, uint8_t > >( memory,  std::pair < size_t, uint8_t >(*(_freeChunck[level].begin()), level) ) );
                     _freeChunck[level].erase( _freeChunck[level].begin() );
@@ -63,7 +59,7 @@ namespace multiCL
             cl_int error;
             cl_mem memory = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
             if( error != CL_SUCCESS )
-                throw imageException( "Cannot allocate a memory for GPU device" );
+                throw imageException( "Cannot allocate a memory for OpenCL device" );
 
             return memory;
         }
@@ -85,11 +81,18 @@ namespace multiCL
             }
 
             if( clReleaseMemObject( memory ) != CL_SUCCESS )
-                throw imageException( "Cannot deallocate a memory for GPU device" );
+                throw imageException( "Cannot deallocate a memory for OpenCL device" );
+        }
+
+        // returns maximum availbale space which could be allocated by allocator
+        size_t availableSize() const
+        {
+            return _availableSize;
         }
     private:
         cl_context _context;
         cl_mem _data; // a pointer to memory allocated chunk
+        const size_t _availableSize; // maximum available memory size 
 
         // a map which holds an information about allocated memory in preallocated memory chunck
         // first paramter is a pointer to allocated memory in OpenCL terms
@@ -97,39 +100,43 @@ namespace multiCL
         // third parameter is a power of 2 (level)
         std::map < cl_mem, std::pair < size_t, uint8_t > > _allocatedChunck;
 
-        // the function for true memory allocation on GPU devices
+        // the function for true memory allocation on OpenCL devices
         virtual void _allocate( size_t size )
         {
+            if ( size > _availableSize )
+                throw std::logic_error( "Memory size to be allocated is bigger than available size on device" ); 
+
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
-                    throw imageException( "Cannot free a memory on GPU device. Not all objects were previously deallocated from allocator." );
+                    throw imageException( "Cannot free a memory on OpenCL device. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
                 cl_int error;
                 _data = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot allocate a memory for GPU device" );
+                    throw imageException( "Cannot allocate a memory for OpenCL device" );
 
                 _size = size;
             }
         }
 
-        // the function for true memory deallocation on GPU device
+        // true memory deallocation on OpenCL device
         virtual void _deallocate()
         {
             if( _data != NULL ) {
                 cl_int error = clReleaseMemObject( _data );
                 if( error != CL_SUCCESS)
-                    throw imageException( "Cannot deallocate a memory for GPU device" );
+                    throw imageException( "Cannot deallocate a memory for OpenCL device" );
                 _data = NULL;
             }
 
             _allocatedChunck.clear();
         }
 
-        MemoryAllocator(const MemoryAllocator & allocator )
+        MemoryAllocator( const MemoryAllocator & allocator )
             : BaseMemoryAllocator( allocator )
+            , _availableSize( 0 )
         {
         }
         MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }

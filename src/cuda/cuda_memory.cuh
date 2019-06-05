@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <cuda_runtime.h>
 #include <map>
-#include <set>
-#include <vector>
 #include "../image_exception.h"
 #include "../memory/memory_allocator.h"
 
@@ -15,9 +13,11 @@ namespace multiCuda
     {
     public:
         explicit MemoryAllocator( size_t availableSpace )
-            : BaseMemoryAllocator( availableSpace )
-            , _data              ( nullptr )
+            : _data         ( nullptr )
+            , _availableSize( availableSpace )
         {
+            if ( _availableSize == 0 )
+                throw std::logic_error( "Available size cannot be 0" );
         }
 
         virtual ~MemoryAllocator()
@@ -25,10 +25,8 @@ namespace multiCuda
             _free();
         }
 
-        // this function returns a pointer to an allocated memory
-        // if memory size on allocated chuck of memory is enough for requested size
-        // so the function just assigns a pointer to preallocated memory
-        // otherwise the function will allocate a new chuck of memory just for this pointer
+        // Returns a pointer to an allocated memory. If memory size of allocated memory chuck of memory is enough for requested size
+        // so assign a pointer to preallocated memory, otherwise allocate a new chuck of memory just for the pointer
         template <typename _DataType = uint8_t>
         _DataType* allocate( size_t size = 1 )
         {
@@ -76,17 +74,27 @@ namespace multiCuda
             if( error != cudaSuccess )
                 throw imageException( "Cannot deallocate memory for CUDA device" );
         }
+
+        // returns maximum availbale space which could be allocated by allocator
+        size_t availableSize() const
+        {
+            return _availableSize;
+        }
     private:
         void * _data; // a pointer to memory allocated chunk
+        const size_t _availableSize; // maximum available memory size
 
         // a map which holds an information about allocated memory in preallocated memory chunck
         // first parameter is an offset from preallocated memory
         // second parameter is a power of 2 (level)
         std::map <size_t, uint8_t> _allocatedChunck;
 
-        // the function for true memory allocation on devices with CUDA support
+        // true memory allocation on devices with CUDA support
         virtual void _allocate( size_t size )
         {
+            if ( size > _availableSize )
+                throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
+
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
                     throw imageException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
@@ -101,7 +109,7 @@ namespace multiCuda
             }
         }
 
-        // the function for true memory deallocation on devices with CUDA support
+        // true memory deallocation on devices with CUDA support
         virtual void _deallocate()
         {
             if( _data != nullptr ) {
@@ -114,7 +122,11 @@ namespace multiCuda
             _allocatedChunck.clear();
         }
 
-        MemoryAllocator(const MemoryAllocator & ) {}
+        MemoryAllocator(const MemoryAllocator & )
+            : _availableSize( 0 )
+        {
+        }
+
         MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
     };
 }
