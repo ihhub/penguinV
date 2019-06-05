@@ -5,7 +5,7 @@ Open example_bitmap_operation.vcxproj file in this directory to create solution 
 - g++    
 In this directory you need to type/paste this text in terminal:    
 	```bash
-	g++ -std=c++11 -Wall -D PENGUINV_ENABLED_PNG_SUPPORT example_file_operation.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/file/file_image.cpp ../../src/file/bmp_image.cpp ../../src/file/png_image.cpp ../../src/file/jpeg_image.cpp -o application -lpng -ljpeg
+	g++ -std=c++11 -Wall -D PENGUINV_ENABLED_PNG_SUPPORT example_file_operation.cpp ../../src/image_function_helper.cpp ../../src/image_function.cpp ../../src/file/file_image.cpp ../../src/file/bmp_image.cpp ../../src/file/png_image.cpp ../../src/file/jpeg_image.cpp -o application -lpng
 	```
 
 - make    
