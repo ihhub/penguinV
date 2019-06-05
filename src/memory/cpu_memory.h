@@ -56,11 +56,12 @@ namespace cpu_Memory
 
         // Deallocates a memory by input address. If a pointer points on allocated chuck of memory inside the allocator then
         // the allocator just removes a reference to such area without any cost, otherwise heap allocation
-        void free( void * address )
+        template <typename _DataType>
+        void free( _DataType * address )
         {
             _acquireLock();
-            if( _data != nullptr && address >= _data ) {
-                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<uint8_t*>(address) - static_cast<uint8_t*>(_data) );
+            if( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
+                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( reinterpret_cast<uint8_t*>(address) - _data );
 
                 if( pos != _allocatedChunck.end() ) {
                     _freeChunck[pos->second].insert( pos->first );
