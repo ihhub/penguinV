@@ -92,7 +92,7 @@ namespace multiCL
     private:
         cl_context _context;
         cl_mem _data; // a pointer to memory allocated chunk
-        const size_t _availableSize; // maximum available memory size 
+        const size_t _availableSize; // maximum available memory size
 
         // a map which holds an information about allocated memory in preallocated memory chunck
         // first paramter is a pointer to allocated memory in OpenCL terms
@@ -104,7 +104,7 @@ namespace multiCL
         virtual void _allocate( size_t size )
         {
             if ( size > _availableSize )
-                throw std::logic_error( "Memory size to be allocated is bigger than available size on device" ); 
+                throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
 
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
