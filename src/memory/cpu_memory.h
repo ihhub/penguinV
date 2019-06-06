@@ -38,10 +38,10 @@ namespace cpu_Memory
             if ( _data != nullptr ) {
                 const size_t overallSize = size * sizeof( _DataType );
 
-                if( overallSize < _size ) {
+                if ( overallSize < _size ) {
                     const uint8_t level = _getAllocationLevel( overallSize );
 
-                    if( _split( level ) ) {
+                    if ( _split( level ) ) {
                         std::set < size_t >::iterator chunk = _freeChunck[level].begin();
                         _DataType* address = reinterpret_cast<_DataType*>( _data + *chunk );
                         _allocatedChunck.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
@@ -63,10 +63,10 @@ namespace cpu_Memory
         void free( _DataType * address )
         {
             _lock.lock();
-            if( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
+            if ( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
                 std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _data ) );
 
-                if( pos != _allocatedChunck.end() ) {
+                if ( pos != _allocatedChunck.end() ) {
                     _freeChunck[pos->second].insert( pos->first );
                     _merge( pos->first, pos->second );
                     _allocatedChunck.erase( pos );
@@ -90,7 +90,7 @@ namespace cpu_Memory
         virtual void _allocate( size_t size )
         {
             _lock.lock();
-            if( _size != size && size > 0 ) {
+            if ( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
                     throw std::logic_error( "Cannot free a memory on CPU. Not all objects were previously deallocated from allocator." );
 
@@ -105,7 +105,7 @@ namespace cpu_Memory
         // true memory deallocation on CPU
         virtual void _deallocate()
         {
-            if( _data != nullptr ) {
+            if ( _data != nullptr ) {
                 delete [] _data;
                 _data = nullptr;
             }
