@@ -24,7 +24,9 @@ namespace cpu_Memory
 
         virtual ~MemoryAllocator()
         {
+            _lock.lock();
             _free();
+            _lock.unlock();
         }
 
         // Returns a pointer to an allocated memory. If memory size of allocated memory chuck is enough for requested size
@@ -32,7 +34,7 @@ namespace cpu_Memory
         template <typename _DataType = uint8_t>
         _DataType* allocate( size_t size = 1 )
         {
-            _acquireLock();
+            _lock.lock();
             if ( _data != nullptr ) {
                 const size_t overallSize = size * sizeof( _DataType );
 
@@ -40,15 +42,15 @@ namespace cpu_Memory
                     const uint8_t level = _getAllocationLevel( overallSize );
 
                     if( _split( level ) ) {
-                        _DataType* address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
+                        _DataType* address = reinterpret_cast<_DataType*>( _data + *_freeChunck[level].begin() );
                         _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
                         _freeChunck[level].erase( _freeChunck[level].begin() );
-                        _releaseLock();
+                        _lock.unlock();
                         return address;
                     }
                 }
             }
-            _releaseLock();
+            _lock.unlock();
 
             // if no space in preallocated memory, allocate as usual memory
             return new _DataType[size];
@@ -59,7 +61,7 @@ namespace cpu_Memory
         template <typename _DataType>
         void free( _DataType * address )
         {
-            _acquireLock();
+            _lock.lock();
             if( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
                 std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( reinterpret_cast<uint8_t*>(address) - _data );
 
@@ -67,17 +69,17 @@ namespace cpu_Memory
                     _freeChunck[pos->second].insert( pos->first );
                     _merge( pos->first, pos->second );
                     _allocatedChunck.erase( pos );
-                    _releaseLock();
+                    _lock.unlock();
                     return;
                 }
             }
-            _releaseLock();
+            _lock.unlock();
 
             delete [] address;
         }
     private:
         uint8_t * _data; // a pointer to memory allocated chunk
-        std::recursive_mutex _lock;
+        std::mutex _lock;
 
         // a map which holds an information about allocated memory in preallocated memory chunck
         // first parameter is an offset from preallocated memory, second parameter is a power of 2 (level)
@@ -86,7 +88,7 @@ namespace cpu_Memory
         // true memory allocation on CPU
         virtual void _allocate( size_t size )
         {
-            _acquireLock();
+            _lock.lock();
             if( _size != size && size > 0 ) {
                 if( !_allocatedChunck.empty() )
                     throw std::logic_error( "Cannot free a memory on CPU. Not all objects were previously deallocated from allocator." );
@@ -96,30 +98,18 @@ namespace cpu_Memory
                 _data = new uint8_t [size];
                 _size = size;
             }
-            _releaseLock();
+            _lock.unlock();
         }
 
         // true memory deallocation on CPU
         virtual void _deallocate()
         {
-            _acquireLock();
             if( _data != nullptr ) {
                 delete [] _data;
                 _data = nullptr;
             }
 
             _allocatedChunck.clear();
-            _releaseLock();
-        }
-
-        void _acquireLock()
-        {
-            _lock.lock();
-        }
-
-        void _releaseLock()
-        {
-            _lock.unlock();
         }
 
         MemoryAllocator(const MemoryAllocator & ) {}
