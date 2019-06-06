@@ -91,7 +91,7 @@ namespace cpu_Memory
         {
             _lock.lock();
             if ( _size != size && size > 0 ) {
-                if( !_allocatedChunck.empty() )
+                if ( !_allocatedChunck.empty() )
                     throw std::logic_error( "Cannot free a memory on CPU. Not all objects were previously deallocated from allocator." );
 
                 _free();
