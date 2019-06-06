@@ -42,9 +42,10 @@ namespace cpu_Memory
                     const uint8_t level = _getAllocationLevel( overallSize );
 
                     if( _split( level ) ) {
-                        _DataType* address = reinterpret_cast<_DataType*>( _data + *_freeChunck[level].begin() );
-                        _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
-                        _freeChunck[level].erase( _freeChunck[level].begin() );
+                        std::set < size_t >::iterator chunk = _freeChunck[level].begin();
+                        _DataType* address = reinterpret_cast<_DataType*>( _data + *chunk );
+                        _allocatedChunck.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
+                        _freeChunck[level].erase( chunk );
                         _lock.unlock();
                         return address;
                     }
