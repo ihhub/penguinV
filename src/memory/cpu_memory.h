@@ -63,7 +63,7 @@ namespace cpu_Memory
         {
             _lock.lock();
             if( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
-                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( reinterpret_cast<uint8_t*>(address) - _data );
+                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _data ) );
 
                 if( pos != _allocatedChunck.end() ) {
                     _freeChunck[pos->second].insert( pos->first );
