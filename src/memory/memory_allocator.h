@@ -18,10 +18,8 @@ public:
     {
     }
 
-    // this function allocates a chunk of memory
-    // we recommend to call this function only one time at the startup of an application
-    // do not reallocate memory if some objects in your source code are allocated
-    // through this allocator. Future access to such object's memory is unpredictable
+    // Allocates a chunk of memory. We recommend to call this function only one time at the startup of an application.
+    // Do not reallocate memory if some objects in your source code are allocated through this allocator.
     void reserve( size_t size )
     {
         if ( size == 0 )
@@ -75,7 +73,7 @@ protected:
         return level;
     }
 
-    // split the preallocated memory by levels
+    // splits the preallocated memory by levels
     bool _split( uint8_t from )
     {
         bool levelFound = false;
@@ -106,7 +104,7 @@ protected:
         return true;
     }
 
-    // merge preallocated memory by levels
+    // merges preallocated memory by levels
     void _merge( size_t offset, uint8_t from )
     {
         size_t memorySize = static_cast<size_t>(1) << from;
@@ -143,9 +141,7 @@ protected:
     }
 
     size_t _size; // a size of memory allocated chunk
-
-    // an array which holds an information about free memory in preallocated memory chunck
-    std::vector < std::set < size_t > > _freeChunck;
+    std::vector < std::set < size_t > > _freeChunck; // free memory in preallocated memory
 
 private:
     virtual void _allocate( size_t size ) = 0; // true memory allocation
