@@ -12,6 +12,8 @@ int main( int argc, char* argv[] )
     // To do this we need an engine (framework) and a bunch of tests
     Performance_Test::setRunCount( argc, argv, 128 );
 
+    cpu_Memory::MemoryAllocator::instance().reserve( 32 * 1024 * 1024 );
+
     // We create a framework
     PerformanceTestFramework framework;
 
