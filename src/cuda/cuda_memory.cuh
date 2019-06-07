@@ -120,7 +120,7 @@ namespace multiCuda
             _allocatedChunck.clear();
         }
 
-        MemoryAllocator(const MemoryAllocator & )
+        MemoryAllocator( const MemoryAllocator & )
             : _availableSize( 0 )
         {
         }
