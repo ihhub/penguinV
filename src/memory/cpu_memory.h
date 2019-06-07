@@ -76,7 +76,7 @@ namespace cpu_Memory
             }
             _lock.unlock();
 
-            delete [] address;
+            delete[] address;
         }
     private:
         uint8_t * _data; // a pointer to memory allocated chunk
@@ -96,7 +96,7 @@ namespace cpu_Memory
 
                 _free();
 
-                _data = new uint8_t [size];
+                _data = new uint8_t[size];
                 _size = size;
             }
             _lock.unlock();
@@ -106,7 +106,7 @@ namespace cpu_Memory
         virtual void _deallocate()
         {
             if ( _data != nullptr ) {
-                delete [] _data;
+                delete[] _data;
                 _data = nullptr;
             }
 
