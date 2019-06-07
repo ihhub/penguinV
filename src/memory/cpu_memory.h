@@ -120,7 +120,7 @@ namespace cpu_Memory
             _allocatedChunck.clear();
         }
 
-        MemoryAllocator(const MemoryAllocator & ) {}
+        MemoryAllocator( const MemoryAllocator & ) {}
         MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
     };
 }
