@@ -20,7 +20,7 @@ else()
 endif()
 
 set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
-add_subdirectory(bitmap_operation)
+add_subdirectory(file_operation)
 add_subdirectory(blob_detection)
 add_subdirectory(filters)
 add_subdirectory(function_pool)
