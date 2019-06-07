@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <cuda_runtime.h>
 #include <map>
-#include "../image_exception.h"
 #include "../memory/memory_allocator.h"
 
 namespace multiCuda
@@ -32,10 +31,10 @@ namespace multiCuda
         {
             size = size * sizeof( _DataType );
 
-            if( _data != nullptr && size < _size ) {
+            if ( _data != nullptr && size < _size ) {
                 const uint8_t level = _getAllocationLevel( size );
 
-                if( _split( level ) ) {
+                if ( _split( level ) ) {
                     _DataType* address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
                     _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
                     _freeChunck[level].erase( _freeChunck[level].begin() );
@@ -46,8 +45,8 @@ namespace multiCuda
             // if no space in preallocated memory just allocate as usual memory
             _DataType* address = nullptr;
             cudaError_t error = cudaMalloc( &address, size );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot allocate a memory for CUDA device" );
+            if ( error != cudaSuccess )
+                throw std::logic_error( "Cannot allocate a memory for CUDA device" );
 
             return address;
         }
@@ -58,11 +57,11 @@ namespace multiCuda
         // otherwise CUDA specific function will be called
         void free( void * address )
         {
-            if( _data != nullptr && address >= _data ) {
+            if ( _data != nullptr && address >= _data ) {
                 std::map <size_t, uint8_t>::iterator pos =
                     _allocatedChunck.find( static_cast<uint8_t*>(address) - static_cast<uint8_t*>(_data) );
 
-                if( pos != _allocatedChunck.end() ) {
+                if ( pos != _allocatedChunck.end() ) {
                     _freeChunck[pos->second].insert( pos->first );
                     _merge( pos->first, pos->second );
                     _allocatedChunck.erase( pos );
@@ -71,11 +70,11 @@ namespace multiCuda
             }
 
             cudaError_t error = cudaFree( address );
-            if( error != cudaSuccess )
-                throw imageException( "Cannot deallocate memory for CUDA device" );
+            if ( error != cudaSuccess )
+                throw std::logic_error( "Cannot deallocate memory for CUDA device" );
         }
 
-        // returns maximum availbale space which could be allocated by allocator
+        // returns maximum available space which could be allocated by allocator
         size_t availableSize() const
         {
             return _availableSize;
@@ -85,8 +84,7 @@ namespace multiCuda
         const size_t _availableSize; // maximum available memory size
 
         // a map which holds an information about allocated memory in preallocated memory chunck
-        // first parameter is an offset from preallocated memory
-        // second parameter is a power of 2 (level)
+        // first parameter is an offset from preallocated memory, second parameter is a power of 2 (level)
         std::map <size_t, uint8_t> _allocatedChunck;
 
         // true memory allocation on devices with CUDA support
@@ -95,15 +93,15 @@ namespace multiCuda
             if ( size > _availableSize )
                 throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
 
-            if( _size != size && size > 0 ) {
-                if( !_allocatedChunck.empty() )
-                    throw imageException( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
+            if ( _size != size && size > 0 ) {
+                if ( !_allocatedChunck.empty() )
+                    throw std::logic_error( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
 
                 _free();
 
                 cudaError_t error = cudaMalloc( &_data, size );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot allocate a memory for CUDA device" );
+                if ( error != cudaSuccess )
+                    throw std::logic_error( "Cannot allocate a memory for CUDA device" );
 
                 _size = size;
             }
@@ -112,10 +110,10 @@ namespace multiCuda
         // true memory deallocation on devices with CUDA support
         virtual void _deallocate()
         {
-            if( _data != nullptr ) {
+            if ( _data != nullptr ) {
                 cudaError_t error = cudaFree( _data );
-                if( error != cudaSuccess )
-                    throw imageException( "Cannot deallocate memory for CUDA device" );
+                if ( error != cudaSuccess )
+                    throw std::logic_error( "Cannot deallocate memory for CUDA device" );
                 _data = nullptr;
             }
 
