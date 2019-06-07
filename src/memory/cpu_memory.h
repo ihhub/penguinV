@@ -13,6 +13,7 @@ namespace cpu_Memory
     public:
         MemoryAllocator()
             : _data( nullptr )
+            , _alignedData( nullptr)
         {
         }
 
@@ -43,7 +44,7 @@ namespace cpu_Memory
 
                     if ( _split( level ) ) {
                         std::set < size_t >::iterator chunk = _freeChunck[level].begin();
-                        _DataType* address = reinterpret_cast<_DataType*>( _data + *chunk );
+                        _DataType* address = reinterpret_cast<_DataType*>( _alignedData + *chunk );
                         _allocatedChunck.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
                         _freeChunck[level].erase( chunk );
                         _lock.unlock();
@@ -63,8 +64,8 @@ namespace cpu_Memory
         void free( _DataType * address )
         {
             _lock.lock();
-            if ( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _data ) {
-                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _data ) );
+            if ( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _alignedData ) {
+                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _alignedData ) );
 
                 if ( pos != _allocatedChunck.end() ) {
                     _freeChunck[pos->second].insert( pos->first );
@@ -80,6 +81,7 @@ namespace cpu_Memory
         }
     private:
         uint8_t * _data; // a pointer to memory allocated chunk
+        uint8_t * _alignedData; // aligned pointer for SIMD access
         std::mutex _lock;
 
         // a map which holds an information about allocated memory in preallocated memory chunck
@@ -96,7 +98,11 @@ namespace cpu_Memory
 
                 _free();
 
-                _data = new uint8_t[size];
+                const size_t alignment = 32u; // AVX alignment requirement
+                _data = new uint8_t[size + alignment];
+                const std::uintptr_t dataAddress = reinterpret_cast<std::uintptr_t>( _data );
+                _alignedData = ( ( dataAddress % alignment ) == 0 ) ? _data : _data + ( alignment - ( dataAddress % alignment ) );
+                
                 _size = size;
             }
             _lock.unlock();
@@ -108,6 +114,7 @@ namespace cpu_Memory
             if ( _data != nullptr ) {
                 delete[] _data;
                 _data = nullptr;
+                _alignedData = nullptr;
             }
 
             _allocatedChunck.clear();
