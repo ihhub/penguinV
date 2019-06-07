@@ -858,7 +858,6 @@ namespace sse
     void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
     {
-        const simd shift_val = _mm_set1_epi64x(8);
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd  * src    = reinterpret_cast <const simd*> (inY);
             simd        * dst    = reinterpret_cast <simd*> (outY);
