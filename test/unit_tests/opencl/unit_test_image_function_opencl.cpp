@@ -23,7 +23,7 @@ namespace image_function_opencl
             const PenguinV_Image::Image output = Image_Function_OpenCL::AbsoluteDifference( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
+                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
                 return false;
         }
 
@@ -38,7 +38,7 @@ namespace image_function_opencl
 
             Image_Function_OpenCL::AbsoluteDifference( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
+            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
                 return false;
         }
 
@@ -430,7 +430,7 @@ namespace image_function_opencl
             const PenguinV_Image::Image output = Image_Function_OpenCL::Subtract( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
+                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
                 return false;
         }
 
@@ -445,7 +445,7 @@ namespace image_function_opencl
 
             Image_Function_OpenCL::Subtract( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
+            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
                 return false;
         }
 
