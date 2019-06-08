@@ -81,7 +81,7 @@ namespace
 
         if ( !checkContrast ) {
             if ( second[position] != second[position + 1] )
-                edge.push_back( position + static_cast<_Type>(second[position]) / (second[position] - second[position + 1u]) );
+                edge.push_back( static_cast<_Type>( position + static_cast<double>(second[position]) / (second[position] - second[position + 1u]) ) );
             else
                 edge.push_back( static_cast<_Type>( position ) + 0.5f );
             return true;
