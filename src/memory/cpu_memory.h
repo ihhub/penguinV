@@ -102,7 +102,7 @@ namespace cpu_Memory
                 _data = new uint8_t[size + alignment];
                 const std::uintptr_t dataAddress = reinterpret_cast<std::uintptr_t>( _data );
                 _alignedData = ( ( dataAddress % alignment ) == 0 ) ? _data : _data + ( alignment - ( dataAddress % alignment ) );
-                
+
                 _size = size;
             }
             _lock.unlock();
