@@ -843,7 +843,7 @@ namespace sse
                 _mm_storeu_si128(dst++, _mm_unpacklo_epi8(zero, srcData));
                 _mm_storeu_si128(dst++, _mm_unpacklo_epi8(zero, srcData));
             }
-            
+
             if ( nonSimdWidth > 0 ) {
                 const uint8_t  * inX  = inY + totalSimdWidth;
                 uint16_t       * outX = outY + totalSimdWidth;
@@ -2227,7 +2227,6 @@ if ( simdType == neon_function ) { \
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                         uint32_t width, uint32_t height, SIMDType simdType )
     {
-
         const uint32_t simdSize = getSimdSize( simdType );
 
         if ( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
