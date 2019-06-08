@@ -48,7 +48,7 @@ namespace Image_Function_Simd
     Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
     void  ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height );
-    
+
     Image ConvertToRgb( const Image & in );
     void  ConvertToRgb( const Image & in, Image & out );
     Image ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
