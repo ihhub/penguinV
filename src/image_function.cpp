@@ -58,7 +58,7 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
-        if ( dilationX == 0u && dilationY == 0u ) 
+        if ( dilationX == 0u && dilationY == 0u )
             return;
 
         if( dilationX > width / 2 )
