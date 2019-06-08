@@ -12,9 +12,9 @@ void multithreaded( const std::vector < PenguinV_Image::Image > & frame );
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
 
 template <class T_>
-T_ randomValue( T_ maximum )
+T_ randomValue( uint32_t maximum )
 {
-    return static_cast<T_>(rand()) % maximum;
+    return static_cast<T_>( static_cast<uint32_t>(rand()) % maximum );
 }
 
 int main()
