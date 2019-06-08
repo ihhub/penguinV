@@ -352,7 +352,7 @@ namespace image_function_avx
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isAvxAvailable;
+    const bool isSupported = SimdInfo::isAvxAvailable();
     const std::string namespaceName = "image_function_avx";
 
     SET_FUNCTION( AbsoluteDifference )
@@ -377,7 +377,7 @@ namespace image_function_neon
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isNeonAvailable;
+    const bool isSupported = SimdInfo::isNeonAvailable();
     const std::string namespaceName = "image_function_neon";
 
     SET_FUNCTION( AbsoluteDifference )
@@ -404,7 +404,7 @@ namespace image_function_sse
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isSseAvailable;
+    const bool isSupported = SimdInfo::isSseAvailable();
     const std::string namespaceName = "image_function_sse";
 
     SET_FUNCTION( AbsoluteDifference )

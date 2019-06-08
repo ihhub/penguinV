@@ -67,20 +67,35 @@
 #endif
 
 // Identify available technologies during runtime
+struct SimdInfo
+{
+    static bool isSseAvailable()
+    {
 #ifdef PENGUINV_SSE_SET
-static const bool isSseAvailable  = CpuInformation::isSseSupported();
+        static const bool isAvailable = CpuInformation::isSseSupported();
+        return isAvailable;
 #else
-static const bool isSseAvailable  = false;
+        return false;
 #endif
+    }
 
+    static bool isAvxAvailable()
+    {
 #ifdef PENGUINV_AVX_SET
-static const bool isAvxAvailable  = CpuInformation::isAvxSupported();
+        static const bool isAvailable = CpuInformation::isAvxSupported();
+        return isAvailable;
 #else
-static const bool isAvxAvailable  = false;
+        return false;
 #endif
+    }
 
+    static bool isNeonAvailable()
+    {
 #ifdef PENGUINV_NEON_SET
-static const bool isNeonAvailable = CpuInformation::isNeonSupported();
+        static const bool isAvailable = CpuInformation::isNeonSupported();
+        return isAvailable;
 #else
-static const bool isNeonAvailable = false;
+        return false;
 #endif
+    }
+};
