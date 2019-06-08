@@ -261,7 +261,7 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT) );
 
-                const _Type yPosition = static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+                const _Type yPosition = static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
@@ -305,7 +305,7 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM) );
 
-                const _Type xPosition =  static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+                const _Type xPosition =  static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )

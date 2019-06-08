@@ -284,7 +284,7 @@ namespace image_function_opencl
 
             const PenguinV_Image::Image output = Image_Function_OpenCL::Invert( input );
 
-            if( !equalSize( input, output ) || !OpenCL::verifyImage( output, ~intensity ) )
+            if( !equalSize( input, output ) || !OpenCL::verifyImage( output, static_cast<uint8_t>( ~intensity ) ) )
                 return false;
         }
 
@@ -299,7 +299,7 @@ namespace image_function_opencl
 
             Image_Function_OpenCL::Invert( input[0], input[1] );
 
-            if( !OpenCL::verifyImage( input[1], ~intensity[0] ) )
+            if( !OpenCL::verifyImage( input[1], static_cast<uint8_t>( ~intensity[0] ) ) )
                 return false;
         }
 
