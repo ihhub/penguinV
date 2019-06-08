@@ -58,17 +58,17 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
-	 if ( dilationX == 0u && dilationY == 0u ) 
-	     return;
-	 
+	if ( dilationX == 0u && dilationY == 0u ) 
+	    return;
+
         if( dilationX > width / 2 )
             dilationX = width / 2;
         if( dilationY > height / 2 )
             dilationY = height / 2;
 
-	 const uint32_t rowSize = image.rowSize();
+        const uint32_t rowSize = image.rowSize();
 
-        if( dilationX > 0u ) {
+        if ( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);
 
             uint8_t ** startPos = new uint8_t *[2 * width];
@@ -94,15 +94,12 @@ namespace
                             startPos[pairCount] = imageX - dilateX;
 
                         if ( imageXEnd - imageX < dilateX ) {
-			     endPos[pairCount] = imageXEnd;
-			     break;
+                            endPos[pairCount++] = imageXEnd;
+                            break;
 			}
-                        else {
-                            endPos[pairCount] = imageX + dilateX;
-                        }
 
+                        endPos[pairCount++] = imageX + dilateX;
                         previousValue = 0xFFu ^ previousValue;
-                        ++pairCount;
                     }
                 }
 
@@ -144,15 +141,12 @@ namespace
                             startPos[pairCount] = imageY - dilationY * rowSize;
 
                         if ( height - rowId < dilationY ) {
-			     endPos[pairCount] = imageYEnd;
-			     break;
+                            endPos[pairCount++] = imageYEnd;
+                            break;
 			}
-                        else {
-                            endPos[pairCount] = imageY + dilationY * rowSize;
-                        }
 
+                        endPos[pairCount] = imageY + dilationY * rowSize;
                         previousValue = 0xFFu ^ previousValue;
-                        ++pairCount;
                     }
                 }
 
