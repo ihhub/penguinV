@@ -599,7 +599,7 @@ namespace avx
             maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue );
 
         if( minThreshold > 0 ) {
-            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80u);
+            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80);
             const simd minCompare = _mm256_set_epi8(
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
