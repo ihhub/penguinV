@@ -125,7 +125,7 @@ namespace multiCL
         {
             if ( _data != NULL ) {
                 cl_int error = clReleaseMemObject( _data );
-                if ( error != CL_SUCCESS)
+                if ( error != CL_SUCCESS )
                     throw std::logic_error( "Cannot deallocate a memory for OpenCL device" );
                 _data = NULL;
             }
