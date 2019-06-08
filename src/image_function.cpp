@@ -58,8 +58,8 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
-	if ( dilationX == 0u && dilationY == 0u ) 
-	    return;
+        if ( dilationX == 0u && dilationY == 0u ) 
+            return;
 
         if( dilationX > width / 2 )
             dilationX = width / 2;
@@ -96,7 +96,7 @@ namespace
                         if ( imageXEnd - imageX < dilateX ) {
                             endPos[pairCount++] = imageXEnd;
                             break;
-			}
+                        }
 
                         endPos[pairCount++] = imageX + dilateX;
                         previousValue = 0xFFu ^ previousValue;
@@ -143,7 +143,7 @@ namespace
                         if ( height - rowId < dilationY ) {
                             endPos[pairCount++] = imageYEnd;
                             break;
-			}
+                        }
 
                         endPos[pairCount++] = imageY + dilationY * rowSize;
                         previousValue = 0xFFu ^ previousValue;
