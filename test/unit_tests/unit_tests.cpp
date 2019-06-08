@@ -16,6 +16,8 @@ int main( int argc, char * argv[] )
     // The main purpose of this application is to test everything within library
     // To do this we need an engine (framework) and a bunch of tests
 
+    cpu_Memory::MemoryAllocator::instance().reserve( 32 * 1024 * 1024 );
+
     // We create a framework
     UnitTestFramework framework;
 

@@ -5,6 +5,7 @@
 #include <cstring>
 #include <vector>
 #include "image_exception.h"
+#include "memory/cpu_memory.h"
 
 namespace PenguinV_Image
 {
@@ -294,12 +295,12 @@ namespace PenguinV_Image
 
         static TColorDepth * _allocateMemory( size_t size )
         {
-            return new TColorDepth[size];
+            return cpu_Memory::MemoryAllocator::instance().allocate<TColorDepth>( size );
         }
 
         static void _deallocateMemory( TColorDepth * data )
         {
-            delete[] data;
+            cpu_Memory::MemoryAllocator::instance().free( data );
         }
 
         static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
