@@ -569,7 +569,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, inX += colorCount )
-                (*outX) = static_cast <uint8_t>( ( static_cast<uint32_t>( *(inX) ) + static_cast<uint32_t>( *(inX + 1) ) + static_cast<uint32_t>( *(inX + 2) ) ) / 3u ); // average of red, green and blue components
+                (*outX) = static_cast <uint8_t>( ( *(inX) + *(inX + 1) + *(inX + 2) ) / 3 ); // average of red, green and blue components
         }
     }
 
