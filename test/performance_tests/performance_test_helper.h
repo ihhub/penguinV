@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <list>
 #include <vector>
-#include "../../src/image_buffer.h"
 #include "../test_helper.h"
 
 namespace Performance_Test
