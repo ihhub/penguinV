@@ -844,7 +844,7 @@ namespace sse
                 _mm_storeu_si128(dst++, _mm_unpacklo_epi8(zero, srcData));
             }
             
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t  * inX  = inY + totalSimdWidth;
                 uint16_t       * outX = outY + totalSimdWidth;
                 const uint16_t * outXEnd = outX + nonSimdWidth;
@@ -872,7 +872,7 @@ namespace sse
                 _mm_storeu_si128(dst, _mm_packus_epi16(_mm_srli_epi16 ( srcData1, 8 ), _mm_srli_epi16 ( srcData2, 8)));
             }
 
-            if(nonSimdWidth > 0){
+            if ( nonSimdWidth > 0 ) {
                 const uint16_t * inX  = inY + totalSimdWidth;
                 uint8_t        * outX = outY + totalSimdWidth;
                 const uint8_t  * outXEnd = outX + nonSimdWidth;
@@ -881,7 +881,6 @@ namespace sse
                     *outX = static_cast<uint8_t>( (*inX) >> 8 );
             }
         }
-        
     }
 
 #ifdef PENGUINV_SSSE3_SET
