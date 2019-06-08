@@ -533,7 +533,7 @@ namespace avx
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm256_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -1261,7 +1261,7 @@ namespace sse
             const simd mask = _mm_set_epi8( maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                                             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,

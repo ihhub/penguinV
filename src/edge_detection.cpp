@@ -69,8 +69,8 @@ namespace
             const uint32_t blackContrastStart = position - leftSideContrastCheck;
             const uint32_t whiteContrastEnd   = position + rightSideContrastCheck;
 
-            _Type sumBlack = std::accumulate( data.begin() + blackContrastStart, data.begin() + blackContrastEnd + 1, 0.0f );
-            _Type sumWhite = std::accumulate( data.begin() + whiteContrastStart, data.begin() + whiteContrastEnd + 1, 0.0f );
+            double sumBlack = std::accumulate( data.begin() + blackContrastStart, data.begin() + blackContrastEnd + 1, 0.0f );
+            double sumWhite = std::accumulate( data.begin() + whiteContrastStart, data.begin() + whiteContrastEnd + 1, 0.0f );
 
             sumBlack /= (blackContrastEnd - blackContrastStart + 1);
             sumWhite /= (whiteContrastEnd - whiteContrastStart + 1);
