@@ -145,7 +145,7 @@ namespace
                             break;
 			}
 
-                        endPos[pairCount] = imageY + dilationY * rowSize;
+                        endPos[pairCount++] = imageY + dilationY * rowSize;
                         previousValue = 0xFFu ^ previousValue;
                     }
                 }
