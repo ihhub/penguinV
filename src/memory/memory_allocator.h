@@ -42,9 +42,9 @@ public:
             }
 
             if ( usedSize == 0 )
-                _freeChunck.resize( levelCount + 1u );
+                _freeChunk.resize( levelCount + 1u );
 
-            _freeChunck[levelCount].insert( usedSize );
+            _freeChunk[levelCount].insert( usedSize );
 
             usedSize += value;
             size -= value;
@@ -55,7 +55,7 @@ protected:
     {
         _deallocate();
 
-        _freeChunck.clear();
+        _freeChunk.clear();
         _size = 0;
     }
 
@@ -79,8 +79,8 @@ protected:
         bool levelFound = false;
         uint8_t startLevel = from;
 
-        for ( uint8_t i = from; i < _freeChunck.size(); ++i ) {
-            if ( !_freeChunck[i].empty() ) {
+        for ( uint8_t i = from; i < _freeChunk.size(); ++i ) {
+            if ( !_freeChunk[i].empty() ) {
                 startLevel = i;
                 levelFound = true;
                 break;
@@ -94,10 +94,10 @@ protected:
             size_t memorySize = static_cast<size_t>(1) << (startLevel - 1);
 
             for ( ; startLevel > from; --startLevel, memorySize >>= 1 ) {
-                const size_t previousLevelValue = *_freeChunck[startLevel].begin();
-                _freeChunck[startLevel - 1u].insert( previousLevelValue );
-                _freeChunck[startLevel - 1u].insert( previousLevelValue + memorySize );
-                _freeChunck[startLevel].erase( _freeChunck[startLevel].begin() );
+                const size_t previousLevelValue = *_freeChunk[startLevel].begin();
+                _freeChunk[startLevel - 1u].insert( previousLevelValue );
+                _freeChunk[startLevel - 1u].insert( previousLevelValue + memorySize );
+                _freeChunk[startLevel].erase( _freeChunk[startLevel].begin() );
             }
         }
 
@@ -109,7 +109,7 @@ protected:
     {
         size_t memorySize = static_cast<size_t>(1) << from;
 
-        for ( std::vector < std::set < size_t > >::iterator level = _freeChunck.begin() + from; level < _freeChunck.end();
+        for ( std::vector < std::set < size_t > >::iterator level = _freeChunk.begin() + from; level < _freeChunk.end();
               ++level, memorySize <<= 1 ) {
             std::set< size_t >::iterator pos = level->find( offset );
             std::set< size_t >::iterator neighbour = pos;
@@ -141,7 +141,7 @@ protected:
     }
 
     size_t _size; // a size of memory allocated chunk
-    std::vector < std::set < size_t > > _freeChunck; // free memory in preallocated memory
+    std::vector < std::set < size_t > > _freeChunk; // free memory in preallocated memory
 
 private:
     virtual void _allocate( size_t size ) = 0; // true memory allocation

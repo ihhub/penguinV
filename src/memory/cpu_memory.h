@@ -43,10 +43,10 @@ namespace cpu_Memory
                     const uint8_t level = _getAllocationLevel( overallSize );
 
                     if ( _split( level ) ) {
-                        std::set < size_t >::iterator chunk = _freeChunck[level].begin();
+                        std::set < size_t >::iterator chunk = _freeChunk[level].begin();
                         _DataType* address = reinterpret_cast<_DataType*>( _alignedData + *chunk );
-                        _allocatedChunck.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
-                        _freeChunck[level].erase( chunk );
+                        _allocatedChunk.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
+                        _freeChunk[level].erase( chunk );
                         _lock.unlock();
                         return address;
                     }
@@ -65,12 +65,12 @@ namespace cpu_Memory
         {
             _lock.lock();
             if ( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _alignedData ) {
-                std::map <size_t, uint8_t>::iterator pos = _allocatedChunck.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _alignedData ) );
+                std::map <size_t, uint8_t>::iterator pos = _allocatedChunk.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _alignedData ) );
 
-                if ( pos != _allocatedChunck.end() ) {
-                    _freeChunck[pos->second].insert( pos->first );
+                if ( pos != _allocatedChunk.end() ) {
+                    _freeChunk[pos->second].insert( pos->first );
                     _merge( pos->first, pos->second );
-                    _allocatedChunck.erase( pos );
+                    _allocatedChunk.erase( pos );
                     _lock.unlock();
                     return;
                 }
@@ -84,16 +84,16 @@ namespace cpu_Memory
         uint8_t * _alignedData; // aligned pointer for SIMD access
         std::mutex _lock;
 
-        // a map which holds an information about allocated memory in preallocated memory chunck
+        // a map which holds an information about allocated memory in preallocated memory chunk
         // first parameter is an offset from preallocated memory, second parameter is a power of 2 (level)
-        std::map <size_t, uint8_t> _allocatedChunck;
+        std::map <size_t, uint8_t> _allocatedChunk;
 
         // true memory allocation on CPU
         virtual void _allocate( size_t size )
         {
             _lock.lock();
             if ( _size != size && size > 0 ) {
-                if ( !_allocatedChunck.empty() )
+                if ( !_allocatedChunk.empty() )
                     throw std::logic_error( "Cannot free a memory on CPU. Not all objects were previously deallocated from allocator." );
 
                 _free();
@@ -117,7 +117,7 @@ namespace cpu_Memory
                 _alignedData = nullptr;
             }
 
-            _allocatedChunck.clear();
+            _allocatedChunk.clear();
         }
 
         MemoryAllocator( const MemoryAllocator & ) {}
