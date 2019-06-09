@@ -386,7 +386,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image16Bit output = ConvertTo16Bit( input );
 
-        return verifyImage( output, intensity * 256 );
+        return verifyImage( output, static_cast<uint16_t>( intensity * 256 ) );
     }
 
     bool form2_ConvertTo16Bit(ConvertTo16BitForm2 ConvertTo16Bit)
@@ -399,7 +399,7 @@ namespace Function_Template
 
         ConvertTo16Bit( input, output );
 
-        return verifyImage( output, intensity[0] * 256 );
+        return verifyImage( output, static_cast<uint16_t>( intensity[0] * 256 ) );
     }
 
     bool form3_ConvertTo16Bit(ConvertTo16BitForm3 ConvertTo16Bit)
@@ -412,7 +412,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image16Bit output = ConvertTo16Bit( input, roiX, roiY, roiWidth, roiHeight );
 
-        return verifyImage( output, intensity * 256 );
+        return verifyImage( output, static_cast<uint16_t>( intensity * 256 ) );
     }
 
     bool form4_ConvertTo16Bit(ConvertTo16BitForm4 ConvertTo16Bit)
@@ -432,7 +432,7 @@ namespace Function_Template
 
         ConvertTo16Bit( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
-        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, intensity[0] * 256 );
+        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint16_t>( intensity[0] * 256 ) );
     }
 
     bool form1_ConvertTo8Bit(ConvertTo8BitForm1 ConvertTo8Bit)
@@ -1127,7 +1127,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Invert( input );
 
-        return verifyImage( output, ~intensity );
+        return verifyImage( output, static_cast<uint8_t>( ~intensity ) );
     }
 
     bool form2_Invert(InvertForm2 Invert)
@@ -1137,7 +1137,7 @@ namespace Function_Template
 
         Invert( input[0], input[1] );
 
-        return verifyImage( input[1], ~intensity[0] );
+        return verifyImage( input[1], static_cast<uint8_t>( ~intensity[0] ) );
     }
 
     bool form3_Invert(InvertForm3 Invert)
@@ -1150,7 +1150,7 @@ namespace Function_Template
 
         const PenguinV_Image::Image output = Invert( input, roiX, roiY, roiWidth, roiHeight );
 
-        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, ~intensity );
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, static_cast<uint8_t>( ~intensity ) );
     }
 
     bool form4_Invert(InvertForm4 Invert)
@@ -1164,7 +1164,7 @@ namespace Function_Template
 
         Invert( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
-        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, ~intensity[0] );
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint8_t>( ~intensity[0] ) );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
@@ -1950,7 +1950,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = Subtract( input[0], input[1] );
 
         return equalSize( input[0], output ) &&
-            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
+            verifyImage( output, ( (intensity[0] > intensity[1]) ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) );
     }
 
     bool form2_Subtract(SubtractForm2 Subtract)
@@ -1960,7 +1960,7 @@ namespace Function_Template
 
         Subtract( image[0], image[1], image[2] );
 
-        return verifyImage( image[2], static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
+        return verifyImage( image[2], ( (intensity[0] > intensity[1]) ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) );
     }
 
     bool form3_Subtract(SubtractForm3 Subtract)
@@ -1978,7 +1978,7 @@ namespace Function_Template
         const PenguinV_Image::Image output = Subtract( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], roiWidth, roiHeight );
 
         return equalSize( output, roiWidth, roiHeight ) &&
-            verifyImage( output, static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
+            verifyImage( output, ( (intensity[0] > intensity[1]) ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) );
     }
 
     bool form4_Subtract(SubtractForm4 Subtract)
@@ -1996,7 +1996,7 @@ namespace Function_Template
         Subtract( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], image[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
         return verifyImage( image[2], roiX[2], roiY[2], roiWidth, roiHeight,
-                            static_cast<uint8_t>( intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0u ) );
+                            ( (intensity[0] > intensity[1]) ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) );
     }
 
     bool form1_Sum(SumForm1 Sum)
@@ -2439,7 +2439,7 @@ namespace avx
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isAvxAvailable;
+    const bool isSupported = SimdInfo::isAvxAvailable();
     const std::string namespaceName = "image_function_avx";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
@@ -2464,7 +2464,7 @@ namespace neon
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isNeonAvailable;
+    const bool isSupported = SimdInfo::isNeonAvailable();
     const std::string namespaceName = "image_function_neon";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
@@ -2490,7 +2490,7 @@ namespace sse
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = isSseAvailable;
+    const bool isSupported = SimdInfo::isSseAvailable();
     const std::string namespaceName = "image_function_sse";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )

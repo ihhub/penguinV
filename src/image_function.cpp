@@ -569,7 +569,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, inX += colorCount )
-                (*outX) = static_cast <uint8_t>((*(inX) + *(inX + 1) + *(inX + 2)) / 3u); // average of red, green and blue components
+                (*outX) = static_cast <uint8_t>( ( *(inX) + *(inX + 1) + *(inX + 2) ) / 3 ); // average of red, green and blue components
         }
     }
 
@@ -961,7 +961,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, ++inX )
-                (*outX) = ~(*inX);
+                (*outX) = static_cast<uint8_t>( ~(*inX) );
         }
     }
 
@@ -1793,7 +1793,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
-                (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : (*in1X) - (*in2X) );
+                (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
         }
     }
 

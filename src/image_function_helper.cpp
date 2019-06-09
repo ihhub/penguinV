@@ -1107,17 +1107,17 @@ namespace simd
     SIMDType actualSimdType()
     {
         #ifdef PENGUINV_AVX_SET
-        if ( isAvxAvailable && isAvxEnabled )
+        if ( SimdInfo::isAvxAvailable() && isAvxEnabled )
             return avx_function;
         #endif
 
         #ifdef PENGUINV_SSE_SET
-        if ( isSseAvailable && isSseEnabled )
+        if ( SimdInfo::isSseAvailable() && isSseEnabled )
             return sse_function;
         #endif
 
         #ifdef PENGUINV_NEON_SET
-        if ( isNeonAvailable && isNeonEnabled )
+        if ( SimdInfo::isNeonAvailable() && isNeonEnabled )
             return neon_function;
         #endif
 

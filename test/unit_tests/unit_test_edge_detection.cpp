@@ -33,12 +33,12 @@ namespace edge_detection
                 return false;
 
             for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
-                if ( fabs( point->x - roiX ) > 1.0 )
+                if ( fabs( point->x - static_cast<_Type>( roiX ) ) > 1.0 )
                     return false;
             }
 
             for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
-                if ( fabs( point->x - roiXEnd ) > 1.0 )
+                if ( fabs( point->x - static_cast<_Type>( roiXEnd ) ) > 1.0 )
                     return false;
             }
         }
@@ -75,12 +75,12 @@ namespace edge_detection
                 return false;
 
             for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
-                if ( fabs( point->y - roiY ) > 1.0 )
+                if ( fabs( point->y - static_cast<_Type>( roiY ) ) > 1.0 )
                     return false;
             }
 
             for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
-                if ( fabs( point->y - roiYEnd ) > 1.0 )
+                if ( fabs( point->y - static_cast<_Type>( roiYEnd ) ) > 1.0 )
                     return false;
             }
         }

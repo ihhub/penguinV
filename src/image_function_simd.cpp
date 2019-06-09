@@ -236,7 +236,7 @@ namespace avx
                 const uint16_t * outXEnd = outX + nonSimdWidth;
 
                 for ( ; outX != outXEnd; ++outX, ++inX )
-                    *outX = (*inX) << 8;
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
             }
         }
     }
@@ -267,7 +267,7 @@ namespace avx
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -477,12 +477,8 @@ namespace avx
                 uint8_t       * outX = outY + totalSimdWidth;
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0;
-                    else
-                        (*outX) = (*in1X) - (*in2X);
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
@@ -537,7 +533,7 @@ namespace avx
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm256_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -603,7 +599,7 @@ namespace avx
             maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue );
 
         if( minThreshold > 0 ) {
-            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80u);
+            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80);
             const simd minCompare = _mm256_set_epi8(
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
@@ -850,7 +846,7 @@ namespace sse
                 const uint16_t * outXEnd = outX + nonSimdWidth;
 
                 for ( ; outX != outXEnd; ++outX, ++inX )
-                    *outX = (*inX) << 8;
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
             }
         }
     }
@@ -1002,7 +998,7 @@ namespace sse
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -1212,12 +1208,8 @@ namespace sse
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0u;
-                    else
-                        (*outX) = static_cast<uint8_t>( (*in1X) - (*in2X) );
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
@@ -1269,7 +1261,7 @@ namespace sse
             const simd mask = _mm_set_epi8( maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                                             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -1626,7 +1618,7 @@ namespace neon
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -1838,12 +1830,8 @@ namespace neon
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0;
-                    else
-                        (*outX) = (*in1X) - (*in2X);
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
