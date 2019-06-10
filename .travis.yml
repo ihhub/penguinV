@@ -92,7 +92,7 @@ before_script:
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
       if [[ "$TRAVIS_OS_NAME" == "windows" ]];
-        then cmake -G $TARGET ..;
+        then cmake -G "$TARGET" ..;
       else
         cmake .. ${CMAKE_OPTIONS}
       fi
