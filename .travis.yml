@@ -91,7 +91,7 @@ matrix:
         - TARGET="Visual Studio 14 2015 Win64"
         - BUILD_TYPE="Release"
       before_install: choco install -y vcbuildtools --version 2015.4 --force;
-      install: ./script/appveyor/cuda_install.cmd
+      install: ./script/travis/install_cuda_windows.sh
 
 before_script:
   # Let CMake generate build files
