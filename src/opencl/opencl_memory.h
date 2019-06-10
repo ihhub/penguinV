@@ -40,7 +40,7 @@ namespace multiCL
 
                 if ( _split( level ) ) {
                     cl_buffer_region region;
-                    region.origin = *(_freeChunck[level].begin());
+                    region.origin = *(_freeChunk[level].begin());
                     region.size = size;
 
                     cl_int error;
@@ -48,8 +48,8 @@ namespace multiCL
                     if ( error != CL_SUCCESS )
                         throw std::logic_error( "Cannot allocate a subbuffer memory for OpenCL device" );
 
-                    _allocatedChunck.insert( std::pair< cl_mem, std::pair < size_t, uint8_t > >( memory,  std::pair < size_t, uint8_t >(*(_freeChunck[level].begin()), level) ) );
-                    _freeChunck[level].erase( _freeChunck[level].begin() );
+                    _allocatedChunk.insert( std::pair< cl_mem, std::pair < size_t, uint8_t > >( memory,  std::pair < size_t, uint8_t >(*(_freeChunk[level].begin()), level) ) );
+                    _freeChunk[level].erase( _freeChunk[level].begin() );
                     return memory;
                 }
             }
@@ -70,12 +70,12 @@ namespace multiCL
         void free( cl_mem memory )
         {
             if ( _data != NULL ) {
-                std::map < cl_mem, std::pair < size_t, uint8_t > >::iterator pos = _allocatedChunck.find( memory );
+                std::map < cl_mem, std::pair < size_t, uint8_t > >::iterator pos = _allocatedChunk.find( memory );
 
-                if ( pos != _allocatedChunck.end() ) {
-                    _freeChunck[pos->second.second].insert( pos->second.first );
+                if ( pos != _allocatedChunk.end() ) {
+                    _freeChunk[pos->second.second].insert( pos->second.first );
                     _merge( pos->second.first, pos->second.second );
-                    _allocatedChunck.erase( pos );
+                    _allocatedChunk.erase( pos );
                 }
             }
 
@@ -93,11 +93,11 @@ namespace multiCL
         cl_mem _data; // a pointer to memory allocated chunk
         const size_t _availableSize; // maximum available memory size
 
-        // a map which holds an information about allocated memory in preallocated memory chunck
+        // a map which holds an information about allocated memory in preallocated memory chunk
         // first paramter is a pointer to allocated memory in OpenCL terms
         // second parameter is an offset from preallocated memory
         // third parameter is a power of 2 (level)
-        std::map < cl_mem, std::pair < size_t, uint8_t > > _allocatedChunck;
+        std::map < cl_mem, std::pair < size_t, uint8_t > > _allocatedChunk;
 
         // true memory allocation on OpenCL devices
         virtual void _allocate( size_t size )
@@ -106,7 +106,7 @@ namespace multiCL
                 throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
 
             if ( _size != size && size > 0 ) {
-                if ( !_allocatedChunck.empty() )
+                if ( !_allocatedChunk.empty() )
                     throw std::logic_error( "Cannot free a memory on OpenCL device. Not all objects were previously deallocated from allocator." );
 
                 _free();
@@ -130,7 +130,7 @@ namespace multiCL
                 _data = NULL;
             }
 
-            _allocatedChunck.clear();
+            _allocatedChunk.clear();
         }
 
         MemoryAllocator( const MemoryAllocator & allocator )

@@ -35,9 +35,9 @@ namespace multiCuda
                 const uint8_t level = _getAllocationLevel( size );
 
                 if ( _split( level ) ) {
-                    _DataType* address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunck[level].begin());
-                    _allocatedChunck.insert( std::pair<size_t, uint8_t >( *_freeChunck[level].begin(), level ) );
-                    _freeChunck[level].erase( _freeChunck[level].begin() );
+                    _DataType* address = reinterpret_cast<_DataType*>(static_cast<uint8_t*>(_data) + *_freeChunk[level].begin());
+                    _allocatedChunk.insert( std::pair<size_t, uint8_t >( *_freeChunk[level].begin(), level ) );
+                    _freeChunk[level].erase( _freeChunk[level].begin() );
                     return address;
                 }
             }
@@ -59,12 +59,12 @@ namespace multiCuda
         {
             if ( _data != nullptr && address >= _data ) {
                 std::map <size_t, uint8_t>::iterator pos =
-                    _allocatedChunck.find( static_cast<uint8_t*>(address) - static_cast<uint8_t*>(_data) );
+                    _allocatedChunk.find( static_cast<uint8_t*>(address) - static_cast<uint8_t*>(_data) );
 
-                if ( pos != _allocatedChunck.end() ) {
-                    _freeChunck[pos->second].insert( pos->first );
+                if ( pos != _allocatedChunk.end() ) {
+                    _freeChunk[pos->second].insert( pos->first );
                     _merge( pos->first, pos->second );
-                    _allocatedChunck.erase( pos );
+                    _allocatedChunk.erase( pos );
                     return;
                 }
             }
@@ -83,9 +83,9 @@ namespace multiCuda
         void * _data; // a pointer to memory allocated chunk
         const size_t _availableSize; // maximum available memory size
 
-        // a map which holds an information about allocated memory in preallocated memory chunck
+        // a map which holds an information about allocated memory in preallocated memory chunk
         // first parameter is an offset from preallocated memory, second parameter is a power of 2 (level)
-        std::map <size_t, uint8_t> _allocatedChunck;
+        std::map <size_t, uint8_t> _allocatedChunk;
 
         // true memory allocation on devices with CUDA support
         virtual void _allocate( size_t size )
@@ -94,7 +94,7 @@ namespace multiCuda
                 throw std::logic_error( "Memory size to be allocated is bigger than available size on device" );
 
             if ( _size != size && size > 0 ) {
-                if ( !_allocatedChunck.empty() )
+                if ( !_allocatedChunk.empty() )
                     throw std::logic_error( "Cannot free a memory on device with CUDA support. Not all objects were previously deallocated from allocator." );
 
                 _free();
@@ -117,7 +117,7 @@ namespace multiCuda
                 _data = nullptr;
             }
 
-            _allocatedChunck.clear();
+            _allocatedChunk.clear();
         }
 
         MemoryAllocator( const MemoryAllocator & )
