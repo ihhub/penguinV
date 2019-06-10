@@ -79,16 +79,15 @@ matrix:
       before_install: source script/travis/install_qt5.sh
     - os: windows
       name: Windows (VS2015 Win32)
-      # Set a supported language, otherwise the Windows worker will not start.
-      language: bash
       env:
         - TARGET="Visual Studio 14 2015"
+      before_install: choco install -y vcbuildtools --version 2015.4 --force;
     - os: windows
       name: Windows (VS2015 x64)
-      # Set a supported language, otherwise the Windows worker will not start.
       language: bash
       env:
         - TARGET="Visual Studio 14 2015 Win64"
+      before_install: choco install -y vcbuildtools --version 2015.4 --force;
 
 before_script:
   # Let CMake generate build files
