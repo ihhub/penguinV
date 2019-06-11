@@ -77,13 +77,13 @@ matrix:
     # - os: osx
     #   env: QT_BASE=latest CMAKE_OPTIONS=""
     #   before_install: source script/travis/install_qt5.sh
-    - os: windows
-      name: Windows (VS2015 Win32)
-      env:
-        - TARGET="Visual Studio 14 2015"
-        - BUILD_TYPE="Release"
-      before_install: choco install -y vcbuildtools --version 2015.4 --force;
-      install: ./script/travis/install_cuda_windows.sh
+    # - os: windows
+    #   name: Windows (VS2015 Win32)
+    #   env:
+    #     - TARGET="Visual Studio 14 2015"
+    #     - BUILD_TYPE="Release"
+    #   before_install: choco install -y vcbuildtools --version 2015.4 --force;
+    #   install: ./script/travis/install_cuda_windows.sh
     - os: windows
       name: Windows (VS2015 x64)
       language: bash
@@ -91,7 +91,7 @@ matrix:
         - TARGET="Visual Studio 14 2015 Win64"
         - BUILD_TYPE="Release"
       before_install: choco install -y vcbuildtools --version 2015.4 --force;
-      install: ./script/travis/install_cuda_windows.sh
+      install: source script/travis/install_cuda_windows.sh
 
 before_script:
   # Let CMake generate build files
