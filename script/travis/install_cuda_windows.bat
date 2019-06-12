@@ -10,7 +10,7 @@ if EXIST cuda_8.0.44_windows.exe (
 ) else (
     echo "cuda_8.0.44_windows.exe does not exist"
 )
-echo "%ProgramFiles%"
+
 if NOT EXIST "%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v8.0\bin\cudart64_80.dll" ( 
     echo "Failed to install CUDA"
     exit /B 1
