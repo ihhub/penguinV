@@ -96,6 +96,10 @@ namespace Image_Function_Cuda
     void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                   uint32_t width, uint32_t height );
 
+    bool IsEqual( const Image & in1, const Image & in2 );
+    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                  uint32_t width, uint32_t height );
+
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table );
     void  LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table );
     Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
