@@ -48,20 +48,24 @@ namespace Png_Operation
             return PenguinV_Image::Image();
 
         png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
-        if( !png )
+        if ( !png ) {
+            fclose( file );
             return PenguinV_Image::Image();
+        }
 
         png_infop info = png_create_info_struct( png );
-        if( !info )
+        if ( !info ) {
+            fclose( file );
             return PenguinV_Image::Image();
+        }
 
         png_init_io( png, file );
         png_read_info( png, info );
 
         const uint32_t width    = static_cast<uint32_t>( png_get_image_width ( png, info ) );
         const uint32_t height   = static_cast<uint32_t>( png_get_image_height( png, info ) );
-        const uint8_t colorType = png_get_color_type  ( png, info );
-        const uint8_t bitDepth  = png_get_bit_depth   ( png, info );
+        const uint8_t colorType = png_get_color_type( png, info );
+        const uint8_t bitDepth  = png_get_bit_depth ( png, info );
 
         if( bitDepth == 16u )
             png_set_strip_16( png );
@@ -76,7 +80,7 @@ namespace Png_Operation
         if( png_get_valid( png, info, PNG_INFO_tRNS ) )
             png_set_tRNS_to_alpha( png );
 
-        // These color_type don't have an alpha channel then fill it with 0xff
+        // These color types don't have an alpha channel then fill it with 0xff
         if( colorType == PNG_COLOR_TYPE_RGB || colorType == PNG_COLOR_TYPE_GRAY || colorType == PNG_COLOR_TYPE_PALETTE )
             png_set_filler( png, 0xFF, PNG_FILLER_AFTER );
 
