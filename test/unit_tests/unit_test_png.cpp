@@ -12,7 +12,7 @@ namespace png_operation
         Png_Operation::Save( "png.png", original );
 
         const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
-        remove("png.png");
+        remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
              !Unit_Test::verifyImage( loaded, 255u ) )
@@ -27,7 +27,7 @@ namespace png_operation
         Png_Operation::Save( "png.png", original );
 
         const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
-        remove("png.png");
+        remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
              !Unit_Test::verifyImage( loaded, 0u ) )
@@ -41,8 +41,8 @@ namespace png_operation
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Png_Operation::Save("png.png", original);
 
-        const PenguinV_Image::Image loaded = Png_Operation::Load("png.png");
-        remove("png.png");
+        const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
+        remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
             return false;
@@ -53,7 +53,7 @@ namespace png_operation
         const uint8_t * inY  = original.data();
         const uint8_t * outY = loaded.data();
         const uint8_t * inYEnd = inY + rowSizeIn * original.height();
-        
+
         for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             if ( memcmp( inY, outY, width ) != 0 )
                 return false;

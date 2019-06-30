@@ -108,11 +108,11 @@ namespace Png_Operation
             uint8_t * outX = outY;
 
             if ( isGrayScale ) {
-                for( uint32_t x = 0; x < width; ++x, column += 4 )
+                for ( uint32_t x = 0; x < width; ++x, column += 4 )
                     *(outX++) = column[0];
             }
             else {
-                for( uint32_t x = 0; x < width; ++x, column += 4 ) {
+                for ( uint32_t x = 0; x < width; ++x, column += 4 ) {
                     *(outX++) = column[2];
                     *(outX++) = column[1];
                     *(outX++) = column[0];
@@ -163,8 +163,8 @@ namespace Png_Operation
         const bool grayScaleImage = image.colorCount() == PenguinV_Image::GRAY_SCALE;
 
         // Output is 8 bit depth, Gray-Scale or RGB
-        png_set_IHDR( png, info, width, height, 8, (grayScaleImage ? PNG_COLOR_TYPE_GRAY : PNG_COLOR_TYPE_RGB), PNG_INTERLACE_NONE,
-                      PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT );
+        png_set_IHDR( png, info, width, height, 8, (grayScaleImage ? PNG_COLOR_TYPE_GRAY : PNG_COLOR_TYPE_RGB), PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
+                      PNG_FILTER_TYPE_DEFAULT );
 
         png_write_info( png, info );
 
@@ -181,12 +181,11 @@ namespace Png_Operation
             const uint8_t * outX = outY;
 
             if ( grayScaleImage ) {
-                for( uint32_t x = 0; x < width; ++x, ++column ) {
+                for ( uint32_t x = 0; x < width; ++x, ++column )
                     *column = *(outX++);
-                }
             }
             else {
-                for( uint32_t x = 0; x < width; ++x, column += 3 ) {
+                for ( uint32_t x = 0; x < width; ++x, column += 3 ) {
                     column[2] = *(outX++);
                     column[1] = *(outX++);
                     column[0] = *(outX++);
