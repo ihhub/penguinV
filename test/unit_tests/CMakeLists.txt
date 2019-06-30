@@ -30,7 +30,8 @@ set(SRCS
     unit_test_helper.cpp
     unit_test_image_buffer.cpp
     unit_test_image_function.cpp
-    unit_test_math.cpp)
+    unit_test_math.cpp
+    unit_test_png.cpp)
 
 option(PENGUINV_BUILD_UNIT_TEST_CUDA "Build CUDA unit tests" ON)
     if(${PENGUINV_BUILD_UNIT_TEST_CUDA})
