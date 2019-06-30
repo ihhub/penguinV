@@ -39,7 +39,7 @@ namespace png_operation
     bool RandomRGBImage()
     {
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
-        Png_Operation::Save("bitmap.bmp", original);
+        Png_Operation::Save("png.png", original);
 
         const PenguinV_Image::Image loaded = Png_Operation::Load("png.png");
         remove("png.png");
