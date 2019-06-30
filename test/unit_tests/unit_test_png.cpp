@@ -75,4 +75,3 @@ void addTests_Png( UnitTestFramework & )
 {
 }
 #endif
-
