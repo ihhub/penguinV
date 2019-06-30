@@ -7,6 +7,7 @@
 #include "unit_test_image_buffer.h"
 #include "unit_test_image_function.h"
 #include "unit_test_math.h"
+#include "unit_test_png.h"
 
 int main( int argc, char * argv[] )
 {
@@ -16,6 +17,7 @@ int main( int argc, char * argv[] )
 
     UnitTestFramework framework;
     addTests_Bitmap         ( framework );
+    addTests_Png            ( framework );
     addTests_Blob_Detection ( framework );
     addTests_Edge_Detection ( framework );
     addTests_Image_Buffer   ( framework );
