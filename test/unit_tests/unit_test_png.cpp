@@ -67,11 +67,9 @@ namespace png_operation
 #ifdef PENGUINV_ENABLED_PNG_SUPPORT
 void addTests_Png( UnitTestFramework & framework )
 {
-
     framework.add(png_operation::WhiteGrayScaleImage, "PNG: Save and load white gray-scale image");
     framework.add(png_operation::BlackGrayScaleImage, "PNG: Save and load black gray-scale image");
     framework.add(png_operation::RandomRGBImage,      "PNG: Save and load random RGB image");
-
 }
 #else
 void addTests_Png( UnitTestFramework & )
