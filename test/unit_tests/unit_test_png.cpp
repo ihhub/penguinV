@@ -14,8 +14,8 @@ namespace png_operation
         const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
         remove("png.png");
 
-        if( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
+             !Unit_Test::verifyImage( loaded, 255u ) )
             return false;
 
         return true;
@@ -29,8 +29,8 @@ namespace png_operation
         const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
         remove("png.png");
 
-        if( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
+             !Unit_Test::verifyImage( loaded, 0u ) )
             return false;
 
         return true;
@@ -44,8 +44,7 @@ namespace png_operation
         const PenguinV_Image::Image loaded = Png_Operation::Load("png.png");
         remove("png.png");
 
-        if( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
             return false;
 
         const uint32_t rowSizeIn  = original.rowSize();
