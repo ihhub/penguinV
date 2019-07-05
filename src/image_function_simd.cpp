@@ -35,6 +35,7 @@ namespace
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
             table.ConvertTo16Bit     = &Image_Function_Simd::ConvertTo16Bit;
+            table.ConvertTo8Bit     = &Image_Function_Simd::ConvertTo8Bit;
             table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             table.Flip               = &Image_Function_Simd::Flip;
             table.Invert             = &Image_Function_Simd::Invert;
@@ -235,7 +236,7 @@ namespace avx
                 const uint16_t * outXEnd = outX + nonSimdWidth;
 
                 for ( ; outX != outXEnd; ++outX, ++inX )
-                    *outX = (*inX) << 8;
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
             }
         }
     }
@@ -266,7 +267,7 @@ namespace avx
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -476,12 +477,8 @@ namespace avx
                 uint8_t       * outX = outY + totalSimdWidth;
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0;
-                    else
-                        (*outX) = (*in1X) - (*in2X);
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
@@ -536,7 +533,7 @@ namespace avx
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                 maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm256_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -602,7 +599,7 @@ namespace avx
             maxCompareValue, maxCompareValue, maxCompareValue, maxCompareValue );
 
         if( minThreshold > 0 ) {
-            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80u);
+            const char minCompareValue = static_cast<char>((minThreshold - 1) ^ 0x80);
             const simd minCompare = _mm256_set_epi8(
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
@@ -842,14 +839,42 @@ namespace sse
                 _mm_storeu_si128(dst++, _mm_unpacklo_epi8(zero, srcData));
                 _mm_storeu_si128(dst++, _mm_unpacklo_epi8(zero, srcData));
             }
-            
-            if( nonSimdWidth > 0 ) {
+
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t  * inX  = inY + totalSimdWidth;
                 uint16_t       * outX = outY + totalSimdWidth;
                 const uint16_t * outXEnd = outX + nonSimdWidth;
 
                 for ( ; outX != outXEnd; ++outX, ++inX )
-                    *outX = (*inX) << 8;
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                        uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast <const simd*> (inY);
+            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst ) {
+                const simd srcData1 = _mm_loadu_si128(src);
+                ++src;
+                const simd srcData2 = _mm_loadu_si128(src);
+                ++src;
+
+                _mm_storeu_si128(dst, _mm_packus_epi16(_mm_srli_epi16 ( srcData1, 8 ), _mm_srli_epi16 ( srcData2, 8)));
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
             }
         }
     }
@@ -973,7 +998,7 @@ namespace sse
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -1183,12 +1208,8 @@ namespace sse
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0u;
-                    else
-                        (*outX) = static_cast<uint8_t>( (*in1X) - (*in2X) );
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
@@ -1240,7 +1261,7 @@ namespace sse
             const simd mask = _mm_set_epi8( maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
                                             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80u);
+            const char compareValue = static_cast<char>((threshold - 1) ^ 0x80);
             const simd compare = _mm_set_epi8(
                 compareValue, compareValue, compareValue, compareValue,
                 compareValue, compareValue, compareValue, compareValue,
@@ -1597,7 +1618,7 @@ namespace neon
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++inX )
-                    (*outX) = ~(*inX);
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
     }
@@ -1809,12 +1830,8 @@ namespace neon
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
-                        (*outX) = 0;
-                    else
-                        (*outX) = (*in1X) - (*in2X);
-                }
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
             }
         }
     }
@@ -2193,6 +2210,40 @@ if ( simdType == neon_function ) { \
 
         AVX_CODE( avx::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height, SIMDType simdType )
+    {
+        const uint32_t simdSize = getSimdSize( simdType );
+
+        if ( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+            Image_Function::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        if ( in.colorCount() != out.colorCount() )
+            throw imageException( "Color counts of images are different" );
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t colorCount = in.colorCount();
+
+        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        width = width * colorCount;
+
+        const uint32_t simdWidth = width / simdSize;
+        const uint32_t totalSimdWidth = simdWidth * simdSize;
+        const uint32_t nonSimdWidth = width - totalSimdWidth;
+
+        SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2741,6 +2792,38 @@ namespace Image_Function_Simd
                          uint32_t width, uint32_t height )
     {
         simd::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in )
+    {
+        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::ParameterValidation( out );
+
+        ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+
+        Image out = Image().generate( width, height, in.colorCount() );
+        ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height )
+    {
+        simd::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
     Image ConvertToRgb( const Image & in )

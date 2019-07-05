@@ -58,19 +58,22 @@ namespace
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
+        if ( dilationX == 0u && dilationY == 0u )
+            return;
 
         if( dilationX > width / 2 )
             dilationX = width / 2;
         if( dilationY > height / 2 )
             dilationY = height / 2;
 
-        if( dilationX > 0u ) {
+        const uint32_t rowSize = image.rowSize();
+
+        if ( dilationX > 0u ) {
             const int32_t dilateX = static_cast<int32_t>(dilationX);
 
             uint8_t ** startPos = new uint8_t *[2 * width];
             uint8_t ** endPos = startPos + width;
 
-            const uint32_t rowSize = image.rowSize();
             uint8_t * imageY    = image.data() + y * rowSize + x;
             uint8_t * imageYEnd = imageY + height * rowSize;
 
@@ -90,13 +93,13 @@ namespace
                         else
                             startPos[pairCount] = imageX - dilateX;
 
-                        if( imageXEnd - imageX < dilateX )
-                            endPos[pairCount] = imageXEnd;
-                        else
-                            endPos[pairCount] = imageX + dilateX;
+                        if ( imageXEnd - imageX < dilateX ) {
+                            endPos[pairCount++] = imageXEnd;
+                            break;
+                        }
 
+                        endPos[pairCount++] = imageX + dilateX;
                         previousValue = 0xFFu ^ previousValue;
-                        ++pairCount;
                     }
                 }
 
@@ -116,7 +119,6 @@ namespace
             uint8_t ** startPos = new uint8_t *[2 * height];
             uint8_t ** endPos = startPos + height;
 
-            const uint32_t rowSize = image.rowSize();
             uint8_t * imageX    = image.data() + y * rowSize + x;
             uint8_t * imageXEnd = imageX + width;
 
@@ -138,13 +140,13 @@ namespace
                         else
                             startPos[pairCount] = imageY - dilationY * rowSize;
 
-                        if( height - rowId < dilationY )
-                            endPos[pairCount] = imageYEnd;
-                        else
-                            endPos[pairCount] = imageY + dilationY * rowSize;
+                        if ( height - rowId < dilationY ) {
+                            endPos[pairCount++] = imageYEnd;
+                            break;
+                        }
 
+                        endPos[pairCount++] = imageY + dilationY * rowSize;
                         previousValue = 0xFFu ^ previousValue;
-                        ++pairCount;
                     }
                 }
 
@@ -567,7 +569,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, inX += colorCount )
-                (*outX) = static_cast <uint8_t>((*(inX) + *(inX + 1) + *(inX + 2)) / 3u); // average of red, green and blue components
+                (*outX) = static_cast <uint8_t>( ( *(inX) + *(inX + 1) + *(inX + 2) ) / 3 ); // average of red, green and blue components
         }
     }
 
@@ -959,7 +961,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, ++inX )
-                (*outX) = ~(*inX);
+                (*outX) = static_cast<uint8_t>( ~(*inX) );
         }
     }
 
@@ -1791,7 +1793,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
-                (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : (*in1X) - (*in2X) );
+                (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
         }
     }
 

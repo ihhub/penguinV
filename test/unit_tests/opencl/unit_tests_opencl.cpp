@@ -1,4 +1,3 @@
-// This application is designed to run unit tests on penguinV library
 #include <iostream>
 #include "unit_test_image_function_opencl.h"
 #include "../unit_test_framework.h"
@@ -8,8 +7,6 @@
 
 int main( int argc, char * argv[] )
 {
-    // The main purpose of this application is to test everything within library
-    // To do this we need an engine (framework) and a bunch of tests
     try 
     {
         // The main purpose of this application is to test everything within library
@@ -31,14 +28,11 @@ int main( int argc, char * argv[] )
             const multiCL::OpenCLDevice & device = deviceManager.device();
             std::cout << device.name() << ": " << device.computeCapability() << std::endl;
 
-            // We preallocate memory (32 MB)
-            multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
+            multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 ); // preallocate memory (32 MB)
 
-            // We create a framework and add tests
             UnitTestFramework framework;
             addTests_Image_Function_OpenCL( framework );
 
-            // Just run the framework what will handle all tests
             returnValue += framework.run();
         }
 

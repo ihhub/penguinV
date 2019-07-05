@@ -67,7 +67,7 @@ namespace bitmap_operation
 
 void addTests_Bitmap( UnitTestFramework & framework )
 {
-    framework.add(bitmap_operation::WhiteGrayScaleImage, "Save and load white gray-scale image");
-    framework.add(bitmap_operation::BlackGrayScaleImage, "Save and load black gray-scale image");
-    framework.add(bitmap_operation::RandomRGBImage,      "Save and load random RGB image");
+    framework.add(bitmap_operation::WhiteGrayScaleImage, "BMP: Save and load white gray-scale image");
+    framework.add(bitmap_operation::BlackGrayScaleImage, "BMP: Save and load black gray-scale image");
+    framework.add(bitmap_operation::RandomRGBImage,      "BMP: Save and load random RGB image");
 }

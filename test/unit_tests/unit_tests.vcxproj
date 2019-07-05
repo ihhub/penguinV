@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\src\edge_detection.cpp" />
     <ClCompile Include="..\..\src\fft.cpp" />
     <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\file\png_image.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\function_pool_task.cpp" />
@@ -172,12 +173,14 @@
     <ClCompile Include="unit_test_image_buffer.cpp" />
     <ClCompile Include="unit_test_image_function.cpp" />
     <ClCompile Include="unit_test_math.cpp" />
+    <ClCompile Include="unit_test_png.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\blob_detection.h" />
     <ClInclude Include="..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\src\fft.h" />
     <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\file\png_image.h" />
     <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\function_pool_task.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="unit_test_image_buffer.h" />
     <ClInclude Include="unit_test_image_function.h" />
     <ClInclude Include="unit_test_math.h" />
+    <ClInclude Include="unit_test_png.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

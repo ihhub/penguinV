@@ -141,13 +141,11 @@ static void kf_bfly5(
         )
 {
     kiss_fft_cpx *Fout0,*Fout1,*Fout2,*Fout3,*Fout4;
-    size_t u;
     kiss_fft_cpx scratch[13];
     kiss_fft_cpx * twiddles = st->twiddles;
     kiss_fft_cpx *tw;
-    kiss_fft_cpx ya,yb;
-    ya = twiddles[fstride*m];
-    yb = twiddles[fstride*2*m];
+    kiss_fft_cpx ya = twiddles[fstride*m];
+    kiss_fft_cpx yb = twiddles[fstride*2*m];
 
     Fout0=Fout;
     Fout1=Fout0+m;
@@ -156,7 +154,7 @@ static void kf_bfly5(
     Fout4=Fout0+4*m;
 
     tw=st->twiddles;
-    for ( u=0; u<(size_t)m; ++u ) {
+    for ( size_t u=0; u<(size_t)m; ++u ) {
         C_FIXDIV( *Fout0,5); C_FIXDIV( *Fout1,5); C_FIXDIV( *Fout2,5); C_FIXDIV( *Fout3,5); C_FIXDIV( *Fout4,5);
         scratch[0] = *Fout0;
 
@@ -223,7 +221,7 @@ static void kf_bfly_generic(
             int twidx=0;
             Fout[ k ] = scratch[0];
             for (q=1;q<p;++q ) {
-                twidx += (int)(fstride * k);
+                twidx += (int)(fstride) * k;
                 if (twidx>=Norig) twidx-=Norig;
                 C_MUL(t,scratch[q] , twiddles[twidx] );
                 C_ADDTO( Fout[ k ] ,t);
@@ -313,8 +311,7 @@ static
 void kf_factor(int n,int * facbuf)
 {
     int p=4;
-    double floor_sqrt;
-    floor_sqrt = floor( sqrt((double)n) );
+    const double floor_sqrt = floor( sqrt((double)n) );
 
     /*factor out powers of 4, powers of 2, then any remaining primes */
     do {
