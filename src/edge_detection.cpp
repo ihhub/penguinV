@@ -331,8 +331,8 @@ namespace
             throw imageException("The data is required");
         if (filterSize > data.size())
             filterSize = static_cast<uint32_t>(data.size());
-        if (filterSize < 3u || (filterSize % 2 != 0))
-            throw imageException("The size of the filter must be smaller than 3 and uneven");
+        if (filterSize < 3u || (filterSize % 2 == 0))
+            throw imageException("The size of the filter must be no smaller than 3 and uneven");
 
         std::vector< int > out(data.size());
         std::vector< int > filter(filterSize);
@@ -340,7 +340,7 @@ namespace
         const uint32_t halfFilterSize = filterSize / 2;
         const size_t size = data.size();
 
-        for (size_t i = 0u; i < size; ++i)
+        for (size_t i = 0u; i < size - halfFilterSize; ++i)
         {
             const size_t start = (i >= halfFilterSize) ? (i - halfFilterSize) : 0u;
             const size_t end   = (i + halfFilterSize < size) ? (i + halfFilterSize) : 0u;
@@ -361,15 +361,51 @@ namespace
 
         std::swap(data, out);
     }
+
+    template< typename _Type >
+    PenguinV_Image::Image applyFiltering(PenguinV_Image::Image & image, const EdgeParameter & edgeParameter)
+    {
+        uint32_t imageNoPixels; 
+        std::vector< int > data;
+
+        switch (edgeParameter.filter)
+        {
+        case (edgeParameter.MEDIAN):
+            imageNoPixels = image.width() * image.height();
+            data.resize(imageNoPixels);
+            
+            for (uint32_t i = 0u; i < imageNoPixels; ++i)
+                data[i] = image.data()[i];
+            
+            meanFilter(data, edgeParameter.filterKernelSize);
+            
+            for (uint32_t i = 0u; i < imageNoPixels; ++i)
+                image.data()[i] = static_cast<uint8_t>(data[i]);
+            
+            break;
+
+        case (edgeParameter.GAUSSIAN):
+            // To be continued...
+            break;
+
+        default:
+            break;
+        }
+
+        return image;
+    }
 }
 
-EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
+EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, filterType _filter, 
+                              uint32_t _filterKernelSize, uint32_t _groupFactor, uint32_t _skipFactor, 
                               uint32_t _contrastCheckLeftSideOffset, uint32_t _contrastCheckRightSideOffset, uint8_t _minimumContrast )
-    : direction  ( _direction )
-    , gradient   ( _gradient )
-    , edge       ( _edge )
-    , groupFactor( _groupFactor )
-    , skipFactor ( _skipFactor )
+    : direction        ( _direction )
+    , gradient         ( _gradient )
+    , edge             ( _edge )
+    , filter           ( _filter )
+    , filterKernelSize ( _filterKernelSize )
+    , groupFactor      ( _groupFactor )
+    , skipFactor       ( _skipFactor )
     , contrastCheckLeftSideOffset( _contrastCheckLeftSideOffset )
     , contrastCheckRightSideOffset( _contrastCheckRightSideOffset )
     , minimumContrast( _minimumContrast )
@@ -389,11 +425,27 @@ void EdgeParameter::verify() const
 void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
-    findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    if (edgeParameter.filter != edgeParameter.NONE)
+    {
+        PenguinV_Image::Image imageCopy(image);
+        imageCopy = applyFiltering<double>(imageCopy, edgeParameter);
+
+        findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
+    }
+    else
+        findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
 
 void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
-    findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    if (edgeParameter.filter != edgeParameter.NONE)
+    {
+        PenguinV_Image::Image imageCopy(image);
+        imageCopy = applyFiltering<float>(imageCopy, edgeParameter);
+
+        findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
+    }
+    else
+        findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
