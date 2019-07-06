@@ -425,27 +425,27 @@ void EdgeParameter::verify() const
 void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
-    if (edgeParameter.filter != edgeParameter.NONE)
-    {
+    if ( edgeParameter.filter != edgeParameter.NONE ) {
         PenguinV_Image::Image imageCopy(image);
         imageCopy = applyFiltering<double>(imageCopy, edgeParameter);
 
-        findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
+        findEdgePoints( imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
     }
-    else
+    else {
         findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    }
 }
 
 void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
-    if (edgeParameter.filter != edgeParameter.NONE)
-    {
+    if ( edgeParameter.filter != edgeParameter.NONE ) {
         PenguinV_Image::Image imageCopy(image);
         imageCopy = applyFiltering<float>(imageCopy, edgeParameter);
 
-        findEdgePoints(imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint);
+        findEdgePoints( imageCopy, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
     }
-    else
+    else { 
         findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
+    }
 }
