@@ -866,11 +866,11 @@ namespace Image_Function_Cuda
         const uint8_t * in1Y = in1.data() + startY1 * rowSizeIn1 + startX1 * colorCount;
         const uint8_t * in2Y = in2.data() + startY2 * rowSizeIn2 + startX2 * colorCount;
 
-        uint32_t result = static_cast<uint32_t>(true);
+        multiCuda::Type< uint32_t > result( 1 );
         launchKernel2D( isEqualCuda, width, height,
-                        in1Y, rowSizeIn1, in2Y, rowSizeIn2, width, height, &result );
+                        in1Y, rowSizeIn1, in2Y, rowSizeIn2, width, height, result.data() );
 
-        return result;
+        return ( result.get() != 0 );
     }
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
