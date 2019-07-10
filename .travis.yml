@@ -21,69 +21,68 @@ matrix:
   allow_failures:
     - os: windows
   include:
-    # - os: linux
-    #   name: "CUDA8-Qt5.9"
-    #   env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
-    #   before_install:
-    #     - source script/travis/install_cuda.sh
-    #     - source script/travis/install_qt5.sh
-    # - os: linux
-    #   env: STATIC_ANALYSIS=ON
-    #   before_install:
-    #     - |
-    #       if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-    #         curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
-    #       fi
-    #   script:
-    #     - export EXCLUDE_PATTERN_1=" not found in expected header ";
-    #     - export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
-    #     - export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
-    #     - git clone https://github.com/myint/cppclean;
-    #     - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
-    #     - cd ${TRAVIS_BUILD_DIR}
-    #     - |
-    #       if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-    #         echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
-    #         bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
-    #       else
-    #         echo "Skipping clang-format check since this is not a pull request."
-    #       fi
-    # - os: linux
-    #   env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
-    #   after_script:
-    #     - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.2.log" > out && cat out
-    #     - test ! -s out
-    #   addons:
-    #     apt:
-    #       update: true
-    #       packages: valgrind
-    # - os: linux
-    #   language: python
-    #   python: 3.6
-    #   env: SWIG=ON
-    #   before_script:
-    #     - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
-    #     - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
-    #     - ./autogen.sh
-    #     - ./configure --prefix=${HOME}/swig/
-    #     - make
-    #     - make install
-    #     - export PATH=${HOME}/swig/bin:$PATH
-    #     - swig -version
-    #     - python --version
-    #   script:
-    #     - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
-    #     - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
-    # - os: osx
-    #   env: QT_BASE=latest CMAKE_OPTIONS=""
-    #   before_install: source script/travis/install_qt5.sh
-    # - os: windows
-    #   name: Windows (VS2015 Win32)
-    #   env:
-    #     - TARGET="Visual Studio 14 2015"
-    #     - BUILD_TYPE="Release"
-    #   before_install: choco install -y vcbuildtools --version 2015.4 --force;
-    #   install: ./script/travis/install_cuda_windows.sh
+    - os: linux
+      name: "CUDA8-Qt5.9"
+      env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
+      before_install:
+        - source script/travis/install_cuda.sh
+        - source script/travis/install_qt5.sh
+    - os: linux
+      env: STATIC_ANALYSIS=ON
+      before_install:
+        - |
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            curl -L http://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-diff.py -o $TRAVIS_BUILD_DIR/script/clang-format-diff.py;
+          fi
+      script:
+        - export EXCLUDE_PATTERN_1=" not found in expected header ";
+        - export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
+        - export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
+        - git clone https://github.com/myint/cppclean;
+        - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+        - cd ${TRAVIS_BUILD_DIR}
+        - |
+          if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+            echo "Checking clang-format between TRAVIS_BRANCH=$TRAVIS_BRANCH and TRAVIS_PULL_REQUEST_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH"
+            bash $TRAVIS_BUILD_DIR/script/check_code_format.sh
+          else
+            echo "Skipping clang-format check since this is not a pull request."
+          fi
+    - os: linux
+      env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+      after_script:
+        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.2.log" > out && cat out
+        - test ! -s out
+      addons:
+        apt:
+          update: true
+          packages: valgrind
+    - os: linux
+      language: python
+      python: 3.6
+      env: SWIG=ON
+      before_script:
+        - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
+        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - ./autogen.sh
+        - ./configure --prefix=${HOME}/swig/
+        - make
+        - make install
+        - export PATH=${HOME}/swig/bin:$PATH
+        - swig -version
+        - python --version
+      script:
+        - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
+        - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
+    - os: osx
+      env: QT_BASE=latest CMAKE_OPTIONS=""
+      before_install: source script/travis/install_qt5.sh
+    - os: windows
+      name: Windows (VS2015 Win32)
+      env:
+        - TARGET="Visual Studio 14 2015"
+        - BUILD_TYPE="Release"
+      before_install: choco install -y vcbuildtools --version 2015.4 --force;
     - os: windows
       name: Windows (VS2015 x64)
       language: bash
@@ -91,11 +90,6 @@ matrix:
         - TARGET="Visual Studio 14 2015 Win64"
         - BUILD_TYPE="Release"
       before_install: choco install -y vcbuildtools --version 2015.4 --force;
-      install:
-        - travis_wait 30 cmd /c "'script/travis/install_cuda_windows.bat'"
-        - export "CUDA_DIR=/c/Program Files (x86)/NVIDIA GPU Computing Toolkit/CUDA/v8.0"
-        - export "PATH=$CUDA_DIR/bin:$CUDA_DIR/libnvvp:/c/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin:$PATH"
-        - nvcc -V
 
 before_script:
   # Let CMake generate build files
