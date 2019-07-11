@@ -202,6 +202,17 @@ namespace
         }
     }
 
+    __global__ void isEqualCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2, uint32_t width, uint32_t height, uint32_t * isEqual )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint32_t partsEqual = static_cast<uint32_t>( in1[y * rowSizeIn1 + x] == in2[y * rowSizeIn2 + x] );
+            atomicAnd( isEqual, partsEqual );
+        }
+    }
+
     __global__ void lookupTableCuda( const uint8_t * in, uint32_t rowSizeIn, uint8_t * out, uint32_t rowSizeOut,
                                      uint32_t width, uint32_t height, uint8_t * table )
     {
@@ -832,6 +843,34 @@ namespace Image_Function_Cuda
 
         launchKernel2D( invertCuda, width, height,
                         inY, rowSizeIn, outY, rowSizeOut, width, height );
+    }
+
+    bool IsEqual( const Image & in1, const Image & in2 )
+    {
+        Image_Function::ParameterValidation( in1, in2 );
+
+        return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+    }
+
+    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                  uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2 );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+
+        const uint8_t * in1Y = in1.data() + startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint8_t * in2Y = in2.data() + startY2 * rowSizeIn2 + startX2 * colorCount;
+
+        multiCuda::Type< uint32_t > result( 1 );
+        launchKernel2D( isEqualCuda, width, height,
+                        in1Y, rowSizeIn1, in2Y, rowSizeIn2, width, height, result.data() );
+
+        return ( result.get() != 0 );
     }
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
