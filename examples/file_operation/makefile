@@ -12,9 +12,16 @@ SRC += ../../src/file/bmp_image.cpp
 SRC += ../../src/file/jpeg_image.cpp
 SRC += ../../src/file/png_image.cpp
 
+.PHONY: all clean
+all: example_file_operation
+	@echo
+	@echo done
+
+clean:
+	$(RM) example_file_operation
 ifeq ($(PNG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
-LDFLAGS += -lpng
+LDFLAGS += -lpng -lz
 
 dep_error:
 	@echo
@@ -32,6 +39,3 @@ endif
 example_file_operation: $(SRC) | dep_error
 	g++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-.PHONY: clean
-clean:
-	$(RM) example_file_operation
