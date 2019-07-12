@@ -38,4 +38,3 @@ endif
 
 example_file_operation: $(SRC) | dep_error
 	g++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
