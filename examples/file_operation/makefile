@@ -1,7 +1,7 @@
 ##
 # Flags for C++ compiler
 ##
-PNG_EXISTS = $(shell ldconfig -p | grep libpng)
+PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
 CXXFLAGS += -std=c++11 -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -O2 -march=native
 
 SRC = *.cpp
@@ -12,7 +12,12 @@ SRC += ../../src/file/bmp_image.cpp
 SRC += ../../src/file/jpeg_image.cpp
 SRC += ../../src/file/png_image.cpp
 
-ifneq ($(PNG_EXISTS),)
+.PHONY: all clean
+all: example_file_operation
+
+clean:
+	$(RM) example_file_operation
+ifeq ($(PNG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
 LDFLAGS += -lpng
 
@@ -31,7 +36,3 @@ endif
 
 example_file_operation: $(SRC) | dep_error
 	g++ $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
-
-.PHONY: clean
-clean:
-	$(RM) example_file_operation
