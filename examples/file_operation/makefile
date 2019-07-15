@@ -14,14 +14,12 @@ SRC += ../../src/file/png_image.cpp
 
 .PHONY: all clean
 all: example_file_operation
-	@echo
-	@echo done
 
 clean:
 	$(RM) example_file_operation
 ifeq ($(PNG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
-LDFLAGS += -lpng -lz
+LDFLAGS += -lpng
 
 dep_error:
 	@echo
