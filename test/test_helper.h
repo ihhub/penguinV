@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdlib>
-#include <vector>
 #include "../src/image_buffer.h"
 
 namespace Test_Helper

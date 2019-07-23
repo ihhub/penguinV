@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cstdint>
-#include <cuda_runtime.h>
-#include <vector>
 #include "cuda_device.cuh"
 #include "../image_exception.h"
 
