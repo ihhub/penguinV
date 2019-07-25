@@ -1,5 +1,4 @@
 #include "fft.h"
-#include "image_function.h"
 #include "image_exception.h"
 
 namespace FFT
@@ -91,9 +90,11 @@ namespace FFT
         for ( uint32_t inY = 0; inY < _height; ++inY ) {
             const uint32_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
 
+            const uint32_t posYIn = inY * _width;
+            const uint32_t posYOut = outY * _width;
             for ( uint32_t inX = 0; inX < _width; ++inX ) {
                 const uint32_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
-                out[outY * _width + outX] = static_cast<uint8_t>(_data[inY * _width + inX].r / static_cast<float>(size) + 0.5);
+                out[posYOut + outX] = static_cast<uint8_t>(_data[posYIn + inX].r / static_cast<float>(size) + 0.5);
             }
         }
 

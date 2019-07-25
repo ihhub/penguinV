@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cuda_runtime.h>
 #include <list>
 #include <string>
 #include <vector>

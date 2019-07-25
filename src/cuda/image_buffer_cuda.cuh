@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cuda_runtime.h>
 #include "../image_buffer.h"
 #include "cuda_device.cuh"
 

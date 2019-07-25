@@ -6,7 +6,6 @@
 #include <CL/cl.h>
 #endif
 
-#include <cstdint>
 #include <map>
 #include "../memory/memory_allocator.h"
 
