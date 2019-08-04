@@ -39,7 +39,8 @@ TARGET := unit_tests
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-LIBS := -pthread -lpng -ljpeg
+# LIBS := -pthread -lpng -ljpeg
+LIBS := -pthread
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
 CXXFLAGS := -x c++ -std=c++11 $(FLAGS)
@@ -48,7 +49,44 @@ BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
 OBJFILES := $(addprefix $(BIN)/, $(foreach obj, $(OBJS), $(shell basename $(obj))))
 
+PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
+JPEG_NOT_EXISTS = $(shell g++ -ljpeg 2>&1 > /dev/null | grep 'cannot find' | wc -c)
+
 all: $(BIN) $(TARGET)
+
+ifeq ($(PNG_NOT_EXISTS),0)
+CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
+LDFLAGS += -lpng
+
+dep_error:
+	@echo
+else
+dep_error:
+	@echo 
+	@echo "Note! libpng-dev is missing from your computer,"
+	@echo "so .png images are not supported."
+	@echo
+	@echo "You can install libpng-dev by:"
+	@echo "$ sudo apt install libpng-dev"
+	@echo
+endif
+
+ifeq ($(JPEG_NOT_EXISTS),0)
+CXXFLAGS += -D PENGUINV_ENABLED_JPEG_SUPPORT
+LDFLAGS += -ljpeg
+
+dep_error:
+	@echo
+else
+dep_error:
+	@echo 
+	@echo "Note! libjpeg is missing from your computer,"
+	@echo "so .jpeg images are not supported."
+	@echo
+	@echo "You can install libjpeg by:"
+	@echo "$ sudo apt install libjpeg"
+	@echo
+endif
 
 $(BIN):
 	@mkdir -p $(BIN)
