@@ -1,5 +1,7 @@
 
 PWD := $(shell pwd)
+PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
+JPEG_NOT_EXISTS = $(shell g++ -ljpeg 2>&1 > /dev/null | grep 'cannot find' | wc -c)
 LIB_DIR := $(PWD)/../../src
 TEST_DIR := $(PWD)/..
 SRCS :=  \
@@ -34,6 +36,7 @@ SRCS :=  \
     unit_test_image_function.cpp \
     unit_test_math.cpp \
     unit_test_png.cpp
+
 TARGET := unit_tests
 
 CXX := g++
@@ -49,19 +52,19 @@ BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
 OBJFILES := $(addprefix $(BIN)/, $(foreach obj, $(OBJS), $(shell basename $(obj))))
 
-PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
-JPEG_NOT_EXISTS = $(shell g++ -ljpeg 2>&1 > /dev/null | grep 'cannot find' | wc -c)
+
 
 all: $(BIN) $(TARGET)
 
 ifeq ($(PNG_NOT_EXISTS),0)
+CFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
-LDFLAGS += -lpng
+LIBS += -lpng
 
-dep_error:
+png_note:
 	@echo
 else
-dep_error:
+png_note:
 	@echo 
 	@echo "Note! libpng-dev is missing from your computer,"
 	@echo "so .png images are not supported."
@@ -73,22 +76,22 @@ endif
 
 ifeq ($(JPEG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_JPEG_SUPPORT
-LDFLAGS += -ljpeg
+LIBS += -ljpeg
 
-dep_error:
+jpeg_note:
 	@echo
 else
-dep_error:
+jpeg_note:
 	@echo 
-	@echo "Note! libjpeg is missing from your computer,"
+	@echo "Note! libjpeg-dev is missing from your computer,"
 	@echo "so .jpeg images are not supported."
 	@echo
-	@echo "You can install libjpeg by:"
-	@echo "$ sudo apt install libjpeg"
+	@echo "You can install libjpeg-dev by:"
+	@echo "$ sudo apt install libjpeg-dev"
 	@echo
 endif
 
-$(BIN):
+$(BIN): | png_note jpeg_note
 	@mkdir -p $(BIN)
 
 $(TARGET): $(OBJFILES)
