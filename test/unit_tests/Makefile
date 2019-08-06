@@ -42,7 +42,6 @@ TARGET := unit_tests
 CXX := g++
 LINKER := g++
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
-# LIBS := -pthread -lpng -ljpeg
 LIBS := -pthread
 FLAGS := -Wall -Wextra -Wstrict-aliasing -Wpedantic -Wconversion -Wsign-conversion -O2 -march=native
 CFLAGS := -x c $(FLAGS)
@@ -51,8 +50,6 @@ BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJS := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
 OBJFILES := $(addprefix $(BIN)/, $(foreach obj, $(OBJS), $(shell basename $(obj))))
-
-
 
 all: $(BIN) $(TARGET)
 
