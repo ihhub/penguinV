@@ -54,6 +54,7 @@ namespace
     {
         static std::map< cl_device_id, MemsetKernelHolder > deviceProgram;
         static std::mutex mapGuard;
+        std::lock_guard<std::mutex> lock( mapGuard );
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
@@ -61,14 +62,11 @@ namespace
         if ( program != deviceProgram.cend() )
             return *(program->second.kernel);
 
-        mapGuard.lock();
-
         MemsetKernelHolder holder;
         holder.program = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), memsetCode.data() ) );
         holder.kernel = std::shared_ptr< multiCL::OpenCLKernel >( new multiCL::OpenCLKernel( *(holder.program), "memsetOpenCL" ) );
 
         deviceProgram[device.deviceId()] = holder;
-        mapGuard.unlock();
 
         return *(deviceProgram[device.deviceId()].kernel);
     }
