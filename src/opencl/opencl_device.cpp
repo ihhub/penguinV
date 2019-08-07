@@ -54,7 +54,7 @@ namespace
     {
         static std::map< cl_device_id, MemsetKernelHolder > deviceProgram;
         static std::mutex mapGuard;
-        std::lock_guard<std::mutex> lock(mapGuard);
+        std::lock_guard<std::mutex> lock( mapGuard );
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
