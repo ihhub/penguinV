@@ -312,7 +312,7 @@ namespace Blob_Detection
         _blob.clear();
 
         // we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
-        PenguinV_Image::Image imageMap( width + 2,  height + 2 );
+        PenguinV_Image::Image imageMap( width + 2, height + 2 );
         imageMap.fill( EMPTY );
 
         uint32_t rowSize = image.rowSize();
@@ -340,7 +340,7 @@ namespace Blob_Detection
         std::list < BlobInfo > foundBlob;
 
         mapValueX = imageMap.data() + mapWidth;
-        uint8_t * endMap = imageMap.data() + (width + 2) * (height + 1);
+        uint8_t * endMap = imageMap.data() + ( width + 2 ) * ( height + 1 );
 
         for( ; mapValueX != endMap; ++mapValueX ) {
             if( *mapValueX == NOT_IN_USE ) { // blob found!
@@ -348,7 +348,7 @@ namespace Blob_Detection
 
                 BlobInfo & newBlob = foundBlob.back();
 
-                uint32_t relativePosition = static_cast<uint32_t>(mapValueX - imageMap.data());
+                uint32_t relativePosition = static_cast<uint32_t>( mapValueX - imageMap.data() );
 
                 std::vector < uint32_t > & pointX = newBlob._pointX;
                 std::vector < uint32_t > & pointY = newBlob._pointY;
