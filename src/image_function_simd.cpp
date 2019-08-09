@@ -1509,13 +1509,13 @@ namespace neon
         const uint8x8_t zero = vdup_n_u8(0);
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t  * src    = inY;
-            uint16_t        * dst    = outY;
+            uint16_t        * dst   = outY;
             const uint8_t  * srcEnd = src + simdWidth;
 
             for ( ; src != srcEnd; ++src ) {
                 const uint8x8_t srcData = vld1_u8( src );
 
-                vst1q_u16(dst, vaddl_u8(zero, srcData));
+                vst1q_u16( dst, vaddl_u8( zero, srcData ) );
                 dst += 8;
             }
 
