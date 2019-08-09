@@ -2209,7 +2209,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (width < simdSize) ) {
             Image_Function::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
