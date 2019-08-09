@@ -1503,6 +1503,33 @@ namespace neon
         }
     }
 
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const uint8x8_t zero = vdup_n_u8(0);
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t  * src    = inY;
+            uint16_t        * dst    = outY;
+            const uint8_t  * srcEnd = src + simdWidth;
+
+            for ( ; src != srcEnd; ++src ) {
+                const uint8x8_t srcData = vld1_u8( src );
+
+                vst1q_u16(dst, vaddl_u8(zero, srcData));
+                dst += 8;
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                        uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2210,6 +2237,7 @@ if ( simdType == neon_function ) { \
 
         AVX_CODE( avx::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
