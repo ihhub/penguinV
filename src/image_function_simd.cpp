@@ -1506,17 +1506,13 @@ namespace neon
     void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                          uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        const uint8x8_t zero = vdup_n_u8(0);
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t  * src    = inY;
             uint16_t        * dst   = outY;
-            const uint8_t  * srcEnd = src + simdWidth;
+            const uint8_t  * srcEnd = src + totalSimdWidth;
 
-            for ( ; src != srcEnd; ++src ) {
-                const uint8x8_t srcData = vld1_u8( src );
-
-                vst1q_u16( dst, vaddl_u8( zero, srcData ) );
-                dst += 8;
+            for ( ; src != srcEnd; src += 8, dst += 8 ) {
+                vst1q_u16( dst, vshll_n_u8( vld1_u8( src ), 8 ) );
             }
 
             if ( nonSimdWidth > 0 ) {
