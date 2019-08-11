@@ -1507,9 +1507,9 @@ namespace neon
                          uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const uint8_t  * src    = inY;
-            uint16_t       * dst    = outY;
-            const uint8_t  * srcEnd = src + totalSimdWidth;
+            const uint8_t * src    = inY;
+            uint16_t      * dst    = outY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
 
             for ( ; src != srcEnd; src += 8, dst += 8 ) {
                 vst1q_u16( dst, vshll_n_u8( vld1_u8( src ), 8 ) );
