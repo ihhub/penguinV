@@ -1508,7 +1508,7 @@ namespace neon
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t  * src    = inY;
-            uint16_t        * dst   = outY;
+            uint16_t       * dst    = outY;
             const uint8_t  * srcEnd = src + totalSimdWidth;
 
             for ( ; src != srcEnd; src += 8, dst += 8 ) {
