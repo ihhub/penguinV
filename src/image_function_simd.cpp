@@ -1508,14 +1508,11 @@ namespace neon
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint16_t * src    = inY;
-            uint8_t      * dst    = outY;
+            uint8_t        * dst    = outY;
             const uint16_t * srcEnd = src + totalSimdWidth;
 
-
-            for ( ; src != srcEnd; src += 8, dst += 8 ) {
+            for ( ; src != srcEnd; src += 8, dst += 8 )
                 vst1_u8( dst, vshrn_n_u16( vld1q_u16( src ), 8 ) );
-            }
-
 
             if ( nonSimdWidth > 0 ) {
                 const uint16_t * inX  = inY + totalSimdWidth;
