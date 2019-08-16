@@ -1526,6 +1526,28 @@ namespace neon
         }
     }
 
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint16_t * src    = inY;
+            uint8_t        * dst    = outY;
+            const uint16_t * srcEnd = src + totalSimdWidth;
+
+            for ( ; src != srcEnd; src += 8, dst += 8 )
+                vst1_u8( dst, vshrn_n_u16( vld1q_u16( src ), 8 ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
+            }
+        }
+    }
+
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                        uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2241,7 +2263,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
             Image_Function::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -2268,6 +2290,7 @@ if ( simdType == neon_function ) { \
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
         SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
