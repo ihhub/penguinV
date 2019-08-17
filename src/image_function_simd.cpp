@@ -1503,6 +1503,29 @@ namespace neon
         }
     }
 
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * src    = inY;
+            uint16_t      * dst    = outY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
+
+            for ( ; src != srcEnd; src += 8, dst += 8 ) {
+                vst1q_u16( dst, vshll_n_u8( vld1_u8( src ), 8 ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
     void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                          uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2204,7 +2227,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (width < simdSize) ) {
             Image_Function::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -2232,6 +2255,7 @@ if ( simdType == neon_function ) { \
 
         AVX_CODE( avx::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
