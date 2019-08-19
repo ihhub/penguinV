@@ -47,13 +47,13 @@ $(BIN)/%.o: $(LIB_DIR)/%.cu
 $(BIN)/%.o: $(LIB_DIR)/**/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: $(UNIT_TEST_DIR)/%.cpp
+$(BIN)/%.o: $(PERFORMANCE_TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(TEST_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 	
-$(BIN)/%.o: $(UNIT_TEST_DIR)/**/%.cpp
+$(BIN)/%.o: $(PERFORMANCE_TEST_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: ./%.cu
@@ -75,7 +75,7 @@ $(BIN)/%.o: ./**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 run: $(TARGET)
-	@echo "Running CUDA unit tests ..."
+	@echo "Running CUDA performance tests ..."
 	@./$(TARGET)
 clean:
 	@rm -rf $(BUILD_DIR)
