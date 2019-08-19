@@ -9,11 +9,11 @@ SRCSCU :=  \
 	performance_test_helper_cuda.cu
 SRCSCPP :=  \
 	${LIB_DIR}/image_function_helper.cpp \
-    ${PERFORMANCE_TEST_DIR}/performance_test_framework.cpp \
-    ${PERFORMANCE_TEST_DIR}/performance_test_helper.cpp \
-    ${TEST_DIR}/test_helper.cpp \
-    performance_tests_cuda.cpp \
-    performance_test_image_function_cuda.cpp
+	${PERFORMANCE_TEST_DIR}/performance_test_framework.cpp \
+	${PERFORMANCE_TEST_DIR}/performance_test_helper.cpp \
+	${TEST_DIR}/test_helper.cpp \
+	performance_tests_cuda.cpp \
+	performance_test_image_function_cuda.cpp
 TARGET := perfomance_tests_cuda
 
 CXX := nvcc
