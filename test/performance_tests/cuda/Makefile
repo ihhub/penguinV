@@ -1,6 +1,5 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../../src
-# THIRD_PARTY_DIR := $(LIB_DIR)/thirdparty/multicuda/src
 PERFORMANCE_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
 SRCSCU :=  \
