@@ -1,17 +1,19 @@
 #include <stdio.h>
 
-#include "unit_test_bitmap.h"
+#include "unit_test_file.h"
 #include "unit_test_helper.h"
-#include "../../src/file/png_image.h"
+#include "../../src/file/file_image.h"
 
-namespace png_operation
+
+namespace file_operation
 {
     bool WhiteGrayScaleImage()
     {
         const PenguinV_Image::Image original = Unit_Test::whiteImage();
-        Png_Operation::Save( "png.png", original );
+        File_Operation::Save( "png.png", original );
+//        Bitmap_Operation::Save( "bitmap.bmp", original );
 
-        const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
+        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
         remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
@@ -24,9 +26,10 @@ namespace png_operation
     bool BlackGrayScaleImage()
     {
         const PenguinV_Image::Image original = Unit_Test::blackImage();
-        Png_Operation::Save( "png.png", original );
+        File_Operation::Save( "png.png", original );
+//        Bitmap_Operation::Save( "bitmap.bmp", original );
 
-        const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
+        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
         remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
@@ -39,9 +42,10 @@ namespace png_operation
     bool RandomRGBImage()
     {
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
-        Png_Operation::Save("png.png", original);
+        File_Operation::Save("png.png", original);
+//      Bitmap_Operation::Save("bitmap.bmp", original);
 
-        const PenguinV_Image::Image loaded = Png_Operation::Load( "png.png" );
+        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
         remove( "png.png" );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
@@ -63,15 +67,14 @@ namespace png_operation
     }
 }
 
+
+void addTests_File( UnitTestFramework & framework )
+{
+    framework.add(bitmap_operation::WhiteGrayScaleImage, "File: Save and load white gray-scale image");
+    framework.add(bitmap_operation::BlackGrayScaleImage, "File: Save and load black gray-scale image");
+    framework.add(bitmap_operation::RandomRGBImage,      "File: Save and load random RGB image");
+}
+
 #ifdef PENGUINV_ENABLED_PNG_SUPPORT
-void addTests_Png( UnitTestFramework & framework )
-{
-    framework.add(png_operation::WhiteGrayScaleImage, "PNG: Save and load white gray-scale image");
-    framework.add(png_operation::BlackGrayScaleImage, "PNG: Save and load black gray-scale image");
-    framework.add(png_operation::RandomRGBImage,      "PNG: Save and load random RGB image");
-}
-#else
-void addTests_Png( UnitTestFramework & )
-{
-}
+
 #endif
