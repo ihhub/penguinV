@@ -35,12 +35,6 @@ $(BIN):
 $(TARGET): $(OBJFILES)
 	$(LINKER) $^ -o $@
 
-$(BIN)/%.o: $(THIRD_PARTY_DIR)/%.cu
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(THIRD_PARTY_DIR)/**/%.cu
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
 $(BIN)/%.o: $(LIB_DIR)/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
