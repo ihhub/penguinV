@@ -146,7 +146,9 @@
     <ClCompile Include="..\..\src\blob_detection.cpp" />
     <ClCompile Include="..\..\src\edge_detection.cpp" />
     <ClCompile Include="..\..\src\fft.cpp" />
+    <ClCompile Include="..\..\src\file\bmp_image.cpp" />
     <ClCompile Include="..\..\src\file\file_image.cpp" />
+    <ClCompile Include="..\..\src\file\png_image.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\function_pool_task.cpp" />

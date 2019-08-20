@@ -6,6 +6,7 @@ LIB_DIR := $(PWD)/../../src
 TEST_DIR := $(PWD)/..
 SRCS :=  \
     $(LIB_DIR)/file/bmp_image.cpp \
+    $(LIB_DIR)/file/file_image.cpp \
     $(LIB_DIR)/file/png_image.cpp \
     $(LIB_DIR)/math/haar_transform.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
@@ -26,16 +27,15 @@ SRCS :=  \
     $(LIB_DIR)/thread_pool.cpp \
     $(TEST_DIR)/test_helper.cpp \
     unit_tests.cpp \
-    unit_test_bitmap.cpp \
     unit_test_blob_detection.cpp \
     unit_test_edge_detection.cpp \
     unit_test_fft.cpp \
+    unit_test_file.cpp \
     unit_test_framework.cpp \
     unit_test_helper.cpp \
     unit_test_image_buffer.cpp \
     unit_test_image_function.cpp \
     unit_test_math.cpp \
-    unit_test_png.cpp
 
 TARGET := unit_tests
 
