@@ -15,12 +15,12 @@ int main( int argc, char * argv[] )
     cpu_Memory::MemoryAllocator::instance().reserve( 32 * 1024 * 1024 ); // reserve preallocated memory
 
     UnitTestFramework framework;
-    addTests_File           ( framework );
     addTests_Blob_Detection ( framework );
     addTests_Edge_Detection ( framework );
     addTests_Image_Buffer   ( framework );
     addTests_Image_Function ( framework );
     addTests_Math           ( framework );
     addTests_FFT            ( framework );
+    addTests_File           ( framework );
     return framework.run();
 }
