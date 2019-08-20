@@ -6,35 +6,50 @@
 
 
 namespace file_operation
-{
+{    
     bool WhiteGrayScaleImage()
     {
+        std::vector<std::string> filenames;
+        filenames.push_back( "bitmap.bmp" );
+#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+        filenames.push_back( "png.png" );
+#endif
         const PenguinV_Image::Image original = Unit_Test::whiteImage();
-        File_Operation::Save( "png.png", original );
-//        Bitmap_Operation::Save( "bitmap.bmp", original );
 
-        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
-        remove( "png.png" );
+        for ( auto filename = filenames.begin(); filename != filenames.end(); ++filename )
+        {
+            File_Operation::Save( filename->c_str(), original );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
-             !Unit_Test::verifyImage( loaded, 255u ) )
-            return false;
+            const PenguinV_Image::Image loaded = File_Operation::Load( filename->c_str() );
+            remove( filename->c_str() );
 
+            if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
+                 !Unit_Test::verifyImage( loaded, 255u ) )
+                return false;
+        }
         return true;
     }
 
     bool BlackGrayScaleImage()
     {
+        std::vector<std::string> filenames;
+        filenames.push_back( "bitmap.bmp" );
+#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+        filenames.push_back( "png.png" );
+#endif
         const PenguinV_Image::Image original = Unit_Test::blackImage();
-        File_Operation::Save( "png.png", original );
-//        Bitmap_Operation::Save( "bitmap.bmp", original );
 
-        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
-        remove( "png.png" );
+        for ( auto filename = filenames.begin(); filename != filenames.end(); ++filename )
+        {
+            File_Operation::Save( filename->c_str(), original );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
-             !Unit_Test::verifyImage( loaded, 0u ) )
-            return false;
+            const PenguinV_Image::Image loaded = File_Operation::Load( filename->c_str() );
+            remove( filename->c_str() );
+
+            if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() ||
+                 !Unit_Test::verifyImage( loaded, 0u ) )
+                return false;
+        }
 
         return true;
     }
@@ -42,27 +57,34 @@ namespace file_operation
     bool RandomRGBImage()
     {
         const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
-        File_Operation::Save("png.png", original);
-//      Bitmap_Operation::Save("bitmap.bmp", original);
+        std::vector<std::string> filenames;
+        filenames.push_back( "bitmap.bmp" );
 
-        const PenguinV_Image::Image loaded = File_Operation::Load( "png.png" );
-        remove( "png.png" );
+#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+        filenames.push_back( "png.png" );
+#endif
+        for ( auto filename = filenames.begin(); filename != filenames.end(); ++filename )
+        {
+            File_Operation::Save( filename->c_str(), original );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
-            return false;
+            const PenguinV_Image::Image loaded = File_Operation::Load( filename->c_str() );
+            remove( filename->c_str() );
 
-        const uint32_t rowSizeIn  = original.rowSize();
-        const uint32_t rowSizeOut = loaded.rowSize();
-        const uint32_t width = original.width() * original.colorCount();
-        const uint8_t * inY  = original.data();
-        const uint8_t * outY = loaded.data();
-        const uint8_t * inYEnd = inY + rowSizeIn * original.height();
-
-        for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
-            if ( memcmp( inY, outY, width ) != 0 )
+            if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
                 return false;
-        }
 
+            const uint32_t rowSizeIn  = original.rowSize();
+            const uint32_t rowSizeOut = loaded.rowSize();
+            const uint32_t width = original.width() * original.colorCount();
+            const uint8_t * inY  = original.data();
+            const uint8_t * outY = loaded.data();
+            const uint8_t * inYEnd = inY + rowSizeIn * original.height();
+
+            for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+                if ( memcmp( inY, outY, width ) != 0 )
+                    return false;
+            }
+        }
         return true;
     }
 }
@@ -70,11 +92,7 @@ namespace file_operation
 
 void addTests_File( UnitTestFramework & framework )
 {
-    framework.add(bitmap_operation::WhiteGrayScaleImage, "File: Save and load white gray-scale image");
-    framework.add(bitmap_operation::BlackGrayScaleImage, "File: Save and load black gray-scale image");
-    framework.add(bitmap_operation::RandomRGBImage,      "File: Save and load random RGB image");
+    framework.add(file_operation::WhiteGrayScaleImage, "File: Save and load white gray-scale image");
+    framework.add(file_operation::BlackGrayScaleImage, "File: Save and load black gray-scale image");
+    framework.add(file_operation::RandomRGBImage,      "File: Save and load random RGB image");
 }
-
-#ifdef PENGUINV_ENABLED_PNG_SUPPORT
-
-#endif
