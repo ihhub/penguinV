@@ -24,10 +24,13 @@ matrix:
       before_install:
         - source script/travis/install_cuda.sh
         - source script/travis/install_qt5.sh
-      after_script:
+      before_script:
         - cd test/performance_tests/cuda
         - make clean
         - make
+        - cd ../../..
+        - mkdir -p build && cd build
+        - cmake .. ${CMAKE_OPTIONS}
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
