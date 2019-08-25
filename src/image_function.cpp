@@ -8,7 +8,7 @@ namespace
     struct FunctionRegistrator
     {
         Image_Function_Helper::FunctionTableHolder table;
-        
+
         FunctionRegistrator()
         {
             table.AbsoluteDifference = &Image_Function::AbsoluteDifference;
@@ -57,7 +57,7 @@ namespace
 
     void Dilate( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
         Image_Function::VerifyGrayScaleImage( image );
 
         if ( dilationX == 0u && dilationY == 0u )
@@ -187,7 +187,7 @@ namespace Image_Function
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -223,7 +223,7 @@ namespace Image_Function
 
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & result )
     {
-        ParameterValidation( image, x, y, width, height );
+        ParameterValidation( width, height, image, x, y );
 
         const uint8_t colorCount = image.colorCount();
         width = width * colorCount;
@@ -291,7 +291,7 @@ namespace Image_Function
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -339,7 +339,7 @@ namespace Image_Function
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -387,7 +387,7 @@ namespace Image_Function
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -434,7 +434,7 @@ namespace Image_Function
 
     Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
 
         Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
         ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
@@ -445,8 +445,8 @@ namespace Image_Function
     void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-        ParameterValidation( out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
+        ParameterValidation( width, height, out, startXOut, startYOut );
         if ( in.colorCount() != out.colorCount() )
             throw imageException( "Color counts of images are different" );
 
@@ -490,7 +490,7 @@ namespace Image_Function
 
     Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
 
         Image out = Image().generate( width, height, in.colorCount() );
         ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
@@ -501,8 +501,8 @@ namespace Image_Function
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                         uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-        ParameterValidation( out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
+        ParameterValidation( width, height, out, startXOut, startYOut );
         if ( in.colorCount() != out.colorCount() )
             throw imageException( "Color counts of images are different" );
 
@@ -546,7 +546,7 @@ namespace Image_Function
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                              uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( out );
 
         if( in.colorCount() == GRAY_SCALE ) {
@@ -593,7 +593,7 @@ namespace Image_Function
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                        uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyRGBImage     ( out );
 
         if( in.colorCount() == RGB ) {
@@ -639,7 +639,7 @@ namespace Image_Function
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
         width = width * colorCount;
@@ -676,7 +676,7 @@ namespace Image_Function
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( out );
 
         if( channelId >= in.colorCount() )
@@ -710,7 +710,7 @@ namespace Image_Function
 
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
-        ParameterValidation( image, x, y, width, height );
+        ParameterValidation( width, height, image, x, y );
 
         const uint8_t colorCount = image.colorCount();
         width = width * colorCount;
@@ -745,7 +745,7 @@ namespace Image_Function
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         if( !horizontal && !vertical ) {
@@ -809,7 +809,7 @@ namespace Image_Function
     void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                           uint32_t width, uint32_t height, double a, double gamma )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         if( a < 0 || gamma < 0 )
             throw imageException( "Gamma correction parameters are invalid" );
@@ -857,7 +857,7 @@ namespace Image_Function
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
     {
-        ParameterValidation( image, x, y, width, height );
+        ParameterValidation( width, height, image, x, y );
         VerifyGrayScaleImage( image );
         OptimiseRoi( width, height, image );
 
@@ -897,7 +897,7 @@ namespace Image_Function
     void Histogram( const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY, uint32_t width, uint32_t height,
                     std::vector < uint32_t > & histogram )
     {
-        ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
+        ParameterValidation( width, height, image, x, y, mask, maskX, maskY );
         VerifyGrayScaleImage( image, mask );
         OptimiseRoi( width, height, image, mask );
 
@@ -941,7 +941,7 @@ namespace Image_Function
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in, out );
         width = width * colorCount;
@@ -976,7 +976,7 @@ namespace Image_Function
 
     bool IsBinary( const Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        ParameterValidation( image, startX, startY, width, height );
+        ParameterValidation( width, height, image, startX, startY );
         VerifyGrayScaleImage( image );
 
         const std::vector< uint32_t > histogram = Histogram( image, startX, startY, width, height );
@@ -1001,7 +1001,7 @@ namespace Image_Function
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2 );
 
         const uint8_t colorCount = CommonColorCount( in1, in2 );
         width = width * colorCount;
@@ -1049,7 +1049,7 @@ namespace Image_Function
     void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
@@ -1097,7 +1097,7 @@ namespace Image_Function
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -1147,8 +1147,8 @@ namespace Image_Function
                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation ( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
-        ParameterValidation ( out, startXOut, startYOut, width, height );
+        ParameterValidation ( width, height, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3 );
+        ParameterValidation ( width, height, out, startXOut, startYOut );
         VerifyGrayScaleImage( in1, in2, in3 );
         VerifyRGBImage      ( out );
 
@@ -1206,7 +1206,7 @@ namespace Image_Function
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -1253,7 +1253,7 @@ namespace Image_Function
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const uint8_t colorCount = CommonColorCount( in, out );
         const uint32_t rowSizeIn = in.rowSize();
@@ -1313,7 +1313,7 @@ namespace Image_Function
     void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                             std::vector < uint32_t > & projection )
     {
-        ParameterValidation( image, x, y, width, height );
+        ParameterValidation( width, height, image, x, y );
 
         const uint8_t colorCount = image.colorCount();
 
@@ -1364,7 +1364,7 @@ namespace Image_Function
     void ReplaceChannel( const Image & channel, uint32_t startXChannel, uint32_t startYChannel, Image & rgb, uint32_t startXRgb, uint32_t startYRgb,
                          uint32_t width, uint32_t height, uint8_t channelId )
     {
-        ParameterValidation( channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb, width, height );
+        ParameterValidation( width, height, channel, startXChannel, startYChannel, rgb, startXRgb, startYRgb );
         VerifyGrayScaleImage( channel );
         VerifyRGBImage( rgb );
 
@@ -1413,8 +1413,8 @@ namespace Image_Function
     void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
     {
-        ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
-        ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+        ParameterValidation( widthIn, heightIn, in, startXIn, startYIn );
+        ParameterValidation( widthOut, heightOut, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -1463,7 +1463,7 @@ namespace Image_Function
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                    uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyRGBImage     ( in, out );
 
         const uint8_t colorCount = RGB;
@@ -1608,7 +1608,7 @@ namespace Image_Function
     void Rotate( const Image & in, uint32_t startXIn, uint32_t startYIn, double centerXIn, double centerYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  double centerXOut, double centerYOut, uint32_t width, uint32_t height, double angle )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         const double cosAngle = cos( angle );
@@ -1655,7 +1655,7 @@ namespace Image_Function
                         const double coeffY = posY - y;
 
                         // Take a weighted mean of four pixels. Use offset of 0.5
-                        // so that integer conversion leads to rounding instead of 
+                        // so that integer conversion leads to rounding instead of
                         // simple truncation.
                         const double sum = *(inX) * (1 - coeffX) * (1 - coeffY) + *(inX + 1) * (coeffX) * (1 - coeffY) +
                                            *(inX + rowSizeIn) * (1 - coeffX) * (coeffY) + *(inX + rowSizeIn + 1) * (coeffX) * (coeffY) + 0.5;
@@ -1716,7 +1716,7 @@ namespace Image_Function
     void Shift( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height, double shiftX, double shiftY )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
@@ -1811,8 +1811,8 @@ namespace Image_Function
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation ( in, startXIn, startYIn, width, height );
-        ParameterValidation ( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        ParameterValidation ( width, height, in, startXIn, startYIn );
+        ParameterValidation ( width, height, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3 );
         VerifyRGBImage      ( in );
         VerifyGrayScaleImage( out1, out2, out3 );
 
@@ -1867,7 +1867,7 @@ namespace Image_Function
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const uint8_t colorCount  = CommonColorCount( in1, in2, out );
         width = width * colorCount;
@@ -1903,7 +1903,7 @@ namespace Image_Function
 
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
-        ParameterValidation( image, x, y, width, height );
+        ParameterValidation( width, height, image, x, y );
         VerifyGrayScaleImage( image );
         OptimiseRoi( width, height, image );
 
@@ -1943,7 +1943,7 @@ namespace Image_Function
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t threshold )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
         OptimiseRoi( width, height, in, out );
 
@@ -1985,7 +1985,7 @@ namespace Image_Function
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
         OptimiseRoi( width, height, in, out );
 
@@ -2029,8 +2029,8 @@ namespace Image_Function
     void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
-        ParameterValidation( out, startXOut, startYOut, height, width );
+        ParameterValidation( width, height, in, startXIn, startYIn );
+        ParameterValidation( height, width, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();

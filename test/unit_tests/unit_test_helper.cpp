@@ -243,7 +243,7 @@ namespace Unit_Test
     void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                     const std::vector < uint8_t > & value )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
 
         const uint32_t rowSize = image.rowSize();
         uint8_t * outputY      = image.data() + y * rowSize + x * image.colorCount();

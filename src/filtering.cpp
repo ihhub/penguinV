@@ -47,7 +47,7 @@ namespace Image_Function
 
     Image Median( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint32_t kernelSize )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
 
         Image out( width, height );
 
@@ -59,7 +59,7 @@ namespace Image_Function
     void Median( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height, uint32_t kernelSize )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         if( kernelSize < 3 || kernelSize % 2 == 0 || kernelSize >= width || kernelSize >= height )
@@ -80,7 +80,7 @@ namespace Image_Function
         uint8_t * dataFirstValue = data.data();
         uint8_t * medianValue    = dataFirstValue + data.size() / 2;
         uint8_t * dataLastValue  = dataFirstValue + data.size();
-        
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -138,7 +138,7 @@ namespace Image_Function
 
     Image Prewitt( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
 
         Image out( width, height );
 
@@ -150,7 +150,7 @@ namespace Image_Function
     void Prewitt( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                   uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         if( width < 3 || height < 3 )
@@ -247,7 +247,7 @@ namespace Image_Function
 
     Image Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn );
 
         Image out( width, height );
 
@@ -259,7 +259,7 @@ namespace Image_Function
     void Sobel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         VerifyGrayScaleImage( in, out );
 
         if( width < 3 || height < 3 )

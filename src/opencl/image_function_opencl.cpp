@@ -355,7 +355,7 @@ namespace Image_Function_OpenCL
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "absoluteDifferenceOpenCL");
@@ -395,7 +395,7 @@ namespace Image_Function_OpenCL
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseAndOpenCL");
@@ -435,7 +435,7 @@ namespace Image_Function_OpenCL
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseOrOpenCL");
@@ -475,7 +475,7 @@ namespace Image_Function_OpenCL
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "bitwiseXorOpenCL");
@@ -579,7 +579,7 @@ namespace Image_Function_OpenCL
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                              uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( out );
 
         if( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
@@ -619,7 +619,7 @@ namespace Image_Function_OpenCL
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                        uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyRGBImage     ( out );
 
         if( in.colorCount() == PenguinV_Image::RGB ) {
@@ -656,11 +656,11 @@ namespace Image_Function_OpenCL
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "copyOpenCL");
-        
+
         const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
         width = width * colorCount;
 
@@ -669,8 +669,8 @@ namespace Image_Function_OpenCL
 
         const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
-        
-        
+
+
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
@@ -694,7 +694,7 @@ namespace Image_Function_OpenCL
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( out );
 
         if( channelId >= in.colorCount() )
@@ -721,7 +721,7 @@ namespace Image_Function_OpenCL
 
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
         Image_Function::VerifyGrayScaleImage( image );
 
         const multiCL::OpenCLProgram & program = GetProgram();
@@ -754,7 +754,7 @@ namespace Image_Function_OpenCL
     void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if( !horizontal && !vertical ) {
@@ -794,7 +794,7 @@ namespace Image_Function_OpenCL
     void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                           uint32_t width, uint32_t height, double a, double gamma )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if( a < 0 || gamma < 0 )
@@ -837,7 +837,7 @@ namespace Image_Function_OpenCL
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
         Image_Function::VerifyGrayScaleImage( image );
 
         histogram.resize( 256u );
@@ -876,7 +876,7 @@ namespace Image_Function_OpenCL
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "invertOpenCL");
@@ -914,7 +914,7 @@ namespace Image_Function_OpenCL
     void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if( table.size() != 256u )
@@ -955,7 +955,7 @@ namespace Image_Function_OpenCL
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "maximumOpenCL");
@@ -995,7 +995,7 @@ namespace Image_Function_OpenCL
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "minimumOpenCL");
@@ -1034,7 +1034,7 @@ namespace Image_Function_OpenCL
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "intensityRangeOpenCL");
@@ -1136,7 +1136,7 @@ namespace Image_Function_OpenCL
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "subtractOpenCL");
@@ -1175,7 +1175,7 @@ namespace Image_Function_OpenCL
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const multiCL::OpenCLProgram & program = GetProgram();
@@ -1211,7 +1211,7 @@ namespace Image_Function_OpenCL
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const multiCL::OpenCLProgram & program = GetProgram();

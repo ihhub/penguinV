@@ -125,7 +125,7 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
 
         _infoIn1 = std::unique_ptr < InputImageInfo >( new InputImageInfo ( image, x, y, width, height, threadCount() ) );
     }
@@ -135,7 +135,7 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2 );
 
         _infoIn1 = std::unique_ptr < InputImageInfo >( new InputImageInfo ( in1, startX1, startY1, width, height, threadCount() ) );
         _infoIn2 = std::unique_ptr < InputImageInfo >( new InputImageInfo ( in2, startX2, startY2, width, height, threadCount() ) );
@@ -145,7 +145,7 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in, inX, inY, out, outX, outY, width, height );
+        Image_Function::ParameterValidation( width, height, in, inX, inY, out, outX, outY );
 
         _infoIn1  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, inX, inY, width, height, threadCount() ) );
         _infoOut1 = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, outX, outY, width, height, threadCount() ) );
@@ -156,8 +156,8 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+        Image_Function::ParameterValidation( widthIn, heightIn, in, startXIn, startYIn );
+        Image_Function::ParameterValidation( widthOut, heightOut, out, startXOut, startYOut );
 
         _infoIn1  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, startXIn, startYIn, std::min( widthIn, widthOut ),
                                                                                                       std::min( heightIn, heightOut ), threadCount() ) );
@@ -172,7 +172,7 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut );
 
         _infoIn1  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startX1, startY1, width, height, threadCount() ) );
         _infoIn2  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startX2, startY2, width, height, threadCount() ) );
@@ -185,8 +185,8 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, width, height );
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out3, startXOut3, startYOut3, width, height );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2 );
+        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out3, startXOut3, startYOut3 );
 
         _infoIn1  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in, startXIn, startYIn, width, height, threadCount() ) );
         _infoOut1 = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out1, startXOut1, startYOut1, width, height, threadCount() ) );
@@ -200,8 +200,8 @@ namespace Function_Pool
     {
         _validateTask();
 
-        Image_Function::ParameterValidation( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
-        Image_Function::ParameterValidation( in1, startXIn1, startYIn1, out, startXOut, startYOut, width, height );
+        Image_Function::ParameterValidation( width, height, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3 );
+        Image_Function::ParameterValidation( width, height, in1, startXIn1, startYIn1, out, startXOut, startYOut );
 
         _infoIn1  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in1, startXIn1, startYIn1, width, height, threadCount() ) );
         _infoIn2  = std::unique_ptr < InputImageInfo  >( new InputImageInfo ( in2, startXIn2, startYIn2, width, height, threadCount() ) );

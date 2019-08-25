@@ -225,7 +225,7 @@ namespace
                          std::vector < PointBase2D<_Type> > & positiveEdgePoint, std::vector < PointBase2D<_Type> > & negativeEdgePoint )
     {
         Image_Function::VerifyGrayScaleImage( image );
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ParameterValidation( width, height, image, x, y );
         edgeParameter.verify();
 
         const bool horizontalEdgeDetectionBase = (edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT || edgeParameter.direction == EdgeParameter::RIGHT_TO_LEFT);
