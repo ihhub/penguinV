@@ -424,11 +424,10 @@ namespace avx
         }
     }
 
-    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, const uint8_t colorCount, uint32_t simdWidth,
+                   uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        const simd ctrl = _mm256_setr_epi8(2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 14, 13, 12, 15,
-                                           16, 17, 20, 19, 18, 23, 22, 21, 26, 25, 24, 29, 28, 27, 30, 31);
+        const simd ctrl = _mm256_setr_epi8( 2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 14, 13, 12, 15, 16, 17, 20, 19, 18, 23, 22, 21, 26, 25, 24, 29, 28, 27, 30, 31 );
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -914,9 +913,9 @@ namespace sse
 #endif
 
 #ifdef PENGUINV_SSSE3_SET
-    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn,
-               const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth,
-               const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
+    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, const uint32_t rowSizeOut,
+               const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, const uint32_t totalSimdWidth,
+               const uint32_t nonSimdWidth )
     {
         const simd ctrl = _mm_setr_epi8( 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 );
 
@@ -1156,8 +1155,8 @@ namespace sse
     }
 
 #ifdef PENGUINV_SSSE3_SET
-    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, const uint8_t colorCount, uint32_t simdWidth,
+                   uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const simd ctrl = _mm_set_epi8(15, 12, 13, 14, 9, 10, 11, 6, 7, 8, 3, 4, 5, 0, 1, 2);
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
@@ -1588,9 +1587,9 @@ namespace neon
         }
     }
 
-    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn,
-               const uint32_t rowSizeOut, const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth,
-               const uint32_t totalSimdWidth, const uint32_t nonSimdWidth )
+    void Flip( Image_Function::Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, const uint32_t rowSizeIn, const uint32_t rowSizeOut,
+               const uint8_t * inY, const uint8_t * inYEnd, bool horizontal, bool vertical, const uint32_t simdWidth, const uint32_t totalSimdWidth,
+               const uint32_t nonSimdWidth )
     {
         if( horizontal && !vertical ) {
             uint8_t * outYSimd = out.data() + startYOut * rowSizeOut + startXOut + width - 8;
@@ -1825,8 +1824,8 @@ namespace neon
         }
     }
 
-    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, const uint8_t colorCount, uint32_t simdWidth,
+                   uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t ctrl_array[8] = {2, 1, 0, 5, 4, 3, 6, 7};
         const uint8x8_t ctrl = vld1_u8( ctrl_array );
@@ -2365,10 +2364,10 @@ if ( simdType == neon_function ) { \
             const uint32_t totalSimdWidth = simdWidth * simdSize;
             const uint32_t nonSimdWidth = width - totalSimdWidth;
 
-            SSSE3_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal,
-                                   vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
-            NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal,
-                                   vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+            SSSE3_CODE( sse::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, vertical, simdWidth, totalSimdWidth,
+                                   nonSimdWidth ); )
+            NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, vertical, simdWidth, totalSimdWidth,
+                                   nonSimdWidth ); )
         }
     }
 
@@ -2993,8 +2992,7 @@ namespace Image_Function_Simd
     {
         return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
     }
-    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                            std::vector < uint32_t > & projection )
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal, std::vector<uint32_t> & projection )
     {
         simd::ProjectionProfile( image, x, y, width, height, horizontal, projection, simd::actualSimdType() );
     }

@@ -670,7 +670,6 @@ namespace Image_Function_OpenCL
         const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn  * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
-
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );

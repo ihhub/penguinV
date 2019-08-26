@@ -78,11 +78,11 @@ namespace Image_Function
             throw imageException( "Bad input parameters in image function" );
     }
 
-    template <typename TImage, typename ... Args>
-    void ParameterValidation( const TImage & image1, const TImage & image2, Args... args)
+    template <typename TImage, typename... Args>
+    void ParameterValidation( const TImage & image1, const TImage & image2, Args... args )
     {
-        ParameterValidation(image1, image2);
-        ParameterValidation(image2, args...);
+        ParameterValidation( image1, image2 );
+        ParameterValidation( image2, args... );
     }
 
     template <typename TImage>
@@ -93,11 +93,11 @@ namespace Image_Function
             throw imageException( "Bad input parameters in image function" );
     }
 
-    template <typename TImage,typename ... Args>
+    template <typename TImage, typename... Args>
     void ParameterValidation( uint32_t width, uint32_t height, const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
     {
-        ParameterValidation(width, height, image1, startX1, startY1);
-        ParameterValidation(width, height, args...);
+        ParameterValidation( width, height, image1, startX1, startY1 );
+        ParameterValidation( width, height, args... );
     }
 
     template <typename TImage>

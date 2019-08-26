@@ -1147,8 +1147,8 @@ namespace Image_Function
                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation ( width, height, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3 );
-        ParameterValidation ( width, height, out, startXOut, startYOut );
+        ParameterValidation( width, height, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3 );
+        ParameterValidation( width, height, out, startXOut, startYOut );
         VerifyGrayScaleImage( in1, in2, in3 );
         VerifyRGBImage      ( out );
 
@@ -1811,8 +1811,8 @@ namespace Image_Function
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        ParameterValidation ( width, height, in, startXIn, startYIn );
-        ParameterValidation ( width, height, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3 );
+        ParameterValidation( width, height, in, startXIn, startYIn );
+        ParameterValidation( width, height, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3 );
         VerifyRGBImage      ( in );
         VerifyGrayScaleImage( out1, out2, out3 );
 
