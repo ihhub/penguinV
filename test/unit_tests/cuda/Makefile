@@ -1,11 +1,10 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../../src
-THIRD_PARTY_DIR := $(LIB_DIR)/thirdparty/multicuda/src
 UNIT_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
 SRCSCU :=  \
-	$(THIRD_PARTY_DIR)/cuda_device.cu \
-	$(THIRD_PARTY_DIR)/cuda_helper.cu \
+        $(LIB_DIR)/cuda/cuda_device.cu \
+        $(LIB_DIR)/cuda/cuda_helper.cu \
 	$(LIB_DIR)/cuda/image_function_cuda.cu \
 	unit_test_helper_cuda.cu
 SRCSCPP :=  \
@@ -20,7 +19,7 @@ TARGET := unit_test_cuda
 
 CXX := nvcc
 LINKER := nvcc
-INCDIRS := -I$(PWD) -I$(LIB_DIR) -I$(THIRD_PARTY_DIR) -I$(UNIT_TEST_DIR) -I$(TEST_DIR)
+INCDIRS := -I$(PWD) -I$(LIB_DIR) -I$(UNIT_TEST_DIR) -I$(TEST_DIR)
 CXXFLAGS := -std=c++11 -O2 -Wno-deprecated-gpu-targets
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
@@ -36,12 +35,6 @@ $(BIN):
 
 $(TARGET): $(OBJFILES)
 	$(LINKER) $^ -o $@
-
-$(BIN)/%.o: $(THIRD_PARTY_DIR)/%.cu
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
-
-$(BIN)/%.o: $(THIRD_PARTY_DIR)/**/%.cu
-	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: $(LIB_DIR)/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
