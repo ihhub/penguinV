@@ -3,8 +3,8 @@ LIB_DIR := $(PWD)/../../../src
 UNIT_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
 SRCSCU :=  \
-        $(LIB_DIR)/cuda_device.cu \
-        $(LIB_DIR)/cuda_helper.cu \
+        $(LIB_DIR)/cuda/cuda_device.cu \
+        $(LIB_DIR)/cuda/cuda_helper.cu \
 	$(LIB_DIR)/cuda/image_function_cuda.cu \
 	unit_test_helper_cuda.cu
 SRCSCPP :=  \
