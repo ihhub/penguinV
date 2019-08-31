@@ -15,7 +15,7 @@ namespace
         EDGE       = 3u,
         CONTOUR    = 4u
     };
-
+    
     double getLengthFromCountour( const std::vector < uint32_t > & contourX, const std::vector < uint32_t > & contourY, PointBase2D< uint32_t > & startPoint,
                                  PointBase2D< uint32_t > & endPoint )
     {
@@ -304,7 +304,7 @@ namespace Blob_Detection
     const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
                                                           uint32_t height, BlobParameters parameter, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( width, height, image, x, y );
+        Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
         parameter._verify();

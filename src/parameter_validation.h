@@ -1,6 +1,7 @@
 #pragma once
 
 #include <limits>
+#include <utility>
 
 namespace Image_Function
 {
@@ -85,8 +86,19 @@ namespace Image_Function
         ParameterValidation( image2, args... );
     }
 
+    inline std::pair<uint32_t, uint32_t> ExtractRoiSize( uint32_t width, uint32_t height )
+    {
+        return std::pair<uint32_t, uint32_t>( width, height );
+    }
+
+    template <typename TImage, typename... Args>
+    std::pair<uint32_t, uint32_t> ExtractRoiSize( const TImage &, uint32_t, uint32_t, Args... args )
+    {
+        return ExtractRoiSize( args... );
+    }
+
     template <typename TImage>
-    void ParameterValidation( uint32_t width, uint32_t height, const TImage & image, uint32_t startX, uint32_t startY )
+    void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() ||
             startX + width < width || startY + height < height )
@@ -94,10 +106,14 @@ namespace Image_Function
     }
 
     template <typename TImage, typename... Args>
-    void ParameterValidation( uint32_t width, uint32_t height, const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
+    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
     {
-        ParameterValidation( width, height, image1, startX1, startY1 );
-        ParameterValidation( width, height, args... );
+        std::pair<uint32_t, uint32_t> dimensions = ExtractRoiSize( args... );
+        uint32_t width = dimensions.first;
+        uint32_t height = dimensions.second;
+
+        ParameterValidation( image1, startX1, startY1, width, height );
+        ParameterValidation( args... );
     }
 
     template <typename TImage>

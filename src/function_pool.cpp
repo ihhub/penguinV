@@ -669,7 +669,7 @@ namespace Function_Pool
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn, out, startXOut, startYOut );
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
         FunctionTask().ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );
@@ -930,8 +930,8 @@ namespace Function_Pool
     void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
     {
-        Image_Function::ParameterValidation( widthIn, heightIn, in, startXIn, startYIn );
-        Image_Function::ParameterValidation( widthOut, heightOut, out, startXOut, startYOut );
+        Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
 
         FunctionTask().Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
     }
@@ -981,8 +981,8 @@ namespace Function_Pool
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( width, height, in, startXIn, startYIn );
-        Image_Function::ParameterValidation( width, height, out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3 );
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
         Image_Function::VerifyRGBImage( in );
         Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
 
