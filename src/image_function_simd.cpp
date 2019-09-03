@@ -250,9 +250,9 @@ namespace avx
             const simd  * dstEnd = dst + simdWidth;
 
             for ( ; dst != dstEnd; ++dst ) {
-                const simd srcData1 = _mm256_loadu_si256(src);
+                const simd srcData1 = _mm256_loadu_si256( src );
                 ++src;
-                const simd srcData2 = _mm256_loadu_si256(src);
+                const simd srcData2 = _mm256_loadu_si256( src );
                 ++src;
 
                 _mm256_storeu_si256(dst, _mm256_packus_epi16(_mm256_srli_epi16 ( srcData1, 8 ), _mm256_srli_epi16 ( srcData2, 8)));
