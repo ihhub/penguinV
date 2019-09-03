@@ -321,15 +321,14 @@ namespace
         static std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > > deviceProgram;
         static std::mutex mapGuard;
 
+        std::lock_guard<std::mutex> lock( mapGuard );
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
         std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > >::const_iterator program = deviceProgram.find( device.deviceId() );
         if ( program != deviceProgram.cend() )
             return *(program->second);
 
-        mapGuard.lock();
         deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
-        mapGuard.unlock();
 
         return *(deviceProgram[device.deviceId()]);
     }

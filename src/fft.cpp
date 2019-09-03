@@ -103,12 +103,12 @@ namespace FFT
 
     void ComplexData::_allocateData( size_t size )
     {
-        _data = reinterpret_cast<kiss_fft_cpx *>(malloc( size ));
+        _data = reinterpret_cast<kiss_fft_cpx *>( cpu_Memory::MemoryAllocator::instance().allocate( size ) );
     }
 
     void ComplexData::_freeData()
     {
-        kiss_fft_free( _data );
+        cpu_Memory::MemoryAllocator::instance().free( _data );
     }
 
     void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data )
