@@ -1,7 +1,5 @@
 PWD := $(shell pwd)
 LIB_DIR := $(PWD)/../../../src
-UNIT_TEST_DIR := $(PWD)/..
-TEST_DIR := $(PWD)/../..
 
 SRCSCU := \
 	$(LIB_DIR)/cuda/cuda_device.cu \
