@@ -103,8 +103,8 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
     }
 
     const int defaultScreen = DefaultScreen( _uiDisplay );
-    _image = XCreateImage( _uiDisplay, DefaultVisual( _uiDisplay, defaultScreen ), DefaultDepth( _uiDisplay, defaultScreen ), ZPixmap,
-                           0, _data.data(), _width, _height, 32, 0 );
+    _image = XCreateImage( _uiDisplay, DefaultVisual( _uiDisplay, defaultScreen ), static_cast<uint32_t>( DefaultDepth( _uiDisplay, defaultScreen ) ), ZPixmap, 0,
+                           _data.data(), _width, _height, 32, 0 );
 }
 
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
