@@ -2,8 +2,8 @@
 # Directories containing makefiles
 ##
 subsystem:
-	-$(MAKE) -C bitmap_operation
 	-$(MAKE) -C blob_detection
+	-$(MAKE) -C file_operation
 	-$(MAKE) -C function_pool
 	-$(MAKE) -C image_function
 	-$(MAKE) -C filters
