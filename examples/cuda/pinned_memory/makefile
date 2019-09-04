@@ -9,7 +9,6 @@ TARGET := example_cuda_pinned_memory
 
 INCDIRS := \
     -I$(LIB_DIR) \
-    -I$(LIB_DIR)/file \
     -I$(LIB_DIR)/cuda \
     -I$(LIB_DIR)/memory
 
