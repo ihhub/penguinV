@@ -33,6 +33,7 @@ namespace
             table.LookupTable        = &Image_Function_OpenCL::LookupTable;
             table.Maximum            = &Image_Function_OpenCL::Maximum;
             table.Minimum            = &Image_Function_OpenCL::Minimum;
+            table.ProjectionProfile  = &Image_Function_OpenCL::ProjectionProfile;
             table.Subtract           = &Image_Function_OpenCL::Subtract;
             table.Threshold          = &Image_Function_OpenCL::Threshold;
             table.Threshold2         = &Image_Function_OpenCL::Threshold;
@@ -252,6 +253,28 @@ namespace
                 const size_t idIn2 = offsetIn2 + y * rowSizeIn2 + x;
                 const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] < in2[idIn2]) ? in1[idIn1] : in2[idIn2];
+            }
+        }
+
+        __kernel void projectionHorizontalOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, volatile __global uint * projection )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = offset + y * rowSize + x;
+                atomic_add( &projection[x], data[id] );
+            }
+        }
+
+        __kernel void projectionVerticalOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, volatile __global uint * projection )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if( x < width && y < height ) {
+                const size_t id = offset + y * rowSize + x;
+                atomic_add( &projection[y], data[id] );
             }
         }
 
@@ -1049,6 +1072,49 @@ namespace Image_Function_OpenCL
 
             LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
         }
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                            std::vector < uint32_t > & projection )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+
+        projection.resize( horizontal ? width * colorCount : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+
+        multiCL::Array< uint32_t > projectionOpenCL( projection );
+
+        const uint32_t rowSize = image.rowSize();
+
+        width = width * colorCount;
+
+        const multiCL::OpenCLProgram & program = GetProgram();
+        multiCL::OpenCLKernel kernel( program, horizontal ? "projectionHorizontalOpenCL" : "projectionVerticalOpenCL" );
+
+        const uint32_t offset = y * rowSize + x * colorCount;
+
+        kernel.setArgument( image.data(), offset, rowSize, width, height, projectionOpenCL.data() );
+
+        multiCL::launchKernel2D( kernel, width, height );
+
+        projection = projectionOpenCL.get();
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
