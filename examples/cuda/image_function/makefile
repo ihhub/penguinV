@@ -12,7 +12,7 @@ SRCSCPP := \
     $(LIB_DIR)/image_function_helper.cpp \
     example_image_function.cpp
 
-TARGET := example_cuda_image_function
+TARGET := example_image_function
 
 INCDIRS := -I$(PWD) -I$(LIB_DIR)
 
