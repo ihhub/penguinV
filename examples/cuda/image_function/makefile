@@ -38,7 +38,10 @@ $(TARGET): $(OBJFILES)
 $(BIN)/%.o: $(LIB_DIR)/cuda/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
-$(BIN)/%.o: $(SRCSCPP)
+$(BIN)/%.o: $(LIB_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
+$(BIN)/%.o: $(LIB_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
 clean:
