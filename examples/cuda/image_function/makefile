@@ -14,10 +14,7 @@ SRCSCPP := \
 
 TARGET := example_cuda_image_function
 
-INCDIRS := \
-    -I$(LIB_DIR) \
-    -I$(LIB_DIR)/file \
-    -I$(LIB_DIR)/cuda
+INCDIRS := -I$(PWD) -I$(LIB_DIR)
 
 CXX := nvcc
 LINKER := nvcc
