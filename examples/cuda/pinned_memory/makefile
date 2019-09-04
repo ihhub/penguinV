@@ -8,14 +8,10 @@ SRCSCPP := pinned_memory.cpp
 TARGET := example_cuda_pinned_memory
 
 INCDIRS := \
-	-I$(LIB_DIR)/cuda/image_buffer_cuda.cuh \
-	-I$(LIB_DIR)/cuda/image_buffer_cuda_pinned.cuh \
-	-I$(LIB_DIR)/cuda/cuda_device.cuh \
-	-I$(LIB_DIR)/cuda/cuda_helper.cuh \
-	-I$(LIB_DIR)/cuda/cuda_memory.cuh \
-	-I$(LIB_DIR)/cuda/cuda_types.cuh \
-	-I$(LIB_DIR)/image_buffer.h \
-	-I$(LIB_DIR)/memory/memory_allocator.h
+    -I$(LIB_DIR) \
+    -I$(LIB_DIR)/file \
+    -I$(LIB_DIR)/cuda \
+    -I$(LIB_DIR)/memory
 
 CXX := nvcc
 LINKER := nvcc
