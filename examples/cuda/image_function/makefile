@@ -15,19 +15,9 @@ SRCSCPP := \
 TARGET := example_cuda_image_function
 
 INCDIRS := \
-    -I$(LIB_DIR)/cuda/image_buffer_cuda.cuh \
-    -I$(LIB_DIR)/cuda/image_function_cuda.cuh \
-    -I$(LIB_DIR)/file/bmp_image.h \
-    -I$(LIB_DIR)/image_buffer.h \
-    -I$(LIB_DIR)/image_exception.h \
-    -I$(LIB_DIR)/image_function.h \
-    -I$(LIB_DIR)/image_function_helper.h \
-    -I$(LIB_DIR)/memory/memory_allocator.h \
-    -I$(LIB_DIR)/parameter_validation.h \
-    -I$(LIB_DIR)/cuda/cuda_device.cuh \
-    -I$(LIB_DIR)/cuda/cuda_helper.cuh \
-    -I$(LIB_DIR)/cuda/cuda_memory.cuh \
-    -I$(LIB_DIR)/cuda/cuda_types.cuh
+    -I$(LIB_DIR) \
+    -I$(LIB_DIR)/file \
+    -I$(LIB_DIR)/cuda
 
 CXX := nvcc
 LINKER := nvcc
