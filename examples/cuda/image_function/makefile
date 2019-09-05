@@ -44,5 +44,8 @@ $(BIN)/%.o: $(LIB_DIR)/%.cpp
 $(BIN)/%.o: $(LIB_DIR)/**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
 
+$(BIN)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
 clean:
 	@rm -rf $(BUILD_DIR)
