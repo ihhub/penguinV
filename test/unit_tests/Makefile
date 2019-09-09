@@ -6,7 +6,6 @@ LIB_DIR := $(PWD)/../../src
 TEST_DIR := $(PWD)/..
 SRCS :=  \
     $(LIB_DIR)/file/bmp_image.cpp \
-    $(LIB_DIR)/file/file_image.cpp \
     $(LIB_DIR)/file/png_image.cpp \
     $(LIB_DIR)/math/haar_transform.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
@@ -35,7 +34,7 @@ SRCS :=  \
     unit_test_helper.cpp \
     unit_test_image_buffer.cpp \
     unit_test_image_function.cpp \
-    unit_test_math.cpp \
+    unit_test_math.cpp
 
 TARGET := unit_tests
 
