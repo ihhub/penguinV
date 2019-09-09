@@ -15,7 +15,7 @@ namespace file_operation
         saveImage( filename, original );
 
         const PenguinV_Image::Image loaded = loadImage( filename );
-        remove( filename );
+        remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
              original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
@@ -30,7 +30,7 @@ namespace file_operation
         saveImage( filename, original );
 
         const PenguinV_Image::Image loaded = loadImage( filename );
-        remove( filename );
+        remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
              original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
@@ -45,7 +45,7 @@ namespace file_operation
         saveImage( filename, original );
 
         const PenguinV_Image::Image loaded = loadImage( filename );
-        remove( filename );
+        remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
             original.colorCount() != loaded.colorCount() )
