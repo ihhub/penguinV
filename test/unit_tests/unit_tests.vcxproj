@@ -207,7 +207,7 @@
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />
     <ClInclude Include="unit_test_image_function.h" />
-    <ClInclude Include="unit_test_math.h" />    
+    <ClInclude Include="unit_test_math.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
