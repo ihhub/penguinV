@@ -1,7 +1,7 @@
 #include "unit_test_blob_detection.h"
 #include "unit_test_edge_detection.h"
-#include "unit_test_fft.h"
 #include "unit_test_file.h"
+#include "unit_test_fft.h"
 #include "unit_test_framework.h"
 #include "unit_test_helper.h"
 #include "unit_test_image_buffer.h"
@@ -17,10 +17,11 @@ int main( int argc, char * argv[] )
     UnitTestFramework framework;
     addTests_Blob_Detection ( framework );
     addTests_Edge_Detection ( framework );
+    addTests_File           ( framework );
+    addTests_FFT            ( framework );
     addTests_Image_Buffer   ( framework );
     addTests_Image_Function ( framework );
     addTests_Math           ( framework );
-    addTests_FFT            ( framework );
-    addTests_File           ( framework );
+
     return framework.run();
 }
