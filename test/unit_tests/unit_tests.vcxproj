@@ -164,16 +164,15 @@
     <ClCompile Include="..\..\src\thread_pool.cpp" />
     <ClCompile Include="..\test_helper.cpp" />
     <ClCompile Include="unit_tests.cpp" />
-    <ClCompile Include="unit_test_bitmap.cpp" />
     <ClCompile Include="unit_test_blob_detection.cpp" />
     <ClCompile Include="unit_test_edge_detection.cpp" />
     <ClCompile Include="unit_test_fft.cpp" />
+    <ClCompile Include="unit_test_file.cpp" />
     <ClCompile Include="unit_test_framework.cpp" />
     <ClCompile Include="unit_test_helper.cpp" />
     <ClCompile Include="unit_test_image_buffer.cpp" />
     <ClCompile Include="unit_test_image_function.cpp" />
     <ClCompile Include="unit_test_math.cpp" />
-    <ClCompile Include="unit_test_png.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\blob_detection.h" />
@@ -199,17 +198,16 @@
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fft.h" />
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fftnd.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
-    <ClInclude Include="..\test_helper.h" />
-    <ClInclude Include="unit_test_bitmap.h" />
+    <ClInclude Include="..\test_helper.h" />    
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_edge_detection.h" />
     <ClInclude Include="unit_test_fft.h" />
+    <ClInclude Include="unit_test_file.h" />
     <ClInclude Include="unit_test_framework.h" />
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />
     <ClInclude Include="unit_test_image_function.h" />
     <ClInclude Include="unit_test_math.h" />
-    <ClInclude Include="unit_test_png.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
