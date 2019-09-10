@@ -102,7 +102,9 @@ void addTests_File( UnitTestFramework & framework )
     framework.add( file_operation::WhiteGrayScaleImageBitmap, "File: Save and load white gray-scale bitmap image" );
     framework.add( file_operation::BlackGrayScaleImageBitmap, "File: Save and load black gray-scale bitmap image" );
     framework.add( file_operation::RandomRGBImageBitmap,      "File: Save and load random RGB bitmap image" );
+#if defined( PENGUINV_ENABLED_PNG_SUPPORT )
     framework.add( file_operation::WhiteGrayScaleImagePng,    "File: Save and load white gray-scale png image" );
     framework.add( file_operation::BlackGrayScaleImagePng,    "File: Save and load black gray-scale png image" );
     framework.add( file_operation::RandomRGBImagePng,         "File: Save and load random RGB png image" );
+#endif
 }
