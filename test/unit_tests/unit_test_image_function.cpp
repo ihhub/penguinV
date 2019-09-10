@@ -2424,6 +2424,7 @@ namespace function_pool
     SET_FUNCTION_2_FORMS( IsEqual )
     SET_FUNCTION_4_FORMS( LookupTable )
     SET_FUNCTION_4_FORMS( Maximum )
+    SET_FUNCTION_4_FORMS( Merge )
     SET_FUNCTION_4_FORMS( Minimum )
     SET_FUNCTION_4_FORMS( Normalize )
     SET_FUNCTION_4_FORMS( ProjectionProfile )
