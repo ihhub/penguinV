@@ -243,6 +243,15 @@ namespace Function_Pool
             _process( _LookupTable );
         }
 
+        void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                    const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+        {
+            _setup( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, out, startXOut, startYOut, width, height );
+
+            _process( _Merge );
+        }
+
         void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                       Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
         {
@@ -343,6 +352,7 @@ namespace Function_Pool
             _IsEqual,
             _LookupTable,
             _Maximum,
+            _Merge,
             _Minimum,
             _ProjectionProfile,
             _Resize,
@@ -431,6 +441,13 @@ namespace Function_Pool
                                        _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
                                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                        _infoIn1->width[taskId], _infoIn1->height[taskId] );
+                    break;
+                case _Merge:
+                    penguinV::Merge( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                     _infoIn2->image, _infoIn2->startX[taskId], _infoIn2->startY[taskId],
+                                     _infoIn3->image, _infoIn3->startX[taskId], _infoIn3->startY[taskId],
+                                     _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
+                                     _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 case _Minimum:
                     penguinV::Minimum( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -775,6 +792,30 @@ namespace Function_Pool
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
         FunctionTask().Maximum( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+    }
+
+    Image Merge( const Image & in1, const Image & in2, const Image & in3 )
+    {
+        return Image_Function_Helper::Merge( Merge, in1, in2, in3 );
+    }
+
+    void Merge( const Image & in1, const Image & in2, const Image & in3, Image & out )
+    {
+        Image_Function_Helper::Merge( Merge, in1, in2, in3, out );
+    }
+
+    Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Merge( Merge, in1, startXIn1, startYIn1, in2, startXIn2, startYIn2,
+                                             in3, startXIn3, startYIn3, width, height  );
+    }
+
+    void Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height )
+    {
+        FunctionTask().Merge( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, out, startXOut, startYOut, width, height );
     }
 
     Image Minimum( const Image & in1, const Image & in2 )
