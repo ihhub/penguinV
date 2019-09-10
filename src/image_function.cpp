@@ -37,6 +37,8 @@ namespace
             table.ProjectionProfile  = &Image_Function::ProjectionProfile;
             table.Resize             = &Image_Function::Resize;
             table.RgbToBgr           = &Image_Function::RgbToBgr;
+            table.RgbToRgba          = &Image_Function::RgbToRgba;
+            table.RgbaToRgb          = &Image_Function::RgbaToRgb;
             table.SetPixel           = &Image_Function::SetPixel;
             table.SetPixel2          = &Image_Function::SetPixel;
             table.Shift              = &Image_Function::Shift;
@@ -1487,6 +1489,103 @@ namespace Image_Function
                 *(outX + 2) = *(inX);
                 *(outX + 1) = *(inX + 1);
                 *(outX) = *(inX + 2);
+            }
+        }
+    }
+
+    Image RgbToRgba( const Image & in )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in );
+    }
+
+    void RgbToRgba( const Image & in, Image & out )
+    {
+        Image_Function_Helper::RgbToRgba( RgbToRgba, in, out );
+    }
+
+    Image RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in, startXIn, startYIn, width, height );
+    }
+
+    void RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyRGBImage     ( in );
+        VerifyRGBAImage    ( out );
+
+        const uint8_t colorCountIn = RGB;
+        const uint8_t colorCountOut = RGBA;
+        width = width * colorCountOut;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCountIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCountOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+                *(outX) = *(inX);
+                *(outX + 1) = *(inX + 1);
+                *(outX + 2) = *(inX + 2);
+                *(outX + 3) = 255u;
+            }
+        }
+    }
+
+    Image RgbaToRgb( const Image & in )
+    {
+        return Image_Function_Helper::RgbaToRgb( RgbaToRgb, in );
+    }
+
+    void RgbaToRgb( const Image & in, Image & out )
+    {
+        Image_Function_Helper::RgbaToRgb( RgbaToRgb, in, out );
+    }
+
+    Image RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::RgbaToRgb( RgbaToRgb, in, startXIn, startYIn, width, height );
+    }
+
+    void RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyRGBAImage    ( in );
+        VerifyRGBImage     ( out );
+
+        const uint8_t colorCountIn = RGBA;
+        const uint8_t colorCountOut = RGB;
+        width = width * colorCountOut;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCountIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCountOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+                *(outX) = *(inX);
+                *(outX + 1) = *(inX + 1);
+                *(outX + 2) = *(inX + 2);
             }
         }
     }
