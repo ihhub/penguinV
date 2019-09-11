@@ -186,6 +186,18 @@ namespace Image_Function_Helper
         typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                         uint32_t width, uint32_t height );
 
+        typedef Image (*RgbToRgbaForm1)( const Image & in );
+        typedef void  (*RgbToRgbaForm2)( const Image & in, Image & out );
+        typedef Image (*RgbToRgbaForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*RgbToRgbaForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
+        typedef Image (*RgbaToRgbForm1)( const Image & in );
+        typedef void  (*RgbaToRgbForm2)( const Image & in, Image & out );
+        typedef Image (*RgbaToRgbForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*RgbaToRgbForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
         typedef Image (*RotateForm1)( const Image & in, double centerX, double centerY, double angle );
         typedef void  (*RotateForm2)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
         typedef Image (*RotateForm3)( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
@@ -457,6 +469,24 @@ namespace Image_Function_Helper
     Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in );
+
+    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, Image & out );
+
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in );
+
+    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                    const Image & in, Image & out );
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
     Image Rotate( FunctionTable::RotateForm4 rotate,
                   const Image & in, double centerX, double centerY, double angle );
 
@@ -544,6 +574,8 @@ namespace Image_Function_Helper
         FunctionTable::ProjectionProfileForm4  ProjectionProfile  = nullptr;
         FunctionTable::ResizeForm4             Resize             = nullptr;
         FunctionTable::RgbToBgrForm4           RgbToBgr           = nullptr;
+        FunctionTable::RgbToRgbaForm4          RgbToRgba          = nullptr;
+        FunctionTable::RgbaToRgbForm4          RgbaToRgb          = nullptr;
         FunctionTable::SetPixelForm1           SetPixel           = nullptr;
         FunctionTable::SetPixelForm2           SetPixel2          = nullptr;
         FunctionTable::ShiftForm4              Shift              = nullptr;

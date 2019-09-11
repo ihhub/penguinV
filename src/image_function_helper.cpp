@@ -793,6 +793,78 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                     const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyRGBImage( in );
+
+        Image out = in.generate( in.width(), in.height(), RGBA );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyRGBImage( in );
+        Image_Function::VerifyRGBAImage( out );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::VerifyRGBImage( in );
+
+        Image out = in.generate( width, height, RGBA );
+
+        rgbToRgba( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyRGBAImage( in );
+
+        Image out = in.generate( in.width(), in.height(), RGB );
+
+        rgbaToRgb( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                    const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyRGBAImage( in );
+        Image_Function::VerifyRGBImage( out );
+
+        rgbaToRgb( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::VerifyRGBAImage( in );
+
+        Image out = in.generate( width, height, RGB );
+
+        rgbaToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
     Image Rotate( FunctionTable::RotateForm4 rotate,
                   const Image & in, double centerX, double centerY, double angle )
     {

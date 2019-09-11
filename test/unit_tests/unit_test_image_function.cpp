@@ -1803,6 +1803,138 @@ namespace Function_Template
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity, false );
     }
 
+    bool form1_RgbToRgba(RgbToRgbaForm1 RgbToRgba)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const PenguinV_Image::Image output = RgbToRgba( input );
+
+        intensity.push_back( 255u );
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form2_RgbToRgba(RgbToRgbaForm2 RgbToRgba)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        PenguinV_Image::Image output = input.generate( input.width(), input.height(), RGBA, input.alignment() );
+        fillImage( output, 0, 0, output.width(), output.height(), intensityValue() );
+
+        RgbToRgba( input, output );
+
+        intensity.push_back( 255u );
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form3_RgbToRgba(RgbToRgbaForm3 RgbToRgba)
+    {
+        PenguinV_Image::Image input = uniformRGBImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+        const PenguinV_Image::Image output = RgbToRgba( input, roiX, roiY, roiWidth, roiHeight );
+
+        intensity.push_back( 255u );
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity, false );
+    }
+
+    bool form4_RgbToRgba(RgbToRgbaForm4 RgbToRgba)
+    {
+        std::vector < PenguinV_Image::Image > image = { uniformRGBImage( intensityValue() ), uniformRGBAImage( intensityValue() ) };
+        std::vector< uint8_t > intensity = intensityArray( 3 );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( image[0], roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+        RgbToRgba( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        intensity.push_back( 255u );
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity, false );
+    }
+
+    bool form1_RgbaToRgb(RgbaToRgbForm1 RgbaToRgb)
+    {
+        PenguinV_Image::Image input = uniformRGBAImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 4 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        const PenguinV_Image::Image output = RgbaToRgb( input );
+
+        intensity.pop_back();
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form2_RgbaToRgb(RgbaToRgbForm2 RgbaToRgb)
+    {
+        PenguinV_Image::Image input = uniformRGBAImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 4 );
+
+        fillImage( input, 0, 0, input.width(), input.height(), intensity );
+
+        PenguinV_Image::Image output = input.generate( input.width(), input.height(), RGB, input.alignment() );
+        fillImage( output, 0, 0, output.width(), output.height(), intensityValue() );
+
+        RgbaToRgb( input, output );
+
+        intensity.pop_back();
+
+        return verifyImage( output, intensity, false );
+    }
+
+    bool form3_RgbaToRgb(RgbaToRgbForm3 RgbaToRgb)
+    {
+        PenguinV_Image::Image input = uniformRGBAImage( intensityValue() );
+        std::vector< uint8_t > intensity = intensityArray( 4 );
+
+        uint32_t roiX, roiY, roiWidth, roiHeight;
+        generateRoi( input, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( input, roiX, roiY, roiWidth, roiHeight, intensity );
+
+        const PenguinV_Image::Image output = RgbaToRgb( input, roiX, roiY, roiWidth, roiHeight );
+
+        intensity.pop_back();
+
+        return equalSize( output, roiWidth, roiHeight ) && verifyImage( output, intensity, false );
+    }
+
+    bool form4_RgbaToRgb(RgbaToRgbForm4 RgbaToRgb)
+    {
+        std::vector < PenguinV_Image::Image > image = { uniformRGBAImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
+        std::vector< uint8_t > intensity = intensityArray( 4 );
+
+        std::vector < uint32_t > roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( image[0], roiX[0], roiY[0], roiWidth, roiHeight, intensity );
+
+        RgbaToRgb( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight );
+
+        intensity.pop_back();
+
+        return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, intensity, false );
+    }
+
     bool form1_SetPixel(SetPixelForm1 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -2394,6 +2526,8 @@ namespace image_function
     SET_FUNCTION_2_FORMS( ReplaceChannel )
     SET_FUNCTION_4_FORMS( Resize )
     SET_FUNCTION_4_FORMS( RgbToBgr )
+    SET_FUNCTION_4_FORMS( RgbToRgba )
+    SET_FUNCTION_4_FORMS( RgbaToRgb )
     SET_FUNCTION_2_FORMS( SetPixel )
     SET_FUNCTION_2_FORMS( Split )
     SET_FUNCTION_4_FORMS( Subtract )

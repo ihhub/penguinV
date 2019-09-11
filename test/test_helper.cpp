@@ -58,6 +58,26 @@ namespace Test_Helper
         return generateImage<uint8_t>( width, height, PenguinV_Image::RGB, value);
     }
 
+    PenguinV_Image::Image uniformRGBAImage( uint32_t width, uint32_t height )
+    {
+        return uniformRGBAImage( width, height, randomValue<uint8_t>( 256 ) );
+    }
+
+    PenguinV_Image::Image uniformRGBAImage( uint32_t width, uint32_t height, uint8_t value )
+    {
+        return generateImage<uint8_t>( width, height, PenguinV_Image::RGBA, value);
+    }
+
+    PenguinV_Image::Image uniformRGBAImage( const PenguinV_Image::Image & reference )
+    {
+        return uniformRGBAImage( randomValue<uint8_t>( 256 ), reference );
+    }
+
+    PenguinV_Image::Image uniformRGBAImage( uint8_t value, const PenguinV_Image::Image & reference )
+    {
+        return generateImage<uint8_t>( randomSize(), randomSize(), PenguinV_Image::RGBA, value, reference );
+    }
+
     std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
     {
         std::vector < PenguinV_Image::Image > image( count );
