@@ -86,9 +86,10 @@ namespace Image_Function
         ParameterValidation( image2, args... );
     }
 
-    inline std::pair<uint32_t, uint32_t> ExtractRoiSize( uint32_t width, uint32_t height )
+    template <typename _Type>
+    std::pair<_Type, _Type> ExtractRoiSize( _Type width, _Type height )
     {
-        return std::pair<uint32_t, uint32_t>( width, height );
+        return std::pair<_Type, _Type>( width, height );
     }
 
     template <typename TImage, typename... Args>
