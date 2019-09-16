@@ -13,17 +13,17 @@ namespace pvmath
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
             const _Type angleTolerance = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>( 0, 10, 0.1f ) + 0.1f ) );
-            const _Type angleStep = angleTolerance / static_cast<_Type>( Unit_Test::randomValue( 1, 50 ) );
+            const _Type angleStep = angleTolerance / static_cast<_Type>( Unit_Test::randomValue( 10, 50 ) );
             const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
 
-            const _Type noiseValue = lineTolerance / 2;
             std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
+            const _Type noiseValue = lineTolerance / static_cast<_Type>( 3 * 100 * point.size() );
 
             const _Type sinVal = std::sin( angle );
             const _Type cosVal = std::cos( angle );
 
             for ( typename std::vector< PointBase2D<_Type> >::iterator p = point.begin(); p != point.end(); ++p ) {
-                const _Type x = Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
+                const _Type x = Unit_Test::randomFloatValue<_Type>( -100, 100, 0.01f ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
                 const _Type y = Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
 
                 p->x = x * cosVal - y * sinVal;
