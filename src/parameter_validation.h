@@ -109,11 +109,9 @@ namespace Image_Function
     template <typename TImage, typename... Args>
     void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
     {
-        std::pair<uint32_t, uint32_t> dimensions = ExtractRoiSize( args... );
-        uint32_t width = dimensions.first;
-        uint32_t height = dimensions.second;
+        const std::pair<uint32_t, uint32_t> & dimensions = ExtractRoiSize( args... );
 
-        ParameterValidation( image1, startX1, startY1, width, height );
+        ParameterValidation( image1, startX1, startY1, dimensions.first, dimensions.second );
         ParameterValidation( args... );
     }
 
