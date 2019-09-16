@@ -241,6 +241,34 @@ namespace avx
         }
     }
 
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                        uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast <const simd*> (inY);
+            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst ) {
+                const simd srcData1 = _mm256_loadu_si256( src );
+                ++src;
+                const simd srcData2 = _mm256_loadu_si256( src );
+                ++src;
+
+                _mm256_storeu_si256(dst, _mm256_packus_epi16(_mm256_srli_epi16 ( srcData1, 8 ), _mm256_srli_epi16 ( srcData2, 8)));
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
+            }
+        }
+    }
+
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -2263,7 +2291,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (width < simdSize) ) {
             Image_Function::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -2289,6 +2317,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX_CODE( avx::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
