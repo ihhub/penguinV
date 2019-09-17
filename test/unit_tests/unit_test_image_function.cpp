@@ -10,6 +10,8 @@
 #include "unit_test_image_function.h"
 #include "unit_test_helper.h"
 
+#include <iostream>
+
 namespace
 {
     void PrepareFunction( const std::string& namespaceName )
@@ -2443,6 +2445,8 @@ struct Register_##functionWrapper                                               
 {                                                                                                                               \
     explicit Register_##functionWrapper( bool makeRegistration )                                                                \
     {                                                                                                                           \
+        std::cout << "Registering function " << namespaceName + std::string("::") + std::string(#function) +  \
+                                                           std::string(" (form ") + std::string(#counter) + std::string(")") << std::endl; \
         if( makeRegistration )                                                                                                  \
             FunctionRegistrator::instance().add( functionWrapper, namespaceName + std::string("::") + std::string(#function) +  \
                                                            std::string(" (form ") + std::string(#counter) + std::string(")") ); \
