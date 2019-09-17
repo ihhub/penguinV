@@ -6,6 +6,8 @@
 
 void UnitTestFramework::add( const testFunction test, const std::string & name )
 {
+    std::cout << "Adding " << name << std::endl;
+
     const size_t sizeBefore = _unitTest.size();
     _unitTest.insert( std::pair < testFunction, std::string > ( test, name ) );
     if ( sizeBefore == _unitTest.size() )
