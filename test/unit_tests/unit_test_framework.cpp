@@ -6,7 +6,10 @@
 
 void UnitTestFramework::add( const testFunction test, const std::string & name )
 {
+    const size_t sizeBefore = _unitTest.size();
     _unitTest.insert( std::pair < testFunction, std::string > ( test, name ) );
+    if ( sizeBefore == _unitTest.size() )
+        std::cerr << "Test " << name << " wasn't properly added to unit tests" << std::endl;
 }
 
 int UnitTestFramework::run() const
