@@ -142,7 +142,7 @@ namespace Image_Function
 
         Image out( width, height );
 
-        Sobel( in, startXIn, startYIn, out, 0, 0, width, height );
+        Prewitt( in, startXIn, startYIn, out, 0, 0, width, height );
 
         return out;
     }

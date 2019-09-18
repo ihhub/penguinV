@@ -10,8 +10,6 @@
 #include "unit_test_image_function.h"
 #include "unit_test_helper.h"
 
-#include <iostream>
-
 namespace
 {
     void PrepareFunction( const std::string& namespaceName )
@@ -53,7 +51,7 @@ namespace
         {
             std::map < UnitTestFramework::testFunction, std::string >::const_iterator pos = _function.find(test);
             if ( pos != _function.cend() )
-                std::cout << "Test " << name << " wasn't properly added to FunctionRegistrator as " << pos->second << " exists" << std::endl;
+                throw imageException( pos->second + " and " + name + " are totally same functions" );
             else
                 _function[test] = name;
         }
@@ -2449,9 +2447,6 @@ struct Register_##functionWrapper                                               
 {                                                                                                                               \
     explicit Register_##functionWrapper( bool makeRegistration )                                                                \
     {                                                                                                                           \
-        const std::string name = namespaceName + std::string("::") + std::string(#function) +  \
-                                                           std::string(" (form ") + std::string(#counter) + std::string(")"); \
-        std::cout << "Adding " << (uintptr_t)functionWrapper << " : " << name << std::endl; \
         if( makeRegistration )                                                                                                  \
             FunctionRegistrator::instance().add( functionWrapper, namespaceName + std::string("::") + std::string(#function) +  \
                                                            std::string(" (form ") + std::string(#counter) + std::string(")") ); \
