@@ -51,10 +51,11 @@ namespace
 
         void add( const UnitTestFramework::testFunction test, const std::string & name )
         {
-            const size_t sizeBefore = _function.size();
-            _function[test] = name;
-            if ( sizeBefore == _function.size() )
-                std::cout << "Test " << name << " wasn't properly added to FunctionRegistrator" << std::endl;
+            std::map < UnitTestFramework::testFunction, std::string >::const_iterator pos = _function.find(test);
+            if ( pos != _function.cend() )
+                std::cout << "Test " << name << " wasn't properly added to FunctionRegistrator as " << pos->second << " exists" << std::endl;
+            else
+                _function[test] = name;
         }
 
         void set( UnitTestFramework & framework )
