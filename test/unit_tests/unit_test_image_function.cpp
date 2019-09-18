@@ -49,7 +49,7 @@ namespace
 
         void add( const UnitTestFramework::testFunction test, const std::string & name )
         {
-            std::map < UnitTestFramework::testFunction, std::string >::const_iterator pos = _function.find(test);
+            std::map<UnitTestFramework::testFunction, std::string>::const_iterator pos = _function.find( test );
             if ( pos != _function.cend() )
                 throw imageException( pos->second + " and " + name + " are totally same functions" );
             else
