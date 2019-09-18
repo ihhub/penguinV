@@ -2451,7 +2451,7 @@ struct Register_##functionWrapper                                               
     {                                                                                                                           \
         const std::string name = namespaceName + std::string("::") + std::string(#function) +  \
                                                            std::string(" (form ") + std::string(#counter) + std::string(")"); \
-        std::cout << "Adding " << (ssize_t)functionWrapper << " : " << name << std::endl; \
+        std::cout << "Adding " << (uintptr_t)functionWrapper << " : " << name << std::endl; \
         if( makeRegistration )                                                                                                  \
             FunctionRegistrator::instance().add( functionWrapper, namespaceName + std::string("::") + std::string(#function) +  \
                                                            std::string(" (form ") + std::string(#counter) + std::string(")") ); \
