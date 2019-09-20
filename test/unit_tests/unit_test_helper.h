@@ -15,9 +15,6 @@ namespace Unit_Test
     // For CPU memory based image you could skip reference parameter
     PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
-    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
-    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference = PenguinV_Image::Image());
 
     // Generate pixel intensity values
     uint8_t intensityValue();

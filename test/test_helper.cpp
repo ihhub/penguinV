@@ -167,6 +167,41 @@ namespace Test_Helper
         return image;
     }
 
+    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value )
+    {
+        if( value.empty() )
+            return randomImage();
+
+        PenguinV_Image::Image image( randomSize(), randomSize() );
+
+        uint32_t height = image.height();
+        uint32_t width = image.width();
+
+        const size_t valueSize = value.size();
+
+        if ( valueSize <= width && (width % static_cast<uint32_t>(valueSize)) == 0 )
+            Image_Function::OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize  = image.rowSize();
+        uint8_t * outY          = image.data();
+        const uint8_t * outYEnd = outY + height * rowSize;
+
+        size_t id = 0;
+
+        for ( ; outY != outYEnd; outY += rowSize ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX ) {
+                (*outX) = value[id++];
+                if ( id == valueSize )
+                    id = 0u;
+            }
+        }
+
+        return image;
+    }
+
     uint32_t runCount()
     {
         return testRunCount;

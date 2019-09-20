@@ -24,6 +24,7 @@ namespace Test_Helper
     std::vector < PenguinV_Image::Image > uniformImages( const std::vector < uint8_t > & intensityValue, const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
     PenguinV_Image::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
     PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference = PenguinV_Image::Image());
+    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value );
 
     // Iteration count for tests
     uint32_t runCount(); // fixed value for all test loops
