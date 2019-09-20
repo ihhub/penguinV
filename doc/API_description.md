@@ -19,6 +19,12 @@ Contains structures and classes related to blob detection methods:
 - ***Point*** - a structure which represents a mathematical point in 2D space [x, y].
 - ***Value*** - a template structure used in BlobInfo structure to contain information about one found blob parameter.    
 
+**Edge_Detection**    
+Contains structures and classes related to blob detection methods:
+- ***EdgeParameter*** - a structure containing parameters for edge detection.
+- ***EdgeDetectionHelper*** - a helper class to solve the problem with template implementation.
+- ***EdgeDetectionBase*** - a main class for edge detection.
+
 **Function_Pool**    
 Contains basic functions for image processing for any CPU with multithreading support.    
 
@@ -624,7 +630,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 		
-- **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
+- **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL, Image_Function_Simd**_]
 
 	##### Syntax:
 	```cpp
@@ -919,7 +925,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Flip** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
+- **Flip** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL, Image_Function_Simd**_]
 
 	##### Syntax:
 	```cpp
@@ -1625,7 +1631,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
 	
-- **Median** [_Namespaces: **Image_Function::Filtering**_]
+- **Median** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
 	```cpp
@@ -2171,7 +2177,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ProjectionProfile** [_Namespaces: **Function_Pool, Image_Function**_]
+- **ProjectionProfile** [_Namespaces: **Function_Pool, Image_Function**, Image_Function_Simd**_]
 
 	##### Syntax:
 	```cpp
@@ -2261,7 +2267,7 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 
-- **RgbToBgr** [_Namespaces: **Function_Pool, Image_Function**_]
+- **RgbToBgr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd**_]
 
 	##### Syntax:
 	```cpp
