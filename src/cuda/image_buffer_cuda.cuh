@@ -9,7 +9,7 @@ namespace PenguinV_Image
     class ImageTemplateCuda : public ImageTemplate<TColorDepth>
     {
     public:
-        ImageTemplateCuda( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageTemplateCuda( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
             ImageTemplate<TColorDepth>::_setType( 1, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
             ImageTemplate<TColorDepth>::setColorCount( colorCount_ );

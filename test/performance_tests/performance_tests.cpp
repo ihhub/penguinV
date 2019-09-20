@@ -1,5 +1,6 @@
 #include <iostream>
 #include "performance_test_blob_detection.h"
+#include "performance_test_edge_detection.h"
 #include "performance_test_filtering.h"
 #include "performance_test_framework.h"
 #include "performance_test_helper.h"
@@ -13,6 +14,7 @@ int main( int argc, char* argv[] )
 
     PerformanceTestFramework framework;
     addTests_Blob_Detection     ( framework );
+    addTests_Edge_Detection     ( framework );
     addTests_Filtering          ( framework );
     addTests_Image_Function     ( framework );
     framework.run();

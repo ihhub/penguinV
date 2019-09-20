@@ -1,4 +1,5 @@
 #include "test_helper.h"
+#include "../src/parameter_validation.h"
 
 namespace
 {
@@ -16,6 +17,25 @@ namespace
         image.fill( value );
 
         return image;
+    }
+
+    void fillRandomData( PenguinV_Image::Image & image )
+    {
+        uint32_t height = image.height();
+        uint32_t width = image.width() * image.colorCount();
+        Image_Function::OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize  = image.rowSize();
+        uint8_t * outY          = image.data();
+        const uint8_t * outYEnd = outY + height * rowSize;
+
+        for ( ; outY != outYEnd; outY += rowSize ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX )
+                (*outX) = Test_Helper::randomValue<uint8_t>( 256 );
+        }
     }
 
     uint32_t testRunCount = 1001;  // some magic number for loop. Higher value = higher chance to verify all possible situations
@@ -124,6 +144,59 @@ namespace Test_Helper
         for( size_t i = 1u; i < image.size(); ++i ) {
             image[i] = reference.generate( image[0].width(), image[0].height() );
             image[i].fill( intensityValue[i] );
+        }
+
+        return image;
+    }
+
+    PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
+    {
+        PenguinV_Image::Image image( (width == 0) ? randomSize() : width, (height == 0) ? randomSize() : height );
+
+        fillRandomData( image );
+
+        return image;
+    }
+
+    PenguinV_Image::Image randomRGBImage( const PenguinV_Image::Image & reference )
+    {
+        PenguinV_Image::Image image = reference.generate(randomSize(), randomSize(), PenguinV_Image::RGB);
+
+        fillRandomData( image );
+
+        return image;
+    }
+
+    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value )
+    {
+        if( value.empty() )
+            return randomImage();
+
+        PenguinV_Image::Image image( randomSize(), randomSize() );
+
+        uint32_t height = image.height();
+        uint32_t width = image.width();
+
+        const size_t valueSize = value.size();
+
+        if ( valueSize <= width && (width % static_cast<uint32_t>(valueSize)) == 0 )
+            Image_Function::OptimiseRoi( width, height, image );
+
+        const uint32_t rowSize  = image.rowSize();
+        uint8_t * outY          = image.data();
+        const uint8_t * outYEnd = outY + height * rowSize;
+
+        size_t id = 0;
+
+        for ( ; outY != outYEnd; outY += rowSize ) {
+            uint8_t * outX = outY;
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; ++outX ) {
+                (*outX) = value[id++];
+                if ( id == valueSize )
+                    id = 0u;
+            }
         }
 
         return image;
