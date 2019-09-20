@@ -15,7 +15,7 @@ namespace PenguinV_Image
     class ImageTemplateOpenCL : public ImageTemplate<TColorDepth>
     {
     public:
-        ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
             ImageTemplate<TColorDepth>::_setType( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
             ImageTemplate<TColorDepth>::setColorCount( colorCount_ );

@@ -10,25 +10,6 @@ namespace
         return Unit_Test::randomValue<uint32_t>( 1, 2048 );
     }
 
-    void fillRandomData( PenguinV_Image::Image & image )
-    {
-        uint32_t height = image.height();
-        uint32_t width = image.width() * image.colorCount();
-        Image_Function::OptimiseRoi( width, height, image );
-
-        const uint32_t rowSize  = image.rowSize();
-        uint8_t * outY          = image.data();
-        const uint8_t * outYEnd = outY + height * rowSize;
-
-        for ( ; outY != outYEnd; outY += rowSize ) {
-            uint8_t * outX = outY;
-            const uint8_t * outXEnd = outX + width;
-
-            for( ; outX != outXEnd; ++outX )
-                (*outX) = Unit_Test::randomValue<uint8_t>( 256 );
-        }
-    }
-
     template <typename _Type>
     bool imageVerification( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
     {
@@ -115,19 +96,10 @@ namespace Unit_Test
         return uniformImage( 255u, 0, 0, reference );
     }
 
-    PenguinV_Image::Image randomImage( uint32_t width, uint32_t height )
-    {
-        PenguinV_Image::Image image( (width == 0) ? randomSize() : width, (height == 0) ? randomSize() : height );
-
-        fillRandomData( image );
-
-        return image;
-    }
-
     PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value )
     {
         if( value.empty() )
-            return randomImage();
+            return Test_Helper::randomImage();
 
         PenguinV_Image::Image image( randomSize(), randomSize() );
 
@@ -155,15 +127,6 @@ namespace Unit_Test
                     id = 0u;
             }
         }
-
-        return image;
-    }
-
-    PenguinV_Image::Image randomRGBImage(const PenguinV_Image::Image & reference)
-    {
-        PenguinV_Image::Image image = reference.generate(randomSize(), randomSize(), PenguinV_Image::RGB);
-
-        fillRandomData( image );
 
         return image;
     }
