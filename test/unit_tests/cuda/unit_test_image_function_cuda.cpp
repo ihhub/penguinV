@@ -214,11 +214,11 @@ namespace image_function_cuda
 
             if (verticalFlip) {
                 if (input.height() > 1)
-                    Image_Function::Fill(input, 0, 0, input.width(), input.height() / 2, intensity[1]);
+                    Image_Function_Cuda::Fill(input, 0, 0, input.width(), input.height() / 2, intensity[1]);
             }
             else if (horizontalFlip) {
                 if (input.width() > 1)
-                    Image_Function::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
+                    Image_Function_Cuda::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
             }
 
             const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, horizontalFlip, verticalFlip );
@@ -257,11 +257,11 @@ namespace image_function_cuda
 
             if (verticalFlip) {
                 if (input[0].height() > 1)
-                    Image_Function::Fill(input[0], 0, 0, input[0].width(), input[0].height() / 2, intensityFill);
+                    Image_Function_Cuda::Fill(input[0], 0, 0, input[0].width(), input[0].height() / 2, intensityFill);
             }
             else if (horizontalFlip) {
                 if (input[0].width() > 1)
-                    Image_Function::Fill(input[0], 0, 0, input[0].width() / 2, input[0].height(), intensityFill);
+                    Image_Function_Cuda::Fill(input[0], 0, 0, input[0].width() / 2, input[0].height(), intensityFill);
             }
 
             Image_Function_Cuda::Flip( input[0], input[1], horizontalFlip, verticalFlip );
@@ -300,11 +300,11 @@ namespace image_function_cuda
 
             if (verticalFlip) {
                 if (roiHeight > 1)
-                    Image_Function::Fill(input, roiX, roiY, roiWidth, roiHeight / 2, intensity[1]);
+                    Image_Function_Cuda::Fill(input, roiX, roiY, roiWidth, roiHeight / 2, intensity[1]);
             }
             else if (horizontalFlip) {
                 if (roiWidth > 1)
-                    Image_Function::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
+                    Image_Function_Cuda::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
             }
 
             const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
@@ -347,11 +347,11 @@ namespace image_function_cuda
 
             if (verticalFlip) {
                 if (roiHeight > 1)
-                    Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth, roiHeight / 2, intensityFill);
+                    Image_Function_Cuda::Fill(image[0], roiX[0], roiY[0], roiWidth, roiHeight / 2, intensityFill);
             }
             else if (horizontalFlip) {
                 if (roiWidth > 1)
-                    Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth / 2, roiHeight, intensityFill);
+                    Image_Function_Cuda::Fill(image[0], roiX[0], roiY[0], roiWidth / 2, roiHeight, intensityFill);
             }
 
             Image_Function_Cuda::Flip( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, horizontalFlip, verticalFlip );
