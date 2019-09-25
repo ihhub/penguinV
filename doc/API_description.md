@@ -2728,7 +2728,6 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out3 - third gray-scale image    
 	&nbsp;&nbsp;&nbsp;&nbsp;startXOut3 - start X position of third gray-scale image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;startYOut3 - start Y position of third gray-scale image area    
-	
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
