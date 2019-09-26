@@ -4,15 +4,15 @@ CUDA_DIR := $(LIB_DIR)/cuda
 UNIT_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
 SRCSCU :=  \
-        $(CUDA_DIR)/cuda_device.cu \
-        $(CUDA_DIR)/cuda_fft.cu \
-        $(CUDA_DIR)/cuda_helper.cu \
-        $(CUDA_DIR)/image_function_cuda.cu \
+	$(CUDA_DIR)/cuda_device.cu \
+	$(CUDA_DIR)/cuda_fft.cu \
+	$(CUDA_DIR)/cuda_helper.cu \
+	$(CUDA_DIR)/image_function_cuda.cu \
 	unit_test_helper_cuda.cu
 SRCSCPP :=  \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \
-        $(LIB_DIR)/fft.cpp \
+	$(LIB_DIR)/fft.cpp \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
 	$(TEST_DIR)/test_helper.cpp \
@@ -37,7 +37,7 @@ $(BIN):
 	@mkdir -p $(BIN)
 
 $(TARGET): $(OBJFILES)
-        $(LINKER) $^ -o $@ -lcufft
+	$(LINKER) $^ -o $@ -lcufft
 
 $(BIN)/%.o: $(LIB_DIR)/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
