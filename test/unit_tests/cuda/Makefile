@@ -23,7 +23,7 @@ TARGET := unit_test_cuda
 CXX := nvcc
 LINKER := nvcc
 INCDIRS := -I$(PWD) -I$(LIB_DIR) -I$(CUDA_DIR) -I$(UNIT_TEST_DIR) -I$(TEST_DIR)
-CXXFLAGS := -std=c++11 -O2 -Wno-deprecated-gpu-targets -lcufft
+CXXFLAGS := -std=c++11 -O2 -Wno-deprecated-gpu-targets
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJSCU := $(patsubst %.cu,%.o,$(SRCSCU))
@@ -37,7 +37,7 @@ $(BIN):
 	@mkdir -p $(BIN)
 
 $(TARGET): $(OBJFILES)
-	$(LINKER) $^ -o $@
+        $(LINKER) $^ -o $@ -lcufft
 
 $(BIN)/%.o: $(LIB_DIR)/%.cu
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
