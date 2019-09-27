@@ -80,7 +80,6 @@ before_script:
   - |
     cd test/unit_tests/cuda/
     make
-    dpkg -L cuda-cufft-8-0
     cd -
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
