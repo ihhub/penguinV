@@ -80,7 +80,7 @@ before_script:
   - |
     cd test/unit_tests/cuda/
     make    
-    find / -name cufft.h
+    sudo find / -name cufft.h
     ls $CUDA_HOME
     cd -
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
