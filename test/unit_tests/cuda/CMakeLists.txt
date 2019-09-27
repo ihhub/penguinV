@@ -6,6 +6,7 @@ set(SRCS
     ${MAIN_LIB_DIR}/cuda/cuda_helper.cu
     ${MAIN_LIB_DIR}/cuda/cuda_fft.cu
     ${MAIN_LIB_DIR}/fft.cpp
+    ${MAIN_LIB_DIR}/math/fft_base.cpp
     ${MAIN_LIB_DIR}/image_function.cpp
     ${MAIN_LIB_DIR}/image_function_helper.cpp
     ${UNIT_TEST_DIR}/unit_test_framework.cpp
