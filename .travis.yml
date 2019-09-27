@@ -79,9 +79,8 @@ before_script:
   # Let CMake generate build files
   - |
     cd test/unit_tests/cuda/
-    make    
-    sudo find / -name cufft.h
-    ls $CUDA_HOME
+    make
+    dpkg -L cuda-cufft-8-0
     cd -
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
