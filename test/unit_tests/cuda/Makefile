@@ -18,12 +18,14 @@ SRCSCPP :=  \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
 	$(TEST_DIR)/test_helper.cpp \
+	unit_tests_cuda.cpp \
+	unit_test_image_function_cuda.cpp
+SRCSC := \
 	$(KISSFFT_DIR)/kiss_fft.c \
 	$(KISSFFT_DIR)/kiss_fftnd.c \
 	$(KISSFFT_DIR)/kiss_fftndr.c \
-	$(KISSFFT_DIR)/kiss_fftr.c \
-	unit_tests_cuda.cpp \
-	unit_test_image_function_cuda.cpp
+	$(KISSFFT_DIR)/kiss_fftr.c
+
 TARGET := unit_test_cuda
 
 CXX := nvcc
@@ -34,8 +36,10 @@ BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
 OBJSCU := $(patsubst %.cu,%.o,$(SRCSCU))
 OBJSCPP := $(patsubst %.cpp,%.o,$(SRCSCPP))
+OBJSC := $(patsubst %.c,%.o,$(SRCSC))
 OBJFILES := $(addprefix $(BIN)/, $(foreach obj, $(OBJSCU), $(shell basename $(obj))))
 OBJFILES += $(addprefix $(BIN)/, $(foreach obj, $(OBJSCPP), $(shell basename $(obj))))
+OBJFILES += $(addprefix $(BIN)/, $(foreach obj, $(OBJSC), $(shell basename $(obj))))
 
 all: $(BIN) $(TARGET)
 
@@ -74,6 +78,9 @@ $(BIN)/%.o: $(LIB_DIR)/**/%.cpp
 
 $(BIN)/%.o: ./%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
+
+$(BIN)/%.o: $(KISSFFT_DIR)/%.c
+	$(CXX) $(CFLAGS) $(INCDIRS) -c $< -o $@
 
 $(BIN)/%.o: ./**/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCDIRS) -c $< -o $@
