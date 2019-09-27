@@ -1,4 +1,5 @@
 set(MAIN_LIB_DIR ${CMAKE_SOURCE_DIR}/src)
+set(KISSFFT_DIR ${MAIN_LIB_DIR}/thirdparty/kissfft)
 set(UNIT_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(SRCS
     ${MAIN_LIB_DIR}/cuda/image_function_cuda.cu
@@ -7,6 +8,10 @@ set(SRCS
     ${MAIN_LIB_DIR}/cuda/cuda_fft.cu
     ${MAIN_LIB_DIR}/fft.cpp
     ${MAIN_LIB_DIR}/math/fft_base.cpp
+    ${KISSFFT_DIR}/kiss_fft.c
+    ${KISSFFT_DIR}/kiss_fftnd.c
+    ${KISSFFT_DIR}/kiss_fftndr.c
+    ${KISSFFT_DIR}/kiss_fftr.c
     ${MAIN_LIB_DIR}/image_function.cpp
     ${MAIN_LIB_DIR}/image_function_helper.cpp
     ${UNIT_TEST_DIR}/unit_test_framework.cpp

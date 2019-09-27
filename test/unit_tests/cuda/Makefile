@@ -3,6 +3,7 @@ LIB_DIR := $(PWD)/../../../src
 CUDA_DIR := $(LIB_DIR)/cuda
 UNIT_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
+KISSFFT_DIR := $(LIB_DIR)/thirdparty/kissfft
 SRCSCU :=  \
 	$(CUDA_DIR)/cuda_device.cu \
 	$(CUDA_DIR)/cuda_fft.cu \
@@ -13,17 +14,21 @@ SRCSCPP :=  \
 	$(LIB_DIR)/image_function.cpp \
 	$(LIB_DIR)/image_function_helper.cpp \
 	$(LIB_DIR)/fft.cpp \
-        $(LIB_DIR)/math/fft_base.cpp \
+	$(LIB_DIR)/math/fft_base.cpp \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
 	$(TEST_DIR)/test_helper.cpp \
+	$(KISSFFT_DIR)/kiss_fft.c \
+	$(KISSFFT_DIR)/kiss_fftnd.c \
+	$(KISSFFT_DIR)/kiss_fftndr.c \
+	$(KISSFFT_DIR)/kiss_fftr.c \
 	unit_tests_cuda.cpp \
 	unit_test_image_function_cuda.cpp
 TARGET := unit_test_cuda
 
 CXX := nvcc
 LINKER := nvcc
-INCDIRS := -I$(PWD) -I$(LIB_DIR) -I$(CUDA_DIR) -I$(LIB_DIR)/math -I$(UNIT_TEST_DIR) -I$(TEST_DIR)
+INCDIRS := -I$(PWD) -I$(LIB_DIR) -I$(CUDA_DIR) -I$(LIB_DIR)/math -I$(KISSFFT_DIR) -I$(UNIT_TEST_DIR) -I$(TEST_DIR)
 CXXFLAGS := -std=c++11 -O2 -Wno-deprecated-gpu-targets
 BUILD_DIR=build
 BIN := $(BUILD_DIR)/bin
