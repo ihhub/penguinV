@@ -205,7 +205,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            PenguinV_Image::Image input = uniformImage( intensity[0] );
+            PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
             const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -248,7 +248,7 @@ namespace image_function_cuda
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
-            std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
             const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -288,7 +288,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            PenguinV_Image::Image input = uniformImage( intensity[0] );
+            PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -334,7 +334,7 @@ namespace image_function_cuda
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
-            std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+            std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0], 0, 0, reference ), uniformImage( intensity[1], 0, 0, reference ) };
 
             std::vector < uint32_t > roiX, roiY;
             uint32_t roiWidth, roiHeight;

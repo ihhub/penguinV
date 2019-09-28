@@ -80,9 +80,9 @@ namespace Unit_Test
             const uint8_t * data = image.data() + y * rowSize + x * colorCount;
 
             launchKernel2D( isEqualCuda, width, height,
-                            image.data(), value, rowSize, width, height, differenceCount.data() );
+                            data, value, rowSize, width, height, differenceCount.data() );
 
-            return differenceCount.get() == rowSize * height;
+            return differenceCount.get() == width * height;
         }
     }
 }
