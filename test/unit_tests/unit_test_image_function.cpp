@@ -745,13 +745,11 @@ namespace Function_Template
         const uint32_t xCorrection = input.width() % 2;
         const uint32_t yCorrection = input.height() % 2;
 
-        if (verticalFlip)
-        {
+        if (verticalFlip) {
             if (input.height() > 1)
                 Image_Function::Fill(input, 0, 0, input.width(), input.height() / 2, intensity[1]);
         }
-        else if (horizontalFlip)
-        {
+        else if (horizontalFlip) {
             if (input.width() > 1)
                 Image_Function::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
         }
@@ -788,13 +786,11 @@ namespace Function_Template
         const uint32_t xCorrection = input[0].width() % 2;
         const uint32_t yCorrection = input[0].height() % 2;
 
-        if (verticalFlip)
-        {
+        if (verticalFlip) {
             if (input[0].height() > 1)
                 Image_Function::Fill(input[0], 0, 0, input[0].width(), input[0].height() / 2, intensityFill);
         }
-        else if (horizontalFlip)
-        {
+        else if (horizontalFlip) {
             if (input[0].width() > 1)
                 Image_Function::Fill(input[0], 0, 0, input[0].width() / 2, input[0].height(), intensityFill);
         }
@@ -831,13 +827,11 @@ namespace Function_Template
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
-        if (verticalFlip)
-        {
+        if (verticalFlip) {
             if (roiHeight > 1)
                 Image_Function::Fill(input, roiX, roiY, roiWidth, roiHeight / 2, intensity[1]);
         }
-        else if (horizontalFlip)
-        {
+        else if (horizontalFlip) {
             if (roiWidth > 1)
                 Image_Function::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
         }
@@ -878,13 +872,11 @@ namespace Function_Template
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
-        if (verticalFlip)
-        {
+        if (verticalFlip) {
             if (roiHeight > 1)
                 Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth, roiHeight / 2, intensityFill);
         }
-        else if (horizontalFlip)
-        {
+        else if (horizontalFlip) {
             if (roiWidth > 1)
                 Image_Function::Fill(image[0], roiX[0], roiY[0], roiWidth / 2, roiHeight, intensityFill);
         }

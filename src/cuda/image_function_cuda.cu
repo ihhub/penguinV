@@ -712,26 +712,40 @@ namespace Image_Function_Cuda
 
     Image Flip( const Image & in, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out = in.generate( in.width(), in.height(), in.colorCount(), in.alignment() );
-
-        Flip( in, out, horizontal, vertical );
-
-        return out;
+        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
     }
 
-    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
+    }
+
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if ( !horizontal && !vertical ) {
-            Copy( in, out );
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
-            launchKernel2D( flipCuda, out.width(), out.height(),
-                            in.data(), in.rowSize(), out.data(), out.rowSize(), out.width(), out.height(), horizontal, vertical );
+            const uint8_t colorCount = in.colorCount();
+            width = width * colorCount;
+
+            const uint32_t rowSizeIn  = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+            uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+            launchKernel2D( flipCuda, width, height,
+                            inY, rowSizeIn, outY, rowSizeOut, width, height, horizontal, vertical );
         }
     }
 
