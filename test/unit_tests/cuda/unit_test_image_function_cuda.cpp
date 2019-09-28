@@ -203,7 +203,7 @@ namespace image_function_cuda
 
     bool FlipForm1()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
@@ -223,29 +223,28 @@ namespace image_function_cuda
 
             const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, horizontalFlip, verticalFlip );
 
-            if( !equalSize( output, input.width(), input.height() ))
+            if ( !equalSize( output, input.width(), input.height() ))
                 return false;
 
             if (verticalFlip) {
-                if( !Cuda::verifyImage( output, 0, 0, input.width(), input.height() / 2 + yCorrection, intensity[0] ) )
+                if ( !Cuda::verifyImage( output, 0, 0, input.width(), input.height() / 2 + yCorrection, intensity[0] ) )
                     return false;
-                if((input.height() > 1) && !Cuda::verifyImage( output, 0, input.height() / 2 + yCorrection, input.width(), input.height() / 2, intensity[1] ) )
+                if ( (input.height() > 1) && !Cuda::verifyImage( output, 0, input.height() / 2 + yCorrection, input.width(), input.height() / 2, intensity[1] ) )
                     return false;
             }
             else {
-                if( !Cuda::verifyImage( output, 0, 0, input.width() / 2 + xCorrection, input.height(), intensity[0] ) )
+                if ( !Cuda::verifyImage( output, 0, 0, input.width() / 2 + xCorrection, input.height(), intensity[0] ) )
                     return false;
-                if((input.width() > 1) && !Cuda::verifyImage( output, input.width() / 2 + xCorrection, 0, input.width() / 2, input.height(), intensity[horizontalFlip ? 1 : 0] ) )
+                if ( (input.width() > 1) && !Cuda::verifyImage( output, input.width() / 2 + xCorrection, 0, input.width() / 2, input.height(), intensity[horizontalFlip ? 1 : 0] ) )
                     return false;
             }
         }
-
         return true;
     }
 
     bool FlipForm2()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
             std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
@@ -267,26 +266,25 @@ namespace image_function_cuda
             Image_Function_Cuda::Flip( input[0], input[1], horizontalFlip, verticalFlip );
 
             if (verticalFlip) {
-                if( !Cuda::verifyImage( input[1], 0, 0, input[1].width(), input[1].height() / 2 + yCorrection, intensity[0] ) )
+                if ( !Cuda::verifyImage( input[1], 0, 0, input[1].width(), input[1].height() / 2 + yCorrection, intensity[0] ) )
                     return false;
-                if((input[0].height() > 1) && !Cuda::verifyImage( input[1], 0, input[1].height() / 2 + yCorrection, input[1].width(), input[1].height() / 2, intensityFill ) )
+                if ( (input[0].height() > 1) && !Cuda::verifyImage( input[1], 0, input[1].height() / 2 + yCorrection, input[1].width(), input[1].height() / 2, intensityFill ) )
                     return false;
             }
             else {
-                if( !Cuda::verifyImage( input[1], 0, 0, input[1].width() / 2 + xCorrection, input[1].height(), intensity[0] ) )
+                if ( !Cuda::verifyImage( input[1], 0, 0, input[1].width() / 2 + xCorrection, input[1].height(), intensity[0] ) )
                     return false;
-                if((input[0].width() > 1) && !Cuda::verifyImage( input[1], input[1].width() / 2 + xCorrection, 0, input[1].width() / 2, input[1].height(),
-                                                                horizontalFlip ? intensityFill : intensity[0] ) )
+                if ( (input[0].width() > 1) && !Cuda::verifyImage( input[1], input[1].width() / 2 + xCorrection, 0, input[1].width() / 2, input[1].height(),
+                                                                   horizontalFlip ? intensityFill : intensity[0] ) )
                     return false;
             }
         }
-
         return true;
     }
 
     bool FlipForm3()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
@@ -309,29 +307,28 @@ namespace image_function_cuda
 
             const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
 
-            if( !equalSize( output, roiWidth, roiHeight ))
+            if ( !equalSize( output, roiWidth, roiHeight ) )
                 return false;
 
             if (verticalFlip) {
-                if( !Cuda::verifyImage( output, 0, 0, roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
+                if ( !Cuda::verifyImage( output, 0, 0, roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
                     return false;
-                if((roiHeight > 1) && !Cuda::verifyImage( output, 0, roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensity[1] ) )
+                if ( (roiHeight > 1) && !Cuda::verifyImage( output, 0, roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensity[1] ) )
                     return false;
             }
             else {
-                if( !Cuda::verifyImage( output, 0, 0, roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
+                if ( !Cuda::verifyImage( output, 0, 0, roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
                     return false;
-                if((roiWidth > 1) && !Cuda::verifyImage( output, roiWidth / 2 + xCorrection, 0, roiWidth / 2, roiHeight, intensity[horizontalFlip ? 1 : 0] ) )
+                if ( (roiWidth > 1) && !Cuda::verifyImage( output, roiWidth / 2 + xCorrection, 0, roiWidth / 2, roiHeight, intensity[horizontalFlip ? 1 : 0] ) )
                     return false;
             }
         }
-
         return true;
     }
 
     bool FlipForm4()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
             std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0], 0, 0, reference ), uniformImage( intensity[1], 0, 0, reference ) };
@@ -357,20 +354,19 @@ namespace image_function_cuda
             Image_Function_Cuda::Flip( image[0], roiX[0], roiY[0], image[1], roiX[1], roiY[1], roiWidth, roiHeight, horizontalFlip, verticalFlip );
 
             if (verticalFlip) {
-                if( !Cuda::verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
+                if ( !Cuda::verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight / 2 + yCorrection, intensity[0] ) )
                     return false;
-                if((roiHeight > 1) && !Cuda::verifyImage( image[1], roiX[1], roiY[1] + roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensityFill ) )
+                if ( (roiHeight > 1) && !Cuda::verifyImage( image[1], roiX[1], roiY[1] + roiHeight / 2 + yCorrection, roiWidth, roiHeight / 2, intensityFill ) )
                     return false;
             }
             else {
-                if( !Cuda::verifyImage( image[1], roiX[1], roiY[1], roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
+                if ( !Cuda::verifyImage( image[1], roiX[1], roiY[1], roiWidth / 2 + xCorrection, roiHeight, intensity[0] ) )
                     return false;
-                if( (roiWidth > 1) && !Cuda::verifyImage( image[1], roiX[1] + roiWidth / 2 + xCorrection, roiY[1], roiWidth / 2, roiHeight,
-                                                        horizontalFlip ? intensityFill : intensity[0] ) )
+                if ( (roiWidth > 1) && !Cuda::verifyImage( image[1], roiX[1] + roiWidth / 2 + xCorrection, roiY[1], roiWidth / 2, roiHeight,
+                                                           horizontalFlip ? intensityFill : intensity[0] ) )
                     return false;
             }
         }
-
         return true;
     }
 
