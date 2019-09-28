@@ -2568,7 +2568,109 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **Split** [_Namespaces: **Function_Pool, **Image_Function**_]
+- **Shift** [_Namespaces: **Image_Function**_]
+
+	##### Syntax:
+	```cpp
+	Image Shift(
+		const Image & in,
+		double shiftX,
+		double shiftY
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Shifts an image by [shiftX, shiftY] pixels and returns shifted image of the same size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftX - shift by X axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image of same size. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Shift(
+		const Image & in,
+		Image & out,
+		double shiftX,
+		double shiftY
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Shifts an image by [shiftX, shiftY] pixels and puts results into output image.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - input image    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - output image    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftX - shift by X axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	Image Shift(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		uint32_t width,
+		uint32_t height,
+		double shiftX,
+		double shiftY
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Shifts an image by [shiftX, shiftY] pixels and returns result image of the [width, height] size.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of an image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area from what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftX - shift by X axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [width, height] size which is a result of shifting. If the function fails exception imageException is raised.
+	
+	##### Syntax:
+	```cpp
+	void Shift(
+		const Image & in,
+		uint32_t startXIn,
+		uint32_t startYIn,
+		Image & out,
+		uint32_t startXOut,
+		uint32_t startYOut,
+		uint32_t width,
+		uint32_t height,
+		double shiftX,
+		double shiftY
+	);
+	```
+	**Description:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;Shifts an image area of [width, height] size by [shiftX, shiftY] pixels area and puts results into [widthOut, heightOut] size area of second image.
+	
+	**Parameters:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXIn - start X position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYIn - start Y position of input image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transpose    
+	&nbsp;&nbsp;&nbsp;&nbsp;startXOut - start X position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;startYOut - start Y position of out image area    
+	&nbsp;&nbsp;&nbsp;&nbsp;widthOut - width of image area to what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftX - shift by X axis    
+	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
+	
+	**Return value:**    
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	
+- **Split** [_Namespaces: **Function_Pool, Image_Function**_]
 
 	##### Syntax:
 	```cpp
@@ -2626,7 +2728,6 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out3 - third gray-scale image    
 	&nbsp;&nbsp;&nbsp;&nbsp;startXOut3 - start X position of third gray-scale image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;startYOut3 - start Y position of third gray-scale image area    
-	
 	&nbsp;&nbsp;&nbsp;&nbsp;width - width of image area    
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	

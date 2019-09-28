@@ -14,7 +14,7 @@ namespace image_function_cuda
 {
     using namespace Unit_Test;
 
-    bool AbsoluteDifference2ParametersTest()
+    bool AbsoluteDifferenceForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -30,7 +30,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool AbsoluteDifference3ParametersTest()
+    bool AbsoluteDifferenceForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -45,7 +45,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseAnd2ParametersTest()
+    bool BitwiseAndForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -60,7 +60,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseAnd3ParametersTest()
+    bool BitwiseAndForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -75,7 +75,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseOr2ParametersTest()
+    bool BitwiseOrForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -90,7 +90,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseOr3ParametersTest()
+    bool BitwiseOrForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -105,7 +105,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseXor2ParametersTest()
+    bool BitwiseXorForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -120,7 +120,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool BitwiseXor3ParametersTest()
+    bool BitwiseXorForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -135,7 +135,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ConvertToGrayScale1ParameterTest()
+    bool ConvertToGrayScaleForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
@@ -150,7 +150,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ConvertToGrayScale2ParametersTest()
+    bool ConvertToGrayScaleForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -168,7 +168,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ConvertToRgb1ParameterTest()
+    bool ConvertToRgbForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
@@ -183,7 +183,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ConvertToRgb2ParametersTest()
+    bool ConvertToRgbForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -374,8 +374,7 @@ namespace image_function_cuda
         return true;
     }
 
-
-    bool GammaCorrection3ParametersTest()
+    bool GammaCorrectionForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -396,7 +395,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool GammaCorrection4ParametersTest()
+    bool GammaCorrectionForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -417,7 +416,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Histogram1ParameterTest()
+    bool HistogramForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -433,7 +432,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Histogram2ParametersTest()
+    bool HistogramForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -450,7 +449,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Invert1ParameterTest()
+    bool InvertForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -465,7 +464,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Invert2ParametersTest()
+    bool InvertForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -480,7 +479,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool LookupTable2ParametersTest()
+    bool LookupTableForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -505,7 +504,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool LookupTable3ParametersTest()
+    bool LookupTableForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -533,7 +532,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Maximum2ParametersTest()
+    bool MaximumForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -549,7 +548,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Maximum3ParametersTest()
+    bool MaximumForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -564,7 +563,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Minimum2ParametersTest()
+    bool MinimumForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -580,7 +579,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Minimum3ParametersTest()
+    bool MinimumForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -595,7 +594,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Subtract2ParametersTest()
+    bool SubtractForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -611,7 +610,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Subtract3ParametersTest()
+    bool SubtractForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
@@ -626,7 +625,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Threshold2ParametersTest()
+    bool ThresholdForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -643,7 +642,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool Threshold3ParametersTest()
+    bool ThresholdForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -660,7 +659,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ThresholdDouble3ParametersTest()
+    bool ThresholdDoubleForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
@@ -678,7 +677,7 @@ namespace image_function_cuda
         return true;
     }
 
-    bool ThresholdDouble4ParametersTest()
+    bool ThresholdDoubleForm2Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -699,53 +698,53 @@ namespace image_function_cuda
 
 void addTests_Image_Function_Cuda( UnitTestFramework & framework )
 {
-    ADD_TEST( framework, image_function_cuda::AbsoluteDifference2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::AbsoluteDifference3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::AbsoluteDifferenceForm1Test );
+    ADD_TEST( framework, image_function_cuda::AbsoluteDifferenceForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::BitwiseAnd2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::BitwiseAnd3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseAndForm1Test );
+    ADD_TEST( framework, image_function_cuda::BitwiseAndForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::BitwiseOr2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::BitwiseOr3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseOrForm1Test );
+    ADD_TEST( framework, image_function_cuda::BitwiseOrForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::BitwiseXor2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::BitwiseXor3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::BitwiseXorForm1Test );
+    ADD_TEST( framework, image_function_cuda::BitwiseXorForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::ConvertToGrayScale1ParameterTest );
-    ADD_TEST( framework, image_function_cuda::ConvertToGrayScale2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToGrayScaleForm1Test );
+    ADD_TEST( framework, image_function_cuda::ConvertToGrayScaleForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::ConvertToRgb1ParameterTest );
-    ADD_TEST( framework, image_function_cuda::ConvertToRgb2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ConvertToRgbForm1Test );
+    ADD_TEST( framework, image_function_cuda::ConvertToRgbForm2Test );
 
     ADD_TEST( framework, image_function_cuda::FlipForm1 );
     ADD_TEST( framework, image_function_cuda::FlipForm2 );
     ADD_TEST( framework, image_function_cuda::FlipForm3 );
     ADD_TEST( framework, image_function_cuda::FlipForm4 );
 
-    ADD_TEST( framework, image_function_cuda::GammaCorrection3ParametersTest );
-    ADD_TEST( framework, image_function_cuda::GammaCorrection4ParametersTest );
+    ADD_TEST( framework, image_function_cuda::GammaCorrectionForm1Test );
+    ADD_TEST( framework, image_function_cuda::GammaCorrectionForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Histogram1ParameterTest );
-    ADD_TEST( framework, image_function_cuda::Histogram2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::HistogramForm1Test );
+    ADD_TEST( framework, image_function_cuda::HistogramForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Invert1ParameterTest );
-    ADD_TEST( framework, image_function_cuda::Invert2ParametersTest );
+    ADD_TEST( framework, image_function_cuda::InvertForm1Test );
+    ADD_TEST( framework, image_function_cuda::InvertForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::LookupTable2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::LookupTable3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::LookupTableForm1Test );
+    ADD_TEST( framework, image_function_cuda::LookupTableForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Maximum2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::Maximum3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::MaximumForm1Test );
+    ADD_TEST( framework, image_function_cuda::MaximumForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Minimum2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::Minimum3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::MinimumForm1Test );
+    ADD_TEST( framework, image_function_cuda::MinimumForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Subtract2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::Subtract3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::SubtractForm1Test );
+    ADD_TEST( framework, image_function_cuda::SubtractForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::Threshold2ParametersTest );
-    ADD_TEST( framework, image_function_cuda::Threshold3ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ThresholdForm1Test );
+    ADD_TEST( framework, image_function_cuda::ThresholdForm2Test );
 
-    ADD_TEST( framework, image_function_cuda::ThresholdDouble3ParametersTest );
-    ADD_TEST( framework, image_function_cuda::ThresholdDouble4ParametersTest );
+    ADD_TEST( framework, image_function_cuda::ThresholdDoubleForm1Test );
+    ADD_TEST( framework, image_function_cuda::ThresholdDoubleForm2Test );
 }
