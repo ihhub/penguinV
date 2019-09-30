@@ -604,6 +604,7 @@ namespace image_function_cuda
             if ( !Cuda::verifyImage( image, x, y, 1, 1, intensity[1]) )
                 return false;
         }
+
         return true;
     }
 
@@ -631,7 +632,7 @@ namespace image_function_cuda
             }
         }
 
-        return false;
+        return true;
     }
 
     bool SubtractForm1Test()
@@ -778,6 +779,9 @@ void addTests_Image_Function_Cuda( UnitTestFramework & framework )
 
     ADD_TEST( framework, image_function_cuda::MinimumForm1Test );
     ADD_TEST( framework, image_function_cuda::MinimumForm2Test );
+
+    ADD_TEST( framework, image_function_cuda::SetPixelForm1Test );
+    ADD_TEST( framework, image_function_cuda::SetPixelForm2Test );
 
     ADD_TEST( framework, image_function_cuda::SubtractForm1Test );
     ADD_TEST( framework, image_function_cuda::SubtractForm2Test );
