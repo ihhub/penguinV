@@ -23,7 +23,6 @@
     <CudaCompile Include="..\..\..\src\cuda\cuda_device.cu" />
     <CudaCompile Include="..\..\..\src\cuda\cuda_helper.cu" />
     <CudaCompile Include="..\..\..\src\cuda\cuda_fft.cu " />
-    <CudaCompile Include="..\..\..\src\math\fft_base.cu " />
     <CudaCompile Include="unit_test_helper_cuda.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +48,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\image_function.cpp" />
     <ClCompile Include="..\..\..\src\image_function_helper.cpp" />
+    <ClCompile Include="..\..\..\src\math\fft_base.cpp " />
     <ClCompile Include="..\unit_test_framework.cpp" />
     <ClCompile Include="..\unit_test_helper.cpp" />
     <ClCompile Include="unit_tests_cuda.cpp" />
