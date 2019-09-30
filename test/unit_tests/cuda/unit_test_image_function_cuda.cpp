@@ -590,6 +590,16 @@ namespace image_function_cuda
         return true;
     }
 
+    bool SetPixelForm1Test()
+    {
+        return false;
+    }
+
+    bool SetPixelForm2Test()
+    {
+        return false;
+    }
+
     bool SubtractForm1Test()
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
