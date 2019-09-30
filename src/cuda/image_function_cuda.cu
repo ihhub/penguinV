@@ -1025,6 +1025,17 @@ namespace Image_Function_Cuda
                         cosAngle, sinAngle );
     }
 
+    void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value) 
+    {
+        /// TODO
+    }
+
+    void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value)
+    {
+        /// TODO
+    }
+
+
     Image Subtract( const Image & in1, const Image & in2 )
     {
         return Image_Function_Helper::Subtract( Subtract, in1, in2 );
