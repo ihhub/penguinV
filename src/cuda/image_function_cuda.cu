@@ -907,16 +907,18 @@ namespace Image_Function_Cuda
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
 
         if ( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
+        const uint8_t colorCount = CommonColorCount( in, out );
+        width = width * colorCount;  //this change is not reflected anywhere else
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         multiCuda::Array< uint8_t > tableCuda( table );
 
