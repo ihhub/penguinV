@@ -3,7 +3,6 @@ LIB_DIR := $(PWD)/../../../src
 CUDA_DIR := $(LIB_DIR)/cuda
 UNIT_TEST_DIR := $(PWD)/..
 TEST_DIR := $(PWD)/../..
-KISSFFT_DIR := $(LIB_DIR)/thirdparty/kissfft
 SRCSCU :=  \
 	$(CUDA_DIR)/cuda_device.cu \
 	$(CUDA_DIR)/cuda_fft.cu \
@@ -12,7 +11,7 @@ SRCSCU :=  \
 	unit_test_helper_cuda.cu
 SRCSCPP :=  \
 	$(LIB_DIR)/image_function.cpp \
-        $(LIB_DIR)/image_function_helper.cpp \
+	$(LIB_DIR)/image_function_helper.cpp \
 	$(LIB_DIR)/math/fft_base.cpp \
 	$(UNIT_TEST_DIR)/unit_test_framework.cpp \
 	$(UNIT_TEST_DIR)/unit_test_helper.cpp \
