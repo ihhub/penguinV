@@ -22,6 +22,8 @@
     <CudaCompile Include="..\..\..\src\cuda\image_function_cuda.cu" />
     <CudaCompile Include="..\..\..\src\cuda\cuda_device.cu" />
     <CudaCompile Include="..\..\..\src\cuda\cuda_helper.cu" />
+    <CudaCompile Include="..\..\..\src\cuda\cuda_fft.cu " />
+    <CudaCompile Include="..\..\..\src\math\fft_base.cu " />
     <CudaCompile Include="unit_test_helper_cuda.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -32,10 +34,12 @@
     <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\memory\memory_allocator.h" />
     <ClInclude Include="..\..\..\src\parameter_validation.h" />
+    <ClInclude Include="..\..\..\src\math\fft_base.h" />
     <ClInclude Include="..\..\..\src\cuda\cuda_device.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_helper.cuh" />
     <ClInclude Include="..\..\..\src\cuda\cuda_memory.cuh" />
-    <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />
+    <ClInclude Include="..\..\..\src\cuda\cuda_types.cuh" />    
+    <ClInclude Include="..\..\..\src\cuda\cuda_fft.cuh" />
     <ClInclude Include="..\unit_test_framework.h" />
     <ClInclude Include="..\unit_test_helper.h" />
     <ClInclude Include="..\..\test_helper.h" />
