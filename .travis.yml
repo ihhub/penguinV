@@ -78,9 +78,6 @@ matrix:
 before_script:
   # Let CMake generate build files
   - |
-    cd test/unit_tests/cuda
-    make
-    cd -
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
