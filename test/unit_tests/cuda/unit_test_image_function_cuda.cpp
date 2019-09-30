@@ -589,7 +589,7 @@ namespace image_function_cuda
 
         return true;
     }
-
+    
     bool SetPixelForm1Test()
     {
         return false;
