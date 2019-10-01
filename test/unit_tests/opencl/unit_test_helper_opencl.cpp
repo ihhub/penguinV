@@ -19,7 +19,7 @@ namespace
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t id = y * rowSize + x;
+                const size_t id = offset + y * rowSize + x;
                 if( data[id] == value )
                     atomic_add( differenceCount, 1 );
             }
@@ -31,7 +31,7 @@ namespace
             const size_t y = get_global_id(1);
 
             if( x < width && y < height ) {
-                const size_t id = y * rowSize + x;
+                const size_t id = offset + y * rowSize + x;
 
                 bool equal = false;
 
@@ -84,8 +84,6 @@ namespace Unit_Test
             multiCL::OpenCLKernel kernel( program, "isEqualOpenCL" );
 
             const uint32_t rowSize = image.rowSize();
-            width = image.width() * image.colorCount();
-            height = image.height();
             const uint32_t offset = x * rowSize + y;
 
             kernel.setArgument( image.data(), offset, value, rowSize, width, height, differenceCount.data() );
@@ -105,8 +103,6 @@ namespace Unit_Test
             multiCL::OpenCLKernel kernel( program, "isAnyEqualOpenCL" );
 
             const uint32_t rowSize = image.rowSize();
-            width = image.width() * image.colorCount();
-            height = image.height();
             const uint32_t offset = x * rowSize + y;
 
             kernel.setArgument( image.data(), offset, valueOpenCL, static_cast<uint32_t>( value.size() ), rowSize, width, height, differenceCount.data() );
