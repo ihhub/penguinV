@@ -9,7 +9,7 @@
 #include "../image_buffer.h"
 #include "opencl_device.h"
 
-namespace PenguinV
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplateOpenCL : public ImageTemplate<TColorDepth>
@@ -67,7 +67,7 @@ namespace PenguinV
                 throw imageException( "Cannot copy a memory in GPU device" );
         }
 
-        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
+        static void _setMemory( TColorDepth * data, TColorDepth value,s size_t size )
         {
             cl_mem dataMem = reinterpret_cast<cl_mem>( data );
 
@@ -75,5 +75,5 @@ namespace PenguinV
         }
     };
 
-    typedef PenguinV::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
+    typedef penguinV::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
 }

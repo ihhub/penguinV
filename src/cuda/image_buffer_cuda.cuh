@@ -3,7 +3,7 @@
 #include "../image_buffer.h"
 #include "cuda_device.cuh"
 
-namespace PenguinV
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplateCuda : public ImageTemplate<TColorDepth>
@@ -66,5 +66,5 @@ namespace PenguinV
         }
     };
 
-    typedef PenguinV::ImageTemplateCuda <uint8_t> ImageCuda;
+    typedef penguinV::ImageTemplateCuda <uint8_t> ImageCuda;
 }
