@@ -84,6 +84,7 @@ namespace Unit_Test
             multiCL::OpenCLKernel kernel( program, "isEqualOpenCL" );
 
             const uint32_t rowSize = image.rowSize();
+            width *= image.colorCount();
             const uint32_t offset = x * rowSize + y;
 
             kernel.setArgument( image.data(), offset, value, rowSize, width, height, differenceCount.data() );
@@ -103,6 +104,7 @@ namespace Unit_Test
             multiCL::OpenCLKernel kernel( program, "isAnyEqualOpenCL" );
 
             const uint32_t rowSize = image.rowSize();
+            width *= image.colorCount();
             const uint32_t offset = x * rowSize + y;
 
             kernel.setArgument( image.data(), offset, valueOpenCL, static_cast<uint32_t>( value.size() ), rowSize, width, height, differenceCount.data() );
