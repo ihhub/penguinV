@@ -359,6 +359,8 @@ namespace Image_Function_Helper
     Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
                            const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
 
+    std::vector<uint8_t> GetGammaCorrectionLookupTable( double a, double gamma );
+
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
     std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,

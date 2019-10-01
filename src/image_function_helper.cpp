@@ -389,6 +389,23 @@ namespace Image_Function_Helper
         return out;
     }
 
+    std::vector<uint8_t> GetGammaCorrectionLookupTable( double a, double gamma ){
+        if ( a < 0 || gamma < 0 )
+            throw imageException( "Gamma correction parameters are invalid" );
+
+        // We precalculate all values and store them in lookup table
+        std::vector < uint8_t > value( 256, 255u );
+
+        for ( uint16_t i = 0; i < 256; ++i ) {
+            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
+
+            if ( data < 256 )
+                value[i] = static_cast<uint8_t>(data);
+        }
+
+	return value;
+    }
+
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
     {
         if( histogram.size() != 256 )
