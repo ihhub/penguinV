@@ -912,12 +912,12 @@ namespace Image_Function_Cuda
             throw imageException( "Lookup table size is not equal to 256" );
 
         const uint8_t colorCount = CommonColorCount( in, out );
-        width = width * colorCount;  //this change is not reflected anywhere else
+        width = width * colorCount;
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
         uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         multiCuda::Array< uint8_t > tableCuda( table );
