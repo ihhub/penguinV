@@ -67,7 +67,7 @@ namespace penguinV
                 throw imageException( "Cannot copy a memory in GPU device" );
         }
 
-        static void _setMemory( TColorDepth * data, TColorDepth value,s size_t size )
+        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
             cl_mem dataMem = reinterpret_cast<cl_mem>( data );
 
