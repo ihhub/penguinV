@@ -911,7 +911,7 @@ namespace Image_Function_Cuda
         if ( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        const uint8_t colorCount = CommonColorCount( in, out );
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn  = in.rowSize();
