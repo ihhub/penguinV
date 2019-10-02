@@ -811,7 +811,7 @@ namespace Image_Function
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-        std::vector<uint8_t> value = GetGammaCorrectionLookupTable( a, gamma );
+        const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
