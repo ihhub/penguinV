@@ -1,7 +1,7 @@
 #include "image_function_helper.h"
-
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
+#include <cmath> 
 
 namespace
 {
