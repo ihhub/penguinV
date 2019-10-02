@@ -301,9 +301,9 @@ namespace
         }
     }
 
-    __global__ void setPixelCuda()
+    __global__ void setPixelCuda( uint8_t *in, uint32_t width, uint32_t x, uint32_t y, uint8_t value)
     {
-
+        in[y * width + x] = value;
     }
 
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
@@ -1033,7 +1033,15 @@ namespace Image_Function_Cuda
 
     void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value) 
     {
-        /// TODO
+        Image_Function::ParameterValidation( image);
+
+        if ( x > image.width() || y > image.height())
+            throw imageException( "Bad input parameters in image function" );
+
+        uint8_t *in = image.data();
+
+        launchKernel1D( setPixelCuda, 1,
+                        in, image.width(), x, y, value);
     }
 
     void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value)
