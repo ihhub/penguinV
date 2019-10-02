@@ -27,6 +27,7 @@ namespace
             table.Histogram          = &Image_Function_Cuda::Histogram;
             table.Invert             = &Image_Function_Cuda::Invert;
             table.LookupTable        = &Image_Function_Cuda::LookupTable;
+            table.SetPixel           = &Image_Function_Cuda::SetPixel;
             table.Maximum            = &Image_Function_Cuda::Maximum;
             table.Minimum            = &Image_Function_Cuda::Minimum;
             table.Subtract           = &Image_Function_Cuda::Subtract;
@@ -298,6 +299,11 @@ namespace
                 *out = static_cast<uint8_t>(mean);
             }
         }
+    }
+
+    __global__ void setPixelCuda()
+    {
+
     }
 
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
