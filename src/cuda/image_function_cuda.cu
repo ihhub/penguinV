@@ -306,6 +306,18 @@ namespace
         in[y * width + x] = value;
     }
 
+    __global__ void setPixelCuda( uint8_t *in, uint32_t width, uint32_t height,
+                                  uint32_t *X, uint32_t *Y, uint32_t xylen, uint32_t value)
+    {
+        const uint32_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+
+        if ( tid < xylen) {
+            const uint32_t idx = Y[tid] * width + X[tid];
+            if ( idx < width * height)
+                in[idx] = value;
+        }
+    }
+
     __global__ void subtractCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                   uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
     {
@@ -1035,20 +1047,35 @@ namespace Image_Function_Cuda
     {
         Image_Function::ParameterValidation( image);
 
-        if ( x > image.width() || y > image.height())
+        if ( x >= image.width() || y >= image.height())
             throw imageException( "Bad input parameters in image function" );
 
-        uint8_t *in = image.data();
-
         launchKernel1D( setPixelCuda, 1,
-                        in, image.width(), x, y, value);
+                        image.data(), image.width(), x, y, value);
     }
 
     void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value)
     {
-        /// TODO
-    }
+        Image_Function::ParameterValidation( image);
+        
+        if ( X.size() != Y.size())
+            throw imageException( "Bad input parameters in image function" );
+        
+        if ( X.size() > 0) {
 
+            uint32_t width = image.width(), height = image.height();
+
+            for ( size_t i = 0; i < X.size(); ++i )
+                if ( X[i] >= width || Y[i] >= height)
+                    throw imageException( "Bad input parameters in image function" );
+            
+            multiCuda::Array<uint32_t> xs(X);
+            multiCuda::Array<uint32_t> ys(Y);
+
+            launchKernel1D( setPixelCuda, X.size(),
+                image.data(), image.width(), image.height(), xs.data(), ys.data(), xs.size(), value);
+        }
+    }
 
     Image Subtract( const Image & in1, const Image & in2 )
     {
