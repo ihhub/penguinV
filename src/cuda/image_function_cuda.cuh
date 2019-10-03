@@ -127,8 +127,8 @@ namespace Image_Function_Cuda
 
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle );
     
-    void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value);
-    void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value);
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value );
 
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );
