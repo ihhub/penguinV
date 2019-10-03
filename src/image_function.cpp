@@ -871,22 +871,23 @@ namespace Image_Function
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
         if ( colorCount == 1 ) {
-            for( ; imageY != imageYEnd; imageY += rowSize ) {
-                const uint8_t * imageX    = imageY;
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
                 const uint8_t * imageXEnd = imageX + width;
 
-                for( ; imageX != imageXEnd; ++imageX )
+                for ( ; imageX != imageXEnd; ++imageX )
                     ++histogram[*imageX];
             }
-        } else {
-            for( ; imageY != imageYEnd; imageY += rowSize ) {
-                const uint8_t * imageX    = imageY;
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
                 const uint8_t * imageXEnd = imageX + width;
 
-                for( ; imageX != imageXEnd; imageX += colorCount ) {
+                for ( ; imageX != imageXEnd; imageX += colorCount ) {
                     uint8_t colorChannel = 0;
-                    for( ; colorChannel < colorCount; colorChannel++ )
-                        ++histogram[*(imageX + colorChannel) * colorCount + colorChannel];
+                    for ( ; colorChannel < colorCount; colorChannel++ )
+                        ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                 }
             }
         }
@@ -922,32 +923,33 @@ namespace Image_Function
         const uint32_t rowSize     = image.rowSize();
         const uint32_t rowSizeMask = mask.rowSize();
 
-        const uint8_t * imageY     = image.data() + y * rowSize + x * colorCount;
+        const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYMask = mask.data() + maskY * rowSizeMask + maskX;
         const uint8_t * imageYEnd  = imageY + height * rowSize;
 
         if ( colorCount == 1 ) {
-            for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
-                const uint8_t * imageX     = imageY;
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
                 const uint8_t * imageXMask = imageYMask;
-                const uint8_t * imageXEnd  = imageX + width;
+                const uint8_t * imageXEnd = imageX + width;
 
-                for( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
-                    if( (*imageXMask) > 0 )
+                for ( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 )
                         ++histogram[*imageX];
                 }
             }
-        } else {
-            for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
-                const uint8_t * imageX     = imageY;
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
                 const uint8_t * imageXMask = imageYMask;
-                const uint8_t * imageXEnd  = imageX + width;
+                const uint8_t * imageXEnd = imageX + width;
 
-                for( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
-                    if( (*imageXMask) > 0 ) {
+                for ( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 ) {
                         uint8_t colorChannel = 0;
-                        for( ; colorChannel < colorCount ; colorChannel++ )
-                            ++histogram[*(imageX + colorChannel) * colorCount + colorChannel];
+                        for ( ; colorChannel < colorCount; colorChannel++ )
+                            ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                     }
                 }
             }
