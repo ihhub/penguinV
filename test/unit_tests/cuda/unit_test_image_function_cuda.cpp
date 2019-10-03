@@ -600,7 +600,7 @@ namespace image_function_cuda
             const uint32_t y = randomValue<uint32_t>( 0, image.height() );
 
             Image_Function_Cuda::SetPixel( image, x, y, intensity[1] );
-            
+
             if ( !Cuda::verifyImage( image, x, y, 1, 1, intensity[1] ) )
                 return false;
         }

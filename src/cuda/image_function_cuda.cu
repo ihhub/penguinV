@@ -304,7 +304,7 @@ namespace
     __global__ void setPixelCuda( uint8_t *in, uint32_t width, uint32_t height, uint32_t x, uint32_t y, uint8_t value)
     {
         const uint32_t idx = y * width + x;
-        
+
         if ( idx < width * height)
             in[idx] = value;
     }
@@ -1060,17 +1060,17 @@ namespace Image_Function_Cuda
     void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value )
     {
         Image_Function::ParameterValidation( image );
-        
+
         if ( X.size() != Y.size() )
             throw imageException( "Bad input parameters in image function" );
-        
+
         if ( X.size() > 0 ) {
             uint32_t width = image.width(), height = image.height();
 
             for ( size_t i = 0; i < X.size(); ++i )
                 if ( X[i] >= width || Y[i] >= height )
                     throw imageException( "Bad input parameters in image function" );
-            
+
             multiCuda::Array<uint32_t> xs( X );
             multiCuda::Array<uint32_t> ys( Y );
 
