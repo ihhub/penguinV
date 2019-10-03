@@ -1065,7 +1065,6 @@ namespace Image_Function_Cuda
             throw imageException( "Bad input parameters in image function" );
         
         if ( X.size() > 0) {
-
             uint32_t width = image.width(), height = image.height();
 
             for ( size_t i = 0; i < X.size(); ++i )
