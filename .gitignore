@@ -55,10 +55,3 @@
 *.fatbin
 *.cu.deps
 *.cu.cache
-
-
-#build 
-/build/*
-
-#editors/IDEs
-/.vscode/*
