@@ -1054,7 +1054,7 @@ namespace Image_Function_Cuda
             throw imageException( "Bad input parameters in image function" );
 
         launchKernel1D( setPixelCuda, 1,
-                        image.data(), image.width(), image.height(), x, y, value );
+                        image.data(), image.rowSize(), image.width(), image.height(), x, y, value );
     }
 
     void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
@@ -1077,7 +1077,7 @@ namespace Image_Function_Cuda
             multiCuda::Array<uint32_t> pointY( Y );
 
             launchKernel1D( setPixelCuda, X.size(),
-                            image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), xs.size(), value );
+                            image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), pointX.size(), value );
         }
     }
 
