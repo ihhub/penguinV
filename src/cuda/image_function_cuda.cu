@@ -301,23 +301,23 @@ namespace
         }
     }
 
-    __global__ void setPixelCuda( uint8_t *in, uint32_t width, uint32_t height, uint32_t x, uint32_t y, uint8_t value)
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t x, uint32_t y, uint8_t value )
     {
-        const uint32_t idx = y * width + x;
-
-        if ( idx < width * height)
-            in[idx] = value;
+        if ( x < width && y < height ) {
+            in[y * rowSize + x] = value;
+        }
     }
 
-    __global__ void setPixelCuda( uint8_t *in, uint32_t width, uint32_t height,
-                                  uint32_t *X, uint32_t *Y, uint32_t xylen, uint32_t value)
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * pointX, uint32_t * pointY, uint32_t pointSize, uint32_t value )
     {
-        const uint32_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+        const uint32_t idPoint = blockIdx.x * blockDim.x + threadIdx.x;
 
-        if ( tid < xylen) {
-            const uint32_t idx = Y[tid] * width + X[tid];
-            if ( idx < width * height)
-                in[idx] = value;
+        if ( idPoint < pointSize) {
+            const uint32_t x = pointX[idPoint];
+            const uint32_t y = pointY[idPoint];
+            if ( x < width && y < height ) {
+                in[y * rowSize + x] = value;
+            }
         }
     }
 
@@ -1046,7 +1046,7 @@ namespace Image_Function_Cuda
                         cosAngle, sinAngle );
     }
 
-    void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value )
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
     {
         Image_Function::ParameterValidation( image );
 
@@ -1057,7 +1057,7 @@ namespace Image_Function_Cuda
                         image.data(), image.width(), image.height(), x, y, value );
     }
 
-    void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value )
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
     {
         Image_Function::ParameterValidation( image );
 
@@ -1065,17 +1065,19 @@ namespace Image_Function_Cuda
             throw imageException( "Bad input parameters in image function" );
 
         if ( X.size() > 0 ) {
-            uint32_t width = image.width(), height = image.height();
+            const uint32_t width = image.width();
+            const uint32_t height = image.height();
 
-            for ( size_t i = 0; i < X.size(); ++i )
+            for ( size_t i = 0; i < X.size(); ++i ) {
                 if ( X[i] >= width || Y[i] >= height )
                     throw imageException( "Bad input parameters in image function" );
+            }
 
-            multiCuda::Array<uint32_t> xs( X );
-            multiCuda::Array<uint32_t> ys( Y );
+            multiCuda::Array<uint32_t> pointX( X );
+            multiCuda::Array<uint32_t> pointY( Y );
 
             launchKernel1D( setPixelCuda, X.size(),
-                image.data(), image.width(), image.height(), xs.data(), ys.data(), xs.size(), value );
+                            image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), xs.size(), value );
         }
     }
 
