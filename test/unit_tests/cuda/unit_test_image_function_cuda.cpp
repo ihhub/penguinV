@@ -610,23 +610,20 @@ namespace image_function_cuda
 
     bool SetPixelForm2Test()
     {
-        size_t i, j;
-
-        for ( i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector<uint8_t> intensity = intensityArray( 2 );
             PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
-
             std::vector<uint32_t> X( randomValue<uint32_t>( 1, 100 ) );
             std::vector<uint32_t> Y( X.size() );
 
-            for ( j = 0; j < X.size(); ++j ) {
-                X[j] = randomValue<uint32_t>( 0, image.width() - 1 );
-                Y[j] = randomValue<uint32_t>( 0, image.height() - 1 );
+            for ( size_t j = 0; j < X.size(); ++j ) {
+                X[j] = randomValue<uint32_t>( 0, image.width() );
+                Y[j] = randomValue<uint32_t>( 0, image.height() );
             }
 
             Image_Function_Cuda::SetPixel( image, X, Y, intensity[1] );
 
-            for ( j = 0; j < X.size(); ++j ) {
+            for ( size_t j = 0; j < X.size(); ++j ) {
                 if ( !Cuda::verifyImage( image, X[j], Y[j], 1, 1, intensity[1] ) )
                     return false;
             }
