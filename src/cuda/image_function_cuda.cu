@@ -1046,36 +1046,36 @@ namespace Image_Function_Cuda
                         cosAngle, sinAngle );
     }
 
-    void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value) 
+    void SetPixel( Image &image, uint32_t x, uint32_t y, uint8_t value )
     {
-        Image_Function::ParameterValidation( image);
+        Image_Function::ParameterValidation( image );
 
-        if ( x >= image.width() || y >= image.height())
+        if ( x >= image.width() || y >= image.height() )
             throw imageException( "Bad input parameters in image function" );
 
         launchKernel1D( setPixelCuda, 1,
-                        image.data(), image.width(), image.height(), x, y, value);
+                        image.data(), image.width(), image.height(), x, y, value );
     }
 
-    void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value)
+    void SetPixel( Image &image, const std::vector<uint32_t> &X, const std::vector<uint32_t> &Y, uint8_t value )
     {
-        Image_Function::ParameterValidation( image);
+        Image_Function::ParameterValidation( image );
         
-        if ( X.size() != Y.size())
+        if ( X.size() != Y.size() )
             throw imageException( "Bad input parameters in image function" );
         
-        if ( X.size() > 0) {
+        if ( X.size() > 0 ) {
             uint32_t width = image.width(), height = image.height();
 
             for ( size_t i = 0; i < X.size(); ++i )
-                if ( X[i] >= width || Y[i] >= height)
+                if ( X[i] >= width || Y[i] >= height )
                     throw imageException( "Bad input parameters in image function" );
             
-            multiCuda::Array<uint32_t> xs(X);
-            multiCuda::Array<uint32_t> ys(Y);
+            multiCuda::Array<uint32_t> xs( X );
+            multiCuda::Array<uint32_t> ys( Y );
 
             launchKernel1D( setPixelCuda, X.size(),
-                image.data(), image.width(), image.height(), xs.data(), ys.data(), xs.size(), value);
+                image.data(), image.width(), image.height(), xs.data(), ys.data(), xs.size(), value );
         }
     }
 
