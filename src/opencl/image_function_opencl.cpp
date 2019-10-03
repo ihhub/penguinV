@@ -34,6 +34,7 @@ namespace
             table.Maximum            = &Image_Function_OpenCL::Maximum;
             table.Minimum            = &Image_Function_OpenCL::Minimum;
             table.ProjectionProfile  = &Image_Function_OpenCL::ProjectionProfile;
+            table.SetPixel           = &Image_Function_OpenCL::SetPixel;
             table.Subtract           = &Image_Function_OpenCL::Subtract;
             table.Threshold          = &Image_Function_OpenCL::Threshold;
             table.Threshold2         = &Image_Function_OpenCL::Threshold;
@@ -290,6 +291,25 @@ namespace
                 const size_t idOut = offsetOut + y * rowSizeOut + x;
                 out[idOut] = (in1[idIn1] > in2[idIn2]) ? (in1[idIn1] - in2[idIn2]) : 0;
             }
+        }
+
+        __kernel void setPixelOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, uint value )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if ( x < width && y < height ) {
+                in[offset + y * rowSize + x] = value
+            }
+        }
+
+        __kernel void setPixelOpenCL( __global const uchar * data, volatile __global uint * offsets, uint rowSize, uint width, uint height,
+                                      volatile __global uint * pointX,  volatile __global uint * pointY, uint pointSize, uint value)
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            //TODO
         }
 
         __kernel void thresholdOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
@@ -1142,6 +1162,62 @@ namespace Image_Function_OpenCL
         kernel.setArgument( in1.data(), offsetIn1, rowSizeIn1, in2.data(), offsetIn2, rowSizeIn2, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
+    }
+
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        const multiCL::OpenCLProgram & program = GetProgram();
+        multiCL::OpenCLKernel kernel( program, "setPixelOpenCL" );
+
+        if ( image.empty() || x >= image.width() || y >= image.height() )
+            throw imageException( "Bad input parameters in image function" );
+
+        const uint32_t width = image.width();
+        const uint32_t height = image.height();
+        const uint32_t rowSize = image.rowSize();
+        const uint32_t offset = x * rowSize + y;
+
+        kernel.setArgument( image.data(), offset, rowSize, width, height, value );
+
+        multiCL::launchKernel2D( kernel, image.width(), image.height() );
+    }
+
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        const multiCL::OpenCLProgram & program = GetProgram();
+        multiCL::OpenCLKernel kernel( program, "setPixelOpenCL");
+
+        if ( image.empty() || X.empty() || X.size() != Y.size() )
+            throw imageException( "Bad input parameters in image function" );
+
+        const uint32_t width = image.width();
+        const uint32_t height = image.height();
+
+        for ( size_t i = 0; i < X.size(); ++i)
+        {
+            if ( X[i] >= width || Y[i] >= height)
+                throw imageException( "Bad input parameters in image function" );
+        }
+
+        const uint32_t rowSize = image.rowSize();
+        std::vector <uint32_t > O {};
+        for ( size_t i = 0; i < X.size(); ++i)
+        {
+            O.emplace_back(X[i] * rowSize + Y[i]);
+        }
+
+        multiCL::Array<uint32_t > offsets( O );
+        multiCL::Array<uint32_t > pointX( X );
+        multiCL::Array<uint32_t > pointY( Y );
+
+
+        kernel.setArgument( image.data(), offsets.data(), rowSize, width, height, pointX.data(), pointY.data(), X.size(), value );
+
+        multiCL::launchKernel2D( kernel, image.width(), image.height() );
     }
 
     Image Threshold( const Image & in, uint8_t threshold )
