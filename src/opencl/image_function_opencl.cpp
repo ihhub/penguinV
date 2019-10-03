@@ -797,20 +797,7 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if( a < 0 || gamma < 0 )
-            throw imageException( "Bad input parameters in image function" );
-
-        // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256 );
-
-        for( uint16_t i = 0; i < 256; ++i ) {
-            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
-
-            if( data < 256 )
-                value[i] = static_cast<uint8_t>(data);
-            else
-                value[i] = 255;
-        }
+        const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }

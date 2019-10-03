@@ -770,18 +770,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if ( a < 0 || gamma < 0 )
-            throw imageException( "Gamma correction parameters are invalid" );
-
-        // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256, 255u );
-
-        for ( uint16_t i = 0; i < 256; ++i ) {
-            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
-
-            if ( data < 256 )
-                value[i] = static_cast<uint8_t>(data);
-        }
+        const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
