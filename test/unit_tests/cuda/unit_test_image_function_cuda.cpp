@@ -593,7 +593,7 @@ namespace image_function_cuda
     bool SetPixelForm1Test()
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
-             const std::vector<uint8_t> intensity = intensityArray( 2 );
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
 
             const uint32_t x = randomValue<uint32_t>( 0, image.width() );
