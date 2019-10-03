@@ -293,23 +293,25 @@ namespace
             }
         }
 
-        __kernel void setPixelOpenCL( __global const uchar * data, uint offset, uint rowSize, uint width, uint height, uint value )
+        __kernel void __attribute__(( overloadable )) setPixelOpenCL( __global uchar * data, uint offset, uint rowSize, uint width, uint height, uint x, uint y, uchar value )
         {
-            const size_t x = get_global_id(0);
-            const size_t y = get_global_id(1);
-
             if ( x < width && y < height ) {
-                in[offset + y * rowSize + x] = value
+                data[offset + y * rowSize + x] = value;
             }
         }
 
-        __kernel void setPixelOpenCL( __global const uchar * data, volatile __global uint * offsets, uint rowSize, uint width, uint height,
-                                      volatile __global uint * pointX,  volatile __global uint * pointY, uint pointSize, uint value)
+        __kernel void __attribute__(( overloadable )) setPixelOpenCL( __global uchar * data, uint offset, uint rowSize, uint width, uint height, __global uint * pointX,
+                                      __global uint * pointY, uint pointSize, uint value )
         {
-            const size_t x = get_global_id(0);
-            const size_t y = get_global_id(1);
+            const size_t id = get_global_id(0);
 
-            //TODO
+            if ( id < pointSize ) {
+                const uint x = pointX[id];
+                const uint y = pointY[id];
+                if ( x < width && y < height ) {
+                    data[offset + y * rowSize + x] = value;
+                }
+            }
         }
 
         __kernel void thresholdOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
@@ -1181,9 +1183,9 @@ namespace Image_Function_OpenCL
         const uint32_t rowSize = image.rowSize();
         const uint32_t offset = x * rowSize + y;
 
-        kernel.setArgument( image.data(), offset, rowSize, width, height, value );
+        kernel.setArgument( image.data(), offset, rowSize, width, height, x, y, value );
 
-        multiCL::launchKernel2D( kernel, image.width(), image.height() );
+        multiCL::launchKernel1D( kernel, 1 );
     }
 
     void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
@@ -1206,20 +1208,13 @@ namespace Image_Function_OpenCL
         }
 
         const uint32_t rowSize = image.rowSize();
-        std::vector <uint32_t > O {};
-        for ( size_t i = 0; i < X.size(); ++i)
-        {
-            O.emplace_back(X[i] * rowSize + Y[i]);
-        }
 
-        multiCL::Array<uint32_t > offsets( O );
         multiCL::Array<uint32_t > pointX( X );
         multiCL::Array<uint32_t > pointY( Y );
 
+        kernel.setArgument( image.data(), rowSize, width, height, pointX.data(), pointY.data(), X.size(), value );
 
-        kernel.setArgument( image.data(), offsets.data(), rowSize, width, height, pointX.data(), pointY.data(), X.size(), value );
-
-        multiCL::launchKernel2D( kernel, image.width(), image.height() );
+        multiCL::launchKernel1D( kernel, static_cast<uint32_t >( X.size() ) );
     }
 
     Image Threshold( const Image & in, uint8_t threshold )
