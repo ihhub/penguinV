@@ -593,15 +593,15 @@ namespace image_function_cuda
     bool SetPixelForm1Test()
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
-             const std::vector<uint8_t> intensity = intensityArray(2);
+             const std::vector<uint8_t> intensity = intensityArray( 2 );
             PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
 
-            const uint32_t x = randomValue<uint32_t>( 0, image.width());
-            const uint32_t y = randomValue<uint32_t>( 0, image.height());
+            const uint32_t x = randomValue<uint32_t>( 0, image.width() );
+            const uint32_t y = randomValue<uint32_t>( 0, image.height() );
 
-            Image_Function_Cuda::SetPixel( image, x, y, intensity[1]);
+            Image_Function_Cuda::SetPixel( image, x, y, intensity[1] );
             
-            if ( !Cuda::verifyImage( image, x, y, 1, 1, intensity[1]))
+            if ( !Cuda::verifyImage( image, x, y, 1, 1, intensity[1] ) )
                 return false;
         }
 
@@ -613,21 +613,21 @@ namespace image_function_cuda
         size_t i, j;
 
         for ( i = 0; i < runCount(); ++i ) {
-            const std::vector<uint8_t> intensity = intensityArray(2);
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
 
-            std::vector<uint32_t> X( randomValue<uint32_t>( 1, 100));
-            std::vector<uint32_t> Y( X.size());
+            std::vector<uint32_t> X( randomValue<uint32_t>( 1, 100 ) );
+            std::vector<uint32_t> Y( X.size() );
 
             for ( j = 0; j < X.size(); ++j) {
-                X[j] = randomValue<uint32_t>( 0, image.width() - 1);
-                Y[j] = randomValue<uint32_t>( 0, image.height() - 1);
+                X[j] = randomValue<uint32_t>( 0, image.width() - 1 );
+                Y[j] = randomValue<uint32_t>( 0, image.height() - 1 );
             }
 
-            Image_Function_Cuda::SetPixel( image, X, Y, intensity[1]);
+            Image_Function_Cuda::SetPixel( image, X, Y, intensity[1] );
 
             for ( j = 0; j < X.size(); ++j) {
-                if ( !Cuda::verifyImage( image, X[j], Y[j], 1, 1, intensity[1]))
+                if ( !Cuda::verifyImage( image, X[j], Y[j], 1, 1, intensity[1] ) )
                     return false;
             }
         }
