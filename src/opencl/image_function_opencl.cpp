@@ -911,8 +911,8 @@ namespace Image_Function_OpenCL
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL");
 
-		const uint8_t colorCount = CommonColorCount( in, out );
-		width = width * colorCount;
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
 
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
