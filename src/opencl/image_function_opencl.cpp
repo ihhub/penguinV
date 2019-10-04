@@ -902,7 +902,6 @@ namespace Image_Function_OpenCL
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
 
         if( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
@@ -912,11 +911,14 @@ namespace Image_Function_OpenCL
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "lookupTableOpenCL");
 
+		const uint8_t colorCount = CommonColorCount( in, out );
+		width = width * colorCount;
+
         const uint32_t rowSizeIn = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn;
-        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut;
+        const uint32_t offsetIn  = startXIn  * rowSizeIn  + startYIn * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, tableOpenCL.data() );
 
