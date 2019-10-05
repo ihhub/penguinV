@@ -1163,7 +1163,7 @@ namespace Function_Template
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint8_t>( ~intensity[0] ) );
     }
 
-    bool form1_IsBinary(IsBinaryForm1 IsBinary)
+    bool form1_IsBinary( IsBinaryForm1 IsBinary )
     {
         std::vector<uint8_t> intensity = intensityArray( 3 );
 
@@ -1193,7 +1193,7 @@ namespace Function_Template
         return IsBinary( singleValueImage ) && IsBinary( doubleValueImage ) && !IsBinary( tripleValueImage );
     }
 
-    bool form2_IsBinary(IsBinaryForm2 IsBinary)
+    bool form2_IsBinary( IsBinaryForm2 IsBinary )
     {
         std::vector<uint8_t> intensity = intensityArray( 3 );
 
@@ -1203,14 +1203,14 @@ namespace Function_Template
         PenguinV_Image::Image image = uniformImage( intensity[0], 200, 200 );
 
         for ( uint32_t x = 0; x < image.width(); ++x ) {
-            Image_Function::SetPixel(image, x, 1, intensity[1] );
-            Image_Function::SetPixel(image, x, 2, intensity[2] );
+            Image_Function::SetPixel( image, x, 1, intensity[1] );
+            Image_Function::SetPixel( image, x, 2, intensity[2] );
         }
 
-        return IsBinary( image, 0, 0, image.width(), 1) && IsBinary( image, 0, 0, image.width(), 2)
-            && IsBinary( image, 0, 1, image.width(), 1) && IsBinary( image, 0, 1, image.width(), 2)
-            && !IsBinary( image, 0, 0, image.width(), 3) && !IsBinary( image, 0, 1, image.width(), 3)
-            && !IsBinary( image, 0, 0, image.width(), image.height());
+        return IsBinary( image, 0, 0, image.width(), 1 ) && IsBinary( image, 0, 0, image.width(), 2 )
+            && IsBinary( image, 0, 1, image.width(), 1 ) && IsBinary( image, 0, 1, image.width(), 2 )
+            && !IsBinary( image, 0, 0, image.width(), 3 ) && !IsBinary( image, 0, 1, image.width(), 3 )
+            && !IsBinary( image, 0, 0, image.width(), image.height() );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
