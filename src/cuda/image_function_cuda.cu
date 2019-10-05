@@ -27,6 +27,7 @@ namespace
             table.Histogram          = &Image_Function_Cuda::Histogram;
             table.Invert             = &Image_Function_Cuda::Invert;
             table.LookupTable        = &Image_Function_Cuda::LookupTable;
+            table.SetPixel           = &Image_Function_Cuda::SetPixel;
             table.Maximum            = &Image_Function_Cuda::Maximum;
             table.Minimum            = &Image_Function_Cuda::Minimum;
             table.Subtract           = &Image_Function_Cuda::Subtract;
@@ -296,6 +297,26 @@ namespace
                                    0.5f;
 
                 *out = static_cast<uint8_t>(mean);
+            }
+        }
+    }
+
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t x, uint32_t y, uint8_t value )
+    {
+        if ( x < width && y < height ) {
+            in[y * rowSize + x] = value;
+        }
+    }
+
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * pointX, uint32_t * pointY, uint32_t pointSize, uint32_t value )
+    {
+        const uint32_t idPoint = blockIdx.x * blockDim.x + threadIdx.x;
+
+        if ( idPoint < pointSize) {
+            const uint32_t x = pointX[idPoint];
+            const uint32_t y = pointY[idPoint];
+            if ( x < width && y < height ) {
+                in[y * rowSize + x] = value;
             }
         }
     }
@@ -1014,6 +1035,41 @@ namespace Image_Function_Cuda
                         inMem, rowSizeIn, outMem, rowSizeOut,
                         inXStart, inYStart, width, height,
                         cosAngle, sinAngle );
+    }
+
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        if ( x >= image.width() || y >= image.height() )
+            throw imageException( "Bad input parameters in image function" );
+
+        launchKernel1D( setPixelCuda, 1,
+                        image.data(), image.rowSize(), image.width(), image.height(), x, y, value );
+    }
+
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        if ( X.size() != Y.size() )
+            throw imageException( "Bad input parameters in image function" );
+
+        if ( X.size() > 0 ) {
+            const uint32_t width = image.width();
+            const uint32_t height = image.height();
+
+            for ( size_t i = 0; i < X.size(); ++i ) {
+                if ( X[i] >= width || Y[i] >= height )
+                    throw imageException( "Bad input parameters in image function" );
+            }
+
+            multiCuda::Array<uint32_t> pointX( X );
+            multiCuda::Array<uint32_t> pointY( Y );
+
+            launchKernel1D( setPixelCuda, static_cast<uint32_t>( X.size() ),
+                            image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), pointX.size(), value );
+        }
     }
 
     Image Subtract( const Image & in1, const Image & in2 )
