@@ -847,23 +847,37 @@ namespace Image_Function
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
     {
         ParameterValidation( image, x, y, width, height );
-        VerifyGrayScaleImage( image );
         OptimiseRoi( width, height, image );
 
-        histogram.resize( 256u );
+        const uint8_t colorCount = image.colorCount();
+
+        histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * imageY = image.data() + y * rowSize + x;
+        const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        for( ; imageY != imageYEnd; imageY += rowSize ) {
-            const uint8_t * imageX    = imageY;
-            const uint8_t * imageXEnd = imageX + width;
+        if ( colorCount == 1 ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX )
-                ++histogram[*imageX];
+                for ( ; imageX != imageXEnd; ++imageX )
+                    ++histogram[*imageX];
+            }
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXEnd = imageX + width;
+
+                for ( ; imageX != imageXEnd; imageX += colorCount ) {
+                    for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                        ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
+                }
+            }
         }
     }
 
@@ -887,27 +901,44 @@ namespace Image_Function
                     std::vector < uint32_t > & histogram )
     {
         ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
-        VerifyGrayScaleImage( image, mask );
         OptimiseRoi( width, height, image, mask );
 
-        histogram.resize( 256u );
+        const uint8_t colorCount = image.colorCount();
+
+        histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
         const uint32_t rowSize     = image.rowSize();
         const uint32_t rowSizeMask = mask.rowSize();
 
-        const uint8_t * imageY     = image.data() + y * rowSize + x;
+        const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYMask = mask.data() + maskY * rowSizeMask + maskX;
         const uint8_t * imageYEnd  = imageY + height * rowSize;
 
-        for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
-            const uint8_t * imageX     = imageY;
-            const uint8_t * imageXMask = imageYMask;
-            const uint8_t * imageXEnd  = imageX + width;
+        if ( colorCount == 1 ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXMask = imageYMask;
+                const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
-                if( (*imageXMask) > 0 )
-                    ++histogram[*imageX];
+                for ( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 )
+                        ++histogram[*imageX];
+                }
+            }
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXMask = imageYMask;
+                const uint8_t * imageXEnd = imageX + width;
+
+                for ( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 ) {
+                        for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                            ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
+                    }
+                }
             }
         }
     }
