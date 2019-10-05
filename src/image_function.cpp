@@ -885,8 +885,7 @@ namespace Image_Function
                 const uint8_t * imageXEnd = imageX + width;
 
                 for ( ; imageX != imageXEnd; imageX += colorCount ) {
-                    uint8_t colorChannel = 0;
-                    for ( ; colorChannel < colorCount; colorChannel++ )
+                    for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
                         ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                 }
             }
@@ -947,8 +946,7 @@ namespace Image_Function
 
                 for ( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
                     if ( ( *imageXMask ) > 0 ) {
-                        uint8_t colorChannel = 0;
-                        for ( ; colorChannel < colorCount; colorChannel++ )
+                        for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
                             ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                     }
                 }
