@@ -1163,6 +1163,56 @@ namespace Function_Template
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint8_t>( ~intensity[0] ) );
     }
 
+    bool form1_IsBinary(IsBinaryForm1 IsBinary)
+    {
+        std::vector<uint8_t> intensity = intensityArray( 3 );
+
+        while ( intensity[0] == intensity[1] || intensity[0] == intensity[2] || intensity[1] == intensity[2] )
+            intensity = intensityArray( 3 );
+
+        PenguinV_Image::Image singleValueImage = uniformImage( intensity[0], 200, 200 );
+
+        PenguinV_Image::Image doubleValueImage = uniformImage( intensity[0], 200, 200 );
+        for ( uint32_t y = 0; y < doubleValueImage.height(); ++y ) {
+            for ( uint32_t x = 0; x < doubleValueImage.width(); ++x ) {
+                if ( y % 2 == 0 )
+                    Image_Function::SetPixel( doubleValueImage, x, y, intensity[1] );
+            }
+        }
+
+        PenguinV_Image::Image tripleValueImage = uniformImage( intensity[0], 200, 200 );
+        for ( uint32_t y = 0; y < tripleValueImage.height(); ++y ) {
+            for ( uint32_t x = 0; x < tripleValueImage.width(); ++x ) {
+                if ( y % 2 == 0 )
+                    Image_Function::SetPixel( tripleValueImage, x, y, intensity[1] );
+                else if ( y % 5 == 0 )
+                    Image_Function::SetPixel( tripleValueImage, x, y, intensity[2] );
+            }
+        }
+
+        return IsBinary( singleValueImage ) && IsBinary( doubleValueImage ) && !IsBinary( tripleValueImage );
+    }
+
+    bool form2_IsBinary(IsBinaryForm2 IsBinary)
+    {
+        std::vector<uint8_t> intensity = intensityArray( 3 );
+
+        while ( intensity[0] == intensity[1] || intensity[0] == intensity[2] || intensity[1] == intensity[2] )
+            intensity = intensityArray( 3 );
+
+        PenguinV_Image::Image image = uniformImage( intensity[0], 200, 200 );
+
+        for ( uint32_t x = 0; x < image.width(); ++x ) {
+            Image_Function::SetPixel(image, x, 1, intensity[1] );
+            Image_Function::SetPixel(image, x, 2, intensity[2] );
+        }
+
+        return IsBinary( image, 0, 0, image.width(), 1) && IsBinary( image, 0, 0, image.width(), 2)
+            && IsBinary( image, 0, 1, image.width(), 1) && IsBinary( image, 0, 1, image.width(), 2)
+            && !IsBinary( image, 0, 0, image.width(), 3) && !IsBinary( image, 0, 1, image.width(), 3)
+            && !IsBinary( image, 0, 0, image.width(), image.height());
+    }
+
     bool form1_IsEqual(IsEqualForm1 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -2512,6 +2562,7 @@ namespace image_function
     SET_FUNCTION_1_FORMS( GetThreshold )
     SET_FUNCTION_8_FORMS( Histogram )
     SET_FUNCTION_4_FORMS( Invert )
+    SET_FUNCTION_2_FORMS( IsBinary )
     SET_FUNCTION_2_FORMS( IsEqual )
     SET_FUNCTION_4_FORMS( LookupTable )
     SET_FUNCTION_4_FORMS( Maximum )
