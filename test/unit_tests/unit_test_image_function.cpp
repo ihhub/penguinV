@@ -1207,10 +1207,9 @@ namespace Function_Template
             Image_Function::SetPixel( image, x, 2, intensity[2] );
         }
 
-        return IsBinary( image, 0, 0, image.width(), 1 ) && IsBinary( image, 0, 0, image.width(), 2 )
-            && IsBinary( image, 0, 1, image.width(), 1 ) && IsBinary( image, 0, 1, image.width(), 2 )
-            && !IsBinary( image, 0, 0, image.width(), 3 ) && !IsBinary( image, 0, 1, image.width(), 3 )
-            && !IsBinary( image, 0, 0, image.width(), image.height() );
+        return IsBinary( image, 0, 0, image.width(), 1 ) && IsBinary( image, 0, 0, image.width(), 2 ) && IsBinary( image, 0, 1, image.width(), 1 )
+               && IsBinary( image, 0, 1, image.width(), 2 ) && !IsBinary( image, 0, 0, image.width(), 3 ) && !IsBinary( image, 0, 1, image.width(), 3 )
+               && !IsBinary( image, 0, 0, image.width(), image.height() );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
