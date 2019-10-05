@@ -1076,7 +1076,7 @@ namespace Image_Function_Cuda
             multiCuda::Array<uint32_t> pointX( X );
             multiCuda::Array<uint32_t> pointY( Y );
 
-            launchKernel1D( setPixelCuda, X.size(),
+            launchKernel1D( setPixelCuda, static_cast<uint32_t>( X.size() ),
                             image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), pointX.size(), value );
         }
     }
