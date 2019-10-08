@@ -1,5 +1,7 @@
 #pragma once
 
+#if !defined(_MSC_VER) && !defined(_WIN32)
+
 #include <cufft.h>
 #include <stdint.h>
 #include "cuda_types.cuh"
@@ -59,3 +61,4 @@ namespace FFT_Cuda
         void _makePlans() override;
     };
 }
+#endif
