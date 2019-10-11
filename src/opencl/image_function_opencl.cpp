@@ -224,8 +224,8 @@ namespace
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
-            if( x < width && y < height ) {
-                if(out[offsetOut + y * rowSizeOut + x] != in[offsetIn + y * rowSizeIn + x])
+            if ( x < width && y < height ) {
+                if (out[offsetOut + y * rowSizeOut + x] != in[offsetIn + y * rowSizeIn + x])
                   atomic_add( nonEqualCount, 1 );
             }
         }
