@@ -902,9 +902,11 @@ namespace Image_Function_OpenCL
     }
 
     bool IsEqual( const Image & in, uint32_t startXIn, uint32_t startYIn, const Image & out, uint32_t startXOut, uint32_t startYOut,
-                 uint32_t width, uint32_t height )
+                  uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        multiCL::Type< uint32_t > differenceCount( 0u );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "isEqualOpenCL");
@@ -918,13 +920,12 @@ namespace Image_Function_OpenCL
         const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
         const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
 
-        uint32_t equal = 0;
 
-        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, equal );
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, differenceCount.data() );
 
         multiCL::launchKernel2D( kernel, width, height );
 
-        return equal > 0 ? false : true;
+        return differenceCount.get() == 0;
     }
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
