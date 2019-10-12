@@ -1168,15 +1168,22 @@ bool ImageTypeManager::isIntertypeConversionEnabled() const
 
 namespace simd
 {
+    bool isAvx512Enabled = true;
     bool isAvxEnabled = true;
     bool isSseEnabled = true;
     bool isNeonEnabled = true;
 
     void EnableSimd( bool enable )
     {
+        EnableAVX512(enable);
         EnableAvx( enable );
         EnableSse( enable );
         EnableNeon( enable );
+    }
+
+    void EnableAVX512( bool enable )
+    {
+        isAvx512Enabled = enable;
     }
     
     void EnableAvx( bool enable )
@@ -1196,9 +1203,14 @@ namespace simd
 
     SIMDType actualSimdType()
     {
-        #ifdef PENGUINV_AVX_SET
+        #ifdef PENGUINV_AVX512BW_SET
         if ( SimdInfo::isAvxAvailable() && isAvxEnabled )
             return avx_function;
+        #endif
+
+        #ifdef PENGUINV_AVX_SET
+        if ( SimdInfo::isAVX512BWAvailable() && isAvx512Enabled )
+            return avx512_function;
         #endif
 
         #ifdef PENGUINV_SSE_SET
