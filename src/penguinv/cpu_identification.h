@@ -35,6 +35,10 @@
         #ifdef __AVX2__
             #define PENGUINV_AVX_SET
         #endif
+
+        #ifdef __AVX512BW__
+            #define PENGUINV_AVX512BW_SET
+        #endif
     #endif
 
 #else
@@ -57,6 +61,12 @@
 #ifdef PENGUINV_AVX_SET
     #ifndef PENGUINV_SSE_SET
         #error "None of existing processors can support AVX but not SSE. Please check SIMD instruction set verification code"
+    #endif
+#endif
+
+#ifdef PENGUINV_AVX512BW_SET
+    #ifndef PENGUINV_AVX_SET
+        #error "None of existing processors can support AVX512 but not AVX. Please check SIMD instruction set verification code"
     #endif
 #endif
 
