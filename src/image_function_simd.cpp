@@ -60,7 +60,7 @@ namespace avx512
     const uint32_t simdSize = 64u;
 
 #ifdef PENGUINV_AVX512BW_SET
-    typedef __m512i simd
+    typedef __m512i simd;
 
     void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                              uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )

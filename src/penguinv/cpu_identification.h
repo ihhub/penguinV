@@ -112,7 +112,7 @@ struct SimdInfo
     static bool isAVX512BWAvailable()
     {
 #ifdef PENGUINV_AVX512BW_SET
-        static const bool isAvailable = CpuInformation::isAVX512BWSupported();
+        static const bool isAvailable = CpuInformation::isAvx512BWSupported();
         return isAvailable;
 #else
         return false;
