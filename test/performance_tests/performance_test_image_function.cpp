@@ -49,7 +49,7 @@ namespace Function_Template
         }
         else if ( namespaceName == "image_function_avx512" ) {
             simd::EnableSimd( false );
-            simd::EnableAVX512( true );
+            simd::EnableAvx512( true );
         }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );
@@ -356,7 +356,7 @@ namespace image_function_avx512
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = SimdInfo::isAvx512Available();
+    const bool isSupported = SimdInfo::isAVX512BWAvailable();
     const std::string namespaceName = "image_function_avx512";
 
     SET_FUNCTION( AbsoluteDifference )
