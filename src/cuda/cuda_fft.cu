@@ -1,3 +1,5 @@
+#if !defined(_MSC_VER) && !defined(_WIN32)
+
 #include <cuda_runtime.h>
 #include "cuda_fft.cuh"
 #include "cuda_helper.cuh"
@@ -209,3 +211,4 @@ namespace FFT_Cuda
             throw imageException( "Cannot create FFT plan on CUDA device" );
     }
 }
+#endif
