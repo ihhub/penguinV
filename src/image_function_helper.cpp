@@ -1175,7 +1175,7 @@ namespace simd
 
     void EnableSimd( bool enable )
     {
-        EnableAvx512(enable);
+        EnableAvx512( enable );
         EnableAvx( enable );
         EnableSse( enable );
         EnableNeon( enable );
