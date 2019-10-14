@@ -622,7 +622,7 @@ namespace simd
 {
     // These functions are designed only for testing simd technique functions individually
     void EnableSimd  ( bool enable );
-    void EnableAvx512( bool enable);
+    void EnableAvx512( bool enable );
     void EnableAvx   ( bool enable );
     void EnableSse   ( bool enable );
     void EnableNeon  ( bool enable );
