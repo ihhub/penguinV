@@ -51,7 +51,6 @@ namespace Raw_Operation
     {
         Image_Function::ParameterValidation( image );
 
-        uint32_t palleteSize = 0;
         std::vector < uint8_t > pallete;
 
         std::fstream file;
