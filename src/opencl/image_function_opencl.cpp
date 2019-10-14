@@ -219,13 +219,14 @@ namespace
                 out[offsetOut + y * rowSizeOut + x] = ~in[offsetIn + y * rowSizeIn + x];
         }
 
-        __kernel void isEqualOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height, volatile __global uint * nonEqualCount )
+        __kernel void isEqualOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global const uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height,
+                                     volatile __global uint * nonEqualCount )
         {
             const size_t x = get_global_id(0);
             const size_t y = get_global_id(1);
 
             if ( x < width && y < height ) {
-                if (out[offsetOut + y * rowSizeOut + x] != in[offsetIn + y * rowSizeIn + x])
+                if ( out[offsetOut + y * rowSizeOut + x] != in[offsetIn + y * rowSizeIn + x] )
                   atomic_add( nonEqualCount, 1 );
             }
         }
