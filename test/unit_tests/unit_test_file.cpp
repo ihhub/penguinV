@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../../src/file/bmp_image.h"
 #include "../../src/file/png_image.h"
+#include "../../src/file/raw_image.h"
 #include "unit_test_file.h"
 #include "unit_test_helper.h"
 
@@ -66,6 +67,20 @@ namespace file_operation
         return true;
     }
 
+    bool RawRGBImage()
+    {
+        const std::string fileName = "raw.raw";
+        const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
+        Raw_Operation::Save( fileName, original );
+        const PenguinV_Image::Image loaded = Raw_Operation::Load<uint8_t>( fileName, original.width(), original.height(), original.colorCount() );
+        remove( fileName.data() );
+
+        if ( !Unit_Test::equalSize( original, loaded ) || !Unit_Test::equalData( original, loaded ) )
+            return false;
+
+        return true;
+    }
+
     bool WhiteGrayScaleImageBitmap()
     {
         return WhiteGrayScaleImage( "bitmap.bmp", Bitmap_Operation::Load, Bitmap_Operation::Save );
@@ -107,4 +122,5 @@ void addTests_File( UnitTestFramework & framework )
     framework.add( file_operation::BlackGrayScaleImagePng,    "File: Save and load black gray-scale png image" );
     framework.add( file_operation::RandomRGBImagePng,         "File: Save and load random RGB png image" );
 #endif
+    framework.add( file_operation::RawRGBImage,               "File: Save and load raw RGB image" );
 }
