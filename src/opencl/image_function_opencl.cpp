@@ -300,8 +300,8 @@ namespace
             }
         }
 
-        __kernel void __attribute__(( overloadable )) setPixelOpenCL( __global uchar * data, uint offset, uint rowSize, uint width, uint height, __global uint * pointX,
-                                      __global uint * pointY, uint pointSize, uint value )
+        __kernel void __attribute__(( overloadable )) setPixelOpenCL( __global uchar * data, uint offset, uint rowSize, uint width, uint height,
+                                                                      __global const uint * pointX, __global const uint * pointY, uint pointSize, uint value )
         {
             const size_t id = get_global_id(0);
 
