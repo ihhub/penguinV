@@ -1185,7 +1185,7 @@ namespace simd
     {
         isAvx512Enabled = enable;
     }
-    
+
     void EnableAvx( bool enable )
     {
         isAvxEnabled = enable;
