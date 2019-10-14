@@ -91,7 +91,6 @@ namespace avx512
         }
     }
 #endif
-
 }
 
 namespace avx
