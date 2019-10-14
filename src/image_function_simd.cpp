@@ -2065,10 +2065,10 @@ namespace simd
     }
 
 #ifdef PENGUINV_AVX512BW_SET
-#define AVX512BW_CODE( code )          \
+#define AVX512BW_CODE( code )        \
 if ( simdType == avx512_function ) { \
-    code;                         \
-    return;                       \
+    code;                            \
+    return;                          \
 }
 #else
 #define AVX512BW_CODE( code )
