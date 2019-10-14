@@ -44,7 +44,7 @@ struct CpuInformation
         __cpuid_count( 0, 0, info[0], info[1], info[2], info[3] );
         const int id = info[0];
 
-        if( id >= 0x00000007 ) {
+        if ( id >= 0x00000007 ) {
             __cpuid_count( 0x00000007, 0, info[0], info[1], info[2], info[3] );
             return (info[1] & ((int)1 << 30)) != 0;
         }
