@@ -740,8 +740,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image input = uniformImage( intensity[0] );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = input.width() % 2;
         const uint32_t yCorrection = input.height() % 2;
 
@@ -781,8 +781,8 @@ namespace Function_Template
         const uint8_t intensityFill = intensityValue();
         std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = input[0].width() % 2;
         const uint32_t yCorrection = input[0].height() % 2;
 
@@ -822,8 +822,8 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -867,8 +867,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -1571,7 +1571,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1586,7 +1586,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1605,7 +1605,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1623,7 +1623,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(1) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );

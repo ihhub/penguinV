@@ -207,8 +207,8 @@ namespace image_function_cuda
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
-            const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-            const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+            const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+            const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
             const uint32_t xCorrection = input.width() % 2;
             const uint32_t yCorrection = input.height() % 2;
 
@@ -249,8 +249,8 @@ namespace image_function_cuda
             const uint8_t intensityFill = intensityValue();
             std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-            const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+            const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+            const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
             const uint32_t xCorrection = input[0].width() % 2;
             const uint32_t yCorrection = input[0].height() % 2;
 
@@ -291,8 +291,8 @@ namespace image_function_cuda
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-            const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-            const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+            const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+            const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
             const uint32_t xCorrection = roiWidth % 2;
             const uint32_t yCorrection = roiHeight % 2;
 
@@ -337,8 +337,8 @@ namespace image_function_cuda
             uint32_t roiWidth, roiHeight;
             generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-            const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
-            const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+            const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+            const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
             const uint32_t xCorrection = roiWidth % 2;
             const uint32_t yCorrection = roiHeight % 2;
 

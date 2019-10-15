@@ -75,7 +75,7 @@ namespace Unit_Test
     template <typename _Type>
     void generateRoi( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
     {
-        width  = randomValue<uint32_t>( 1, image.width() );
+        width = randomValue<uint32_t>( 1, image.width() );
         height = randomValue<uint32_t>( 1, image.height() );
 
         x = randomValue<uint32_t>( image.width()  - width );

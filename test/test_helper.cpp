@@ -34,7 +34,7 @@ namespace
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX )
-                (*outX) = Test_Helper::randomValue<uint8_t>( 255 );
+                ( *outX ) = Test_Helper::randomValue<uint8_t>( 255 );
         }
     }
 
