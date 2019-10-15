@@ -133,7 +133,7 @@ namespace Function_Template
     std::pair < double, double > template_Fill( FillForm1 Fill, const std::string & namespaceName, uint32_t size )
     {
         PenguinV_Image::Image image = Performance_Test::uniformImage( size, size );
-        uint8_t value = Performance_Test::randomValue<uint8_t>( 256 );
+        uint8_t value = Performance_Test::randomValue<uint8_t>( 255 );
 
         TEST_FUNCTION_LOOP( Fill( image, value ), namespaceName )
     }
@@ -239,7 +239,7 @@ namespace Function_Template
     std::pair < double, double > template_Threshold( ThresholdForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
-        uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
+        uint8_t threshold = Performance_Test::randomValue<uint8_t>( 255 );
 
         TEST_FUNCTION_LOOP( Threshold( image[0], image[1], threshold ), namespaceName )
     }
@@ -247,8 +247,8 @@ namespace Function_Template
     std::pair < double, double > template_ThresholdDouble( ThresholdDoubleForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
         std::vector < PenguinV_Image::Image > image = Performance_Test::uniformImages( 2, size, size );
-        uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
-        uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
+        uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 255 );
+        uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 255 );
 
         TEST_FUNCTION_LOOP( Threshold( image[0], image[1], minThreshold, maxThreshold ), namespaceName )
     }

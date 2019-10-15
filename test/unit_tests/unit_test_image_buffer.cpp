@@ -15,7 +15,7 @@ namespace template_image
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
             const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 3 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
             if( !Unit_Test::equalSize( PenguinV_Image::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
@@ -32,7 +32,7 @@ namespace template_image
             PenguinV_Image::ImageTemplate < uint8_t > image;
 
             uint8_t fakeArray[1];
-            uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 2 );
+            uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 1 );
             if( fakeValue == 1 )
                 fakeValue = 0;
 
@@ -51,11 +51,11 @@ namespace template_image
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
             const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 3 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
             PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-            image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
+            image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 255u ) ) );
 
             const PenguinV_Image::ImageTemplate < _Type > image_copy( image );
 
@@ -72,11 +72,11 @@ namespace template_image
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
             const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
+            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 3 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
             PenguinV_Image::ImageTemplate < _Type > image( width, height, colorCount, alignment );
-            image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
+            image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 255u ) ) );
 
             PenguinV_Image::ImageTemplate < _Type > image_copy;
 

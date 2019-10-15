@@ -34,7 +34,7 @@ namespace
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; ++outX )
-                (*outX) = Test_Helper::randomValue<uint8_t>( 256 );
+                (*outX) = Test_Helper::randomValue<uint8_t>( 255 );
         }
     }
 
@@ -45,7 +45,7 @@ namespace Test_Helper
 {
     PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
     {
-        return uniformImage( randomValue<uint8_t>( 256 ), width, height, reference );
+        return uniformImage( randomValue<uint8_t>( 255 ), width, height, reference );
     }
 
     PenguinV_Image::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const PenguinV_Image::Image & reference )
@@ -60,7 +60,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBImage( const PenguinV_Image::Image & reference )
     {
-        return uniformRGBImage( randomValue<uint8_t>( 256 ), reference );
+        return uniformRGBImage( randomValue<uint8_t>( 255 ), reference );
     }
 
     PenguinV_Image::Image uniformRGBImage( uint8_t value, const PenguinV_Image::Image & reference )
@@ -70,7 +70,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height )
     {
-        return uniformRGBImage( width, height, randomValue<uint8_t>( 256 ) );
+        return uniformRGBImage( width, height, randomValue<uint8_t>( 255 ) );
     }
 
     PenguinV_Image::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
@@ -80,7 +80,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBAImage( uint32_t width, uint32_t height )
     {
-        return uniformRGBAImage( width, height, randomValue<uint8_t>( 256 ) );
+        return uniformRGBAImage( width, height, randomValue<uint8_t>( 255 ) );
     }
 
     PenguinV_Image::Image uniformRGBAImage( uint32_t width, uint32_t height, uint8_t value )
@@ -90,7 +90,7 @@ namespace Test_Helper
 
     PenguinV_Image::Image uniformRGBAImage( const PenguinV_Image::Image & reference )
     {
-        return uniformRGBAImage( randomValue<uint8_t>( 256 ), reference );
+        return uniformRGBAImage( randomValue<uint8_t>( 255 ), reference );
     }
 
     PenguinV_Image::Image uniformRGBAImage( uint8_t value, const PenguinV_Image::Image & reference )
@@ -125,7 +125,7 @@ namespace Test_Helper
 
         std::vector<uint8_t> intesity( images );
         for( size_t i = 0u; i < intesity.size(); ++i )
-            intesity[i] = randomValue<uint8_t>( 256 );
+            intesity[i] = randomValue<uint8_t>( 255 );
 
         return uniformImages( intesity, reference );
     }
