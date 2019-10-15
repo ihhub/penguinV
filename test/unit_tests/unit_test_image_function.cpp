@@ -652,7 +652,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         const PenguinV_Image::Image output = ExtractChannel( input, channelId );
 
@@ -665,7 +665,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
         PenguinV_Image::Image output = uniformImage( input.width(), input.height() );
 
         ExtractChannel( input, output, channelId );
@@ -679,7 +679,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         uint32_t roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -696,7 +696,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
         PenguinV_Image::Image output = uniformImage();
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -867,8 +867,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
+        const bool verticalFlip = (randomValue<uint32_t>( 0, 1 ) == 0);
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -1642,7 +1642,7 @@ namespace Function_Template
 
         output.fill( intensity[1] );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         ReplaceChannel( input, output, channelId );
 
@@ -1667,7 +1667,7 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         ReplaceChannel( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, channelId );
 
