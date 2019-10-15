@@ -8,7 +8,7 @@ namespace edge_detection
     bool DetectHorizontalEdge()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            PenguinV_Image::Image image = Unit_Test::blackImage();
+            PenguinV::Image image = Unit_Test::blackImage();
 
             uint32_t roiX, roiY;
             uint32_t roiWidth, roiHeight;
@@ -50,7 +50,7 @@ namespace edge_detection
     bool DetectVerticalEdge()
     {
         for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            PenguinV_Image::Image image = Unit_Test::blackImage();
+            PenguinV::Image image = Unit_Test::blackImage();
 
             uint32_t roiX, roiY;
             uint32_t roiWidth, roiHeight;

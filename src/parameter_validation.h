@@ -26,20 +26,20 @@ namespace Image_Function
     template <typename TImage>
     bool IsCorrectColorCount( const TImage & image )
     {
-        return image.colorCount() == PenguinV_Image::GRAY_SCALE || image.colorCount() == PenguinV_Image::RGB || image.colorCount() == PenguinV_Image::RGBA;
+        return image.colorCount() == PenguinV::GRAY_SCALE || image.colorCount() == PenguinV::RGB || image.colorCount() == PenguinV::RGBA;
     }
 
     template <typename TImage>
     void VerifyRGBImage( const TImage & image )
     {
-        if( image.colorCount() != PenguinV_Image::RGB )
+        if( image.colorCount() != PenguinV::RGB )
             throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
     }
 
     template <typename TImage>
     void VerifyRGBAImage( const TImage & image )
     {
-        if( image.colorCount() != PenguinV_Image::RGBA )
+        if( image.colorCount() != PenguinV::RGBA )
             throw imageException( "Bad input parameters in image function: colored image has different than 4 color channels" );
     }
 
@@ -53,7 +53,7 @@ namespace Image_Function
     template <typename TImage>
     void VerifyGrayScaleImage( const TImage & image )
     {
-        if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if( image.colorCount() != PenguinV::GRAY_SCALE )
             throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 

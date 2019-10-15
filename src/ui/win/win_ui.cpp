@@ -16,7 +16,7 @@ namespace WindowsUi
         {
         }
 
-        const PenguinV_Image::Image & image() const
+        const PenguinV::Image & image() const
         {
             return _window->_image;
         }
@@ -159,8 +159,8 @@ namespace
     };
 }
 
-UiWindowWin::UiWindowWin( const PenguinV_Image::Image & image, const std::string & title )
-    : UiWindow( PenguinV_Image::Image(), title ) // we pass an empty image into base class
+UiWindowWin::UiWindowWin( const PenguinV::Image & image, const std::string & title )
+    : UiWindow( PenguinV::Image(), title ) // we pass an empty image into base class
     , _bmpInfo( nullptr )
 {
     static const UiWindowWinRegistrator registrator; // we need to register only once hence static variable
@@ -201,7 +201,7 @@ void UiWindowWin::_display()
     }
 }
 
-void UiWindowWin::setImage( const PenguinV_Image::Image & image )
+void UiWindowWin::setImage( const PenguinV::Image & image )
 {
     _free();
 

@@ -4,12 +4,12 @@
 
 namespace
 {
-    PenguinV_Image::Image generateImage( uint8_t imageType )
+    PenguinV::Image generateImage( uint8_t imageType )
     {
         return ImageTypeManager::instance().image( imageType );
     }
 
-    void convertImage( const PenguinV_Image::Image & in, PenguinV_Image::Image & out )
+    void convertImage( const PenguinV::Image & in, PenguinV::Image & out )
     {
         ImageTypeManager::instance().convert( in, out );
     }

@@ -5,25 +5,25 @@
 
 namespace Jpeg_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    PenguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        PenguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string &, PenguinV_Image::Image & )
+    void Load( const std::string &, PenguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image & )
+    void Save( const std::string &, const PenguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    void Save( const std::string &, const PenguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
         throw imageException( "JPEG is not supported" );
     }

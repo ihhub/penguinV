@@ -39,15 +39,15 @@ namespace
 
 namespace File_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    PenguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        PenguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string & path, PenguinV_Image::Image & image )
+    void Load( const std::string & path, PenguinV::Image & image )
     {
         if ( isJpegFile( path ) ) {
             Jpeg_Operation::Load( path, image );
@@ -62,12 +62,12 @@ namespace File_Operation
         Bitmap_Operation::Load( path, image );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image )
+    void Save( const std::string & path, const PenguinV::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    void Save( const std::string & path, const PenguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         if ( isJpegFile( path ) ) {
             Jpeg_Operation::Save( path, image, startX, startY, width, height );

@@ -1116,7 +1116,7 @@ const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTab
     return table->second;
 }
 
-void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out )
+void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV::Image & in, const PenguinV::Image & out )
 {
     if ( in.type() == out.type() )
         throw imageException( "Cannot register same type images for intertype copy" );
@@ -1127,7 +1127,7 @@ void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable:
     _image[out.type()] = out.generate();
 }
 
-void ImageTypeManager::convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const
+void ImageTypeManager::convert( const PenguinV::Image & in, PenguinV::Image & out ) const
 {
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
         _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
@@ -1137,9 +1137,9 @@ void ImageTypeManager::convert( const PenguinV_Image::Image & in, PenguinV_Image
     copy->second( in, out );
 }
 
-PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
+PenguinV::Image ImageTypeManager::image( uint8_t type ) const
 {
-    std::map< uint8_t, PenguinV_Image::Image >::const_iterator image = _image.find( type );
+    std::map< uint8_t, PenguinV::Image >::const_iterator image = _image.find( type );
     if ( image == _image.cend() )
         throw imageException( "Image is not registered" );
 

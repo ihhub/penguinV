@@ -16,7 +16,7 @@ void DisplayHistogram( UiWindow & window, const std::vector < _Type > & histogra
 
     const _Type range = maxValue - minValue;
 
-    PenguinV_Image::Image image( histogram.size(), 100 );
+    PenguinV::Image image( histogram.size(), 100 );
     image.fill( 0u );
 
     const uint32_t rowSize = image.rowSize();

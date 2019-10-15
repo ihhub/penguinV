@@ -38,9 +38,9 @@ namespace
             table.Threshold          = &Image_Function_OpenCL::Threshold;
             table.Threshold2         = &Image_Function_OpenCL::Threshold;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageOpenCL().type(), table );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertToOpenCL, PenguinV_Image::Image(), PenguinV_Image::ImageOpenCL() );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertFromOpenCL, PenguinV_Image::ImageOpenCL(), PenguinV_Image::Image() );
+            ImageTypeManager::instance().setFunctionTable( PenguinV::ImageOpenCL().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertToOpenCL, PenguinV::Image(), PenguinV::ImageOpenCL() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_OpenCL::ConvertFromOpenCL, PenguinV::ImageOpenCL(), PenguinV::Image() );
         }
     };
 
@@ -498,7 +498,7 @@ namespace Image_Function_OpenCL
 
     Image ConvertToOpenCL( const Image & in )
     {
-        PenguinV_Image::Image out = PenguinV_Image::ImageOpenCL().generate( in.width(), in.height(), in.colorCount() );
+        PenguinV::Image out = PenguinV::ImageOpenCL().generate( in.width(), in.height(), in.colorCount() );
 
         ConvertToOpenCL( in, out );
 
@@ -582,7 +582,7 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
+        if( in.colorCount() == PenguinV::GRAY_SCALE ) {
             Copy( in, out );
             return;
         }
@@ -622,7 +622,7 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
 
-        if( in.colorCount() == PenguinV_Image::RGB ) {
+        if( in.colorCount() == PenguinV::RGB ) {
             Copy( in, out );
         }
         else {

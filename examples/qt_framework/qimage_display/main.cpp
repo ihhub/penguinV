@@ -21,9 +21,9 @@ int main( int argc, char *argv[] )
                                                                  QObject::tr("Bitmap (*.bmp);;All Files (*)") );
 
         // Load a color image from storage
-        PenguinV_Image::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
+        PenguinV::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
 
-        if( original.colorCount() != PenguinV_Image::RGB || original.empty() ) {
+        if( original.colorCount() != PenguinV::RGB || original.empty() ) {
             std::cout << "Looks like no image or it is not a color image" << std::endl;
             return 0;
         }
@@ -33,7 +33,7 @@ int main( int argc, char *argv[] )
         window1.show();
 
         // Because our logo is green-white so we extract red channel to make green areas be as black on gray-scale image
-        PenguinV_Image::Image red = Image_Function::ExtractChannel( original, 0 );
+        PenguinV::Image red = Image_Function::ExtractChannel( original, 0 );
 
         // Display image in separate window
         UiWindowQt window2( red );
@@ -42,7 +42,7 @@ int main( int argc, char *argv[] )
         // We theshold image for proper blob detection
         // Remark: actually we can pass the threshold to blob detection function so we can skip this step
         // But we made this just to show how it works
-        PenguinV_Image::Image thresholded = Image_Function::Threshold( red, Image_Function::GetThreshold( Image_Function::Histogram( red ) ) );
+        PenguinV::Image thresholded = Image_Function::Threshold( red, Image_Function::GetThreshold( Image_Function::Histogram( red ) ) );
 
         // Display image in separate window
         UiWindowQt window3( thresholded );
@@ -53,7 +53,7 @@ int main( int argc, char *argv[] )
         detection.find( thresholded );
 
         // Create an ouput image
-        PenguinV_Image::Image output( thresholded.width(), thresholded.height() );
+        PenguinV::Image output( thresholded.width(), thresholded.height() );
         output.fill( 0 );
 
         // Sort blobs by size and do NOT draw an edge of biggest blob what is actually white backgroud

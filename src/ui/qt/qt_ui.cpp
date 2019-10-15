@@ -3,7 +3,7 @@
 #include <QPainter>
 #include <QString>
 
-UiWindowQt::UiWindowQt( const PenguinV_Image::Image & image, const std::string & title )
+UiWindowQt::UiWindowQt( const PenguinV::Image & image, const std::string & title )
     : UiWindow( image, title )
 {
     const QImage imageQt( _image.data(), static_cast<int>( _image.width() ), static_cast<int>( _image.height() ),
