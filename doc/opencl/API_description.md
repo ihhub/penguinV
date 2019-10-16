@@ -1,7 +1,7 @@
 # API description
 
 ## Namespaces
-**PenguinV_Image**    
+**PenguinV**
 - ***ImageOpenCL*** - a 8-bit image with default number of colors as 1 (gray-scale image). If the the number of color channels in this description is not implicitly specified then it is a 1 (gray-scale image).    
 
 **Image_Function_OpenCL**    

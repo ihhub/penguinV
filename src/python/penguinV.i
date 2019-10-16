@@ -10,7 +10,7 @@
 #include "../image_function.h"
 %}
 
-%nodefaultctor PenguinV_Image::ImageTemplate;
+%nodefaultctor PenguinV::ImageTemplate;
 %nodefaultctor Image;
 
 %feature("autodoc", "1");
@@ -19,7 +19,7 @@ namespace std {
     %template(vectorUInt32) vector<uint32_t>;
 };
 
-namespace PenguinV_Image {
+namespace PenguinV {
 
     template<typename TColorDepth> class ImageTemplate {
 
@@ -70,17 +70,17 @@ namespace PenguinV_Image {
 
 namespace Bitmap_Operation {
 
-    PenguinV_Image::Image Load ( const std::string & path);
-    void                  Load( const std::string & path, PenguinV_Image::Image & image );
+    PenguinV::Image Load ( const std::string & path);
+    void                  Load( const std::string & path, PenguinV::Image & image );
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image );
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
+    void Save( const std::string & path, const PenguinV::Image & image );
+    void Save( const std::string & path, const PenguinV::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height );
 }
 
 namespace Image_Function {
 
-   using namespace PenguinV_Image;
+   using namespace PenguinV;
 
    Image ConvertToGrayScale( const Image & in );
    void  ConvertToGrayScale( const Image & in, Image & out );
