@@ -34,9 +34,9 @@ namespace
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV::ImageCuda().type(), table );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV::Image(), PenguinV::ImageCuda() );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, PenguinV::ImageCuda(), PenguinV::Image() );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, PenguinV_Image::ImageCuda(), PenguinV_Image::Image() );
         }
     };
 
@@ -592,7 +592,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if ( in.colorCount() == PenguinV::GRAY_SCALE ) {
+        if ( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -630,7 +630,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
 
-        if ( in.colorCount() == PenguinV::RGB ) {
+        if ( in.colorCount() == PenguinV_Image::RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }

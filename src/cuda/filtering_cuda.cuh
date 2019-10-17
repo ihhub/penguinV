@@ -4,7 +4,7 @@
 
 namespace Image_Function_Cuda
 {
-    using namespace PenguinV;
+    using namespace PenguinV_Image;
 
     Image Gaussian( const Image & in, uint32_t kernelSize, float sigma );
     void  Gaussian( const Image & in, Image & out, uint32_t kernelSize, float sigma );
