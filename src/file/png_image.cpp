@@ -5,25 +5,25 @@
 
 namespace Png_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        penguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string &, PenguinV_Image::Image & )
+    void Load( const std::string &, penguinV::Image & )
     {
         throw imageException( "PNG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image & )
+    void Save( const std::string &, const penguinV::Image & )
     {
         throw imageException( "PNG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
         throw imageException( "PNG is not supported" );
     }
@@ -38,25 +38,25 @@ namespace Png_Operation
 
 namespace Png_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
         if( path.empty() )
             throw imageException( "Incorrect file path for image file loading" );
 
         FILE * file = fopen( path.data(), "rb" );
         if( !file )
-            return PenguinV_Image::Image();
+            return penguinV::Image();
 
         png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
         if ( !png ) {
             fclose( file );
-            return PenguinV_Image::Image();
+            return penguinV::Image();
         }
 
         png_infop info = png_create_info_struct( png );
         if ( !info ) {
             fclose( file );
-            return PenguinV_Image::Image();
+            return penguinV::Image();
         }
 
         png_init_io( png, file );
@@ -100,7 +100,7 @@ namespace Png_Operation
 
         const bool isGrayScale = (colorType == PNG_COLOR_TYPE_GRAY || colorType == PNG_COLOR_TYPE_GRAY_ALPHA);
 
-        PenguinV_Image::Image image( width, height, isGrayScale ? PenguinV_Image::GRAY_SCALE : PenguinV_Image::RGB );
+        penguinV::Image image( width, height, isGrayScale ? penguinV::GRAY_SCALE : penguinV::RGB );
 
         uint8_t * outY = image.data();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
@@ -131,17 +131,17 @@ namespace Png_Operation
         return image;
     }
 
-    void Load( const std::string & path, PenguinV_Image::Image & raw )
+    void Load( const std::string & path, penguinV::Image & raw )
     {
         raw = Load( path );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image )
+    void Save( const std::string & path, const penguinV::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( image, startX, startY, width, height );
@@ -160,7 +160,7 @@ namespace Png_Operation
 
         png_init_io( png, file );
 
-        const bool grayScaleImage = image.colorCount() == PenguinV_Image::GRAY_SCALE;
+        const bool grayScaleImage = image.colorCount() == penguinV::GRAY_SCALE;
 
         // Output is 8 bit depth, Gray-Scale or RGB
         png_set_IHDR( png, info, width, height, 8, (grayScaleImage ? PNG_COLOR_TYPE_GRAY : PNG_COLOR_TYPE_RGB), PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,

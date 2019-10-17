@@ -221,7 +221,7 @@ namespace
     }
 
     template <typename _Type>
-    void findEdgePoints( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter,
+    void findEdgePoints( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter,
                          std::vector < PointBase2D<_Type> > & positiveEdgePoint, std::vector < PointBase2D<_Type> > & negativeEdgePoint )
     {
         Image_Function::VerifyGrayScaleImage( image );
@@ -349,13 +349,13 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
 
-void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );

@@ -26,8 +26,8 @@ namespace Performance_Test
         std::pair < double, double > runPerformanceTestCuda( performanceFunctionCuda function, uint32_t size, uint32_t threadCountDivider );
 
         // Functions to generate images
-        PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height );
-        PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
-        std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
+        penguinV::Image uniformImage( uint32_t width, uint32_t height );
+        penguinV::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
+        std::vector< penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
     }
 }

@@ -13,8 +13,8 @@ namespace Unit_Test
     // Generate images
     // reference is used to generate a specific type of images aka CPU, CUDA, OpenCL.
     // For CPU memory based image you could skip reference parameter
-    PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
-    PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference = PenguinV_Image::Image() );
+    penguinV::Image blackImage( const penguinV::Image & reference = penguinV::Image() );
+    penguinV::Image whiteImage( const penguinV::Image & reference = penguinV::Image() );
 
     // Generate pixel intensity values
     uint8_t intensityValue();
@@ -39,41 +39,41 @@ namespace Unit_Test
                    alignment == image.alignment() && rowSize == image.rowSize());
     }
 
-    bool equalSize( const PenguinV_Image::Image & image, uint32_t width, uint32_t height );
+    bool equalSize( const penguinV::Image & image, uint32_t width, uint32_t height );
 
     template <typename data>
-    bool equalData( const PenguinV_Image::ImageTemplate < data > & image1, const PenguinV_Image::ImageTemplate < data > & image2 )
+    bool equalData( const penguinV::ImageTemplate < data > & image1, const penguinV::ImageTemplate < data > & image2 )
     {
         return memcmp( image1.data(), image2.data(), sizeof( data ) * image1.height() * image1.rowSize() ) == 0;
     }
 
     template <typename data>
-    bool isEmpty( const PenguinV_Image::ImageTemplate < data > & image )
+    bool isEmpty( const penguinV::ImageTemplate < data > & image )
     {
         return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
                image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint8_t > & value, bool isAnyValue = true );
-    bool verifyImage( const PenguinV_Image::Image & image, uint8_t value );
-    bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image & image, uint8_t value );
+    bool verifyImage( const penguinV::Image & image, const std::vector < uint8_t > & value, bool isAnyValue = true );
 
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value );
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value );
+    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint16_t > & value, bool isAnyValue = true );
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint16_t value );
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image16Bit & image, uint16_t value );
+    bool verifyImage( const penguinV::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue = true );
 
     // Fill image ROI with specific intensity
-    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                     const std::vector < uint8_t > & value );
 
     // Generate and return ROI based on full image size
     template <typename _Type>
-    void generateRoi( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
+    void generateRoi( const penguinV::ImageTemplate<_Type> & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
     {
         width  = randomValue<uint32_t>( 1, image.width()  + 1 );
         height = randomValue<uint32_t>( 1, image.height() + 1 );
@@ -81,16 +81,16 @@ namespace Unit_Test
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );
     }
-    void generateRoi( const std::vector < PenguinV_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
+    void generateRoi( const std::vector < penguinV::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
                       uint32_t & width, uint32_t & height );
     // first element in pair structure is width, second - height
     void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
                       std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
 
-    void generateOffset( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
+    void generateOffset( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
 
     template <typename _Type>
-    std::pair <uint32_t, uint32_t> imageSize( const PenguinV_Image::ImageTemplate<_Type> & image )
+    std::pair <uint32_t, uint32_t> imageSize( const penguinV::ImageTemplate<_Type> & image )
     {
         return std::pair <uint32_t, uint32_t>( image.width(), image.height() );
     }

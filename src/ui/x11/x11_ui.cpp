@@ -4,7 +4,7 @@
 
 #include "../../image_exception.h"
 
-UiWindowX11::UiWindowX11( const PenguinV_Image::Image & image, const std::string & title )
+UiWindowX11::UiWindowX11( const penguinV::Image & image, const std::string & title )
     : UiWindow( image, title )
     , _uiDisplay( nullptr )
     , _screen( 0 )
@@ -61,7 +61,7 @@ void UiWindowX11::_display()
     }
 }
 
-void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
+void UiWindowX11::_setupImage( const penguinV::Image & image )
 {
     if ( image.empty() )
         return;
@@ -73,7 +73,7 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
     const uint8_t * imageYEnd = imageY + _height * rowSize;
     char * imageData = _data.data();
 
-    if ( image.colorCount() == PenguinV_Image::GRAY_SCALE ) {
+    if ( image.colorCount() == penguinV::GRAY_SCALE ) {
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + _width;
@@ -87,7 +87,7 @@ void UiWindowX11::_setupImage( const PenguinV_Image::Image & image )
         }
     }
     else {
-        if ( image.colorCount() != PenguinV_Image::RGB )
+        if ( image.colorCount() != penguinV::RGB )
             throw imageException( "Color image has different than 3 color channels." );
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
