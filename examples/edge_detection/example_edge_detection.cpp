@@ -18,13 +18,13 @@ int main( int argc, char * argv[] )
         if ( argc > 1 ) // Check input data
             filePath = argv[1];
 
-        const PenguinV::Image original = Bitmap_Operation::Load( filePath );
+        const PenguinV_Image::Image original = Bitmap_Operation::Load( filePath );
 
         if ( original.empty() ) // if the image is empty it means that the image doesn't exist or the file is not readable
             throw imageException( std::string("Cannot load ") + filePath );
 
-        PenguinV::Image image( original );
-        if ( image.colorCount() != PenguinV::GRAY_SCALE ) // convert to gray-scale image if it's not
+        PenguinV_Image::Image image( original );
+        if ( image.colorCount() != PenguinV_Image::GRAY_SCALE ) // convert to gray-scale image if it's not
             image = Image_Function::ConvertToGrayScale( image );
 
         EdgeParameter edgeParameter;

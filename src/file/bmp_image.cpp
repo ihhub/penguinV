@@ -9,7 +9,7 @@ namespace Bitmap_Operation
 {
     const static uint8_t BITMAP_ALIGNMENT = 4; // this is standard alignment of bitmap images
 
-    void flipData( PenguinV::Image & image )
+    void flipData( PenguinV_Image::Image & image )
     {
         if( image.empty() || image.height() < 2u )
             return;
@@ -336,7 +336,7 @@ namespace Bitmap_Operation
         }
     }
 
-    PenguinV::Image Load( const std::string & path )
+    PenguinV_Image::Image Load( const std::string & path )
     {
         if( path.empty() )
             throw imageException( "Incorrect parameters for bitmap loading" );
@@ -345,14 +345,14 @@ namespace Bitmap_Operation
         file.open( path, std::fstream::in | std::fstream::binary );
 
         if( !file )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         file.seekg( 0, file.end );
         std::streamoff length = file.tellg();
 
         if( length == std::char_traits<char>::pos_type( -1 ) ||
             static_cast<size_t>(length) < sizeof( BitmapFileHeader ) + sizeof( BitmapInfoHeader ) )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         file.seekg( 0, file.beg );
 
@@ -367,7 +367,7 @@ namespace Bitmap_Operation
 
         // we suppose to compare header.bfSize and length but some editors don't put correct information
         if( header.bfType != BitmapFileHeader().bfType || header.bfOffBits >= length )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         // read the size of dib header
         data.resize( 4u );
@@ -383,7 +383,7 @@ namespace Bitmap_Operation
         std::unique_ptr <BitmapDibHeader> info( getInfoHeader( dibHeaderSize ) );
 
         if( info.get() == nullptr )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         data.resize( dibHeaderSize );
 
@@ -393,14 +393,14 @@ namespace Bitmap_Operation
         info->set( data );
 
         if( info->validate( header ) )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         uint32_t rowSize = info->width() * info->colorCount();
         if( rowSize % BITMAP_ALIGNMENT != 0 )
             rowSize = (rowSize / BITMAP_ALIGNMENT + 1) * BITMAP_ALIGNMENT;
 
         if( length != header.bfOffBits + rowSize * info->height() )
-            return PenguinV::Image();
+            return PenguinV_Image::Image();
 
         const uint32_t palleteSize = header.bfOffBits - info->size() - header.overallSize;
         std::vector < uint8_t > pallete( palleteSize );
@@ -432,7 +432,7 @@ namespace Bitmap_Operation
             }
         }
 
-        PenguinV::Image image( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
+        PenguinV_Image::Image image( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
 
         size_t dataToRead = rowSize * info->height();
         size_t dataReaded = 0;
@@ -477,17 +477,17 @@ namespace Bitmap_Operation
         return image;
     }
 
-    void Load( const std::string & path, PenguinV::Image & raw )
+    void Load( const std::string & path, PenguinV_Image::Image & raw )
     {
         raw = Load( path );
     }
 
-    void Save( const std::string & path, const PenguinV::Image & image )
+    void Save( const std::string & path, const PenguinV_Image::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV::Image & image, uint32_t startX, uint32_t startY,
+    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
                uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( image, startX, startY, width, height );

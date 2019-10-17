@@ -48,7 +48,7 @@ namespace
             table.Threshold          = &Image_Function_Simd::Threshold;
             table.Threshold2         = &Image_Function_Simd::Threshold;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV::Image().type(), table, true );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table, true );
         }
     };
 
@@ -2065,7 +2065,7 @@ if ( simdType == neon_function ) { \
 #define NEON_CODE( code )
 #endif
 
-    using namespace PenguinV;
+    using namespace PenguinV_Image;
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )

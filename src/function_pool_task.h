@@ -6,7 +6,7 @@
 
 namespace Function_Pool
 {
-    using namespace PenguinV;
+    using namespace PenguinV_Image;
 
     struct AreaInfo
     {

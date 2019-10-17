@@ -22,7 +22,7 @@ int main( int argc, char * argv[] )
         for ( size_t i = 0; i < filePaths.size(); ++i ) {
             const std::string & path = filePaths[i];
 
-            PenguinV::Image image = File_Operation::Load( path );
+            PenguinV_Image::Image image = File_Operation::Load( path );
 
             // If the image is empty it means that the image doesn't exist or the file is not readable
             if ( image.empty() ) {
@@ -31,7 +31,7 @@ int main( int argc, char * argv[] )
             }
 
             // Convert to gray-scale image if it's not
-            if ( image.colorCount() != PenguinV::GRAY_SCALE )
+            if ( image.colorCount() != PenguinV_Image::GRAY_SCALE )
                 image = Image_Function::ConvertToGrayScale( image );
 
             // Threshold image with calculated optimal threshold

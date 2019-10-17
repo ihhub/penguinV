@@ -13,18 +13,18 @@ namespace FFT
     {
     public:
         ComplexData();
-        ComplexData( const PenguinV::Image & image );
+        ComplexData( const PenguinV_Image::Image & image );
 
         ComplexData( const BaseComplexData<kiss_fft_cpx> & data );
         ComplexData( ComplexData && data );
 
         ~ComplexData();
 
-        void set( const PenguinV::Image & image );
+        void set( const PenguinV_Image::Image & image );
         void set( const std::vector<float> & data );
 
         // This function returns normalized image with swapped quadrants
-        PenguinV::Image get() const;
+        PenguinV_Image::Image get() const;
 
     private:
         void _allocateData( size_t size ) override;

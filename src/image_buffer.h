@@ -7,7 +7,7 @@
 #include "image_exception.h"
 #include "memory/cpu_memory.h"
 
-namespace PenguinV
+namespace PenguinV_Image
 {
     template <typename TColorDepth>
     class ImageTemplate

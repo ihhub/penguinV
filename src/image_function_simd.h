@@ -4,7 +4,7 @@
 
 namespace Image_Function_Simd
 {
-    using namespace PenguinV;
+    using namespace PenguinV_Image;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );

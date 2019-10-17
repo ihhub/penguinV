@@ -6,8 +6,8 @@
 #include "../../src/image_function.h"
 #include "../../src/thread_pool.h"
 
-void basic        ( const std::vector < PenguinV::Image > & frame );
-void multithreaded( const std::vector < PenguinV::Image > & frame );
+void basic        ( const std::vector < PenguinV_Image::Image > & frame );
+void multithreaded( const std::vector < PenguinV_Image::Image > & frame );
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
 
@@ -38,9 +38,9 @@ int main()
         // 5. put result on the map
 
         // Create a set of 60 frames
-        std::vector < PenguinV::Image > frame( 60, PenguinV::Image( 1920, 1080 ) );
+        std::vector < PenguinV_Image::Image > frame( 60, PenguinV_Image::Image( 1920, 1080 ) );
 
-        for( std::vector < PenguinV::Image >::iterator image = frame.begin(); image != frame.end(); ++image ) {
+        for( std::vector < PenguinV_Image::Image >::iterator image = frame.begin(); image != frame.end(); ++image ) {
             // Fill background. Let's assume that background varies from 0 to 15 gray scale values
             image->fill( randomValue<uint8_t>(16u) );
 
@@ -96,13 +96,13 @@ double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > sta
     return time.count();
 }
 
-void basic( const std::vector < PenguinV::Image > & frame )
+void basic( const std::vector < PenguinV_Image::Image > & frame )
 {
     // Prepare image map
-    PenguinV::Image map( frame.front().width(), frame.front().height() );
+    PenguinV_Image::Image map( frame.front().width(), frame.front().height() );
     map.fill( 0 );
 
-    PenguinV::Image result( map.width(), map.height() );
+    PenguinV_Image::Image result( map.width(), map.height() );
 
     for( size_t i = 0; i + 1 < frame.size(); ++i ) {
         // subtract one image from another
@@ -122,16 +122,16 @@ void basic( const std::vector < PenguinV::Image > & frame )
     // here we have to save the image map but don't do this in the example
 }
 
-void multithreaded( const std::vector < PenguinV::Image > & frame )
+void multithreaded( const std::vector < PenguinV_Image::Image > & frame )
 {
     // okay we setup 4 thread in global thread pool
     ThreadPoolMonoid::instance().resize( 4 );
 
     // Prepare image map
-    PenguinV::Image map( frame.front().width(), frame.front().height() );
+    PenguinV_Image::Image map( frame.front().width(), frame.front().height() );
     map.fill( 0 );
 
-    PenguinV::Image result( map.width(), map.height() );
+    PenguinV_Image::Image result( map.width(), map.height() );
 
     // As you see the only difference in this loop is namespace name
     for( size_t i = 0; i + 1 < frame.size(); ++i ) {

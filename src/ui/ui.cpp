@@ -1,6 +1,6 @@
 #include "ui.h"
 
-UiWindow::UiWindow( const PenguinV::Image & image, const std::string & title )
+UiWindow::UiWindow( const PenguinV_Image::Image & image, const std::string & title )
     : _image( image )
     , _title( title )
     , _shown( false )
@@ -17,7 +17,7 @@ void UiWindow::show()
     _display();
 }
 
-void UiWindow::setImage( const PenguinV::Image & image )
+void UiWindow::setImage( const PenguinV_Image::Image & image )
 {
     _image = image;
     _display();

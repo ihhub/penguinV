@@ -9,9 +9,9 @@ namespace fft
         for ( uint32_t i = 0u; i < 32u; ++i ) { // a special case for FFT because it take a lot of time for execution
             const uint32_t dimension = (2u << Unit_Test::randomValue<uint8_t>( 11 ));
 
-            const PenguinV::Image input = Unit_Test::randomImage( dimension, dimension );
+            const PenguinV_Image::Image input = Unit_Test::randomImage( dimension, dimension );
 
-            PenguinV::Image diracDelta( input.width(), input.height() );
+            PenguinV_Image::Image diracDelta( input.width(), input.height() );
             diracDelta.fill( 0u );
             diracDelta.data()[diracDelta.height() / 2 * diracDelta.rowSize() + diracDelta.width() / 2 ] = 1u;
 
@@ -25,7 +25,7 @@ namespace fft
             fftExecutor.complexMultiplication( complexDataInput, complexDataDracDelta, complexDataInput );
             fftExecutor.inverseTransform( complexDataInput );
 
-            const PenguinV::Image output = complexDataInput.get();
+            const PenguinV_Image::Image output = complexDataInput.get();
 
             if( input.height() != output.height() || input.width() != output.width() || input.colorCount() != output.colorCount() )
                 return false;
