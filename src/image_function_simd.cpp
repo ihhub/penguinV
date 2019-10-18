@@ -35,7 +35,7 @@ namespace
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
             table.ConvertTo16Bit     = &Image_Function_Simd::ConvertTo16Bit;
-            table.ConvertTo8Bit     = &Image_Function_Simd::ConvertTo8Bit;
+            table.ConvertTo8Bit      = &Image_Function_Simd::ConvertTo8Bit;
             table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             table.Flip               = &Image_Function_Simd::Flip;
             table.Invert             = &Image_Function_Simd::Invert;
@@ -53,6 +53,44 @@ namespace
     };
 
     const FunctionRegistrator functionRegistrator;
+}
+
+namespace avx512
+{
+    const uint32_t simdSize = 64u;
+
+#ifdef PENGUINV_AVX512BW_SET
+    typedef __m512i simd;
+
+    void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                             uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst ) {
+                simd data1 = _mm512_loadu_si512( src1 );
+                simd data2 = _mm512_loadu_si512( src2 );
+                _mm512_storeu_si512( dst, _mm512_sub_epi8( _mm512_max_epu8( data1, data2 ), _mm512_min_epu8( data1, data2 ) ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
+            }
+        }
+    }
+#endif
 }
 
 namespace avx
@@ -2011,6 +2049,8 @@ namespace simd
 {
     uint32_t getSimdSize( SIMDType simdType )
     {
+        if ( simdType == avx512_function )
+            return avx512::simdSize;
         if ( simdType == avx_function )
             return avx::simdSize;
         if ( simdType == sse_function )
@@ -2022,6 +2062,16 @@ namespace simd
 
         return 0u;
     }
+
+#ifdef PENGUINV_AVX512BW_SET
+#define AVX512BW_CODE( code )        \
+if ( simdType == avx512_function ) { \
+    code;                            \
+    return;                          \
+}
+#else
+#define AVX512BW_CODE( code )
+#endif
 
 #ifdef PENGUINV_AVX_SET
 #define AVX_CODE( code )          \
@@ -2099,6 +2149,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512BW_CODE( avx512::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )

@@ -47,6 +47,10 @@ namespace Function_Template
             simd::EnableSimd( true );
             ThreadPoolMonoid::instance().resize( 4 );
         }
+        else if ( namespaceName == "image_function_avx512" ) {
+            simd::EnableSimd( false );
+            simd::EnableAvx512( true );
+        }
         else if ( namespaceName == "image_function_avx" ) {
             simd::EnableSimd( false );
             simd::EnableAvx( true );
@@ -63,7 +67,7 @@ namespace Function_Template
 
     void CleanupFunction(const std::string& namespaceName)
     {
-        if ( (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") )
+        if ( (namespaceName == "image_function_avx512") || (namespaceName == "image_function_avx") || (namespaceName == "image_function_sse") || (namespaceName == "image_function_neon") )
             simd::EnableSimd( true );
     }
 
@@ -346,6 +350,18 @@ namespace function_pool
     SET_FUNCTION( Threshold          )
     REGISTER_FUNCTION( ThresholdDouble, Threshold )
 }
+
+#ifdef PENGUIV_AV512BW_SET
+namespace image_function_avx512
+{
+    using namespace Image_Function_Simd;
+
+    const bool isSupported = SimdInfo::isAVX512BWAvailable();
+    const std::string namespaceName = "image_function_avx512";
+
+    SET_FUNCTION( AbsoluteDifference )
+}
+#endif
 
 #ifdef PENGUINV_AVX_SET
 namespace image_function_avx

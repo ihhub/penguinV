@@ -32,6 +32,20 @@ struct CpuInformation
         return false;
     }
 
+    static bool isAvx512BWSupported()
+    {
+        int info[4];
+        __cpuidex( info, 0, 0 );
+        const int id = info[0];
+
+        if ( id >= 0x00000007 ) {
+            __cpuidex( info, 0x00000007, 0 );
+            return (info[1] & ((int)1 << 30)) != 0;
+        }
+
+        return false;
+    }
+
     static bool isNeonSupported()
     {
 #ifdef _M_ARM
