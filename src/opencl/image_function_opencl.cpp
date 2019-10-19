@@ -30,6 +30,7 @@ namespace
             table.GammaCorrection    = &Image_Function_OpenCL::GammaCorrection;
             table.Histogram          = &Image_Function_OpenCL::Histogram;
             table.Invert             = &Image_Function_OpenCL::Invert;
+            table.IsEqual            = &Image_Function_OpenCL::IsEqual;
             table.LookupTable        = &Image_Function_OpenCL::LookupTable;
             table.Maximum            = &Image_Function_OpenCL::Maximum;
             table.Minimum            = &Image_Function_OpenCL::Minimum;
@@ -217,6 +218,18 @@ namespace
 
             if( x < width && y < height )
                 out[offsetOut + y * rowSizeOut + x] = ~in[offsetIn + y * rowSizeIn + x];
+        }
+
+        __kernel void isEqualOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global const uchar * out, uint offsetOut, uint rowSizeOut, uint width, uint height,
+                                     volatile __global uint * nonEqualCount )
+        {
+            const size_t x = get_global_id(0);
+            const size_t y = get_global_id(1);
+
+            if ( x < width && y < height ) {
+                if ( out[offsetOut + y * rowSizeOut + x] != in[offsetIn + y * rowSizeIn + x] )
+                  atomic_add( nonEqualCount, 1 );
+            }
         }
 
         __kernel void lookupTableOpenCL( __global const uchar * in, uint offsetIn, uint rowSizeIn, __global uchar * out, uint offsetOut, uint rowSizeOut,
@@ -902,6 +915,39 @@ namespace Image_Function_OpenCL
         kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height );
 
         multiCL::launchKernel2D( kernel, width, height );
+    }
+
+    bool IsEqual( const Image & in1, const Image & in2 )
+    {
+        Image_Function::ParameterValidation( in1, in2 );
+
+        return Image_Function_Helper::IsEqual( IsEqual, in1, in2 );
+    }
+
+    bool IsEqual( const Image & in, uint32_t startXIn, uint32_t startYIn, const Image & out, uint32_t startXOut, uint32_t startYOut,
+                  uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+        multiCL::Type< uint32_t > differenceCount( 0u );
+
+        const multiCL::OpenCLProgram & program = GetProgram();
+        multiCL::OpenCLKernel kernel( program, "isEqualOpenCL");
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint32_t offsetIn  = startYIn  * rowSizeIn  + startXIn  * colorCount;
+        const uint32_t offsetOut = startYOut * rowSizeOut + startXOut * colorCount;
+
+        kernel.setArgument( in.data(), offsetIn, rowSizeIn, out.data(), offsetOut, rowSizeOut, width, height, differenceCount.data() );
+
+        multiCL::launchKernel2D( kernel, width, height );
+
+        return differenceCount.get() == 0;
     }
 
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
