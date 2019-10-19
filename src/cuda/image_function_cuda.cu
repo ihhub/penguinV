@@ -33,6 +33,7 @@ namespace
             table.Subtract           = &Image_Function_Cuda::Subtract;
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
+            table.ProjectionProfile  = &Image_Function_Cuda::ProjectionProfile;
 
             ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
             ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
@@ -43,6 +44,16 @@ namespace
     const FunctionRegistrator functionRegistrator;
 
     // The list of CUDA device functions on device side
+    __global__ void normalizeCuda( const uint8_t * image, uint32_t rowSize, bool horizontal, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            projection[image[y * rowSize + x]] = image[y * rowSize + x]
+        }
+    }
+
     __global__ void absoluteDifferenceCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                             uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
     {
@@ -1169,5 +1180,41 @@ namespace Image_Function_Cuda
 
         launchKernel2D( thresholdCuda, width, height,
                         inY, rowSizeIn, outY, rowSizeOut, width, height, minThreshold, maxThreshold );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+
+    void Image_Function_Cuda::ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                 std::vector<uint32_t> & projection )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+
+        projection.resize( horizontal ? width * colorCount : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+
+        const uint32_t rowSize = image.rowSize();
+        width *= colorCount;
+
+        const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
+
+        multiCuda::Array< uint32_t > projectionCuda( projection );
+
+        launchKernel2D( normalizeCuda, width, height,
+            imageX, rowSize, horizontal, width, height, projectionCuda.data())
     }
 }
