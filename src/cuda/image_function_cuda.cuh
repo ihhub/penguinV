@@ -156,4 +156,10 @@ namespace Image_Function_Cuda
                      uint8_t maxThreshold );
     void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                      uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal );
+    void                     ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
+    void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                std::vector < uint32_t > & projection );
 }
