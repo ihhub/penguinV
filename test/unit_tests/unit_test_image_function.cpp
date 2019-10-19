@@ -2578,6 +2578,9 @@ namespace avx512
     const std::string namespaceName = "image_function_avx512";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )
+    SET_FUNCTION_2_FORMS( Accumulate )
+    SET_FUNCTION_4_FORMS( BitwiseAnd )
+    SET_FUNCTION_4_FORMS( BitwiseOr )
 }
 #endif
 
