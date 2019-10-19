@@ -90,18 +90,19 @@ namespace avx512
             }
         }
     }
+
     void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         simd zero = _mm512_setzero_si512();
 
         const uint32_t width = totalSimdWidth + nonSimdWidth;
 
-        for( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+        for ( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
             const simd * src    = reinterpret_cast <const simd*> (imageY);
             const simd * srcEnd = src + simdWidth;
             simd       * dst    = reinterpret_cast <simd*> (outY);
 
-            for( ; src != srcEnd; ++src ) {
+            for ( ; src != srcEnd; ++src ) {
                 simd data = _mm512_loadu_si512( src );
 
                 const simd dataLo  = _mm512_unpacklo_epi8( data, zero );
@@ -122,38 +123,38 @@ namespace avx512
                 ++dst;
             }
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * imageX    = imageY + totalSimdWidth;
                 const uint8_t * imageXEnd = imageX + nonSimdWidth;
                 uint32_t      * outX      = outY + totalSimdWidth;
 
                 for( ; imageX != imageXEnd; ++imageX, ++outX )
                     (*outX) += (*imageX);
-            }   
+            }
         }
     }
 
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                      uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
             const simd * src2 = reinterpret_cast <const simd*> (in2Y);
             simd       * dst  = reinterpret_cast <simd*> (outY);
 
             const simd * src1End = src1 + simdWidth;
 
-            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
                 _mm512_storeu_si512( dst, _mm512_and_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                     (*outX) = (*in1X) & (*in2X);
             }
         }
@@ -162,29 +163,28 @@ namespace avx512
     void BitwiseOr( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                     uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const simd * src1 = reinterpret_cast <const simd*> (in1Y);
             const simd * src2 = reinterpret_cast <const simd*> (in2Y);
             simd       * dst  = reinterpret_cast <simd*> (outY);
 
             const simd * src1End = src1 + simdWidth;
 
-            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
                 _mm512_storeu_si512( dst, _mm512_or_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                     (*outX) = (*in1X) | (*in2X);
             }
         }
     }
-
 #endif
 }
 
