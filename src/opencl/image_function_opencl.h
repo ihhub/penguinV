@@ -140,6 +140,9 @@ namespace Image_Function_OpenCL
     void  Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
+    void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value );
+
     // Thresholding works in such way:
         // if pixel intensity on input image is          less (  < ) than threshold then set pixel intensity on output image as 0
         // if pixel intensity on input image is equal or more ( >= ) than threshold then set pixel intensity on output image as 255
