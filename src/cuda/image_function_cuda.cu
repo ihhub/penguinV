@@ -50,7 +50,7 @@ namespace
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if ( x < width && y < height ) {
-            projection[image[y * rowSize + x]] = image[y * rowSize + x]
+            projection[image[y * rowSize + x]] = image[y * rowSize + x];
         }
     }
 
@@ -1215,6 +1215,6 @@ namespace Image_Function_Cuda
         multiCuda::Array< uint32_t > projectionCuda( projection );
 
         launchKernel2D( normalizeCuda, width, height,
-            imageX, rowSize, horizontal, width, height, projectionCuda.data())
+            imageX, rowSize, horizontal, width, height, projectionCuda.data());
     }
 }
