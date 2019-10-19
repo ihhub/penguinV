@@ -33,7 +33,6 @@ namespace
             table.Subtract           = &Image_Function_Cuda::Subtract;
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
-            table.ProjectionProfile  = &Image_Function_Cuda::ProjectionProfile;
 
             ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
             ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
