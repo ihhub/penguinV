@@ -363,6 +363,7 @@ namespace image_function_avx512
     SET_FUNCTION( Accumulate         )
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
+    SET_FUNCTION( BitwiseXor         )
 }
 #endif
 
