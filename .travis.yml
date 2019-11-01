@@ -26,9 +26,6 @@ matrix:
         - source script/travis/install_qt5.sh
     - os: linux
       arch: arm64
-      before_install:
-        - sudo apt update
-        - sudo apt install cmake
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
