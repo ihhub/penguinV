@@ -25,6 +25,8 @@ matrix:
         - source script/travis/install_cuda.sh
         - source script/travis/install_qt5.sh
     - os: linux
+      arch: arm64
+    - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
         - |
