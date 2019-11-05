@@ -55,9 +55,9 @@ struct CpuInformation
     static bool isNeonSupported()
     {
 #if !defined(__arm__) && !defined(__aarch64__)
-        return true;
-#else
         return false;
+#else
+        return true;
 #endif
     }
 };
