@@ -1,7 +1,7 @@
 #pragma once
 
 
-#ifndef __arm__
+#if !defined(__arm__) && !defined(__aarch64__)
 #include <cpuid.h>
 #endif
 
@@ -9,7 +9,7 @@ struct CpuInformation
 {
     static bool isSseSupported()
     {
-#ifndef __arm__
+#if !defined(__arm__) && !defined(__aarch64__)
         int info[4];
         __cpuid_count( 0, 0, info[0], info[1], info[2], info[3] );
         const int id = info[0];
@@ -24,7 +24,7 @@ struct CpuInformation
 
     static bool isAvxSupported()
     {
-#ifndef __arm__
+#if !defined(__arm__) && !defined(__aarch64__)
         int info[4];
         __cpuid_count( 0, 0, info[0], info[1], info[2], info[3] );
         const int id = info[0];
@@ -39,7 +39,7 @@ struct CpuInformation
 
     static bool isAvx512BWSupported()
     {
-#ifndef __arm__
+#if !defined(__arm__) && !defined(__aarch64__)
         int info[4];
         __cpuid_count( 0, 0, info[0], info[1], info[2], info[3] );
         const int id = info[0];
@@ -54,7 +54,7 @@ struct CpuInformation
 
     static bool isNeonSupported()
     {
-#ifdef __arm__
+#if !defined(__arm__) && !defined(__aarch64__)
         return true;
 #else
         return false;
