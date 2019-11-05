@@ -23,7 +23,7 @@
 
 #include "cpu_id_unix.h"
 
-    #ifdef __arm__
+    #if defined(__arm__) || defined(__aarch64__)
         #define PENGUINV_NEON_SET
     #elif __SSE2__
         #define PENGUINV_SSE_SET
