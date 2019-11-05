@@ -26,6 +26,14 @@ matrix:
         - source script/travis/install_qt5.sh
     - os: linux
       arch: arm64
+      before_script:
+        - cd test/unit_tests
+      script:
+        - make
+        - cd ../performance_tests
+        - make
+        - cd ../../examples
+        - make
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
