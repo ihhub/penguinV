@@ -10,7 +10,7 @@
 
 int main( int argc, char * argv[] )
 {
-    Unit_Test::setRunCount( argc, argv, 1001 );
+    Unit_Test::setRunCount( argc, argv, 100 );
 
     cpu_Memory::MemoryAllocator::instance().reserve( 32 * 1024 * 1024 ); // reserve preallocated memory
 
