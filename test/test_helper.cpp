@@ -38,7 +38,7 @@ namespace
         }
     }
 
-    uint32_t testRunCount = 100;  // some magic number for loop. Higher value = higher chance to verify all possible situations
+    uint32_t testRunCount = 100; // some magic number for loop. Higher value = higher chance to verify all possible situations
 }
 
 namespace Test_Helper
