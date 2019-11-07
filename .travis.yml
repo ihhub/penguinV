@@ -30,7 +30,7 @@ matrix:
         - cd test/unit_tests
       script:
         - make
-        - ./unit_tests 100
+        - ./unit_tests
         - cd ../performance_tests
         - make
         - cd ../../examples
