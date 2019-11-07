@@ -89,6 +89,9 @@ matrix:
 before_script:
   # Let CMake generate build files
   - |
+    if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+      export PENGUINV_UNIT_TEST_RUN_COUNT=1000
+    fi
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
       cmake .. ${CMAKE_OPTIONS}
@@ -97,9 +100,6 @@ before_script:
 script:
   - |
     # Build and run tests
-    if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
-      export PENGUINV_UNIT_TEST_RUN_COUNT=1000
-    fi
     set -e
     cmake --build .
     set +e
