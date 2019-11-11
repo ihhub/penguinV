@@ -186,13 +186,13 @@ namespace avx512
         }
     }
 
-    void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                     uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y, uint8_t * outY, const uint8_t * outYEnd,
+                     uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
-            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
-            simd       * dst  = reinterpret_cast <simd*> (outY);
+            const simd * src1 = reinterpret_cast<const simd*>(in1Y);
+            const simd * src2 = reinterpret_cast<const simd*>(in2Y);
+            simd       * dst  = reinterpret_cast<simd*>(outY);
 
             const simd * src1End = src1 + simdWidth;
 
@@ -217,8 +217,8 @@ namespace avx512
     {
         const simd zero = _mm512_setzero_si512();
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const simd  * src    = reinterpret_cast <const simd*> (inY);
-            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
             const simd  * srcEnd = src + simdWidth;
 
             for ( ; src != srcEnd; ++src ) {
@@ -243,8 +243,8 @@ namespace avx512
                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const simd  * src    = reinterpret_cast <const simd*> (inY);
-            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
             const simd  * dstEnd = dst + simdWidth;
 
             for ( ; dst != dstEnd; ++dst ) {
