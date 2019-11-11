@@ -44,13 +44,25 @@ namespace
     const FunctionRegistrator functionRegistrator;
 
     // The list of CUDA device functions on device side
-    __global__ void projectionProfileCuda( const uint8_t * image, uint32_t rowSize, bool horizontal, uint32_t width, uint32_t height, uint32_t * projection )
+    __global__ void projectionProfileHorizontalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
     {
         const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if ( x < width && y < height ) {
-            projection[image[y * rowSize + x]] = image[y * rowSize + x];
+            const uint8_t * imagex = image + y * rowSize + x;
+            projection[x] = (*imagex);
+        }
+    }
+
+    __global__ void projectionProfileVerticalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageY = image + y * rowSize + x;
+            projection[y] = (*imageY);
         }
     }
 
@@ -1214,7 +1226,9 @@ namespace Image_Function_Cuda
 
         multiCuda::Array< uint32_t > projectionCuda( projection );
 
-        launchKernel2D( projectionProfileCuda, width, height,
-            imageX, rowSize, horizontal, width, height, projectionCuda.data());
+        auto kernel = horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda;
+
+        launchKernel2D( kernel, width, height,
+            imageX, rowSize, width, height, projectionCuda.data());
     }
 }
