@@ -2581,6 +2581,9 @@ namespace avx512
     SET_FUNCTION_2_FORMS( Accumulate )
     SET_FUNCTION_4_FORMS( BitwiseAnd )
     SET_FUNCTION_4_FORMS( BitwiseOr )
+    SET_FUNCTION_4_FORMS( BitwiseXor )
+    SET_FUNCTION_4_FORMS( ConvertTo16Bit )
+    SET_FUNCTION_4_FORMS( ConvertTo8Bit )
 }
 #endif
 
