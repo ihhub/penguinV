@@ -185,6 +185,87 @@ namespace avx512
             }
         }
     }
+
+    void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y, uint8_t * outY, const uint8_t * outYEnd,
+                     uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>(in1Y);
+            const simd * src2 = reinterpret_cast<const simd*>(in2Y);
+            simd       * dst  = reinterpret_cast<simd*>(outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_xor_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = (*in1X) ^ (*in2X);
+            }
+        }
+    }
+
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm512_setzero_si512();
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
+            const simd  * srcEnd = src + simdWidth;
+
+            for ( ; src != srcEnd; ++src ) {
+                const simd srcData = _mm512_loadu_si512( src );
+
+                _mm512_storeu_si512( dst++, _mm512_unpacklo_epi8( zero, srcData ) );
+                _mm512_storeu_si512( dst++, _mm512_unpacklo_epi8( zero, srcData ) );
+            }
+            
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                        uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst ) {
+                const simd srcData1 = _mm512_loadu_si512( src );
+                ++src;
+                const simd srcData2 = _mm512_loadu_si512( src );
+                ++src;
+
+                _mm512_storeu_si512(dst, _mm512_packus_epi16(_mm512_srli_epi16 ( srcData1, 8 ), _mm512_srli_epi16 ( srcData2, 8)));
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
+            }
+        }
+    }
 #endif
 }
 
