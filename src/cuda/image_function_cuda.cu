@@ -44,7 +44,7 @@ namespace
     const FunctionRegistrator functionRegistrator;
 
     // The list of CUDA device functions on device side
-    __global__ void normalizeCuda( const uint8_t * image, uint32_t rowSize, bool horizontal, uint32_t width, uint32_t height, uint32_t * projection )
+    __global__ void projectionProfileCuda( const uint8_t * image, uint32_t rowSize, bool horizontal, uint32_t width, uint32_t height, uint32_t * projection )
     {
         const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
@@ -1197,7 +1197,7 @@ namespace Image_Function_Cuda
         return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
     }
 
-    void Image_Function_Cuda::ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                  std::vector<uint32_t> & projection )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
@@ -1214,7 +1214,9 @@ namespace Image_Function_Cuda
 
         multiCuda::Array< uint32_t > projectionCuda( projection );
 
-        launchKernel2D( normalizeCuda, width, height,
+        launchKernel2D( projectionProfileCuda, width, height,
             imageX, rowSize, horizontal, width, height, projectionCuda.data());
+
+        projection = projectionCuda.get();
     }
 }
