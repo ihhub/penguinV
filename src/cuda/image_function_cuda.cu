@@ -260,8 +260,8 @@ namespace
         const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
 
         if ( x < width && y < height ) {
-            const uint8_t * imagex = image + y * rowSize + x;
-            projection[x] = (*imagex);
+            const uint8_t * imageX = image + y * rowSize + x;
+            atomicAdd( &projection[x], (*imageX) );
         }
     }
 
@@ -272,7 +272,7 @@ namespace
 
         if ( x < width && y < height ) {
             const uint8_t * imageY = image + y * rowSize + x;
-            projection[y] = (*imageY);
+            atomicAdd( &projection[y], (*imageY) );
         }
     }
 
@@ -1052,19 +1052,20 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( image, x, y, width, height );
 
         const uint8_t colorCount = image.colorCount();
+        width *= colorCount;
 
-        projection.resize( horizontal ? width * colorCount : height );
+        projection.resize( horizontal ? width : height );
         std::fill( projection.begin(), projection.end(), 0u );
 
         const uint32_t rowSize = image.rowSize();
-        width *= colorCount;
-
         const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
 
         multiCuda::Array< uint32_t > projectionCuda( projection );
 
-        launchKernel2D( horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda, width, height,
-            imageX, rowSize, width, height, projectionCuda.data());
+        launchKernel2D( ( horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda ), width, height,
+                        imageX, rowSize, width, height, projectionCuda.data());
+
+        projection = projectionCuda.get();
     }
 
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
