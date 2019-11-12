@@ -44,28 +44,6 @@ namespace
     const FunctionRegistrator functionRegistrator;
 
     // The list of CUDA device functions on device side
-    __global__ void projectionProfileHorizontalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
-    {
-        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
-        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
-
-        if ( x < width && y < height ) {
-            const uint8_t * imagex = image + y * rowSize + x;
-            projection[x] = (*imagex);
-        }
-    }
-
-    __global__ void projectionProfileVerticalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
-    {
-        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
-        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
-
-        if ( x < width && y < height ) {
-            const uint8_t * imageY = image + y * rowSize + x;
-            projection[y] = (*imageY);
-        }
-    }
-
     __global__ void absoluteDifferenceCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2,
                                             uint8_t * out, uint32_t rowSizeOut, uint32_t width, uint32_t height )
     {
@@ -273,6 +251,28 @@ namespace
             const uint8_t * in2X = in2 + y * rowSizeIn2 + x;
             uint8_t * outX = out + y * rowSizeOut + x;
             (*outX) = ((*in1X) < (*in2X)) ? (*in1X) : (*in2X);
+        }
+    }
+
+    __global__ void projectionProfileHorizontalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imagex = image + y * rowSize + x;
+            projection[x] = (*imagex);
+        }
+    }
+
+    __global__ void projectionProfileVerticalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageY = image + y * rowSize + x;
+            projection[y] = (*imageY);
         }
     }
 
