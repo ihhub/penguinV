@@ -206,15 +206,15 @@ public:
 
     PointBase2D<_Type> projection( const PointBase2D<_Type> & point ) const
     {
-        const _Type dot_product = _direction.x * (point.x - _position.x) + _direction.y * (point.y - _position.y);
-        const PointBase2D<_Type> offset( _direction.x * dot_product , _direction.y * dot_product );
+        const _Type dotProduct = _direction.x * (point.x - _position.x) + _direction.y * (point.y - _position.y);
+        const PointBase2D<_Type> offset( _direction.x * dotProduct, _direction.y * dotProduct );
         return _position + offset;
     }
 
     PointBase2D<_Type> opposite( const PointBase2D<_Type> & point ) const
     {
         const PointBase2D<_Type> offset = point - projection(point);
-        return point - offset - offset;
+        return point - 2 * offset;
     }
 
     template <template <typename, typename...> class _container>
