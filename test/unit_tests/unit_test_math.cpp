@@ -123,11 +123,11 @@ namespace pvmath
         PointBase2D<_Type> point3( 0, 1 );
 
         PointBase2D<_Type> point4( -2, 0 );
-        PointBase2D<_Type> point5( -1, 5 );
+        PointBase2D<_Type> point5( -5, -2 );
 
-        PointBase2D<_Type> testPoint( -1, -5 );
+        PointBase2D<_Type> testPoint( -1, 5 );
         PointBase2D<_Type> resultPoint1( -1, 0 );
-        PointBase2D<_Type> resultPoint2( 0, -5 );
+        PointBase2D<_Type> resultPoint2( 0, 5 );
         PointBase2D<_Type> resultPoint3( 1, 2 );
 
         const LineBase2D<_Type> line1( point1, point2 );
@@ -148,7 +148,7 @@ namespace pvmath
         PointBase2D<_Type> point3( 0, 1 );
 
         PointBase2D<_Type> point4( -2, 0 );
-        PointBase2D<_Type> point5( -1, 5 );
+        PointBase2D<_Type> point5( -5, -2 );
 
         PointBase2D<_Type> testPoint( -1, 5 );
         PointBase2D<_Type> resultPoint1( -1, -5 );
