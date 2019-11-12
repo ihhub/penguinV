@@ -73,9 +73,21 @@ struct PointBase2D
         return PointBase2D( x - point.x, y - point.y );
     }
 
+    template <typename T>
+    PointBase2D operator * ( const T & value ) const
+    {
+        return PointBase2D( value * x, value * y );
+    }
+
     _Type x;
     _Type y;
 };
+
+template <typename _Type, typename T>
+PointBase2D<_Type> operator * ( const T & value, const PointBase2D<_Type> & point )
+{
+    return PointBase2D<_Type>( value * point.x, value * point.y );
+}
 
 template <typename _Type>
 struct PointBase3D : public PointBase2D<_Type>
