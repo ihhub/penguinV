@@ -1031,6 +1031,44 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                 std::vector<uint32_t> & projection )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+
+        projection.resize( horizontal ? width * colorCount : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+
+        const uint32_t rowSize = image.rowSize();
+        width *= colorCount;
+
+        const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
+
+        multiCuda::Array< uint32_t > projectionCuda( projection );
+
+        auto kernel = horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda;
+
+        launchKernel2D( kernel, width, height,
+            imageX, rowSize, width, height, projectionCuda.data());
+    }
+
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
     {
         Image_Function::ParameterValidation( in, out );
@@ -1192,43 +1230,5 @@ namespace Image_Function_Cuda
 
         launchKernel2D( thresholdCuda, width, height,
                         inY, rowSizeIn, outY, rowSizeOut, width, height, minThreshold, maxThreshold );
-    }
-
-    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
-    {
-        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
-    }
-
-    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
-    {
-        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
-    }
-
-    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
-    {
-        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
-    }
-
-    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
-                                                 std::vector<uint32_t> & projection )
-    {
-        Image_Function::ParameterValidation( image, x, y, width, height );
-
-        const uint8_t colorCount = image.colorCount();
-
-        projection.resize( horizontal ? width * colorCount : height );
-        std::fill( projection.begin(), projection.end(), 0u );
-
-        const uint32_t rowSize = image.rowSize();
-        width *= colorCount;
-
-        const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
-
-        multiCuda::Array< uint32_t > projectionCuda( projection );
-
-        auto kernel = horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda;
-
-        launchKernel2D( kernel, width, height,
-            imageX, rowSize, width, height, projectionCuda.data());
     }
 }
