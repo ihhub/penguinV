@@ -114,6 +114,56 @@ namespace pvmath
         }
         return true;
     }
+
+    template <typename _Type>
+    bool pointProjection()
+    {
+        PointBase2D<_Type> point1( 0, 0 );
+        PointBase2D<_Type> point2( 1, 0 );
+        PointBase2D<_Type> point3( 0, 1 );
+
+        PointBase2D<_Type> point4( -2, 0 );
+        PointBase2D<_Type> point5( -1, 5 );
+
+        PointBase2D<_Type> testPoint( -1, -5 );
+        PointBase2D<_Type> resultPoint1( -1, 0 );
+        PointBase2D<_Type> resultPoint2( 0, -5 );
+        PointBase2D<_Type> resultPoint3( 1, 2 );
+
+        const LineBase2D<_Type> line1( point1, point2 );
+        const LineBase2D<_Type> line2( point1, point3 );
+        const LineBase2D<_Type> line3( point4, point5 );
+
+        if ( line1.projection( testPoint ) == resultPoint1 && line2.projection( testPoint ) == resultPoint2 && line3.projection( testPoint ) == resultPoint3 )
+            return true;
+
+        return false;
+    }
+
+    template <typename _Type>
+    bool pointOpposition()
+    {
+        PointBase2D<_Type> point1( 0, 0 );
+        PointBase2D<_Type> point2( 1, 0 );
+        PointBase2D<_Type> point3( 0, 1 );
+
+        PointBase2D<_Type> point4( -2, 0 );
+        PointBase2D<_Type> point5( -1, 5 );
+
+        PointBase2D<_Type> testPoint( -1, 5 );
+        PointBase2D<_Type> resultPoint1( -1, -5 );
+        PointBase2D<_Type> resultPoint2( 1, 5 );
+        PointBase2D<_Type> resultPoint3( 3, -1 );
+
+        const LineBase2D<_Type> line1( point1, point2 );
+        const LineBase2D<_Type> line2( point1, point3 );
+        const LineBase2D<_Type> line3( point4, point5 );
+
+        if ( line1.opposite( testPoint ) == resultPoint1 && line2.opposite( testPoint ) == resultPoint2 && line3.opposite( testPoint ) == resultPoint3 )
+            return true;
+
+        return false;
+    }
 }
 
 void addTests_Math( UnitTestFramework & framework )
@@ -128,4 +178,8 @@ void addTests_Math( UnitTestFramework & framework )
     framework.add( pvmath::parallelLine<float>, "math::Line2d parallel lines (float)" );
     framework.add( pvmath::lineIntersection<double>, "math::Line2d line intersection (double)" );
     framework.add( pvmath::lineIntersection<float>, "math::Line2d line intersection (float)" );
+    framework.add( pvmath::pointProjection<double>, "math::Line2d point projection (double)" );
+    framework.add( pvmath::pointProjection<float>, "math::Line2d point projection (float)" );
+    framework.add( pvmath::pointOpposition<double>, "math::Line2d point opposition (double)" );
+    framework.add( pvmath::pointOpposition<float>, "math::Line2d point opposition (float)" );
 }
