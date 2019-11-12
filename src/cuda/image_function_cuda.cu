@@ -1063,9 +1063,7 @@ namespace Image_Function_Cuda
 
         multiCuda::Array< uint32_t > projectionCuda( projection );
 
-        auto kernel = horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda;
-
-        launchKernel2D( kernel, width, height,
+        launchKernel2D( horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda, width, height,
             imageX, rowSize, width, height, projectionCuda.data());
     }
 
