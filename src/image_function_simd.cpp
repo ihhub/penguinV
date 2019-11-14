@@ -266,6 +266,101 @@ namespace avx512
             }
         }
     }
+
+    void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
+                 uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const char maskValue = static_cast<char>(0xffu);
+        const simd mask = _mm512_set_epi8(
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd * src1 = reinterpret_cast <const simd*> (inY);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for( ; src1 != src1End; ++src1, ++dst )
+                _mm512_storeu_si512( dst, _mm512_andnot_si512( _mm512_loadu_si512( src1 ), mask ) );
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * inX  = inY  + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for( ; outX != outXEnd; ++outX, ++inX )
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
+            }
+        }
+    }
+
+    void Maximum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_max_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if( (*in2X) < (*in1X) )
+                        (*outX) = (*in1X);
+                    else
+                        (*outX) = (*in2X);
+                }
+            }
+        }
+    }
+
+    void Minimum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_min_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if( (*in2X) > (*in1X) )
+                        (*outX) = (*in1X);
+                    else
+                        (*outX) = (*in2X);
+                }
+            }
+        }
+    }
 #endif
 }
 
@@ -2661,6 +2756,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512BW_CODE( avx512::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2698,6 +2794,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512BW_CODE( avx512::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2735,6 +2832,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512BW_CODE( avx512::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
