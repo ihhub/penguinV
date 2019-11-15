@@ -125,6 +125,12 @@ namespace Image_Function_Cuda
     void  Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal );
+    void                     ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
+    void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                std::vector < uint32_t > & projection );
+
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle );
     
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );

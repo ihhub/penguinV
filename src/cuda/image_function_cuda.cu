@@ -30,6 +30,7 @@ namespace
             table.SetPixel           = &Image_Function_Cuda::SetPixel;
             table.Maximum            = &Image_Function_Cuda::Maximum;
             table.Minimum            = &Image_Function_Cuda::Minimum;
+            table.ProjectionProfile  = &Image_Function_Cuda::ProjectionProfile;
             table.Subtract           = &Image_Function_Cuda::Subtract;
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
@@ -250,6 +251,28 @@ namespace
             const uint8_t * in2X = in2 + y * rowSizeIn2 + x;
             uint8_t * outX = out + y * rowSizeOut + x;
             (*outX) = ((*in1X) < (*in2X)) ? (*in1X) : (*in2X);
+        }
+    }
+
+    __global__ void projectionProfileHorizontalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageX = image + y * rowSize + x;
+            atomicAdd( &projection[x], (*imageX) );
+        }
+    }
+
+    __global__ void projectionProfileVerticalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageY = image + y * rowSize + x;
+            atomicAdd( &projection[y], (*imageY) );
         }
     }
 
@@ -1006,6 +1029,43 @@ namespace Image_Function_Cuda
 
         launchKernel2D( minimumCuda, width, height,
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                 std::vector<uint32_t> & projection )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+        width *= colorCount;
+
+        projection.resize( horizontal ? width : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+
+        const uint32_t rowSize = image.rowSize();
+        const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
+
+        multiCuda::Array< uint32_t > projectionCuda( projection );
+
+        launchKernel2D( ( horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda ), width, height,
+                        imageX, rowSize, width, height, projectionCuda.data());
+
+        projection = projectionCuda.get();
     }
 
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
