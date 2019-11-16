@@ -1167,6 +1167,28 @@ namespace Function_Template
         return verifyImage( image[1], roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint8_t>( ~intensity[0] ) );
     }
 
+    bool form1_IsBinary( IsBinaryForm1 IsBinary )
+    {
+        std::vector<uint8_t> intensity = intensityArray( 3 );
+        PenguinV_Image::Image image = randomImage( intensity );
+
+        return IsBinary( image ) == !( ( intensity[0] != intensity[1] ) && ( intensity[0] != intensity[2] ) && ( intensity[1] != intensity[2] ) );
+    }
+
+    bool form2_IsBinary( IsBinaryForm2 IsBinary )
+    {
+        std::vector<uint8_t> intensity = intensityArray( 3 );
+        PenguinV_Image::Image image = uniformImage( intensity[0] );
+
+        uint32_t roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+
+        fillImage( image, roiX, roiY, roiWidth, roiHeight, intensity );
+
+        return IsBinary( image,  roiX, roiY, roiWidth, roiHeight ) == !( ( intensity[0] != intensity[1] ) && ( intensity[0] != intensity[2] ) && ( intensity[1] != intensity[2] ) );
+    }
+
     bool form1_IsEqual(IsEqualForm1 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
@@ -2516,6 +2538,7 @@ namespace image_function
     SET_FUNCTION_1_FORMS( GetThreshold )
     SET_FUNCTION_8_FORMS( Histogram )
     SET_FUNCTION_4_FORMS( Invert )
+    SET_FUNCTION_2_FORMS( IsBinary )
     SET_FUNCTION_2_FORMS( IsEqual )
     SET_FUNCTION_4_FORMS( LookupTable )
     SET_FUNCTION_4_FORMS( Maximum )
