@@ -1165,51 +1165,26 @@ namespace Function_Template
 
     bool form1_IsBinary( IsBinaryForm1 IsBinary )
     {
-        std::vector<uint8_t> intensity = intensityArray( 3 );
+        std::vector<uint8_t> intensity = intensityArray( 2 );
 
-        while ( intensity[0] == intensity[1] || intensity[0] == intensity[2] || intensity[1] == intensity[2] )
-            intensity = intensityArray( 3 );
+        PenguinV_Image::Image image = randomImage( intensity );
 
-        PenguinV_Image::Image singleValueImage = uniformImage( intensity[0], 200, 200 );
-
-        PenguinV_Image::Image doubleValueImage = uniformImage( intensity[0], 200, 200 );
-        for ( uint32_t y = 0; y < doubleValueImage.height(); ++y ) {
-            for ( uint32_t x = 0; x < doubleValueImage.width(); ++x ) {
-                if ( y % 2 == 0 )
-                    Image_Function::SetPixel( doubleValueImage, x, y, intensity[1] );
-            }
-        }
-
-        PenguinV_Image::Image tripleValueImage = uniformImage( intensity[0], 200, 200 );
-        for ( uint32_t y = 0; y < tripleValueImage.height(); ++y ) {
-            for ( uint32_t x = 0; x < tripleValueImage.width(); ++x ) {
-                if ( y % 2 == 0 )
-                    Image_Function::SetPixel( tripleValueImage, x, y, intensity[1] );
-                else if ( y % 5 == 0 )
-                    Image_Function::SetPixel( tripleValueImage, x, y, intensity[2] );
-            }
-        }
-
-        return IsBinary( singleValueImage ) && IsBinary( doubleValueImage ) && !IsBinary( tripleValueImage );
+        return IsBinary( image ) == ( intensity[0] != intensity[1] );
     }
 
     bool form2_IsBinary( IsBinaryForm2 IsBinary )
     {
-        std::vector<uint8_t> intensity = intensityArray( 3 );
+        std::vector<uint8_t> intensity = intensityArray( 2 );
 
-        while ( intensity[0] == intensity[1] || intensity[0] == intensity[2] || intensity[1] == intensity[2] )
-            intensity = intensityArray( 3 );
+        PenguinV_Image::Image image = uniformImage( intensity[0] );
 
-        PenguinV_Image::Image image = uniformImage( intensity[0], 200, 200 );
+        uint32_t roiX, roiY;
+        uint32_t roiWidth, roiHeight;
+        generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        for ( uint32_t x = 0; x < image.width(); ++x ) {
-            Image_Function::SetPixel( image, x, 1, intensity[1] );
-            Image_Function::SetPixel( image, x, 2, intensity[2] );
-        }
+        fillImage( image, roiX, roiY, roiWidth, roiHeight, intensity );
 
-        return IsBinary( image, 0, 0, image.width(), 1 ) && IsBinary( image, 0, 0, image.width(), 2 ) && IsBinary( image, 0, 1, image.width(), 1 )
-               && IsBinary( image, 0, 1, image.width(), 2 ) && !IsBinary( image, 0, 0, image.width(), 3 ) && !IsBinary( image, 0, 1, image.width(), 3 )
-               && !IsBinary( image, 0, 0, image.width(), image.height() );
+        return IsBinary( image,  roiX, roiY, roiWidth, roiHeight ) == ( intensity[0] != intensity[1] );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
