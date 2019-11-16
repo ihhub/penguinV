@@ -1165,17 +1165,15 @@ namespace Function_Template
 
     bool form1_IsBinary( IsBinaryForm1 IsBinary )
     {
-        std::vector<uint8_t> intensity = intensityArray( 2 );
-
+        std::vector<uint8_t> intensity = intensityArray( 3 );
         PenguinV_Image::Image image = randomImage( intensity );
 
-        return IsBinary( image ) == ( intensity[0] != intensity[1] );
+        return IsBinary( image ) == !( ( intensity[0] != intensity[1] ) && ( intensity[0] != intensity[2] ) && ( intensity[1] != intensity[2] ) );
     }
 
     bool form2_IsBinary( IsBinaryForm2 IsBinary )
     {
-        std::vector<uint8_t> intensity = intensityArray( 2 );
-
+        std::vector<uint8_t> intensity = intensityArray( 3 );
         PenguinV_Image::Image image = uniformImage( intensity[0] );
 
         uint32_t roiX, roiY;
@@ -1184,7 +1182,7 @@ namespace Function_Template
 
         fillImage( image, roiX, roiY, roiWidth, roiHeight, intensity );
 
-        return IsBinary( image,  roiX, roiY, roiWidth, roiHeight ) == ( intensity[0] != intensity[1] );
+        return IsBinary( image,  roiX, roiY, roiWidth, roiHeight ) == !( ( intensity[0] != intensity[1] ) && ( intensity[0] != intensity[2] ) && ( intensity[1] != intensity[2] ) );
     }
 
     bool form1_IsEqual(IsEqualForm1 IsEqual)
