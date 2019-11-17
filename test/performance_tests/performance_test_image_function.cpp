@@ -364,6 +364,8 @@ namespace image_function_avx512
     SET_FUNCTION( BitwiseAnd         )
     SET_FUNCTION( BitwiseOr          )
     SET_FUNCTION( BitwiseXor         )
+    SET_FUNCTION( Invert             )
+    SET_FUNCTION( Maximum            )
 }
 #endif
 
