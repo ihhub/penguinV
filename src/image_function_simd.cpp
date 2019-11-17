@@ -281,22 +281,22 @@ namespace avx512
             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
             maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
-            const simd * src1 = reinterpret_cast <const simd*> (inY);
-            simd       * dst  = reinterpret_cast <simd*> (outY);
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd * src1 = reinterpret_cast<const simd*>( inY );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
 
             const simd * src1End = src1 + simdWidth;
 
-            for( ; src1 != src1End; ++src1, ++dst )
+            for ( ; src1 != src1End; ++src1, ++dst )
                 _mm512_storeu_si512( dst, _mm512_andnot_si512( _mm512_loadu_si512( src1 ), mask ) );
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * inX  = inY  + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++inX )
+                for ( ; outX != outXEnd; ++outX, ++inX )
                     (*outX) = static_cast<uint8_t>( ~(*inX) );
             }
         }
@@ -305,25 +305,25 @@ namespace avx512
     void Maximum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                   uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
-            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
-            simd       * dst  = reinterpret_cast <simd*> (outY);
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>( in1Y );
+            const simd * src2 = reinterpret_cast<const simd*>( in2Y );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
 
             const simd * src1End = src1 + simdWidth;
 
-            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
                 _mm512_storeu_si512( dst, _mm512_max_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) < (*in1X) )
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if ( (*in2X) < (*in1X) )
                         (*outX) = (*in1X);
                     else
                         (*outX) = (*in2X);
@@ -335,25 +335,25 @@ namespace avx512
     void Minimum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
                   uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
-            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
-            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
-            simd       * dst  = reinterpret_cast <simd*> (outY);
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>( in1Y );
+            const simd * src2 = reinterpret_cast<const simd*>( in2Y );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
 
             const simd * src1End = src1 + simdWidth;
 
-            for( ; src1 != src1End; ++src1, ++src2, ++dst )
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
                 _mm512_storeu_si512( dst, _mm512_min_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
 
-            if( nonSimdWidth > 0 ) {
+            if ( nonSimdWidth > 0 ) {
                 const uint8_t * in1X = in1Y + totalSimdWidth;
                 const uint8_t * in2X = in2Y + totalSimdWidth;
                 uint8_t       * outX = outY + totalSimdWidth;
 
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
-                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
-                    if( (*in2X) > (*in1X) )
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if ( (*in2X) > (*in1X) )
                         (*outX) = (*in1X);
                     else
                         (*outX) = (*in2X);
