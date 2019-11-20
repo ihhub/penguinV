@@ -3,6 +3,7 @@
 #ifndef _WIN32 // Not for Windows
 
 #include <vector>
+#include <tuple>
 #include <utility>
 #include <X11/Xlib.h>
 #include "../ui.h"
@@ -14,6 +15,7 @@ public:
     virtual ~UiWindowX11();
 
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
+    virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
 protected:
     virtual void _display();
 private:
@@ -27,6 +29,7 @@ private:
     uint32_t _height;
 
     std::vector< std::pair<Point2d, uint32_t> > _point;
+    std::vector< std::tuple<Point2d, Point2d, uint32_t> > _lines;
 
     void _setupImage( const penguinV::Image & image );
 };

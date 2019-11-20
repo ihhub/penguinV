@@ -55,6 +55,16 @@ void UiWindowX11::_display()
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(point.x - 1), static_cast<int>(point.y - 1),
                            static_cast<int>(point.x + 1), static_cast<int>(point.y + 1) );
             }
+
+            for ( size_t i = 0u; i < _lines.size(); ++i ) {
+                const Point2d & start = std::get<0>(_lines[i]);
+                const Point2d & end = std::get<1>(_lines[i]);
+                const uint32_t & foreground = std::get<2>(_lines[i]);
+
+                XSetForeground( _uiDisplay, defaultGC, foreground );
+                XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(start.x), static_cast<int>(start.y),
+                           static_cast<int>(end.x), static_cast<int>(end.y) );
+            }
         }
         else if ( (e.type == ClientMessage) && (static_cast<unsigned int>(e.xclient.data.l[0]) == _deleteWindowEvent) )
             break;
@@ -110,6 +120,11 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 {
     _point.push_back( std::make_pair( point, (color.red << 16) + (color.green << 8) + color.blue ) );
+}
+
+void UiWindowX11::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
+{
+    _lines.push_back( std::make_tuple( start, end, (color.red << 16) + (color.green << 8) + color.blue ) );
 }
 
 #endif
