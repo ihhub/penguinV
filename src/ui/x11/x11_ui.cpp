@@ -65,6 +65,17 @@ void UiWindowX11::_display()
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(start.x), static_cast<int>(start.y),
                            static_cast<int>(end.x), static_cast<int>(end.y) );
             }
+
+            for ( size_t i = 0u; i < _ellipses.size(); ++i ) {
+                const Point2d & position = std::get<0>( _ellipses[i] );
+                const double & width = std::get<1>( _ellipses[i] );
+                const double & height = std::get<2>( _ellipses[i] );
+                const uint32_t & foreground = std::get<3>( _ellipses[i] );
+
+
+                XSetForeground( _uiDisplay, defaultGC, foreground );
+                XDrawArc( _uiDisplay, _window, defaultGC, position.x, position.y, width, height, 0, 360 * 64 );
+            }
         }
         else if ( (e.type == ClientMessage) && (static_cast<unsigned int>(e.xclient.data.l[0]) == _deleteWindowEvent) )
             break;
@@ -125,6 +136,14 @@ void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 void UiWindowX11::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
     _lines.push_back( std::make_tuple( start, end, (color.red << 16) + (color.green << 8) + color.blue ) );
+}
+
+void UiWindowX11::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
+{
+    //XDrawArc needs x and y coordinates of the upper-left corner of the bounding rectangle but not the center of the ellipse.
+    Point2d position(center.x - xRadius, center.y - yRadius);
+
+    _ellipses.push_back( std::make_tuple( position, xRadius * 2, yRadius * 2, (color.red << 16) + (color.green << 8) + color.blue ) );
 }
 
 #endif
