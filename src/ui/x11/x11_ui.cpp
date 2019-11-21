@@ -72,9 +72,18 @@ void UiWindowX11::_display()
                 const double & height = std::get<2>( _ellipses[i] );
                 const uint32_t & foreground = std::get<3>( _ellipses[i] );
 
-
                 XSetForeground( _uiDisplay, defaultGC, foreground );
                 XDrawArc( _uiDisplay, _window, defaultGC, position.x, position.y, width, height, 0, 360 * 64 );
+            }
+
+            for ( size_t i = 0u; i < _rectangles.size(); ++i) {
+                const Point2d & topLeftCorner = std::get<0>( _rectangles[i] );
+                const double & width = std::get<1>( _rectangles[i] );
+                const double & height = std::get<2>( _rectangles[i] );
+                const uint32_t & foreground = std::get<3>( _rectangles[i] );
+
+                XSetForeground(_uiDisplay, defaultGC, foreground);
+                XDrawRectangle(_uiDisplay, _window, defaultGC, topLeftCorner.x, topLeftCorner.y, width, height);
             }
         }
         else if ( (e.type == ClientMessage) && (static_cast<unsigned int>(e.xclient.data.l[0]) == _deleteWindowEvent) )
@@ -144,6 +153,11 @@ void UiWindowX11::drawEllipse( const Point2d & center, double xRadius, double yR
     Point2d position(center.x - xRadius, center.y - yRadius);
 
     _ellipses.push_back( std::make_tuple( position, xRadius * 2, yRadius * 2, (color.red << 16) + (color.green << 8) + color.blue ) );
+}
+
+void UiWindowX11::drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color )
+{
+    _rectangles.push_back( std::make_tuple( topLeftCorner, width, height, (color.red << 16) + (color.green << 8) + color.blue ) );
 }
 
 #endif
