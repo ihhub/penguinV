@@ -592,88 +592,80 @@ namespace image_function_cuda
 
     bool ProjectionProfileForm1Test()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const bool horizontal = (randomValue<uint32_t>(2) == 0);
+            const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
-            std::vector < uint32_t > projection = Image_Function_Cuda::ProjectionProfile( input, horizontal );
-            const uint32_t value = (horizontal ? input.height() : input.width()) * intensity;
+            const std::vector < uint32_t > projection = Image_Function_Cuda::ProjectionProfile( input, horizontal );
+            const uint32_t value = ( horizontal ? input.height() : input.width() ) * intensity;
 
-            if ( (projection.size() != (horizontal ? input.width() : input.height())) ||
-                std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v) { return value != v; } ) )
-            {
+            if ( ( projection.size() != ( horizontal ? input.width() : input.height() ) ) ||
+                std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
                 return false;
-            }
         }
         return true;
     }
 
     bool ProjectionProfileForm2Test()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const bool horizontal = (randomValue<uint32_t>(2) == 0);
+            const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
             std::vector < uint32_t > projection;
             Image_Function_Cuda::ProjectionProfile( input, horizontal, projection );
-            const uint32_t value = (horizontal ? input.height() : input.width()) * intensity;
+            const uint32_t value = ( horizontal ? input.height() : input.width() ) * intensity;
 
-            if ( (projection.size() != (horizontal ? input.width() : input.height())) ||
-                 std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v) { return value != v; } ) )
-            {
+            if ( ( projection.size() != ( horizontal ? input.width() : input.height() ) ) ||
+                 std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
                 return false;
-            }
         }
         return true;
     }
 
     bool ProjectionProfileForm3Test()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-            const bool horizontal = (randomValue<uint32_t>(2) == 0);
+            const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
-            std::vector < uint32_t > projection = Image_Function_Cuda::ProjectionProfile( input, roiX, roiY, roiWidth, roiHeight, horizontal );
-            const uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
+            const std::vector < uint32_t > projection = Image_Function_Cuda::ProjectionProfile( input, roiX, roiY, roiWidth, roiHeight, horizontal );
+            const uint32_t value = ( horizontal ? roiHeight : roiWidth ) * intensity;
 
-            if ( (projection.size() != (horizontal ? roiWidth : roiHeight)) ||
-                 std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v) { return value != v; } ) )
-            {
+            if ( ( projection.size() != ( horizontal ? roiWidth : roiHeight ) ) ||
+                 std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
                 return false;
-            }
         }
         return true;
     }
 
     bool ProjectionProfileForm4Test()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-            const bool horizontal = (randomValue<uint32_t>(2) == 0);
+            const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
             std::vector < uint32_t > projection;
             Image_Function_Cuda::ProjectionProfile( input, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
-            const uint32_t value = (horizontal ? roiHeight : roiWidth) * intensity;
+            const uint32_t value = ( horizontal ? roiHeight : roiWidth ) * intensity;
 
-            if ( (projection.size() != (horizontal ? roiWidth : roiHeight)) ||
-                 std::all_of( projection.begin(), projection.end(), [&value]( uint32_t v) { return value != v; } ) )
-            {
+            if ( ( projection.size() != ( horizontal ? roiWidth : roiHeight ) ) ||
+                 std::any_of( projection.begin(), projection.end(), [&value]( uint32_t v ) { return value != v; } ) )
                 return false;
-            }
         }
         return true;
     }
