@@ -1,7 +1,7 @@
 # API description
 
 ## Namespaces
-**penguinV**
+**penguinV**    
 Contains classes for images:
 - ***Image*** - 8-bit image with default number of color channels as 1 (gray-scale image).   
 - ***ImageTemplate*** - main class for image buffer classes.   
