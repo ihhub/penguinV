@@ -16,7 +16,7 @@ namespace image_function_cuda
 
     bool AbsoluteDifferenceForm1Test()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
 
