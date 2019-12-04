@@ -37,7 +37,15 @@
         #endif
 
         #ifdef __AVX512BW__
-            #define PENGUINV_AVX512BW_SET
+            #ifdef __AVX512CD__
+                #ifdef __AVX512DQ__
+                    #ifdef __AVX512F__
+                        #ifdef __AVX512VL__
+                            #define PENGUINV_AVX512BW_SET
+                        #endif
+                    #endif
+                #endif
+            #endif
         #endif
     #endif
 
