@@ -36,11 +36,8 @@
             #define PENGUINV_AVX_SET
         #endif
 
-        #if defined(__AVX512BW__) && defined(__AVX512CD__) && defined(__AVX512DQ__) && defined(__AVX512F__) && \
-            defined(__AVX512VL__)
-
+        #if defined(__AVX512BW__) && defined(__AVX512CD__) && defined(__AVX512DQ__) && defined(__AVX512F__) && defined(__AVX512VL__)
             #define PENGUINV_AVX512BW_SET
-            
         #endif
     #endif
 
