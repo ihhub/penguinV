@@ -20,7 +20,7 @@ namespace Raw_Operation
         file.seekg( 0, file.end );
         std::streamoff length = file.tellg();
 
-        const uint32_t overallImageSize = width * height * colorCount * sizeof( _Type );
+        const uint32_t overallImageSize = width * height * colorCount * static_cast<uint32_t>( sizeof( _Type ) );
 
         if ( length != overallImageSize )
             return PenguinV_Image::ImageTemplate<_Type>();
@@ -67,7 +67,7 @@ namespace Raw_Operation
         while ( dataToWrite > 0 ) {
             size_t writeSize = dataToWrite > blockSize ? blockSize : dataToWrite;
 
-            file.write( reinterpret_cast<const char *>(image.data() + dataWritten), writeSize );
+            file.write( reinterpret_cast<const char *>(image.data() + dataWritten), static_cast<std::streamsize>( writeSize ) );
             file.flush();
 
             dataWritten += writeSize;

@@ -849,7 +849,7 @@ namespace Image_Function
         ParameterValidation( image, x, y, width, height );
         OptimiseRoi( width, height, image );
 
-        const uint8_t colorCount = image.colorCount();
+        const uint32_t colorCount = image.colorCount();
 
         histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
@@ -874,7 +874,7 @@ namespace Image_Function
                 const uint8_t * imageXEnd = imageX + width;
 
                 for ( ; imageX != imageXEnd; imageX += colorCount ) {
-                    for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                    for ( uint32_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
                         ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                 }
             }
@@ -903,7 +903,7 @@ namespace Image_Function
         ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
         OptimiseRoi( width, height, image, mask );
 
-        const uint8_t colorCount = image.colorCount();
+        const uint32_t colorCount = image.colorCount();
 
         histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
@@ -935,7 +935,7 @@ namespace Image_Function
 
                 for ( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
                     if ( ( *imageXMask ) > 0 ) {
-                        for ( uint8_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                        for ( uint32_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
                             ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
                     }
                 }
