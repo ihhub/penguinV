@@ -88,8 +88,8 @@ namespace
                 uint8_t * imageX      = imageXStart + 1;
                 uint8_t * imageXEnd   = imageXStart + width;
 
-                for( ; imageX != imageXEnd; ++imageX ) {
-                    if( (*imageX) != previousValue ) {
+                for (; imageX != imageXEnd; ++imageX) {
+                    if ( (*imageX) != previousValue ) {
                         if( imageX - imageXStart < dilateX )
                             startPos[pairCount] = imageXStart;
                         else
