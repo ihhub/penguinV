@@ -8,8 +8,7 @@
 #include "../../src/blob_detection.h"
 #include "../../src/parameter_validation.h"
 
-void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green,
-                   const penguinV::Image & blue, penguinV::Image & out, double coeff );
+void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green, const penguinV::Image & blue, penguinV::Image & out, double coeff );
 
 int main( int argc, char **argv )
 {
@@ -26,7 +25,7 @@ int main( int argc, char **argv )
         raspicam::RaspiCam camera;
 
         // Open the camera
-        if( !camera.open() ) {
+        if ( !camera.open() ) {
             std::cerr << "Error in opening camera" << std::endl;
             return -1;
         }
@@ -59,8 +58,8 @@ int main( int argc, char **argv )
         rgbImage = Image_Function::RgbToBgr( rgbImage );
 
         // Allocate 3 gray-scale images
-        std::vector <penguinV::Image> image( 3 );
-        for( std::vector <penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
+        std::vector<penguinV::Image> image( 3 );
+        for ( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
             im->resize( rgbImage.width(), rgbImage.height() );
 
         // Split coloured image into separate channels
@@ -76,7 +75,7 @@ int main( int argc, char **argv )
         Blob_Detection::BlobDetection detection;
         detection.find( out );
 
-        if( !detection().empty() ) {
+        if ( !detection().empty() ) {
             out.fill( 0 );
 
             const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::CRITERION_SIZE );
@@ -111,8 +110,7 @@ int main( int argc, char **argv )
     return 0;
 }
 
-void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green,
-                   const penguinV::Image & blue, penguinV::Image & out, double coeff )
+void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green, const penguinV::Image & blue, penguinV::Image & out, double coeff )
 {
     Image_Function::ParameterValidation( red, green, blue );
     Image_Function::ParameterValidation( out, red );

@@ -71,7 +71,7 @@ namespace Unit_Test
             return verifyImage(image, 0, 0, image.width(), image.height(), value);
         }
 
-        bool verifyImage( const penguinV::Image & image, const std::vector < uint8_t > & value )
+        bool verifyImage( const penguinV::Image & image, const std::vector<uint8_t> & value )
         {
             return verifyImage(image, 0, 0, image.width(), image.height(), value);
         }

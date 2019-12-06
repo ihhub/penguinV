@@ -1382,7 +1382,7 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
         std::vector<penguinV::Image> input = uniformImages( intensity );
-        penguinV::Image output( input[0].width(), input[0].height(), penguinV::RGB ); 
+        penguinV::Image output( input[0].width(), input[0].height(), penguinV::RGB );
 
         Merge( input[0], input[1], input[2], output );
 
@@ -1960,7 +1960,7 @@ namespace Function_Template
     bool form1_SetPixel(SetPixelForm1 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        penguinV::Image image  = uniformImage( intensity[0] );
+        penguinV::Image image = uniformImage( intensity[0] );
         const uint32_t x = randomValue<uint32_t>( 0, image.width() );
         const uint32_t y = randomValue<uint32_t>( 0, image.height() );
 
@@ -1972,7 +1972,7 @@ namespace Function_Template
     bool form2_SetPixel(SetPixelForm2 SetPixel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        penguinV::Image image  = uniformImage( intensity[0] );
+        penguinV::Image image = uniformImage( intensity[0] );
         std::vector< uint32_t > X( randomValue<uint32_t>( 1, 100 ) );
         std::vector< uint32_t > Y( X.size() );
 

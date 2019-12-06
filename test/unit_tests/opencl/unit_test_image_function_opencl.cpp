@@ -310,7 +310,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL(randomImage( intensity ));
+            const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL( randomImage( intensity ) );
 
             std::vector < uint8_t > lookupTable( 256, 0 );
 
@@ -335,7 +335,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL(randomImage( intensity ));
+            const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL( randomImage( intensity ) );
             penguinV::ImageOpenCL output( input.width(), input.height() );
 
             output.fill( intensityValue() );

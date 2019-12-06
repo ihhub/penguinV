@@ -86,7 +86,7 @@ void gpuCode( const std::string & filePath )
         penguinV::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
 
         // Convert to gray-scale image if it's not
-        if( imageGPU.colorCount() != penguinV::GRAY_SCALE )
+        if ( imageGPU.colorCount() != penguinV::GRAY_SCALE )
             imageGPU = Image_Function_OpenCL::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold

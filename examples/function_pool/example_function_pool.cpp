@@ -7,7 +7,7 @@
 #include "../../src/thread_pool.h"
 
 void basic        ( const std::vector<penguinV::Image> & frame );
-void multithreaded( const std::vector< penguinV::Image> & frame );
+void multithreaded( const std::vector<penguinV::Image> & frame );
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
 

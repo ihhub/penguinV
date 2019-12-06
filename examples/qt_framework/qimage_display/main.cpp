@@ -23,7 +23,7 @@ int main( int argc, char *argv[] )
         // Load a color image from storage
         penguinV::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
 
-        if( original.colorCount() != penguinV::RGB || original.empty() ) {
+        if ( original.colorCount() != penguinV::RGB || original.empty() ) {
             std::cout << "Looks like no image or it is not a color image" << std::endl;
             return 0;
         }

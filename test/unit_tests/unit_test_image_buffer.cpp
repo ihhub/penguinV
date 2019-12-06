@@ -6,7 +6,7 @@ namespace template_image
 {
     bool EmptyConstructor()
     {
-        penguinV::ImageTemplate < uint8_t > image;
+        penguinV::ImageTemplate<uint8_t> image;
         return Unit_Test::isEmpty( image );
     }
 
@@ -18,8 +18,8 @@ namespace template_image
             const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
-            if( !Unit_Test::equalSize( penguinV::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
-                                       Unit_Test::rowSize( width, colorCount, alignment ), colorCount, alignment ) )
+            if ( !Unit_Test::equalSize( penguinV::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
+                                        Unit_Test::rowSize( width, colorCount, alignment ), colorCount, alignment ) )
                 return false;
         }
 
@@ -29,7 +29,7 @@ namespace template_image
     bool NullAssignment()
     {
         try {
-            penguinV::ImageTemplate < uint8_t > image;
+            penguinV::ImageTemplate<uint8_t> image;
 
             uint8_t fakeArray[1];
             uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 2 );
