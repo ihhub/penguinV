@@ -55,21 +55,20 @@ namespace Unit_Test
     }
 
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const std::vector < uint8_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector <uint8_t> & value,
+                      bool isAnyValue = true );
     bool verifyImage( const penguinV::Image & image, uint8_t value );
-    bool verifyImage( const penguinV::Image & image, const std::vector < uint8_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image & image, const std::vector<uint8_t> & value, bool isAnyValue = true );
 
     bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value );
-    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const std::vector < uint16_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint16_t> & value,
+                      bool isAnyValue = true );
     bool verifyImage( const penguinV::Image16Bit & image, uint16_t value );
-    bool verifyImage( const penguinV::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue = true );
+    bool verifyImage( const penguinV::Image16Bit & image, const std::vector<uint16_t> & value, bool isAnyValue = true );
 
     // Fill image ROI with specific intensity
     void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                    const std::vector < uint8_t > & value );
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value );
 
     // Generate and return ROI based on full image size
     template <typename _Type>

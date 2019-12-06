@@ -137,7 +137,7 @@ namespace Function_Template
 
         std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
 
-        for( std::vector<penguinV::Image>::const_iterator image = input.begin(); image != input.end(); ++image ) {
+        for ( std::vector<penguinV::Image>::const_iterator image = input.begin(); image != input.end(); ++image ) {
             Accumulate( *image, result );
         }
 
@@ -1233,7 +1233,7 @@ namespace Function_Template
     bool form2_LookupTable(LookupTableForm2 LookupTable)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        penguinV::Image input  = randomImage( intensity );
+        penguinV::Image input = randomImage( intensity );
         penguinV::Image output( input.width(), input.height() );
 
         output.fill( intensityValue() );

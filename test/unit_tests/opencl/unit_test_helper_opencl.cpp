@@ -68,12 +68,12 @@ namespace Unit_Test
     {
         bool verifyImage( const penguinV::Image & image, uint8_t value )
         {
-            return verifyImage(image, 0, 0, image.width(), image.height(), value);
+            return verifyImage(image, 0, 0, image.width(), image.height(), value );
         }
 
         bool verifyImage( const penguinV::Image & image, const std::vector<uint8_t> & value )
         {
-            return verifyImage(image, 0, 0, image.width(), image.height(), value);
+            return verifyImage(image, 0, 0, image.width(), image.height(), value );
         }
 
         bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )

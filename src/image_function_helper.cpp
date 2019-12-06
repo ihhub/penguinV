@@ -1139,7 +1139,7 @@ void ImageTypeManager::convert( const penguinV::Image & in, penguinV::Image & ou
 
 penguinV::Image ImageTypeManager::image( uint8_t type ) const
 {
-    std::map< uint8_t, penguinV::Image >::const_iterator image = _image.find( type );
+    std::map<uint8_t, penguinV::Image>::const_iterator image = _image.find( type );
     if ( image == _image.cend() )
         throw imageException( "Image is not registered" );
 

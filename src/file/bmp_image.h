@@ -7,6 +7,5 @@ namespace Bitmap_Operation
     void            Load( const std::string & path, penguinV::Image & image );
 
     void Save( const std::string & path, const penguinV::Image & image );
-    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY,
-               uint32_t width, uint32_t height );
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height );
 }

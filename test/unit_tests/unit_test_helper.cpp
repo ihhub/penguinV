@@ -96,7 +96,7 @@ namespace Unit_Test
         return uniformImage( 255u, 0, 0, reference );
     }
 
-    penguinV::Image randomImage( const std::vector <uint8_t> & value )
+    penguinV::Image randomImage( const std::vector<uint8_t> & value )
     {
         if( value.empty() )
             return Test_Helper::randomImage();
@@ -203,8 +203,7 @@ namespace Unit_Test
         Image_Function::Fill( image, x, y, width, height, value );
     }
 
-    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                    const std::vector < uint8_t > & value )
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
 

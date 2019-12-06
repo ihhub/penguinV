@@ -10,7 +10,7 @@ namespace
 
     template <typename _Type>
     penguinV::ImageTemplate<_Type> generateImage( uint32_t width, uint32_t height, uint8_t colorCount, _Type value,
-                                                        const penguinV::ImageTemplate<_Type> & reference = penguinV::ImageTemplate<_Type>() )
+                                                  const penguinV::ImageTemplate<_Type> & reference = penguinV::ImageTemplate<_Type>() )
     {
         penguinV::ImageTemplate<_Type> image = reference.generate( width, height, colorCount );
 
@@ -75,7 +75,7 @@ namespace Test_Helper
 
     penguinV::Image uniformRGBImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        return generateImage<uint8_t>( width, height, penguinV::RGB, value);
+        return generateImage<uint8_t>( width, height, penguinV::RGB, value );
     }
 
     penguinV::Image uniformRGBAImage( uint32_t width, uint32_t height )
@@ -85,7 +85,7 @@ namespace Test_Helper
 
     penguinV::Image uniformRGBAImage( uint32_t width, uint32_t height, uint8_t value )
     {
-        return generateImage<uint8_t>( width, height, penguinV::RGBA, value);
+        return generateImage<uint8_t>( width, height, penguinV::RGBA, value );
     }
 
     penguinV::Image uniformRGBAImage( const penguinV::Image & reference )
@@ -117,7 +117,7 @@ namespace Test_Helper
 
         return image;
     }
-    
+
     std::vector<penguinV::Image> uniformImages( uint32_t images, const penguinV::Image & reference )
     {
         if( images == 0 )
@@ -151,7 +151,7 @@ namespace Test_Helper
 
     penguinV::Image randomImage( uint32_t width, uint32_t height )
     {
-        penguinV::Image image( (width == 0) ? randomSize() : width, (height == 0) ? randomSize() : height );
+        penguinV::Image image( ( width == 0 ) ? randomSize() : width, ( height == 0 ) ? randomSize() : height );
 
         fillRandomData( image );
 
@@ -167,7 +167,7 @@ namespace Test_Helper
         return image;
     }
 
-    penguinV::Image randomImage( const std::vector <uint8_t> & value )
+    penguinV::Image randomImage( const std::vector<uint8_t> & value )
     {
         if( value.empty() )
             return randomImage();

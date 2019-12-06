@@ -487,8 +487,7 @@ namespace Bitmap_Operation
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY,
-               uint32_t width, uint32_t height )
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( image, startX, startY, width, height );
 
