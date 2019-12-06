@@ -37,7 +37,7 @@ namespace Test_Helper
         if( maximum == 0 )
             return 0;
         else
-            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            return static_cast<data>( static_cast<uint32_t>( rand() ) % ( maximum + 1 ) );
     }
 
     template <typename data>
@@ -47,7 +47,7 @@ namespace Test_Helper
             return 0;
         }
         else {
-            data value = static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            data value = static_cast<data>( static_cast<uint32_t>( rand() ) % ( maximum + 1 ) );
 
             if( value < minimum )
                 value = minimum;

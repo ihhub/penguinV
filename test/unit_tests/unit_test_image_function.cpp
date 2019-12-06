@@ -656,7 +656,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         const PenguinV_Image::Image output = ExtractChannel( input, channelId );
 
@@ -669,7 +669,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
         PenguinV_Image::Image output = uniformImage( input.width(), input.height() );
 
         ExtractChannel( input, output, channelId );
@@ -683,7 +683,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         uint32_t roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -700,7 +700,7 @@ namespace Function_Template
         PenguinV_Image::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
         PenguinV_Image::Image output = uniformImage();
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -744,8 +744,8 @@ namespace Function_Template
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image input = uniformImage( intensity[0] );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = input.width() % 2;
         const uint32_t yCorrection = input.height() % 2;
 
@@ -785,8 +785,8 @@ namespace Function_Template
         const uint8_t intensityFill = intensityValue();
         std::vector < PenguinV_Image::Image > input = uniformImages( intensity );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = input[0].width() % 2;
         const uint32_t yCorrection = input[0].height() % 2;
 
@@ -826,8 +826,8 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -871,8 +871,8 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
-        const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
+        const bool horizontalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
+        const bool verticalFlip = ( randomValue<uint32_t>( 0, 1 ) == 0 );
         const uint32_t xCorrection = roiWidth % 2;
         const uint32_t yCorrection = roiHeight % 2;
 
@@ -1597,7 +1597,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection = ProjectionProfile( image, horizontal );
 
@@ -1612,7 +1612,7 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const PenguinV_Image::Image image = uniformImage( intensity );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, horizontal, projection );
@@ -1631,7 +1631,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection = ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal );
 
@@ -1649,7 +1649,7 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
-        const bool horizontal = (randomValue<int>(2) == 0);
+        const bool horizontal = ( randomValue<int>( 1 ) == 0 );
 
         std::vector < uint32_t > projection;
         ProjectionProfile( image, roiX, roiY, roiWidth, roiHeight, horizontal, projection );
@@ -1668,7 +1668,7 @@ namespace Function_Template
 
         output.fill( intensity[1] );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         ReplaceChannel( input, output, channelId );
 
@@ -1693,7 +1693,7 @@ namespace Function_Template
         uint32_t roiWidth, roiHeight;
         generateRoi( size, roiX, roiY, roiWidth, roiHeight );
 
-        const uint8_t channelId = randomValue<uint8_t>( 3 );
+        const uint8_t channelId = randomValue<uint8_t>( 2 );
 
         ReplaceChannel( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight, channelId );
 
@@ -1961,8 +1961,8 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         PenguinV_Image::Image image  = uniformImage( intensity[0] );
-        const uint32_t x = randomValue<uint32_t>( 0, image.width() );
-        const uint32_t y = randomValue<uint32_t>( 0, image.height() );
+        const uint32_t x = randomValue<uint32_t>( 0, image.width() - 1 );
+        const uint32_t y = randomValue<uint32_t>( 0, image.height() - 1 );
 
         SetPixel( image, x, y, intensity[1] );
 
@@ -1977,8 +1977,8 @@ namespace Function_Template
         std::vector< uint32_t > Y( X.size() );
 
         for (size_t j = 0; j < X.size(); j++) {
-            X[j] = randomValue<uint32_t>( 0, image.width() );
-            Y[j] = randomValue<uint32_t>( 0, image.height() );
+            X[j] = randomValue<uint32_t>( 0, image.width() - 1 );
+            Y[j] = randomValue<uint32_t>( 0, image.height() - 1 );
         }
 
         SetPixel( image, X, Y, intensity[1] );

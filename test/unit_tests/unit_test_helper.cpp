@@ -259,8 +259,8 @@ namespace Unit_Test
                 maximumHeight = im->second;
         }
 
-        width  = randomValue<uint32_t>( 1, maximumWidth  + 1 );
-        height = randomValue<uint32_t>( 1, maximumHeight + 1 );
+        width = randomValue<uint32_t>( 1, maximumWidth );
+        height = randomValue<uint32_t>( 1, maximumHeight );
 
         x.resize( imageSize.size() );
         y.resize( imageSize.size() );

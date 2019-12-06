@@ -7,7 +7,7 @@ namespace Performance_Test
     {
         PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height )
         {
-            return uniformImage( width, height, randomValue<uint8_t>( 256 ) );
+            return uniformImage( width, height, randomValue<uint8_t>( 255 ) );
         }
 
         PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value )
