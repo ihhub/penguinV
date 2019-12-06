@@ -55,7 +55,7 @@ namespace Unit_Test
     }
 
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
-    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector <uint8_t> & value,
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value,
                       bool isAnyValue = true );
     bool verifyImage( const penguinV::Image & image, uint8_t value );
     bool verifyImage( const penguinV::Image & image, const std::vector<uint8_t> & value, bool isAnyValue = true );
@@ -80,7 +80,7 @@ namespace Unit_Test
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );
     }
-    void generateRoi( const std::vector<penguinV::Image> & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
+    void generateRoi( const std::vector<penguinV::Image> & image, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width, uint32_t & height );
     // first element in pair structure is width, second - height
     void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
                       std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );

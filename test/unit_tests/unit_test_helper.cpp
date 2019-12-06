@@ -161,8 +161,7 @@ namespace Unit_Test
         return imageVerification<uint8_t>( image, x, y, width, height, value );
     }
 
-    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                      const std::vector < uint8_t > & value, bool isAnyValue )
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value, bool isAnyValue )
     {
         return imageVerification<uint8_t>( image, x, y, width, height, value, isAnyValue );
     }
@@ -228,7 +227,7 @@ namespace Unit_Test
         }
     }
 
-    void generateRoi( const std::vector<penguinV::Image> & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y, uint32_t & width, uint32_t & height )
+    void generateRoi( const std::vector<penguinV::Image> & image, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width, uint32_t & height )
     {
         std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );
 
