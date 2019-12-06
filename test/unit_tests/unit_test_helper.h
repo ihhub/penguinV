@@ -42,13 +42,13 @@ namespace Unit_Test
     bool equalSize( const penguinV::Image & image, uint32_t width, uint32_t height );
 
     template <typename data>
-    bool equalData( const penguinV::ImageTemplate < data > & image1, const penguinV::ImageTemplate < data > & image2 )
+    bool equalData( const penguinV::ImageTemplate<data> & image1, const penguinV::ImageTemplate<data> & image2 )
     {
         return memcmp( image1.data(), image2.data(), sizeof( data ) * image1.height() * image1.rowSize() ) == 0;
     }
 
     template <typename data>
-    bool isEmpty( const penguinV::ImageTemplate < data > & image )
+    bool isEmpty( const penguinV::ImageTemplate<data> & image )
     {
         return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
                image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;

@@ -426,7 +426,7 @@ namespace Function_Template
     bool form4_ConvertTo16Bit(ConvertTo16BitForm4 ConvertTo16Bit)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image16Bit output = uniformImage16Bit( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -527,7 +527,7 @@ namespace Function_Template
     bool form3_ConvertToGrayScale(ConvertToGrayScaleForm3 ConvertToGrayScale)
     {
         const uint8_t intensity = intensityValue();
-        const penguinV::Image input  = uniformRGBImage( intensity );
+        const penguinV::Image input = uniformRGBImage( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -540,7 +540,7 @@ namespace Function_Template
     bool form4_ConvertToGrayScale(ConvertToGrayScaleForm4 ConvertToGrayScale)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformRGBImage( intensity[0] );
+        const penguinV::Image input = uniformRGBImage( intensity[0] );
         penguinV::Image output = uniformImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -596,7 +596,7 @@ namespace Function_Template
     bool form4_ConvertToRgb(ConvertToRgbForm4 ConvertToRgb)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image output = uniformRGBImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
@@ -660,7 +660,7 @@ namespace Function_Template
 
         const penguinV::Image output = ExtractChannel( input, channelId );
 
-        return verifyImage( output, intensity[channelId] ) && (output.colorCount() == penguinV::GRAY_SCALE);
+        return verifyImage( output, intensity[channelId] ) && ( output.colorCount() == penguinV::GRAY_SCALE );
     }
 
     bool form2_ExtractChannel(ExtractChannelForm2 ExtractChannel)
@@ -674,7 +674,7 @@ namespace Function_Template
 
         ExtractChannel( input, output, channelId );
 
-        return verifyImage( output, intensity[channelId] ) && (output.colorCount() == penguinV::GRAY_SCALE);
+        return verifyImage( output, intensity[channelId] ) && ( output.colorCount() == penguinV::GRAY_SCALE );
     }
 
     bool form3_ExtractChannel(ExtractChannelForm3 ExtractChannel)
@@ -691,7 +691,7 @@ namespace Function_Template
 
         const penguinV::Image output = ExtractChannel( input, roiX, roiY, roiWidth, roiHeight, channelId );
 
-        return verifyImage( output, intensity[channelId] ) && equalSize( output, roiWidth, roiHeight ) && (output.colorCount() == penguinV::GRAY_SCALE);
+        return verifyImage( output, intensity[channelId] ) && equalSize( output, roiWidth, roiHeight ) && ( output.colorCount() == penguinV::GRAY_SCALE );
     }
 
     bool form4_ExtractChannel(ExtractChannelForm4 ExtractChannel)
@@ -1375,7 +1375,7 @@ namespace Function_Template
 
         const penguinV::Image output = Merge( input[0], input[1], input[2] );
 
-        return verifyImage( output, intensity, false ) && equalSize( output, input[0].width(), input[0].height() ) && (output.colorCount() == penguinV::RGB);
+        return verifyImage( output, intensity, false ) && equalSize( output, input[0].width(), input[0].height() ) && ( output.colorCount() == penguinV::RGB );
     }
 
     bool form2_Merge(MergeForm2 Merge)
@@ -1386,7 +1386,7 @@ namespace Function_Template
 
         Merge( input[0], input[1], input[2], output );
 
-        return verifyImage( output, intensity, false ) && (output.colorCount() == penguinV::RGB);
+        return verifyImage( output, intensity, false ) && ( output.colorCount() == penguinV::RGB );
     }
 
     bool form3_Merge(MergeForm3 Merge)
@@ -1407,7 +1407,7 @@ namespace Function_Template
 
         const penguinV::Image output = Merge( input[0], roiX[0], roiY[0], input[1], roiX[1], roiY[1], input[2], roiX[2], roiY[2], roiWidth, roiHeight );
 
-        return verifyImage( output, intensity, false ) && equalSize( output, roiWidth, roiHeight ) && (output.colorCount() == penguinV::RGB);
+        return verifyImage( output, intensity, false ) && equalSize( output, roiWidth, roiHeight ) && ( output.colorCount() == penguinV::RGB );
     }
 
     bool form4_Merge(MergeForm4 Merge)
@@ -1514,7 +1514,7 @@ namespace Function_Template
     bool form2_Normalize(NormalizeForm2 Normalize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = randomImage( intensity );
+        const penguinV::Image input = randomImage( intensity );
         penguinV::Image output( input.width(), input.height() );
 
         output.fill( intensityValue() );
@@ -1719,7 +1719,7 @@ namespace Function_Template
     bool form2_Resize(ResizeForm2 Resize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image output = uniformImage( intensity[1] );
 
         Resize( input, output );
@@ -1746,7 +1746,7 @@ namespace Function_Template
     bool form4_Resize(ResizeForm4 Resize)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image output = uniformImage( intensity[1] );
 
         std::vector < uint32_t > roiX( 2 ), roiY( 2 ), roiWidth( 2 ), roiHeight( 2 );
@@ -2307,7 +2307,7 @@ namespace Function_Template
     bool form2_Transpose(TransposeForm2 Transpose)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image output( input.height(), input.width() );
 
         output.fill( intensity[1] );
@@ -2333,7 +2333,7 @@ namespace Function_Template
     bool form4_Transpose(TransposeForm4 Transpose)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const penguinV::Image input  = uniformImage( intensity[0] );
+        const penguinV::Image input = uniformImage( intensity[0] );
         penguinV::Image output = uniformImage( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );

@@ -102,7 +102,7 @@ namespace Test_Helper
     {
         std::vector<penguinV::Image> image( count );
 
-        for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
+        for ( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformImage( width, height );
 
         return image;
@@ -112,7 +112,7 @@ namespace Test_Helper
     {
         std::vector<penguinV::Image> image( count );
 
-        for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
+        for ( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformRGBImage( width, height );
 
         return image;

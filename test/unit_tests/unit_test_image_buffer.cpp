@@ -54,10 +54,10 @@ namespace template_image
             const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
-            penguinV::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+            penguinV::ImageTemplate<_Type> image( width, height, colorCount, alignment );
             image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
 
-            const penguinV::ImageTemplate < _Type > image_copy( image );
+            const penguinV::ImageTemplate<_Type> image_copy( image );
 
             if( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
                 return false;
@@ -75,10 +75,10 @@ namespace template_image
             const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
             const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
 
-            penguinV::ImageTemplate < _Type > image( width, height, colorCount, alignment );
+            penguinV::ImageTemplate<_Type> image( width, height, colorCount, alignment );
             image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
 
-            penguinV::ImageTemplate < _Type > image_copy;
+            penguinV::ImageTemplate<_Type> image_copy;
 
             image_copy = image;
 

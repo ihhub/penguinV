@@ -40,7 +40,7 @@ int main()
         // Create a set of 60 frames
         std::vector<penguinV::Image> frame( 60, penguinV::Image( 1920, 1080 ) );
 
-        for( std::vector<penguinV::Image>::iterator image = frame.begin(); image != frame.end(); ++image ) {
+        for ( std::vector<penguinV::Image>::iterator image = frame.begin(); image != frame.end(); ++image ) {
             // Fill background. Let's assume that background varies from 0 to 15 gray scale values
             image->fill( randomValue<uint8_t>(16u) );
 

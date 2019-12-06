@@ -76,7 +76,7 @@ namespace Performance_Test
         {
             std::vector<penguinV::Image> image( count );
 
-            for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
+            for ( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
                 *im = uniformImage( width, height );
 
             return image;
