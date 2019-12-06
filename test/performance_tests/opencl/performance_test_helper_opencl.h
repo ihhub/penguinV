@@ -9,8 +9,8 @@ namespace Performance_Test
     namespace OpenCL_Helper
     {
         // Functions to generate images
-        PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height );
-        PenguinV_Image::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
-        std::vector< PenguinV_Image::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
+        penguinV::Image uniformImage( uint32_t width, uint32_t height );
+        penguinV::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
+        std::vector< penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
     }
 }

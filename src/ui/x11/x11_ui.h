@@ -10,7 +10,7 @@
 class UiWindowX11 : public UiWindow
 {
 public:
-    explicit UiWindowX11( const PenguinV_Image::Image & image = PenguinV_Image::Image(), const std::string & title = std::string() );
+    explicit UiWindowX11( const penguinV::Image & image = penguinV::Image(), const std::string & title = std::string() );
     virtual ~UiWindowX11();
 
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
@@ -28,7 +28,7 @@ private:
 
     std::vector< std::pair<Point2d, uint32_t> > _point;
 
-    void _setupImage( const PenguinV_Image::Image & image );
+    void _setupImage( const penguinV::Image & image );
 };
 
 #endif

@@ -296,12 +296,12 @@ namespace Blob_Detection
     }
 
 
-    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, BlobParameters parameter, uint8_t threshold )
+    const std::vector < BlobInfo > & BlobDetection::find( const penguinV::Image & image, BlobParameters parameter, uint8_t threshold )
     {
         return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
     }
 
-    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
+    const std::vector < BlobInfo > & BlobDetection::find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width,
                                                           uint32_t height, BlobParameters parameter, uint8_t threshold )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
@@ -312,7 +312,7 @@ namespace Blob_Detection
         _blob.clear();
 
         // we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
-        PenguinV_Image::Image imageMap( width + 2, height + 2 );
+        penguinV::Image imageMap( width + 2, height + 2 );
         imageMap.fill( EMPTY );
 
         uint32_t rowSize = image.rowSize();

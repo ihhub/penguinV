@@ -7,7 +7,7 @@ namespace FFT
     {
     }
 
-    ComplexData::ComplexData( const PenguinV_Image::Image & image )
+    ComplexData::ComplexData( const penguinV::Image & image )
     {
         set( image );
     }
@@ -27,7 +27,7 @@ namespace FFT
         _clean();
     }
 
-    void ComplexData::set( const PenguinV_Image::Image & image )
+    void ComplexData::set( const penguinV::Image & image )
     {
         if ( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
@@ -75,12 +75,12 @@ namespace FFT
         }
     }
 
-    PenguinV_Image::Image ComplexData::get() const
+    penguinV::Image ComplexData::get() const
     {
         if ( empty() )
-            return PenguinV_Image::Image();
+            return penguinV::Image();
 
-        PenguinV_Image::Image image( _width, _height, 1u, 1u );
+        penguinV::Image image( _width, _height, 1u, 1u );
         uint8_t * out = image.data();
 
         const uint32_t size = _width * _height;

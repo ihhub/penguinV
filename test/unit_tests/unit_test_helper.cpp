@@ -11,7 +11,7 @@ namespace
     }
 
     template <typename _Type>
-    bool imageVerification( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
+    bool imageVerification( const penguinV::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
@@ -37,7 +37,7 @@ namespace
     }
 
     template <typename _Type>
-    bool imageVerification( const PenguinV_Image::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool imageVerification( const penguinV::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                             const std::vector < _Type > & value, bool isAnyValue )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
@@ -86,22 +86,22 @@ namespace
 
 namespace Unit_Test
 {
-    PenguinV_Image::Image blackImage( const PenguinV_Image::Image & reference )
+    penguinV::Image blackImage( const penguinV::Image & reference )
     {
         return uniformImage( 0u, 0, 0, reference );
     }
 
-    PenguinV_Image::Image whiteImage( const PenguinV_Image::Image & reference )
+    penguinV::Image whiteImage( const penguinV::Image & reference )
     {
         return uniformImage( 255u, 0, 0, reference );
     }
 
-    PenguinV_Image::Image randomImage( const std::vector <uint8_t> & value )
+    penguinV::Image randomImage( const std::vector <uint8_t> & value )
     {
         if( value.empty() )
             return Test_Helper::randomImage();
 
-        PenguinV_Image::Image image( randomSize(), randomSize() );
+        penguinV::Image image( randomSize(), randomSize() );
 
         uint32_t height = image.height();
         uint32_t width = image.width();
@@ -151,59 +151,59 @@ namespace Unit_Test
         return generateArray<uint8_t>( size, 256u );
     }
 
-    bool equalSize( const PenguinV_Image::Image & image, uint32_t width, uint32_t height )
+    bool equalSize( const penguinV::Image & image, uint32_t width, uint32_t height )
     {
         return image.width() == width && image.height() == height && !image.empty();
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         return imageVerification<uint8_t>( image, x, y, width, height, value );
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint8_t > & value, bool isAnyValue )
     {
         return imageVerification<uint8_t>( image, x, y, width, height, value, isAnyValue );
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
+    bool verifyImage( const penguinV::Image & image, uint8_t value )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value, bool isAnyValue )
+    bool verifyImage( const penguinV::Image & image, const std::vector < uint8_t > & value, bool isAnyValue )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
 
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value )
+    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value )
     {
         return imageVerification<uint16_t>( image, x, y, width, height, value );
     }
 
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint16_t > & value, bool isAnyValue )
     {
         return imageVerification<uint16_t>( image, x, y, width, height, value, isAnyValue );
     }
 
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, uint16_t value )
+    bool verifyImage( const penguinV::Image16Bit & image, uint16_t value )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    bool verifyImage( const PenguinV_Image::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue )
+    bool verifyImage( const penguinV::Image16Bit & image, const std::vector < uint16_t > & value, bool isAnyValue )
     {
         return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
 
-    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         Image_Function::Fill( image, x, y, width, height, value );
     }
 
-    void fillImage( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                     const std::vector < uint8_t > & value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
@@ -229,7 +229,7 @@ namespace Unit_Test
         }
     }
 
-    void generateRoi( const std::vector < PenguinV_Image::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
+    void generateRoi( const std::vector < penguinV::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
                       uint32_t & width, uint32_t & height )
     {
         std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );
@@ -271,7 +271,7 @@ namespace Unit_Test
         }
     }
 
-    void generateOffset( const PenguinV_Image::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
+    void generateOffset( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height )
     {
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );

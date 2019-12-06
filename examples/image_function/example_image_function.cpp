@@ -3,10 +3,10 @@
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
 
-void example1( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut );
-void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut );
-void example3( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut );
-void example4( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut );
+void example1( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut );
+void example2( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut );
+void example3( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut );
+void example4( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut );
 
 int main()
 {
@@ -31,9 +31,9 @@ int main()
     {
         // create image objects with certain sizes
 
-        PenguinV_Image::Image imageIn1( 1024, 1024 );
-        PenguinV_Image::Image imageIn2( 2048, 2048 );
-        PenguinV_Image::Image imageOut( 512, 512 );
+        penguinV::Image imageIn1( 1024, 1024 );
+        penguinV::Image imageIn2( 2048, 2048 );
+        penguinV::Image imageOut( 512, 512 );
 
         // set any data because initially images contain some uninitialized garbage
         // (we assume that this step you do not need to do during real development of image processing algorithms)
@@ -68,12 +68,12 @@ int main()
 }
 
 
-void example1( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
+void example1( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
     // We allocate another images with size 128 x 128
-    PenguinV_Image::Image croppedIn1( 128, 128 );
-    PenguinV_Image::Image croppedIn2( 128, 128 );
-    PenguinV_Image::Image croppedOut( 128, 128 );
+    penguinV::Image croppedIn1( 128, 128 );
+    penguinV::Image croppedIn2( 128, 128 );
+    penguinV::Image croppedOut( 128, 128 );
 
     // Copy information from input images to cropped images
 
@@ -113,11 +113,11 @@ void example1( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
     );
 }
 
-void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
+void example2( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
     // We allocate another images with size 128 x 128
-    PenguinV_Image::Image croppedIn1( 128, 128 );
-    PenguinV_Image::Image croppedIn2( 128, 128 );
+    penguinV::Image croppedIn1( 128, 128 );
+    penguinV::Image croppedIn2( 128, 128 );
 
     // Copy information from input images to cropped images
 
@@ -142,7 +142,7 @@ void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
     );
 
     // Do Bitwise OR and store result in cropped output image (move operator)
-    PenguinV_Image::Image croppedOut = Image_Function::BitwiseOr( croppedIn1, croppedIn2 );
+    penguinV::Image croppedOut = Image_Function::BitwiseOr( croppedIn1, croppedIn2 );
 
     // Copy the result into output image
     Image_Function::Copy( croppedOut, // cropped output image
@@ -156,10 +156,10 @@ void example2( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
     );
 }
 
-void example3( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
+void example3( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
     // Do Bitwise OR and store result in cropped output image (move operator)
-    PenguinV_Image::Image croppedOut = Image_Function::BitwiseOr( imageIn1, // first input image
+    penguinV::Image croppedOut = Image_Function::BitwiseOr( imageIn1, // first input image
                                                                 10,       // X coordinate of first input image area
                                                                 10,       // Y coordinate of first input image area
                                                                 imageIn2, // second input image
@@ -181,7 +181,7 @@ void example3( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Ima
     );
 }
 
-void example4( const PenguinV_Image::Image & imageIn1, const PenguinV_Image::Image & imageIn2, PenguinV_Image::Image & imageOut )
+void example4( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
     Image_Function::BitwiseOr( imageIn1, // first input image
                                10,       // X coordinate of first input image area
