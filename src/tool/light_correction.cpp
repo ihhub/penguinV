@@ -1,7 +1,7 @@
 #include "light_correction.h"
 #include "../parameter_validation.h"
 
-void LightCorrection::analyze( const penguinV::Image & image )
+void LightCorrection::analyze( const PenguinV_Image::Image & image )
 {
     Image_Function::ParameterValidation( image );
 
@@ -52,14 +52,14 @@ void LightCorrection::analyze( const penguinV::Image & image )
     }
 }
 
-void LightCorrection::correct( penguinV::Image & image ) const
+void LightCorrection::correct( PenguinV_Image::Image & image ) const
 {
     Image_Function::ParameterValidation( image );
 
     correct( image, 0, 0, image.width(), image.height() );
 }
 
-void LightCorrection::correct( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height ) const
+void LightCorrection::correct( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height ) const
 {
     Image_Function::ParameterValidation( image, x, y, width, height );
     if ( _width == 0 || _height == 0 )
@@ -87,7 +87,7 @@ void LightCorrection::correct( penguinV::Image & image, uint32_t x, uint32_t y, 
     }
 }
 
-std::vector< PointBase2D< uint32_t > > LightCorrection::findIncorrectPixels( const penguinV::Image & image ) const
+std::vector< PointBase2D< uint32_t > > LightCorrection::findIncorrectPixels( const PenguinV_Image::Image & image ) const
 {
     std::vector< PointBase2D< uint32_t > > point;
 

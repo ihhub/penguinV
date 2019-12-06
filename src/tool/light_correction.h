@@ -9,12 +9,12 @@
 class LightCorrection
 {
 public:
-    void analyze( const penguinV::Image & image );
-    void correct( penguinV::Image & image ) const;
-    void correct( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height ) const;
+    void analyze( const PenguinV_Image::Image & image );
+    void correct( PenguinV_Image::Image & image ) const;
+    void correct( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height ) const;
 
     // Returns an array of pixel coordinates on which pixel intensity equal to 0 or 255
-    std::vector< PointBase2D< uint32_t > > findIncorrectPixels( const penguinV::Image & image ) const;
+    std::vector< PointBase2D< uint32_t > > findIncorrectPixels( const PenguinV_Image::Image & image ) const;
 
 private:
     std::vector< uint32_t > _data;

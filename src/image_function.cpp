@@ -49,13 +49,13 @@ namespace
             table.Threshold2         = &Image_Function::Threshold;
             table.Transpose          = &Image_Function::Transpose;
 
-            ImageTypeManager::instance().setFunctionTable( penguinV::Image().type(), table );
+            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table );
         }
     };
 
     const FunctionRegistrator functionRegistrator;
 
-    void Dilate( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
+    void Dilate( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );

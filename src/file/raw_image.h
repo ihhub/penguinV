@@ -6,7 +6,7 @@
 namespace Raw_Operation
 {
     template <typename _Type>
-    penguinV::ImageTemplate<_Type> Load( const std::string & path, uint32_t width, uint32_t height, uint8_t colorCount )
+    PenguinV_Image::ImageTemplate<_Type> Load( const std::string & path, uint32_t width, uint32_t height, uint8_t colorCount )
     {
         if ( path.empty() || width == 0 || height == 0 || colorCount == 0 )
             throw imageException( "Incorrect parameters for raw image loading" );
@@ -15,7 +15,7 @@ namespace Raw_Operation
         file.open( path, std::fstream::in | std::fstream::binary );
 
         if ( !file )
-            return penguinV::ImageTemplate<_Type>();
+            return PenguinV_Image::ImageTemplate<_Type>();
 
         file.seekg( 0, file.end );
         std::streamoff length = file.tellg();
@@ -23,11 +23,11 @@ namespace Raw_Operation
         const uint32_t overallImageSize = width * height * colorCount * static_cast<uint32_t>( sizeof( _Type ) );
 
         if ( length != overallImageSize )
-            return penguinV::ImageTemplate<_Type>();
+            return PenguinV_Image::ImageTemplate<_Type>();
 
         file.seekg( 0, file.beg );
 
-        penguinV::ImageTemplate<_Type> image( width, height, colorCount );
+        PenguinV_Image::ImageTemplate<_Type> image( width, height, colorCount );
 
         size_t dataToRead = overallImageSize;
         size_t dataReaded = 0;
@@ -47,7 +47,7 @@ namespace Raw_Operation
     }
 
     template <typename _Type>
-    void Save( const std::string & path, const penguinV::ImageTemplate<_Type> & image )
+    void Save( const std::string & path, const PenguinV_Image::ImageTemplate<_Type> & image )
     {
         Image_Function::ParameterValidation( image );
 
@@ -79,7 +79,7 @@ namespace Raw_Operation
     }
 
     template <typename _Type>
-    void LittleEndianToBigEndian( penguinV::ImageTemplate<_Type> & image )
+    void LittleEndianToBigEndian( PenguinV_Image::ImageTemplate<_Type> & image )
     {
         Image_Function::ParameterValidation( image );
         if ( sizeof( _Type ) < 2 )

@@ -7,7 +7,7 @@
 
 namespace
 {
-    const penguinV::ImageCuda reference;
+    const PenguinV_Image::ImageCuda reference;
 }
 
 namespace image_function_cuda
@@ -18,9 +18,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::AbsoluteDifference( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::AbsoluteDifference( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
                 !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : intensity[1] - intensity[0] ) )
@@ -34,7 +34,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -49,9 +49,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::BitwiseAnd( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::BitwiseAnd( input[0], input[1] );
 
             if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] & intensity[1] ) )
                 return false;
@@ -64,7 +64,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -79,9 +79,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::BitwiseOr( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::BitwiseOr( input[0], input[1] );
 
             if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] | intensity[1] ) )
                 return false;
@@ -94,7 +94,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::BitwiseOr( image[0], image[1], image[2] );
 
@@ -109,9 +109,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::BitwiseXor( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::BitwiseXor( input[0], input[1] );
 
             if( !equalSize( input[0], output ) || !Cuda::verifyImage( output, intensity[0] ^ intensity[1] ) )
                 return false;
@@ -124,7 +124,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::BitwiseXor( image[0], image[1], image[2] );
 
@@ -139,9 +139,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
-            const penguinV::Image input = uniformRGBImage( intensity[0], reference );
+            const PenguinV_Image::Image input = uniformRGBImage( intensity[0], reference );
 
-            const penguinV::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
+            const PenguinV_Image::Image output = Image_Function_Cuda::ConvertToGrayScale( input );
 
             if( !Cuda::verifyImage( output, intensity[0] ) )
                 return false;
@@ -154,8 +154,8 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = uniformRGBImage( intensity[0], reference );
-            penguinV::ImageCuda output( input.width(), input.height() );
+            const PenguinV_Image::Image input = uniformRGBImage( intensity[0], reference );
+            PenguinV_Image::ImageCuda output( input.width(), input.height() );
 
             output.fill( intensity[1] );
 
@@ -172,9 +172,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 1 );
-            const penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::ConvertToRgb( input );
+            const PenguinV_Image::Image output = Image_Function_Cuda::ConvertToRgb( input );
 
             if( !Cuda::verifyImage( output, intensity[0] ) )
                 return false;
@@ -187,8 +187,8 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
-            penguinV::ImageCuda output( input.width(), input.height(), penguinV::RGB );
+            const PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
+            PenguinV_Image::ImageCuda output( input.width(), input.height(), PenguinV_Image::RGB );
 
             output.fill( intensity[1] );
 
@@ -205,7 +205,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
+            PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
             const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -221,7 +221,7 @@ namespace image_function_cuda
                     Image_Function_Cuda::Fill(input, 0, 0, input.width() / 2, input.height(), intensity[1]);
             }
 
-            const penguinV::Image output = Image_Function_Cuda::Flip( input, horizontalFlip, verticalFlip );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, horizontalFlip, verticalFlip );
 
             if ( !equalSize( output, input.width(), input.height() ))
                 return false;
@@ -247,7 +247,7 @@ namespace image_function_cuda
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
             const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -286,7 +286,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
+            PenguinV_Image::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -305,7 +305,7 @@ namespace image_function_cuda
                     Image_Function_Cuda::Fill(input, roiX, roiY, roiWidth / 2, roiHeight, intensity[1]);
             }
 
-            const penguinV::Image output = Image_Function_Cuda::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Flip( input, roiX, roiY, roiWidth, roiHeight, horizontalFlip, verticalFlip );
 
             if ( !equalSize( output, roiWidth, roiHeight ) )
                 return false;
@@ -331,7 +331,7 @@ namespace image_function_cuda
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
             const uint8_t intensityFill = intensityValue();
-            std::vector < penguinV::Image > image = { uniformImage( intensity[0], 0, 0, reference ), uniformImage( intensity[1], 0, 0, reference ) };
+            std::vector < PenguinV_Image::Image > image = { uniformImage( intensity[0], 0, 0, reference ), uniformImage( intensity[1], 0, 0, reference ) };
 
             std::vector < uint32_t > roiX, roiY;
             uint32_t roiWidth, roiHeight;
@@ -374,12 +374,12 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
 
-            const penguinV::Image output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
+            const PenguinV_Image::Image output = Image_Function_Cuda::GammaCorrection( input, a, gamma );
 
             const double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
             const uint8_t corrected = ( value < 256 ) ? static_cast<uint8_t>(value) : 255u;
@@ -395,7 +395,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -416,7 +416,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image image = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image image = uniformImage( intensity, 0, 0, reference );
 
             const std::vector < uint32_t > histogram = Image_Function_Cuda::Histogram( image );
 
@@ -432,7 +432,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image image = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image image = uniformImage( intensity, 0, 0, reference );
 
             std::vector < uint32_t > histogram;
             Image_Function_Cuda::Histogram( image, histogram );
@@ -449,9 +449,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::Invert( input );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Invert( input );
 
             if( !equalSize( input, output ) || !Cuda::verifyImage( output, ~intensity ) )
                 return false;
@@ -464,7 +464,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             Image_Function_Cuda::Invert( input[0], input[1] );
 
@@ -479,14 +479,14 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+            const PenguinV_Image::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
 
             std::vector < uint8_t > lookupTable( 256, 0 );
 
             lookupTable[intensity[0]] = intensityValue();
             lookupTable[intensity[1]] = intensityValue();
 
-            const penguinV::Image output = Image_Function_Cuda::LookupTable( input, lookupTable );
+            const PenguinV_Image::Image output = Image_Function_Cuda::LookupTable( input, lookupTable );
 
             std::vector < uint8_t > normalized( 2 );
 
@@ -504,8 +504,8 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const penguinV::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
-            penguinV::ImageCuda output( input.width(), input.height() );
+            const PenguinV_Image::Image input = Image_Function_Cuda::ConvertToCuda(randomImage( intensity ));
+            PenguinV_Image::ImageCuda output( input.width(), input.height() );
 
             output.fill( intensityValue() );
 
@@ -532,9 +532,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::Maximum( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Maximum( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
                 !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
@@ -548,7 +548,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::Maximum( image[0], image[1], image[2] );
 
@@ -563,9 +563,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::Minimum( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Minimum( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
                 !Cuda::verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
@@ -579,7 +579,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::Minimum( image[0], image[1], image[2] );
 
@@ -594,7 +594,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
@@ -612,7 +612,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const bool horizontal = ( randomValue<uint32_t>(2) == 0 );
 
@@ -631,7 +631,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -652,7 +652,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             uint32_t roiX, roiY, roiWidth, roiHeight;
             generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -674,7 +674,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector<uint8_t> intensity = intensityArray( 2 );
-            penguinV::Image image = uniformImage( intensity[0], 0, 0, reference );
+            PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
 
             const uint32_t x = randomValue<uint32_t>( 0, image.width() );
             const uint32_t y = randomValue<uint32_t>( 0, image.height() );
@@ -692,7 +692,7 @@ namespace image_function_cuda
     {
         for ( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector<uint8_t> intensity = intensityArray( 2 );
-            penguinV::Image image = uniformImage( intensity[0], 0, 0, reference );
+            PenguinV_Image::Image image = uniformImage( intensity[0], 0, 0, reference );
             std::vector<uint32_t> X( randomValue<uint32_t>( 1, 100 ) );
             std::vector<uint32_t> Y( X.size() );
 
@@ -716,9 +716,9 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
-            const penguinV::Image output = Image_Function_Cuda::Subtract( input[0], input[1] );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Subtract( input[0], input[1] );
 
             if( !equalSize( input[0], output ) ||
                 !Cuda::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] - intensity[1] : 0 ) )
@@ -732,7 +732,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > image = uniformImages( intensity, reference );
 
             Image_Function_Cuda::Subtract( image[0], image[1], image[2] );
 
@@ -747,7 +747,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -764,7 +764,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -781,12 +781,12 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
-            const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
+            const PenguinV_Image::Image input = uniformImage( intensity, 0, 0, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
 
-            const penguinV::Image output = Image_Function_Cuda::Threshold( input, minThreshold, maxThreshold );
+            const PenguinV_Image::Image output = Image_Function_Cuda::Threshold( input, minThreshold, maxThreshold );
 
             if( !Cuda::verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
                 return false;
@@ -799,7 +799,7 @@ namespace image_function_cuda
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector < PenguinV_Image::Image > input = uniformImages( intensity, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );

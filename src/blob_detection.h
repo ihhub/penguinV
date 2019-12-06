@@ -185,9 +185,9 @@ namespace Blob_Detection
         // Sorting blobs will be in alphabet order of sorting criteria
         // Example: length and width criteria enabled. So first all blobs would be removed if they are not fitting length criterion
         // and then all remain blobs would be removed if they are not fitting for width criterion
-        const std::vector < BlobInfo > & find( const penguinV::Image & image, BlobParameters parameter = BlobParameters(),
+        const std::vector < BlobInfo > & find( const PenguinV_Image::Image & image, BlobParameters parameter = BlobParameters(),
                                                uint8_t threshold = 1 );
-        const std::vector < BlobInfo > & find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+        const std::vector < BlobInfo > & find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                                BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
 
         // Retrieve an array of all found blobs

@@ -6,7 +6,7 @@
 #include "../../../src/cuda/image_buffer_cuda_pinned.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
 
-void measureTiming( penguinV::Image & in, penguinV::Image & out, const std::string & type, bool hostToDevice )
+void measureTiming( PenguinV_Image::Image & in, PenguinV_Image::Image & out, const std::string & type, bool hostToDevice )
 {
     cudaEvent_t start, stop;
 
@@ -47,16 +47,16 @@ int main()
         const uint32_t height = 2048;
 
         // We allocate image using normal CPU RAM allocation (no magic inside)
-        penguinV::Image in1( width, height );
+        PenguinV_Image::Image in1( width, height );
 
         // Then we allocate image using CUDA pinned memory...
-        penguinV::ImageCudaPinned in2( width, height );
+        PenguinV_Image::ImageCudaPinned in2( width, height );
 
         // Do you see the diffrence in programming syntax? No difference :)
         // And you can use this image in normal image operations as well
 
         // Now we allocate image on CUDA device
-        penguinV::ImageCuda out( width, height );
+        PenguinV_Image::ImageCuda out( width, height );
 
         // First we will measure speed to copy image from CPU RAM to CUDA device memory
         // To avoid caching on CPU and give an advantage for normal CPU allocation

@@ -7,15 +7,15 @@
 
 namespace file_operation
 {
-    typedef penguinV::Image (*ImageLoad)( const std::string & path );
-    typedef void (*ImageSave)( const std::string & path, const penguinV::Image & image );
+    typedef PenguinV_Image::Image (*ImageLoad)( const std::string & path );
+    typedef void (*ImageSave)( const std::string & path, const PenguinV_Image::Image & image );
 
     bool WhiteGrayScaleImage( const std::string & filename, ImageLoad loadImage, ImageSave saveImage )
     {
-        const penguinV::Image original = Unit_Test::whiteImage();
+        const PenguinV_Image::Image original = Unit_Test::whiteImage();
         saveImage( filename, original );
 
-        const penguinV::Image loaded = loadImage( filename );
+        const PenguinV_Image::Image loaded = loadImage( filename );
         remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
@@ -27,10 +27,10 @@ namespace file_operation
 
     bool BlackGrayScaleImage( const std::string & filename, ImageLoad loadImage, ImageSave saveImage )
     {
-        const penguinV::Image original = Unit_Test::blackImage();
+        const PenguinV_Image::Image original = Unit_Test::blackImage();
         saveImage( filename, original );
 
-        const penguinV::Image loaded = loadImage( filename );
+        const PenguinV_Image::Image loaded = loadImage( filename );
         remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
@@ -42,10 +42,10 @@ namespace file_operation
 
     bool RandomRGBImage( const std::string & filename, ImageLoad loadImage, ImageSave saveImage )
     {
-        const penguinV::Image original = Unit_Test::randomRGBImage();
+        const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         saveImage( filename, original );
 
-        const penguinV::Image loaded = loadImage( filename );
+        const PenguinV_Image::Image loaded = loadImage( filename );
         remove( filename.data() );
 
         if ( original.height() != loaded.height() || original.width() != loaded.width() ||
@@ -70,9 +70,9 @@ namespace file_operation
     bool RawRGBImage()
     {
         const std::string fileName = "raw.raw";
-        const penguinV::Image original = Unit_Test::randomRGBImage();
+        const PenguinV_Image::Image original = Unit_Test::randomRGBImage();
         Raw_Operation::Save( fileName, original );
-        const penguinV::Image loaded = Raw_Operation::Load<uint8_t>( fileName, original.width(), original.height(), original.colorCount() );
+        const PenguinV_Image::Image loaded = Raw_Operation::Load<uint8_t>( fileName, original.width(), original.height(), original.colorCount() );
         remove( fileName.data() );
 
         if ( !Unit_Test::equalSize( original, loaded ) || !Unit_Test::equalData( original, loaded ) )

@@ -8,8 +8,8 @@
 #include "../../src/blob_detection.h"
 #include "../../src/parameter_validation.h"
 
-void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green,
-                   const penguinV::Image & blue, penguinV::Image & out, double coeff );
+void ExtractGreen( const PenguinV_Image::Image & red, const PenguinV_Image::Image & green,
+                   const PenguinV_Image::Image & blue, PenguinV_Image::Image & out, double coeff );
 
 int main( int argc, char **argv )
 {
@@ -52,15 +52,15 @@ int main( int argc, char **argv )
         std::cout << "Original image saved at original.ppm" << std::endl;
 
         // Create a colour image and assign received data from camera to it
-        penguinV::Image rgbImage;
+        PenguinV_Image::Image rgbImage;
         rgbImage.assign( data, camera.getWidth(), camera.getHeight(), 3u, 1u ); // here we give a control of allocated memory into ColorImage class
 
         // Correct image because representation inside image is wrong (at least for my camera :) )
         rgbImage = Image_Function::RgbToBgr( rgbImage );
 
         // Allocate 3 gray-scale images
-        std::vector <penguinV::Image> image( 3 );
-        for( std::vector <penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
+        std::vector <PenguinV_Image::Image> image( 3 );
+        for( std::vector <PenguinV_Image::Image>::iterator im = image.begin(); im != image.end(); ++im )
             im->resize( rgbImage.width(), rgbImage.height() );
 
         // Split coloured image into separate channels
@@ -69,7 +69,7 @@ int main( int argc, char **argv )
         // Extract all regions with green colour
         // Coefficient 1.05 means that pixel intensity in green channel must be at least by 5% higher than
         // pixel intenstities in red and blue channels at the same pixel position
-        penguinV::Image out( rgbImage.width(), rgbImage.height() );
+        PenguinV_Image::Image out( rgbImage.width(), rgbImage.height() );
         ExtractGreen( image[0], image[1], image[2], out, 1.05 );
 
         // Find the biggest blob and create a mask for it if the blob exists
@@ -111,8 +111,8 @@ int main( int argc, char **argv )
     return 0;
 }
 
-void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green,
-                   const penguinV::Image & blue, penguinV::Image & out, double coeff )
+void ExtractGreen( const PenguinV_Image::Image & red, const PenguinV_Image::Image & green,
+                   const PenguinV_Image::Image & blue, PenguinV_Image::Image & out, double coeff )
 {
     Image_Function::ParameterValidation( red, green, blue );
     Image_Function::ParameterValidation( out, red );

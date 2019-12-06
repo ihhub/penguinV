@@ -4,19 +4,19 @@
 
 namespace
 {
-    typedef void ( *filterFunction )( const penguinV::Image & input, penguinV::Image & output );
+    typedef void ( *filterFunction )( const PenguinV_Image::Image & input, PenguinV_Image::Image & output );
 
-    void MedianFilter3x3( const penguinV::Image & input, penguinV::Image & output )
+    void MedianFilter3x3( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
     {
         Image_Function::Median( input, output, 3 );
     }
 
-    void PrewittFilter( const penguinV::Image & input, penguinV::Image & output )
+    void PrewittFilter( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
     {
         Image_Function::Prewitt( input, output );
     }
 
-    void SobelFilter( const penguinV::Image & input, penguinV::Image & output )
+    void SobelFilter( const PenguinV_Image::Image & input, PenguinV_Image::Image & output )
     {
         Image_Function::Sobel( input, output );
     }
@@ -25,8 +25,8 @@ namespace
     {
         Performance_Test::TimerContainer timer;
 
-        penguinV::Image input = Performance_Test::uniformImage( Performance_Test::randomValue<uint8_t>( 1, 256 ), size, size );
-        penguinV::Image output( input.width(), input.height() );
+        PenguinV_Image::Image input = Performance_Test::uniformImage( Performance_Test::randomValue<uint8_t>( 1, 256 ), size, size );
+        PenguinV_Image::Image output( input.width(), input.height() );
 
         for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {
             timer.start();

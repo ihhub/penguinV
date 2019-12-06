@@ -56,10 +56,10 @@ class EdgeDetectionBase;
 class EdgeDetectionHelper
 {
 public:
-    static void find( EdgeDetectionBase<double> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    static void find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const EdgeParameter & edgeParameter );
 
-    static void find( EdgeDetectionBase<float> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    static void find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const EdgeParameter & edgeParameter );
 };
 
@@ -67,12 +67,12 @@ template <typename _Type>
 class EdgeDetectionBase
 {
 public:
-    void find( const penguinV::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
+    void find( const PenguinV_Image::Image & image, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
         find( image, 0, 0, image.width(), image.height(), edgeParameter );
     }
 
-    void find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
+    void find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter = EdgeParameter() )
     {
         positiveEdgePoint.clear();
         negativeEdgePoint.clear();
