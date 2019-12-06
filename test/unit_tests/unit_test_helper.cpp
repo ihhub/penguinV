@@ -229,7 +229,7 @@ namespace Unit_Test
         }
     }
 
-    void generateRoi( const std::vector < penguinV::Image > & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
+    void generateRoi( const std::vector<penguinV::Image> & image, std::vector < uint32_t > & x, std::vector < uint32_t > & y,
                       uint32_t & width, uint32_t & height )
     {
         std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );

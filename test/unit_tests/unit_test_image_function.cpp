@@ -82,7 +82,7 @@ namespace Function_Template
     bool form1_AbsoluteDifference(AbsoluteDifferenceForm1 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = AbsoluteDifference( input[0], input[1] );
 
@@ -93,7 +93,7 @@ namespace Function_Template
     bool form2_AbsoluteDifference(AbsoluteDifferenceForm2 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -103,7 +103,7 @@ namespace Function_Template
     bool form3_AbsoluteDifference(AbsoluteDifferenceForm3 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        const std::vector<penguinV::Image> input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -118,7 +118,7 @@ namespace Function_Template
     bool form4_AbsoluteDifference(AbsoluteDifferenceForm4 AbsoluteDifference)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -133,11 +133,11 @@ namespace Function_Template
     bool form1_Accumulate(AccumulateForm1 Accumulate)
     {
         const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         std::vector < uint32_t > result( input[0].width() * input[0].height(), 0 );
 
-        for( std::vector < penguinV::Image >::const_iterator image = input.begin(); image != input.end(); ++image ) {
+        for( std::vector<penguinV::Image>::const_iterator image = input.begin(); image != input.end(); ++image ) {
             Accumulate( *image, result );
         }
 
@@ -149,7 +149,7 @@ namespace Function_Template
     bool form2_Accumulate(AccumulateForm2 Accumulate)
     {
         const std::vector < uint8_t > intensity = intensityArray( randomValue<uint8_t>( 1, 16 ) );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
@@ -246,7 +246,7 @@ namespace Function_Template
     bool form1_BitwiseAnd(BitwiseAndForm1 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = BitwiseAnd( input[0], input[1] );
 
@@ -256,7 +256,7 @@ namespace Function_Template
     bool form2_BitwiseAnd(BitwiseAndForm2 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         BitwiseAnd( image[0], image[1], image[2] );
 
@@ -266,7 +266,7 @@ namespace Function_Template
     bool form3_BitwiseAnd(BitwiseAndForm3 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        const std::vector<penguinV::Image> input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -280,7 +280,7 @@ namespace Function_Template
     bool form4_BitwiseAnd(BitwiseAndForm4 BitwiseAnd)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -294,7 +294,7 @@ namespace Function_Template
     bool form1_BitwiseOr(BitwiseOrForm1 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = BitwiseOr( input[0], input[1] );
 
@@ -304,7 +304,7 @@ namespace Function_Template
     bool form2_BitwiseOr(BitwiseOrForm2 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         BitwiseOr( image[0], image[1], image[2] );
 
@@ -314,7 +314,7 @@ namespace Function_Template
     bool form3_BitwiseOr(BitwiseOrForm3 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        const std::vector<penguinV::Image> input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -328,7 +328,7 @@ namespace Function_Template
     bool form4_BitwiseOr(BitwiseOrForm4 BitwiseOr)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -342,7 +342,7 @@ namespace Function_Template
     bool form1_BitwiseXor(BitwiseXorForm1 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = BitwiseXor( input[0], input[1] );
 
@@ -352,7 +352,7 @@ namespace Function_Template
     bool form2_BitwiseXor(BitwiseXorForm2 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         BitwiseXor( image[0], image[1], image[2] );
 
@@ -362,7 +362,7 @@ namespace Function_Template
     bool form3_BitwiseXor(BitwiseXorForm3 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        const std::vector<penguinV::Image> input = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -376,7 +376,7 @@ namespace Function_Template
     bool form4_BitwiseXor(BitwiseXorForm4 BitwiseXor)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ), uniformImage( intensity[2] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -616,7 +616,7 @@ namespace Function_Template
     bool form1_Copy(CopyForm1 Copy)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         Copy( input[0], input[1] );
 
@@ -639,7 +639,7 @@ namespace Function_Template
     bool form3_Copy(CopyForm3 Copy)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -783,7 +783,7 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const uint8_t intensityFill = intensityValue();
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const bool horizontalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
         const bool verticalFlip = (randomValue<uint32_t>( 0, 2 ) == 0);
@@ -865,7 +865,7 @@ namespace Function_Template
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const uint8_t intensityFill = intensityValue();
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -923,7 +923,7 @@ namespace Function_Template
     bool form2_GammaCorrection(GammaCorrectionForm2 GammaCorrection)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const double a     = randomValue <uint32_t>( 100 ) / 100.0;
         const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -958,7 +958,7 @@ namespace Function_Template
     bool form4_GammaCorrection(GammaCorrectionForm4 GammaCorrection)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1080,7 +1080,7 @@ namespace Function_Template
     bool form7_Histogram(HistogramForm7 Histogram)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1101,7 +1101,7 @@ namespace Function_Template
     bool form8_Histogram(HistogramForm8 Histogram)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1133,7 +1133,7 @@ namespace Function_Template
     bool form2_Invert(InvertForm2 Invert)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         Invert( input[0], input[1] );
 
@@ -1156,7 +1156,7 @@ namespace Function_Template
     bool form4_Invert(InvertForm4 Invert)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1192,7 +1192,7 @@ namespace Function_Template
     bool form1_IsEqual(IsEqualForm1 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         return (intensity[0] == intensity[1]) == (IsEqual( input[0], input[1] ));
     }
@@ -1200,7 +1200,7 @@ namespace Function_Template
     bool form2_IsEqual(IsEqualForm2 IsEqual)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -1314,7 +1314,7 @@ namespace Function_Template
     bool form1_Maximum(MaximumForm1 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = Maximum( input[0], input[1] );
 
@@ -1325,7 +1325,7 @@ namespace Function_Template
     bool form2_Maximum(MaximumForm2 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         Maximum( image[0], image[1], image[2] );
 
@@ -1335,7 +1335,7 @@ namespace Function_Template
     bool form3_Maximum(MaximumForm3 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
@@ -1353,7 +1353,7 @@ namespace Function_Template
     bool form4_Maximum(MaximumForm4 Maximum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { image.push_back( uniformImage( value ) ); } );
@@ -1371,7 +1371,7 @@ namespace Function_Template
     bool form1_Merge(MergeForm1 Merge)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = Merge( input[0], input[1], input[2] );
 
@@ -1381,7 +1381,7 @@ namespace Function_Template
     bool form2_Merge(MergeForm2 Merge)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
         penguinV::Image output( input[0].width(), input[0].height(), penguinV::RGB ); 
 
         Merge( input[0], input[1], input[2], output );
@@ -1392,7 +1392,7 @@ namespace Function_Template
     bool form3_Merge(MergeForm3 Merge)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
 
@@ -1413,7 +1413,7 @@ namespace Function_Template
     bool form4_Merge(MergeForm4 Merge)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
 
@@ -1437,7 +1437,7 @@ namespace Function_Template
     bool form1_Minimum(MinimumForm1 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = Minimum( input[0], input[1] );
 
@@ -1448,7 +1448,7 @@ namespace Function_Template
     bool form2_Minimum(MinimumForm2 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         Minimum( image[0], image[1], image[2] );
 
@@ -1458,7 +1458,7 @@ namespace Function_Template
     bool form3_Minimum(MinimumForm3 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
@@ -1476,7 +1476,7 @@ namespace Function_Template
     bool form4_Minimum(MinimumForm4 Minimum)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { image.push_back( uniformImage( value ) ); } );
@@ -1809,7 +1809,7 @@ namespace Function_Template
 
     bool form4_RgbToBgr(RgbToBgrForm4 RgbToBgr)
     {
-        std::vector < penguinV::Image > image = { uniformRGBImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
+        std::vector<penguinV::Image> image = { uniformRGBImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         std::vector < uint32_t > roiX, roiY;
@@ -1875,7 +1875,7 @@ namespace Function_Template
 
     bool form4_RgbToRgba(RgbToRgbaForm4 RgbToRgba)
     {
-        std::vector < penguinV::Image > image = { uniformRGBImage( intensityValue() ), uniformRGBAImage( intensityValue() ) };
+        std::vector<penguinV::Image> image = { uniformRGBImage( intensityValue() ), uniformRGBAImage( intensityValue() ) };
         std::vector< uint8_t > intensity = intensityArray( 3 );
 
         std::vector < uint32_t > roiX, roiY;
@@ -1941,7 +1941,7 @@ namespace Function_Template
 
     bool form4_RgbaToRgb(RgbaToRgbForm4 RgbaToRgb)
     {
-        std::vector < penguinV::Image > image = { uniformRGBAImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
+        std::vector<penguinV::Image> image = { uniformRGBAImage( intensityValue() ), uniformRGBImage( intensityValue() ) };
         std::vector< uint8_t > intensity = intensityArray( 4 );
 
         std::vector < uint32_t > roiX, roiY;
@@ -2007,7 +2007,7 @@ namespace Function_Template
     bool form2_Shift(ShiftForm2 Shift)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const double shiftX = randomFloatValue<double>( -static_cast<double>( input[0].width()  / 4 ), input[0].width() / 4 , 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
         const double shiftY = randomFloatValue<double>( -static_cast<double>( input[0].height() / 4 ), input[0].height() / 4, 1 ) + randomFloatValue<double>( 0, 1, 0.01 );
@@ -2038,7 +2038,7 @@ namespace Function_Template
     bool form4_Shift(ShiftForm4 Shift)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -2060,7 +2060,7 @@ namespace Function_Template
         penguinV::Image input = uniformRGBImage( intensity[0] );
         fillImage( input, 0, 0, input.width(), input.height(), intensity );
 
-        std::vector < penguinV::Image > output = uniformImages( 3, input.width(), input.height() );
+        std::vector<penguinV::Image> output = uniformImages( 3, input.width(), input.height() );
         Split( input, output[0], output[1], output[2] );
 
         return verifyImage( output[0], intensity[0] ) && verifyImage( output[1], intensity[1] ) && verifyImage( output[2], intensity[2] );
@@ -2073,7 +2073,7 @@ namespace Function_Template
         fillImage( input, 0, 0, input.width(), input.height(), inputIntensity );
 
         const std::vector < uint8_t > outputIntensity = intensityArray( 3 );
-        std::vector < penguinV::Image > output;
+        std::vector<penguinV::Image> output;
 
         std::for_each( outputIntensity.begin(), outputIntensity.end(), [&]( uint8_t value )
         { output.push_back( uniformImage( value ) ); } );
@@ -2099,7 +2099,7 @@ namespace Function_Template
     bool form1_Subtract(SubtractForm1 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        const std::vector < penguinV::Image > input = uniformImages( intensity );
+        const std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const penguinV::Image output = Subtract( input[0], input[1] );
 
@@ -2110,7 +2110,7 @@ namespace Function_Template
     bool form2_Subtract(SubtractForm2 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
 
         Subtract( image[0], image[1], image[2] );
 
@@ -2120,7 +2120,7 @@ namespace Function_Template
     bool form3_Subtract(SubtractForm3 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input;
+        std::vector<penguinV::Image> input;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { input.push_back( uniformImage( value ) ); } );
@@ -2138,7 +2138,7 @@ namespace Function_Template
     bool form4_Subtract(SubtractForm4 Subtract)
     {
         const std::vector < uint8_t > intensity = intensityArray( 3 );
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { image.push_back( uniformImage( value ) ); } );
@@ -2187,7 +2187,7 @@ namespace Function_Template
     bool form2_Threshold(ThresholdForm2 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -2214,7 +2214,7 @@ namespace Function_Template
     bool form4_Threshold(ThresholdForm4 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { image.push_back( uniformImage( value ) ); } );
@@ -2246,7 +2246,7 @@ namespace Function_Template
     bool form6_Threshold(ThresholdDoubleForm2 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > input = uniformImages( intensity );
+        std::vector<penguinV::Image> input = uniformImages( intensity );
 
         const uint8_t minThreshold = randomValue <uint8_t>( 255 );
         const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
@@ -2276,7 +2276,7 @@ namespace Function_Template
     bool form8_Threshold(ThresholdDoubleForm4 Threshold)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         std::for_each( intensity.begin(), intensity.end(), [&]( uint8_t value )
         { image.push_back( uniformImage( value ) ); } );
@@ -2367,7 +2367,7 @@ namespace Function_Template
     bool form2_Prewitt(PrewittForm2 Prewitt)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
         if ( (image[0].width() < 3) || (image[0].height() < 3) )
             return true;
 
@@ -2393,7 +2393,7 @@ namespace Function_Template
     bool form4_Prewitt(PrewittForm4 Prewitt)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;
@@ -2420,7 +2420,7 @@ namespace Function_Template
     bool form2_Sobel(SobelForm2 Sobel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = uniformImages( intensity );
+        std::vector<penguinV::Image> image = uniformImages( intensity );
         if ( (image[0].width() < 3) || (image[0].height() < 3) )
             return true;
 
@@ -2446,7 +2446,7 @@ namespace Function_Template
     bool form4_Sobel(SobelForm4 Sobel)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
-        std::vector < penguinV::Image > image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
+        std::vector<penguinV::Image> image = { uniformImage( intensity[0] ), uniformImage( intensity[1] ) };
 
         std::vector < uint32_t > roiX, roiY;
         uint32_t roiWidth, roiHeight;

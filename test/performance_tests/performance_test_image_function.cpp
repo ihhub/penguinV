@@ -84,7 +84,7 @@ namespace Function_Template
 
     std::pair < double, double > template_AbsoluteDifference( AbsoluteDifferenceForm2 AbsoluteDifference, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( AbsoluteDifference( image[0], image[1], image[2] ), namespaceName )
     }
@@ -99,21 +99,21 @@ namespace Function_Template
 
     std::pair < double, double > template_BitwiseAnd( BitwiseAndForm2 BitwiseAnd, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( BitwiseAnd( image[0], image[1], image[2] ), namespaceName )
     }
 
     std::pair < double, double > template_BitwiseOr( BitwiseOrForm2 BitwiseOr, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( BitwiseOr( image[0], image[1], image[2] ), namespaceName )
     }
 
     std::pair < double, double > template_BitwiseXor( BitwiseXorForm2 BitwiseXor, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( BitwiseXor( image[0], image[1], image[2] ), namespaceName )
     }
@@ -144,14 +144,14 @@ namespace Function_Template
 
     std::pair < double, double > template_Flip( FlipForm2 Flip, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
 
         TEST_FUNCTION_LOOP( Flip( image[0], image[1], true, true), namespaceName )
     }
 
     std::pair < double, double > template_GammaCorrection( GammaCorrectionForm2 GammaCorrection, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
         double a     = Performance_Test::randomValue <uint32_t>( 100 ) / 100.0;
         double gamma = Performance_Test::randomValue <uint32_t>( 300 ) / 100.0;
 
@@ -168,14 +168,14 @@ namespace Function_Template
 
     std::pair < double, double > template_Invert( InvertForm2 Invert, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
 
         TEST_FUNCTION_LOOP( Invert( image[0], image[1] ), namespaceName )
     }
 
     std::pair < double, double > template_LookupTable( LookupTableForm2 LookupTable, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
         std::vector<uint8_t> table(256, 0);
 
         TEST_FUNCTION_LOOP( LookupTable( image[0], image[1], table ), namespaceName )
@@ -183,14 +183,14 @@ namespace Function_Template
 
     std::pair < double, double > template_Maximum( MaximumForm2 Maximum, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( Maximum( image[0], image[1], image[2] ), namespaceName )
     }
 
     std::pair < double, double > template_Minimum( MinimumForm2 Minimum, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( Minimum( image[0], image[1], image[2] ), namespaceName )
     }
@@ -205,7 +205,7 @@ namespace Function_Template
 
     std::pair < double, double > template_RgbToBgr( RgbToBgrForm2 RgbToBgr, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformRGBImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformRGBImages( 2, size, size );
 
         TEST_FUNCTION_LOOP( RgbToBgr( image[0], image[1] ), namespaceName )
     }
@@ -228,7 +228,7 @@ namespace Function_Template
 
     std::pair < double, double > template_Subtract( SubtractForm2 Subtract, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 3, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 3, size, size );
 
         TEST_FUNCTION_LOOP( Subtract( image[0], image[1], image[2] ), namespaceName )
     }
@@ -242,7 +242,7 @@ namespace Function_Template
 
     std::pair < double, double > template_Threshold( ThresholdForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
         uint8_t threshold = Performance_Test::randomValue<uint8_t>( 256 );
 
         TEST_FUNCTION_LOOP( Threshold( image[0], image[1], threshold ), namespaceName )
@@ -250,7 +250,7 @@ namespace Function_Template
 
     std::pair < double, double > template_ThresholdDouble( ThresholdDoubleForm2 Threshold, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
         uint8_t minThreshold = Performance_Test::randomValue<uint8_t>( 256 );
         uint8_t maxThreshold = Performance_Test::randomValue<uint8_t>( minThreshold, 256 );
 
@@ -259,7 +259,7 @@ namespace Function_Template
 
     std::pair < double, double > template_Transpose( TransposeForm2 Transpose, const std::string & namespaceName, uint32_t size )
     {
-        std::vector < penguinV::Image > image = Performance_Test::uniformImages( 2, size, size );
+        std::vector<penguinV::Image> image = Performance_Test::uniformImages( 2, size, size );
 
         TEST_FUNCTION_LOOP( Transpose( image[0], image[1] ), namespaceName )
     }

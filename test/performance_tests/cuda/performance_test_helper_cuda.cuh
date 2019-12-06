@@ -28,6 +28,6 @@ namespace Performance_Test
         // Functions to generate images
         penguinV::Image uniformImage( uint32_t width, uint32_t height );
         penguinV::Image uniformImage( uint32_t width, uint32_t height, uint8_t value );
-        std::vector< penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
+        std::vector<penguinV::Image> uniformImages( uint32_t count, uint32_t width, uint32_t height );
     }
 }

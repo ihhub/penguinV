@@ -18,10 +18,10 @@ namespace Test_Helper
     penguinV::Image uniformRGBAImage( uint32_t width, uint32_t height, uint8_t value );
     penguinV::Image uniformRGBAImage( const penguinV::Image & reference = penguinV::Image() );
     penguinV::Image uniformRGBAImage( uint8_t value, const penguinV::Image & reference = penguinV::Image() );
-    std::vector < penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height );
-    std::vector < penguinV::Image > uniformRGBImages( uint32_t count, uint32_t width, uint32_t height );
-    std::vector < penguinV::Image > uniformImages( uint32_t images, const penguinV::Image & reference = penguinV::Image() );
-    std::vector < penguinV::Image > uniformImages( const std::vector < uint8_t > & intensityValue, const penguinV::Image & reference = penguinV::Image() );
+    std::vector<penguinV::Image> uniformImages( uint32_t count, uint32_t width, uint32_t height );
+    std::vector<penguinV::Image> uniformRGBImages( uint32_t count, uint32_t width, uint32_t height );
+    std::vector<penguinV::Image> uniformImages( uint32_t images, const penguinV::Image & reference = penguinV::Image() );
+    std::vector<penguinV::Image> uniformImages( const std::vector < uint8_t > & intensityValue, const penguinV::Image & reference = penguinV::Image() );
     penguinV::Image randomImage( uint32_t width = 0, uint32_t height = 0 );
     penguinV::Image randomRGBImage(const penguinV::Image & reference = penguinV::Image());
     penguinV::Image randomImage( const std::vector <uint8_t> & value );

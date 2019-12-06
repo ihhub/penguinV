@@ -8,7 +8,7 @@ namespace Image_Function
     template <typename TImage>
     uint8_t CommonColorCount( const TImage & image1, const TImage & image2 )
     {
-        if( image1.colorCount() != image2.colorCount() )
+        if ( image1.colorCount() != image2.colorCount() )
             throw imageException( "Color counts of images are different" );
 
         return image1.colorCount();
@@ -17,7 +17,7 @@ namespace Image_Function
     template <typename TImage>
     uint8_t CommonColorCount( const TImage & image1, const TImage & image2, const TImage & image3 )
     {
-        if( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
+        if ( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
             throw imageException( "Color counts of images are different" );
 
         return image1.colorCount();
@@ -32,14 +32,14 @@ namespace Image_Function
     template <typename TImage>
     void VerifyRGBImage( const TImage & image )
     {
-        if( image.colorCount() != penguinV::RGB )
+        if ( image.colorCount() != penguinV::RGB )
             throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
     }
 
     template <typename TImage>
     void VerifyRGBAImage( const TImage & image )
     {
-        if( image.colorCount() != penguinV::RGBA )
+        if ( image.colorCount() != penguinV::RGBA )
             throw imageException( "Bad input parameters in image function: colored image has different than 4 color channels" );
     }
 
@@ -53,7 +53,7 @@ namespace Image_Function
     template <typename TImage>
     void VerifyGrayScaleImage( const TImage & image )
     {
-        if( image.colorCount() != penguinV::GRAY_SCALE )
+        if ( image.colorCount() != penguinV::GRAY_SCALE )
             throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 
@@ -67,7 +67,7 @@ namespace Image_Function
     template <typename TImage>
     void ParameterValidation( const TImage & image1 )
     {
-        if( image1.empty() || !IsCorrectColorCount( image1 ) )
+        if ( image1.empty() || !IsCorrectColorCount( image1 ) )
             throw imageException( "Bad input parameters in image function" );
     }
 
@@ -124,7 +124,7 @@ namespace Image_Function
     template <typename TImage, typename... Args>
     bool IsFullImageRow( uint32_t width, const TImage & image, Args... args )
     {
-        if( !IsFullImageRow( width, image ) )
+        if ( !IsFullImageRow( width, image ) )
             return false;
 
         return IsFullImageRow( width, args... );

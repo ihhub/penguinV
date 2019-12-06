@@ -160,13 +160,13 @@ void example3( const penguinV::Image & imageIn1, const penguinV::Image & imageIn
 {
     // Do Bitwise OR and store result in cropped output image (move operator)
     penguinV::Image croppedOut = Image_Function::BitwiseOr( imageIn1, // first input image
-                                                                10,       // X coordinate of first input image area
-                                                                10,       // Y coordinate of first input image area
-                                                                imageIn2, // second input image
-                                                                650,      // X coordinate of second input image area
-                                                                768,      // Y coordinate of second input image area
-                                                                128,      // width of the area
-                                                                128       // height of the area
+                                                            10,       // X coordinate of first input image area
+                                                            10,       // Y coordinate of first input image area
+                                                            imageIn2, // second input image
+                                                            650,      // X coordinate of second input image area
+                                                            768,      // Y coordinate of second input image area
+                                                            128,      // width of the area
+                                                            128       // height of the area
     );
 
     // Copy the result into output image

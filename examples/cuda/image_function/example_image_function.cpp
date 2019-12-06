@@ -16,7 +16,7 @@ int main( int argc, char * argv[] )
     try // <---- do not forget to put your code into try.. catch block!
     {
         // First thing we should check whether the system contains CUDA device
-        if( !multiCuda::isCudaSupported() ) {
+        if ( !multiCuda::isCudaSupported() ) {
             std::cout << "CUDA device is not found in current system." << std::endl;
             return 0;
         }
@@ -53,11 +53,11 @@ void cpuCode( const std::string & filePath )
     penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
-    if( image.empty() )
+    if ( image.empty() )
         throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if( image.colorCount() != penguinV::GRAY_SCALE )
+    if ( image.colorCount() != penguinV::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
@@ -73,7 +73,7 @@ void gpuCode( const std::string & filePath )
     const penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
-    if( image.empty() )
+    if ( image.empty() )
         throw imageException( std::string("Cannot load ") + filePath );
 
     multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();

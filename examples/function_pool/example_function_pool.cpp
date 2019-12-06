@@ -6,8 +6,8 @@
 #include "../../src/image_function.h"
 #include "../../src/thread_pool.h"
 
-void basic        ( const std::vector < penguinV::Image > & frame );
-void multithreaded( const std::vector < penguinV::Image > & frame );
+void basic        ( const std::vector<penguinV::Image> & frame );
+void multithreaded( const std::vector< penguinV::Image> & frame );
 
 double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
 
@@ -38,9 +38,9 @@ int main()
         // 5. put result on the map
 
         // Create a set of 60 frames
-        std::vector < penguinV::Image > frame( 60, penguinV::Image( 1920, 1080 ) );
+        std::vector<penguinV::Image> frame( 60, penguinV::Image( 1920, 1080 ) );
 
-        for( std::vector < penguinV::Image >::iterator image = frame.begin(); image != frame.end(); ++image ) {
+        for( std::vector<penguinV::Image>::iterator image = frame.begin(); image != frame.end(); ++image ) {
             // Fill background. Let's assume that background varies from 0 to 15 gray scale values
             image->fill( randomValue<uint8_t>(16u) );
 
@@ -96,7 +96,7 @@ double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > sta
     return time.count();
 }
 
-void basic( const std::vector < penguinV::Image > & frame )
+void basic( const std::vector<penguinV::Image> & frame )
 {
     // Prepare image map
     penguinV::Image map( frame.front().width(), frame.front().height() );
@@ -122,7 +122,7 @@ void basic( const std::vector < penguinV::Image > & frame )
     // here we have to save the image map but don't do this in the example
 }
 
-void multithreaded( const std::vector < penguinV::Image > & frame )
+void multithreaded( const std::vector<penguinV::Image> & frame )
 {
     // okay we setup 4 thread in global thread pool
     ThreadPoolMonoid::instance().resize( 4 );

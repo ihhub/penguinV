@@ -18,7 +18,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::AbsoluteDifference( input[0], input[1] );
 
@@ -34,7 +34,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::AbsoluteDifference( image[0], image[1], image[2] );
 
@@ -49,7 +49,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::BitwiseAnd( input[0], input[1] );
 
@@ -64,7 +64,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseAnd( image[0], image[1], image[2] );
 
@@ -79,7 +79,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::BitwiseOr( input[0], input[1] );
 
@@ -94,7 +94,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseOr( image[0], image[1], image[2] );
 
@@ -109,7 +109,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             penguinV::Image output = Image_Function_OpenCL::BitwiseXor( input[0], input[1] );
 
@@ -124,7 +124,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseXor( image[0], image[1], image[2] );
 
@@ -226,7 +226,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const double a     = randomValue <uint32_t>( 100 ) / 100.0;
             const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
@@ -295,7 +295,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Invert( input[0], input[1] );
 
@@ -363,7 +363,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Maximum( input[0], input[1] );
 
@@ -379,7 +379,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Maximum( image[0], image[1], image[2] );
 
@@ -394,7 +394,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Minimum( input[0], input[1] );
 
@@ -410,7 +410,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Minimum( image[0], image[1], image[2] );
 
@@ -425,7 +425,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            const std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Subtract( input[0], input[1] );
 
@@ -441,7 +441,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 3 );
-            std::vector < penguinV::Image > image = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Subtract( image[0], image[1], image[2] );
 
@@ -473,7 +473,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const uint8_t threshold = randomValue <uint8_t>( 255 );
 
@@ -508,7 +508,7 @@ namespace image_function_opencl
     {
         for( uint32_t i = 0; i < runCount(); ++i ) {
             const std::vector < uint8_t > intensity = intensityArray( 2 );
-            std::vector < penguinV::Image > input = uniformImages( intensity, reference );
+            std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const uint8_t minThreshold = randomValue <uint8_t>( 255 );
             const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );

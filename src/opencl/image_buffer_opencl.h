@@ -75,5 +75,5 @@ namespace penguinV
         }
     };
 
-    typedef penguinV::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
+    typedef penguinV::ImageTemplateOpenCL<uint8_t> ImageOpenCL;
 }

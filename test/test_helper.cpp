@@ -98,27 +98,27 @@ namespace Test_Helper
         return generateImage<uint8_t>( randomSize(), randomSize(), penguinV::RGBA, value, reference );
     }
 
-    std::vector< penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector<penguinV::Image> uniformImages( uint32_t count, uint32_t width, uint32_t height )
     {
-        std::vector < penguinV::Image > image( count );
+        std::vector<penguinV::Image> image( count );
 
-        for( std::vector< penguinV::Image >::iterator im = image.begin(); im != image.end(); ++im )
+        for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformImage( width, height );
 
         return image;
     }
 
-    std::vector< penguinV::Image > uniformRGBImages( uint32_t count, uint32_t width, uint32_t height )
+    std::vector<penguinV::Image> uniformRGBImages( uint32_t count, uint32_t width, uint32_t height )
     {
-        std::vector < penguinV::Image > image( count );
+        std::vector<penguinV::Image> image( count );
 
-        for( std::vector< penguinV::Image >::iterator im = image.begin(); im != image.end(); ++im )
+        for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
             *im = uniformRGBImage( width, height );
 
         return image;
     }
     
-    std::vector < penguinV::Image > uniformImages( uint32_t images, const penguinV::Image & reference )
+    std::vector<penguinV::Image> uniformImages( uint32_t images, const penguinV::Image & reference )
     {
         if( images == 0 )
             throw imageException( "Invalid parameter: number of images is 0" );
@@ -130,12 +130,12 @@ namespace Test_Helper
         return uniformImages( intesity, reference );
     }
 
-    std::vector < penguinV::Image > uniformImages( const std::vector<uint8_t> & intensityValue, const penguinV::Image & reference )
+    std::vector<penguinV::Image> uniformImages( const std::vector<uint8_t> & intensityValue, const penguinV::Image & reference )
     {
         if( intensityValue.size() == 0 )
             throw imageException( "Invalid parameter" );
 
-        std::vector < penguinV::Image > image;
+        std::vector<penguinV::Image> image;
 
         image.push_back( uniformImage( intensityValue[0], 0, 0, reference ) );
 

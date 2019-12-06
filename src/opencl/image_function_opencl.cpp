@@ -617,7 +617,7 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if( in.colorCount() == penguinV::GRAY_SCALE ) {
+        if ( in.colorCount() == penguinV::GRAY_SCALE ) {
             Copy( in, out );
             return;
         }
@@ -657,7 +657,7 @@ namespace Image_Function_OpenCL
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
 
-        if( in.colorCount() == penguinV::RGB ) {
+        if ( in.colorCount() == penguinV::RGB ) {
             Copy( in, out );
         }
         else {

@@ -72,11 +72,11 @@ namespace Performance_Test
             return imageOut;
         }
 
-        std::vector< penguinV::Image > uniformImages( uint32_t count, uint32_t width, uint32_t height )
+        std::vector<penguinV::Image> uniformImages( uint32_t count, uint32_t width, uint32_t height )
         {
-            std::vector < penguinV::Image > image( count );
+            std::vector<penguinV::Image> image( count );
 
-            for( std::vector< penguinV::Image >::iterator im = image.begin(); im != image.end(); ++im )
+            for( std::vector<penguinV::Image>::iterator im = image.begin(); im != image.end(); ++im )
                 *im = uniformImage( width, height );
 
             return image;
