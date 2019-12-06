@@ -50,14 +50,14 @@ void cpuCode( const std::string & filePath )
     // Load an image from storage
     // Please take note that the image must be in the same folder as this application or project (for Visual Studio)
     // Otherwise you can change the path where the image stored
-    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+    penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
         throw imageException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
-    if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+    if( image.colorCount() != penguinV::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
@@ -70,7 +70,7 @@ void cpuCode( const std::string & filePath )
 void gpuCode( const std::string & filePath )
 {
     // Load an image from storage
-    const PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+    const penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if( image.empty() )
@@ -85,10 +85,10 @@ void gpuCode( const std::string & filePath )
         multiCuda::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
         // Load an image from storage
-        PenguinV_Image::Image imageGPU = Image_Function_Cuda::ConvertToCuda( image );
+        penguinV::Image imageGPU = Image_Function_Cuda::ConvertToCuda( image );
 
         // Convert to gray-scale image if it's not
-        if ( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if ( imageGPU.colorCount() != penguinV::GRAY_SCALE )
             imageGPU = Image_Function_Cuda::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold

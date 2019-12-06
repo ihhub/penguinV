@@ -9,7 +9,7 @@
 #include "../image_buffer.h"
 #include "opencl_device.h"
 
-namespace PenguinV_Image
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplateOpenCL : public ImageTemplate<TColorDepth>
@@ -75,5 +75,5 @@ namespace PenguinV_Image
         }
     };
 
-    typedef PenguinV_Image::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
+    typedef penguinV::ImageTemplateOpenCL <uint8_t> ImageOpenCL;
 }

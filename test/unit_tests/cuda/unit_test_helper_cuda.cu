@@ -51,12 +51,12 @@ namespace Unit_Test
 {
     namespace Cuda
     {
-        bool verifyImage( const PenguinV_Image::Image & image, uint8_t value )
+        bool verifyImage( const penguinV::Image & image, uint8_t value )
         {
             return verifyImage( image, 0, 0, image.width(), image.height(), value );
         }
 
-        bool verifyImage( const PenguinV_Image::Image & image, const std::vector < uint8_t > & value )
+        bool verifyImage( const penguinV::Image & image, const std::vector < uint8_t > & value )
         {
             multiCuda::Type<uint32_t> differenceCount( 0 );
             multiCuda::Array<uint8_t> valueCuda( value );
@@ -70,7 +70,7 @@ namespace Unit_Test
             return differenceCount.get() == rowSize * height;
         }
 
-        bool verifyImage( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
+        bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
         {
             multiCuda::Type<uint32_t> differenceCount( 0 );
 
