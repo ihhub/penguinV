@@ -1203,8 +1203,8 @@ namespace simd
 
     SIMDType actualSimdType()
     {
-        #ifdef PENGUINV_AVX512BW_SET
-        if ( SimdInfo::isAVX512BWAvailable() && isAvx512Enabled )
+        #ifdef PENGUINV_AVX512_SKL_SET
+        if ( SimdInfo::isAVX512SKLAvailable() && isAvx512Enabled )
             return avx512_function;
         #endif
 

@@ -2592,12 +2592,12 @@ namespace function_pool
     SET_FUNCTION_8_FORMS( Threshold )
 }
 
-#ifdef PENGUINV_AVX512BW_SET
+#ifdef PENGUINV_AVX512_SKL_SET
 namespace avx512
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = SimdInfo::isAVX512BWAvailable();
+    const bool isSupported = SimdInfo::isAVX512SKLAvailable();
     const std::string namespaceName = "image_function_avx512";
 
     SET_FUNCTION_4_FORMS( AbsoluteDifference )

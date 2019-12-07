@@ -32,7 +32,7 @@ struct CpuInformation
         return false;
     }
 
-    static bool isAvx512BWSupported()
+    static bool isAvx512SKLSupported()
     {
         int info[4];
         __cpuidex( info, 0, 0 );

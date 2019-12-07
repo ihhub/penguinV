@@ -37,7 +37,7 @@ struct CpuInformation
         return false;
     }
 
-    static bool isAvx512BWSupported()
+    static bool isAvx512SKLSupported()
     {
 #if !defined(__arm__) && !defined(__aarch64__)
         int info[4];

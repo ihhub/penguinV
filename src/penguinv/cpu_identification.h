@@ -39,7 +39,7 @@
         #endif
 
         #if defined(__AVX512BW__) && defined(__AVX512CD__) && defined(__AVX512DQ__) && defined(__AVX512F__) && defined(__AVX512VL__)
-            #define PENGUINV_AVX512BW_SET
+            #define PENGUINV_AVX512_SKL_SET
         #endif
     #endif
 
@@ -66,7 +66,7 @@
     #endif
 #endif
 
-#ifdef PENGUINV_AVX512BW_SET
+#ifdef PENGUINV_AVX512_SKL_SET
     #ifndef PENGUINV_AVX_SET
         #error "None of existing processors can support AVX512 but not AVX. Please check SIMD instruction set verification code"
     #endif
@@ -111,10 +111,10 @@ struct SimdInfo
 #endif
     }
 
-    static bool isAVX512BWAvailable()
+    static bool isAVX512SKLAvailable()
     {
-#ifdef PENGUINV_AVX512BW_SET
-        static const bool isAvailable = CpuInformation::isAvx512BWSupported();
+#ifdef PENGUINV_AVX512_SKL_SET
+        static const bool isAvailable = CpuInformation::isAvx512SKLSupported();
         return isAvailable;
 #else
         return false;
