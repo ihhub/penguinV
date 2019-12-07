@@ -40,7 +40,7 @@ struct CpuInformation
 
         if ( id >= 0x00000007 ) {
             __cpuidex( info, 0x00000007, 0 );
-            return (info[1] & ((int)1 << 30)) != 0;
+            return (info[1] & (((int)1 << 31) | ((int)1 << 30) | ((int)1 << 28) | ((int)1 << 17) | ((int)1 << 16))) != 0;
         }
 
         return false;
