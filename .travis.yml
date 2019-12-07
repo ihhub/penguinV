@@ -106,7 +106,9 @@ script:
     cmake --build .
     set +e
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-      ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
+      ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
+            -R unit_test --extra-verbose \
+            -T MemCheck # execute unit_test only
     else
       ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
     fi
