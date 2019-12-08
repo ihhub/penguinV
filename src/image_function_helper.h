@@ -5,7 +5,7 @@
 
 namespace Image_Function_Helper
 {
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     namespace FunctionTable
     {
@@ -600,10 +600,10 @@ public:
     void setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup = false );
     const Image_Function_Helper::FunctionTableHolder & functionTable( uint8_t type ) const;
 
-    void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out );
-    void convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const;
+    void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const penguinV::Image & in, const penguinV::Image & out );
+    void convert( const penguinV::Image & in, penguinV::Image & out ) const;
 
-    PenguinV_Image::Image image( uint8_t type ) const;
+    penguinV::Image image( uint8_t type ) const;
     std::vector< uint8_t > imageTypes() const;
 
     void enableIntertypeConversion( bool enable );
@@ -611,7 +611,7 @@ public:
 private:
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > _functionTableMap;
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 > _intertypeConvertMap;
-    std::map< uint8_t, PenguinV_Image::Image > _image;
+    std::map< uint8_t, penguinV::Image > _image;
     bool _enabledIntertypeConversion;
 
     ImageTypeManager();

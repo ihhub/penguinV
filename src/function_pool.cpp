@@ -741,7 +741,7 @@ namespace Function_Pool
     {
         Image_Function::ParameterValidation( in1, in2 );
 
-        return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+        return Function_Pool::IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
 
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -858,7 +858,7 @@ namespace Function_Pool
     void Normalize( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        const std::vector<uint32_t> histogram = Histogram( in, startXIn, startYIn, width, height );
+        const std::vector<uint32_t> histogram = Function_Pool::Histogram( in, startXIn, startYIn, width, height );
         if ( histogram.size() != 256u )
             throw imageException( "Histogram size is not equal to 256" );
 
@@ -897,7 +897,7 @@ namespace Function_Pool
 
     void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
     {
-        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+        Function_Pool::ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
     }
 
     std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
@@ -1003,7 +1003,7 @@ namespace Function_Pool
 
     uint32_t Sum( const Image & image )
     {
-        return Sum( image, 0, 0, image.width(), image.height() );
+        return Function_Pool::Sum( image, 0, 0, image.width(), image.height() );
     }
 
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )

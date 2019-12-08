@@ -8,7 +8,7 @@ namespace Function_Pool
 
     // This namespace's functions support thread pool utilization through Thread_Pool::ThreadPoolMonoid class
     // Please make sure before calling of any of these functions that global (singleton) thread pool has at least 1 thread!
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );

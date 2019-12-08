@@ -16,7 +16,7 @@ int main( int argc, char * argv[] )
     try // <---- do not forget to put your code into try.. catch block!
     {
         // First thing we should check whether the system contains GPU device
-        if( !multiCL::isOpenCLSupported() ) {
+        if ( !multiCL::isOpenCLSupported() ) {
             std::cout << "GPU device is not found in current system." << std::endl;
             return 0;
         }
@@ -48,14 +48,14 @@ int main( int argc, char * argv[] )
 void cpuCode( const std::string & filePath )
 {
     // Load an image from storage
-    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+    penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
-    if( image.empty() )
+    if ( image.empty() )
         throw imageException( std::string("Cannot load ") + filePath );
 
     // Convert to gray-scale image if it's not
-    if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+    if ( image.colorCount() != penguinV::GRAY_SCALE )
         image = Image_Function::ConvertToGrayScale( image );
 
     // Threshold image with calculated optimal threshold
@@ -68,10 +68,10 @@ void cpuCode( const std::string & filePath )
 void gpuCode( const std::string & filePath )
 {
     // Load an image from storage
-    PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+    penguinV::Image image = Bitmap_Operation::Load( filePath );
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
-    if( image.empty() )
+    if ( image.empty() )
         throw imageException( std::string("Cannot load ") + filePath );
 
     multiCL::OpenCLDeviceManager & deviceManager = multiCL::OpenCLDeviceManager::instance();
@@ -83,10 +83,10 @@ void gpuCode( const std::string & filePath )
         multiCL::MemoryManager::memory().reserve( 32 * 1024 * 1024 );
 
         // Copy image from GPU space to GPU space
-        PenguinV_Image::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
+        penguinV::Image imageGPU = Image_Function_OpenCL::ConvertToOpenCL( image );
 
         // Convert to gray-scale image if it's not
-        if( imageGPU.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if ( imageGPU.colorCount() != penguinV::GRAY_SCALE )
             imageGPU = Image_Function_OpenCL::ConvertToGrayScale( imageGPU );
 
         // Threshold image with calculated optimal threshold

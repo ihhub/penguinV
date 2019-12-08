@@ -16,18 +16,18 @@ int main( int argc, char * argv[] )
             filePath = argv[1];
 
         // Load an image
-        PenguinV_Image::Image image = Bitmap_Operation::Load( filePath );
+        penguinV::Image image = Bitmap_Operation::Load( filePath );
 
         // If the image is empty it means that the image doesn't exist or the file is not readable
-        if( image.empty() )
+        if ( image.empty() )
             throw imageException( std::string("Cannot load ") + filePath );
 
         // Convert to gray-scale image if it's not
-        if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if ( image.colorCount() != penguinV::GRAY_SCALE )
             image = Image_Function::ConvertToGrayScale( image );
 
         // Create Image object which will contain filtered image
-        PenguinV_Image::Image filtered( image.width(), image.height() );
+        penguinV::Image filtered( image.width(), image.height() );
 
         // Median filtering
         Image_Function::Median( image, filtered, 3 );
