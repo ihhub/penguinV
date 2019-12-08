@@ -54,8 +54,6 @@ void UiWindowX11::_display()
                 XSetForeground( _uiDisplay, defaultGC, _point[i].second );
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>( point.x - 1 ), static_cast<int>( point.y - 1 ), static_cast<int>( point.x + 1 ),
                            static_cast<int>( point.y + 1 ) );
-                XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>( point.x - 1 ), static_cast<int>( point.y + 1 ), static_cast<int>( point.x + 1 ),
-                           static_cast<int>( point.y - 1 ) );
             }
 
             for ( size_t i = 0u; i < _lines.size(); ++i ) {
