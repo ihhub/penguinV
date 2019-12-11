@@ -118,51 +118,41 @@ namespace pvmath
     template <typename _Type>
     bool pointProjection()
     {
-        PointBase2D<_Type> point1( 0, 0 );
-        PointBase2D<_Type> point2( 1, 0 );
-        PointBase2D<_Type> point3( 0, 1 );
+        PointBase2D<_Type> point0( 0, 0 );
+        PointBase2D<_Type> pointX( 1, 0 );
+        PointBase2D<_Type> pointY( 0, 1 );
 
-        PointBase2D<_Type> point4( -2, 0 );
-        PointBase2D<_Type> point5( -5, -2 );
+        const LineBase2D<_Type> lineX( point0, pointX );
+        const LineBase2D<_Type> lineY( point0, pointY );
 
-        PointBase2D<_Type> testPoint( -1, 5 );
-        PointBase2D<_Type> resultPoint1( -1, 0 );
-        PointBase2D<_Type> resultPoint2( 0, 5 );
-        PointBase2D<_Type> resultPoint3( 1, 2 );
-
-        const LineBase2D<_Type> line1( point1, point2 );
-        const LineBase2D<_Type> line2( point1, point3 );
-        const LineBase2D<_Type> line3( point4, point5 );
-
-        if ( line1.projection( testPoint ) == resultPoint1 && line2.projection( testPoint ) == resultPoint2 && line3.projection( testPoint ) == resultPoint3 )
-            return true;
-
-        return false;
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const PointBase2D<_Type> resultPointX( testPoint.x, 0 );
+            const PointBase2D<_Type> resultPointY( 0, testPoint.y );
+            if ( !( lineX.projection( testPoint ) == resultPointX ) || !( lineY.projection( testPoint ) == resultPointY ) )
+                return false;
+        }
+        return true;
     }
 
     template <typename _Type>
     bool pointOpposition()
     {
-        PointBase2D<_Type> point1( 0, 0 );
-        PointBase2D<_Type> point2( 1, 0 );
-        PointBase2D<_Type> point3( 0, 1 );
+        PointBase2D<_Type> point0( 0, 0 );
+        PointBase2D<_Type> pointX( 1, 0 );
+        PointBase2D<_Type> pointY( 0, 1 );
 
-        PointBase2D<_Type> point4( -2, 0 );
-        PointBase2D<_Type> point5( -5, -2 );
+        const LineBase2D<_Type> lineX( point0, pointX );
+        const LineBase2D<_Type> lineY( point0, pointY );
 
-        PointBase2D<_Type> testPoint( -1, 5 );
-        PointBase2D<_Type> resultPoint1( -1, -5 );
-        PointBase2D<_Type> resultPoint2( 1, 5 );
-        PointBase2D<_Type> resultPoint3( 3, -1 );
-
-        const LineBase2D<_Type> line1( point1, point2 );
-        const LineBase2D<_Type> line2( point1, point3 );
-        const LineBase2D<_Type> line3( point4, point5 );
-
-        if ( line1.opposite( testPoint ) == resultPoint1 && line2.opposite( testPoint ) == resultPoint2 && line3.opposite( testPoint ) == resultPoint3 )
-            return true;
-
-        return false;
+        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
+            const PointBase2D<_Type> resultPointX( testPoint.x, -testPoint.y );
+            const PointBase2D<_Type> resultPointY( -testPoint.x, testPoint.y );
+            if ( !( lineX.opposite( testPoint ) == resultPointX ) || !( lineY.opposite( testPoint ) == resultPointY ) )
+                return false;
+        }
+        return true;
     }
 }
 
