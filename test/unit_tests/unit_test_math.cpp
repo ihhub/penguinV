@@ -118,8 +118,7 @@ namespace pvmath
     template <typename _Type>
     bool pointProjection()
     {
-
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
 
             const PointBase2D<_Type> pointBase( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
@@ -141,8 +140,7 @@ namespace pvmath
     template <typename _Type>
     bool pointOpposition()
     {
-
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
 
             const PointBase2D<_Type> pointBase( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
