@@ -16,7 +16,8 @@
         #ifdef _MSC_VER
             #if _MSC_VER >= 1700
                 #define PENGUINV_AVX_SET
-            #elif _MSC_VER >= 1911
+            #endif
+            #if _MSC_VER >= 1911
                 #define PENGUINV_AVX512_SKL_SET
             #endif
         #endif
