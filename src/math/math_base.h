@@ -46,8 +46,7 @@ struct PointBase2D
 
     bool operator == ( const PointBase2D & point ) const
     {
-        return ( pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y ) ) ||
-               ( pvmath::isEqual( x, point.x, point.x ) && pvmath::isEqual( y, point.y, point.y ) );
+        return pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y );
     }
 
     PointBase2D & operator += ( const PointBase2D & point )
