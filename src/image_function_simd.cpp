@@ -2335,7 +2335,7 @@ namespace simd
     }
 
 #ifdef PENGUINV_AVX512_SKL_SET
-#define AVX512SKL_CODE( code )        \
+#define AVX512SKL_CODE( code )       \
 if ( simdType == avx512_function ) { \
     code;                            \
     return;                          \
