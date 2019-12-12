@@ -226,7 +226,7 @@ public:
     PointBase2D<_Type> opposite( const PointBase2D<_Type> & point ) const
     {
         const PointBase2D<_Type> offset = point - projection( point );
-        return point - 2 * offset;
+        return 2 * projection( point ) - point;
     }
 
     template <template <typename, typename...> class _container>
