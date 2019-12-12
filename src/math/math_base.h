@@ -49,6 +49,11 @@ struct PointBase2D
         return pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y );
     }
 
+    bool operator != ( const PointBase2D & point ) const
+    {
+        return !(*this == point);
+    }
+
     PointBase2D & operator += ( const PointBase2D & point )
     {
         x += point.x;
@@ -225,7 +230,6 @@ public:
 
     PointBase2D<_Type> opposite( const PointBase2D<_Type> & point ) const
     {
-        const PointBase2D<_Type> offset = point - projection( point );
         return 2 * projection( point ) - point;
     }
 

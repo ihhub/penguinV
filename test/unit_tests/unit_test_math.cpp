@@ -128,10 +128,10 @@ namespace pvmath
             const LineBase2D<_Type> lineX( pointBase, pointBaseX );
             const LineBase2D<_Type> lineY( pointBase, pointBaseY );
 
-            const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y * 2 - testPoint.y );
-            const PointBase2D<_Type> resultPointY( pointBase.x * 2 - testPoint.x, testPoint.y );
+            const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y );
+            const PointBase2D<_Type> resultPointY( pointBase.x, testPoint.y );
 
-            if ( !( lineX.projection( testPoint ) == resultPointX ) || !( lineY.projection( testPoint ) == resultPointY ) )
+            if ( lineX.projection( testPoint ) != resultPointX || lineY.projection( testPoint ) != resultPointY )
                 return false;
         }
         return true;
@@ -153,7 +153,7 @@ namespace pvmath
             const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y * 2 - testPoint.y );
             const PointBase2D<_Type> resultPointY( pointBase.x * 2 - testPoint.x, testPoint.y );
 
-            if ( !( lineX.opposite( testPoint ) == resultPointX ) || !( lineY.opposite( testPoint ) == resultPointY ) )
+            if ( lineX.opposite( testPoint ) != resultPointX ||  lineY.opposite( testPoint ) != resultPointY )
                 return false;
         }
         return true;
