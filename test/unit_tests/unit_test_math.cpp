@@ -120,13 +120,10 @@ namespace pvmath
     {
         for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
-
             const PointBase2D<_Type> pointBase( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
-            const PointBase2D<_Type> pointBaseX( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), pointBase.y );
-            const PointBase2D<_Type> pointBaseY( pointBase.x, Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
 
-            const LineBase2D<_Type> lineX( pointBase, pointBaseX );
-            const LineBase2D<_Type> lineY( pointBase, pointBaseY );
+            const LineBase2D<_Type> lineX( pointBase, 0 );
+            const LineBase2D<_Type> lineY( pointBase, static_cast<_Type>( pvmath::pi / 2 ) );
 
             const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y );
             const PointBase2D<_Type> resultPointY( pointBase.x, testPoint.y );
@@ -142,13 +139,10 @@ namespace pvmath
     {
         for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> testPoint( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
-
             const PointBase2D<_Type> pointBase( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
-            const PointBase2D<_Type> pointBaseX( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), pointBase.y );
-            const PointBase2D<_Type> pointBaseY( pointBase.x, Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
 
-            const LineBase2D<_Type> lineX( pointBase, pointBaseX );
-            const LineBase2D<_Type> lineY( pointBase, pointBaseY );
+            const LineBase2D<_Type> lineX( pointBase, 0 );
+            const LineBase2D<_Type> lineY( pointBase, static_cast<_Type>( pvmath::pi / 2 ) );
 
             const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y * 2 - testPoint.y );
             const PointBase2D<_Type> resultPointY( pointBase.x * 2 - testPoint.x, testPoint.y );
