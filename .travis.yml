@@ -107,8 +107,10 @@ matrix:
 before_script:
   # Let CMake generate build files
   - |
-    if [[ "$TRAVIS_EVENT_TYPE" == "cron" AND "$DYNAMIC_ANALYSIS" != "ON" ]]; then
-      export PENGUINV_UNIT_TEST_RUN_COUNT=1000
+    if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+      if [[ "$DYNAMIC_ANALYSIS" != "ON" ]]; then
+        export PENGUINV_UNIT_TEST_RUN_COUNT=1000
+      fi
     fi
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
@@ -124,15 +126,17 @@ before_script:
 script:
   - |
     # Build and run tests
-    if [[ "$TRAVIS_OS_NAME" != "windows" OR "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
-      set -e
-      cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
-      set +e
-      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
-              -R unit_test --extra-verbose \
-              -T MemCheck # execute unit_test only
-      else
-        ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+    if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then
+      if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+        set -e
+        cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
+        set +e
+        if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+          ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
+                -R unit_test --extra-verbose \
+                -T MemCheck # execute unit_test only
+        else
+          ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+        fi
       fi
     fi
