@@ -22,6 +22,8 @@ matrix:
     - os: windows
     - os: linux
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
+  exclude:
+    - if: os = windows AND type != cron
   include:
     - os: linux
       name: "CUDA8-Qt5.9"
@@ -95,14 +97,14 @@ matrix:
       env:
         - TARGET="Visual Studio 14 2015"
         - BUILD_TYPE="Release"
-      before_install: if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then choco install -y vcbuildtools --version 2015.4 --force; fi
+      before_install: choco install -y vcbuildtools --version 2015.4 --force;
     - os: windows
       name: Windows (VS2015 x64)
       language: bash
       env:
         - TARGET="Visual Studio 14 2015 Win64"
         - BUILD_TYPE="Release"
-      before_install: if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then choco install -y vcbuildtools --version 2015.4 --force; fi
+      before_install: choco install -y vcbuildtools --version 2015.4 --force;
 
 before_script:
   # Let CMake generate build files
@@ -126,15 +128,13 @@ before_script:
 script:
   - |
     # Build and run tests
-    if [[ "$TRAVIS_OS_NAME" != "windows" ] OR [ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
-      set -e
-      cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
-      set +e
-      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-        ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
-              -R unit_test --extra-verbose \
-              -T MemCheck # execute unit_test only
-      else
-        ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-      fi
+    set -e
+    cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
+    set +e
+    if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
+            -R unit_test --extra-verbose \
+            -T MemCheck # execute unit_test only
+    else
+      ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
     fi
