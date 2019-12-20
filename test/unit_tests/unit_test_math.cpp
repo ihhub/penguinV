@@ -5,6 +5,26 @@
 #include "../../src/math/hough_transform.h"
 #include "../../src/math/haar_transform.h"
 
+// Only for opposite() and projection() functions of Line2D class:
+namespace pvmathHelper
+{
+    template <typename _Type>
+    bool isEqual( const _Type & value1, const _Type & value2 )
+    {
+        return pvmath::isEqual( value1, value2 );
+    }
+
+    // For 90 degree angle we have [4.37113883e-08, 1] values of directories instead of [0, 1].
+    // Value 4.37113883e-08 is standard error for float variable.
+    // The difference between possible generated points is 200.
+    // We multiply 2000 by 2 and by 4.37113883e-08 which gives us 0.0001748455532 --> 0.0002
+    template <>
+    bool isEqual<float>( const float & value1, const float & value2 )
+    {
+        return std::fabs( value1 - value2 ) < 0.0002;
+    }
+}
+
 namespace pvmath
 {
     template <typename _Type>
@@ -128,7 +148,7 @@ namespace pvmath
             const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y );
             const PointBase2D<_Type> resultPointY( pointBase.x, testPoint.y );
 
-            if ( lineX.projection( testPoint ) != resultPointX || lineY.projection( testPoint ) != resultPointY )
+            if ( !pvmathHelper::isEqual( lineX.projection( testPoint ), resultPointX ) || !pvmathHelper::isEqual( lineY.projection( testPoint ), resultPointY ) )
                 return false;
         }
         return true;
@@ -147,7 +167,7 @@ namespace pvmath
             const PointBase2D<_Type> resultPointX( testPoint.x, pointBase.y * 2 - testPoint.y );
             const PointBase2D<_Type> resultPointY( pointBase.x * 2 - testPoint.x, testPoint.y );
 
-            if ( lineX.opposite( testPoint ) != resultPointX ||  lineY.opposite( testPoint ) != resultPointY )
+            if ( !pvmathHelper::isEqual( lineX.opposite( testPoint ), resultPointX ) || !pvmathHelper::isEqual( lineY.opposite( testPoint ), resultPointY ) )
                 return false;
         }
         return true;
