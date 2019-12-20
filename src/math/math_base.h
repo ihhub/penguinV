@@ -51,7 +51,7 @@ struct PointBase2D
 
     bool operator != ( const PointBase2D & point ) const
     {
-        return !(*this == point);
+        return !( *this == point );
     }
 
     PointBase2D & operator += ( const PointBase2D & point )
