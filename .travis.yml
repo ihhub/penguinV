@@ -128,11 +128,11 @@ before_script:
 script:
   - |
     # Build and run tests
-    if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+    if [[ "$TRAVIS_EVENT_TYPE" == "cron" || "$TRAVIS_OS_NAME" != "windows" ]]; then
       set -e
       cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
       set +e
-      if [[ "$TRAVIS_OS_NAME" != "windows" ] || [ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
+      if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
         ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
               -R unit_test --extra-verbose \
               -T MemCheck # execute unit_test only
