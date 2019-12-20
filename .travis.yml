@@ -23,7 +23,7 @@ matrix:
     - os: linux
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
   exclude:
-    - if: os = windows AND type != cron
+    - if: os = windows
   include:
     - os: linux
       name: "CUDA8-Qt5.9"
