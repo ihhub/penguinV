@@ -356,7 +356,7 @@ namespace image_function_avx512
 {
     using namespace Image_Function_Simd;
 
-    const bool isSupported = SimdInfo::isAVX512BWAvailable();
+    const bool isSupported = SimdInfo::isAVX512SKLAvailable();
     const std::string namespaceName = "image_function_avx512";
 
     SET_FUNCTION( AbsoluteDifference )
