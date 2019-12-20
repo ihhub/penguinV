@@ -95,14 +95,14 @@ matrix:
       env:
         - TARGET="Visual Studio 14 2015"
         - BUILD_TYPE="Release"
-      before_install: choco install -y vcbuildtools --version 2015.4 --force;
+      before_install: if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then choco install -y vcbuildtools --version 2015.4 --force; fi
     - os: windows
       name: Windows (VS2015 x64)
       language: bash
       env:
         - TARGET="Visual Studio 14 2015 Win64"
         - BUILD_TYPE="Release"
-      before_install: choco install -y vcbuildtools --version 2015.4 --force;
+      before_install: if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then choco install -y vcbuildtools --version 2015.4 --force; fi
 
 before_script:
   # Let CMake generate build files
