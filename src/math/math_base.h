@@ -49,6 +49,11 @@ struct PointBase2D
         return pvmath::isEqual( x, point.x ) && pvmath::isEqual( y, point.y );
     }
 
+    bool operator != ( const PointBase2D & point ) const
+    {
+        return !( *this == point );
+    }
+
     PointBase2D & operator += ( const PointBase2D & point )
     {
         x += point.x;
@@ -73,9 +78,21 @@ struct PointBase2D
         return PointBase2D( x - point.x, y - point.y );
     }
 
+    template <typename T>
+    PointBase2D operator * ( const T & value ) const
+    {
+        return PointBase2D( value * x, value * y );
+    }
+
     _Type x;
     _Type y;
 };
+
+template <typename _Type, typename T>
+PointBase2D<_Type> operator * ( const T & value, const PointBase2D<_Type> & point )
+{
+    return PointBase2D<_Type>( value * point.x, value * point.y );
+}
 
 template <typename _Type>
 struct PointBase3D : public PointBase2D<_Type>
@@ -202,6 +219,18 @@ public:
         // |A * x0 + B * y0 + C| / sqrt(A * A + B * B)
         const _Type distanceToLine = _direction.y * (point.x - _position.x) + _direction.x * (_position.y - point.y);
         return (distanceToLine < 0 ? -distanceToLine : distanceToLine);
+    }
+
+    PointBase2D<_Type> projection( const PointBase2D<_Type> & point ) const
+    {
+        const _Type dotProduct = _direction.x * ( point.x - _position.x ) + _direction.y * ( point.y - _position.y );
+        const PointBase2D<_Type> offset( _direction.x * dotProduct, _direction.y * dotProduct );
+        return _position + offset;
+    }
+
+    PointBase2D<_Type> opposite( const PointBase2D<_Type> & point ) const
+    {
+        return 2 * projection( point ) - point;
     }
 
     template <template <typename, typename...> class _container>
