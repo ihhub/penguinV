@@ -1,3 +1,5 @@
+#if !defined(_MSC_VER) && !defined(_WIN32)
+
 #include <cuda_runtime.h>
 #include "cuda_fft.cuh"
 #include "cuda_helper.cuh"
@@ -70,7 +72,7 @@ namespace FFT_Cuda
     {
     }
 
-    ComplexData::ComplexData( const PenguinV_Image::Image & image )
+    ComplexData::ComplexData( const penguinV::Image & image )
     {
         set( image );
     }
@@ -90,7 +92,7 @@ namespace FFT_Cuda
         _clean();
     }
 
-    void ComplexData::set( const PenguinV_Image::Image & image )
+    void ComplexData::set( const penguinV::Image & image )
     {
         if ( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
@@ -115,12 +117,12 @@ namespace FFT_Cuda
                         data.data(), _data, _width, _height );
     }
 
-    PenguinV_Image::Image ComplexData::get() const
+    penguinV::Image ComplexData::get() const
     {
         if ( empty() )
-            return PenguinV_Image::Image();
+            return penguinV::Image();
 
-        PenguinV_Image::Image image = PenguinV_Image::ImageCuda().generate( _width, _height );
+        penguinV::Image image = penguinV::ImageCuda().generate( _width, _height );
 
         const float size = static_cast<float>(image.width() * image.height());
 
@@ -209,3 +211,4 @@ namespace FFT_Cuda
             throw imageException( "Cannot create FFT plan on CUDA device" );
     }
 }
+#endif

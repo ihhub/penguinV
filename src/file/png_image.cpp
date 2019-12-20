@@ -5,25 +5,25 @@
 
 namespace Png_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        penguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string &, PenguinV_Image::Image & )
+    void Load( const std::string &, penguinV::Image & )
     {
         throw imageException( "PNG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image & )
+    void Save( const std::string &, const penguinV::Image & )
     {
         throw imageException( "PNG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
         throw imageException( "PNG is not supported" );
     }
@@ -38,30 +38,34 @@ namespace Png_Operation
 
 namespace Png_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
         if( path.empty() )
             throw imageException( "Incorrect file path for image file loading" );
 
         FILE * file = fopen( path.data(), "rb" );
         if( !file )
-            return PenguinV_Image::Image();
+            return penguinV::Image();
 
         png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
-        if( !png )
-            return PenguinV_Image::Image();
+        if ( !png ) {
+            fclose( file );
+            return penguinV::Image();
+        }
 
         png_infop info = png_create_info_struct( png );
-        if( !info )
-            return PenguinV_Image::Image();
+        if ( !info ) {
+            fclose( file );
+            return penguinV::Image();
+        }
 
         png_init_io( png, file );
         png_read_info( png, info );
 
         const uint32_t width    = static_cast<uint32_t>( png_get_image_width ( png, info ) );
         const uint32_t height   = static_cast<uint32_t>( png_get_image_height( png, info ) );
-        const uint8_t colorType = png_get_color_type  ( png, info );
-        const uint8_t bitDepth  = png_get_bit_depth   ( png, info );
+        const uint8_t colorType = png_get_color_type( png, info );
+        const uint8_t bitDepth  = png_get_bit_depth ( png, info );
 
         if( bitDepth == 16u )
             png_set_strip_16( png );
@@ -76,7 +80,7 @@ namespace Png_Operation
         if( png_get_valid( png, info, PNG_INFO_tRNS ) )
             png_set_tRNS_to_alpha( png );
 
-        // These color_type don't have an alpha channel then fill it with 0xff
+        // These color types don't have an alpha channel then fill it with 0xff
         if( colorType == PNG_COLOR_TYPE_RGB || colorType == PNG_COLOR_TYPE_GRAY || colorType == PNG_COLOR_TYPE_PALETTE )
             png_set_filler( png, 0xFF, PNG_FILLER_AFTER );
 
@@ -94,16 +98,25 @@ namespace Png_Operation
 
         png_read_image( png, row_pointers );
 
-        PenguinV_Image::Image image( width, height, PenguinV_Image::RGB );
+        const bool isGrayScale = (colorType == PNG_COLOR_TYPE_GRAY || colorType == PNG_COLOR_TYPE_GRAY_ALPHA);
+
+        penguinV::Image image( width, height, isGrayScale ? penguinV::GRAY_SCALE : penguinV::RGB );
 
         uint8_t * outY = image.data();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
             const uint8_t * column = row_pointers[y];
             uint8_t * outX = outY;
-            for( uint32_t x = 0; x < width; ++x, column += 4 ) {
-                *(outX++) = column[2];
-                *(outX++) = column[1];
-                *(outX++) = column[0];
+
+            if ( isGrayScale ) {
+                for ( uint32_t x = 0; x < width; ++x, column += 4 )
+                    *(outX++) = column[0];
+            }
+            else {
+                for ( uint32_t x = 0; x < width; ++x, column += 4 ) {
+                    *(outX++) = column[2];
+                    *(outX++) = column[1];
+                    *(outX++) = column[0];
+                }
             }
         }
 
@@ -118,18 +131,17 @@ namespace Png_Operation
         return image;
     }
 
-    void Load( const std::string & path, PenguinV_Image::Image & raw )
+    void Load( const std::string & path, penguinV::Image & raw )
     {
         raw = Load( path );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image )
+    void Save( const std::string & path, const penguinV::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY,
-               uint32_t width, uint32_t height )
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( image, startX, startY, width, height );
 
@@ -147,9 +159,11 @@ namespace Png_Operation
 
         png_init_io( png, file );
 
-        // Output is 8bit depth, RGBA format
-        png_set_IHDR( png, info, width, height, 8, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE,
-                      PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT );
+        const bool grayScaleImage = image.colorCount() == penguinV::GRAY_SCALE;
+
+        // Output is 8 bit depth, Gray-Scale or RGB
+        png_set_IHDR( png, info, width, height, 8, (grayScaleImage ? PNG_COLOR_TYPE_GRAY : PNG_COLOR_TYPE_RGB), PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
+                      PNG_FILTER_TYPE_DEFAULT );
 
         png_write_info( png, info );
 
@@ -160,27 +174,20 @@ namespace Png_Operation
         for( uint32_t y = 0; y < height; ++y )
             row_pointers[y] = reinterpret_cast<uint8_t*>( malloc( rowByteCount ) );
 
-        const bool grayScaleImage = image.colorCount() == PenguinV_Image::GRAY_SCALE;
-
         const uint8_t * outY = image.data() + startY * image.rowSize() + startX * image.colorCount();
         for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
             uint8_t * column = row_pointers[y];
             const uint8_t * outX = outY;
 
-            if( grayScaleImage )
-            {
-                for( uint32_t x = 0; x < width; ++x, column += 4 ) {
-                    column[0] = column[1] = column[2] = *(outX++);
-                    column[3] = 255;
-                }
+            if ( grayScaleImage ) {
+                for ( uint32_t x = 0; x < width; ++x, ++column )
+                    *column = *(outX++);
             }
-            else
-            {
-                for( uint32_t x = 0; x < width; ++x, column += 4 ) {
+            else {
+                for ( uint32_t x = 0; x < width; ++x, column += 3 ) {
                     column[2] = *(outX++);
                     column[1] = *(outX++);
                     column[0] = *(outX++);
-                    column[3] = 255;
                 }
             }
         }

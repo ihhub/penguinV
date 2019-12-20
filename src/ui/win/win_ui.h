@@ -14,10 +14,10 @@ namespace WindowsUi
 class UiWindowWin : public UiWindow
 {
 public:
-    explicit UiWindowWin( const PenguinV_Image::Image & image = PenguinV_Image::Image(), const std::string & title = std::string() );
+    explicit UiWindowWin( const penguinV::Image & image = penguinV::Image(), const std::string & title = std::string() );
     virtual ~UiWindowWin();
 
-    virtual void setImage( const PenguinV_Image::Image & image );
+    virtual void setImage( const penguinV::Image & image );
     virtual void drawPoint( const Point2d & point, const PaintColor & color );
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
     virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );

@@ -20,6 +20,8 @@ matrix:
   # Windows builds are experimental in Travis, ignore job results in case of failure!
   allow_failures:
     - os: windows
+    - os: linux
+      env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
   include:
     - os: linux
       name: "CUDA8-Qt5.9"
@@ -27,6 +29,17 @@ matrix:
       before_install:
         - source script/travis/install_cuda.sh
         - source script/travis/install_qt5.sh
+    - os: linux
+      arch: arm64
+      before_script:
+        - cd test/unit_tests
+      script:
+        - make
+        - ./unit_tests
+        - cd ../performance_tests
+        - make
+        - cd ../../examples
+        - make
     - os: linux
       env: STATIC_ANALYSIS=ON
       before_install:
@@ -94,6 +107,11 @@ matrix:
 before_script:
   # Let CMake generate build files
   - |
+    if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+      if [[ "$DYNAMIC_ANALYSIS" != "ON" ]]; then
+        export PENGUINV_UNIT_TEST_RUN_COUNT=1000
+      fi
+    fi
     if [[ "$STATIC_ANALYSIS" != "ON" ]]; then
       mkdir -p build && cd build
       if [[ "$TRAVIS_OS_NAME" == "windows" ]];
@@ -110,7 +128,9 @@ script:
     cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
     set +e
     if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
-      ctest -R unit_test --extra-verbose -T MemCheck # execute unit_test only
+      ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
+            -R unit_test --extra-verbose \
+            -T MemCheck # execute unit_test only
     else
       ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
     fi

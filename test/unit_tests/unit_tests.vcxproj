@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\src\edge_detection.cpp" />
     <ClCompile Include="..\..\src\fft.cpp" />
     <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\file\png_image.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\function_pool_task.cpp" />
@@ -163,10 +164,10 @@
     <ClCompile Include="..\..\src\thread_pool.cpp" />
     <ClCompile Include="..\test_helper.cpp" />
     <ClCompile Include="unit_tests.cpp" />
-    <ClCompile Include="unit_test_bitmap.cpp" />
     <ClCompile Include="unit_test_blob_detection.cpp" />
     <ClCompile Include="unit_test_edge_detection.cpp" />
     <ClCompile Include="unit_test_fft.cpp" />
+    <ClCompile Include="unit_test_file.cpp" />
     <ClCompile Include="unit_test_framework.cpp" />
     <ClCompile Include="unit_test_helper.cpp" />
     <ClCompile Include="unit_test_image_buffer.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\src\fft.h" />
     <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\file\png_image.h" />
     <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\function_pool_task.h" />
@@ -196,11 +198,11 @@
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fft.h" />
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fftnd.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
-    <ClInclude Include="..\test_helper.h" />
-    <ClInclude Include="unit_test_bitmap.h" />
+    <ClInclude Include="..\test_helper.h" />    
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_edge_detection.h" />
     <ClInclude Include="unit_test_fft.h" />
+    <ClInclude Include="unit_test_file.h" />
     <ClInclude Include="unit_test_framework.h" />
     <ClInclude Include="unit_test_helper.h" />
     <ClInclude Include="unit_test_image_buffer.h" />

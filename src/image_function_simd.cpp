@@ -35,7 +35,7 @@ namespace
             table.BitwiseOr          = &Image_Function_Simd::BitwiseOr;
             table.BitwiseXor         = &Image_Function_Simd::BitwiseXor;
             table.ConvertTo16Bit     = &Image_Function_Simd::ConvertTo16Bit;
-            table.ConvertTo8Bit     = &Image_Function_Simd::ConvertTo8Bit;
+            table.ConvertTo8Bit      = &Image_Function_Simd::ConvertTo8Bit;
             table.ConvertToRgb       = &Image_Function_Simd::ConvertToRgb;
             table.Flip               = &Image_Function_Simd::Flip;
             table.Invert             = &Image_Function_Simd::Invert;
@@ -48,11 +48,320 @@ namespace
             table.Threshold          = &Image_Function_Simd::Threshold;
             table.Threshold2         = &Image_Function_Simd::Threshold;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table, true );
+            ImageTypeManager::instance().setFunctionTable( penguinV::Image().type(), table, true );
         }
     };
 
     const FunctionRegistrator functionRegistrator;
+}
+
+namespace avx512
+{
+    const uint32_t simdSize = 64u;
+
+#ifdef PENGUINV_AVX512_SKL_SET
+    typedef __m512i simd;
+
+    void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                             uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst ) {
+                simd data1 = _mm512_loadu_si512( src1 );
+                simd data2 = _mm512_loadu_si512( src2 );
+                _mm512_storeu_si512( dst, _mm512_sub_epi8( _mm512_max_epu8( data1, data2 ), _mm512_min_epu8( data1, data2 ) ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
+            }
+        }
+    }
+
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        simd zero = _mm512_setzero_si512();
+
+        const uint32_t width = totalSimdWidth + nonSimdWidth;
+
+        for ( ; imageY != imageYEnd; imageY += rowSize, outY += width ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+            simd       * dst    = reinterpret_cast <simd*> (outY);
+
+            for ( ; src != srcEnd; ++src ) {
+                simd data = _mm512_loadu_si512( src );
+
+                const simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                const simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+
+                const simd data_1 = _mm512_unpacklo_epi16( dataLo, zero );
+                const simd data_2 = _mm512_unpackhi_epi16( dataLo, zero );
+                const simd data_3 = _mm512_unpacklo_epi16( dataHi, zero );
+                const simd data_4 = _mm512_unpackhi_epi16( dataHi, zero );
+
+                _mm512_storeu_si512( dst, _mm512_add_epi32( data_1, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( data_2, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( data_3, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( data_4, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+                uint32_t      * outX      = outY + totalSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX, ++outX )
+                    (*outX) += (*imageX);
+            }
+        }
+    }
+
+    void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                     uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_and_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = (*in1X) & (*in2X);
+            }
+        }
+    }
+
+    void BitwiseOr( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_or_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = (*in1X) | (*in2X);
+            }
+        }
+    }
+
+    void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y, uint8_t * outY, const uint8_t * outYEnd,
+                     uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>(in1Y);
+            const simd * src2 = reinterpret_cast<const simd*>(in2Y);
+            simd       * dst  = reinterpret_cast<simd*>(outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_xor_si512( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = (*in1X) ^ (*in2X);
+            }
+        }
+    }
+
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm512_setzero_si512();
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
+            const simd  * srcEnd = src + simdWidth;
+
+            for ( ; src != srcEnd; ++src ) {
+                const simd srcData = _mm512_loadu_si512( src );
+
+                _mm512_storeu_si512( dst++, _mm512_unpacklo_epi8( zero, srcData ) );
+                _mm512_storeu_si512( dst++, _mm512_unpacklo_epi8( zero, srcData ) );
+            }
+            
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                        uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast<const simd*>(inY);
+            simd        * dst    = reinterpret_cast<simd*>(outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst ) {
+                const simd srcData1 = _mm512_loadu_si512( src );
+                ++src;
+                const simd srcData2 = _mm512_loadu_si512( src );
+                ++src;
+
+                _mm512_storeu_si512(dst, _mm512_packus_epi16(_mm512_srli_epi16 ( srcData1, 8 ), _mm512_srli_epi16 ( srcData2, 8)));
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
+            }
+        }
+    }
+
+    void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
+                 uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const char maskValue = static_cast<char>(0xffu);
+        const simd mask = _mm512_set_epi8(
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
+            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd * src1 = reinterpret_cast<const simd*>( inY );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++dst )
+                _mm512_storeu_si512( dst, _mm512_andnot_si512( _mm512_loadu_si512( src1 ), mask ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * inX  = inY  + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    (*outX) = static_cast<uint8_t>( ~(*inX) );
+            }
+        }
+    }
+
+    void Maximum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>( in1Y );
+            const simd * src2 = reinterpret_cast<const simd*>( in2Y );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_max_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if ( (*in2X) < (*in1X) )
+                        (*outX) = (*in1X);
+                    else
+                        (*outX) = (*in2X);
+                }
+            }
+        }
+    }
+
+    void Minimum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast<const simd*>( in1Y );
+            const simd * src2 = reinterpret_cast<const simd*>( in2Y );
+            simd       * dst  = reinterpret_cast<simd*>( outY );
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst )
+                _mm512_storeu_si512( dst, _mm512_min_epu8( _mm512_loadu_si512( src1 ), _mm512_loadu_si512( src2 ) ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X ) {
+                    if ( (*in2X) > (*in1X) )
+                        (*outX) = (*in1X);
+                    else
+                        (*outX) = (*in2X);
+                }
+            }
+        }
+    }
+#endif
 }
 
 namespace avx
@@ -237,6 +546,34 @@ namespace avx
 
                 for ( ; outX != outXEnd; ++outX, ++inX )
                     *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                        uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth  )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const simd  * src    = reinterpret_cast <const simd*> (inY);
+            simd        * dst    = reinterpret_cast <simd*> (outY);
+            const simd  * dstEnd = dst + simdWidth;
+
+            for ( ; dst != dstEnd; ++dst ) {
+                const simd srcData1 = _mm256_loadu_si256( src );
+                ++src;
+                const simd srcData2 = _mm256_loadu_si256( src );
+                ++src;
+
+                _mm256_storeu_si256(dst, _mm256_packus_epi16(_mm256_srli_epi16 ( srcData1, 8 ), _mm256_srli_epi16 ( srcData2, 8)));
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
             }
         }
     }
@@ -1503,6 +1840,51 @@ namespace neon
         }
     }
 
+    void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * src    = inY;
+            uint16_t      * dst    = outY;
+            const uint8_t * srcEnd = src + totalSimdWidth;
+
+            for ( ; src != srcEnd; src += 8, dst += 8 ) {
+                vst1q_u16( dst, vshll_n_u8( vld1_u8( src ), 8 ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t  * inX  = inY + totalSimdWidth;
+                uint16_t       * outX = outY + totalSimdWidth;
+                const uint16_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint16_t>( (*inX) << 8 );
+            }
+        }
+    }
+
+    void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
+                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint16_t * src    = inY;
+            uint8_t        * dst    = outY;
+            const uint16_t * srcEnd = src + totalSimdWidth;
+
+            for ( ; src != srcEnd; src += 8, dst += 8 )
+                vst1_u8( dst, vshrn_n_u16( vld1q_u16( src ), 8 ) );
+
+            if ( nonSimdWidth > 0 ) {
+                const uint16_t * inX  = inY + totalSimdWidth;
+                uint8_t        * outX = outY + totalSimdWidth;
+                const uint8_t  * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++inX )
+                    *outX = static_cast<uint8_t>( (*inX) >> 8 );
+            }
+        }
+    }
+
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
                        uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
@@ -1938,6 +2320,8 @@ namespace simd
 {
     uint32_t getSimdSize( SIMDType simdType )
     {
+        if ( simdType == avx512_function )
+            return avx512::simdSize;
         if ( simdType == avx_function )
             return avx::simdSize;
         if ( simdType == sse_function )
@@ -1949,6 +2333,16 @@ namespace simd
 
         return 0u;
     }
+
+#ifdef PENGUINV_AVX512_SKL_SET
+#define AVX512SKL_CODE( code )       \
+if ( simdType == avx512_function ) { \
+    code;                            \
+    return;                          \
+}
+#else
+#define AVX512SKL_CODE( code )
+#endif
 
 #ifdef PENGUINV_AVX_SET
 #define AVX_CODE( code )          \
@@ -1992,7 +2386,7 @@ if ( simdType == neon_function ) { \
 #define NEON_CODE( code )
 #endif
 
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
@@ -2026,6 +2420,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2061,6 +2456,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2098,6 +2494,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2135,6 +2532,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2172,6 +2570,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2182,7 +2581,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (width < simdSize) ) {
             Image_Function::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -2208,8 +2607,10 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2217,7 +2618,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if ( (simdType == cpu_function) || (simdType == avx_function) || (simdType == neon_function) || (width < simdSize) ) {
+        if ( (simdType == cpu_function) || (width < simdSize) ) {
             Image_Function::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -2243,7 +2644,10 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        AVX_CODE( avx::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+        NEON_CODE( neon::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2355,6 +2759,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2392,6 +2797,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2429,6 +2835,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )

@@ -295,14 +295,13 @@ namespace Blob_Detection
         }
     }
 
-
-    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, BlobParameters parameter, uint8_t threshold )
+    const std::vector<BlobInfo> & BlobDetection::find( const penguinV::Image & image, BlobParameters parameter, uint8_t threshold )
     {
         return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
     }
 
-    const std::vector < BlobInfo > & BlobDetection::find( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width,
-                                                          uint32_t height, BlobParameters parameter, uint8_t threshold )
+    const std::vector<BlobInfo> & BlobDetection::find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width,
+                                                       uint32_t height, BlobParameters parameter, uint8_t threshold )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
@@ -312,7 +311,8 @@ namespace Blob_Detection
         _blob.clear();
 
         // we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
-        std::vector < uint8_t > imageMap( (width + 2) * (height + 2), EMPTY );
+        penguinV::Image imageMap( width + 2, height + 2 );
+        imageMap.fill( EMPTY );
 
         uint32_t rowSize = image.rowSize();
 
@@ -321,13 +321,13 @@ namespace Blob_Detection
 
         const uint32_t mapWidth = width + 2;
 
-        std::vector < uint8_t >::iterator mapValueX = imageMap.begin() + mapWidth + 1;
+        uint8_t * mapValueX = imageMap.data() + mapWidth + 1;
 
         for( ; imageY != imageYEnd; imageY += rowSize, mapValueX += mapWidth ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + width;
 
-            std::vector < uint8_t >::iterator mapValueY = mapValueX;
+            uint8_t * mapValueY = mapValueX;
 
             for( ; imageX != imageXEnd; ++imageX, ++mapValueY ) {
                 if( (*imageX) >= threshold )
@@ -338,8 +338,8 @@ namespace Blob_Detection
         // find all blobs
         std::list < BlobInfo > foundBlob;
 
-        mapValueX = imageMap.begin() + mapWidth;
-        std::vector < uint8_t >::const_iterator endMap = imageMap.end() - mapWidth;
+        mapValueX = imageMap.data() + mapWidth;
+        uint8_t * endMap = imageMap.data() + ( width + 2 ) * ( height + 1 );
 
         for( ; mapValueX != endMap; ++mapValueX ) {
             if( *mapValueX == NOT_IN_USE ) { // blob found!
@@ -347,7 +347,7 @@ namespace Blob_Detection
 
                 BlobInfo & newBlob = foundBlob.back();
 
-                uint32_t relativePosition = static_cast<uint32_t>(mapValueX - imageMap.begin());
+                uint32_t relativePosition = static_cast<uint32_t>( mapValueX - imageMap.data() );
 
                 std::vector < uint32_t > & pointX = newBlob._pointX;
                 std::vector < uint32_t > & pointY = newBlob._pointY;

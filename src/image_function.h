@@ -5,7 +5,7 @@
 
 namespace Image_Function
 {
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
@@ -190,6 +190,18 @@ namespace Image_Function
     Image RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
     void  RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height );
+
+    Image RgbToRgba( const Image & in );
+    void  RgbToRgba( const Image & in, Image & out );
+    Image RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void  RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                     uint32_t width, uint32_t height );
+
+    Image RgbaToRgb( const Image & in );
+    void  RgbaToRgb( const Image & in, Image & out );
+    Image RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void  RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                     uint32_t width, uint32_t height );
 
     Image Rotate( const Image & in, double centerX, double centerY, double angle );
     void  Rotate( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );

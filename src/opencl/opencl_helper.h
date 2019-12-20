@@ -16,8 +16,8 @@ namespace multiCL
 
     bool isOpenCLSupported();
 
-    void openCLCheck( cl_int error ); // validates cl_int value and throws an exception if the value is not cudaSuccess
-    bool openCLSafeCheck( cl_int error ); // validates cl_int and returns true if the error is cudaSuccess
+    void openCLCheck( cl_int error ); // validates cl_int value and throws an exception if the value is not CL_SUCCESS
+    bool openCLSafeCheck( cl_int error ); // validates cl_int and returns true if the error is CL_SUCCESS
 
     OpenCLProgram CreateProgramFromFile( const std::string & fileName );
     OpenCLProgram CreateProgramFromFile( const std::string & fileName, const OpenCLContext & context );
@@ -35,7 +35,7 @@ namespace multiCL
         size_t threadsPerBlock[3]; // Local work size
     };
 
-    // Helper function which returns calculated KernelParameters structure for kernel to be executed on current CUDA device
+    // Helper function which returns calculated KernelParameters structure for kernel to be executed on current OpenCL device
     KernelParameters getKernelParameters( const OpenCLKernel & kernel, size_t sizeX ); // 1D
     KernelParameters getKernelParameters( const OpenCLKernel & kernel, size_t sizeX, size_t sizeY ); // 2D
     KernelParameters getKernelParameters( const OpenCLKernel & kernel, size_t sizeX, size_t sizeY, size_t sizeZ ); // 3D

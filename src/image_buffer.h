@@ -7,13 +7,13 @@
 #include "image_exception.h"
 #include "memory/cpu_memory.h"
 
-namespace PenguinV_Image
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplate
     {
     public:
-        ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
             : _width     ( 0 )       // width of image
             , _height    ( 0 )       // height of image
             , _colorCount( 1 )       // number of colors per pixel

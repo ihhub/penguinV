@@ -5,7 +5,7 @@
 
 namespace Image_Function_Cuda
 {
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
@@ -71,6 +71,10 @@ namespace Image_Function_Cuda
     // vertical flip: top-bottom --> bottom-top
     Image Flip( const Image & in, bool horizontal, bool vertical );
     void  Flip( const Image & in, Image & out, bool horizontal, bool vertical );
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical );
+    void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, bool horizontal, bool vertical );
 
     // Gamma correction works by formula:
     // output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0
@@ -96,6 +100,10 @@ namespace Image_Function_Cuda
     void  Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                   uint32_t width, uint32_t height );
 
+    bool IsEqual( const Image & in1, const Image & in2 );
+    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                  uint32_t width, uint32_t height );
+
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table );
     void  LookupTable( const Image & in, Image & out, const std::vector < uint8_t > & table );
     Image LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
@@ -117,7 +125,16 @@ namespace Image_Function_Cuda
     void  Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal );
+    void                     ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection );
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal );
+    void                     ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                std::vector < uint32_t > & projection );
+
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle );
+    
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value );
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value );
 
     Image Subtract( const Image & in1, const Image & in2 );
     void  Subtract( const Image & in1, const Image & in2, Image & out );

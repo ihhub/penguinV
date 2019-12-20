@@ -5,6 +5,7 @@ TEST_DIR := $(PWD)/..
 SRCS :=  \
 	$(LIB_DIR)/math/math_base.cpp \
 	$(LIB_DIR)/blob_detection.cpp \
+	$(LIB_DIR)/edge_detection.cpp \
 	$(LIB_DIR)/filtering.cpp \
 	$(LIB_DIR)/function_pool.cpp \
 	$(LIB_DIR)/function_pool_task.cpp \
@@ -16,6 +17,7 @@ SRCS :=  \
 	$(TEST_DIR)/test_helper.cpp \
 	performance_tests.cpp \
 	performance_test_blob_detection.cpp \
+	performance_test_edge_detection.cpp \
 	performance_test_filtering.cpp \
 	performance_test_framework.cpp \
 	performance_test_helper.cpp \

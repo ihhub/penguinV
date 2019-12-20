@@ -1,5 +1,4 @@
 #include "fft.h"
-#include "image_function.h"
 #include "image_exception.h"
 
 namespace FFT
@@ -8,7 +7,7 @@ namespace FFT
     {
     }
 
-    ComplexData::ComplexData( const PenguinV_Image::Image & image )
+    ComplexData::ComplexData( const penguinV::Image & image )
     {
         set( image );
     }
@@ -28,7 +27,7 @@ namespace FFT
         _clean();
     }
 
-    void ComplexData::set( const PenguinV_Image::Image & image )
+    void ComplexData::set( const penguinV::Image & image )
     {
         if ( image.empty() || image.colorCount() != 1u )
             throw imageException( "Failed to allocate complex data for empty or coloured image" );
@@ -76,12 +75,12 @@ namespace FFT
         }
     }
 
-    PenguinV_Image::Image ComplexData::get() const
+    penguinV::Image ComplexData::get() const
     {
         if ( empty() )
-            return PenguinV_Image::Image();
+            return penguinV::Image();
 
-        PenguinV_Image::Image image( _width, _height, 1u, 1u );
+        penguinV::Image image( _width, _height, 1u, 1u );
         uint8_t * out = image.data();
 
         const uint32_t size = _width * _height;
@@ -91,9 +90,11 @@ namespace FFT
         for ( uint32_t inY = 0; inY < _height; ++inY ) {
             const uint32_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
 
+            const uint32_t posYIn = inY * _width;
+            const uint32_t posYOut = outY * _width;
             for ( uint32_t inX = 0; inX < _width; ++inX ) {
                 const uint32_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
-                out[outY * _width + outX] = static_cast<uint8_t>(_data[inY * _width + inX].r / static_cast<float>(size) + 0.5);
+                out[posYOut + outX] = static_cast<uint8_t>(_data[posYIn + inX].r / static_cast<float>(size) + 0.5);
             }
         }
 
@@ -102,12 +103,12 @@ namespace FFT
 
     void ComplexData::_allocateData( size_t size )
     {
-        _data = reinterpret_cast<kiss_fft_cpx *>(malloc( size ));
+        _data = reinterpret_cast<kiss_fft_cpx *>( cpu_Memory::MemoryAllocator::instance().allocate( size ) );
     }
 
     void ComplexData::_freeData()
     {
-        kiss_fft_free( _data );
+        cpu_Memory::MemoryAllocator::instance().free( _data );
     }
 
     void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data )

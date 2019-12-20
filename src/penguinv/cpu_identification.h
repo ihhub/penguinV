@@ -17,13 +17,16 @@
             #if _MSC_VER >= 1700
                 #define PENGUINV_AVX_SET
             #endif
+            #if _MSC_VER >= 1911
+                #define PENGUINV_AVX512_SKL_SET
+            #endif
         #endif
     #endif
 #elif defined(__APPLE__) || defined(__linux__) || defined (__MINGW32__) // MacOS, Linux or MinGW
 
 #include "cpu_id_unix.h"
 
-    #ifdef __arm__
+    #if defined(__arm__) || defined(__aarch64__)
         #define PENGUINV_NEON_SET
     #elif __SSE2__
         #define PENGUINV_SSE_SET
@@ -34,6 +37,10 @@
 
         #ifdef __AVX2__
             #define PENGUINV_AVX_SET
+        #endif
+
+        #if defined(__AVX512BW__) && defined(__AVX512CD__) && defined(__AVX512DQ__) && defined(__AVX512F__) && defined(__AVX512VL__)
+            #define PENGUINV_AVX512_SKL_SET
         #endif
     #endif
 
@@ -57,6 +64,12 @@
 #ifdef PENGUINV_AVX_SET
     #ifndef PENGUINV_SSE_SET
         #error "None of existing processors can support AVX but not SSE. Please check SIMD instruction set verification code"
+    #endif
+#endif
+
+#ifdef PENGUINV_AVX512_SKL_SET
+    #ifndef PENGUINV_AVX_SET
+        #error "None of existing processors can support AVX512 but not AVX. Please check SIMD instruction set verification code"
     #endif
 #endif
 
@@ -93,6 +106,16 @@ struct SimdInfo
     {
 #ifdef PENGUINV_NEON_SET
         static const bool isAvailable = CpuInformation::isNeonSupported();
+        return isAvailable;
+#else
+        return false;
+#endif
+    }
+
+    static bool isAVX512SKLAvailable()
+    {
+#ifdef PENGUINV_AVX512_SKL_SET
+        static const bool isAvailable = CpuInformation::isAvx512SKLSupported();
         return isAvailable;
 #else
         return false;

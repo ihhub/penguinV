@@ -8,7 +8,7 @@ namespace Function_Pool
 
     // This namespace's functions support thread pool utilization through Thread_Pool::ThreadPoolMonoid class
     // Please make sure before calling of any of these functions that global (singleton) thread pool has at least 1 thread!
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     Image AbsoluteDifference( const Image & in1, const Image & in2 );
     void  AbsoluteDifference( const Image & in1, const Image & in2, Image & out );
@@ -95,6 +95,14 @@ namespace Function_Pool
                    uint32_t width, uint32_t height );
     void  Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
+
+    Image Merge( const Image & in1, const Image & in2, const Image & in3 );
+    void  Merge( const Image & in1, const Image & in2, const Image & in3, Image & out );
+    Image Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height );
+    void  Merge( const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+                 const Image & in3, uint32_t startXIn3, uint32_t startYIn3, Image & out, uint32_t startXOut, uint32_t startYOut,
+                 uint32_t width, uint32_t height );
 
     Image Minimum( const Image & in1, const Image & in2 );
     void  Minimum( const Image & in1, const Image & in2, Image & out );

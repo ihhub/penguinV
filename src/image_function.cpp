@@ -37,6 +37,8 @@ namespace
             table.ProjectionProfile  = &Image_Function::ProjectionProfile;
             table.Resize             = &Image_Function::Resize;
             table.RgbToBgr           = &Image_Function::RgbToBgr;
+            table.RgbToRgba          = &Image_Function::RgbToRgba;
+            table.RgbaToRgb          = &Image_Function::RgbaToRgb;
             table.SetPixel           = &Image_Function::SetPixel;
             table.SetPixel2          = &Image_Function::SetPixel;
             table.Shift              = &Image_Function::Shift;
@@ -47,13 +49,13 @@ namespace
             table.Threshold2         = &Image_Function::Threshold;
             table.Transpose          = &Image_Function::Transpose;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::Image().type(), table );
+            ImageTypeManager::instance().setFunctionTable( penguinV::Image().type(), table );
         }
     };
 
     const FunctionRegistrator functionRegistrator;
 
-    void Dilate( PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
+    void Dilate( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t dilationX, uint32_t dilationY, uint8_t value )
     {
         Image_Function::ParameterValidation( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
@@ -809,18 +811,7 @@ namespace Image_Function
     {
         ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-        if( a < 0 || gamma < 0 )
-            throw imageException( "Gamma correction parameters are invalid" );
-
-        // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256, 255u );
-
-        for( uint16_t i = 0; i < 256; ++i ) {
-            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
-
-            if( data < 256 )
-                value[i] = static_cast<uint8_t>(data);
-        }
+        const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
@@ -856,23 +847,37 @@ namespace Image_Function
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
     {
         ParameterValidation( image, x, y, width, height );
-        VerifyGrayScaleImage( image );
         OptimiseRoi( width, height, image );
 
-        histogram.resize( 256u );
+        const uint32_t colorCount = image.colorCount();
+
+        histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * imageY = image.data() + y * rowSize + x;
+        const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
-        for( ; imageY != imageYEnd; imageY += rowSize ) {
-            const uint8_t * imageX    = imageY;
-            const uint8_t * imageXEnd = imageX + width;
+        if ( colorCount == 1 ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX )
-                ++histogram[*imageX];
+                for ( ; imageX != imageXEnd; ++imageX )
+                    ++histogram[*imageX];
+            }
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXEnd = imageX + width;
+
+                for ( ; imageX != imageXEnd; imageX += colorCount ) {
+                    for ( uint32_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                        ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
+                }
+            }
         }
     }
 
@@ -896,27 +901,44 @@ namespace Image_Function
                     std::vector < uint32_t > & histogram )
     {
         ParameterValidation( image, x, y, mask, maskX, maskY, width, height );
-        VerifyGrayScaleImage( image, mask );
         OptimiseRoi( width, height, image, mask );
 
-        histogram.resize( 256u );
+        const uint32_t colorCount = image.colorCount();
+
+        histogram.resize( 256u * colorCount );
         std::fill( histogram.begin(), histogram.end(), 0u );
 
         const uint32_t rowSize     = image.rowSize();
         const uint32_t rowSizeMask = mask.rowSize();
 
-        const uint8_t * imageY     = image.data() + y * rowSize + x;
+        const uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYMask = mask.data() + maskY * rowSizeMask + maskX;
         const uint8_t * imageYEnd  = imageY + height * rowSize;
 
-        for( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
-            const uint8_t * imageX     = imageY;
-            const uint8_t * imageXMask = imageYMask;
-            const uint8_t * imageXEnd  = imageX + width;
+        if ( colorCount == 1 ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXMask = imageYMask;
+                const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
-                if( (*imageXMask) > 0 )
-                    ++histogram[*imageX];
+                for ( ; imageX != imageXEnd; ++imageX, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 )
+                        ++histogram[*imageX];
+                }
+            }
+        }
+        else {
+            for ( ; imageY != imageYEnd; imageY += rowSize, imageYMask += rowSizeMask ) {
+                const uint8_t * imageX = imageY;
+                const uint8_t * imageXMask = imageYMask;
+                const uint8_t * imageXEnd = imageX + width;
+
+                for ( ; imageX != imageXEnd; imageX += colorCount, ++imageXMask ) {
+                    if ( ( *imageXMask ) > 0 ) {
+                        for ( uint32_t colorChannel = 0; colorChannel < colorCount; ++colorChannel )
+                            ++histogram[*( imageX + colorChannel ) * colorCount + colorChannel];
+                    }
+                }
             }
         }
     }
@@ -1487,6 +1509,103 @@ namespace Image_Function
                 *(outX + 2) = *(inX);
                 *(outX + 1) = *(inX + 1);
                 *(outX) = *(inX + 2);
+            }
+        }
+    }
+
+    Image RgbToRgba( const Image & in )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in );
+    }
+
+    void RgbToRgba( const Image & in, Image & out )
+    {
+        Image_Function_Helper::RgbToRgba( RgbToRgba, in, out );
+    }
+
+    Image RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::RgbToRgba( RgbToRgba, in, startXIn, startYIn, width, height );
+    }
+
+    void RgbToRgba( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyRGBImage     ( in );
+        VerifyRGBAImage    ( out );
+
+        const uint8_t colorCountIn = RGB;
+        const uint8_t colorCountOut = RGBA;
+        width = width * colorCountOut;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCountIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCountOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+                *(outX) = *(inX);
+                *(outX + 1) = *(inX + 1);
+                *(outX + 2) = *(inX + 2);
+                *(outX + 3) = 255u;
+            }
+        }
+    }
+
+    Image RgbaToRgb( const Image & in )
+    {
+        return Image_Function_Helper::RgbaToRgb( RgbaToRgb, in );
+    }
+
+    void RgbaToRgb( const Image & in, Image & out )
+    {
+        Image_Function_Helper::RgbaToRgb( RgbaToRgb, in, out );
+    }
+
+    Image RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::RgbaToRgb( RgbaToRgb, in, startXIn, startYIn, width, height );
+    }
+
+    void RgbaToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        VerifyRGBAImage    ( in );
+        VerifyRGBImage     ( out );
+
+        const uint8_t colorCountIn = RGBA;
+        const uint8_t colorCountOut = RGB;
+        width = width * colorCountOut;
+
+        const uint32_t rowSizeIn  = in.rowSize();
+        const uint32_t rowSizeOut = out.rowSize();
+
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCountIn;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCountOut;
+
+        const uint8_t * outYEnd = outY + height * rowSizeOut;
+
+        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+            const uint8_t * inX  = inY;
+            uint8_t       * outX = outY;
+
+            const uint8_t * outXEnd = outX + width;
+
+            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+                *(outX) = *(inX);
+                *(outX + 1) = *(inX + 1);
+                *(outX + 2) = *(inX + 2);
             }
         }
     }
