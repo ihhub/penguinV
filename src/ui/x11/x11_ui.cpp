@@ -50,16 +50,16 @@ void UiWindowX11::_display()
             XPutImage( _uiDisplay, _window, defaultGC, _image, 0, 0, 0, 0, _width, _height );
 
             for ( size_t i = 0u; i < _point.size(); ++i ) {
-                const Point2d & point = _point[i].first;
-                XSetForeground( _uiDisplay, defaultGC, _point[i].second );
+                const Point2d & point = _point[i].point;
+                XSetForeground( _uiDisplay, defaultGC, _point[i].color );
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>( point.x - 1 ), static_cast<int>( point.y - 1 ), static_cast<int>( point.x + 1 ),
                            static_cast<int>( point.y + 1 ) );
             }
 
             for ( size_t i = 0u; i < _lines.size(); ++i ) {
-                const Point2d & start = std::get<0>( _lines[i] );
-                const Point2d & end = std::get<1>( _lines[i] );
-                const uint32_t & foreground = std::get<2>( _lines[i] );
+                const Point2d & start =  _lines[i].start;
+                const Point2d & end = _lines[i].end;
+                const uint32_t & foreground = _lines[i].color;
 
                 XSetForeground( _uiDisplay, defaultGC, foreground );
                 XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>( start.x ), static_cast<int>( start.y ), static_cast<int>( end.x ),
@@ -67,10 +67,10 @@ void UiWindowX11::_display()
             }
 
             for ( size_t i = 0u; i < _ellipses.size(); ++i ) {
-                const Point2d & position = std::get<0>( _ellipses[i] );
-                const double & width = std::get<1>( _ellipses[i] );
-                const double & height = std::get<2>( _ellipses[i] );
-                const uint32_t & foreground = std::get<3>( _ellipses[i] );
+                const Point2d & position = _ellipses[i].topLeft;
+                const double & width = _ellipses[i].width;
+                const double & height = _ellipses[i].height;
+                const uint32_t & foreground = _ellipses[i].color;
 
                 XSetForeground( _uiDisplay, defaultGC, foreground );
                 XDrawArc( _uiDisplay, _window, defaultGC, static_cast<int>( position.x ), static_cast<int>( position.y ), static_cast<int>( width ),
@@ -78,13 +78,13 @@ void UiWindowX11::_display()
             }
 
             for ( size_t i = 0u; i < _rectangles.size(); ++i ) {
-                const Point2d & topLeftCorner = std::get<0>( _rectangles[i] );
-                const double & width = std::get<1>( _rectangles[i] );
-                const double & height = std::get<2>( _rectangles[i] );
-                const uint32_t & foreground = std::get<3>( _rectangles[i] );
+                const Point2d & topLeft = _rectangles[i].topLeft;
+                const double & width = _rectangles[i].width;
+                const double & height = _rectangles[i].height;
+                const uint32_t & foreground = _rectangles[i].color;
 
                 XSetForeground( _uiDisplay, defaultGC, foreground );
-                XDrawRectangle( _uiDisplay, _window, defaultGC, static_cast<int>( topLeftCorner.x ), static_cast<int>( topLeftCorner.y ), static_cast<int>( width ),
+                XDrawRectangle( _uiDisplay, _window, defaultGC, static_cast<int>( topLeft.x ), static_cast<int>( topLeft.y ), static_cast<int>( width ),
                                 static_cast<int>( height ) );
             }
         }
@@ -141,12 +141,12 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
 
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 {
-    _point.push_back( std::make_pair( point, (color.red << 16) + (color.green << 8) + color.blue ) );
+    _point.push_back( PointToDraw( point, (color.red << 16) + (color.green << 8) + color.blue ) );
 }
 
 void UiWindowX11::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
-    _lines.push_back( std::make_tuple( start, end, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
+    _lines.push_back( LineToDraw( start, end, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
 
 void UiWindowX11::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
@@ -154,12 +154,12 @@ void UiWindowX11::drawEllipse( const Point2d & center, double xRadius, double yR
     // XDrawArc needs x and y coordinates of the upper-left corner of the bounding rectangle but not the center of the ellipse.
     Point2d position( center.x - xRadius, center.y - yRadius );
 
-    _ellipses.push_back( std::make_tuple( position, xRadius * 2, yRadius * 2, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
+    _ellipses.push_back( EllipseToDraw( position, xRadius * 2, yRadius * 2, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
 
 void UiWindowX11::drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color )
 {
-    _rectangles.push_back( std::make_tuple( topLeftCorner, width, height, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
+    _rectangles.push_back( RectangleToDraw( topLeftCorner, width, height, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
 
 #endif
