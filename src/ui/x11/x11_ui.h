@@ -32,11 +32,10 @@ private:
 
     struct PointToDraw
     {
-        PointToDraw( const Point2d & point_ = Point2d(),  uint32_t color_ = 0 )
+        PointToDraw( const Point2d & point_ = Point2d(), uint32_t color_ = 0 )
             : point( point_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d point;
         uint32_t color;
@@ -44,12 +43,11 @@ private:
 
     struct LineToDraw
     {
-        LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(),  uint32_t color_ = 0 )
+        LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), uint32_t color_ = 0 )
             : start( start_ )
-            , end  ( end_ )
+            , end( end_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d start;
         Point2d end;
@@ -58,13 +56,12 @@ private:
 
     struct EllipseToDraw
     {
-        EllipseToDraw( const Point2d& topLeft_ = Point2d(), double width_ = 0.0, double height_ = 0.0, uint32_t color_ = 0 )
-            : topLeft ( topLeft_ )
-            , width   ( width_ )
-            , height  ( height_ )
-            , color   ( color_ )
-        {
-        }
+        EllipseToDraw( const Point2d & topLeft_ = Point2d(), double width_ = 0.0, double height_ = 0.0, uint32_t color_ = 0 )
+            : topLeft( topLeft_ )
+            , width( width_ )
+            , height( height_ )
+            , color( color_ )
+        {}
 
         Point2d topLeft;
         double width;
@@ -74,13 +71,12 @@ private:
 
     struct RectangleToDraw
     {
-        RectangleToDraw( const Point2d& topLeft_ = Point2d(), double width_ = 0.0, double height_ = 0.0, uint32_t color_ = 0 )
-            : topLeft ( topLeft_ )
-            , width   ( width_ )
-            , height  ( height_ )
-            , color   ( color_ )
-        {
-        }
+        RectangleToDraw( const Point2d & topLeft_ = Point2d(), double width_ = 0.0, double height_ = 0.0, uint32_t color_ = 0 )
+            : topLeft( topLeft_ )
+            , width( width_ )
+            , height( height_ )
+            , color( color_ )
+        {}
 
         Point2d topLeft;
         double width;
@@ -88,10 +84,10 @@ private:
         uint32_t color;
     };
 
-    std::vector < PointToDraw > _point;
-    std::vector < LineToDraw > _lines;
-    std::vector < EllipseToDraw > _ellipses;
-    std::vector < RectangleToDraw > _rectangles;
+    std::vector<PointToDraw> _point;
+    std::vector<LineToDraw> _lines;
+    std::vector<EllipseToDraw> _ellipses;
+    std::vector<RectangleToDraw> _rectangles;
 
     void _setupImage( const penguinV::Image & image );
 };

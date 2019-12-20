@@ -57,7 +57,7 @@ void UiWindowX11::_display()
             }
 
             for ( size_t i = 0u; i < _lines.size(); ++i ) {
-                const Point2d & start =  _lines[i].start;
+                const Point2d & start = _lines[i].start;
                 const Point2d & end = _lines[i].end;
                 const uint32_t & foreground = _lines[i].color;
 
@@ -141,7 +141,7 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
 
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 {
-    _point.push_back( PointToDraw( point, (color.red << 16) + (color.green << 8) + color.blue ) );
+    _point.push_back( PointToDraw( point, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
 
 void UiWindowX11::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
