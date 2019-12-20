@@ -9,19 +9,19 @@
 namespace pvmathHelper
 {
     template <typename _Type>
-    bool isEqual( const _Type & value1, const _Type & value2 )
+    bool isEqual( const PointBase2D<_Type> & value1, const PointBase2D<_Type> & value2 )
     {
-        return pvmath::isEqual( value1, value2 );
+        return pvmath::isEqual( value1.x, value2.x ) && pvmath::isEqual( value1.y, value2.y );
     }
 
     // For 90 degree angle we have [4.37113883e-08, 1] values of directories instead of [0, 1].
     // Value 4.37113883e-08 is standard error for float variable.
     // The difference between possible generated points is 200.
-    // We multiply 2000 by 2 and by 4.37113883e-08 which gives us 0.0001748455532 --> 0.0002
+    // We multiply 2000 by 2 * 2 and by 4.37113883e-08 which gives us 0.0001748455532 * 2 --> 0.0004
     template <>
-    bool isEqual<float>( const float & value1, const float & value2 )
+    bool isEqual<float>( const PointBase2D<float> & value1, const PointBase2D<float> & value2 )
     {
-        return std::fabs( value1 - value2 ) < 0.0002;
+        return ( std::fabs( value1.x - value2.x ) < 0.0004 ) && ( std::fabs( value1.y - value2.y ) < 0.0004 );
     }
 }
 
