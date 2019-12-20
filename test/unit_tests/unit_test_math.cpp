@@ -16,7 +16,7 @@ namespace pvmathHelper
 
     // For 90 degree angle we have [4.37113883e-08, 1] values of directories instead of [0, 1].
     // Value 4.37113883e-08 is standard error for float variable.
-    // The difference between possible generated points is 200.
+    // The difference between possible generated points is 2000.
     // We multiply 2000 by 2 * 2 and by 4.37113883e-08 which gives us 0.0001748455532 * 2 --> 0.0004
     template <>
     bool isEqual<float>( const PointBase2D<float> & value1, const PointBase2D<float> & value2 )
