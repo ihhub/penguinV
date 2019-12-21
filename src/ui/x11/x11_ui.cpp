@@ -152,7 +152,7 @@ void UiWindowX11::drawLine( const Point2d & start, const Point2d & end, const Pa
 void UiWindowX11::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
     // XDrawArc needs x and y coordinates of the upper-left corner of the bounding rectangle but not the center of the ellipse.
-    Point2d position( center.x - xRadius, center.y - yRadius );
+    const Point2d position( center.x - xRadius, center.y - yRadius );
 
     _ellipses.push_back( EllipseToDraw( position, xRadius * 2, yRadius * 2, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
