@@ -1183,6 +1183,8 @@ namespace Function_Template
         uint32_t roiX, roiY;
         uint32_t roiWidth, roiHeight;
         generateRoi( image, roiX, roiY, roiWidth, roiHeight );
+        if ( roiWidth * roiHeight < 3 )
+            return true;
 
         fillImage( image, roiX, roiY, roiWidth, roiHeight, intensity );
 
