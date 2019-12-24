@@ -94,7 +94,7 @@ void UiWindowX11::_display()
     }
 }
 
-uint32_t UiWindowX11::_convertColor(const PaintColor &color)
+uint32_t UiWindowX11::_convertColor( const PaintColor & color )
 {
     return static_cast<uint32_t>( ( color.red << 16 ) + ( color.green << 8 ) + color.blue );
 }

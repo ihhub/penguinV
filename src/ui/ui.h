@@ -38,8 +38,7 @@ protected:
         PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : point( point_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d point;
         PaintColor color;
@@ -49,10 +48,9 @@ protected:
     {
         LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : start( start_ )
-            , end  ( end_   )
+            , end( end_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d start;
         Point2d end;

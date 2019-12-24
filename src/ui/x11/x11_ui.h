@@ -48,7 +48,7 @@ private:
     std::vector<RectangleToDraw> _rectangles;
 
     void _setupImage( const penguinV::Image & image );
-    static uint32_t _convertColor(const PaintColor & color = PaintColor());
+    static uint32_t _convertColor( const PaintColor & color = PaintColor() );
 };
 
 #endif
