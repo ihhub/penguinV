@@ -68,10 +68,10 @@ namespace WindowsUi
             }
 
             for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
-                const int left = static_cast<int>( ellipse->left * xFactor );
-                const int top = static_cast<int>( ellipse->top * yFactor );
-                const int right = static_cast<int>( ellipse->right * xFactor );
-                const int bottom = static_cast<int>( ellipse->bottom * yFactor );
+                const int left = static_cast<int>( ellipse->topLeft.x * xFactor );
+                const int top = static_cast<int>( ellipse->topLeft.y * yFactor );
+                const int right = static_cast<int>( ( ellipse->topLeft.x + width ) * xFactor );
+                const int bottom = static_cast<int>( ( ellipse->topLeft.y + height ) * yFactor );
 
                 HPEN hPen = CreatePen( PS_SOLID, 1, RGB( ellipse->color.red, ellipse->color.green, ellipse->color.blue ) );
                 HGDIOBJ hOldPen = SelectObject( hdc, hPen );
@@ -276,7 +276,8 @@ void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const Pa
 
 void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
-    _ellipse.emplace_back( center.x - xRadius, center.y - yRadius, center.x + xRadius, center.y + yRadius, color );
+    const Point topLeft( center.x - xRadius, center.y - yRadius );
+    _ellipse.emplace_back( topLeft, xRadius * 2, yRadius * 2, color );
 
     _display();
 }

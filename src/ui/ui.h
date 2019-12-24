@@ -33,6 +33,51 @@ public:
 protected:
     virtual void _display();
 
+    struct PointToDraw
+    {
+        PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
+            : point( point_ )
+            , color( color_ )
+        {
+        }
+
+        Point2d point;
+        PaintColor color;
+    };
+
+    struct LineToDraw
+    {
+        LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
+            : start( start_ )
+            , end  ( end_   )
+            , color( color_ )
+        {
+        }
+
+        Point2d start;
+        Point2d end;
+        PaintColor color;
+    };
+
+    struct EllipseToDraw
+    {
+        EllipseToDraw( const Point2d & topLeft_ = Point2d(), double width_ = 0.0, double height_ = 0.0, const PaintColor & color_ = PaintColor() )
+            : topLeft( topLeft_ )
+            , width( width_ )
+            , height( height_ )
+            , color( color_ )
+        {}
+
+        Point2d topLeft;
+        double width;
+        double height;
+        PaintColor color;
+    };
+
+    std::vector<PointToDraw> _point;
+    std::vector<LineToDraw> _lines;
+    std::vector<EllipseToDraw> _ellipses;
+
     penguinV::Image _image; // we store a copy of image
     std::string _title;
     bool _shown;
