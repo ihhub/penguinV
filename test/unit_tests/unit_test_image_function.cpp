@@ -2612,6 +2612,10 @@ namespace avx512
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
+    SET_FUNCTION_4_FORMS( ProjectionProfile )
+    SET_FUNCTION_4_FORMS( RgbToBgr )
+    SET_FUNCTION_4_FORMS( Subtract )
+    SET_FUNCTION_2_FORMS( Sum )
 }
 #endif
 
