@@ -361,6 +361,162 @@ namespace avx512
             }
         }
     }
+
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
+                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm512_setzero_si512();
+
+        if( horizontal ) {
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
+
+            for( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
+                const uint8_t * imageSimdY = imageStart;
+                const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
+                simd simdSum_1 = _mm512_setzero_si512();
+                simd simdSum_2 = _mm512_setzero_si512();
+                simd simdSum_3 = _mm512_setzero_si512();
+                simd simdSum_4 = _mm512_setzero_si512();
+
+                simd * dst = reinterpret_cast <simd*> (out);
+
+                for( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                    const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
+
+                    const simd data = _mm512_loadu_si512( src );
+
+                    const simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                    const simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+
+                    const simd data_1 = _mm512_unpacklo_epi16( dataLo, zero );
+                    const simd data_2 = _mm512_unpackhi_epi16( dataLo, zero );
+                    const simd data_3 = _mm512_unpacklo_epi16( dataHi, zero );
+                    const simd data_4 = _mm512_unpackhi_epi16( dataHi, zero );
+                    simdSum_1 = _mm512_add_epi32( data_1, simdSum_1 );
+                    simdSum_2 = _mm512_add_epi32( data_2, simdSum_2 );
+                    simdSum_3 = _mm512_add_epi32( data_3, simdSum_3 );
+                    simdSum_4 = _mm512_add_epi32( data_4, simdSum_4 );
+                }
+
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_1, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_2, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_3, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_4, _mm512_loadu_si512( dst ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t* imageXEnd = imageStart + nonSimdWidth;
+
+                for( ; imageStart != imageXEnd; ++imageStart, ++out ) {
+                    const uint8_t * imageY    = imageStart;
+                    const uint8_t * imageYEnd = imageY + height * rowSize;
+
+                    for( ; imageY != imageYEnd; imageY += rowSize )
+                        (*out) += (*imageY);
+                }
+            }
+        }
+        else {
+            const uint8_t * imageYEnd = imageStart + height * rowSize;
+
+            for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
+                const simd * src    = reinterpret_cast <const simd*> (imageStart);
+                const simd * srcEnd = src + simdWidth;
+                simd simdSum = _mm512_setzero_si512();
+
+                for( ; src != srcEnd; ++src ) {
+                    simd data = _mm512_loadu_si512( src );
+
+                    simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                    simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+                    simd sumLoHi = _mm512_add_epi16( dataLo, dataHi );
+
+                    simdSum = _mm512_add_epi32( simdSum, _mm512_add_epi32( _mm512_unpacklo_epi16( sumLoHi, zero ),
+                                                                           _mm512_unpackhi_epi16( sumLoHi, zero ) ) );
+                }
+
+                if( nonSimdWidth > 0 ) {
+                    const uint8_t * imageX    = imageStart + totalSimdWidth;
+                    const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                    for( ; imageX != imageXEnd; ++imageX )
+                        (*out) += (*imageX);
+                }
+
+                uint32_t output[8] = { 0 };
+                _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
+                
+                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
+            }
+        }
+    }
+
+    void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                   uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for( ; src1 != src1End; ++src1, ++src2, ++dst ) {
+                simd data = _mm512_loadu_si512( src1 );
+                _mm512_storeu_si512( dst, _mm512_sub_epi8( data, _mm512_min_epu8( data, _mm512_loadu_si512( src2 ) ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
+            }
+        }
+    }
+
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY,const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        uint32_t sum = 0;
+        simd simdSum = _mm512_setzero_si512();
+        simd zero    = _mm512_setzero_si512();
+
+        for( ; imageY != imageYEnd; imageY += rowSize ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+
+            for( ; src != srcEnd; ++src ) {
+                simd data = _mm512_loadu_si512( src );
+
+                simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+                simd sumLoHi = _mm512_add_epi16( dataLo, dataHi );
+
+                simdSum = _mm512_add_epi32( simdSum, _mm512_add_epi32( _mm512_unpacklo_epi16( sumLoHi, zero ),
+                                                                       _mm512_unpackhi_epi16( sumLoHi, zero ) ) );
+            }
+
+            if( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                for( ; imageX != imageXEnd; ++imageX )
+                    sum += (*imageX);
+            }
+        }
+
+        uint32_t output[8] ={ 0 };
+
+        _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
+
+        return sum + output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
+    }
 #endif
 }
 
