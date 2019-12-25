@@ -39,7 +39,7 @@ namespace WindowsUi
             const int minPointFactor = static_cast<int>(xFactor < yFactor ? xFactor : yFactor);
             const int pointMultiplicator = minPointFactor > 1 ? minPointFactor / 2 : 1;
 
-            for ( std::vector < UiWindowWin::PointToDraw >::const_iterator point = _window->_point.cbegin(); point != _window->_point.cend(); ++point ) {
+            for ( std::vector<UiWindowWin::PointToDraw>::const_iterator point = _window->_point.cbegin(); point != _window->_point.cend(); ++point ) {
                 const int x = static_cast<int>(point->point.x * xFactor);
                 const int y = static_cast<int>(point->point.y * yFactor);
 
@@ -53,7 +53,7 @@ namespace WindowsUi
                 DeleteObject( hPen );
             }
 
-            for ( std::vector < UiWindowWin::LineToDraw >::const_iterator line = _window->_line.cbegin(); line != _window->_line.cend(); ++line ) {
+            for ( std::vector<UiWindowWin::LineToDraw>::const_iterator line = _window->_lines.cbegin(); line != _window->_lines.cend(); ++line ) {
                 const int xStart = static_cast<int>(line->start.x * xFactor);
                 const int yStart = static_cast<int>(line->start.y * yFactor);
                 const int xEnd   = static_cast<int>(line->end.x * xFactor);
@@ -269,7 +269,7 @@ void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )
 
 void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const PaintColor & color )
 {
-    _line.emplace_back( start, end, color );
+    _lines.emplace_back( start, end, color );
 
     _display();
 }
@@ -288,10 +288,10 @@ void UiWindowWin::drawRectangle( const Point2d & topLeftCorner, double width, do
     const Point2d bottomLeftCorner( topLeftCorner.x, topLeftCorner.y + height );
     const Point2d bottomRightCorner( topLeftCorner.x + width, topLeftCorner.y + height );
 
-    _line.emplace_back( topLeftCorner, topRightCorner, color );
-    _line.emplace_back( topLeftCorner, bottomLeftCorner, color );
-    _line.emplace_back( topRightCorner, bottomRightCorner, color );
-    _line.emplace_back( bottomLeftCorner, bottomRightCorner, color );
+    _lines.emplace_back( topLeftCorner, topRightCorner, color );
+    _lines.emplace_back( topLeftCorner, bottomLeftCorner, color );
+    _lines.emplace_back( topRightCorner, bottomRightCorner, color );
+    _lines.emplace_back( bottomLeftCorner, bottomRightCorner, color );
 
     _display();
 }
