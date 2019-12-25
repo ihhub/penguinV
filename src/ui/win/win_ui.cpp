@@ -67,7 +67,7 @@ namespace WindowsUi
                 DeleteObject( hPen );
             }
 
-            for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
+            for ( std::vector<UiWindowWin::EllipseToDraw>::const_iterator ellipse = _window->_ellipses.cbegin(); ellipse != _window->_ellipses.cend(); ++ellipse ) {
                 const int left = static_cast<int>( ellipse->topLeft.x * xFactor );
                 const int top = static_cast<int>( ellipse->topLeft.y * yFactor );
                 const int right = static_cast<int>( ( ellipse->topLeft.x + width ) * xFactor );
@@ -277,7 +277,7 @@ void UiWindowWin::drawLine( const Point2d & start, const Point2d & end, const Pa
 void UiWindowWin::drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color )
 {
     const Point topLeft( center.x - xRadius, center.y - yRadius );
-    _ellipse.emplace_back( topLeft, xRadius * 2, yRadius * 2, color );
+    _ellipses.emplace_back( topLeft, xRadius * 2, yRadius * 2, color );
 
     _display();
 }
