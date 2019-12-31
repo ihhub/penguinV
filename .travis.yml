@@ -135,6 +135,10 @@ script:
               -R unit_test --extra-verbose \
               -T MemCheck # execute unit_test only
       else
-        ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+        if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+          ctest -C $BUILD_TYPE -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+        else
+          ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+        fi
       fi
     fi
