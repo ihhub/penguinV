@@ -15,6 +15,8 @@ namespace multiCL
     class OpenCLProgram;
 
     bool isOpenCLSupported();
+    void enableDeviceSupport( bool enableGPUSupport = true, bool enableCPUSupport = false );
+    void getDeviceSupportStatus( bool & isGPUSupportActive, bool & isCPUSupportActive );
 
     void openCLCheck( cl_int error ); // validates cl_int value and throws an exception if the value is not CL_SUCCESS
     bool openCLSafeCheck( cl_int error ); // validates cl_int and returns true if the error is CL_SUCCESS

@@ -187,7 +187,7 @@ namespace multiCL
 
         void setActiveDevice( uint32_t deviceId ); // set device with specified ID as a active device in current thread
 
-        void resetSupportedDevice( bool enableCpuSupport, bool enableGpuSupport ); // by default CPU support is OFF, GPU support is ON.
+        void resetSupportedDevice();
 
     private:
         OpenCLDeviceManager();
