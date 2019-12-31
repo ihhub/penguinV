@@ -39,9 +39,9 @@ kiss_fftnd_cfg kiss_fftnd_alloc(const int *dims,int ndims,int inverse_fft,void*m
         memneeded += sublen;   /* st->states[i] */
         dimprod *= dims[i];
     }
-    memneeded += sizeof(int) * ndims;/*  st->dims */
-    memneeded += sizeof(void*) * ndims;/* st->states  */
-    memneeded += sizeof(kiss_fft_cpx) * dimprod; /* st->tmpbuf */
+    memneeded += sizeof(int) * (size_t)(ndims);/*  st->dims */
+    memneeded += sizeof(void*) * (size_t)(ndims);/* st->states  */
+    memneeded += sizeof(kiss_fft_cpx) * (size_t)(dimprod); /* st->tmpbuf */
 
     if (lenmem == NULL) {/* allocate for the caller*/
         st = (kiss_fftnd_cfg) malloc (memneeded);
@@ -58,13 +58,13 @@ kiss_fftnd_cfg kiss_fftnd_alloc(const int *dims,int ndims,int inverse_fft,void*m
     ptr=(char*)(st+1);
 
     st->states = (kiss_fft_cfg *)ptr;
-    ptr += sizeof(void*) * ndims;
+    ptr += sizeof(void*) * (size_t)(ndims);
 
     st->dims = (int*)ptr;
-    ptr += sizeof(int) * ndims;
+    ptr += sizeof(int) * (size_t)(ndims);
 
     st->tmpbuf = (kiss_fft_cpx*)ptr;
-    ptr += sizeof(kiss_fft_cpx) * dimprod;
+    ptr += sizeof(kiss_fft_cpx) * (size_t)(dimprod);
 
     for (i=0;i<ndims;++i) {
         size_t len;
@@ -168,7 +168,7 @@ void kiss_fftnd(kiss_fftnd_cfg st,const kiss_fft_cpx *fin,kiss_fft_cpx *fout)
     if ( st->ndims & 1 ) {
         bufout = fout;
         if (fin==fout) {
-            memcpy( st->tmpbuf, fin, sizeof(kiss_fft_cpx) * st->dimprod );
+            memcpy( st->tmpbuf, fin, sizeof(kiss_fft_cpx) * (size_t)(st->dimprod) );
             bufin = st->tmpbuf;
         }
     }else
