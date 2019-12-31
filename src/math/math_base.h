@@ -87,10 +87,10 @@ struct PointBase2D
     _Type y;
 };
 
-template <typename _Type>
-PointBase2D<_Type> operator * ( const _Type & value, const PointBase2D<_Type> & point )
+template <typename _Type, typename T>
+PointBase2D<_Type> operator * ( const T & value, const PointBase2D<_Type> & point )
 {
-    return PointBase2D<_Type>( value * point.x, value * point.y );
+    return PointBase2D<_Type>( static_cast<_Type>( value ) * point.x, static_cast<_Type>( value ) * point.y );
 }
 
 template <typename _Type>
@@ -229,7 +229,7 @@ public:
 
     PointBase2D<_Type> opposite( const PointBase2D<_Type> & point ) const
     {
-        return static_cast<_Type>( 2 ) * projection( point ) - point;
+        return 2 * projection( point ) - point;
     }
 
     template <template <typename, typename...> class _container>
