@@ -15,11 +15,15 @@ namespace multiCL
     class MemoryAllocator : public BaseMemoryAllocator
     {
     public:
-        MemoryAllocator( cl_context context, size_t availableSpace )
-            : _context      ( context )
-            , _data         ( NULL )
-            , _availableSize( availableSpace ) 
+        MemoryAllocator( cl_context context, cl_device_id deviceId, size_t availableSpace )
+            : _context          ( context )
+            , _minimumSizeChunk ( 1 )
+            , _data             ( NULL )
+            , _availableSize    ( availableSpace ) 
         {
+            const cl_int error = clGetDeviceInfo( deviceId, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof(cl_uint), &_minimumSizeChunk, NULL );
+            if ( error != CL_SUCCESS )
+                throw std::logic_error( "Cannot get an information about minimum allocation size on OpenCL device" );
         }
 
         virtual ~MemoryAllocator()
@@ -35,7 +39,7 @@ namespace multiCL
             size = size * sizeof( _DataType );
 
             if ( _data != NULL && size < _size ) {
-                const uint8_t level = _getAllocationLevel( size );
+                const uint8_t level = _getAllocationLevel( size < _minimumSizeChunk ? _minimumSizeChunk : size );
 
                 if ( _split( level ) ) {
                     cl_buffer_region region;
@@ -89,6 +93,7 @@ namespace multiCL
         }
     private:
         cl_context _context;
+        cl_uint _minimumSizeChunk;
         cl_mem _data; // a pointer to memory allocated chunk
         const size_t _availableSize; // maximum available memory size
 
