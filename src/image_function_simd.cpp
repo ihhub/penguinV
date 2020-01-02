@@ -1247,7 +1247,7 @@ namespace sse
                 const uint8_t * inXEnd = inX + nonSimdWidth;
 
                 for( ; inX != inXEnd; outX += colorCount, ++inX )
-                    memset( outX, (*inX), rgbSize );
+                    memset( outX, *inX, rgbSize );
             }
         }
     }
@@ -1735,7 +1735,7 @@ namespace neon
             const uint8_t * srcEnd = src + totalSimdWidth;
             uint32_t      * dst    = outY;
 
-            for( ; src != srcEnd; src += simdSize ) {
+            for ( ; src != srcEnd; src += simdSize ) {
                 uint8x16_t data = vld1q_u8( src );
 
                 const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero_8 );
@@ -1923,7 +1923,7 @@ namespace neon
                 const uint8_t * inXEnd = inX + nonSimdWidth;
 
                 for( ; inX != inXEnd; outX += colorCount, ++inX )
-                    memset( outX, (*inX), rgbSize );
+                    memset( outX, *inX, rgbSize );
             }
         }
     }

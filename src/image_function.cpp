@@ -622,7 +622,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; outX += colorCount, ++inX )
-                memset( outX, (*inX), rgbSize );
+                memset( outX, *inX, rgbSize );
         }
     }
 
