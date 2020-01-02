@@ -1902,7 +1902,7 @@ namespace neon
 
             const uint8_t * srcEnd = src + totalSimdWidth;
 
-            for( ; src != srcEnd; ++src ) {
+            for ( ; src != srcEnd; src += 8 ) {
                 const uint8x8_t src1 = vld1_u8( src );
 
                 vst1_u8( dst, vtbl1_u8( src1, ctrl1 ) );
