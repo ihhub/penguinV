@@ -1885,7 +1885,7 @@ namespace neon
     }
 
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                       uint8_t colorCount, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                       uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t ctrl1_array[8] = {0, 0, 0, 1, 1, 1, 2, 2};
         const uint8_t ctrl2_array[8] = {2, 3, 3, 3, 4, 4, 4, 5};
@@ -1895,13 +1895,15 @@ namespace neon
         const uint8x8_t ctrl2 = vld1_u8( ctrl2_array );
         const uint8x8_t ctrl3 = vld1_u8( ctrl3_array );
 
+        const uint32_t simdSize = totalSimdWidth / simdWidth;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * src = inY;
             uint8_t       * dst = outY;
 
             const uint8_t * srcEnd = src + totalSimdWidth;
 
-            for ( ; src != srcEnd; src += 8 ) {
+            for ( ; src != srcEnd; src += simdSize ) {
                 const uint8x8_t src1 = vld1_u8( src );
 
                 vst1_u8( dst, vtbl1_u8( src1, ctrl1 ) );
@@ -2216,16 +2218,17 @@ namespace neon
         }
     }
 
-    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         uint32_t sum = 0;
         uint32x4_t simdSum = vdupq_n_u32(0);
+        const uint32_t simdSize = totalSimdWidth / simdWidth;
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * src    = imageY;
             const uint8_t * srcEnd = src + totalSimdWidth;
 
-            for ( ; src != srcEnd; src += 8 ) {
+            for ( ; src != srcEnd; src += simdSize ) {
                 const uint8x16_t data = vld1q_u8(src);
                 const uint16x8_t data8Sum = vaddl_u8(vget_high_u8(data), vget_low_u8(data));
                 const uint32x4_t data16Sum = vaddl_u16(vget_high_u16(data8Sum), vget_low_u16(data8Sum));
