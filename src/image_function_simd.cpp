@@ -1718,7 +1718,7 @@ namespace neon
                 const uint8_t * outXEnd = outX + nonSimdWidth;
 
                 for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
-                    (*outX) = (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X);
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
             }
         }
     }
@@ -2090,7 +2090,6 @@ namespace neon
                     const uint8x16_t data = vld1q_u8( src );
 
                     const uint16x8_t dataLo = vaddl_u8( vget_low_u8(data), zero );
-                    const uint16x8_t dataHi = vaddl_u8( vget_high_u8(data), zero );
 
                     const uint32x4_t data_1 = vaddl_u16( vget_low_u16 (dataLo), zero_16 );
                     const uint32x4_t data_2 = vaddl_u16( vget_high_u16(dataLo), zero_16 );
@@ -2129,7 +2128,7 @@ namespace neon
 
             for( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
                 const uint8_t * src    = imageStart;
-                const uint8_t * srcEnd = src + simdWidth*simdSize;
+                const uint8_t * srcEnd = src + totalSimdWidth;
                 uint32x4_t simdSum = vdupq_n_u32(0);
 
                 for( ; src != srcEnd; src += simdSize ) {
