@@ -1734,7 +1734,7 @@ namespace neon
             const uint8_t * srcEnd = src + totalSimdWidth;
             uint32_t      * dst    = outY;
 
-            for( ; src != srcEnd; src+= simdSize ) {
+            for( ; src != srcEnd; src += simdSize ) {
                 uint8x16_t data = vld1q_u8( src );
 
                 const uint16x8_t dataLo  = vaddl_u8( vget_low_u8(data), zero_8 );
@@ -2218,11 +2218,10 @@ namespace neon
         }
     }
 
-    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         uint32_t sum = 0;
         uint32x4_t simdSum = vdupq_n_u32(0);
-        const uint32_t simdSize = totalSimdWidth / simdWidth;
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * src    = imageY;
