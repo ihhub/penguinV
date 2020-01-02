@@ -2161,7 +2161,7 @@ namespace neon
     }
 
     void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
-                   const uint8_t colorCount, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t ctrl_array[8] = {2, 1, 0, 5, 4, 3, 6, 7};
         const uint8x8_t ctrl = vld1_u8( ctrl_array );
