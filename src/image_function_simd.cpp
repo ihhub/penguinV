@@ -1281,10 +1281,7 @@ namespace sse
             }
         }
         else if( !horizontal && vertical ) {
-            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
-
-            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
-                memcpy( outY, inY, sizeof( uint8_t ) * width );
+            throw std::logic_error( "This case should not be handled in this function" );
         }
         else {
             uint8_t * outYSimd = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - simdSize;
@@ -1953,10 +1950,7 @@ namespace neon
             }
         }
         else if( !horizontal && vertical ) {
-            uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
-
-            for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
-                memcpy( outY, inY, sizeof( uint8_t ) * width );
+            throw std::logic_error( "This case should not be handled in this function" );
         }
         else {
             uint8_t * outYSimd = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 8;
@@ -2698,7 +2692,7 @@ if ( simdType == neon_function ) { \
         if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
             simdSize = 8u;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( width < simdSize ) || ( !horizontal && vertical ) ) {
             AVX_CODE( Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, sse_function ); )
 
             Image_Function::Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
