@@ -1698,7 +1698,7 @@ namespace neon
     typedef uint8x16_t simd;
 
     void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                             uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                             uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -1723,8 +1723,7 @@ namespace neon
         }
     }
     
-    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t simdWidth,
-                     uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    void Accumulate( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t * outY, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8x8_t zero_8 = vdup_n_u8(0);
 
@@ -1763,7 +1762,7 @@ namespace neon
     }
 
     void BitwiseAnd( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                     uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                     uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -1789,7 +1788,7 @@ namespace neon
     }
 
     void BitwiseOr( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                    uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                    uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -1815,7 +1814,7 @@ namespace neon
     }
 
     void BitwiseXor( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                     uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                     uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -1841,7 +1840,7 @@ namespace neon
     }
 
     void ConvertTo16Bit( uint16_t * outY, const uint16_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                         uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * src    = inY;
@@ -1864,7 +1863,7 @@ namespace neon
     }
 
     void ConvertTo8Bit( uint8_t * outY, const uint8_t * outYEnd, const uint16_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                         uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                         uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint16_t * src    = inY;
@@ -1886,7 +1885,7 @@ namespace neon
     }
 
     void ConvertToRgb( uint8_t * outY, const uint8_t * outYEnd, const uint8_t * inY, uint32_t rowSizeOut, uint32_t rowSizeIn,
-                       uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                       uint8_t colorCount, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t ctrl1_array[8] = {0, 0, 0, 1, 1, 1, 2, 2};
         const uint8_t ctrl2_array[8] = {2, 3, 3, 3, 4, 4, 4, 5};
@@ -1982,7 +1981,7 @@ namespace neon
     }
 
     void Invert( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd,
-                 uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                 uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * src1 = inY;
@@ -2006,7 +2005,7 @@ namespace neon
     }
 
     void Maximum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -2036,7 +2035,7 @@ namespace neon
     }
 
     void Minimum( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                  uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                  uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -2066,7 +2065,7 @@ namespace neon
     }
 
     void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
-                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                            uint32_t * out, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8x8_t zero = vdup_n_u8(0);
         const uint16x4_t zero_16 = vdup_n_u16(0);
@@ -2162,7 +2161,7 @@ namespace neon
     }
 
     void RgbToBgr( uint8_t * outY, const uint8_t * inY, const uint8_t * outYEnd, uint32_t rowSizeOut, uint32_t rowSizeIn, 
-                   const uint8_t colorCount, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                   const uint8_t colorCount, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t ctrl_array[8] = {2, 1, 0, 5, 4, 3, 6, 7};
         const uint8x8_t ctrl = vld1_u8( ctrl_array );
@@ -2190,7 +2189,7 @@ namespace neon
     }
 
     void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
-                   uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                   uint8_t * outY, const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
             const uint8_t * src1 = in1Y;
@@ -2217,7 +2216,7 @@ namespace neon
         }
     }
 
-    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         uint32_t sum = 0;
         uint32x4_t simdSum = vdupq_n_u32(0);
@@ -2248,7 +2247,7 @@ namespace neon
     }
 
     void Threshold( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd, uint8_t threshold,
-                    uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                    uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t thresholdValue[16] ={ threshold, threshold, threshold, threshold, threshold, threshold, threshold, threshold,
                                             threshold, threshold, threshold, threshold, threshold, threshold, threshold, threshold };
@@ -2276,7 +2275,7 @@ namespace neon
     }
 
     void Threshold( uint32_t rowSizeIn, uint32_t rowSizeOut, const uint8_t * inY, uint8_t * outY, const uint8_t * outYEnd, uint8_t minThreshold, uint8_t maxThreshold,
-                    uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+                    uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const uint8_t thresholdMinValue[16] ={ minThreshold, minThreshold, minThreshold, minThreshold,
                                                minThreshold, minThreshold, minThreshold, minThreshold,
