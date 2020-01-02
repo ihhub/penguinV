@@ -2216,16 +2216,16 @@ namespace neon
         }
     }
 
-    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY, const uint8_t * imageYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         uint32_t sum = 0;
         uint32x4_t simdSum = vdupq_n_u32(0);
 
         for( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * src    = imageY;
-            const uint8_t * srcEnd = src + simdWidth;
+            const uint8_t * srcEnd = src + totalSimdWidth;
 
-            for( ; src != srcEnd; ++src ) {
+            for ( ; src != srcEnd; src += 8 ) {
                 const uint8x16_t data = vld1q_u8(src);
                 const uint16x8_t data8Sum = vaddl_u8(vget_high_u8(data), vget_low_u8(data));
                 const uint32x4_t data16Sum = vaddl_u16(vget_high_u16(data8Sum), vget_low_u16(data8Sum));
