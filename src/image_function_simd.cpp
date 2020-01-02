@@ -902,8 +902,9 @@ namespace avx
             }
         }
         else {
+            const size_t lineSize = sizeof( uint8_t ) * ( totalSimdWidth + nonSimdWidth );
             for( ; outY != outYEnd; outY += rowSizeOut )
-                memset( outY, 255u, sizeof( uint8_t ) * (totalSimdWidth + nonSimdWidth) );
+                memset( outY, 255u, lineSize );
         }
     }
 
@@ -1223,6 +1224,8 @@ namespace sse
         const simd ctrl1 = _mm_setr_epi8( 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5 );
         const simd ctrl2 = _mm_setr_epi8( 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10 );
         const simd ctrl3 = _mm_setr_epi8( 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15 );
+        const size_t rgbSize = sizeof( uint8_t ) * colorCount;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd * src = reinterpret_cast<const simd*>(inY);
             simd       * dst = reinterpret_cast<simd*>(outY);
@@ -1244,7 +1247,7 @@ namespace sse
                 const uint8_t * inXEnd = inX + nonSimdWidth;
 
                 for( ; inX != inXEnd; outX += colorCount, ++inX )
-                    memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+                    memset( outX, (*inX), rgbSize );
             }
         }
     }
@@ -1623,8 +1626,9 @@ namespace sse
             }
         }
         else {
+            const size_t lineSize = sizeof( uint8_t ) * ( totalSimdWidth + nonSimdWidth );
             for( ; outY != outYEnd; outY += rowSizeOut )
-                memset( outY, 255u, sizeof( uint8_t ) * (totalSimdWidth + nonSimdWidth) );
+                memset( outY, 255u, lineSize );
         }
     }
 
@@ -1893,6 +1897,7 @@ namespace neon
         const uint8x8_t ctrl3 = vld1_u8( ctrl3_array );
 
         const uint32_t simdSize = totalSimdWidth / simdWidth;
+        const size_t rgbSize = sizeof( uint8_t ) * colorCount;
 
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * src = inY;
@@ -1918,7 +1923,7 @@ namespace neon
                 const uint8_t * inXEnd = inX + nonSimdWidth;
 
                 for( ; inX != inXEnd; outX += colorCount, ++inX )
-                    memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+                    memset( outX, (*inX), rgbSize );
             }
         }
     }
