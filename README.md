@@ -29,9 +29,9 @@ BlobDetection detection;
 detection.find( binary );
 ...
 Image rgb = ConvertToRgb( binary );
-rgd = BitwiseAnd( image, rgb );
+rgb = BitwiseAnd( image, rgb );
 ...
-rgd = BitwiseOr( image, rgb );
+rgb = BitwiseOr( image, rgb );
 ```
 
 The trick behind the code is that you have a **single interface** for CPU as well as for GPU!
