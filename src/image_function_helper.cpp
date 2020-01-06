@@ -1,5 +1,5 @@
 #include "image_function_helper.h"
-
+#include <cmath>
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
 
@@ -387,6 +387,24 @@ namespace Image_Function_Helper
         gammaCorrection( in, startXIn, startYIn, out, 0, 0, width, height, a, gamma );
 
         return out;
+    }
+
+    std::vector<uint8_t> GetGammaCorrectionLookupTable( double a, double gamma )
+    {
+        if ( a < 0 || gamma < 0 )
+            throw imageException( "Gamma correction parameters are invalid" );
+
+        // We precalculate all values and store them in lookup table
+        std::vector<uint8_t> value( 256, 255u );
+
+        for ( uint16_t i = 0; i < 256; ++i ) {
+            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
+
+            if ( data < 256 )
+                value[i] = static_cast<uint8_t>( data );
+        }
+
+        return value;
     }
 
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
@@ -793,6 +811,78 @@ namespace Image_Function_Helper
         return out;
     }
 
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                     const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyRGBImage( in );
+
+        Image out = in.generate( in.width(), in.height(), RGBA );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyRGBImage( in );
+        Image_Function::VerifyRGBAImage( out );
+
+        rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::VerifyRGBImage( in );
+
+        Image out = in.generate( width, height, RGBA );
+
+        rgbToRgba( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in )
+    {
+        Image_Function::ParameterValidation( in );
+        Image_Function::VerifyRGBAImage( in );
+
+        Image out = in.generate( in.width(), in.height(), RGB );
+
+        rgbaToRgb( in, 0, 0, out, 0, 0, in.width(), in.height() );
+
+        return out;
+    }
+
+    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                    const Image & in, Image & out )
+    {
+        Image_Function::ParameterValidation( in, out );
+        Image_Function::VerifyRGBAImage( in );
+        Image_Function::VerifyRGBImage( out );
+
+        rgbaToRgb( in, 0, 0, out, 0, 0, in.width(), in.height() );
+    }
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::VerifyRGBAImage( in );
+
+        Image out = in.generate( width, height, RGB );
+
+        rgbaToRgb( in, startXIn, startYIn, out, 0, 0, width, height );
+
+        return out;
+    }
+
     Image Rotate( FunctionTable::RotateForm4 rotate,
                   const Image & in, double centerX, double centerY, double angle )
     {
@@ -1026,7 +1116,7 @@ const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTab
     return table->second;
 }
 
-void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out )
+void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const penguinV::Image & in, const penguinV::Image & out )
 {
     if ( in.type() == out.type() )
         throw imageException( "Cannot register same type images for intertype copy" );
@@ -1037,7 +1127,7 @@ void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable:
     _image[out.type()] = out.generate();
 }
 
-void ImageTypeManager::convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const
+void ImageTypeManager::convert( const penguinV::Image & in, penguinV::Image & out ) const
 {
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
         _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
@@ -1047,9 +1137,9 @@ void ImageTypeManager::convert( const PenguinV_Image::Image & in, PenguinV_Image
     copy->second( in, out );
 }
 
-PenguinV_Image::Image ImageTypeManager::image( uint8_t type ) const
+penguinV::Image ImageTypeManager::image( uint8_t type ) const
 {
-    std::map< uint8_t, PenguinV_Image::Image >::const_iterator image = _image.find( type );
+    std::map<uint8_t, penguinV::Image>::const_iterator image = _image.find( type );
     if ( image == _image.cend() )
         throw imageException( "Image is not registered" );
 
@@ -1078,17 +1168,24 @@ bool ImageTypeManager::isIntertypeConversionEnabled() const
 
 namespace simd
 {
+    bool isAvx512Enabled = true;
     bool isAvxEnabled = true;
     bool isSseEnabled = true;
     bool isNeonEnabled = true;
 
     void EnableSimd( bool enable )
     {
+        EnableAvx512( enable );
         EnableAvx( enable );
         EnableSse( enable );
         EnableNeon( enable );
     }
-    
+
+    void EnableAvx512( bool enable )
+    {
+        isAvx512Enabled = enable;
+    }
+
     void EnableAvx( bool enable )
     {
         isAvxEnabled = enable;
@@ -1106,18 +1203,23 @@ namespace simd
 
     SIMDType actualSimdType()
     {
+        #ifdef PENGUINV_AVX512_SKL_SET
+        if ( SimdInfo::isAVX512SKLAvailable() && isAvx512Enabled )
+            return avx512_function;
+        #endif
+
         #ifdef PENGUINV_AVX_SET
-        if ( isAvxAvailable && isAvxEnabled )
+        if ( SimdInfo::isAvxAvailable() && isAvxEnabled )
             return avx_function;
         #endif
 
         #ifdef PENGUINV_SSE_SET
-        if ( isSseAvailable && isSseEnabled )
+        if ( SimdInfo::isSseAvailable() && isSseEnabled )
             return sse_function;
         #endif
 
         #ifdef PENGUINV_NEON_SET
-        if ( isNeonAvailable && isNeonEnabled )
+        if ( SimdInfo::isNeonAvailable() && isNeonEnabled )
             return neon_function;
         #endif
 

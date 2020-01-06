@@ -15,8 +15,9 @@ namespace
         {
             const uint32_t size = 256u * sizeInBytes;
             for ( uint32_t i = 0; i < size; ++i ) {
+                const uint32_t squaredI = i * i;
                 for ( uint32_t j = i; j < size; ++j )
-                    kernel[i][j] = kernel[j][i] = static_cast<uint8_t>(sqrtf( static_cast<float>(i * i + j * j) ) * multiplier_ + 0.5f);
+                    kernel[i][j] = kernel[j][i] = static_cast<uint8_t>(sqrtf( static_cast<float>(squaredI + j * j) ) * multiplier_ + 0.5f);
             }
         }
 
@@ -141,7 +142,7 @@ namespace Image_Function
 
         Image out( width, height );
 
-        Sobel( in, startXIn, startYIn, out, 0, 0, width, height );
+        Prewitt( in, startXIn, startYIn, out, 0, 0, width, height );
 
         return out;
     }

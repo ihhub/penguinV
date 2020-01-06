@@ -22,7 +22,7 @@ static void kf_bfly2(
         kiss_fft_cpx * Fout,
         const size_t fstride,
         const kiss_fft_cfg st,
-        int m
+        size_t m
         )
 {
     kiss_fft_cpx * Fout2;
@@ -137,17 +137,15 @@ static void kf_bfly5(
         kiss_fft_cpx * Fout,
         const size_t fstride,
         const kiss_fft_cfg st,
-        int m
+        size_t m
         )
 {
     kiss_fft_cpx *Fout0,*Fout1,*Fout2,*Fout3,*Fout4;
-    size_t u;
     kiss_fft_cpx scratch[13];
     kiss_fft_cpx * twiddles = st->twiddles;
     kiss_fft_cpx *tw;
-    kiss_fft_cpx ya,yb;
-    ya = twiddles[fstride*m];
-    yb = twiddles[fstride*2*m];
+    kiss_fft_cpx ya = twiddles[fstride*m];
+    kiss_fft_cpx yb = twiddles[fstride*2*m];
 
     Fout0=Fout;
     Fout1=Fout0+m;
@@ -156,7 +154,7 @@ static void kf_bfly5(
     Fout4=Fout0+4*m;
 
     tw=st->twiddles;
-    for ( u=0; u<(size_t)m; ++u ) {
+    for ( size_t u=0; u<(size_t)m; ++u ) {
         C_FIXDIV( *Fout0,5); C_FIXDIV( *Fout1,5); C_FIXDIV( *Fout2,5); C_FIXDIV( *Fout3,5); C_FIXDIV( *Fout4,5);
         scratch[0] = *Fout0;
 
@@ -199,11 +197,11 @@ static void kf_bfly_generic(
         kiss_fft_cpx * Fout,
         const size_t fstride,
         const kiss_fft_cfg st,
-        int m,
-        int p
+        size_t m,
+        size_t p
         )
 {
-    int u,k,q1,q;
+    size_t u,k, q1,q;
     kiss_fft_cpx * twiddles = st->twiddles;
     kiss_fft_cpx t;
     int Norig = st->nfft;
@@ -245,9 +243,9 @@ void kf_work(
         )
 {
     kiss_fft_cpx * Fout_beg=Fout;
-    const int p=*factors++; /* the radix  */
-    const int m=*factors++; /* stage's fft length/p */
-    const kiss_fft_cpx * Fout_end = Fout + p*m;
+    const size_t p=(size_t)(*factors++); /* the radix  */
+    const size_t m=(size_t)(*factors++); /* stage's fft length/p */
+    const kiss_fft_cpx * Fout_end = Fout + p * m;
 
 #ifdef _OPENMP
     /*
@@ -256,7 +254,7 @@ void kf_work(
     */
     if (fstride==1 && p<=5)
     {
-        int k;
+        size_t k;
 
         /* execute the p different work units in different threads */
 #       pragma omp parallel for
@@ -278,7 +276,7 @@ void kf_work(
     if (m==1) {
         do{
             *Fout = *f;
-            f += fstride*in_stride;
+            f += fstride * (size_t)(in_stride);
         }while(++Fout != Fout_end );
     }else{
         do{
@@ -289,7 +287,7 @@ void kf_work(
             each one takes a decimated version of the input
             */
             kf_work( Fout , f, fstride*p, in_stride, factors,st);
-            f += fstride*in_stride;
+            f += fstride * (size_t)(in_stride);
         }while( (Fout += m) != Fout_end );
     }
 
@@ -313,8 +311,7 @@ static
 void kf_factor(int n,int * facbuf)
 {
     int p=4;
-    double floor_sqrt;
-    floor_sqrt = floor( sqrt((double)n) );
+    const double floor_sqrt = floor( sqrt((double)n) );
 
     /*factor out powers of 4, powers of 2, then any remaining primes */
     do {
@@ -344,7 +341,7 @@ kiss_fft_cfg kiss_fft_alloc(int nfft,int inverse_fft,void * mem,size_t * lenmem 
 {
     kiss_fft_cfg st=NULL;
     size_t memneeded = sizeof(struct kiss_fft_state)
-        + sizeof(kiss_fft_cpx)*(nfft-1); /* twiddle factors*/
+        + sizeof(kiss_fft_cpx) * (size_t)(nfft-1); /* twiddle factors*/
 
     if ( lenmem==NULL ) {
         st = ( kiss_fft_cfg)KISS_FFT_MALLOC( memneeded );
@@ -379,9 +376,9 @@ void kiss_fft_stride(kiss_fft_cfg st,const kiss_fft_cpx *fin,kiss_fft_cpx *fout,
         NOTE: this is not really an in-place FFT algorithm.
         It just performs an out-of-place FFT into a temp buffer
         */
-        kiss_fft_cpx * tmpbuf = (kiss_fft_cpx*)KISS_FFT_TMP_ALLOC( sizeof(kiss_fft_cpx)*st->nfft);
+        kiss_fft_cpx * tmpbuf = (kiss_fft_cpx*)KISS_FFT_TMP_ALLOC( sizeof(kiss_fft_cpx)*(size_t)(st->nfft));
         kf_work(tmpbuf,fin,1,in_stride, st->factors,st);
-        memcpy(fout,tmpbuf,sizeof(kiss_fft_cpx)*st->nfft);
+        memcpy(fout,tmpbuf,sizeof(kiss_fft_cpx) * (size_t)(st->nfft));
         KISS_FFT_TMP_FREE(tmpbuf);
     }else{
         kf_work( fout, fin, 1,in_stride, st->factors,st );

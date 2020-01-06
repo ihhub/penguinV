@@ -55,3 +55,17 @@
 *.fatbin
 *.cu.deps
 *.cu.cache
+
+# Build
+build/*
+
+# Editors/IDEs
+.vscode/*
+.history
+.eclipse/*
+./idea/*
+
+# OS generated
+.DS_store
+.Trashes
+._*

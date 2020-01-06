@@ -1,13 +1,14 @@
 #pragma once
 
 #include <limits>
+#include <utility>
 
 namespace Image_Function
 {
     template <typename TImage>
     uint8_t CommonColorCount( const TImage & image1, const TImage & image2 )
     {
-        if( image1.colorCount() != image2.colorCount() )
+        if ( image1.colorCount() != image2.colorCount() )
             throw imageException( "Color counts of images are different" );
 
         return image1.colorCount();
@@ -16,7 +17,7 @@ namespace Image_Function
     template <typename TImage>
     uint8_t CommonColorCount( const TImage & image1, const TImage & image2, const TImage & image3 )
     {
-        if( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
+        if ( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
             throw imageException( "Color counts of images are different" );
 
         return image1.colorCount();
@@ -25,14 +26,21 @@ namespace Image_Function
     template <typename TImage>
     bool IsCorrectColorCount( const TImage & image )
     {
-        return image.colorCount() == PenguinV_Image::GRAY_SCALE || image.colorCount() == PenguinV_Image::RGB;
+        return image.colorCount() == penguinV::GRAY_SCALE || image.colorCount() == penguinV::RGB || image.colorCount() == penguinV::RGBA;
     }
 
     template <typename TImage>
     void VerifyRGBImage( const TImage & image )
     {
-        if( image.colorCount() != PenguinV_Image::RGB )
+        if ( image.colorCount() != penguinV::RGB )
             throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
+    }
+
+    template <typename TImage>
+    void VerifyRGBAImage( const TImage & image )
+    {
+        if ( image.colorCount() != penguinV::RGBA )
+            throw imageException( "Bad input parameters in image function: colored image has different than 4 color channels" );
     }
 
     template <typename TImage, typename... Args>
@@ -45,7 +53,7 @@ namespace Image_Function
     template <typename TImage>
     void VerifyGrayScaleImage( const TImage & image )
     {
-        if( image.colorCount() != PenguinV_Image::GRAY_SCALE )
+        if ( image.colorCount() != penguinV::GRAY_SCALE )
             throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 
@@ -59,7 +67,7 @@ namespace Image_Function
     template <typename TImage>
     void ParameterValidation( const TImage & image1 )
     {
-        if( image1.empty() || !IsCorrectColorCount( image1 ) )
+        if ( image1.empty() || !IsCorrectColorCount( image1 ) )
             throw imageException( "Bad input parameters in image function" );
     }
 
@@ -71,13 +79,23 @@ namespace Image_Function
             throw imageException( "Bad input parameters in image function" );
     }
 
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1, const TImage & image2, const TImage & image3 )
+    template <typename TImage, typename... Args>
+    void ParameterValidation( const TImage & image1, const TImage & image2, Args... args )
     {
-        if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            !IsCorrectColorCount( image3 ) || image1.width() != image2.width() || image1.height() != image2.height() ||
-            image1.width() != image3.width() || image1.height() != image3.height() )
-            throw imageException( "Bad input parameters in image function" );
+        ParameterValidation( image1, image2 );
+        ParameterValidation( image2, args... );
+    }
+
+    template <typename _Type>
+    std::pair<_Type, _Type> ExtractRoiSize( _Type width, _Type height )
+    {
+        return std::pair<_Type, _Type>( width, height );
+    }
+
+    template <typename TImage, typename... Args>
+    std::pair<uint32_t, uint32_t> ExtractRoiSize( const TImage &, uint32_t, uint32_t, Args... args )
+    {
+        return ExtractRoiSize( args... );
     }
 
     template <typename TImage>
@@ -88,29 +106,13 @@ namespace Image_Function
             throw imageException( "Bad input parameters in image function" );
     }
 
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
-                              const TImage & image2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    template <typename TImage, typename... Args>
+    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
     {
-        if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() || startX1 + width < width || startY1 + height < height ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() || startX2 + width < width || startY2 + height < height )
-            throw imageException( "Bad input parameters in image function" );
-    }
+        const std::pair<uint32_t, uint32_t> & dimensions = ExtractRoiSize( args... );
 
-    template <typename TImage>
-    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1,
-                              const TImage & image2, uint32_t startX2, uint32_t startY2,
-                              const TImage & image3, uint32_t startX3, uint32_t startY3,
-                              uint32_t width, uint32_t height )
-    {
-        if( image1.empty() || image2.empty() || image3.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            !IsCorrectColorCount( image3 ) || width == 0 || height == 0 ||
-            startX1 + width > image1.width() || startY1 + height > image1.height() || startX1 + width < width || startY1 + height < height ||
-            startX2 + width > image2.width() || startY2 + height > image2.height() || startX2 + width < width || startY2 + height < height ||
-            startX3 + width > image3.width() || startY3 + height > image3.height() || startX3 + width < width || startY3 + height < height )
-            throw imageException( "Bad input parameters in image function" );
+        ParameterValidation( image1, startX1, startY1, dimensions.first, dimensions.second );
+        ParameterValidation( args... );
     }
 
     template <typename TImage>
@@ -122,7 +124,7 @@ namespace Image_Function
     template <typename TImage, typename... Args>
     bool IsFullImageRow( uint32_t width, const TImage & image, Args... args )
     {
-        if( !IsFullImageRow( width, image ) )
+        if ( !IsFullImageRow( width, image ) )
             return false;
 
         return IsFullImageRow( width, args... );

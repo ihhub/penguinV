@@ -10,38 +10,45 @@ namespace
         return ( path.size() >= fileExtension.size() && path.compare( path.size() - fileExtension.size(), fileExtension.size(), fileExtension ) == 0 );
     }
 
+#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
+    bool isJpegFile( const std::string & )
+    {
+        return false;
+    }
+#else
     bool isJpegFile( const std::string & path )
     {
-#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
-        const static std::string fileExtension = ".jpg";
-        return isSameFileExtension( path, fileExtension );
-#else
-        return false;
-#endif
+        const static std::string fileExtension1 = ".jpg";
+        const static std::string fileExtension2 = ".jpeg";
+        return isSameFileExtension( path, fileExtension1 ) || isSameFileExtension( path, fileExtension2 );
     }
+#endif
 
+#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+    bool isPngFile( const std::string & )
+    {
+        return false;
+    }
+#else
     bool isPngFile( const std::string & path )
     {
-#ifdef PENGUINV_ENABLED_PNG_SUPPORT
         const static std::string fileExtension = ".png";
         return isSameFileExtension( path, fileExtension );
-#else
-        return false;
-#endif
     }
+#endif
 }
 
 namespace File_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        penguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string & path, PenguinV_Image::Image & image )
+    void Load( const std::string & path, penguinV::Image & image )
     {
         if ( isJpegFile( path ) ) {
             Jpeg_Operation::Load( path, image );
@@ -56,12 +63,12 @@ namespace File_Operation
         Bitmap_Operation::Load( path, image );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image )
+    void Save( const std::string & path, const penguinV::Image & image )
     {
         Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string & path, const PenguinV_Image::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         if ( isJpegFile( path ) ) {
             Jpeg_Operation::Save( path, image, startX, startY, width, height );

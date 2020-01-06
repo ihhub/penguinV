@@ -69,8 +69,8 @@ namespace
             const uint32_t blackContrastStart = position - leftSideContrastCheck;
             const uint32_t whiteContrastEnd   = position + rightSideContrastCheck;
 
-            _Type sumBlack = std::accumulate( data.begin() + blackContrastStart, data.begin() + blackContrastEnd + 1, 0.0f );
-            _Type sumWhite = std::accumulate( data.begin() + whiteContrastStart, data.begin() + whiteContrastEnd + 1, 0.0f );
+            double sumBlack = std::accumulate( data.begin() + blackContrastStart, data.begin() + blackContrastEnd + 1, 0.0f );
+            double sumWhite = std::accumulate( data.begin() + whiteContrastStart, data.begin() + whiteContrastEnd + 1, 0.0f );
 
             sumBlack /= (blackContrastEnd - blackContrastStart + 1);
             sumWhite /= (whiteContrastEnd - whiteContrastStart + 1);
@@ -81,9 +81,9 @@ namespace
 
         if ( !checkContrast ) {
             if ( second[position] != second[position + 1] )
-                edge.push_back( position + static_cast<_Type>(second[position]) / (second[position] - second[position + 1u]) );
+                edge.push_back( static_cast<_Type>( position + static_cast<double>(second[position]) / (second[position] - second[position + 1u]) ) );
             else
-                edge.push_back( position + 0.5f );
+                edge.push_back( static_cast<_Type>( position ) + 0.5f );
             return true;
         }
 
@@ -221,7 +221,7 @@ namespace
     }
 
     template <typename _Type>
-    void findEdgePoints( const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter,
+    void findEdgePoints( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const EdgeParameter & edgeParameter,
                          std::vector < PointBase2D<_Type> > & positiveEdgePoint, std::vector < PointBase2D<_Type> > & negativeEdgePoint )
     {
         Image_Function::VerifyGrayScaleImage( image );
@@ -261,7 +261,7 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT) );
 
-                const _Type yPosition = static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+                const _Type yPosition = static_cast<_Type>(y + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
@@ -305,7 +305,7 @@ namespace
                 std::vector< _Type > edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter, (edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM) );
 
-                const _Type xPosition =  static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0f );
+                const _Type xPosition =  static_cast<_Type>( x + rowId + (edgeParameter.groupFactor - 1) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
                     if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
@@ -349,13 +349,13 @@ void EdgeParameter::verify() const
         throw imageException( "Minimum contrast for edge detection cannot be 0" );
 }
 
-void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );
 }
 
-void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const PenguinV_Image::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+void EdgeDetectionHelper::find( EdgeDetectionBase<float> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                 const EdgeParameter & edgeParameter )
 {
     findEdgePoints( image, x, y, width, height, edgeParameter, edgeDetection.positiveEdgePoint, edgeDetection.negativeEdgePoint );

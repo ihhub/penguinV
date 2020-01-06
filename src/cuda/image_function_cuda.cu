@@ -27,15 +27,17 @@ namespace
             table.Histogram          = &Image_Function_Cuda::Histogram;
             table.Invert             = &Image_Function_Cuda::Invert;
             table.LookupTable        = &Image_Function_Cuda::LookupTable;
+            table.SetPixel           = &Image_Function_Cuda::SetPixel;
             table.Maximum            = &Image_Function_Cuda::Maximum;
             table.Minimum            = &Image_Function_Cuda::Minimum;
+            table.ProjectionProfile  = &Image_Function_Cuda::ProjectionProfile;
             table.Subtract           = &Image_Function_Cuda::Subtract;
             table.Threshold          = &Image_Function_Cuda::Threshold;
             table.Threshold2         = &Image_Function_Cuda::Threshold;
 
-            ImageTypeManager::instance().setFunctionTable( PenguinV_Image::ImageCuda().type(), table );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, PenguinV_Image::Image(), PenguinV_Image::ImageCuda() );
-            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, PenguinV_Image::ImageCuda(), PenguinV_Image::Image() );
+            ImageTypeManager::instance().setFunctionTable( penguinV::ImageCuda().type(), table );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertToCuda, penguinV::Image(), penguinV::ImageCuda() );
+            ImageTypeManager::instance().setConvertFunction( Image_Function_Cuda::ConvertFromCuda, penguinV::ImageCuda(), penguinV::Image() );
         }
     };
 
@@ -202,6 +204,17 @@ namespace
         }
     }
 
+    __global__ void isEqualCuda( const uint8_t * in1, uint32_t rowSizeIn1, const uint8_t * in2, uint32_t rowSizeIn2, uint32_t width, uint32_t height, uint32_t * isEqual )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint32_t partsEqual = static_cast<uint32_t>( in1[y * rowSizeIn1 + x] == in2[y * rowSizeIn2 + x] );
+            atomicAnd( isEqual, partsEqual );
+        }
+    }
+
     __global__ void lookupTableCuda( const uint8_t * in, uint32_t rowSizeIn, uint8_t * out, uint32_t rowSizeOut,
                                      uint32_t width, uint32_t height, uint8_t * table )
     {
@@ -238,6 +251,28 @@ namespace
             const uint8_t * in2X = in2 + y * rowSizeIn2 + x;
             uint8_t * outX = out + y * rowSizeOut + x;
             (*outX) = ((*in1X) < (*in2X)) ? (*in1X) : (*in2X);
+        }
+    }
+
+    __global__ void projectionProfileHorizontalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageX = image + y * rowSize + x;
+            atomicAdd( &projection[x], (*imageX) );
+        }
+    }
+
+    __global__ void projectionProfileVerticalCuda( const uint8_t * image, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * projection )
+    {
+        const uint32_t x = blockDim.x * blockIdx.x + threadIdx.x;
+        const uint32_t y = blockDim.y * blockIdx.y + threadIdx.y;
+
+        if ( x < width && y < height ) {
+            const uint8_t * imageY = image + y * rowSize + x;
+            atomicAdd( &projection[y], (*imageY) );
         }
     }
 
@@ -285,6 +320,26 @@ namespace
                                    0.5f;
 
                 *out = static_cast<uint8_t>(mean);
+            }
+        }
+    }
+
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t x, uint32_t y, uint8_t value )
+    {
+        if ( x < width && y < height ) {
+            in[y * rowSize + x] = value;
+        }
+    }
+
+    __global__ void setPixelCuda( uint8_t * in, uint32_t rowSize, uint32_t width, uint32_t height, uint32_t * pointX, uint32_t * pointY, uint32_t pointSize, uint32_t value )
+    {
+        const uint32_t idPoint = blockIdx.x * blockDim.x + threadIdx.x;
+
+        if ( idPoint < pointSize) {
+            const uint32_t x = pointX[idPoint];
+            const uint32_t y = pointY[idPoint];
+            if ( x < width && y < height ) {
+                in[y * rowSize + x] = value;
             }
         }
     }
@@ -560,7 +615,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
-        if ( in.colorCount() == PenguinV_Image::GRAY_SCALE ) {
+        if ( in.colorCount() == penguinV::GRAY_SCALE ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -598,7 +653,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyRGBImage     ( out );
 
-        if ( in.colorCount() == PenguinV_Image::RGB ) {
+        if ( in.colorCount() == penguinV::RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
             return;
         }
@@ -701,26 +756,40 @@ namespace Image_Function_Cuda
 
     Image Flip( const Image & in, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in );
-
-        Image out = in.generate( in.width(), in.height(), in.colorCount(), in.alignment() );
-
-        Flip( in, out, horizontal, vertical );
-
-        return out;
+        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
     }
 
-    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
+    }
+
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if ( !horizontal && !vertical ) {
-            Copy( in, out );
+            Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         }
         else {
-            launchKernel2D( flipCuda, out.width(), out.height(),
-                            in.data(), in.rowSize(), out.data(), out.rowSize(), out.width(), out.height(), horizontal, vertical );
+            const uint8_t colorCount = in.colorCount();
+            width = width * colorCount;
+
+            const uint32_t rowSizeIn  = in.rowSize();
+            const uint32_t rowSizeOut = out.rowSize();
+
+            const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+            uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+            launchKernel2D( flipCuda, width, height,
+                            inY, rowSizeIn, outY, rowSizeOut, width, height, horizontal, vertical );
         }
     }
 
@@ -745,18 +814,7 @@ namespace Image_Function_Cuda
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
-        if ( a < 0 || gamma < 0 )
-            throw imageException( "Gamma correction parameters are invalid" );
-
-        // We precalculate all values and store them in lookup table
-        std::vector < uint8_t > value( 256, 255u );
-
-        for ( uint16_t i = 0; i < 256; ++i ) {
-            double data = a * pow( i / 255.0, gamma ) * 255 + 0.5;
-
-            if ( data < 256 )
-                value[i] = static_cast<uint8_t>(data);
-        }
+        const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
 
         LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
     }
@@ -834,6 +892,34 @@ namespace Image_Function_Cuda
                         inY, rowSizeIn, outY, rowSizeOut, width, height );
     }
 
+    bool IsEqual( const Image & in1, const Image & in2 )
+    {
+        Image_Function::ParameterValidation( in1, in2 );
+
+        return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
+    }
+
+    bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+                  uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+
+        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2 );
+        width = width * colorCount;
+
+        const uint32_t rowSizeIn1 = in1.rowSize();
+        const uint32_t rowSizeIn2 = in2.rowSize();
+
+        const uint8_t * in1Y = in1.data() + startY1 * rowSizeIn1 + startX1 * colorCount;
+        const uint8_t * in2Y = in2.data() + startY2 * rowSizeIn2 + startX2 * colorCount;
+
+        multiCuda::Type< uint32_t > result( 1 );
+        launchKernel2D( isEqualCuda, width, height,
+                        in1Y, rowSizeIn1, in2Y, rowSizeIn2, width, height, result.data() );
+
+        return ( result.get() != 0 );
+    }
+
     Image LookupTable( const Image & in, const std::vector < uint8_t > & table )
     {
         return Image_Function_Helper::LookupTable( LookupTable, in, table );
@@ -854,16 +940,18 @@ namespace Image_Function_Cuda
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyGrayScaleImage( in, out );
 
         if ( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
+        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        width = width * colorCount;
+
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn  * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         multiCuda::Array< uint8_t > tableCuda( table );
 
@@ -943,6 +1031,43 @@ namespace Image_Function_Cuda
                         in1Y, rowSizeIn1, in2Y, rowSizeIn2, outY, rowSizeOut, width, height );
     }
 
+    std::vector < uint32_t > ProjectionProfile( const Image & image, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    {
+        ProjectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
+    }
+
+    std::vector < uint32_t > ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    {
+        return Image_Function_Helper::ProjectionProfile( ProjectionProfile, image, x, y, width, height, horizontal );
+    }
+
+    void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
+                                                 std::vector<uint32_t> & projection )
+    {
+        Image_Function::ParameterValidation( image, x, y, width, height );
+
+        const uint8_t colorCount = image.colorCount();
+        width *= colorCount;
+
+        projection.resize( horizontal ? width : height );
+        std::fill( projection.begin(), projection.end(), 0u );
+
+        const uint32_t rowSize = image.rowSize();
+        const uint8_t * imageX = image.data() + y * rowSize + x * colorCount;
+
+        multiCuda::Array< uint32_t > projectionCuda( projection );
+
+        launchKernel2D( ( horizontal ? projectionProfileHorizontalCuda : projectionProfileVerticalCuda ), width, height,
+                        imageX, rowSize, width, height, projectionCuda.data());
+
+        projection = projectionCuda.get();
+    }
+
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
     {
         Image_Function::ParameterValidation( in, out );
@@ -970,6 +1095,41 @@ namespace Image_Function_Cuda
                         inMem, rowSizeIn, outMem, rowSizeOut,
                         inXStart, inYStart, width, height,
                         cosAngle, sinAngle );
+    }
+
+    void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        if ( x >= image.width() || y >= image.height() )
+            throw imageException( "Bad input parameters in image function" );
+
+        launchKernel1D( setPixelCuda, 1,
+                        image.data(), image.rowSize(), image.width(), image.height(), x, y, value );
+    }
+
+    void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
+    {
+        Image_Function::ParameterValidation( image );
+
+        if ( X.size() != Y.size() )
+            throw imageException( "Bad input parameters in image function" );
+
+        if ( X.size() > 0 ) {
+            const uint32_t width = image.width();
+            const uint32_t height = image.height();
+
+            for ( size_t i = 0; i < X.size(); ++i ) {
+                if ( X[i] >= width || Y[i] >= height )
+                    throw imageException( "Bad input parameters in image function" );
+            }
+
+            multiCuda::Array<uint32_t> pointX( X );
+            multiCuda::Array<uint32_t> pointY( Y );
+
+            launchKernel1D( setPixelCuda, static_cast<uint32_t>( X.size() ),
+                            image.data(), image.rowSize(), width, height, pointX.data(), pointY.data(), pointX.size(), value );
+        }
     }
 
     Image Subtract( const Image & in1, const Image & in2 )

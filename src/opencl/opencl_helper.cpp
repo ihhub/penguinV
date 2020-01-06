@@ -51,12 +51,18 @@ namespace
 
         multiCL::openCLCheck( clWaitForEvents( 1, &waitingEvent ) );
     }
+
+    bool isGPUSupportEnabled = true;
+    bool isCPUSupportEnabled = false;
 }
 
 namespace multiCL
 {
     bool isOpenCLSupported()
     {
+        if ( !isGPUSupportEnabled && !isCPUSupportEnabled )
+            return false;
+
         cl_uint platformCount = 0u;
 
         if( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) )
@@ -69,10 +75,12 @@ namespace multiCL
         if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) )
             return false;
 
+        const cl_device_type deviceType = ( isGPUSupportEnabled ? CL_DEVICE_TYPE_GPU : 0u ) + ( isCPUSupportEnabled ? CL_DEVICE_TYPE_CPU : 0u );
+
         for( std::vector<cl_platform_id>::const_iterator singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
             cl_uint deviceCount = 0u;
 
-            if( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, CL_DEVICE_TYPE_GPU, 0, NULL, &deviceCount ) ) )
+            if( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, deviceType, 0, NULL, &deviceCount ) ) )
                 continue;
 
             if( deviceCount > 0u )
@@ -80,6 +88,18 @@ namespace multiCL
         }
 
         return false;
+    }
+
+    void enableDeviceSupport( bool enableGPUSupport, bool enableCPUSupport )
+    {
+        isGPUSupportEnabled = enableGPUSupport;
+        isCPUSupportEnabled = enableCPUSupport;
+    }
+
+    void getDeviceSupportStatus( bool & isGPUSupportActive, bool & isCPUSupportActive )
+    {
+        isGPUSupportActive = isGPUSupportEnabled;
+        isCPUSupportActive = isCPUSupportEnabled;
     }
 
     void openCLCheck( cl_int error )

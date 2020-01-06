@@ -54,6 +54,7 @@ namespace
     {
         static std::map< cl_device_id, MemsetKernelHolder > deviceProgram;
         static std::mutex mapGuard;
+        std::lock_guard<std::mutex> lock( mapGuard );
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
@@ -61,14 +62,11 @@ namespace
         if ( program != deviceProgram.cend() )
             return *(program->second.kernel);
 
-        mapGuard.lock();
-
         MemsetKernelHolder holder;
         holder.program = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), memsetCode.data() ) );
         holder.kernel = std::shared_ptr< multiCL::OpenCLKernel >( new multiCL::OpenCLKernel( *(holder.program), "memsetOpenCL" ) );
 
         deviceProgram[device.deviceId()] = holder;
-        mapGuard.unlock();
 
         return *(deviceProgram[device.deviceId()].kernel);
     }
@@ -291,7 +289,7 @@ namespace multiCL
         , _context       ( _deviceId )
         , _currentQueueId( 0u )
     {
-        _allocator = new MemoryAllocator( _context(), static_cast<size_t>(totalMemorySize()) );
+        _allocator = new MemoryAllocator( _context(), _deviceId, static_cast<size_t>(totalMemorySize()) );
 
         setQueueCount( 1u );
     }
@@ -454,7 +452,7 @@ namespace multiCL
 
     OpenCLDeviceManager::OpenCLDeviceManager()
     {
-        resetSupportedDevice( false, true );
+        resetSupportedDevice();
     }
 
     OpenCLDeviceManager::~OpenCLDeviceManager()
@@ -562,7 +560,7 @@ namespace multiCL
         setDefaultDeviceId( deviceId );
     }
 
-    void OpenCLDeviceManager::resetSupportedDevice( bool enableCpuSupport, bool enableGpuSupport )
+    void OpenCLDeviceManager::resetSupportedDevice()
     {
         closeDevices();
         _supportedDeviceId.clear();
@@ -576,7 +574,11 @@ namespace multiCL
             }
         }
 
-        const cl_device_type deviceType =  (enableCpuSupport ? CL_DEVICE_TYPE_CPU : 0u) + (enableGpuSupport ? CL_DEVICE_TYPE_GPU : 0u);
+        bool isGPUSupportEnabled = false;
+        bool isCPUSupportEnabled = false;
+        getDeviceSupportStatus( isGPUSupportEnabled, isCPUSupportEnabled );
+
+        const cl_device_type deviceType = ( isGPUSupportEnabled ? CL_DEVICE_TYPE_GPU : 0u ) + ( isCPUSupportEnabled ? CL_DEVICE_TYPE_CPU : 0u );
 
         uint32_t supportedDeviceCount = 0u;
         for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
@@ -587,6 +589,18 @@ namespace multiCL
                 if( !openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
                     _supportedDeviceId.resize( supportedDeviceCount );
                     continue;
+                }
+
+                for ( uint32_t deviceId = 0u; deviceId < deviceCount; ) {
+                    cl_int error;
+                    cl_context _context = clCreateContext( NULL, 1u, &_supportedDeviceId[supportedDeviceCount + deviceId], NULL, NULL, &error );
+                    if ( error != CL_SUCCESS ) {
+                        --deviceCount;
+                    }
+                    else {
+                        clReleaseContext( _context );
+                        ++deviceId;
+                    }
                 }
 
                 supportedDeviceCount += deviceCount;

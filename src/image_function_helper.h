@@ -5,7 +5,7 @@
 
 namespace Image_Function_Helper
 {
-    using namespace PenguinV_Image;
+    using namespace penguinV;
 
     namespace FunctionTable
     {
@@ -186,6 +186,18 @@ namespace Image_Function_Helper
         typedef void  (*RgbToBgrForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                         uint32_t width, uint32_t height );
 
+        typedef Image (*RgbToRgbaForm1)( const Image & in );
+        typedef void  (*RgbToRgbaForm2)( const Image & in, Image & out );
+        typedef Image (*RgbToRgbaForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*RgbToRgbaForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
+        typedef Image (*RgbaToRgbForm1)( const Image & in );
+        typedef void  (*RgbaToRgbForm2)( const Image & in, Image & out );
+        typedef Image (*RgbaToRgbForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*RgbaToRgbForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                                         uint32_t width, uint32_t height );
+
         typedef Image (*RotateForm1)( const Image & in, double centerX, double centerY, double angle );
         typedef void  (*RotateForm2)( const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle );
         typedef Image (*RotateForm3)( const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle );
@@ -347,6 +359,8 @@ namespace Image_Function_Helper
     Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
                            const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma );
 
+    std::vector<uint8_t> GetGammaCorrectionLookupTable( double a, double gamma );
+
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram );
 
     std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
@@ -457,6 +471,24 @@ namespace Image_Function_Helper
     Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
 
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in );
+
+    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, Image & out );
+
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
+                    const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in );
+
+    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                    const Image & in, Image & out );
+
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
+                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+
     Image Rotate( FunctionTable::RotateForm4 rotate,
                   const Image & in, double centerX, double centerY, double angle );
 
@@ -544,6 +576,8 @@ namespace Image_Function_Helper
         FunctionTable::ProjectionProfileForm4  ProjectionProfile  = nullptr;
         FunctionTable::ResizeForm4             Resize             = nullptr;
         FunctionTable::RgbToBgrForm4           RgbToBgr           = nullptr;
+        FunctionTable::RgbToRgbaForm4          RgbToRgba          = nullptr;
+        FunctionTable::RgbaToRgbForm4          RgbaToRgb          = nullptr;
         FunctionTable::SetPixelForm1           SetPixel           = nullptr;
         FunctionTable::SetPixelForm2           SetPixel2          = nullptr;
         FunctionTable::ShiftForm4              Shift              = nullptr;
@@ -566,10 +600,10 @@ public:
     void setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup = false );
     const Image_Function_Helper::FunctionTableHolder & functionTable( uint8_t type ) const;
 
-    void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const PenguinV_Image::Image & in, const PenguinV_Image::Image & out );
-    void convert( const PenguinV_Image::Image & in, PenguinV_Image::Image & out ) const;
+    void setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const penguinV::Image & in, const penguinV::Image & out );
+    void convert( const penguinV::Image & in, penguinV::Image & out ) const;
 
-    PenguinV_Image::Image image( uint8_t type ) const;
+    penguinV::Image image( uint8_t type ) const;
     std::vector< uint8_t > imageTypes() const;
 
     void enableIntertypeConversion( bool enable );
@@ -577,7 +611,7 @@ public:
 private:
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder > _functionTableMap;
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 > _intertypeConvertMap;
-    std::map< uint8_t, PenguinV_Image::Image > _image;
+    std::map< uint8_t, penguinV::Image > _image;
     bool _enabledIntertypeConversion;
 
     ImageTypeManager();
@@ -587,13 +621,15 @@ private:
 namespace simd
 {
     // These functions are designed only for testing simd technique functions individually
-    void EnableSimd( bool enable );
-    void EnableAvx ( bool enable );
-    void EnableSse ( bool enable );
-    void EnableNeon( bool enable );
+    void EnableSimd  ( bool enable );
+    void EnableAvx512( bool enable );
+    void EnableAvx   ( bool enable );
+    void EnableSse   ( bool enable );
+    void EnableNeon  ( bool enable );
 
     enum SIMDType
     {
+        avx512_function,
         avx_function,
         sse_function,
         neon_function,

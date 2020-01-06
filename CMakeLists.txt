@@ -21,7 +21,7 @@ if(CUDA_FOUND)
     # if you let it propagate it to nvcc in some cases.
     if(NOT MSVC)
         set(CUDA_PROPAGATE_HOST_FLAGS OFF)
-        list(APPEND CUDA_NVCC_FLAGS -std=c++11)
+        list(APPEND CUDA_NVCC_FLAGS -std=c++11 -Wno-deprecated-gpu-targets)
     endif()
 endif()
 

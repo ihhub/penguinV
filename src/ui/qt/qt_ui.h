@@ -7,7 +7,7 @@
 class UiWindowQt : public UiWindow
 {
 public:
-    explicit UiWindowQt( const PenguinV_Image::Image & image = PenguinV_Image::Image(), const std::string & title = std::string() );
+    explicit UiWindowQt( const penguinV::Image & image = penguinV::Image(), const std::string & title = std::string() );
     virtual ~UiWindowQt();
 
     virtual void drawPoint( const Point2d & point, const PaintColor & color );

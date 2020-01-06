@@ -5,14 +5,15 @@
 #include <cstring>
 #include <vector>
 #include "image_exception.h"
+#include "memory/cpu_memory.h"
 
-namespace PenguinV_Image
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplate
     {
     public:
-        ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
             : _width     ( 0 )       // width of image
             , _height    ( 0 )       // height of image
             , _colorCount( 1 )       // number of colors per pixel
@@ -294,12 +295,12 @@ namespace PenguinV_Image
 
         static TColorDepth * _allocateMemory( size_t size )
         {
-            return new TColorDepth[size];
+            return cpu_Memory::MemoryAllocator::instance().allocate<TColorDepth>( size );
         }
 
         static void _deallocateMemory( TColorDepth * data )
         {
-            delete[] data;
+            cpu_Memory::MemoryAllocator::instance().free( data );
         }
 
         static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
@@ -398,4 +399,8 @@ namespace PenguinV_Image
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
+    const static uint8_t RED_CHANNEL = 0u;
+    const static uint8_t GREEN_CHANNEL = 1u;
+    const static uint8_t BLUE_CHANNEL = 2u;
+    const static uint8_t ALPHA_CHANNEL = 3u;
 }

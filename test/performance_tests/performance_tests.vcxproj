@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\blob_detection.cpp" />
+    <ClCompile Include="..\..\src\edge_detection.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
     <ClCompile Include="..\..\src\function_pool_task.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="..\test_helper.cpp" />
     <ClCompile Include="performance_tests.cpp" />
     <ClCompile Include="performance_test_blob_detection.cpp" />
+    <ClCompile Include="performance_test_edge_detection.cpp" />
     <ClCompile Include="performance_test_filtering.cpp" />
     <ClCompile Include="performance_test_framework.cpp" />
     <ClCompile Include="performance_test_helper.cpp" />
@@ -163,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\blob_detection.h" />
+    <ClInclude Include="..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\function_pool_task.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="..\..\src\thread_pool.h" />
     <ClInclude Include="..\test_helper.h" />
     <ClInclude Include="performance_test_blob_detection.h" />
+    <ClInclude Include="performance_test_edge_detection.h" />
     <ClInclude Include="performance_test_filtering.h" />
     <ClInclude Include="performance_test_framework.h" />
     <ClInclude Include="performance_test_helper.h" />

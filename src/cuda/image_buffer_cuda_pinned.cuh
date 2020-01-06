@@ -3,13 +3,13 @@
 #include <cuda_runtime.h>
 #include "../image_buffer.h"
 
-namespace PenguinV_Image
+namespace penguinV
 {
     template <typename TColorDepth>
     class ImageTemplateCudaPinned : public ImageTemplate<TColorDepth>
     {
     public:
-        ImageTemplateCudaPinned( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageTemplateCudaPinned( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
             ImageTemplate<TColorDepth>::_setType( 2, _allocateMemory, _deallocateMemory );
             ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
@@ -60,5 +60,5 @@ namespace PenguinV_Image
         }
     };
 
-    typedef PenguinV_Image::ImageTemplateCudaPinned <uint8_t> ImageCudaPinned;
+    typedef penguinV::ImageTemplateCudaPinned <uint8_t> ImageCudaPinned;
 }

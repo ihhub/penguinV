@@ -19,7 +19,7 @@ You can develop a software within minutes of your time to obtain **high performa
 
 Example code for below images could look like this:
 ```cpp
-Image red = ExtractChannel( image, 0 ); // 0 is red channel
+Image red = ExtractChannel( image, RED_CHANNEL );
 Image binary = Threshold( red, // threshold
                           GetThreshold( // get weighted threshold
                               Histogram( red ) ) ) ); // get image histogram
@@ -29,9 +29,9 @@ BlobDetection detection;
 detection.find( binary );
 ...
 Image rgb = ConvertToRgb( binary );
-rgd = BitwiseAnd( image, rgb );
+rgb = BitwiseAnd( image, rgb );
 ...
-rgd = BitwiseOr( image, rgb );
+rgb = BitwiseOr( image, rgb );
 ```
 
 The trick behind the code is that you have a **single interface** for CPU as well as for GPU!
