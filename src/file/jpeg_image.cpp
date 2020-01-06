@@ -1,8 +1,6 @@
 #include "jpeg_image.h"
 #include "../image_exception.h"
 
-#ifndef PENGUINV_ENABLED_JPEG_SUPPORT
-
 namespace Jpeg_Operation
 {
     penguinV::Image Load( const std::string & path )
@@ -28,9 +26,3 @@ namespace Jpeg_Operation
         throw imageException( "JPEG is not supported" );
     }
 }
-
-#else
-
-#error "No implementation for JPEG exists. Please do not set PENGUINV_ENABLED_JPEG_SUPPORT macro"
-
-#endif
