@@ -2,6 +2,7 @@ set(LIB_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TEST_DIR ${CMAKE_SOURCE_DIR}/test)
 set(SRCS
     ${LIB_DIR}/file/bmp_image.cpp
+    ${LIB_DIR}/file/jpeg_image.cpp
     ${LIB_DIR}/file/png_image.cpp
     ${LIB_DIR}/math/haar_transform.cpp
     ${LIB_DIR}/math/hough_transform.cpp

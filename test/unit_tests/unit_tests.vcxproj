@@ -147,6 +147,7 @@
     <ClCompile Include="..\..\src\edge_detection.cpp" />
     <ClCompile Include="..\..\src\fft.cpp" />
     <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\file\jpeg_image.cpp" />
     <ClCompile Include="..\..\src\file\png_image.cpp" />
     <ClCompile Include="..\..\src\filtering.cpp" />
     <ClCompile Include="..\..\src\function_pool.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\src\fft.h" />
     <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\file\jpeg_image.h" />
     <ClInclude Include="..\..\src\file\png_image.h" />
     <ClInclude Include="..\..\src\filtering.h" />
     <ClInclude Include="..\..\src\function_pool.h" />

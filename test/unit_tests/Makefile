@@ -7,6 +7,7 @@ TEST_DIR := $(PWD)/..
 SRCS :=  \
     $(LIB_DIR)/file/bmp_image.cpp \
     $(LIB_DIR)/file/png_image.cpp \
+    $(LIB_DIR)/file/jpeg_image.cpp \
     $(LIB_DIR)/math/haar_transform.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/fft_base.cpp \
