@@ -5,25 +5,25 @@
 
 namespace Jpeg_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        penguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string &, PenguinV_Image::Image & )
+    void Load( const std::string &, penguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image & )
+    void Save( const std::string &, const penguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
         throw imageException( "JPEG is not supported" );
     }
@@ -36,15 +36,15 @@ namespace Jpeg_Operation
 
 namespace Jpeg_Operation
 {
-    PenguinV_Image::Image Load( const std::string & path )
+    penguinV::Image Load( const std::string & path )
     {
-        PenguinV_Image::Image image;
+        penguinV::Image image;
 
         Load( path, image );
         return image;
     }
 
-    void Load( const std::string & path, PenguinV_Image::Image & image )
+    void Load( const std::string & path, penguinV::Image & image )
     {
         if( path.empty() )
             throw imageException( "Incorrect parameters for Jpeg image loading" );
@@ -78,12 +78,12 @@ namespace Jpeg_Operation
         fclose( file );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image & )
+    void Save( const std::string &, const penguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
 
-    void Save( const std::string &, const PenguinV_Image::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
+    void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
         throw imageException( "JPEG is not supported" );
     }
