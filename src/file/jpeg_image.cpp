@@ -46,10 +46,10 @@ namespace Jpeg_Operation
 
     void Load( const std::string & path, penguinV::Image & image )
     {
-        if( path.empty() )
+        if ( path.empty() )
             throw imageException( "Incorrect parameters for Jpeg image loading" );
 
-        FILE * file = fopen(path.data(), "rb");
+        FILE * file = fopen( path.data(), "rb" );
         if ( file == nullptr )
             throw imageException( "Cannot open Jpeg image" );
 
@@ -68,13 +68,13 @@ namespace Jpeg_Operation
         image.resize( info.output_width, info.output_height );
 
         uint8_t * line[1] = { nullptr };
-        while (info.output_scanline < info.output_height) {
+        while ( info.output_scanline < info.output_height ) {
             line[0] = image.data() + image.rowSize() * info.output_scanline;
-            jpeg_read_scanlines( &info, line, 1) ;
+            jpeg_read_scanlines( &info, line, 1 );
         }
 
-        jpeg_finish_decompress(&info);
-        jpeg_destroy_decompress(&info);
+        jpeg_finish_decompress( &info );
+        jpeg_destroy_decompress( &info );
         fclose( file );
     }
 
@@ -89,4 +89,3 @@ namespace Jpeg_Operation
     }
 }
 #endif
-
