@@ -18,8 +18,9 @@ namespace
 #else
     bool isJpegFile( const std::string & path )
     {
-        const static std::string fileExtension = ".jpg";
-        return isSameFileExtension( path, fileExtension );
+        const static std::string fileExtension1 = ".jpg";
+        const static std::string fileExtension2 = ".jpeg";
+        return isSameFileExtension( path, fileExtension1 ) || isSameFileExtension( path, fileExtension2 );
     }
 #endif
 
