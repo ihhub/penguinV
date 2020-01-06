@@ -399,4 +399,8 @@ namespace penguinV
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
     const static uint8_t RGBA = 4u;
+    const static uint8_t RED_CHANNEL = 0u;
+    const static uint8_t GREEN_CHANNEL = 1u;
+    const static uint8_t BLUE_CHANNEL = 2u;
+    const static uint8_t ALPHA_CHANNEL = 3u;
 }
