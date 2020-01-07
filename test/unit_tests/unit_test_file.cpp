@@ -114,20 +114,12 @@ namespace file_operation
 
     bool WhiteGrayScaleImageJpeg()
     {
-        return true;
-        //return WhiteGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
+        return WhiteGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
     }
 
     bool BlackGrayScaleImageJpeg()
     {
-        return true;
-        //return BlackGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
-    }
-
-    bool RandomRGBImageJpeg()
-    {
-        return true;
-        //return RandomRGBImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
+        return BlackGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
     }
 }
 
@@ -144,7 +136,6 @@ void addTests_File( UnitTestFramework & framework )
 #if defined( PENGUINV_ENABLED_JPEG_SUPPORT )
     framework.add( file_operation::WhiteGrayScaleImageJpeg,   "File: Save and load white gray-scale jpeg image" );
     framework.add( file_operation::BlackGrayScaleImageJpeg,   "File: Save and load black gray-scale jpeg image" );
-    framework.add( file_operation::RandomRGBImageJpeg,        "File: Save and load random RGB jpeg image" );
 #endif
     framework.add( file_operation::RawRGBImage,               "File: Save and load raw RGB image" );
 }
