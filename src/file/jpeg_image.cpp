@@ -26,7 +26,7 @@ namespace Jpeg_Operation
     {
         if ( quality < 1 || quality > 100 )
             throw imageException( "JPEG quality value must be between 1 and 100" );
-        
+
         jpegQuality = quality;
     }
 
@@ -97,7 +97,7 @@ namespace Jpeg_Operation
         Image_Function::ParameterValidation( image, startX, startY, width, height );
 
         FILE * file = fopen( path.data(), "wb" );
-        if( !file )
+        if ( !file )
             throw imageException( "Cannot create file for saving" );
 
         struct jpeg_compress_struct info;
@@ -115,7 +115,7 @@ namespace Jpeg_Operation
         info.in_color_space = ( ( image.colorCount() == 1 ) ? JCS_GRAYSCALE : JCS_RGB );
 
         jpeg_set_defaults( &info );
-        jpeg_set_quality( &info, jpegQuality, TRUE/* limit to baseline-JPEG values */ );
+        jpeg_set_quality( &info, jpegQuality, TRUE ); // limit to baseline-JPEG values
 
         jpeg_start_compress( &info, TRUE );
 
