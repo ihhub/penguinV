@@ -1,7 +1,11 @@
 #include "jpeg_image.h"
 #include "../image_exception.h"
+#include "../parameter_validation.h"
 
-#ifndef PENGUINV_ENABLED_JPEG_SUPPORT
+namespace
+{
+    int jpegQuality = 100;
+}
 
 namespace Jpeg_Operation
 {
@@ -13,12 +17,30 @@ namespace Jpeg_Operation
         return image;
     }
 
-    void Load( const std::string &, penguinV::Image & )
+    void Save( const std::string & path, const penguinV::Image & image )
     {
-        throw imageException( "JPEG is not supported" );
+        Save( path, image, 0, 0, image.width(), image.height() );
     }
 
-    void Save( const std::string &, const penguinV::Image & )
+    void SetImageQuality( int quality )
+    {
+        if ( quality < 1 || quality > 100 )
+            throw imageException( "JPEG quality value must be between 1 and 100" );
+
+        jpegQuality = quality;
+    }
+
+    int GetImageQuality()
+    {
+        return jpegQuality;
+    }
+}
+
+#ifndef PENGUINV_ENABLED_JPEG_SUPPORT
+
+namespace Jpeg_Operation
+{
+    void Load( const std::string &, penguinV::Image & )
     {
         throw imageException( "JPEG is not supported" );
     }
@@ -36,14 +58,6 @@ namespace Jpeg_Operation
 
 namespace Jpeg_Operation
 {
-    penguinV::Image Load( const std::string & path )
-    {
-        penguinV::Image image;
-
-        Load( path, image );
-        return image;
-    }
-
     void Load( const std::string & path, penguinV::Image & image )
     {
         if ( path.empty() )
@@ -78,14 +92,43 @@ namespace Jpeg_Operation
         fclose( file );
     }
 
-    void Save( const std::string &, const penguinV::Image & )
+    void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        throw imageException( "JPEG is not supported" );
-    }
+        Image_Function::ParameterValidation( image, startX, startY, width, height );
 
-    void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
-    {
-        throw imageException( "JPEG is not supported" );
+        FILE * file = fopen( path.data(), "wb" );
+        if ( !file )
+            throw imageException( "Cannot create file for saving" );
+
+        struct jpeg_compress_struct info;
+        struct jpeg_error_mgr jerr;
+        JSAMPROW row_pointer[1];
+
+        info.err = jpeg_std_error( &jerr );
+        jpeg_create_compress( &info );
+
+        jpeg_stdio_dest( &info, file );
+
+        info.image_width = width;
+        info.image_height = height;
+        info.input_components = image.colorCount();
+        info.in_color_space = ( ( image.colorCount() == 1 ) ? JCS_GRAYSCALE : JCS_RGB );
+
+        jpeg_set_defaults( &info );
+        jpeg_set_quality( &info, jpegQuality, TRUE ); // limit to baseline-JPEG values
+
+        jpeg_start_compress( &info, TRUE );
+
+        while ( info.next_scanline < info.image_height ) {
+            row_pointer[0] = const_cast<uint8_t *>( image.data() + image.rowSize() * info.next_scanline ); // libjpeg is C based library so no choice
+            jpeg_write_scanlines( &info, row_pointer, 1 );
+        }
+
+        jpeg_finish_compress( &info );
+
+        fclose( file );
+
+        jpeg_destroy_compress( &info );
     }
 }
 #endif
