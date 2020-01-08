@@ -24,13 +24,14 @@ matrix:
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
   include:
     - os: linux
-      name: "CUDA8-Qt5.9"
+      name: "Linux (Ubuntu) with CUDA 8 and Qt 5.9"
       env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install:
         - source script/travis/install_cuda.sh
         - source script/travis/install_qt5.sh
     - os: linux
       arch: arm64
+      name: "Linux (Ubuntu) ARM"
       before_script:
         - cd test/unit_tests
       script:
@@ -41,6 +42,25 @@ matrix:
         - cd ../../examples
         - make
     - os: linux
+      language: python
+      name: "Python module compilation"
+      python: 3.6
+      env: SWIG=ON
+      before_script:
+        - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
+        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
+        - ./autogen.sh
+        - ./configure --prefix=${HOME}/swig/
+        - make
+        - make install
+        - export PATH=${HOME}/swig/bin:$PATH
+        - swig -version
+        - python --version
+      script:
+        - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
+        - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
+    - os: linux
+      name: "Static analysis"
       env: STATIC_ANALYSIS=ON
       before_install:
         - |
@@ -62,6 +82,7 @@ matrix:
             echo "Skipping clang-format check since this is not a pull request."
           fi
     - os: linux
+      name: "Dynamic analysis"
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
         - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.2.log" > out && cat out
@@ -70,34 +91,18 @@ matrix:
         apt:
           update: true
           packages: valgrind
-    - os: linux
-      language: python
-      python: 3.6
-      env: SWIG=ON
-      before_script:
-        - wget https://github.com/swig/swig/archive/rel-3.0.12.tar.gz
-        - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
-        - ./autogen.sh
-        - ./configure --prefix=${HOME}/swig/
-        - make
-        - make install
-        - export PATH=${HOME}/swig/bin:$PATH
-        - swig -version
-        - python --version
-      script:
-        - cd $TRAVIS_BUILD_DIR/src/python && python setup.py build_ext --inplace
-        - cd $TRAVIS_BUILD_DIR/examples/python && python bitmap_operation.py
     - os: osx
+      name: "OSX with QT latest"
       env: QT_BASE=latest CMAKE_OPTIONS=""
       before_install: source script/travis/install_qt5.sh
     - os: windows
-      name: Windows (VS2015 Win32)
+      name: "Windows (x86) with VS2015"
       env:
         - TARGET="Visual Studio 14 2015"
         - BUILD_TYPE="Release"
       before_install: if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then choco install -y vcbuildtools --version 2015.4 --force; fi
     - os: windows
-      name: Windows (VS2015 x64)
+      name: "Windows (x64) with VS2015"
       language: bash
       env:
         - TARGET="Visual Studio 14 2015 Win64"
