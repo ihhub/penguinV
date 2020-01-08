@@ -446,10 +446,11 @@ namespace avx512
                         (*out) += (*imageX);
                 }
 
-                uint32_t output[8] = { 0 };
+                uint32_t output[16] = { 0 };
                 _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
 
-                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
+                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7] +
+                          output[8] + output[9] + output[10] + output[11] + output[12] + output[13] + output[14] + output[15];
             }
         }
     }
@@ -511,11 +512,12 @@ namespace avx512
             }
         }
 
-        uint32_t output[8] = { 0 };
+        uint32_t output[16] = { 0 };
 
         _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
 
-        return sum + output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7];
+        return sum + output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7] +
+                     output[8] + output[9] + output[10] + output[11] + output[12] + output[13] + output[14] + output[15];
     }
 #endif
 }
