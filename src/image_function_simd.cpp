@@ -378,10 +378,10 @@ namespace avx512
                 simd simdSum_3 = _mm512_setzero_si512();
                 simd simdSum_4 = _mm512_setzero_si512();
 
-                simd * dst = reinterpret_cast <simd*>(out);
+                simd * dst = reinterpret_cast<simd *>( out );
 
                 for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize ) {
-                    const simd * src = reinterpret_cast <const simd*>(imageSimdY);
+                    const simd * src = reinterpret_cast<const simd *>( imageSimdY );
 
                     const simd data = _mm512_loadu_si512( src );
 
@@ -408,7 +408,7 @@ namespace avx512
             }
 
             if ( nonSimdWidth > 0 ) {
-                const uint8_t* imageXEnd = imageStart + nonSimdWidth;
+                const uint8_t * imageXEnd = imageStart + nonSimdWidth;
 
                 for ( ; imageStart != imageXEnd; ++imageStart, ++out ) {
                     const uint8_t * imageY    = imageStart;
@@ -447,7 +447,7 @@ namespace avx512
                 }
 
                 uint32_t output[16] = { 0 };
-                _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
+                _mm512_storeu_si512( reinterpret_cast<simd *>( output ), simdSum );
 
                 (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7] +
                           output[8] + output[9] + output[10] + output[11] + output[12] + output[13] + output[14] + output[15];
@@ -486,7 +486,7 @@ namespace avx512
     {
         uint32_t sum = 0;
         simd simdSum = _mm512_setzero_si512();
-        simd zero    = _mm512_setzero_si512();
+        const simd zero = _mm512_setzero_si512();
 
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const simd * src    = reinterpret_cast <const simd*> (imageY);
