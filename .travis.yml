@@ -41,6 +41,10 @@ matrix:
         - make
         - cd ../../examples
         - make
+    - os: osx
+      name: "OSX with QT latest"
+      env: QT_BASE=latest CMAKE_OPTIONS=""
+      before_install: source script/travis/install_qt5.sh
     - os: linux
       language: python
       name: "Python module compilation"
@@ -91,10 +95,6 @@ matrix:
         apt:
           update: true
           packages: valgrind
-    - os: osx
-      name: "OSX with QT latest"
-      env: QT_BASE=latest CMAKE_OPTIONS=""
-      before_install: source script/travis/install_qt5.sh
     - os: windows
       name: "Windows (x86) with VS2015"
       env:
