@@ -210,13 +210,13 @@ namespace Function_Pool
                 if ( _infoOut1->startY[0] == _infoOut1->startY[1] ) {
                     if ( horizontal ) {
                         for ( size_t i = 0u; i < _infoOut1->_size(); ++i )
-                            _infoOut1->startX[i] = startXOut + width - ( _infoOut1->startX[i] + _infoOut1->width[i] );
+                            _infoOut1->startX[i] = 2 * startXOut + width - ( _infoOut1->startX[i] + _infoOut1->width[i] );
                     }
                 }
                 else {
                     if ( vertical ) {
                         for ( size_t i = 0u; i < _infoOut1->_size(); ++i )
-                            _infoOut1->startY[i] = startYOut + height - ( _infoOut1->startY[i] + _infoOut1->height[i] );
+                            _infoOut1->startY[i] = 2 * startYOut + height - ( _infoOut1->startY[i] + _infoOut1->height[i] );
                     }
                 }
             }
