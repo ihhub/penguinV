@@ -78,7 +78,7 @@ int main( int argc, char **argv )
         if ( !detection().empty() ) {
             out.fill( 0 );
 
-            const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::CRITERION_SIZE );
+            const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::BY_SIZE );
             Image_Function::SetPixel( out, blob.pointX(), blob.pointY(), 255 );
         }
 

@@ -197,12 +197,12 @@ namespace Blob_Detection
 
         enum BlobCriterion
         {
-            CRITERION_CIRCULARITY,
-            CRITERION_ELONGATION,
-            CRITERION_HEIGHT,
-            CRITERION_LENGTH,
-            CRITERION_SIZE,
-            CRITERION_WIDTH
+            BY_CIRCULARITY,
+            BY_ELONGATION,
+            BY_HEIGHT,
+            BY_LENGTH,
+            BY_SIZE,
+            BY_WIDTH
         };
 
         // before calling this function make sure that you have more than 1 found blob!

@@ -57,7 +57,7 @@ int main( int argc, char *argv[] )
         output.fill( 0 );
 
         // Sort blobs by size and do NOT draw an edge of biggest blob what is actually white backgroud
-        detection.sort( Blob_Detection::BlobDetection::CRITERION_SIZE );
+        detection.sort( Blob_Detection::BlobDetection::BY_SIZE );
 
         for( std::vector <Blob_Detection::BlobInfo>::const_iterator blob = detection().begin() + 1; blob != detection().end(); ++blob )
             Image_Function::SetPixel( output, blob->edgeX(), blob->edgeY(), 255 );
