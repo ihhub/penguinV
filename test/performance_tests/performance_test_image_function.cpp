@@ -335,6 +335,7 @@ namespace function_pool
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( ConvertToRgb       )
     SET_FUNCTION( ConvertToGrayScale )
+    SET_FUNCTION( Flip               )
     SET_FUNCTION( GammaCorrection    )
     SET_FUNCTION( Histogram          )
     SET_FUNCTION( Invert             )
