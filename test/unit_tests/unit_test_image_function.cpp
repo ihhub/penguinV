@@ -2577,6 +2577,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( BitwiseXor )
     SET_FUNCTION_4_FORMS( ConvertToGrayScale )
     SET_FUNCTION_4_FORMS( ConvertToRgb )
+    SET_FUNCTION_4_FORMS( Flip )
     SET_FUNCTION_4_FORMS( GammaCorrection )
     SET_FUNCTION_4_FORMS( Histogram )
     SET_FUNCTION_4_FORMS( Invert )

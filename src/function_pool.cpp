@@ -16,6 +16,8 @@ namespace Function_Pool
             , coefficientA        ( 1 )
             , coefficientGamma    ( 1 )
             , extractChannelId    ( 255 )
+            , horizontalFlip      ( false )
+            , verticalFlip        ( false )
         { }
 
         uint8_t minThreshold;      // for Threshold() function same as threshold
@@ -25,6 +27,8 @@ namespace Function_Pool
         double coefficientGamma;   // for GammaCorrection() function
         uint8_t extractChannelId;  // for ExtractChannel() function
         std::vector<uint8_t> lookupTable; // for LookupTable() function
+        bool horizontalFlip;
+        bool verticalFlip;
     };
     // This structure holds output data for some specific functions
     struct OutputInfo
@@ -184,14 +188,40 @@ namespace Function_Pool
             _process( _ConvertToRgb );
         }
 
-        void  ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
-                              uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
+        void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                             uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
         {
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
             _dataIn.extractChannelId = channelId;
 
             _process( _ExtractChannel );
+        }
+
+        void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
+                   uint32_t startYOut, uint32_t width, uint32_t height, bool horizontal, bool vertical )
+        {
+            _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+
+            _dataIn.horizontalFlip = horizontal;
+            _dataIn.verticalFlip = vertical;
+
+            if ( _infoOut1->_size() > 1 ) {
+                if ( _infoOut1->startY[0] == _infoOut1->startY[1] ) {
+                    if ( horizontal ) {
+                        for ( size_t i = 0u; i < _infoOut1->_size(); ++i )
+                            _infoOut1->startX[i] = 2 * startXOut + width - ( _infoOut1->startX[i] + _infoOut1->width[i] );
+                    }
+                }
+                else {
+                    if ( vertical ) {
+                        for ( size_t i = 0u; i < _infoOut1->_size(); ++i )
+                            _infoOut1->startY[i] = 2 * startYOut + height - ( _infoOut1->startY[i] + _infoOut1->height[i] );
+                    }
+                }
+            }
+
+            _process( _Flip );
         }
 
         void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -346,6 +376,7 @@ namespace Function_Pool
             _ConvertToGrayScale,
             _ConvertToRgb,
             _ExtractChannel,
+            _Flip,
             _GammaCorrection,
             _Histogram,
             _Invert,
@@ -409,6 +440,13 @@ namespace Function_Pool
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                         _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.extractChannelId );
+                    break;
+                case _Flip:
+                    penguinV::Flip(
+                        _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                        _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
+                        _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.horizontalFlip, _dataIn.verticalFlip );
+                    break;
                 case _GammaCorrection:
                     penguinV::GammaCorrection(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -673,6 +711,36 @@ namespace Function_Pool
         Image_Function::VerifyGrayScaleImage( out );
 
         FunctionTask().ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );
+    }
+
+    Image Flip( const Image & in, bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, Image & out, bool horizontal, bool vertical )
+    {
+        Image_Function_Helper::Flip( Flip, in, out, horizontal, vertical );
+    }
+
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical )
+    {
+        return Image_Function_Helper::Flip( Flip, in, startXIn, startYIn, width, height, horizontal, vertical );
+    }
+
+    void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+               uint32_t width, uint32_t height, bool horizontal, bool vertical )
+    {
+        if ( !horizontal && !vertical ) {
+            penguinV::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+            return;
+        }
+
+        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        FunctionTask().Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
     }
 
     Image GammaCorrection( const Image & in, double a, double gamma )
