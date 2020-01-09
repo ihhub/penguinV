@@ -365,6 +365,13 @@ namespace Function_Pool
             _dataIn.maxThreshold = maxThreshold;
             _process( _ThresholdDouble );
         }
+
+        void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                        uint32_t width, uint32_t height )
+        {
+            _setup( in, startXIn, startYIn, width, height, out, startXOut, startYOut, height, width, true );
+            _process( _Transpose );
+        }
     protected:
         enum TaskName // enumeration to define for thread which function need to execute
         {
@@ -392,7 +399,8 @@ namespace Function_Pool
             _Split,
             _Sum,
             _Threshold,
-            _ThresholdDouble
+            _ThresholdDouble,
+            _Transpose
         };
 
         virtual void _task( size_t taskId )
@@ -538,6 +546,11 @@ namespace Function_Pool
                                          _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
                                          _infoIn1->width[taskId], _infoIn1->height[taskId], _dataIn.minThreshold,
                                          _dataIn.maxThreshold );
+                    break;
+                case _Transpose:
+                    penguinV::Transpose( _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
+                                         _infoOut1->image, _infoOut1->startX[taskId], _infoOut1->startY[taskId],
+                                         _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 default:
                     throw imageException( "Unknown image function task" );
@@ -1120,5 +1133,30 @@ namespace Function_Pool
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
         FunctionTask().Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
+    }
+
+    Image Transpose( const Image & in )
+    {
+        return Image_Function_Helper::Transpose( Transpose, in );
+    }
+
+    void Transpose( const Image & in, Image & out )
+    {
+        Image_Function_Helper::Transpose( Transpose, in, out );
+    }
+
+    Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    {
+        return Image_Function_Helper::Transpose( Transpose, in, startXIn, startYIn, width, height );
+    }
+
+    void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                    uint32_t width, uint32_t height )
+    {
+        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ParameterValidation( out, startXOut, startYOut, height, width );
+        Image_Function::VerifyGrayScaleImage( in, out );
+
+        FunctionTask().Transpose( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
     }
 }
