@@ -35,12 +35,12 @@ matrix:
       before_script:
         - cd test/unit_tests
       script:
-        - make
+        - make -j 2
         - ./unit_tests
         - cd ../performance_tests
-        - make
+        - make -j 2
         - cd ../../examples
-        - make
+        - make -j 2
     - os: osx
       name: "OSX with QT latest"
       env: QT_BASE=latest CMAKE_OPTIONS=""
