@@ -47,7 +47,7 @@ matrix:
       before_install: source script/travis/install_qt5.sh
     - os: linux
       language: python
-      name: "Python module compilation"
+      name: "Python 3.6 module compilation"
       python: 3.6
       env: SWIG=ON
       before_script:
@@ -55,7 +55,7 @@ matrix:
         - tar xzf rel-3.0.12.tar.gz && cd swig-rel-3.0.12
         - ./autogen.sh
         - ./configure --prefix=${HOME}/swig/
-        - make
+        - make -j 2
         - make install
         - export PATH=${HOME}/swig/bin:$PATH
         - swig -version
