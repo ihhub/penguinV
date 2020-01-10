@@ -31,7 +31,7 @@ endif
 
 ifeq ($(JPEG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_JPEG_SUPPORT
-LIBS += -ljpeg
+LDFLAGS += -ljpeg
 else
 JPEG_MESSAGE := "\nNote! libjpeg-dev is missing from your computer,\nso .jpeg images are not supported.\n\nYou can install libjpeg-dev by:\n$ sudo apt install libjpeg-dev\n"
 endif
