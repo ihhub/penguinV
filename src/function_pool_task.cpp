@@ -27,7 +27,7 @@ namespace Function_Pool
         return startX.size();
     }
 
-    void AreaInfo::_copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ )
+    void AreaInfo::_copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, bool oppositeAxis )
     {
         if( info._size() > 0 ) {
             bool yAxis = true;
@@ -39,7 +39,7 @@ namespace Function_Pool
                 }
             }
 
-            _fill( x, y, width_, height_, static_cast<uint32_t>(info._size()), yAxis );
+            _fill( x, y, width_, height_, static_cast<uint32_t>(info._size()), oppositeAxis ? !yAxis : yAxis );
         }
     }
 
@@ -152,7 +152,7 @@ namespace Function_Pool
     }
 
     void FunctionPoolTask::_setup( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
+                                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut, bool oppositeAxis )
     {
         _validateTask();
 
@@ -163,8 +163,8 @@ namespace Function_Pool
                                                                                                       std::min( heightIn, heightOut ), threadCount() ) );
         _infoOut1 = std::unique_ptr < OutputImageInfo >( new OutputImageInfo( out, startXOut, startYOut, widthOut, heightOut, threadCount() ) );
 
-        _infoOut1->_copy( *_infoIn1, startXOut, startYOut, widthOut, heightOut );
-        _infoIn1->_copy( *_infoOut1, startXIn, startYIn, widthIn, heightIn );
+        _infoOut1->_copy( *_infoIn1, startXOut, startYOut, widthOut, heightOut, oppositeAxis );
+        _infoIn1->_copy( *_infoOut1, startXIn, startYIn, widthIn, heightIn, oppositeAxis );
     }
 
     void FunctionPoolTask::_setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,

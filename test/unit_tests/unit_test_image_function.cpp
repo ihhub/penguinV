@@ -2593,6 +2593,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
+    SET_FUNCTION_4_FORMS( Transpose )
 }
 
 #ifdef PENGUINV_AVX512_SKL_SET

@@ -350,6 +350,7 @@ namespace function_pool
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
     REGISTER_FUNCTION( ThresholdDouble, Threshold )
+    SET_FUNCTION( Transpose          )
 }
 
 #ifdef PENGUIV_AV512BW_SET

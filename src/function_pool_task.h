@@ -20,7 +20,7 @@ namespace Function_Pool
         size_t _size() const;
 
         // makes a similar input data sorting like it is done in info parameter
-        void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_ );
+        void _copy( const AreaInfo & info, uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, bool oppositeAxis = false );
     private:
         // sorts out all input data into arrays for multithreading execution
         void _calculate( uint32_t x, uint32_t y, uint32_t width_, uint32_t height_, uint32_t count );
@@ -67,7 +67,7 @@ namespace Function_Pool
         void _setup( const Image & in, uint32_t inX, uint32_t inY, Image & out, uint32_t outX, uint32_t outY, uint32_t width, uint32_t height );
 
         void _setup( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut );
+                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut, bool oppositeAxis = false );
 
         void _setup( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
