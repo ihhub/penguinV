@@ -133,7 +133,11 @@ script:
     # Build and run tests
     if [[ "$TRAVIS_EVENT_TYPE" == "cron" || "$TRAVIS_OS_NAME" != "windows" ]]; then
       set -e
-      cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
+      if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+        cmake --build . --config $BUILD_TYPE # --config is ignored on Linux/MacOS
+      else
+        cmake --build . -- -j 2
+      fi
       set +e
       if [[ "$DYNAMIC_ANALYSIS" == "ON" ]]; then
         ctest --overwrite MemoryCheckCommandOptions="--show-reachable=no" \
