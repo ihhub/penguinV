@@ -77,7 +77,7 @@ namespace Jpeg_Operation
 
         jpeg_start_decompress( &info );
 
-        const uint8_t colorCount = ( info.num_components > 0 && info.num_components < 256 ) ? static_cast<uint8_t>( info.num_components ) : 1;
+        const uint8_t colorCount = ( info.num_components > 0 && info.num_components < 256 ) ? static_cast<uint8_t>( info.num_components ) : 1u;
         image.setColorCount( colorCount );
         image.resize( info.output_width, info.output_height );
 
