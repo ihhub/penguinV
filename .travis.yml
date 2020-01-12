@@ -2,19 +2,6 @@ sudo: required
 
 language: cpp
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:beineri/opt-qt596-xenial'
-    packages:
-      - libgl-dev
-      - libpng-dev
-      - libjpeg-dev
-      - yasm
-      - ocl-icd-opencl-dev
-      - opencl-headers
-    update: true
-
 matrix:
   # Windows builds are experimental in Travis, ignore job results in case of failure!
   allow_failures:
@@ -23,6 +10,18 @@ matrix:
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
   include:
     - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:beineri/opt-qt596-xenial'
+          packages:
+            - libgl-dev
+            - libpng-dev
+            - libjpeg-dev
+            - yasm
+            - ocl-icd-opencl-dev
+            - opencl-headers
+          update: true
       name: "Linux (Ubuntu) with CUDA 8 and Qt 5.9"
       env: CUDA=8.0.61-1 QT_BASE=59 CMAKE_OPTIONS="-DPENGUINV_BUILD_TEST=ON"
       before_install:
@@ -30,6 +29,18 @@ matrix:
         - source script/travis/install_qt5.sh
     - os: linux
       arch: arm64
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:beineri/opt-qt596-xenial'
+          packages:
+            - libgl-dev
+            - libpng-dev
+            - libjpeg-dev
+            - yasm
+            - ocl-icd-opencl-dev
+            - opencl-headers
+          update: true
       name: "Linux (Ubuntu) ARM"
       before_script:
         - cd test/unit_tests
@@ -85,6 +96,18 @@ matrix:
             echo "Skipping clang-format check since this is not a pull request."
           fi
     - os: linux
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:beineri/opt-qt596-xenial'
+          packages:
+            - libgl-dev
+            - libpng-dev
+            - libjpeg-dev
+            - yasm
+            - ocl-icd-opencl-dev
+            - opencl-headers
+          update: true
       name: "Dynamic analysis"
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
