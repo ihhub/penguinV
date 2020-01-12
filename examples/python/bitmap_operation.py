@@ -44,7 +44,7 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
 
 try:
 
-    saveGrayScaleCopy( filenameToOpen = os.path.join('..', '_image', 'mercury.bmp'),
+    saveGrayScaleCopy( filenameToOpen = os.path.join('..', '..', 'data', 'mercury.bmp'),
                        filenameToSave = 'result.bmp'
                      )
     print('Output image was saved into result.bmp file')
