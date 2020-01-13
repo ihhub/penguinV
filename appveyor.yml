@@ -21,7 +21,6 @@ environment:
       platform: x64
     - JOB: Python2.7
       PYTHON: "C:\\Python27-x64"
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - JOB: Python3.7
       PYTHON: "C:\\Python37-x64"
 
@@ -50,7 +49,7 @@ clone_folder: C:\projects\penguinv
 
 # scripts to run before build
 before_build:
-  - cmd: if "%configuration%"=="Release" call script\appveyor\cuda_install.cmd
+  - cmd: call script\appveyor\cuda_install.cmd
 
 build_script:
   - cmd: if "%APPVEYOR_SCHEDULED_BUILD%" == "True" set PENGUINV_UNIT_TEST_RUN_COUNT=500
@@ -63,4 +62,4 @@ build_script:
 
 test_script:
 # OpenCL unit test is excluded as it fails with Exception: Exit code 0xc0000135 on Appveyor
-  - cmd: if "%configuration%"=="Release" ctest -C %configuration% -E "unit_tests_opencl|perf_test|performance_tests_opencl" --extra-verbose
+  - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test|performance_tests_opencl" --extra-verbose
