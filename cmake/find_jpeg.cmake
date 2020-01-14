@@ -1,10 +1,26 @@
 include(ExternalProject)
 option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
 option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
+option(PENGUINV_USE_APPVEYOR_CACHE_JPEG "Use Appveyor cache for libjpeg" OFF)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
     if(DEFINED ENV{APPVEYOR})
-        find_package(JPEG PATHS C:/projects/penguinv/build/jpeg)
+        if(EXISTS ${CMAKE_BINARY_DIR}/jpeg)
+            set(JPEG_INSTALL ${CMAKE_BINARY_DIR}/jpeg)
+            set(JPEG_LIBRARY_RELEASE ${INSTALL_DIR}/lib/jpeg-static.lib)
+            set(JPEG_LIBRARY_RELWITHDEBINFO ${INSTALL_DIR}/lib/jpeg-static.lib)
+            set(JPEG_LIBRARY_DEBUG ${INSTALL_DIR}/lib/jpeg-staticd.lib)
+            set(JPEG_INCLUDE_DIRS ${INSTALL_DIR}/include)
+
+            set_target_properties(JPEG_EXTERNAL PROPERTIES
+                IMPORTED_LOCATION_RELEASE "${JPEG_LIBRARY_RELEASE}"
+                IMPORTED_LOCATION_RELWITHDEBINFO "${JPEG_LIBRARY_RELWITHDEBINFO}"
+                IMPORTED_LOCATION_DEBUG "${JPEG_LIBRARY_DEBUG}"
+                INTERFACE_INCLUDE_DIRECTORIES ${JPEG_INCLUDE_DIRS})
+
+            set(PENGUINV_USE_EXTERNAL_JPEG ON CACHE BOOL "" FORCE)
+            set(PENGUINV_USE_APPVEYOR_CACHE_JPEG ON CACHE BOOL "" FORCE)
+        endif()
     else()
         find_package(JPEG)
     endif()
@@ -14,7 +30,7 @@ if(PENGUINV_ENABLE_JPEG_SUPPORT)
     endif()
 endif()
 
-if(PENGUINV_USE_EXTERNAL_JPEG)
+if(PENGUINV_USE_EXTERNAL_JPEG AND NOT(PENGUINV_USE_APPVEYOR_CACHE_JPEG))
     set(DOWNLOAD_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/downloads"
     CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
