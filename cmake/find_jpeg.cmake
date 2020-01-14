@@ -27,7 +27,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     endif()
 
     if(DEFINED ENV{APPVEYOR})
-        if(EXISTS ${CMAKE_BINARY_DIR}/yasm/yasm.exe)
+        if(EXISTS ${YASM_BINARY})
             set(PENGUINV_INSTALL_YASM OFF CACHE BOOL "" FORCE)
         endif()
     else()
@@ -62,10 +62,6 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
                 -DBUILD_SHARED_LIBS:BOOL=OFF
                 -DCMAKE_BUILD_TYPE:STRING=RELEASE
                 -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
-
-        
-
-        
 
         ExternalProject_Add(jpeg
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
