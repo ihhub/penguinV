@@ -43,6 +43,9 @@ for:
   test_script:
     - cmd: cd C:\projects\penguinv\examples\python
     - cmd: python bitmap_operation.py
+  cache:
+    - C:\ProgramData\chocolatey\bin -> appveyor.yml
+    - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # clone directory
 clone_folder: C:\projects\penguinv
