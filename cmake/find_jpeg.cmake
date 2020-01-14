@@ -1,6 +1,7 @@
 include(ExternalProject)
 option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
 option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
+option(PENGUINV_INSTALL_YASM "Download yasm and build from source" ON)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
     find_package(JPEG)
@@ -15,7 +16,6 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
 
-    option(PENGUINV_INSTALL_YASM "Download yasm and build from source" ON)
     set(YASM_INSTALL ${CMAKE_BINARY_DIR}/yasm)
     set(YASM_INCLUDE_DIR ${YASM_INSTALL}/include)
     set(YASM_LIBRARIES ${YASM_INSTALL}/lib/libyasm.a)
@@ -30,7 +30,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         if(EXISTS ${YASM_BINARY})
             set(PENGUINV_INSTALL_YASM OFF CACHE BOOL "" FORCE)
         endif()
-    else()
+    endif()
 
     set(JPEG_INSTALL ${CMAKE_BINARY_DIR}/jpeg)
     set(JPEG_BUILD_DIR ${CMAKE_BINARY_DIR}/jpeg/build)
@@ -52,7 +52,6 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     else()
         set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libjpeg.a)
     endif()
-    
 
     if(PENGUINV_INSTALL_YASM)
         ExternalProject_Add(yasm
