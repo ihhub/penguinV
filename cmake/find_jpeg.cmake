@@ -6,8 +6,9 @@ if(PENGUINV_ENABLE_JPEG_SUPPORT)
     if(DEFINED ENV{APPVEYOR})
         if(EXISTS ${CMAKE_BINARY_DIR}/jpeg)
             set(CUSTOM_JPEG_PATH ${CMAKE_BINARY_DIR}/jpeg)
+            message(STATUS "JPEG path is ${CUSTOM_JPEG_PATH}.")
             find_package(JPEG 
-                PATHS ${CUSTOM_JPEG_PATH} 
+                PATHS ${CUSTOM_JPEG_PATH}
                 NO_SYSTEM_ENVIRONMENT_PATH
             )
         endif()
