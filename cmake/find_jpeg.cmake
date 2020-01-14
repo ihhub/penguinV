@@ -3,6 +3,7 @@ option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
 option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
+    find_package(JPEG)
     if(NOT JPEG_FOUND)
         set(PENGUINV_USE_EXTERNAL_JPEG ON CACHE BOOL "" FORCE)
         message(STATUS "libjpeg has not been found in the system and will be downloaded")
