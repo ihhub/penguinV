@@ -54,7 +54,7 @@ before_build:
 build_script:
   - cmd: if "%APPVEYOR_SCHEDULED_BUILD%" == "True" set PENGUINV_UNIT_TEST_RUN_COUNT=500
   - cmd: cd C:\projects\penguinv
-  - cmd: md build
+  - cmd: if not exist "build" mkdir "build"
   - cmd: cd build
   - cmd: if "%platform%"=="x64" cmake -G "Visual Studio 14 2015 Win64" ..
   - cmd: if "%platform%"=="x86" cmake -G "Visual Studio 14 2015" ..
