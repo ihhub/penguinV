@@ -54,6 +54,10 @@ clone_folder: C:\projects\penguinv
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
 
+install:
+  - choco install -y nasm
+  - set PATH=%PROGRAMFILES%\nasm;%PATH%
+
 build_script:
   - cmd: if "%APPVEYOR_SCHEDULED_BUILD%" == "True" set PENGUINV_UNIT_TEST_RUN_COUNT=500
   - cmd: cd C:\projects\penguinv
