@@ -54,6 +54,7 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     endif()
 
     if(PENGUINV_INSTALL_YASM)
+        # Download yasm to compile jpeg
         ExternalProject_Add(yasm
             PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yasm
             URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
