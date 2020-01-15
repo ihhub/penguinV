@@ -3,6 +3,7 @@
 ##
 subsystem:
 	-$(MAKE) -C blob_detection
+	-$(MAKE) -C fft
 	-$(MAKE) -C file_operation
 	-$(MAKE) -C filters
 	-$(MAKE) -C function_pool
@@ -14,6 +15,7 @@ subsystem:
 .PHONY: clean
 clean:
 	-$(MAKE) clean -C blob_detection
+	-$(MAKE) clean -C fft
 	-$(MAKE) clean -C file_operation
 	-$(MAKE) clean -C filters
 	-$(MAKE) clean -C function_pool
