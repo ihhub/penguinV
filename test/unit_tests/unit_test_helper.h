@@ -26,7 +26,8 @@ namespace Unit_Test
     {
         return image1.height() == image2.height() && image1.width() == image2.width() &&
             image1.alignment() == image2.alignment() && image1.colorCount() == image2.colorCount()
-            && image1.rowSize() == image2.rowSize();
+            && image1.rowSize() == image2.rowSize() && image1.dataSize() == image2.dataSize()
+            && image1.dataType() == image2.dataType();
     }
 
     template <typename data>
@@ -41,18 +42,13 @@ namespace Unit_Test
 
     bool equalSize( const penguinV::Image & image, uint32_t width, uint32_t height );
 
-    template <typename data>
-    bool equalData( const penguinV::ImageTemplate<data> & image1, const penguinV::ImageTemplate<data> & image2 )
+    template <typename TData>
+    bool equalData( const penguinV::Image & image1, const penguinV::Image & image2 )
     {
-        return memcmp( image1.data(), image2.data(), sizeof( data ) * image1.height() * image1.rowSize() ) == 0;
+        return memcmp( image1.data<TData>(), image2.data<TData>(), sizeof( TData ) * image1.height() * image1.rowSize() ) == 0;
     }
 
-    template <typename data>
-    bool isEmpty( const penguinV::ImageTemplate<data> & image )
-    {
-        return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
-               image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
-    }
+    bool isEmpty( const penguinV::Image & image );
 
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value,
@@ -60,26 +56,18 @@ namespace Unit_Test
     bool verifyImage( const penguinV::Image & image, uint8_t value );
     bool verifyImage( const penguinV::Image & image, const std::vector<uint8_t> & value, bool isAnyValue = true );
 
-    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value );
-    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint16_t> & value,
-                      bool isAnyValue = true );
-    bool verifyImage( const penguinV::Image16Bit & image, uint16_t value );
-    bool verifyImage( const penguinV::Image16Bit & image, const std::vector<uint16_t> & value, bool isAnyValue = true );
+    bool verify16BitImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value );
+    bool verify16BitImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint16_t> & value,
+                           bool isAnyValue = true );
+    bool verify16BitImage( const penguinV::Image & image, uint16_t value );
+    bool verify16BitImage( const penguinV::Image & image, const std::vector<uint16_t> & value, bool isAnyValue = true );
 
     // Fill image ROI with specific intensity
     void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
     void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value );
 
     // Generate and return ROI based on full image size
-    template <typename _Type>
-    void generateRoi( const penguinV::ImageTemplate<_Type> & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
-    {
-        width  = randomValue<uint32_t>( 1, image.width()  + 1 );
-        height = randomValue<uint32_t>( 1, image.height() + 1 );
-
-        x = randomValue<uint32_t>( image.width()  - width );
-        y = randomValue<uint32_t>( image.height() - height );
-    }
+    void generateRoi( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height );
     void generateRoi( const std::vector<penguinV::Image> & image, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width, uint32_t & height );
     // first element in pair structure is width, second - height
     void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
@@ -87,11 +75,7 @@ namespace Unit_Test
 
     void generateOffset( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
 
-    template <typename _Type>
-    std::pair<uint32_t, uint32_t> imageSize( const penguinV::ImageTemplate<_Type> & image )
-    {
-        return std::pair<uint32_t, uint32_t>( image.width(), image.height() );
-    }
+    std::pair<uint32_t, uint32_t> imageSize( const penguinV::Image & image );
 
     // Return calculated row size
     uint32_t rowSize( uint32_t width, uint8_t colorCount = 1, uint8_t alignment = 1 );

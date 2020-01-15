@@ -11,7 +11,7 @@ namespace
     }
 
     template <typename _Type>
-    bool imageVerification( const penguinV::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
+    bool imageVerification( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
@@ -20,7 +20,7 @@ namespace
         Image_Function::OptimiseRoi( width, height, image );
 
         const uint32_t rowSize = image.rowSize();
-        const _Type * outputY  = image.data() + y * rowSize + x * image.colorCount();
+        const _Type * outputY  = image.data<_Type>() + y * rowSize + x * image.colorCount();
         const _Type * endY     = outputY + rowSize * height;
 
         for ( ; outputY != endY; outputY += rowSize ) {
@@ -37,14 +37,14 @@ namespace
     }
 
     template <typename _Type>
-    bool imageVerification( const penguinV::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool imageVerification( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                             const std::vector < _Type > & value, bool isAnyValue )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
             throw imageException( "Bad input parameters in image function" );
 
         const uint32_t rowSize = image.rowSize();
-        const _Type * outputY  = image.data() + y * rowSize + x * image.colorCount();
+        const _Type * outputY  = image.data<_Type>() + y * rowSize + x * image.colorCount();
         const _Type * endY     = outputY + rowSize * height;
 
         width = width * image.colorCount();
@@ -156,6 +156,12 @@ namespace Unit_Test
         return image.width() == width && image.height() == height && !image.empty();
     }
 
+    bool isEmpty( const penguinV::Image & image )
+    {
+        return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
+               image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
+    }
+
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
         return imageVerification<uint8_t>( image, x, y, width, height, value );
@@ -176,25 +182,25 @@ namespace Unit_Test
         return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
 
-    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value )
+    bool verify16BitImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint16_t value )
     {
         return imageVerification<uint16_t>( image, x, y, width, height, value );
     }
 
-    bool verifyImage( const penguinV::Image16Bit & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+    bool verify16BitImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                       const std::vector < uint16_t > & value, bool isAnyValue )
     {
         return imageVerification<uint16_t>( image, x, y, width, height, value, isAnyValue );
     }
 
-    bool verifyImage( const penguinV::Image16Bit & image, uint16_t value )
+    bool verify16BitImage( const penguinV::Image & image, uint16_t value )
     {
-        return verifyImage( image, 0, 0, image.width(), image.height(), value );
+        return verify16BitImage( image, 0, 0, image.width(), image.height(), value );
     }
 
-    bool verifyImage( const penguinV::Image16Bit & image, const std::vector<uint16_t> & value, bool isAnyValue )
+    bool verify16BitImage( const penguinV::Image & image, const std::vector<uint16_t> & value, bool isAnyValue )
     {
-        return verifyImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
+        return verify16BitImage( image, 0, 0, image.width(), image.height(), value, isAnyValue );
     }
 
     void fillImage( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
@@ -225,6 +231,15 @@ namespace Unit_Test
                     id = 0;
             }
         }
+    }
+
+    void generateRoi( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
+    {
+        width  = randomValue<uint32_t>( 1, image.width()  + 1 );
+        height = randomValue<uint32_t>( 1, image.height() + 1 );
+
+        x = randomValue<uint32_t>( image.width()  - width );
+        y = randomValue<uint32_t>( image.height() - height );
     }
 
     void generateRoi( const std::vector<penguinV::Image> & image, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width, uint32_t & height )
@@ -272,6 +287,11 @@ namespace Unit_Test
     {
         x = randomValue<uint32_t>( image.width()  - width );
         y = randomValue<uint32_t>( image.height() - height );
+    }
+
+    std::pair<uint32_t, uint32_t> imageSize( const penguinV::Image & image )
+    {
+        return std::pair<uint32_t, uint32_t>( image.width(), image.height() );
     }
 
     uint32_t rowSize( uint32_t width, uint8_t colorCount, uint8_t alignment )

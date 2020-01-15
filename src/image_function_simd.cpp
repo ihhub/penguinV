@@ -2575,7 +2575,7 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
-    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height, SIMDType simdType )
     {
         const uint32_t simdSize = getSimdSize( simdType );
@@ -2596,7 +2596,7 @@ if ( simdType == neon_function ) { \
         const uint8_t colorCount = in.colorCount();
 
         const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint16_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
+        uint16_t      * outY = out.data<uint16_t>() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint16_t * outYEnd = outY + height * rowSizeOut;
 
@@ -2612,7 +2612,7 @@ if ( simdType == neon_function ) { \
         NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
     }
 
-    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+    void ConvertTo8Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                         uint32_t width, uint32_t height, SIMDType simdType )
     {
         const uint32_t simdSize = getSimdSize( simdType );
@@ -2632,7 +2632,7 @@ if ( simdType == neon_function ) { \
 
         const uint8_t colorCount = in.colorCount();
 
-        const uint16_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
+        const uint16_t * inY = in.data<uint16_t>() + startYIn  * rowSizeIn  + startXIn;
         uint8_t      * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
@@ -3168,15 +3168,15 @@ namespace Image_Function_Simd
         simd::BitwiseXor( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
-    Image16Bit ConvertTo16Bit( const Image & in )
+    Image ConvertTo16Bit( const Image & in )
     {
-        Image16Bit out = Image16Bit().generate( in.width(), in.height(), in.colorCount() );
+        Image out = Image().generate<uint16_t>( in.width(), in.height(), in.colorCount() );
         ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
         return out;
     }
 
-    void ConvertTo16Bit( const Image & in, Image16Bit & out )
+    void ConvertTo16Bit( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -3184,23 +3184,23 @@ namespace Image_Function_Simd
         ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image16Bit ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image16Bit out = Image16Bit().generate( width, height, in.colorCount() );
+        Image out = Image().generate<uint16_t>( width, height, in.colorCount() );
         ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
 
         return out;
     }
 
-    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+    void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                          uint32_t width, uint32_t height )
     {
         simd::ConvertTo16Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );
     }
 
-    Image ConvertTo8Bit( const Image16Bit & in )
+    Image ConvertTo8Bit( const Image & in )
     {
         Image out = Image().generate( in.width(), in.height(), in.colorCount() );
         ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
@@ -3208,7 +3208,7 @@ namespace Image_Function_Simd
         return out;
     }
 
-    void ConvertTo8Bit( const Image16Bit & in, Image & out )
+    void ConvertTo8Bit( const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -3216,7 +3216,7 @@ namespace Image_Function_Simd
         ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertTo8Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
@@ -3226,7 +3226,7 @@ namespace Image_Function_Simd
         return out;
     }
 
-    void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+    void ConvertTo8Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                         uint32_t width, uint32_t height )
     {
         simd::ConvertTo8Bit( in, startXIn, startYIn, out, startXOut, startYOut, width, height, simd::actualSimdType() );

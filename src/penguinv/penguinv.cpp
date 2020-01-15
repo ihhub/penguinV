@@ -39,7 +39,7 @@ namespace
         }                                                                                                    \
     }                                                                                                        \
     verifyFunction( func, #func_ );                                                                          \
-    ImageManager<uint8_t> manager( imageType, generateImage, convertImage );
+    ImageManager manager( imageType, generateImage, convertImage );
 }
 
 namespace penguinV

@@ -12,7 +12,7 @@ namespace fft
             const penguinV::Image input = Unit_Test::randomImage( dimension, dimension );
 
             penguinV::Image diracDelta( input.width(), input.height() );
-            diracDelta.fill( 0u );
+            diracDelta.fill<uint8_t>( 0u );
             diracDelta.data()[diracDelta.height() / 2 * diracDelta.rowSize() + diracDelta.width() / 2 ] = 1u;
 
             FFT::ComplexData complexDataInput( input );

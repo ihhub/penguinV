@@ -199,7 +199,7 @@ namespace Image_Function_Helper
     }
 
     void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
-                         const Image & in, Image16Bit & out )
+                         const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );
@@ -208,7 +208,7 @@ namespace Image_Function_Helper
     }
 
     void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
-                        const Image16Bit & in, Image & out )
+                        const Image & in, Image & out )
     {
         Image_Function::ParameterValidation( in );
         Image_Function::ParameterValidation( out );

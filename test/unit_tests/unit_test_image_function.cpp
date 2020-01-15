@@ -392,22 +392,22 @@ namespace Function_Template
         const uint8_t intensity = intensityValue();
         const penguinV::Image input = uniformImage( intensity );
 
-        const penguinV::Image16Bit output = ConvertTo16Bit( input );
+        const penguinV::Image output = ConvertTo16Bit( input );
 
-        return verifyImage( output, static_cast<uint16_t>( intensity * 256 ) );
+        return verify16BitImage( output, static_cast<uint16_t>( intensity * 256 ) );
     }
 
     bool form2_ConvertTo16Bit(ConvertTo16BitForm2 ConvertTo16Bit)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const penguinV::Image input = uniformImage( intensity[0] );
-        penguinV::Image16Bit output( input.width(), input.height() );
+        penguinV::Image output = penguinV::Image().generate<uint16_t>( input.width(), input.height() );
 
-        output.fill( intensity[1] );
+        output.fill<uint16_t>( intensity[1] );
 
         ConvertTo16Bit( input, output );
 
-        return verifyImage( output, static_cast<uint16_t>( intensity[0] * 256 ) );
+        return verify16BitImage( output, static_cast<uint16_t>( intensity[0] * 256 ) );
     }
 
     bool form3_ConvertTo16Bit(ConvertTo16BitForm3 ConvertTo16Bit)
@@ -418,16 +418,16 @@ namespace Function_Template
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
 
-        const penguinV::Image16Bit output = ConvertTo16Bit( input, roiX, roiY, roiWidth, roiHeight );
+        const penguinV::Image output = ConvertTo16Bit( input, roiX, roiY, roiWidth, roiHeight );
 
-        return verifyImage( output, static_cast<uint16_t>( intensity * 256 ) );
+        return verify16BitImage( output, static_cast<uint16_t>( intensity * 256 ) );
     }
 
     bool form4_ConvertTo16Bit(ConvertTo16BitForm4 ConvertTo16Bit)
     {
         const std::vector < uint8_t > intensity = intensityArray( 2 );
         const penguinV::Image input = uniformImage( intensity[0] );
-        penguinV::Image16Bit output = uniformImage16Bit( intensity[1] );
+        penguinV::Image output = uniformImage16Bit( intensity[1] );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );
 
@@ -440,13 +440,13 @@ namespace Function_Template
 
         ConvertTo16Bit( input, roiX[0], roiY[0], output, roiX[1], roiY[1], roiWidth, roiHeight );
 
-        return verifyImage( output, roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint16_t>( intensity[0] * 256 ) );
+        return verify16BitImage( output, roiX[1], roiY[1], roiWidth, roiHeight, static_cast<uint16_t>( intensity[0] * 256 ) );
     }
 
     bool form1_ConvertTo8Bit(ConvertTo8BitForm1 ConvertTo8Bit)
     {
         const uint16_t intensity = randomValue<uint16_t>( 65535 );
-        const penguinV::Image16Bit input = uniformImage16Bit( intensity );
+        const penguinV::Image input = uniformImage16Bit( intensity );
 
         const penguinV::Image output = ConvertTo8Bit( input );
 
@@ -457,7 +457,7 @@ namespace Function_Template
     {
         const uint16_t intensityInput = randomValue<uint16_t>( 65535 );
         const uint8_t intensityOutput = intensityValue();
-        const penguinV::Image16Bit input = uniformImage16Bit( intensityInput );
+        const penguinV::Image input = uniformImage16Bit( intensityInput );
         penguinV::Image output( input.width(), input.height() );
 
         output.fill( intensityOutput );
@@ -470,7 +470,7 @@ namespace Function_Template
     bool form3_ConvertTo8Bit(ConvertTo8BitForm3 ConvertTo8Bit)
     {
         const uint16_t intensity = randomValue<uint16_t>( 65535 );
-        const penguinV::Image16Bit input = uniformImage16Bit( intensity );
+        const penguinV::Image input = uniformImage16Bit( intensity );
 
         uint32_t roiX, roiY, roiWidth, roiHeight;
         generateRoi( input, roiX, roiY, roiWidth, roiHeight );
@@ -484,7 +484,7 @@ namespace Function_Template
     {
         const uint16_t intensityInput = randomValue<uint16_t>( 65535 );
         const uint8_t intensityOutput = intensityValue();
-        const penguinV::Image16Bit input = uniformImage16Bit( intensityInput );
+        const penguinV::Image input = uniformImage16Bit( intensityInput );
         penguinV::Image output = uniformImage( intensityOutput );
 
         std::vector < std::pair <uint32_t, uint32_t> > size( 2 );

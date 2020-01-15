@@ -47,16 +47,16 @@ namespace Image_Function_Helper
         typedef void  (*BitwiseXorForm4)( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                                           Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height );
 
-        typedef Image16Bit (*ConvertTo16BitForm1)( const Image & in );
-        typedef void       (*ConvertTo16BitForm2)( const Image & in, Image16Bit & out );
-        typedef Image16Bit (*ConvertTo16BitForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
-        typedef void       (*ConvertTo16BitForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
+        typedef Image (*ConvertTo16BitForm1)( const Image & in );
+        typedef void  (*ConvertTo16BitForm2)( const Image & in, Image & out );
+        typedef Image (*ConvertTo16BitForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*ConvertTo16BitForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                               uint32_t width, uint32_t height );
 
-        typedef Image (*ConvertTo8BitForm1)( const Image16Bit & in );
-        typedef void  (*ConvertTo8BitForm2)( const Image16Bit & in, Image & out );
-        typedef Image (*ConvertTo8BitForm3)( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
-        typedef void  (*ConvertTo8BitForm4)( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+        typedef Image (*ConvertTo8BitForm1)( const Image & in );
+        typedef void  (*ConvertTo8BitForm2)( const Image & in, Image & out );
+        typedef Image (*ConvertTo8BitForm3)( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+        typedef void  (*ConvertTo8BitForm4)( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                                              uint32_t width, uint32_t height );
 
         typedef Image (*ConvertToGrayScaleForm1)( const Image & in );
@@ -305,10 +305,10 @@ namespace Image_Function_Helper
                       uint32_t width, uint32_t height );
 
     void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
-                         const Image & in, Image16Bit & out );
+                         const Image & in, Image & out );
 
     void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
-                        const Image16Bit & in, Image & out );
+                        const Image & in, Image & out );
 
     Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
                               const Image & in );
