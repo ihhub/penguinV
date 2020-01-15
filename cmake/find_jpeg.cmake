@@ -1,6 +1,7 @@
 include(ExternalProject)
 option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
 option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
+option(PENGUINV_INSTALL_YASM "Download yasm and build from source" ON)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
     find_package(JPEG)
@@ -15,22 +16,20 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     CACHE PATH "Location where external projects will be downloaded.")
     mark_as_advanced(DOWNLOAD_LOCATION)
 
-    # Download yasm
     set(YASM_INSTALL ${CMAKE_BINARY_DIR}/yasm)
     set(YASM_INCLUDE_DIR ${YASM_INSTALL}/include)
     set(YASM_LIBRARIES ${YASM_INSTALL}/lib/libyasm.a)
-    ExternalProject_Add(yasm
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yasm
-        URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
-        CMAKE_CACHE_ARGS
-            -DBUILD_SHARED_LIBS:BOOL=OFF
-            -DCMAKE_BUILD_TYPE:STRING=RELEASE
-            -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
 
     if(WIN32)
         set(YASM_BINARY ${YASM_INSTALL}/bin/yasm.exe)
     else()
         set(YASM_BINARY ${YASM_INSTALL}/bin/yasm)
+    endif()
+
+    if(DEFINED ENV{APPVEYOR})
+        if(EXISTS ${YASM_BINARY})
+            set(PENGUINV_INSTALL_YASM OFF CACHE BOOL "" FORCE)
+        endif()
     endif()
 
     set(JPEG_INSTALL ${CMAKE_BINARY_DIR}/jpeg)
@@ -54,23 +53,51 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
         set(JPEG_STATIC_LIBRARIES ${JPEG_LIB_DIR}/libjpeg.a)
     endif()
 
-    ExternalProject_Add(jpeg
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
-        DEPENDS yasm
-        URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
-        URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
-        INSTALL_DIR ${JPEG_INSTALL}
-        CMAKE_ARGS
-            -DWITH_SIMD=TRUE
-            -DENABLE_SHARED=TRUE
-            -DENABLE_STATIC=TRUE
-            -DWITH_TURBOJPEG=TRUE
-            -DWITH_JPEG8=TRUE
-            -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
-            -DCMAKE_BUILD_TYPE=Release
-            -DCMAKE_CONFIGURATION_TYPES=Release
-            -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
-            -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+    if(PENGUINV_INSTALL_YASM)
+        # Download yasm to compile jpeg
+        ExternalProject_Add(yasm
+            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/yasm
+            URL http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+            CMAKE_CACHE_ARGS
+                -DBUILD_SHARED_LIBS:BOOL=OFF
+                -DCMAKE_BUILD_TYPE:STRING=RELEASE
+                -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
+
+        ExternalProject_Add(jpeg
+            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
+            DEPENDS yasm
+            URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
+            URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+            INSTALL_DIR ${JPEG_INSTALL}
+            CMAKE_ARGS
+                -DWITH_SIMD=TRUE
+                -DENABLE_SHARED=TRUE
+                -DENABLE_STATIC=TRUE
+                -DWITH_TURBOJPEG=TRUE
+                -DWITH_JPEG8=TRUE
+                -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
+                -DCMAKE_BUILD_TYPE=Release
+                -DCMAKE_CONFIGURATION_TYPES=Release
+                -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
+                -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+    else()
+        ExternalProject_Add(jpeg
+            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
+            URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
+            URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+            INSTALL_DIR ${JPEG_INSTALL}
+            CMAKE_ARGS
+                -DWITH_SIMD=TRUE
+                -DENABLE_SHARED=TRUE
+                -DENABLE_STATIC=TRUE
+                -DWITH_TURBOJPEG=TRUE
+                -DWITH_JPEG8=TRUE
+                -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
+                -DCMAKE_BUILD_TYPE=Release
+                -DCMAKE_CONFIGURATION_TYPES=Release
+                -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
+                -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+    endif()
 
     ExternalProject_Get_Property(jpeg INSTALL_DIR)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
