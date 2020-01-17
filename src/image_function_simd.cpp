@@ -3202,7 +3202,7 @@ namespace Image_Function_Simd
 
     Image ConvertTo8Bit( const Image & in )
     {
-        Image out = Image().generate( in.width(), in.height(), in.colorCount() );
+        Image out( in.width(), in.height(), in.colorCount() );
         ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
 
         return out;
@@ -3220,7 +3220,7 @@ namespace Image_Function_Simd
     {
         Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
 
-        Image out = Image().generate( width, height, in.colorCount() );
+        Image out( width, height, in.colorCount() );
         ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );
 
         return out;
