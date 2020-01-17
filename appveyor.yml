@@ -53,7 +53,7 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
-  - cmd: 7z a cuda.zip C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA
+  - cmd: 7z a cuda.zip C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA
   - cmd: dir /p
 
 build_script:
