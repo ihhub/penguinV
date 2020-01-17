@@ -53,6 +53,9 @@ clone_folder: C:\projects\penguinv
 # scripts to run before build
 before_build:
   - cmd: call script\appveyor\cuda_install.cmd
+  - cmd: dir /s 'C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA'
+  - cmd: 7z a cuda.zip C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA
+  - cmd: dir /p
 
 build_script:
   - cmd: if "%APPVEYOR_SCHEDULED_BUILD%" == "True" set PENGUINV_UNIT_TEST_RUN_COUNT=500
