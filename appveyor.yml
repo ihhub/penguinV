@@ -52,7 +52,10 @@ clone_folder: C:\projects\penguinv
 
 # scripts to run before build
 before_build:
-  - cmd: call script\appveyor\cuda_install.cmd
+  - cmd: if not exist "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA" call script\appveyor\cuda_install.cmd
+  - cmd: set CUDA_DIR=%ProgramFiles%\NVIDIA GPU Computing Toolkit\CUDA\v8.0
+  - cmd: set PATH=%CUDA_DIR%\bin;%CUDA_DIR%\libnvvp;C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin;%PATH%
+  - cmd: nvcc -V
 
 build_script:
   - cmd: if "%APPVEYOR_SCHEDULED_BUILD%" == "True" set PENGUINV_UNIT_TEST_RUN_COUNT=500
@@ -68,7 +71,8 @@ test_script:
   - cmd: ctest -C %configuration% -E "unit_tests_opencl|perf_test|performance_tests_opencl" --extra-verbose
 
 cache:
-  - C:/projects/penguinv/build/zlib -> appveyor.yml
-  - C:/projects/penguinv/build/jpeg -> appveyor.yml
-  - C:/projects/penguinv/build/yasm -> appveyor.yml
-  - C:/projects/penguinv/build/png -> appveyor.yml
+  - C:\projects\penguinv\build\zlib -> appveyor.yml
+  - C:\projects\penguinv\build\jpeg -> appveyor.yml
+  - C:\projects\penguinv\build\yasm -> appveyor.yml
+  - C:\projects\penguinv\build\png -> appveyor.yml
+  - C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA -> appveyor.yml, script\appveyor\cuda_install.cmd
