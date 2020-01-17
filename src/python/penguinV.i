@@ -10,8 +10,7 @@
 #include "../image_function.h"
 %}
 
-%nodefaultctor penguinV::ImageTemplate;
-%nodefaultctor Image;
+%nodefaultctor penguinV::Image;
 
 %feature("autodoc", "1");
 
@@ -21,23 +20,25 @@ namespace std {
 
 namespace penguinV {
 
-    template<typename TColorDepth> class ImageTemplate {
+    class Image {
 
         public:
 
-        ImageTemplate(uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u );
-        ImageTemplate( const ImageTemplate<TColorDepth> & image_ );
-        // Missing ImageTemplate( ImageTemplate && image) as moving constructors don't make sense in python.
+        Image(uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u );
+        Image( const Image & image_ );
+        // Missing Image( Image && image) as moving constructors don't make sense in python.
         // Missing overloading of operator= as it doesn't make sense in python as everything in python is just references.
-        ~ImageTemplate(); //originally virtual, but every member function is virtual in python.
+        ~Image(); //originally virtual, but every member function is virtual in python.
 
         void resize(uint32_t width_, uint32_t height_ );
         void clear();
 
+        template<typename TColorDepth = uint8_t>
         TColorDepth * data(); // This doesn't wrap to return an array or list in python. The pointer is just wrapped as
                               // an object that can't be manipulated directly in python, but it can be used with penguinV
-                              // functions such as ImageTemplate::assign().
+                              // functions such as Image::assign().
 
+        template<typename TColorDepth>
         void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ );
 
         bool empty() const;
@@ -48,20 +49,15 @@ namespace penguinV {
         void setColorCount( uint8_t colorCount_ );
         uint8_t alignment() const;
         void setAlignment( uint8_t alignment_ );
+        template<typename TColorDepth = uint8_t>
         void fill( TColorDepth value );
-        void swap( ImageTemplate & image );
-        void copy( const ImageTemplate & image );
+        void swap( Image & image );
+        void copy( const Image & image );
         bool mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ );
         uint8_t type() const;
-        ImageTemplate generate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u ) const;
+        Image generate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u ) const;
 
     };
-
-    // Type definitions aren't passed to wrapper code. We have to tell swig to generate the
-    // template instance.
-
-    typedef ImageTemplate<uint8_t> Image;
-    %template(Image) ImageTemplate<uint8_t>;
 
     const uint8_t GRAY_SCALE;
     const uint8_t RGB;
