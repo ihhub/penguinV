@@ -45,7 +45,7 @@ namespace penguinV
 
             return (*this);
         }
-    private:
+    protected:
         template <typename TColorDepth>
         static TColorDepth * _allocateMemory( size_t size )
         {
@@ -75,6 +75,20 @@ namespace penguinV
             cl_mem dataMem = reinterpret_cast<cl_mem>( data );
 
             multiCL::MemoryManager::memorySet( dataMem, &value, sizeof( TColorDepth ), 0, size );
+        }
+    };
+
+    class ImageOpenCL16Bit : public ImageOpenCL
+    {
+    public:
+        explicit ImageOpenCL16Bit( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        {
+            Image::_setType<uint16_t>( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            _setDataType<uint16_t>();
+
+            setColorCount( colorCount_ );
+            setAlignment( alignment_ );
+            resize( width_, height_ );
         }
     };
 }

@@ -198,7 +198,6 @@ namespace penguinV
             if ( typeid( TColorDepth ).name() != _dataType )
                 throw imageException( "Image data type is different compare to fill value type" );
 
-            _setType<TColorDepth>();
             _set<TColorDepth>( reinterpret_cast<TColorDepth *>( data() ), value, sizeof( TColorDepth ) * height() * rowSize() );
         }
 
@@ -282,9 +281,8 @@ namespace penguinV
         Image generate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u ) const
         {
             Image image;
-            image._type = _type;
-            image._dataType = typeid( TColorDepth ).name();
-            image._dataSize = sizeof( TColorDepth );
+            image._setType<TColorDepth>( _type );
+            image._setDataType<TColorDepth>();
 
             image.setColorCount( colorCount_ );
             image.setAlignment( alignment_ );
@@ -378,13 +376,13 @@ namespace penguinV
         }
 
         template <typename TColorDepth>
-        void setDataType()
+        void _setDataType()
         {
             clear();
             _dataType = typeid( TColorDepth ).name();
             _dataSize = sizeof( TColorDepth );
         }
-    private:
+
         template <typename TColorDepth>
         TColorDepth * _allocate( size_t size ) const
         {
@@ -433,6 +431,7 @@ namespace penguinV
             std::fill( data, data + size / sizeof( TColorDepth ), value );
         }
 
+    private:
         uint32_t _width;
         uint32_t _height;
 
@@ -446,6 +445,20 @@ namespace penguinV
         
         std::string _dataType;
         size_t _dataSize;
+    };
+
+    class Image16Bit : public Image
+    {
+    public:
+        explicit Image16Bit( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        {
+            _setType<uint16_t>();
+            _setDataType<uint16_t>();
+
+            setColorCount( colorCount_ );
+            setAlignment( alignment_ );
+            resize( width_, height_ );
+        }
     };
 
     const static uint8_t GRAY_SCALE = 1u;
