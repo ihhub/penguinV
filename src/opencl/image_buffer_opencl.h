@@ -78,17 +78,20 @@ namespace penguinV
         }
     };
 
-    class ImageOpenCL16Bit : public ImageOpenCL
+    template<typename TImageColorType>
+    class ImageOpenCLXType : public ImageOpenCL
     {
     public:
-        explicit ImageOpenCL16Bit( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageOpenCLXType( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
-            Image::_setType<uint16_t>( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
-            _setDataType<uint16_t>();
+            Image::_setType<TImageColorType>( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            _setDataType<TImageColorType>();
 
             setColorCount( colorCount_ );
             setAlignment( alignment_ );
             resize( width_, height_ );
         }
     };
+
+    typedef ImageOpenCLXType <uint16_t> ImageOpenCL16Bit;
 }

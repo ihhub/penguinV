@@ -447,19 +447,22 @@ namespace penguinV
         size_t _dataSize;
     };
 
-    class Image16Bit : public Image
+    template<typename TImageColorType>
+    class ImageXType : public Image
     {
     public:
-        explicit Image16Bit( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageXType( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
-            _setType<uint16_t>();
-            _setDataType<uint16_t>();
+            _setType<TImageColorType>();
+            _setDataType<TImageColorType>();
 
             setColorCount( colorCount_ );
             setAlignment( alignment_ );
             resize( width_, height_ );
         }
     };
+
+    typedef ImageXType <uint16_t> Image16Bit;
 
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;
