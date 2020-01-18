@@ -3145,7 +3145,7 @@ if ( simdType == neon_function ) { \
 
         #ifdef PENGUINV_AVX512_SKL_SET
         if ( simdType == avx512_function )
-        return avx512::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
+            return avx512::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
         #endif
         #ifdef PENGUINV_AVX_SET
         if ( simdType == avx_function )
