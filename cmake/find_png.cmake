@@ -2,6 +2,7 @@ include(ExternalProject)
 option(PENGUINV_ENABLE_PNG_SUPPORT "Enable support of libpng" ON)
 option(PENGUINV_USE_EXTERNAL_PNG "Download libpng and build from source" OFF)
 option(PENGUINV_INSTALL_ZLIB "Download zlib and build from source" ON)
+option(PENGUINV_INSTALL_PNG "Download libpng and build from source" ON)
 
 if(PENGUINV_ENABLE_PNG_SUPPORT)
     find_package(PNG)
@@ -91,6 +92,12 @@ if(PENGUINV_USE_EXTERNAL_PNG)
             "${PNG_INCLUDE_DIR}/libpng16/pngconf.h"
             "${PNG_INCLUDE_DIR}/libpng16/pnglibconf.h")
 
+    if(DEFINED ENV{APPVEYOR})
+        if(EXISTS ${PNG_INSTALL})
+            set(PENGUINV_INSTALL_PNG OFF CACHE BOOL "" FORCE)
+        endif()
+    endif()
+
     if(WIN32)
         if(MSVC)
             set(PNG_STATIC_LIBRARIES
@@ -108,60 +115,65 @@ if(PENGUINV_USE_EXTERNAL_PNG)
     endif()
 
     if(PENGUINV_INSTALL_ZLIB)
-        ExternalProject_Add(png
-            PREFIX png
-            DEPENDS zlib
-            URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
-            URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
-            BINARY_DIR ${PNG_BUILD_DIR}
-            BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
-            DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
-            INSTALL_DIR ${PNG_INSTALL}
-            CMAKE_CACHE_ARGS
-                -DCMAKE_BUILD_TYPE:STRING=Release
-                -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
-                -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-                -DPNG_TESTS:BOOL=OFF
-                -DPNG_SHARED:BOOL=OFF
-                -DPNG_STATIC:BOOL=ON
-                -DSKIP_INSTALL_EXECUTABLES:BOOL=OFF
-            -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
+        if(PENGUINV_INSTALL_PNG)
+            ExternalProject_Add(png
+                PREFIX png
+                DEPENDS zlib
+                URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
+                URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
+                BINARY_DIR ${PNG_BUILD_DIR}
+                BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
+                DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
+                INSTALL_DIR ${PNG_INSTALL}
+                CMAKE_CACHE_ARGS
+                    -DCMAKE_BUILD_TYPE:STRING=Release
+                    -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
+                    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+                    -DPNG_TESTS:BOOL=OFF
+                    -DPNG_SHARED:BOOL=OFF
+                    -DPNG_STATIC:BOOL=ON
+                    -DSKIP_INSTALL_EXECUTABLES:BOOL=OFF
+                -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
+        endif()
     else()
-        ExternalProject_Add(png
-            PREFIX png
-            URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
-            URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
-            BINARY_DIR ${PNG_BUILD_DIR}
-            BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
-            DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
-            INSTALL_DIR ${PNG_INSTALL}
-            CMAKE_CACHE_ARGS
-                -DCMAKE_BUILD_TYPE:STRING=Release
-                -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
-                -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-                -DPNG_TESTS:BOOL=OFF
-                -DPNG_SHARED:BOOL=OFF
-                -DPNG_STATIC:BOOL=ON
-                -DSKIP_INSTALL_EXECUTABLES:BOOL=OFF
-            -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
+        if(PENGUINV_INSTALL_PNG)
+            ExternalProject_Add(png
+                PREFIX png
+                URL https://sourceforge.net/projects/libpng/files/libpng16/1.6.35/lpng1635.zip
+                URL_MD5 d8bfd42ee9e59404349b50106e04e1f9
+                BINARY_DIR ${PNG_BUILD_DIR}
+                BUILD_BYPRODUCTS ${PNG_STATIC_LIBRARIES}
+                DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
+                INSTALL_DIR ${PNG_INSTALL}
+                CMAKE_CACHE_ARGS
+                    -DCMAKE_BUILD_TYPE:STRING=Release
+                    -DCMAKE_INSTALL_PREFIX:STRING=${PNG_INSTALL}
+                    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+                    -DPNG_TESTS:BOOL=OFF
+                    -DPNG_SHARED:BOOL=OFF
+                    -DPNG_STATIC:BOOL=ON
+                    -DSKIP_INSTALL_EXECUTABLES:BOOL=OFF
+                -DZLIB_ROOT:STRING=${ZLIB_INSTALL})
+        endif()
     endif()
 
-    add_custom_target(png_create_destination_dir
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${PNG_INCLUDE_DIR}
-        DEPENDS png)
-    add_custom_target(png_copy_headers_to_destination
-        DEPENDS png_create_destination_dir)
-    foreach(header_file ${PNG_HEADERS})
-        add_custom_command(TARGET png_copy_headers_to_destination PRE_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
-    endforeach()
+    if(PENGUINV_INSTALL_PNG)
+        add_custom_target(png_create_destination_dir
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${PNG_INCLUDE_DIR}
+            DEPENDS png)
+        add_custom_target(png_copy_headers_to_destination
+            DEPENDS png_create_destination_dir)
+        foreach(header_file ${PNG_HEADERS})
+            add_custom_command(TARGET png_copy_headers_to_destination PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_if_different ${header_file} ${PNG_INCLUDE_DIR})
+        endforeach()
+    endif()
 
-    ExternalProject_Get_Property(png install_dir)
     add_library(PNG_EXTERNAL STATIC IMPORTED)
-    set(PNG_LIBRARY_RELEASE ${install_dir}/lib/libpng16_static.lib)
-    set(PNG_LIBRARY_RELWITHDEBINFO ${install_dir}/lib/libpng16_static.lib)
-    set(PNG_LIBRARY_DEBUG ${install_dir}/lib/libpng16_staticd.lib)
-    set(PNG_INCLUDE_DIRS ${install_dir}/include)
+    set(PNG_LIBRARY_RELEASE ${PNG_INSTALL}/lib/libpng16_static.lib)
+    set(PNG_LIBRARY_RELWITHDEBINFO ${PNG_INSTALL}/lib/libpng16_static.lib)
+    set(PNG_LIBRARY_DEBUG ${PNG_INSTALL}/lib/libpng16_staticd.lib)
+    set(PNG_INCLUDE_DIRS ${PNG_INSTALL}/include)
     # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
     # This is quite unhelpful because those directories are only generated at build time
     file(MAKE_DIRECTORY ${PNG_INCLUDE_DIRS}) # Workaround
