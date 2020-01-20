@@ -1153,7 +1153,7 @@ namespace avx
                     const uint8_t * outXEnd = outX + nonSimdWidth;
 
                     for( ; outX != outXEnd; ++outX, ++inX )
-                        (*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
+                        (*outX) = (*inX) > maxThreshold ? 0 : 255;
                 }
             }
         }
