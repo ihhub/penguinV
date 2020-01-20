@@ -52,7 +52,9 @@ matrix:
     - os: osx
       name: "OSX with QT latest"
       env: QT_BASE=latest CMAKE_OPTIONS=""
-      before_install: source script/travis/install_qt5.sh
+      before_install:
+        - brew link --force qt5;
+        - export CMAKE_PREFIX_PATH=$(brew --prefix qt5)/lib/cmake;
     - os: linux
       language: python
       name: "Python 3.6 module compilation"
