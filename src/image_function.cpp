@@ -656,8 +656,10 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        const size_t lineSize = sizeof( uint8_t ) * width;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
-            memcpy( outY, inY, sizeof( uint8_t ) * width );
+            memcpy( outY, inY, lineSize );
     }
 
     Image ExtractChannel( const Image & in, uint8_t channelId )
