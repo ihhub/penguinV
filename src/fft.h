@@ -14,6 +14,7 @@ namespace FFT
     public:
         ComplexData();
         ComplexData( const penguinV::Image & image );
+        ComplexData( const std::vector<float> & data, uint32_t width, uint32_t height );
 
         ComplexData( const BaseComplexData<kiss_fft_cpx> & data );
         ComplexData( ComplexData && data );
