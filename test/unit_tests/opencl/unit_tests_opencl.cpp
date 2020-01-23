@@ -9,6 +9,7 @@ int main( int argc, char * argv[] )
 {
     try 
     {
+        std::cout << "Starting OpenCL unit tests" << std::endl;
         // The main purpose of this application is to test everything within library
         // To do this we need an engine (framework) and a bunch of tests
         if ( !multiCL::isOpenCLSupported() ) {
