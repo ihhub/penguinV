@@ -11,6 +11,9 @@ version: 1.0.{build}
 # Build worker image (VM template)
 image: Visual Studio 2015
 
+# No need to clone everything for build servers
+clone_depth: 50
+
 environment:
   matrix:
     - JOB: Release_x86
