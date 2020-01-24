@@ -56,6 +56,16 @@ namespace Function_Pool
     void  ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                           uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId );
 
+    // Make sure that input parameters such as input and output images are not same image!
+    // horizontal flip: left-right --> right-left
+    // vertical flip: top-bottom --> bottom-top
+    Image Flip( const Image & in, bool horizontal, bool vertical );
+    void  Flip( const Image & in, Image & out, bool horizontal, bool vertical );
+    Image Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                bool horizontal, bool vertical );
+    void  Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                uint32_t width, uint32_t height, bool horizontal, bool vertical );
+
     // Gamma correction works by formula:
     // output = A * ((input / 255) ^ gamma) * 255, where A - multiplication, gamma - power base. Both values must be greater than 0
     // Usually people set A as 1
@@ -173,4 +183,12 @@ namespace Function_Pool
                      uint8_t maxThreshold );
     void  Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                      uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold );
+
+    // Swap columns and rows in input image. It is equivalent to 90 degree rotation
+    // Output image (area) must be [height, width] compare to original [width, height]
+    Image Transpose( const Image & in );
+    void  Transpose( const Image & in, Image & out );
+    Image Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height );
+    void  Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
+                     uint32_t width, uint32_t height );
 }

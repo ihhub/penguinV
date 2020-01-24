@@ -12,6 +12,12 @@ namespace FFT
         set( image );
     }
 
+    ComplexData::ComplexData( const std::vector<float> & data, uint32_t width, uint32_t height )
+    {
+        resize( width, height );
+        set( data );
+    }
+
     ComplexData::ComplexData( const BaseComplexData<kiss_fft_cpx> & data )
     {
         _copy( data );

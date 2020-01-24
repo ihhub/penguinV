@@ -8,4 +8,7 @@ namespace Jpeg_Operation
 
     void Save( const std::string & path, const penguinV::Image & image );
     void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height );
+
+    void SetImageQuality( int quality ); // quality is in % from 1 to 100
+    int GetImageQuality(); // in %
 }

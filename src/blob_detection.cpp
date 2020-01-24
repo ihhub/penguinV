@@ -614,22 +614,22 @@ namespace Blob_Detection
     const BlobInfo & BlobDetection::getBestBlob( BlobCriterion criterion ) const
     {
         switch( criterion ) {
-            case CRITERION_CIRCULARITY:
+            case BY_CIRCULARITY:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.circularity() < blob2.circularity(); } ));
-            case CRITERION_ELONGATION:
+            case BY_ELONGATION:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.elongation() < blob2.elongation(); } ));
-            case CRITERION_HEIGHT:
+            case BY_HEIGHT:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.height() < blob2.height(); } ));
-            case CRITERION_LENGTH:
+            case BY_LENGTH:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.length() < blob2.length(); } ));
-            case CRITERION_SIZE:
+            case BY_SIZE:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.size() < blob2.size(); } ));
-            case CRITERION_WIDTH:
+            case BY_WIDTH:
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.width() < blob2.width(); } ));
             default:
@@ -640,27 +640,27 @@ namespace Blob_Detection
     void BlobDetection::sort( BlobCriterion criterion )
     {
         switch( criterion ) {
-            case CRITERION_CIRCULARITY:
+            case BY_CIRCULARITY:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.circularity() > blob2.circularity(); } );
                 break;
-            case CRITERION_ELONGATION:
+            case BY_ELONGATION:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.elongation() > blob2.elongation(); } );
                 break;
-            case CRITERION_HEIGHT:
+            case BY_HEIGHT:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.height() > blob2.height(); } );
                 break;
-            case CRITERION_LENGTH:
+            case BY_LENGTH:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.length() > blob2.length(); } );
                 break;
-            case CRITERION_SIZE:
+            case BY_SIZE:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.size() > blob2.size(); } );
                 break;
-            case CRITERION_WIDTH:
+            case BY_WIDTH:
                 std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.width() > blob2.width(); } );
                 break;

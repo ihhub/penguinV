@@ -613,6 +613,8 @@ namespace Image_Function
 
         width = width * colorCount;
 
+        const size_t rgbSize = sizeof( uint8_t ) * colorCount;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
@@ -620,7 +622,7 @@ namespace Image_Function
             const uint8_t * outXEnd = outX + width;
 
             for( ; outX != outXEnd; outX += colorCount, ++inX )
-                memset( outX, (*inX), sizeof( uint8_t ) * colorCount );
+                memset( outX, *inX, rgbSize );
         }
     }
 
@@ -654,8 +656,10 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
+        const size_t lineSize = sizeof( uint8_t ) * width;
+
         for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
-            memcpy( outY, inY, sizeof( uint8_t ) * width );
+            memcpy( outY, inY, lineSize );
     }
 
     Image ExtractChannel( const Image & in, uint8_t channelId )
@@ -722,8 +726,10 @@ namespace Image_Function
         uint8_t * imageY = image.data() + y * rowSize + x * colorCount;
         const uint8_t * imageYEnd = imageY + height * rowSize;
 
+        const size_t overallWidth = sizeof( uint8_t ) * width;
+
         for( ; imageY != imageYEnd; imageY += rowSize )
-            memset( imageY, value, sizeof( uint8_t ) * width );
+            memset( imageY, value, overallWidth );
     }
 
     Image Flip( const Image & in, bool horizontal, bool vertical )

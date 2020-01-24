@@ -10,7 +10,7 @@ namespace
         return ( path.size() >= fileExtension.size() && path.compare( path.size() - fileExtension.size(), fileExtension.size(), fileExtension ) == 0 );
     }
 
-#ifdef PENGUINV_ENABLED_JPEG_SUPPORT
+#ifndef PENGUINV_ENABLED_JPEG_SUPPORT
     bool isJpegFile( const std::string & )
     {
         return false;
@@ -18,12 +18,13 @@ namespace
 #else
     bool isJpegFile( const std::string & path )
     {
-        const static std::string fileExtension = ".jpg";
-        return isSameFileExtension( path, fileExtension );
+        const static std::string fileExtension1 = ".jpg";
+        const static std::string fileExtension2 = ".jpeg";
+        return isSameFileExtension( path, fileExtension1 ) || isSameFileExtension( path, fileExtension2 );
     }
 #endif
 
-#ifdef PENGUINV_ENABLED_PNG_SUPPORT
+#ifndef PENGUINV_ENABLED_PNG_SUPPORT
     bool isPngFile( const std::string & )
     {
         return false;

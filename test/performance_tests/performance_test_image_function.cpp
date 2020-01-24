@@ -335,6 +335,7 @@ namespace function_pool
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( ConvertToRgb       )
     SET_FUNCTION( ConvertToGrayScale )
+    SET_FUNCTION( Flip               )
     SET_FUNCTION( GammaCorrection    )
     SET_FUNCTION( Histogram          )
     SET_FUNCTION( Invert             )
@@ -349,6 +350,7 @@ namespace function_pool
     SET_FUNCTION( Sum                )
     SET_FUNCTION( Threshold          )
     REGISTER_FUNCTION( ThresholdDouble, Threshold )
+    SET_FUNCTION( Transpose          )
 }
 
 #ifdef PENGUIV_AV512BW_SET
@@ -366,6 +368,10 @@ namespace image_function_avx512
     SET_FUNCTION( BitwiseXor         )
     SET_FUNCTION( Invert             )
     SET_FUNCTION( Maximum            )
+    SET_FUNCTION( Minimum            )
+    SET_FUNCTION( ProjectionProfile  )
+    SET_FUNCTION( Subtract           )
+    SET_FUNCTION( Sum                )
 }
 #endif
 

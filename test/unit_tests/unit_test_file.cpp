@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../../src/file/bmp_image.h"
+#include "../../src/file/jpeg_image.h"
 #include "../../src/file/png_image.h"
 #include "../../src/file/raw_image.h"
 #include "unit_test_file.h"
@@ -110,6 +111,16 @@ namespace file_operation
     {
         return RandomRGBImage( "png.png", Png_Operation::Load, Png_Operation::Save );
     }
+
+    bool WhiteGrayScaleImageJpeg()
+    {
+        return WhiteGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
+    }
+
+    bool BlackGrayScaleImageJpeg()
+    {
+        return BlackGrayScaleImage( "jpeg.jpg", Jpeg_Operation::Load, Jpeg_Operation::Save );
+    }
 }
 
 void addTests_File( UnitTestFramework & framework )
@@ -121,6 +132,10 @@ void addTests_File( UnitTestFramework & framework )
     framework.add( file_operation::WhiteGrayScaleImagePng,    "File: Save and load white gray-scale png image" );
     framework.add( file_operation::BlackGrayScaleImagePng,    "File: Save and load black gray-scale png image" );
     framework.add( file_operation::RandomRGBImagePng,         "File: Save and load random RGB png image" );
+#endif
+#if defined( PENGUINV_ENABLED_JPEG_SUPPORT )
+    framework.add( file_operation::WhiteGrayScaleImageJpeg,   "File: Save and load white gray-scale jpeg image" );
+    framework.add( file_operation::BlackGrayScaleImageJpeg,   "File: Save and load black gray-scale jpeg image" );
 #endif
     framework.add( file_operation::RawRGBImage,               "File: Save and load raw RGB image" );
 }

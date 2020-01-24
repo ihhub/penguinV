@@ -10,7 +10,6 @@ import os
 sys.path.insert(0, os.path.join('..', '..', 'src', 'python'))
 
 # Now get the module.
-
 import penguinV
 
 def saveGrayScaleCopy(filenameToOpen, filenameToSave):
@@ -26,14 +25,14 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
     '''
 
     image = penguinV.Load(filenameToOpen)
-    
+
     if image.empty():
         raise penguinV.ImageException('penguinV.Load()', 'Problem loading file ' + filenameToOpen)
 
     if image.colorCount() != penguinV.GRAY_SCALE:
         image = penguinV.ConvertToGrayScale(image)
 
-    threshold_value = penguinV.GetThreshold( penguinV.Histogram(image) ) 
+    threshold_value = penguinV.GetThreshold( penguinV.Histogram(image) )
     image = penguinV.Threshold(image, threshold_value)
 
     penguinV.Save(filenameToSave, image)
@@ -43,20 +42,15 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
 ########################
 
 try:
-
-    saveGrayScaleCopy( filenameToOpen = os.path.join('..', '_image', 'mercury.bmp'),
+    saveGrayScaleCopy( filenameToOpen = os.path.join('..', '..', 'data', 'mercury.bmp'),
                        filenameToSave = 'result.bmp'
                      )
     print('Output image was saved into result.bmp file')
 
 except penguinV.ImageException as err:
-
         # This error occurs when there was trouble opening the file.
-
         print(err)
 
-except BaseException as err: 
-
+except Exception as err:
         # Something more serious has gone wrong.
-
-        print('Unknown Error ', err) 
+        print('Unknown Error ', err)

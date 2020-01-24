@@ -36,7 +36,7 @@ int main( int argc, char * argv[] )
         if ( !detection().empty() ) {
             // okay, our image contains some blobs
             // extract a biggest one
-            const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::CRITERION_SIZE );
+            const Blob_Detection::BlobInfo & blob = detection.getBestBlob( Blob_Detection::BlobDetection::BY_SIZE );
 
             // clear image and draw contour of found blob
             image.fill( 0 );

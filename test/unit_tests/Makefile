@@ -7,6 +7,7 @@ TEST_DIR := $(PWD)/..
 SRCS :=  \
     $(LIB_DIR)/file/bmp_image.cpp \
     $(LIB_DIR)/file/png_image.cpp \
+    $(LIB_DIR)/file/jpeg_image.cpp \
     $(LIB_DIR)/math/haar_transform.cpp \
     $(LIB_DIR)/math/hough_transform.cpp \
     $(LIB_DIR)/math/fft_base.cpp \
@@ -52,42 +53,27 @@ OBJFILES := $(addprefix $(BIN)/, $(foreach obj, $(OBJS), $(shell basename $(obj)
 
 all: $(BIN) $(TARGET)
 
+PNG_MESSAGE := ""
+JPEG_MESSAGE := ""
+
 ifeq ($(PNG_NOT_EXISTS),0)
 CFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
 CXXFLAGS += -D PENGUINV_ENABLED_PNG_SUPPORT
 LIBS += -lpng
-
-png_note:
-	@echo
 else
-png_note:
-	@echo 
-	@echo "Note! libpng-dev is missing from your computer,"
-	@echo "so .png images are not supported."
-	@echo
-	@echo "You can install libpng-dev by:"
-	@echo "$ sudo apt install libpng-dev"
-	@echo
+PNG_MESSAGE := "\nNote! libpng-dev is missing from your computer,\nso .png images are not supported.\n\nYou can install libpng-dev by:\n$ sudo apt install libpng-dev\n"
 endif
 
 ifeq ($(JPEG_NOT_EXISTS),0)
 CXXFLAGS += -D PENGUINV_ENABLED_JPEG_SUPPORT
 LIBS += -ljpeg
-
-jpeg_note:
-	@echo
 else
-jpeg_note:
-	@echo 
-	@echo "Note! libjpeg-dev is missing from your computer,"
-	@echo "so .jpeg images are not supported."
-	@echo
-	@echo "You can install libjpeg-dev by:"
-	@echo "$ sudo apt install libjpeg-dev"
-	@echo
+JPEG_MESSAGE := "\nNote! libjpeg-dev is missing from your computer,\nso .jpeg images are not supported.\n\nYou can install libjpeg-dev by:\n$ sudo apt install libjpeg-dev\n"
 endif
 
-$(BIN): | png_note jpeg_note
+$(BIN):
+	@echo $(PNG_MESSAGE)
+	@echo $(JPEG_MESSAGE)
 	@mkdir -p $(BIN)
 
 $(TARGET): $(OBJFILES)

@@ -1,6 +1,6 @@
 penguinV
 ======
- [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) [![CodeFactor](https://www.codefactor.io/repository/github/ihhub/penguinv/badge)](https://www.codefactor.io/repository/github/ihhub/penguinv)
+ [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) [![CodeFactor](https://www.codefactor.io/repository/github/ihhub/penguinv/badge)](https://www.codefactor.io/repository/github/ihhub/penguinv) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/alerts/)
 
 PenguinV is a simple and fast C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
 
@@ -19,7 +19,7 @@ You can develop a software within minutes of your time to obtain **high performa
 
 Example code for below images could look like this:
 ```cpp
-Image red = ExtractChannel( image, 0 ); // 0 is red channel
+Image red = ExtractChannel( image, RED_CHANNEL );
 Image binary = Threshold( red, // threshold
                           GetThreshold( // get weighted threshold
                               Histogram( red ) ) ) ); // get image histogram
@@ -29,9 +29,9 @@ BlobDetection detection;
 detection.find( binary );
 ...
 Image rgb = ConvertToRgb( binary );
-rgd = BitwiseAnd( image, rgb );
+rgb = BitwiseAnd( image, rgb );
 ...
-rgd = BitwiseOr( image, rgb );
+rgb = BitwiseOr( image, rgb );
 ```
 
 The trick behind the code is that you have a **single interface** for CPU as well as for GPU!

@@ -2577,6 +2577,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( BitwiseXor )
     SET_FUNCTION_4_FORMS( ConvertToGrayScale )
     SET_FUNCTION_4_FORMS( ConvertToRgb )
+    SET_FUNCTION_4_FORMS( Flip )
     SET_FUNCTION_4_FORMS( GammaCorrection )
     SET_FUNCTION_4_FORMS( Histogram )
     SET_FUNCTION_4_FORMS( Invert )
@@ -2592,6 +2593,7 @@ namespace function_pool
     SET_FUNCTION_4_FORMS( Subtract )
     SET_FUNCTION_2_FORMS( Sum )
     SET_FUNCTION_8_FORMS( Threshold )
+    SET_FUNCTION_4_FORMS( Transpose )
 }
 
 #ifdef PENGUINV_AVX512_SKL_SET
@@ -2612,6 +2614,10 @@ namespace avx512
     SET_FUNCTION_4_FORMS( Invert )
     SET_FUNCTION_4_FORMS( Maximum )
     SET_FUNCTION_4_FORMS( Minimum )
+    SET_FUNCTION_4_FORMS( ProjectionProfile )
+    SET_FUNCTION_4_FORMS( RgbToBgr )
+    SET_FUNCTION_4_FORMS( Subtract )
+    SET_FUNCTION_2_FORMS( Sum )
 }
 #endif
 
