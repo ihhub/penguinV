@@ -96,17 +96,6 @@ matrix:
             echo "Skipping clang-format check since this is not a pull request."
           fi
     - os: linux
-      addons:
-        apt:
-          sources:
-            - sourceline: 'ppa:beineri/opt-qt596-xenial'
-          packages:
-            - libgl-dev
-            - libpng-dev
-            - libjpeg-dev
-            - ocl-icd-opencl-dev
-            - opencl-headers
-          update: true
       name: "Dynamic analysis"
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
