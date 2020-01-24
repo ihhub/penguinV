@@ -59,7 +59,7 @@ namespace Raw_Operation
         if(  !file )
             throw imageException( "Cannot create file for saving" );
 
-        size_t dataToWrite = image.rowSize() * image.height() * sizeof( _Type );
+        size_t dataToWrite = sizeof( _Type ) * image.rowSize() * image.height();
         size_t dataWritten = 0;
 
         const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks
