@@ -28,3 +28,8 @@ if(${PENGUINV_ENABLE_JPEG_SUPPORT})
     endif()
     target_compile_definitions(example_file_operation PRIVATE PENGUINV_ENABLED_JPEG_SUPPORT)
 endif()
+
+if (WIN32)
+    # Quiet warnings related to fopen on MSVC
+    target_compile_definitions(example_file_operation PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
