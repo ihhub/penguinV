@@ -9,7 +9,6 @@ add_executable(example_file_operation
 target_link_libraries(example_file_operation
     PRIVATE example_features_options example_features_warnings)
 
-include(find_png)
 if(${PENGUINV_ENABLE_PNG_SUPPORT})
     if(${PENGUINV_USE_EXTERNAL_PNG})
         target_link_libraries(example_file_operation PRIVATE ZLIB_EXTERNAL PNG_EXTERNAL)
@@ -19,7 +18,6 @@ if(${PENGUINV_ENABLE_PNG_SUPPORT})
     target_compile_definitions(example_file_operation PRIVATE PENGUINV_ENABLED_PNG_SUPPORT)
 endif()
 
-include(find_jpeg)
 if(${PENGUINV_ENABLE_JPEG_SUPPORT})
     if(${PENGUINV_USE_EXTERNAL_JPEG})
         target_link_libraries(example_file_operation PRIVATE JPEG_EXTERNAL)
