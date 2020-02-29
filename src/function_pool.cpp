@@ -720,7 +720,7 @@ namespace Function_Pool
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
         FunctionTask().ExtractChannel( in, startXIn, startYIn, out, startXOut, startYOut, width, height, channelId );
@@ -750,7 +750,7 @@ namespace Function_Pool
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         FunctionTask().Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
@@ -820,7 +820,7 @@ namespace Function_Pool
 
     bool IsEqual( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
+        Image_Function::ValidateImageParameters( in1, in2 );
 
         return Function_Pool::IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
@@ -1011,8 +1011,8 @@ namespace Function_Pool
     void Resize( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
                  Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t widthOut, uint32_t heightOut )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, widthIn, heightIn );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, widthOut, heightOut );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, widthIn, heightIn );
+        Image_Function::ValidateImageParameters( out, startXOut, startYOut, widthOut, heightOut );
 
         FunctionTask().Resize( in, startXIn, startYIn, widthIn, heightIn, out, startXOut, startYOut, widthOut, heightOut );
     }
@@ -1050,8 +1050,8 @@ namespace Function_Pool
 
     void Split (const Image & in, Image & out1, Image & out2, Image & out3 )
     {
-        Image_Function::ParameterValidation( in, out1, out2 );
-        Image_Function::ParameterValidation( in, out3 );
+        Image_Function::ValidateImageParameters( in, out1, out2 );
+        Image_Function::ValidateImageParameters( in, out3 );
         Image_Function::VerifyRGBImage( in );
         Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
 
@@ -1062,8 +1062,8 @@ namespace Function_Pool
                 Image & out2, uint32_t startXOut2, uint32_t startYOut2, Image & out3, uint32_t startXOut3, uint32_t startYOut3,
                 uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( out1, startXOut1, startYOut1, out2, startXOut2, startYOut2, out3, startXOut3, startYOut3, width, height );
         Image_Function::VerifyRGBImage( in );
         Image_Function::VerifyGrayScaleImage( out1, out2, out3 );
 
@@ -1153,8 +1153,8 @@ namespace Function_Pool
     void Transpose( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, height, width );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( out, startXOut, startYOut, height, width );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         FunctionTask().Transpose( in, startXIn, startYIn, out, startXOut, startYOut, width, height );

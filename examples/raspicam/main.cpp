@@ -112,8 +112,8 @@ int main( int argc, char **argv )
 
 void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green, const penguinV::Image & blue, penguinV::Image & out, double coeff )
 {
-    Image_Function::ParameterValidation( red, green, blue );
-    Image_Function::ParameterValidation( out, red );
+    Image_Function::ValidateImageParameters( red, green, blue );
+    Image_Function::ValidateImageParameters( out, red );
 
     uint32_t rowSizeIn1 = red.rowSize();
     uint32_t rowSizeIn2 = green.rowSize();

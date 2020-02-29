@@ -504,12 +504,12 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **CommonColorCount** [_Namespaces: **Image_Function**_]
+- **CheckCommonColorCount** [_Namespaces: **Image_Function**_]
 	
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	uint8_t CommonColorCount(
+	uint8_t CheckCommonColorCount(
 		const TImage & image1,
 		const TImage & image2
 	);
@@ -527,7 +527,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	uint8_t CommonColorCount(
+	uint8_t CheckCommonColorCount(
 		const TImage & image1,
 		const TImage & image2,
 		const TImage & image3
@@ -2031,12 +2031,12 @@ All images in function parameter list must have width and height greater than 0 
 	**Return value:**    
 	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
 	
-- **ParameterValidation** [_Namespaces: **Image_Function**_]
+- **ValidateImageParameters** [_Namespaces: **Image_Function**_]
 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image1
 	);
 	```
@@ -2052,7 +2052,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image1,
 		const TImage & image2
 	);
@@ -2070,7 +2070,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image1,
 		const TImage & image2,
 		const TImage & image3
@@ -2090,7 +2090,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image,
 		uint32_t startX,
 		uint32_t startY,
@@ -2114,7 +2114,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image1,
 		uint32_t startX1,
 		uint32_t startY1,
@@ -2144,7 +2144,7 @@ All images in function parameter list must have width and height greater than 0 
 	##### Syntax:
 	```cpp
 	template <typename TImage>
-	void ParameterValidation(
+	void ValidateImageParameters(
 		const TImage & image1,
 		uint32_t startX1,
 		uint32_t startY1,
