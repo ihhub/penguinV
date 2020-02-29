@@ -6,19 +6,19 @@
 namespace Image_Function
 {
     template <typename TImage>
-    uint8_t CommonColorCount( const TImage & image1, const TImage & image2 )
+    uint8_t CheckCommonColorCount( const TImage & image1, const TImage & image2 )
     {
         if ( image1.colorCount() != image2.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw imageException( "The number of color channels in images is different" );
 
         return image1.colorCount();
     }
 
     template <typename TImage>
-    uint8_t CommonColorCount( const TImage & image1, const TImage & image2, const TImage & image3 )
+    uint8_t CheckCommonColorCount( const TImage & image1, const TImage & image2, const TImage & image3 )
     {
         if ( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw imageException( "The number of color channels in images is different" );
 
         return image1.colorCount();
     }
@@ -65,14 +65,14 @@ namespace Image_Function
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image1 )
+    void ValidateImageParameters( const TImage & image1 )
     {
         if ( image1.empty() || !IsCorrectColorCount( image1 ) )
             throw imageException( "Bad input parameters in image function" );
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image1, const TImage & image2 )
+    void ValidateImageParameters( const TImage & image1, const TImage & image2 )
     {
         if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
             image1.width() != image2.width() || image1.height() != image2.height() )
@@ -80,10 +80,10 @@ namespace Image_Function
     }
 
     template <typename TImage, typename... Args>
-    void ParameterValidation( const TImage & image1, const TImage & image2, Args... args )
+    void ValidateImageParameters( const TImage & image1, const TImage & image2, Args... args )
     {
-        ParameterValidation( image1, image2 );
-        ParameterValidation( image2, args... );
+        ValidateImageParameters( image1, image2 );
+        ValidateImageParameters( image2, args... );
     }
 
     template <typename _Type>
@@ -99,7 +99,7 @@ namespace Image_Function
     }
 
     template <typename TImage>
-    void ParameterValidation( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
+    void ValidateImageParameters( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
         if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() ||
             startX + width < width || startY + height < height )
@@ -107,12 +107,12 @@ namespace Image_Function
     }
 
     template <typename TImage, typename... Args>
-    void ParameterValidation( const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
+    void ValidateImageParameters( const TImage & image1, uint32_t startX1, uint32_t startY1, Args... args )
     {
         const std::pair<uint32_t, uint32_t> & dimensions = ExtractRoiSize( args... );
 
-        ParameterValidation( image1, startX1, startY1, dimensions.first, dimensions.second );
-        ParameterValidation( args... );
+        ValidateImageParameters( image1, startX1, startY1, dimensions.first, dimensions.second );
+        ValidateImageParameters( args... );
     }
 
     template <typename TImage>

@@ -10,7 +10,7 @@ namespace Image_Function_Cuda
 {
     Image Gaussian( const Image & in, uint32_t kernelSize, float sigma )
     {
-        Image_Function::ParameterValidation( in );
+        Image_Function::ValidateImageParameters( in );
 
         ImageCuda out( in.width(), in.height() );
 
@@ -21,7 +21,7 @@ namespace Image_Function_Cuda
 
     void Gaussian( const Image & in, Image & out, uint32_t kernelSize,  float sigma )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function::ValidateImageParameters( in, out );
 
         if( sigma < 0 )
             throw imageException( "Sigma value cannot be negative" );

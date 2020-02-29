@@ -3,7 +3,7 @@
 
 void LightCorrection::analyze( const penguinV::Image & image )
 {
-    Image_Function::ParameterValidation( image );
+    Image_Function::ValidateImageParameters( image );
 
     _width = image.width();
     _height = image.height();
@@ -54,14 +54,14 @@ void LightCorrection::analyze( const penguinV::Image & image )
 
 void LightCorrection::correct( penguinV::Image & image ) const
 {
-    Image_Function::ParameterValidation( image );
+    Image_Function::ValidateImageParameters( image );
 
     correct( image, 0, 0, image.width(), image.height() );
 }
 
 void LightCorrection::correct( penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height ) const
 {
-    Image_Function::ParameterValidation( image, x, y, width, height );
+    Image_Function::ValidateImageParameters( image, x, y, width, height );
     if ( _width == 0 || _height == 0 )
         throw imageException( "Image is not being analyzed before calling correction. Analyze first." );
 

@@ -403,9 +403,9 @@ namespace Image_Function_Cuda
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -439,9 +439,9 @@ namespace Image_Function_Cuda
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -475,9 +475,9 @@ namespace Image_Function_Cuda
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -511,9 +511,9 @@ namespace Image_Function_Cuda
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -539,8 +539,8 @@ namespace Image_Function_Cuda
 
     void ConvertToCuda( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in );
-        Image_Function::ParameterValidation( out );
+        Image_Function::ValidateImageParameters( in );
+        Image_Function::ValidateImageParameters( out );
 
         if ( in.width() != out.width() || in.height() != out.height() ||
              in.colorCount() != out.colorCount() )
@@ -572,8 +572,8 @@ namespace Image_Function_Cuda
 
     void ConvertFromCuda(const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in );
-        Image_Function::ParameterValidation( out );
+        Image_Function::ValidateImageParameters( in );
+        Image_Function::ValidateImageParameters( out );
 
         if ( in.width() != out.width() || in.height() != out.height() ||
              in.colorCount() != out.colorCount() )
@@ -612,7 +612,7 @@ namespace Image_Function_Cuda
     void ConvertToGrayScale( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                              uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
         if ( in.colorCount() == penguinV::GRAY_SCALE ) {
@@ -650,8 +650,8 @@ namespace Image_Function_Cuda
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                        uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( out );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyRGBImage( out );
 
         if ( in.colorCount() == penguinV::RGB ) {
             Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -672,7 +672,7 @@ namespace Image_Function_Cuda
 
     void Copy( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function::ValidateImageParameters( in, out );
 
         out = in;
     }
@@ -685,9 +685,9 @@ namespace Image_Function_Cuda
     void Copy( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount  = Image_Function::CommonColorCount( in, out );
+        const uint8_t colorCount  = Image_Function::CheckCommonColorCount( in, out );
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
@@ -718,7 +718,7 @@ namespace Image_Function_Cuda
     void ExtractChannel( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut,
                          uint32_t startYOut, uint32_t width, uint32_t height, uint8_t channelId )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( out );
 
         if ( channelId >= in.colorCount() )
@@ -743,7 +743,7 @@ namespace Image_Function_Cuda
 
     void Fill( Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
         const uint32_t rowSize = image.rowSize();
@@ -773,7 +773,7 @@ namespace Image_Function_Cuda
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if ( !horizontal && !vertical ) {
@@ -811,7 +811,7 @@ namespace Image_Function_Cuda
     void GammaCorrection( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                           uint32_t width, uint32_t height, double a, double gamma )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const std::vector<uint8_t> & value = Image_Function_Helper::GetGammaCorrectionLookupTable( a, gamma );
@@ -841,7 +841,7 @@ namespace Image_Function_Cuda
 
     void Histogram( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector < uint32_t > & histogram )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
         histogram.resize( 256u );
@@ -877,9 +877,9 @@ namespace Image_Function_Cuda
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -894,7 +894,7 @@ namespace Image_Function_Cuda
 
     bool IsEqual( const Image & in1, const Image & in2 )
     {
-        Image_Function::ParameterValidation( in1, in2 );
+        Image_Function::ValidateImageParameters( in1, in2 );
 
         return IsEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
@@ -902,9 +902,9 @@ namespace Image_Function_Cuda
     bool IsEqual( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2 );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2 );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -939,12 +939,12 @@ namespace Image_Function_Cuda
     void LookupTable( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                       uint32_t width, uint32_t height, const std::vector < uint8_t > & table )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         if ( table.size() != 256u )
             throw imageException( "Lookup table size is not equal to 256" );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -978,9 +978,9 @@ namespace Image_Function_Cuda
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -1014,9 +1014,9 @@ namespace Image_Function_Cuda
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -1049,7 +1049,7 @@ namespace Image_Function_Cuda
     void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
                                                  std::vector<uint32_t> & projection )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
 
         const uint8_t colorCount = image.colorCount();
         width *= colorCount;
@@ -1070,7 +1070,7 @@ namespace Image_Function_Cuda
 
     void Rotate( const Image & in, float centerXIn, float centerYIn, Image & out, float centerXOut, float centerYOut, float angle )
     {
-        Image_Function::ParameterValidation( in, out );
+        Image_Function::ValidateImageParameters( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const float cosAngle = cos( angle );
@@ -1099,7 +1099,7 @@ namespace Image_Function_Cuda
 
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
     {
-        Image_Function::ParameterValidation( image );
+        Image_Function::ValidateImageParameters( image );
 
         if ( x >= image.width() || y >= image.height() )
             throw imageException( "Bad input parameters in image function" );
@@ -1110,7 +1110,7 @@ namespace Image_Function_Cuda
 
     void SetPixel( Image & image, const std::vector<uint32_t> & X, const std::vector<uint32_t> & Y, uint8_t value )
     {
-        Image_Function::ParameterValidation( image );
+        Image_Function::ValidateImageParameters( image );
 
         if ( X.size() != Y.size() )
             throw imageException( "Bad input parameters in image function" );
@@ -1151,9 +1151,9 @@ namespace Image_Function_Cuda
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
 
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         width = width * colorCount;
 
         const uint32_t rowSizeIn1 = in1.rowSize();
@@ -1186,7 +1186,7 @@ namespace Image_Function_Cuda
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
@@ -1218,7 +1218,7 @@ namespace Image_Function_Cuda
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                     uint32_t width, uint32_t height, uint8_t minThreshold, uint8_t maxThreshold )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         const uint32_t rowSizeIn  = in.rowSize();
