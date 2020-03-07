@@ -8,3 +8,8 @@ add_executable(example_file_operation
     ${LIB_DIR}/file/jpeg_image.cpp)
 target_link_libraries(example_file_operation
     PRIVATE example_features_options example_features_warnings)
+
+if (WIN32)
+    # Quiet warnings related to fopen on MSVC
+    target_compile_definitions(example_file_operation PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()

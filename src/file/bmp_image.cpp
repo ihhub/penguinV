@@ -22,10 +22,12 @@ namespace Bitmap_Operation
         uint8_t * start = image.data();
         uint8_t * end   = image.data() + rowSize * (height - 1);
 
+        const size_t lineSize = sizeof( uint8_t ) * rowSize;
+
         for( uint32_t rowId = 0; rowId < height / 2; ++rowId, start += rowSize, end -= rowSize ) {
-            memcpy( temp.data(), start, sizeof( uint8_t ) * rowSize );
-            memcpy( start, end, sizeof( uint8_t ) * rowSize );
-            memcpy( end, temp.data(), sizeof( uint8_t ) * rowSize );
+            memcpy( temp.data(), start, lineSize );
+            memcpy( start, end, lineSize );
+            memcpy( end, temp.data(), lineSize );
         }
     }
 
@@ -489,7 +491,7 @@ namespace Bitmap_Operation
 
     void Save( const std::string & path, const penguinV::Image & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( image, startX, startY, width, height );
+        Image_Function::ValidateImageParameters( image, startX, startY, width, height );
 
         uint32_t palleteSize = 0;
         std::vector < uint8_t > pallete;
@@ -544,8 +546,10 @@ namespace Bitmap_Operation
 
         std::vector < uint8_t > temp( lineLength, 0 );
 
+        const size_t imageLineSize = sizeof( uint8_t ) * width * colorCount;
+
         for( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
-            memcpy( temp.data(), imageY, sizeof( uint8_t ) * width * colorCount );
+            memcpy( temp.data(), imageY, imageLineSize );
 
             file.write( reinterpret_cast<const char *>(temp.data()), lineLength );
             file.flush();

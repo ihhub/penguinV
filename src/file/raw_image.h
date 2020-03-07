@@ -48,7 +48,7 @@ namespace Raw_Operation
 
     void Save( const std::string & path, const penguinV::Image & image )
     {
-        Image_Function::ParameterValidation( image );
+        Image_Function::ValidateImageParameters( image );
 
         std::vector < uint8_t > pallete;
 
@@ -80,7 +80,7 @@ namespace Raw_Operation
     template <typename _Type>
     void LittleEndianToBigEndian( penguinV::Image & image )
     {
-        Image_Function::ParameterValidation( image );
+        Image_Function::ValidateImageParameters( image );
         if ( sizeof( _Type ) < 2 )
             return;
 

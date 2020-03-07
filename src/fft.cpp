@@ -12,6 +12,12 @@ namespace FFT
         set( image );
     }
 
+    ComplexData::ComplexData( const std::vector<float> & data, uint32_t width, uint32_t height )
+    {
+        resize( width, height );
+        set( data );
+    }
+
     ComplexData::ComplexData( const BaseComplexData<kiss_fft_cpx> & data )
     {
         _copy( data );
@@ -113,7 +119,7 @@ namespace FFT
 
     void ComplexData::_copyData( const BaseComplexData<kiss_fft_cpx> & data )
     {
-        memcpy( _data, data.data(), _width * _height * sizeof( kiss_fft_cpx ) );
+        memcpy( _data, data.data(), sizeof( kiss_fft_cpx ) * _width * _height );
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )

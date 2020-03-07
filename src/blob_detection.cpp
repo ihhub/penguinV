@@ -303,7 +303,7 @@ namespace Blob_Detection
     const std::vector<BlobInfo> & BlobDetection::find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width,
                                                        uint32_t height, BlobParameters parameter, uint8_t threshold )
     {
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
         parameter._verify();

@@ -361,6 +361,164 @@ namespace avx512
             }
         }
     }
+
+    void ProjectionProfile( uint32_t rowSize, const uint8_t * imageStart, uint32_t height, bool horizontal,
+                            uint32_t * out, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        const simd zero = _mm512_setzero_si512();
+
+        if ( horizontal ) {
+            const uint8_t * imageSimdXEnd = imageStart + totalSimdWidth;
+
+            for ( ; imageStart != imageSimdXEnd; imageStart += simdSize, out += simdSize ) {
+                const uint8_t * imageSimdY = imageStart;
+                const uint8_t * imageSimdYEnd = imageSimdY + height * rowSize;
+                simd simdSum_1 = _mm512_setzero_si512();
+                simd simdSum_2 = _mm512_setzero_si512();
+                simd simdSum_3 = _mm512_setzero_si512();
+                simd simdSum_4 = _mm512_setzero_si512();
+
+                simd * dst = reinterpret_cast<simd *>( out );
+
+                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize ) {
+                    const simd * src = reinterpret_cast<const simd *>( imageSimdY );
+
+                    const simd data = _mm512_loadu_si512( src );
+
+                    const simd dataLo = _mm512_unpacklo_epi8( data, zero );
+                    const simd dataHi = _mm512_unpackhi_epi8( data, zero );
+
+                    const simd data_1 = _mm512_unpacklo_epi16( dataLo, zero );
+                    const simd data_2 = _mm512_unpackhi_epi16( dataLo, zero );
+                    const simd data_3 = _mm512_unpacklo_epi16( dataHi, zero );
+                    const simd data_4 = _mm512_unpackhi_epi16( dataHi, zero );
+                    simdSum_1 = _mm512_add_epi32( data_1, simdSum_1 );
+                    simdSum_2 = _mm512_add_epi32( data_2, simdSum_2 );
+                    simdSum_3 = _mm512_add_epi32( data_3, simdSum_3 );
+                    simdSum_4 = _mm512_add_epi32( data_4, simdSum_4 );
+                }
+
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_1, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_2, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_3, _mm512_loadu_si512( dst ) ) );
+                ++dst;
+                _mm512_storeu_si512( dst, _mm512_add_epi32( simdSum_4, _mm512_loadu_si512( dst ) ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * imageXEnd = imageStart + nonSimdWidth;
+
+                for ( ; imageStart != imageXEnd; ++imageStart, ++out ) {
+                    const uint8_t * imageY    = imageStart;
+                    const uint8_t * imageYEnd = imageY + height * rowSize;
+
+                    for ( ; imageY != imageYEnd; imageY += rowSize )
+                        (*out) += (*imageY);
+                }
+            }
+        }
+        else {
+            const uint8_t * imageYEnd = imageStart + height * rowSize;
+
+            for ( ; imageStart != imageYEnd; imageStart += rowSize, ++out ) {
+                const simd * src    = reinterpret_cast <const simd*> (imageStart);
+                const simd * srcEnd = src + simdWidth;
+                simd simdSum = _mm512_setzero_si512();
+
+                for ( ; src != srcEnd; ++src ) {
+                    simd data = _mm512_loadu_si512( src );
+
+                    simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                    simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+                    simd sumLoHi = _mm512_add_epi16( dataLo, dataHi );
+
+                    simdSum = _mm512_add_epi32( simdSum, _mm512_add_epi32( _mm512_unpacklo_epi16( sumLoHi, zero ),
+                                                                           _mm512_unpackhi_epi16( sumLoHi, zero ) ) );
+                }
+
+                if ( nonSimdWidth > 0 ) {
+                    const uint8_t * imageX    = imageStart + totalSimdWidth;
+                    const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                    for ( ; imageX != imageXEnd; ++imageX )
+                        (*out) += (*imageX);
+                }
+
+                uint32_t output[16] = { 0 };
+                _mm512_storeu_si512( reinterpret_cast<simd *>( output ), simdSum );
+
+                (*out) += output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7] +
+                          output[8] + output[9] + output[10] + output[11] + output[12] + output[13] + output[14] + output[15];
+            }
+        }
+    }
+
+    void Subtract( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y,
+                   uint8_t * outY, const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2 ) {
+            const simd * src1 = reinterpret_cast <const simd*> (in1Y);
+            const simd * src2 = reinterpret_cast <const simd*> (in2Y);
+            simd       * dst  = reinterpret_cast <simd*> (outY);
+
+            const simd * src1End = src1 + simdWidth;
+
+            for ( ; src1 != src1End; ++src1, ++src2, ++dst ) {
+                simd data = _mm512_loadu_si512( src1 );
+                _mm512_storeu_si512( dst, _mm512_sub_epi8( data, _mm512_min_epu8( data, _mm512_loadu_si512( src2 ) ) ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * in1X = in1Y + totalSimdWidth;
+                const uint8_t * in2X = in2Y + totalSimdWidth;
+                uint8_t       * outX = outY + totalSimdWidth;
+                const uint8_t * outXEnd = outX + nonSimdWidth;
+
+                for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+                    (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
+            }
+        }
+    }
+
+    uint32_t Sum( uint32_t rowSize, const uint8_t * imageY,const uint8_t * imageYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
+    {
+        uint32_t sum = 0;
+        simd simdSum = _mm512_setzero_si512();
+        const simd zero = _mm512_setzero_si512();
+
+        for ( ; imageY != imageYEnd; imageY += rowSize ) {
+            const simd * src    = reinterpret_cast <const simd*> (imageY);
+            const simd * srcEnd = src + simdWidth;
+
+            for ( ; src != srcEnd; ++src ) {
+                simd data = _mm512_loadu_si512( src );
+
+                simd dataLo  = _mm512_unpacklo_epi8( data, zero );
+                simd dataHi  = _mm512_unpackhi_epi8( data, zero );
+                simd sumLoHi = _mm512_add_epi16( dataLo, dataHi );
+
+                simdSum = _mm512_add_epi32( simdSum, _mm512_add_epi32( _mm512_unpacklo_epi16( sumLoHi, zero ),
+                                                                       _mm512_unpackhi_epi16( sumLoHi, zero ) ) );
+            }
+
+            if ( nonSimdWidth > 0 ) {
+                const uint8_t * imageX    = imageY + totalSimdWidth;
+                const uint8_t * imageXEnd = imageX + nonSimdWidth;
+
+                for ( ; imageX != imageXEnd; ++imageX )
+                    sum += (*imageX);
+            }
+        }
+
+        uint32_t output[16] = { 0 };
+
+        _mm512_storeu_si512( reinterpret_cast <simd*>(output), simdSum );
+
+        return sum + output[0] + output[1] + output[2] + output[3] + output[4] + output[5] + output[6] + output[7] +
+                     output[8] + output[9] + output[10] + output[11] + output[12] + output[13] + output[14] + output[15];
+    }
 #endif
 }
 
@@ -995,7 +1153,7 @@ namespace avx
                     const uint8_t * outXEnd = outX + nonSimdWidth;
 
                     for( ; outX != outXEnd; ++outX, ++inX )
-                        (*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
+                        (*outX) = (*inX) > maxThreshold ? 0 : 255;
                 }
             }
         }
@@ -2390,7 +2548,7 @@ if ( simdType == neon_function ) { \
     void AbsoluteDifference( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                              Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2400,7 +2558,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2435,7 +2593,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
         width = width * colorCount;
 
@@ -2464,7 +2622,7 @@ if ( simdType == neon_function ) { \
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2474,7 +2632,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2502,7 +2660,7 @@ if ( simdType == neon_function ) { \
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2512,7 +2670,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2540,7 +2698,7 @@ if ( simdType == neon_function ) { \
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                      Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2550,7 +2708,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2585,8 +2743,8 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
             throw imageException( "Color counts of images are different" );
 
@@ -2622,8 +2780,8 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
-        Image_Function::ParameterValidation( out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
             throw imageException( "Color counts of images are different" );
 
@@ -2665,8 +2823,8 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( out );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyRGBImage( out );
 
         if( in.colorCount() == RGB ) {
             Image_Function::Copy( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -2704,7 +2862,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         if( !horizontal && !vertical ) {
@@ -2731,7 +2889,7 @@ if ( simdType == neon_function ) { \
     void Invert( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
                  uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2741,7 +2899,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in, out );
@@ -2767,7 +2925,7 @@ if ( simdType == neon_function ) { \
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2777,7 +2935,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2805,7 +2963,7 @@ if ( simdType == neon_function ) { \
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                   Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2815,7 +2973,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2852,7 +3010,7 @@ if ( simdType == neon_function ) { \
             Image_Function::ProjectionProfile( image, x, y, width, height, horizontal, projection );
             return;
         }
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         width = width * colorCount;
 
         projection.resize( horizontal ? width : height );
@@ -2867,6 +3025,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
@@ -2889,8 +3048,8 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
-        Image_Function::VerifyRGBImage     ( in, out );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::VerifyRGBImage( in, out );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in, out );
@@ -2922,7 +3081,7 @@ if ( simdType == neon_function ) { \
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    Image & out, uint32_t startXOut, uint32_t startYOut, uint32_t width, uint32_t height, SIMDType simdType )
     {
-        const uint8_t colorCount = Image_Function::CommonColorCount( in1, in2, out );
+        const uint8_t colorCount = Image_Function::CheckCommonColorCount( in1, in2, out );
         const uint32_t simdSize = getSimdSize( simdType );
 
         if( (simdType == cpu_function) || (width * colorCount < simdSize) ) {
@@ -2932,7 +3091,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, out, startXOut, startYOut, width, height );
         width = width * colorCount;
 
         Image_Function::OptimiseRoi( width, height, in1, in2, out );
@@ -2951,6 +3110,7 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        AVX512SKL_CODE( avx512::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         AVX_CODE( avx::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
@@ -2969,7 +3129,7 @@ if ( simdType == neon_function ) { \
             return Image_Function::Sum( image, x, y, width, height );
         }
 
-        Image_Function::ParameterValidation( image, x, y, width, height );
+        Image_Function::ValidateImageParameters( image, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( image );
 
         Image_Function::OptimiseRoi( width, height, image );
@@ -2983,6 +3143,10 @@ if ( simdType == neon_function ) { \
         const uint32_t totalSimdWidth = simdWidth * simdSize;
         const uint32_t nonSimdWidth = width - totalSimdWidth;
 
+        #ifdef PENGUINV_AVX512_SKL_SET
+        if ( simdType == avx512_function )
+            return avx512::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
+        #endif
         #ifdef PENGUINV_AVX_SET
         if ( simdType == avx_function )
             return avx::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
@@ -3011,7 +3175,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         Image_Function::OptimiseRoi( width, height, in, out );
@@ -3045,7 +3209,7 @@ if ( simdType == neon_function ) { \
             return;
         }
 
-        Image_Function::ParameterValidation( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
         Image_Function::VerifyGrayScaleImage( in, out );
 
         Image_Function::OptimiseRoi( width, height, in, out );
@@ -3178,15 +3342,15 @@ namespace Image_Function_Simd
 
     void ConvertTo16Bit( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in );
-        Image_Function::ParameterValidation( out );
+        Image_Function::ValidateImageParameters( in );
+        Image_Function::ValidateImageParameters( out );
 
         ConvertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
     Image ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
         Image out = Image().generate<uint16_t>( width, height, in.colorCount() );
         ConvertTo16Bit( in, startXIn, startYIn, out, 0, 0, width, height );
@@ -3210,15 +3374,15 @@ namespace Image_Function_Simd
 
     void ConvertTo8Bit( const Image & in, Image & out )
     {
-        Image_Function::ParameterValidation( in );
-        Image_Function::ParameterValidation( out );
+        Image_Function::ValidateImageParameters( in );
+        Image_Function::ValidateImageParameters( out );
 
         ConvertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
     Image ConvertTo8Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
-        Image_Function::ParameterValidation( in, startXIn, startYIn, width, height );
+        Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
         Image out( width, height, in.colorCount() );
         ConvertTo8Bit( in, startXIn, startYIn, out, 0, 0, width, height );

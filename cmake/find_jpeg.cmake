@@ -2,6 +2,7 @@ include(ExternalProject)
 option(PENGUINV_ENABLE_JPEG_SUPPORT "Enable support of libjpeg" ON)
 option(PENGUINV_USE_EXTERNAL_JPEG "Download libjpeg and build from source" OFF)
 option(PENGUINV_INSTALL_YASM "Download yasm and build from source" ON)
+option(PENGUINV_INSTALL_JPEG "Download jpeg and build from source" ON)
 
 if(PENGUINV_ENABLE_JPEG_SUPPORT)
     find_package(JPEG)
@@ -37,6 +38,12 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
     set(JPEG_LIB_DIR ${JPEG_INSTALL}/lib)
     set(JPEG_INCLUDE_DIR ${JPEG_INSTALL}/include)
 
+    if(DEFINED ENV{APPVEYOR})
+        if(EXISTS ${JPEG_INSTALL})
+            set(PENGUINV_INSTALL_JPEG OFF CACHE BOOL "" FORCE)
+        endif()
+    endif()
+
     if(WIN32)
         if(MSVC)
             set(JPEG_STATIC_LIBRARIES
@@ -63,48 +70,51 @@ if(PENGUINV_USE_EXTERNAL_JPEG)
                 -DCMAKE_BUILD_TYPE:STRING=RELEASE
                 -DCMAKE_INSTALL_PREFIX:STRING=${YASM_INSTALL})
 
-        ExternalProject_Add(jpeg
-            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
-            DEPENDS yasm
-            URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
-            URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
-            INSTALL_DIR ${JPEG_INSTALL}
-            CMAKE_ARGS
-                -DWITH_SIMD=TRUE
-                -DENABLE_SHARED=TRUE
-                -DENABLE_STATIC=TRUE
-                -DWITH_TURBOJPEG=TRUE
-                -DWITH_JPEG8=TRUE
-                -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
-                -DCMAKE_BUILD_TYPE=Release
-                -DCMAKE_CONFIGURATION_TYPES=Release
-                -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
-                -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+        if(PENGUINV_INSTALL_JPEG)
+            ExternalProject_Add(jpeg
+                PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
+                DEPENDS yasm
+                URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
+                URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+                INSTALL_DIR ${JPEG_INSTALL}
+                CMAKE_ARGS
+                    -DWITH_SIMD=TRUE
+                    -DENABLE_SHARED=TRUE
+                    -DENABLE_STATIC=TRUE
+                    -DWITH_TURBOJPEG=TRUE
+                    -DWITH_JPEG8=TRUE
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
+                    -DCMAKE_BUILD_TYPE=Release
+                    -DCMAKE_CONFIGURATION_TYPES=Release
+                    -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
+                    -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+        endif()
     else()
-        ExternalProject_Add(jpeg
-            PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
-            URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
-            URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
-            INSTALL_DIR ${JPEG_INSTALL}
-            CMAKE_ARGS
-                -DWITH_SIMD=TRUE
-                -DENABLE_SHARED=TRUE
-                -DENABLE_STATIC=TRUE
-                -DWITH_TURBOJPEG=TRUE
-                -DWITH_JPEG8=TRUE
-                -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
-                -DCMAKE_BUILD_TYPE=Release
-                -DCMAKE_CONFIGURATION_TYPES=Release
-                -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
-                -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+        if(PENGUINV_INSTALL_JPEG)
+            ExternalProject_Add(jpeg
+                PREFIX ${CMAKE_CURRENT_BINARY_DIR}/jpeg
+                URL https://sourceforge.net/projects/libjpeg-turbo/files/2.0.1/libjpeg-turbo-2.0.1.tar.gz
+                URL_MD5 1b05a66aa9b006fd04ed29f408e68f46
+                INSTALL_DIR ${JPEG_INSTALL}
+                CMAKE_ARGS
+                    -DWITH_SIMD=TRUE
+                    -DENABLE_SHARED=TRUE
+                    -DENABLE_STATIC=TRUE
+                    -DWITH_TURBOJPEG=TRUE
+                    -DWITH_JPEG8=TRUE
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE
+                    -DCMAKE_BUILD_TYPE=Release
+                    -DCMAKE_CONFIGURATION_TYPES=Release
+                    -DCMAKE_INSTALL_PREFIX=${JPEG_INSTALL}
+                    -DCMAKE_ASM_NASM_COMPILER=${YASM_BINARY})
+        endif()
     endif()
 
-    ExternalProject_Get_Property(jpeg INSTALL_DIR)
     add_library(JPEG_EXTERNAL STATIC IMPORTED)
-    set(JPEG_LIBRARY_RELEASE ${INSTALL_DIR}/lib/jpeg-static.lib)
-    set(JPEG_LIBRARY_RELWITHDEBINFO ${INSTALL_DIR}/lib/jpeg-static.lib)
-    set(JPEG_LIBRARY_DEBUG ${INSTALL_DIR}/lib/jpeg-staticd.lib)
-    set(JPEG_INCLUDE_DIRS ${INSTALL_DIR}/include)
+    set(JPEG_LIBRARY_RELEASE ${JPEG_INSTALL}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_RELWITHDEBINFO ${JPEG_INSTALL}/lib/jpeg-static.lib)
+    set(JPEG_LIBRARY_DEBUG ${JPEG_INSTALL}/lib/jpeg-staticd.lib)
+    set(JPEG_INCLUDE_DIRS ${JPEG_INSTALL}/include)
     # CMake INTERFACE_INCLUDE_DIRECTORIES requires the directory to exists at configure time
     # This is quite unhelpful because those directories are only generated at build time
     file(MAKE_DIRECTORY ${JPEG_INCLUDE_DIRS}) # Workaround
