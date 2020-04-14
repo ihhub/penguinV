@@ -83,10 +83,9 @@ matrix:
           fi
       script:
         - export EXCLUDE_PATTERN_1=" not found in expected header ";
-        - export EXCLUDE_PATTERN_2=" does not need to be \#included; use a forward declaration instead";
-        - export EXCLUDE_PATTERN_3=" not found in any directly \#included header";
+        - export EXCLUDE_PATTERN_2=" not found in any directly \#included header";
         - git clone --depth 50 https://github.com/myint/cppclean;
-        - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2" | grep -v "$EXCLUDE_PATTERN_3";
+        - ./cppclean/cppclean src test examples | grep -v "$EXCLUDE_PATTERN_1" | grep -v "$EXCLUDE_PATTERN_2"
         - cd ${TRAVIS_BUILD_DIR}
         - |
           if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
