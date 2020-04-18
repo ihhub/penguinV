@@ -91,7 +91,7 @@ namespace Bitmap_Operation
             get_value( data, offset, bfOffBits );
         }
 
-        void get( std::vector < uint8_t > & data )
+        void get( std::vector < uint8_t > & data ) const
         {
             size_t offset = 0;
             set_value( data, offset, bfType );
@@ -108,19 +108,21 @@ namespace Bitmap_Operation
         virtual ~BitmapDibHeader() {}
 
         virtual void set( const std::vector < uint8_t > & ) = 0;
-        virtual void get( std::vector < uint8_t > & )       = 0;
+        virtual void get( std::vector < uint8_t > & ) const = 0;
 
-        virtual uint32_t width()      = 0;
-        virtual uint32_t height()     = 0;
-        virtual uint8_t  colorCount() = 0;
-        virtual uint32_t size()       = 0;
+        virtual uint32_t width() const      = 0;
+        virtual uint32_t height() const     = 0;
+        virtual uint8_t  colorCount() const = 0;
+        virtual uint32_t size() const       = 0;
+        virtual bool     isFlipped() const  = 0;
 
         virtual void setWidth( uint32_t )      = 0;
         virtual void setHeight( uint32_t )     = 0;
         virtual void setColorCount( uint16_t ) = 0;
         virtual void setImageSize( uint32_t )  = 0;
+        virtual void flip( bool doFlip )       = 0;
 
-        virtual bool validate( const BitmapFileHeader & ) = 0;
+        virtual bool validate( const BitmapFileHeader & ) const = 0;
     };
 
     struct BitmapCoreHeader : public BitmapDibHeader
@@ -152,7 +154,7 @@ namespace Bitmap_Operation
             get_value( data, offset, bcBitCount );
         }
 
-        void get( std::vector < uint8_t > & data )
+        void get( std::vector < uint8_t > & data ) const
         {
             size_t offset = 0;
             set_value( data, offset, bcSize );
@@ -162,22 +164,22 @@ namespace Bitmap_Operation
             set_value( data, offset, bcBitCount );
         }
 
-        virtual uint32_t width()
+        virtual uint32_t width() const
         {
             return bcWidth;
         }
 
-        virtual uint32_t height()
+        virtual uint32_t height() const
         {
             return bcHeight;
         }
 
-        virtual uint8_t colorCount()
+        virtual uint8_t colorCount() const
         {
             return static_cast<uint8_t>(bcBitCount / 8u);
         }
 
-        virtual uint32_t size()
+        virtual uint32_t size() const
         {
             return overallSize;
         }
@@ -201,7 +203,15 @@ namespace Bitmap_Operation
         {
         }
 
-        virtual bool validate( const BitmapFileHeader & header )
+        virtual bool isFlipped() const
+        {
+            return true;
+        }
+
+        virtual void flip( bool )
+        { }
+
+        virtual bool validate( const BitmapFileHeader & header ) const
         {
             return !(bcBitCount == 8u || bcBitCount == 24u || bcBitCount == 32u) ||
                 bcWidth == 0 || bcHeight == 0 || bcSize != BitmapCoreHeader().bcSize ||
@@ -224,6 +234,7 @@ namespace Bitmap_Operation
             , biClrUsed      ( 0 )  // Number of colours used
             , biClrImportant ( 0 )  // important colours
             , overallSize    ( 40 ) // real size of this structure for bitmap format
+            , flipped        ( true ) // reading/writing rows from bottom to top
         { }
 
         uint32_t biSize;
@@ -239,6 +250,7 @@ namespace Bitmap_Operation
         uint32_t biClrImportant;
 
         uint32_t overallSize;
+        bool flipped;
 
         void set( const std::vector < uint8_t > & data )
         {
@@ -254,14 +266,22 @@ namespace Bitmap_Operation
             get_value( data, offset, biYPelsPerMeter );
             get_value( data, offset, biClrUsed );
             get_value( data, offset, biClrImportant );
+
+            if ( biHeight < 0 ) {
+                biHeight = -biHeight;
+                flipped = false;
+            }
+            else {
+                flipped = true;
+            }
         }
 
-        void get( std::vector < uint8_t > & data )
+        void get( std::vector < uint8_t > & data ) const
         {
             size_t offset = 0;
             set_value( data, offset, biSize );
             set_value( data, offset, biWidth );
-            set_value( data, offset, biHeight );
+            set_value( data, offset, flipped ? biHeight : static_cast<int32_t>( -biHeight ) );
             set_value( data, offset, biPlanes );
             set_value( data, offset, biBitCount );
             set_value( data, offset, biCompress );
@@ -272,22 +292,22 @@ namespace Bitmap_Operation
             set_value( data, offset, biClrImportant );
         }
 
-        virtual uint32_t width()
+        virtual uint32_t width() const
         {
             return static_cast<uint32_t>(biWidth);
         }
 
-        virtual uint32_t height()
+        virtual uint32_t height() const
         {
             return static_cast<uint32_t>(biHeight);
         }
 
-        virtual uint8_t colorCount()
+        virtual uint8_t colorCount() const
         {
             return static_cast<uint8_t>(biBitCount / 8u);
         }
 
-        virtual uint32_t size()
+        virtual uint32_t size() const
         {
             return overallSize;
         }
@@ -312,7 +332,17 @@ namespace Bitmap_Operation
             biSizeImage = s;
         }
 
-        virtual bool validate( const BitmapFileHeader & header )
+        virtual bool isFlipped() const
+        {
+            return flipped;
+        }
+
+        virtual void flip( bool doFlip )
+        {
+            flipped = doFlip;
+        }
+
+        virtual bool validate( const BitmapFileHeader & header ) const
         {
             uint32_t rowSize = width() * colorCount();
             if( rowSize % BITMAP_ALIGNMENT != 0 )
@@ -474,7 +504,8 @@ namespace Bitmap_Operation
         }
 
         // thanks to bitmap creators image is stored in wrong flipped format so we have to flip back
-        flipData( image );
+        if ( info->isFlipped() )
+            flipData( image );
 
         return image;
     }
