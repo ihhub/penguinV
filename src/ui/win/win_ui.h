@@ -76,6 +76,8 @@ private:
     std::vector < LineToDraw    > _line;
     std::vector < EllipseToDraw > _ellipse;
 
+    double _scaleFactor;
+
     friend class WindowsUi::UiWindowWinInfo;
 
     void _free();
