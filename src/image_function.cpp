@@ -1441,14 +1441,14 @@ namespace Image_Function
     {
         ValidateImageParameters( in, startXIn, startYIn, widthIn, heightIn );
         ValidateImageParameters( out, startXOut, startYOut, widthOut, heightOut );
-        VerifyGrayScaleImage( in, out );
+
+        const uint8_t colorCount = in.colorCount();
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
 
-        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn;
-        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut;
-
+        const uint8_t * inY  = in.data()  + startYIn  * rowSizeIn  + startXIn * colorCount;
+        uint8_t       * outY = out.data() + startYOut * rowSizeOut + startXOut * colorCount;
         const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
 
         uint32_t idY = 0;
@@ -1456,18 +1456,35 @@ namespace Image_Function
         // Precalculation of X position
         std::vector < uint32_t > positionX( widthOut );
         for( uint32_t x = 0; x < widthOut; ++x )
-            positionX[x] = x * widthIn / widthOut;
+            positionX[x] = ( x * widthIn / widthOut ) * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
-            const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
-            uint8_t       * outX = outY;
+        widthOut *= colorCount;
 
-            const uint8_t * outXEnd = outX + widthOut;
+        if ( colorCount == 1u ) {
+            for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+                uint8_t       * outX = outY;
+                const uint8_t * outXEnd = outX + widthOut;
 
-            const uint32_t * idX = positionX.data();
+                const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
+                const uint32_t * idX = positionX.data();
 
-            for( ; outX != outXEnd; ++outX, ++idX )
-                (*outX) = *(inX + (*idX));
+                for( ; outX != outXEnd; ++outX, ++idX )
+                    (*outX) = *(inX + (*idX));
+            }
+        }
+        else {
+            const size_t pixelSize = sizeof( uint8_t ) * colorCount;
+
+            for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+                uint8_t       * outX = outY;
+                const uint8_t * outXEnd = outX + widthOut;
+
+                const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
+                const uint32_t * idX = positionX.data();
+
+                for( ; outX != outXEnd; outX += colorCount, ++idX )
+                    memcpy( outX, inX + (*idX), pixelSize );
+            }
         }
     }
 
