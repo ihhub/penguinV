@@ -39,19 +39,18 @@ namespace pvmath
 
     void getMatrixRoots( const std::vector<double> & squareMatrix, const std::vector<double> freeTerms, std::vector<double> & roots )
     {
-        if ( squareMatrix.empty() || freeTerms.empty() || squareMatrix.size() != freeTerms.size() * freeTerms.size() ||
-             freeTerms.size() < 2 )
+        if ( squareMatrix.empty() || freeTerms.empty() || squareMatrix.size() != freeTerms.size() * freeTerms.size() || freeTerms.size() < 2 )
             throw imageException( "Invalid parameters for getMatrixRoots function" );
 
         const size_t size = freeTerms.size();
-        std::vector< size_t > matrixIndices( size * size );
+        std::vector<size_t> matrixIndices( size * size );
 
         for ( size_t i = 0; i < size; ++i )
             for ( size_t j = 0; j < size; ++j )
                 matrixIndices[i + j * size] = i;
 
-        std::vector< double > matrix( squareMatrix );
-        std::vector< double > terms( freeTerms );
+        std::vector<double> matrix( squareMatrix );
+        std::vector<double> terms( freeTerms );
 
         // Direct method
         for ( size_t i = 0u; i < size; ++i ) {
@@ -101,7 +100,7 @@ namespace pvmath
 
         // Inverse method
         std::vector< double > unsortedRoots( size );
-        for ( size_t i = size - 1; ; --i ) {
+        for ( size_t i = size - 1;; --i ) {
             if ( fabs( matrix[i + i * size] ) < 1e-10 ) {
                 unsortedRoots[i] = 0;
             }
@@ -110,7 +109,7 @@ namespace pvmath
                 for ( size_t k = i + 1; k < size; ++k )
                     temp += unsortedRoots[k] * matrix[k + i * size];
 
-                unsortedRoots[i] = (terms[i] - temp) / matrix[i + i * size];
+                unsortedRoots[i] = ( terms[i] - temp ) / matrix[i + i * size];
             }
 
             if ( i == 0 )
