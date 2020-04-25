@@ -33,8 +33,8 @@ namespace WindowsUi
 
         void paint( HDC hdc, RECT clientRoi ) const
         {
-            const double xFactor = static_cast<double>(clientRoi.right - clientRoi.left) / _window->_image.width();
-            const double yFactor = static_cast<double>(clientRoi.bottom - clientRoi.top) / _window->_image.height();
+            const double xFactor = static_cast<double>( clientRoi.right - clientRoi.left ) / _window->_image.width() * _window->_scaleFactor;
+            const double yFactor = static_cast<double>( clientRoi.bottom - clientRoi.top ) / _window->_image.height() * _window->_scaleFactor;
 
             const int minPointFactor = static_cast<int>(xFactor < yFactor ? xFactor : yFactor);
             const int pointMultiplicator = minPointFactor > 1 ? minPointFactor / 2 : 1;
@@ -162,6 +162,7 @@ namespace
 UiWindowWin::UiWindowWin( const penguinV::Image & image, const std::string & title )
     : UiWindow( penguinV::Image(), title ) // we pass an empty image into base class
     , _bmpInfo( nullptr )
+    , _scaleFactor( 1.0 )
 {
     static const UiWindowWinRegistrator registrator; // we need to register only once hence static variable
     if ( !registrator.registered )
@@ -208,30 +209,82 @@ void UiWindowWin::setImage( const penguinV::Image & image )
     // We need to set image upside-down to show correctly in UI window as well as make 4 byte row length for bitmap
     _image.setAlignment( 4u );
     _image.setColorCount( image.colorCount() );
-    _image.resize( image.width(), image.height() );
 
-    const uint32_t rowSizeIn  = image.rowSize();
-    const uint32_t rowSizeOut = _image.rowSize();
-    const uint32_t width      = image.width() * image.colorCount();
+    const int maxWindowWidth = GetSystemMetrics( SM_CXSCREEN ) * 95 / 100;
+    const int maxWindowHeight = GetSystemMetrics( SM_CYSCREEN ) * 95 / 100;
+    if ( maxWindowWidth > 0 && static_cast<uint32_t>( maxWindowWidth ) < image.width() ||
+         maxWindowHeight > 0 && static_cast<uint32_t>( maxWindowHeight ) < image.height() ) {
+        const double scaleX = static_cast<double>( maxWindowWidth ) / image.width();
+        const double scaleY = static_cast<double>( maxWindowHeight ) / image.height();
 
-    const uint8_t * inY     = image.data() + image.rowSize() * (image.height() - 1);
-    uint8_t       * outY    = _image.data();
-    const uint8_t * outYEnd = outY + image.height() * rowSizeOut;
+        _scaleFactor = scaleX < scaleY ? scaleX : scaleY;
+        _image.resize( static_cast<uint32_t>( _scaleFactor * image.width() ), static_cast<uint32_t>( _scaleFactor * image.height() ) );
 
-    for ( ; outY != outYEnd; outY += rowSizeOut, inY -= rowSizeIn )
-        memcpy( outY, inY, sizeof( uint8_t ) * width );
+        const uint8_t colorCount = image.colorCount();
 
-    const bool rgbImage = (image.colorCount() != 1u);
+        const uint32_t widthIn = image.width();
+        uint32_t widthOut = _image.width();
+
+        const uint32_t heightIn = image.height();
+        const uint32_t heightOut = _image.height();
+
+        const uint32_t rowSizeIn  = image.rowSize();
+        const uint32_t rowSizeOut = _image.rowSize();
+
+        const uint8_t * inY  = image.data();
+        uint8_t       * outY = _image.data();
+        const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
+
+        uint32_t idY = 0;
+
+        // Precalculation of X position
+        std::vector < uint32_t > positionX( widthOut );
+        for ( uint32_t x = 0; x < widthOut; ++x )
+            positionX[x] = ( x * widthIn / widthOut ) * colorCount;
+
+        widthOut *= colorCount;
+
+        const size_t pixelSize = sizeof( uint8_t ) * colorCount;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+            uint8_t       * outX = outY;
+            const uint8_t * outXEnd = outX + widthOut;
+
+            const uint8_t * inX  = inY + ( heightIn - 1 - ( idY * heightIn / heightOut ) ) * rowSizeIn;
+            const uint32_t * idX = positionX.data();
+
+            for ( ; outX != outXEnd; outX += colorCount, ++idX )
+                memcpy( outX, inX + (*idX), pixelSize );
+        }
+    }
+    else {
+        _scaleFactor = 1.0;
+
+        _image.resize( image.width(), image.height() );
+
+        const uint32_t rowSizeIn  = image.rowSize();
+        const uint32_t rowSizeOut = _image.rowSize();
+        const uint32_t width      = image.width() * image.colorCount();
+
+        const uint8_t * inY     = image.data() + image.rowSize() * (image.height() - 1);
+        uint8_t       * outY    = _image.data();
+        const uint8_t * outYEnd = outY + image.height() * rowSizeOut;
+
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY -= rowSizeIn )
+            memcpy( outY, inY, sizeof( uint8_t ) * width );
+    }
+
+    const bool rgbImage = ( _image.colorCount() != 1u );
     const DWORD bmpInfoSize = sizeof( BITMAPINFOHEADER ) + (rgbImage ? 1 : 256) * sizeof( RGBQUAD );
 
     _bmpInfo = reinterpret_cast<BITMAPINFO*>(malloc( bmpInfoSize ));
     _bmpInfo->bmiHeader.biSize          = sizeof( BITMAPINFOHEADER );
-    _bmpInfo->bmiHeader.biWidth         = image.width();
-    _bmpInfo->bmiHeader.biHeight        = image.height();
+    _bmpInfo->bmiHeader.biWidth         = _image.width();
+    _bmpInfo->bmiHeader.biHeight        = _image.height();
     _bmpInfo->bmiHeader.biPlanes        = 1;
-    _bmpInfo->bmiHeader.biBitCount      = image.colorCount() * 8;
+    _bmpInfo->bmiHeader.biBitCount      = _image.colorCount() * 8;
     _bmpInfo->bmiHeader.biCompression   = BI_RGB;
-    _bmpInfo->bmiHeader.biSizeImage     = image.rowSize() * image.height();
+    _bmpInfo->bmiHeader.biSizeImage     = _image.rowSize() * _image.height();
     _bmpInfo->bmiHeader.biXPelsPerMeter = 0;
     _bmpInfo->bmiHeader.biYPelsPerMeter = 0;
     _bmpInfo->bmiHeader.biClrUsed       = rgbImage ? 0 : 256;
@@ -256,8 +309,8 @@ void UiWindowWin::setImage( const penguinV::Image & image )
 
     // Resize window to fit image 1 to 1
     MoveWindow( _window, windowRoi.left, windowRoi.top,
-                windowRoi.right - windowRoi.left - (clientRoi.right - clientRoi.left) + image.width(),
-                windowRoi.bottom - windowRoi.top - (clientRoi.bottom - clientRoi.top) + image.height(), FALSE );
+                windowRoi.right - windowRoi.left - (clientRoi.right - clientRoi.left) + _image.width(),
+                windowRoi.bottom - windowRoi.top - (clientRoi.bottom - clientRoi.top) + _image.height(), FALSE );
 }
 
 void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )
