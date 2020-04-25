@@ -33,8 +33,8 @@ namespace WindowsUi
 
         void paint( HDC hdc, RECT clientRoi ) const
         {
-            const double xFactor = static_cast<double>(clientRoi.right - clientRoi.left) / _window->_image.width() * _window->_scaleFactor;
-            const double yFactor = static_cast<double>(clientRoi.bottom - clientRoi.top) / _window->_image.height() * _window->_scaleFactor;
+            const double xFactor = static_cast<double>( clientRoi.right - clientRoi.left ) / _window->_image.width() * _window->_scaleFactor;
+            const double yFactor = static_cast<double>( clientRoi.bottom - clientRoi.top ) / _window->_image.height() * _window->_scaleFactor;
 
             const int minPointFactor = static_cast<int>(xFactor < yFactor ? xFactor : yFactor);
             const int pointMultiplicator = minPointFactor > 1 ? minPointFactor / 2 : 1;
@@ -239,21 +239,21 @@ void UiWindowWin::setImage( const penguinV::Image & image )
 
         // Precalculation of X position
         std::vector < uint32_t > positionX( widthOut );
-        for( uint32_t x = 0; x < widthOut; ++x )
+        for ( uint32_t x = 0; x < widthOut; ++x )
             positionX[x] = ( x * widthIn / widthOut ) * colorCount;
 
         widthOut *= colorCount;
 
         const size_t pixelSize = sizeof( uint8_t ) * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
             uint8_t       * outX = outY;
             const uint8_t * outXEnd = outX + widthOut;
 
-            const uint8_t * inX  = inY + ( heightIn - 1 - (idY * heightIn / heightOut) ) * rowSizeIn;
+            const uint8_t * inX  = inY + ( heightIn - 1 - ( idY * heightIn / heightOut ) ) * rowSizeIn;
             const uint32_t * idX = positionX.data();
 
-            for( ; outX != outXEnd; outX += colorCount, ++idX )
+            for ( ; outX != outXEnd; outX += colorCount, ++idX )
                 memcpy( outX, inX + (*idX), pixelSize );
         }
     }
@@ -274,7 +274,7 @@ void UiWindowWin::setImage( const penguinV::Image & image )
             memcpy( outY, inY, sizeof( uint8_t ) * width );
     }
 
-    const bool rgbImage = (_image.colorCount() != 1u);
+    const bool rgbImage = ( _image.colorCount() != 1u );
     const DWORD bmpInfoSize = sizeof( BITMAPINFOHEADER ) + (rgbImage ? 1 : 256) * sizeof( RGBQUAD );
 
     _bmpInfo = reinterpret_cast<BITMAPINFO*>(malloc( bmpInfoSize ));
