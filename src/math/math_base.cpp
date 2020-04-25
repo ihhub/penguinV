@@ -99,7 +99,7 @@ namespace pvmath
         }
 
         // Inverse method
-        std::vector< double > unsortedRoots( size );
+        std::vector<double> unsortedRoots( size );
         for ( size_t i = size - 1;; --i ) {
             if ( fabs( matrix[i + i * size] ) < 1e-10 ) {
                 unsortedRoots[i] = 0;
