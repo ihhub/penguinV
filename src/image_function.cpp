@@ -1455,35 +1455,35 @@ namespace Image_Function
 
         // Precalculation of X position
         std::vector < uint32_t > positionX( widthOut );
-        for( uint32_t x = 0; x < widthOut; ++x )
+        for ( uint32_t x = 0; x < widthOut; ++x )
             positionX[x] = ( x * widthIn / widthOut ) * colorCount;
 
         widthOut *= colorCount;
 
         if ( colorCount == 1u ) {
-            for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+            for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
                 uint8_t       * outX = outY;
                 const uint8_t * outXEnd = outX + widthOut;
 
-                const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
+                const uint8_t * inX  = inY + ( idY * heightIn / heightOut ) * rowSizeIn;
                 const uint32_t * idX = positionX.data();
 
-                for( ; outX != outXEnd; ++outX, ++idX )
-                    (*outX) = *(inX + (*idX));
+                for ( ; outX != outXEnd; ++outX, ++idX )
+                    *outX = *( inX + ( *idX ) );
             }
         }
         else {
             const size_t pixelSize = sizeof( uint8_t ) * colorCount;
 
-            for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+            for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
                 uint8_t       * outX = outY;
                 const uint8_t * outXEnd = outX + widthOut;
 
-                const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
+                const uint8_t * inX  = inY + ( idY * heightIn / heightOut ) * rowSizeIn;
                 const uint32_t * idX = positionX.data();
 
-                for( ; outX != outXEnd; outX += colorCount, ++idX )
-                    memcpy( outX, inX + (*idX), pixelSize );
+                for ( ; outX != outXEnd; outX += colorCount, ++idX )
+                    memcpy( outX, inX + ( *idX ), pixelSize );
             }
         }
     }
