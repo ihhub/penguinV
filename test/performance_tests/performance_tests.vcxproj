@@ -175,6 +175,8 @@
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\math\math_base.h" />
+    <ClInclude Include="..\..\src\memory\cpu_memory.h" />
+    <ClInclude Include="..\..\src\memory\memory_allocator.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\penguinv.h" />
