@@ -1,5 +1,6 @@
 #include "../../src/filtering.h"
 #include "performance_test_filtering.h"
+#include "performance_test_framework.h"
 #include "performance_test_helper.h"
 
 namespace

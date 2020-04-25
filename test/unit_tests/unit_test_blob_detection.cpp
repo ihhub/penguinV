@@ -1,4 +1,5 @@
 #include "unit_test_blob_detection.h"
+#include "unit_test_framework.h"
 #include "unit_test_helper.h"
 #include "../../src/blob_detection.h"
 #include "../../src/image_function.h"

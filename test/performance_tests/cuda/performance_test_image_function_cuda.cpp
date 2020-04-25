@@ -1,5 +1,6 @@
 #include <vector>
 #include "../../../src/cuda/image_function_cuda.cuh"
+#include "../performance_test_framework.h"
 #include "performance_test_image_function_cuda.h"
 #include "performance_test_helper_cuda.cuh"
 

@@ -1,3 +1,4 @@
+#include "unit_test_framework.h"
 #include "unit_test_helper.h"
 #include "unit_test_image_buffer.h"
 #include "../../src/image_function.h"

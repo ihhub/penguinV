@@ -1,5 +1,6 @@
 #include <vector>
 #include "../../../src/opencl/image_function_opencl.h"
+#include "../performance_test_framework.h"
 #include "performance_test_image_function_opencl.h"
 #include "performance_test_helper_opencl.h"
 

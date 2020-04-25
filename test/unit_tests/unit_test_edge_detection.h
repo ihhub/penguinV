@@ -1,5 +1,5 @@
 #pragma once
 
-#include "unit_test_framework.h"
+class UnitTestFramework;
 
 void addTests_Edge_Detection( UnitTestFramework & framework );

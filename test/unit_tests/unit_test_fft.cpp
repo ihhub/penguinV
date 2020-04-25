@@ -1,5 +1,6 @@
 #include "unit_test_fft.h"
 #include "../../src/fft.h"
+#include "unit_test_framework.h"
 #include "unit_test_helper.h"
 
 namespace fft

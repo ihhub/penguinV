@@ -1,6 +1,7 @@
 #include "unit_test_math.h"
 
 #include <cmath>
+#include "unit_test_framework.h"
 #include "unit_test_helper.h"
 #include "../../src/math/hough_transform.h"
 #include "../../src/math/haar_transform.h"
