@@ -5,14 +5,14 @@
 
 namespace
 {
-#if defined(PENGUINV_ENABLED_JPEG_SUPPORT) || defined(PENGUINV_ENABLED_PNG_SUPPORT)
+#if defined( PENGUINV_ENABLED_JPEG_SUPPORT ) || defined( PENGUINV_ENABLED_PNG_SUPPORT )
     bool isSameFileExtension( const std::string & path, const std::string & fileExtension )
     {
         return ( path.size() >= fileExtension.size() && path.compare( path.size() - fileExtension.size(), fileExtension.size(), fileExtension ) == 0 );
     }
 #endif
 
-#if !defined(PENGUINV_ENABLED_JPEG_SUPPORT)
+#if !defined( PENGUINV_ENABLED_JPEG_SUPPORT )
     bool isJpegFile( const std::string & )
     {
         return false;
@@ -24,7 +24,7 @@ namespace
     }
 #endif
 
-#if !defined(PENGUINV_ENABLED_PNG_SUPPORT)
+#if !defined( PENGUINV_ENABLED_PNG_SUPPORT )
     bool isPngFile( const std::string & )
     {
         return false;
