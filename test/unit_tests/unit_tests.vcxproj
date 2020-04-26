@@ -193,6 +193,8 @@
     <ClInclude Include="..\..\src\math\haar_transform.h" />
     <ClInclude Include="..\..\src\math\hough_transform.h" />
     <ClInclude Include="..\..\src\math\math_base.h" />
+    <ClInclude Include="..\..\src\memory\cpu_memory.h" />
+    <ClInclude Include="..\..\src\memory\memory_allocator.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
     <ClInclude Include="..\..\src\penguinv\cpu_id_windows.h" />
@@ -200,7 +202,7 @@
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fft.h" />
     <ClInclude Include="..\..\src\thirdparty\kissfft\kiss_fftnd.h" />
     <ClInclude Include="..\..\src\thread_pool.h" />
-    <ClInclude Include="..\test_helper.h" />    
+    <ClInclude Include="..\test_helper.h" />
     <ClInclude Include="unit_test_blob_detection.h" />
     <ClInclude Include="unit_test_edge_detection.h" />
     <ClInclude Include="unit_test_fft.h" />
