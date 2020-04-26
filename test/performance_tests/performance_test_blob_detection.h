@@ -1,5 +1,5 @@
 #pragma once
 
-#include "performance_test_framework.h"
+class PerformanceTestFramework;
 
 void addTests_Blob_Detection( PerformanceTestFramework & framework );

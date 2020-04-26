@@ -1,5 +1,5 @@
 #pragma once
 
-#include "../unit_test_framework.h"
+class UnitTestFramework;
 
 void addTests_Image_Function_OpenCL( UnitTestFramework & framework );
