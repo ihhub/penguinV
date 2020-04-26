@@ -466,7 +466,7 @@ namespace Bitmap_Operation
 
         penguinV::Image image( info->width(), info->height(), info->colorCount(), BITMAP_ALIGNMENT );
 
-        size_t dataToRead = rowSize * info->height();
+        size_t dataToRead = static_cast<size_t>( rowSize ) * info->height();
         size_t dataReaded = 0;
 
         const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks

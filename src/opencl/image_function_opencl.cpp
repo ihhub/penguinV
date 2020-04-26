@@ -551,7 +551,7 @@ namespace Image_Function_OpenCL
 
         if (in.alignment() == 1u || (in.rowSize() == in.width() * in.colorCount()))
         {
-            const size_t size = in.rowSize() * in.height();
+            const size_t size = static_cast<size_t>( in.rowSize() ) * in.height();
             multiCL::writeBuffer( reinterpret_cast<cl_mem>( out.data() ), size * sizeof(uint8_t), in.data() );
         }
         else
@@ -583,7 +583,7 @@ namespace Image_Function_OpenCL
 
         if (out.alignment() == 1u || (out.rowSize() == out.width() * out.colorCount()))
         {
-            const size_t size = in.rowSize() * in.height();
+            const size_t size = static_cast<size_t>( in.rowSize() ) * in.height();
             multiCL::readBuffer( reinterpret_cast<cl_mem>( const_cast<uint8_t*>( in.data() ) ), size * sizeof(uint8_t), out.data() );
         }
         else
