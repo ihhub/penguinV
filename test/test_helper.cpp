@@ -9,10 +9,9 @@ namespace
     }
 
     template <typename _Type>
-    penguinV::ImageTemplate<_Type> generateImage( uint32_t width, uint32_t height, uint8_t colorCount, _Type value,
-                                                  const penguinV::ImageTemplate<_Type> & reference = penguinV::ImageTemplate<_Type>() )
+    penguinV::Image generateImage( uint32_t width, uint32_t height, uint8_t colorCount, _Type value, const penguinV::Image & reference = penguinV::Image() )
     {
-        penguinV::ImageTemplate<_Type> image = reference.generate( width, height, colorCount );
+        penguinV::Image image = reference.generate<_Type>( width, height, colorCount );
 
         image.fill( value );
 
@@ -53,7 +52,7 @@ namespace Test_Helper
         return generateImage<uint8_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
     }
 
-    penguinV::Image16Bit uniformImage16Bit( uint16_t value, uint32_t width, uint32_t height, const penguinV::Image16Bit & reference )
+    penguinV::Image uniformImage16Bit( uint16_t value, uint32_t width, uint32_t height, const penguinV::Image & reference )
     {
         return generateImage<uint16_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
     }

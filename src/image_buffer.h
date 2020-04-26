@@ -9,11 +9,10 @@
 
 namespace penguinV
 {
-    template <typename TColorDepth>
-    class ImageTemplate
+    class Image
     {
     public:
-        explicit ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit Image( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
             : _width     ( 0 )       // width of image
             , _height    ( 0 )       // height of image
             , _colorCount( 1 )       // number of colors per pixel
@@ -22,22 +21,26 @@ namespace penguinV
             , _rowSize   ( 0 )       // size of single row on image, usually it is equal to width
             , _data      ( nullptr ) // an array what store image information (pixel data)
             , _type      ( 0 )       // special attribute to specify different types of images based on technology it is used for
+            , _dataType( typeid( uint8_t ).name() )
+            , _dataSize( sizeof( uint8_t ) )
         {
-            _setType();
+            _setType<uint8_t>();
 
             setColorCount( colorCount_ );
             setAlignment( alignment_ );
             resize( width_, height_ );
         }
 
-        ImageTemplate( const ImageTemplate & image )
-            : _data      ( nullptr )
-            , _type      ( image._type )
+        Image( const Image & image )
+            : _data    ( nullptr )
+            , _type    ( image._type )
+            , _dataType( typeid( uint8_t ).name() )
+            , _dataSize( sizeof( uint8_t ) )
         {
             copy( image );
         }
 
-        ImageTemplate( ImageTemplate && image )
+        Image( Image && image )
             : _width     ( 0 )
             , _height    ( 0 )
             , _colorCount( 1 )
@@ -45,31 +48,33 @@ namespace penguinV
             , _rowSize   ( 0 )
             , _data      ( nullptr )
             , _type      ( 0 )
+            , _dataType( typeid( uint8_t ).name() )
+            , _dataSize( sizeof( uint8_t ) )
         {
             swap( image );
         }
 
-        ImageTemplate & operator=( const ImageTemplate & image )
+        Image & operator=( const Image & image )
         {
             copy( image );
 
             return (*this);
         }
 
-        ImageTemplate & operator=( ImageTemplate && image )
+        Image & operator=( Image && image )
         {
             swap( image );
 
             return (*this);
         }
 
-        bool operator==( const ImageTemplate & image ) const
+        bool operator==( const Image & image ) const
         {
             return _data == image._data && _width == image._width && _height == image._height && _colorCount == image._colorCount &&
-                   _alignment == image._alignment && _type == image._type;
+                   _alignment == image._alignment && _type == image._type && _dataType == image._dataType && _dataSize == image._dataSize;
         }
 
-        virtual ~ImageTemplate()
+        virtual ~Image()
         {
             clear();
         }
@@ -86,7 +91,7 @@ namespace penguinV
                 if( _rowSize % alignment() != 0 )
                     _rowSize = (_rowSize / alignment() + 1) * alignment();
 
-                _data = _allocate( _height * _rowSize );
+                _data = _allocate<uint8_t>( _height * _rowSize * _dataSize );
             }
         }
 
@@ -102,16 +107,19 @@ namespace penguinV
             _rowSize = 0;
         }
 
+        template <typename TColorDepth = uint8_t>
         TColorDepth * data()
         {
-            return _data;
+            return reinterpret_cast<TColorDepth *>( _data );
         }
 
+        template <typename TColorDepth = uint8_t>
         const TColorDepth * data() const
         {
-            return _data;
+            return reinterpret_cast<TColorDepth *>( _data );
         }
 
+        template <typename TColorDepth>
         void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
@@ -126,6 +134,9 @@ namespace penguinV
             _alignment = alignment_;
 
             _data = data_;
+
+            _dataType = typeid( TColorDepth ).name();
+            _dataSize = sizeof( TColorDepth );
 
             _rowSize = width() * colorCount();
             if( _rowSize % alignment() != 0 )
@@ -178,15 +189,19 @@ namespace penguinV
             }
         }
 
+        template <typename TColorDepth = uint8_t>
         void fill( TColorDepth value )
         {
             if( empty() )
                 return;
 
-            _set( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
+            if ( typeid( TColorDepth ).name() != _dataType )
+                throw imageException( "Image data type is different compare to fill value type" );
+
+            _set<TColorDepth>( reinterpret_cast<TColorDepth *>( data() ), value, sizeof( TColorDepth ) * height() * rowSize() );
         }
 
-        void swap( ImageTemplate & image )
+        void swap( Image & image )
         {
             std::swap( _width, image._width );
             std::swap( _height, image._height );
@@ -197,9 +212,11 @@ namespace penguinV
 
             std::swap( _data, image._data );
             std::swap( _type, image._type );
+            std::swap( _dataType, image._dataType );
+            std::swap( _dataSize, image._dataSize );
         }
 
-        void copy( const ImageTemplate & image )
+        void copy( const Image & image )
         {
             if( _type != image._type )
                 throw imageException( "Cannot copy image of one type to another type." );
@@ -212,11 +229,13 @@ namespace penguinV
             _colorCount = image._colorCount;
             _rowSize    = image._rowSize;
             _alignment  = image._alignment;
+            _dataType   = image._dataType;
+            _dataSize   = image._dataSize;
 
             if( image._data != nullptr ) {
-                _data = _allocate( _height * _rowSize );
+                _data = _allocate<uint8_t>( _height * _rowSize * _dataSize );
 
-                _copy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
+                _copy<uint8_t>( _data, image._data, _dataSize * _height * _rowSize );
             }
         }
 
@@ -248,10 +267,22 @@ namespace penguinV
             return _type;
         }
 
-        ImageTemplate generate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u ) const
+        std::string dataType() const
         {
-            ImageTemplate image;
-            image._type = _type;
+            return _dataType;
+        }
+
+        size_t dataSize() const
+        {
+            return _dataSize;
+        }
+
+        template <typename TColorDepth = uint8_t>
+        Image generate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u ) const
+        {
+            Image image;
+            image._setType<TColorDepth>( _type );
+            image._setDataType<TColorDepth>();
 
             image.setColorCount( colorCount_ );
             image.setAlignment( alignment_ );
@@ -259,74 +290,16 @@ namespace penguinV
 
             return image;
         }
-    protected:
-        typedef TColorDepth * ( *AllocateFunction   )( size_t size );
-        typedef void          ( *DeallocateFunction )( TColorDepth * data );
-        typedef void          ( *CopyFunction       )( TColorDepth * out, TColorDepth * in, size_t size );
-        typedef void          ( *SetFunction        )( TColorDepth * data, TColorDepth value, size_t size );
-
-        void _setType( uint8_t type = 0u, AllocateFunction allocateFunction = _allocateMemory, DeallocateFunction deallocateFunction = _deallocateMemory,
-                       CopyFunction copyFunction = _copyMemory, SetFunction setFunction = _setMemory )
-        {
-            _type = type;
-            FunctionFacade::instance().initialize( _type, allocateFunction, deallocateFunction, copyFunction, setFunction );
-        }
-
     private:
-        TColorDepth * _allocate( size_t size ) const
-        {
-            return FunctionFacade::instance().allocate( _type )( size );
-        }
-
-        void _deallocate( TColorDepth * data ) const
-        {
-            FunctionFacade::instance().deallocate( _type )( data );
-        }
-
-        void _copy( TColorDepth * out, TColorDepth * in, size_t size ) const
-        {
-            FunctionFacade::instance().copy( _type )( out, in, size );
-        }
-
-        void _set( TColorDepth * data, TColorDepth value, size_t size ) const
-        {
-            FunctionFacade::instance().set( _type )( data, value, size );
-        }
-
-        static TColorDepth * _allocateMemory( size_t size )
-        {
-            return cpu_Memory::MemoryAllocator::instance().allocate<TColorDepth>( size );
-        }
-
-        static void _deallocateMemory( TColorDepth * data )
-        {
-            cpu_Memory::MemoryAllocator::instance().free( data );
-        }
-
-        static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
-        {
-            memcpy( out, in, size );
-        }
-
-        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
-        {
-            std::fill( data, data + size / sizeof( TColorDepth ), value );
-        }
-
-        uint32_t _width;
-        uint32_t _height;
-
-        uint8_t  _colorCount;
-        uint8_t  _alignment;
-        uint32_t _rowSize;
-
-        TColorDepth * _data;
-
-        uint8_t  _type;
-
+        template <typename TColorDepth>
         class FunctionFacade
         {
         public:
+            typedef TColorDepth * ( *AllocateFunction   )( size_t size );
+            typedef void          ( *DeallocateFunction )( TColorDepth * data );
+            typedef void          ( *CopyFunction       )( TColorDepth * out, TColorDepth * in, size_t size );
+            typedef void          ( *SetFunction        )( TColorDepth * data, TColorDepth value, size_t size );
+
             static FunctionFacade & instance()
             {
                 static FunctionFacade facade;
@@ -391,10 +364,105 @@ namespace penguinV
             std::vector < CopyFunction > _copy;
             std::vector < SetFunction > _set;
         };
+    protected:
+        template <typename TColorDepth>
+        void _setType( uint8_t type = 0u, typename FunctionFacade<TColorDepth>::AllocateFunction allocateFunction = _allocateMemory,
+                       typename FunctionFacade<TColorDepth>::DeallocateFunction deallocateFunction = _deallocateMemory,
+                       typename FunctionFacade<TColorDepth>::CopyFunction copyFunction = _copyMemory,
+                       typename FunctionFacade<TColorDepth>::SetFunction setFunction = _setMemory )
+        {
+            _type = type;
+            FunctionFacade<TColorDepth>::instance().initialize( _type, allocateFunction, deallocateFunction, copyFunction, setFunction );
+        }
+
+        template <typename TColorDepth>
+        void _setDataType()
+        {
+            clear();
+            _dataType = typeid( TColorDepth ).name();
+            _dataSize = sizeof( TColorDepth );
+        }
+
+        template <typename TColorDepth>
+        TColorDepth * _allocate( size_t size ) const
+        {
+            return FunctionFacade<TColorDepth>::instance().allocate( _type )( size );
+        }
+
+        template <typename TColorDepth>
+        void _deallocate( TColorDepth * data ) const
+        {
+            FunctionFacade<TColorDepth>::instance().deallocate( _type )( data );
+        }
+
+        template <typename TColorDepth>
+        void _copy( TColorDepth * out, TColorDepth * in, size_t size ) const
+        {
+            FunctionFacade<TColorDepth>::instance().copy( _type )( out, in, size );
+        }
+
+        template <typename TColorDepth>
+        void _set( TColorDepth * data, TColorDepth value, size_t size ) const
+        {
+            FunctionFacade<TColorDepth>::instance().set( _type )( data, value, size );
+        }
+
+        template <typename TColorDepth>
+        static TColorDepth * _allocateMemory( size_t size )
+        {
+            return cpu_Memory::MemoryAllocator::instance().allocate<TColorDepth>( size );
+        }
+
+        template <typename TColorDepth>
+        static void _deallocateMemory( TColorDepth * data )
+        {
+            cpu_Memory::MemoryAllocator::instance().free( data );
+        }
+
+        template <typename TColorDepth>
+        static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
+        {
+            memcpy( out, in, size );
+        }
+
+        template <typename TColorDepth>
+        static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
+        {
+            std::fill( data, data + size / sizeof( TColorDepth ), value );
+        }
+
+    private:
+        uint32_t _width;
+        uint32_t _height;
+
+        uint8_t  _colorCount;
+        uint8_t  _alignment;
+        uint32_t _rowSize;
+
+        uint8_t * _data;
+
+        uint8_t  _type;
+        
+        std::string _dataType;
+        size_t _dataSize;
     };
 
-    typedef ImageTemplate <uint8_t> Image;
-    typedef ImageTemplate <uint16_t> Image16Bit;
+    template<typename TImageColorType>
+    class ImageXType : public Image
+    {
+    public:
+        explicit ImageXType( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        {
+            _setType<TImageColorType>();
+            _setDataType<TImageColorType>();
+
+            setColorCount( colorCount_ );
+            setAlignment( alignment_ );
+            resize( width_, height_ );
+        }
+    };
+
+    typedef ImageXType <uint16_t> Image16Bit;
 
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;

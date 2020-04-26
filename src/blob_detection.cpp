@@ -312,7 +312,7 @@ namespace Blob_Detection
 
         // we make the area by 2 pixels bigger in each direction so we don't need to check borders of map
         penguinV::Image imageMap( width + 2, height + 2 );
-        imageMap.fill( EMPTY );
+        imageMap.fill<uint8_t>( EMPTY );
 
         uint32_t rowSize = image.rowSize();
 

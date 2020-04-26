@@ -77,7 +77,7 @@ namespace file_operation
         const penguinV::Image loaded = Raw_Operation::Load<uint8_t>( fileName, original.width(), original.height(), original.colorCount() );
         remove( fileName.data() );
 
-        if ( !Unit_Test::equalSize( original, loaded ) || !Unit_Test::equalData( original, loaded ) )
+        if ( !Unit_Test::equalSize( original, loaded ) || !Unit_Test::equalData<uint8_t>( original, loaded ) )
             return false;
 
         return true;

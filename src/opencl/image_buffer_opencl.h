@@ -11,52 +11,54 @@
 
 namespace penguinV
 {
-    template <typename TColorDepth>
-    class ImageTemplateOpenCL : public ImageTemplate<TColorDepth>
+    class ImageOpenCL : public Image
     {
     public:
-        explicit ImageTemplateOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        explicit ImageOpenCL( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
         {
-            ImageTemplate<TColorDepth>::_setType( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
-            ImageTemplate<TColorDepth>::setColorCount( colorCount_ );
-            ImageTemplate<TColorDepth>::setAlignment( alignment_ );
-            ImageTemplate<TColorDepth>::resize( width_, height_ );
+            Image::_setType<uint8_t>( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            Image::setColorCount( colorCount_ );
+            Image::setAlignment( alignment_ );
+            Image::resize( width_, height_ );
         }
 
-        ImageTemplateOpenCL( const ImageTemplateOpenCL & image )
+        ImageOpenCL( const ImageOpenCL & image )
         {
-            ImageTemplate<TColorDepth>::operator=( image );
+            Image::operator=( image );
         }
 
-        ImageTemplateOpenCL( ImageTemplateOpenCL && image )
+        ImageOpenCL( ImageOpenCL && image )
         {
-            ImageTemplate<TColorDepth>::swap( image );
+            Image::swap( image );
         }
 
-        ImageTemplateOpenCL & operator=( const ImageTemplateOpenCL & image )
+        ImageOpenCL & operator=( const ImageOpenCL & image )
         {
-            ImageTemplate<TColorDepth>::operator=( image );
+            Image::operator=( image );
 
             return (*this);
         }
 
-        ImageTemplateOpenCL & operator=( ImageTemplateOpenCL && image )
+        ImageOpenCL & operator=( ImageOpenCL && image )
         {
-            ImageTemplate<TColorDepth>::swap( image );
+            Image::swap( image );
 
             return (*this);
         }
-    private:
+    protected:
+        template <typename TColorDepth>
         static TColorDepth * _allocateMemory( size_t size )
         {
             return reinterpret_cast<TColorDepth*>( multiCL::MemoryManager::memory().allocate<TColorDepth>( size ) );
         }
 
+        template <typename TColorDepth>
         static void _deallocateMemory( TColorDepth * data )
         {
             multiCL::MemoryManager::memory().free( reinterpret_cast<cl_mem>( data ) );
         }
 
+        template <typename TColorDepth>
         static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
         {
             cl_mem inMem  = reinterpret_cast<cl_mem>( in );
@@ -67,6 +69,7 @@ namespace penguinV
                 throw imageException( "Cannot copy a memory in GPU device" );
         }
 
+        template <typename TColorDepth>
         static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
             cl_mem dataMem = reinterpret_cast<cl_mem>( data );
@@ -75,5 +78,20 @@ namespace penguinV
         }
     };
 
-    typedef penguinV::ImageTemplateOpenCL<uint8_t> ImageOpenCL;
+    template<typename TImageColorType>
+    class ImageOpenCLXType : public ImageOpenCL
+    {
+    public:
+        explicit ImageOpenCLXType( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
+        {
+            Image::_setType<TImageColorType>( 3, _allocateMemory, _deallocateMemory, _copyMemory, _setMemory );
+            _setDataType<TImageColorType>();
+
+            setColorCount( colorCount_ );
+            setAlignment( alignment_ );
+            resize( width_, height_ );
+        }
+    };
+
+    typedef ImageOpenCLXType <uint16_t> ImageOpenCL16Bit;
 }

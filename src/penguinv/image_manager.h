@@ -3,32 +3,29 @@
 #include <vector>
 #include "../image_buffer.h"
 
-template <typename _Type>
 struct ReferenceOwner
 {
-    explicit ReferenceOwner( penguinV::ImageTemplate<_Type> & data_ )
+    explicit ReferenceOwner( penguinV::Image & data_ )
         : data( data_ )
     {
     }
-    penguinV::ImageTemplate<_Type> & data;
+    penguinV::Image & data;
 };
 
-template <typename _Type>
 struct ConstReferenceOwner
 {
-    explicit ConstReferenceOwner( const penguinV::ImageTemplate<_Type> & data_ )
+    explicit ConstReferenceOwner( const penguinV::Image & data_ )
         : data( data_ )
     {
     }
-    const penguinV::ImageTemplate<_Type> & data;
+    const penguinV::Image & data;
 };
 
-template <typename _Type>
 class ImageManager
 {
 public:
-    typedef penguinV::ImageTemplate<_Type> ( *GenerateImage )( uint8_t imageType );
-    typedef void ( *ConvertImage )( const penguinV::ImageTemplate<_Type> & in, penguinV::ImageTemplate<_Type> & out );
+    typedef penguinV::Image ( *GenerateImage )( uint8_t imageType );
+    typedef void ( *ConvertImage )( const penguinV::Image & in, penguinV::Image & out );
 
     explicit ImageManager( uint8_t requiredType, GenerateImage generateImage, ConvertImage convertImage )
         : _type( requiredType )
@@ -39,7 +36,7 @@ public:
 
     ~ImageManager()
     {
-        for ( typename std::vector<ConstReferenceOwner< _Type > *>::iterator data = _input.begin(); data != _input.end(); ++data )
+        for ( std::vector<ConstReferenceOwner *>::iterator data = _input.begin(); data != _input.end(); ++data )
             delete *data;
 
         for ( size_t i = 0u; i < _output.size(); ++i ) {
@@ -49,7 +46,7 @@ public:
         }
     }
 
-    const penguinV::Image & operator()( const penguinV::ImageTemplate<_Type> & image )
+    const penguinV::Image & operator()( const penguinV::Image & image )
     {
         if ( image.type() != _type ) {
             _inputClone.push_back( _clone( image ) );
@@ -60,10 +57,10 @@ public:
         }
     }
 
-    penguinV::ImageTemplate<_Type> & operator()( penguinV::ImageTemplate<_Type> & image )
+    penguinV::Image & operator()( penguinV::Image & image )
     {
         if ( image.type() != _type ) {
-            _output.push_back( new ReferenceOwner< _Type >( image ) );
+            _output.push_back( new ReferenceOwner( image ) );
             _outputClone.push_back( _clone( image ) );
             return _outputClone.back();
         }
@@ -75,19 +72,19 @@ private:
     uint8_t _type;
     GenerateImage _generateImage;
     ConvertImage _convertImage;
-    std::vector< ConstReferenceOwner< _Type > * > _input;
-    std::vector< ReferenceOwner< _Type > * > _output;
-    std::vector<penguinV::ImageTemplate<_Type>> _inputClone;
-    std::vector<penguinV::ImageTemplate<_Type>> _outputClone;
+    std::vector< ConstReferenceOwner * > _input;
+    std::vector< ReferenceOwner * > _output;
+    std::vector<penguinV::Image> _inputClone;
+    std::vector<penguinV::Image> _outputClone;
 
-    penguinV::Image _clone( const penguinV::ImageTemplate<_Type> & in )
+    penguinV::Image _clone( const penguinV::Image & in )
     {
-        penguinV::ImageTemplate<_Type> temp = _generateImage( _type ).generate( in.width(), in.height(), in.colorCount() );
+        penguinV::Image temp = _generateImage( _type ).generate( in.width(), in.height(), in.colorCount() );
         _convertImage( in, temp );
         return temp;
     }
 
-    void _restore( const penguinV::ImageTemplate<_Type> & in, penguinV::ImageTemplate<_Type> & out )
+    void _restore( const penguinV::Image & in, penguinV::Image & out )
     {
         _convertImage( in, out );
     }
