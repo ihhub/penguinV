@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <vector>
 
 namespace pvmath
 {
@@ -34,6 +35,8 @@ namespace pvmath
 
     double toRadians(double angleDegree);
     double toDegrees(double angleRadians);
+
+    void getMatrixRoots( const std::vector<double> & squareMatrix, const std::vector<double> freeTerms, std::vector<double> & roots );
 }
 
 template <typename _Type>
