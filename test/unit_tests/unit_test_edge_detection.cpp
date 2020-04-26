@@ -1,7 +1,7 @@
 #include "unit_test_edge_detection.h"
+#include "../../src/edge_detection.h"
 #include "unit_test_framework.h"
 #include "unit_test_helper.h"
-#include "../../src/edge_detection.h"
 
 namespace edge_detection
 {

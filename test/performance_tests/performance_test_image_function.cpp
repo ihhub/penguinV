@@ -1,12 +1,12 @@
+#include "performance_test_image_function.h"
 #include "../../src/function_pool.h"
 #include "../../src/image_function.h"
 #include "../../src/image_function_helper.h"
 #include "../../src/image_function_simd.h"
-#include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
+#include "../../src/thread_pool.h"
 #include "performance_test_framework.h"
 #include "performance_test_helper.h"
-#include "performance_test_image_function.h"
 
 namespace
 {

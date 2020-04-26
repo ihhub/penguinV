@@ -8,6 +8,7 @@
 #include "../../src/thread_pool.h"
 #include "../../src/penguinv/cpu_identification.h"
 #include "unit_test_image_function.h"
+#include "unit_test_framework.h"
 #include "unit_test_helper.h"
 
 namespace

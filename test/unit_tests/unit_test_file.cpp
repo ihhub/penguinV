@@ -1,11 +1,11 @@
-#include <stdio.h>
+#include "unit_test_file.h"
 #include "../../src/file/bmp_image.h"
 #include "../../src/file/jpeg_image.h"
 #include "../../src/file/png_image.h"
 #include "../../src/file/raw_image.h"
-#include "unit_test_file.h"
 #include "unit_test_framework.h"
 #include "unit_test_helper.h"
+#include <stdio.h>
 
 namespace file_operation
 {

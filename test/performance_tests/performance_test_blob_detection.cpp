@@ -1,5 +1,5 @@
-#include "../../src/blob_detection.h"
 #include "performance_test_blob_detection.h"
+#include "../../src/blob_detection.h"
 #include "performance_test_framework.h"
 #include "performance_test_helper.h"
 

@@ -1,10 +1,10 @@
-#include <cmath>
-#include <numeric>
+#include "unit_test_image_function_cuda.h"
 #include "../../../src/cuda/image_function_cuda.cuh"
 #include "../unit_test_framework.h"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_cuda.cuh"
-#include "unit_test_image_function_cuda.h"
+#include <cmath>
+#include <numeric>
 
 namespace
 {
