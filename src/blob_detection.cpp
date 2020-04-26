@@ -215,7 +215,7 @@ namespace Blob_Detection
             std::vector < uint32_t >::const_iterator y   = _contourY.begin();
             std::vector < uint32_t >::const_iterator end = _contourX.end();
 
-            for( ; x != end; ++x, ++y ) {
+            for ( ; x != end; ++x, ++y ) {
                 difference += fabs( sqrt( (*x - _center.value.x) * (*x - _center.value.x) +
                     (*y - _center.value.y) * (*y - _center.value.y) ) - radius );
             }
@@ -245,7 +245,7 @@ namespace Blob_Detection
                 std::vector < double >::iterator yRotated           = contourYTemp.begin();
                 std::vector < uint32_t >::const_iterator endRotated = _contourX.end();
 
-                for( ; xRotated != endRotated; ++xRotated, ++yRotated )
+                for ( ; xRotated != endRotated; ++xRotated, ++yRotated )
                     (*yRotated) = (*xRotated - startPoint.x) * _sin + (*yRotated - startPoint.y) * _cos;
 
                 double height = *(std::max_element( contourYTemp.begin(), contourYTemp.end() )) -
@@ -323,13 +323,13 @@ namespace Blob_Detection
 
         uint8_t * mapValueX = imageMap.data() + mapWidth + 1;
 
-        for( ; imageY != imageYEnd; imageY += rowSize, mapValueX += mapWidth ) {
+        for ( ; imageY != imageYEnd; imageY += rowSize, mapValueX += mapWidth ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + width;
 
             uint8_t * mapValueY = mapValueX;
 
-            for( ; imageX != imageXEnd; ++imageX, ++mapValueY ) {
+            for ( ; imageX != imageXEnd; ++imageX, ++mapValueY ) {
                 if( (*imageX) >= threshold )
                     *mapValueY = NOT_IN_USE;
             }
@@ -341,7 +341,7 @@ namespace Blob_Detection
         mapValueX = imageMap.data() + mapWidth;
         uint8_t * endMap = imageMap.data() + ( width + 2 ) * ( height + 1 );
 
-        for( ; mapValueX != endMap; ++mapValueX ) {
+        for ( ; mapValueX != endMap; ++mapValueX ) {
             if( *mapValueX == NOT_IN_USE ) { // blob found!
                 foundBlob.push_back( BlobInfo() );
 

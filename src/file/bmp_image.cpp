@@ -24,7 +24,7 @@ namespace Bitmap_Operation
 
         const size_t lineSize = sizeof( uint8_t ) * rowSize;
 
-        for( uint32_t rowId = 0; rowId < height / 2; ++rowId, start += rowSize, end -= rowSize ) {
+        for ( uint32_t rowId = 0; rowId < height / 2; ++rowId, start += rowSize, end -= rowSize ) {
             memcpy( temp.data(), start, lineSize );
             memcpy( start, end, lineSize );
             memcpy( end, temp.data(), lineSize );
@@ -38,7 +38,7 @@ namespace Bitmap_Operation
         uint8_t * palleteData = pallete.data();
         uint8_t * palleteEnd = palleteData + pallete.size();
 
-        for( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
+        for ( uint8_t i = 0; palleteData != palleteEnd; ++i, ++palleteData ) {
             *palleteData++ = i;
             *palleteData++ = i;
             *palleteData++ = i;
@@ -486,12 +486,12 @@ namespace Bitmap_Operation
             const uint8_t * inYEnd = image.data();
             uint8_t * outY  = image.data() + image.rowSize() * (image.height() - 1);
 
-            for( ; inY != inYEnd; inY -= rowSize, outY -= image.rowSize() ) {
+            for ( ; inY != inYEnd; inY -= rowSize, outY -= image.rowSize() ) {
                 const uint8_t * inX    = inY + (info->width() - 1u);
                 const uint8_t * inXEnd = inY;
                 uint8_t * outX = outY + 3u * (image.width() - 1u);
 
-                for( ; ; --inX, outX -= 3u ) {
+                for ( ; ; --inX, outX -= 3u ) {
                     const uint8_t * palleteValue = pallete.data() + (*inX) * 4u;
                     *(outX    ) = *(palleteValue++);
                     *(outX + 1) = *(palleteValue++);
@@ -579,7 +579,7 @@ namespace Bitmap_Operation
 
         const size_t imageLineSize = sizeof( uint8_t ) * width * colorCount;
 
-        for( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
+        for ( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
             memcpy( temp.data(), imageY, imageLineSize );
 
             file.write( reinterpret_cast<const char *>(temp.data()), lineLength );

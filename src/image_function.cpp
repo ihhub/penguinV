@@ -79,7 +79,7 @@ namespace
             uint8_t * imageY    = image.data() + y * rowSize + x;
             uint8_t * imageYEnd = imageY + height * rowSize;
 
-            for( ; imageY != imageYEnd; imageY += rowSize ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize ) {
                 uint32_t pairCount = 0u;
 
                 uint8_t previousValue = *imageY;
@@ -88,7 +88,7 @@ namespace
                 uint8_t * imageX      = imageXStart + 1;
                 uint8_t * imageXEnd   = imageXStart + width;
 
-                for( ; imageX != imageXEnd; ++imageX ) {
+                for ( ; imageX != imageXEnd; ++imageX ) {
                     if( (*imageX) != previousValue ) {
                         if( imageX - imageXStart < dilateX )
                             startPos[pairCount] = imageXStart;
@@ -105,11 +105,11 @@ namespace
                     }
                 }
 
-                for( uint32_t i = 0u; i < pairCount; ++i ) {
+                for ( uint32_t i = 0u; i < pairCount; ++i ) {
                     imageX    = startPos[i];
                     imageXEnd = endPos[i];
 
-                    for( ; imageX != imageXEnd; ++imageX )
+                    for ( ; imageX != imageXEnd; ++imageX )
                         (*imageX) = value;
                 }
             }
@@ -124,7 +124,7 @@ namespace
             uint8_t * imageX    = image.data() + y * rowSize + x;
             uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX ) {
+            for ( ; imageX != imageXEnd; ++imageX ) {
                 uint32_t pairCount = 0u;
 
                 uint8_t previousValue = *imageX;
@@ -133,7 +133,7 @@ namespace
                 uint8_t * imageY      = imageYStart + rowSize;
                 uint8_t * imageYEnd   = imageYStart + height * rowSize;
 
-                for( ; imageY != imageYEnd; imageY += rowSize ) {
+                for ( ; imageY != imageYEnd; imageY += rowSize ) {
                     if( (*imageY) != previousValue ) {
                         const uint32_t rowId = static_cast<uint32_t>(imageY - imageYStart) / rowSize;
 
@@ -152,11 +152,11 @@ namespace
                     }
                 }
 
-                for( uint32_t i = 0u; i < pairCount; ++i ) {
+                for ( uint32_t i = 0u; i < pairCount; ++i ) {
                     imageY    = startPos[i];
                     imageYEnd = endPos[i];
 
-                    for( ; imageY != imageYEnd; imageY += rowSize )
+                    for ( ; imageY != imageYEnd; imageY += rowSize )
                         (*imageY) = value;
                 }
             }
@@ -204,14 +204,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? (*in2X) - (*in1X) : (*in1X) - (*in2X) );
         }
     }
@@ -239,11 +239,11 @@ namespace Image_Function
         const uint8_t * imageYEnd = imageY + height * rowSize;
         std::vector < uint32_t >::iterator v = result.begin();
 
-        for( ; imageY != imageYEnd; imageY += rowSize ) {
+        for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX, ++v )
+            for ( ; imageX != imageXEnd; ++imageX, ++v )
                 *v += (*imageX);
         }
     }
@@ -308,14 +308,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in1X) & (*in2X);
         }
     }
@@ -356,14 +356,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in1X) | (*in2X);
         }
     }
@@ -404,14 +404,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in1X) ^ (*in2X);
         }
     }
@@ -564,13 +564,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, inX += colorCount )
+            for ( ; outX != outXEnd; ++outX, inX += colorCount )
                 (*outX) = static_cast <uint8_t>( ( *(inX) + *(inX + 1) + *(inX + 2) ) / 3 ); // average of red, green and blue components
         }
     }
@@ -615,13 +615,13 @@ namespace Image_Function
 
         const size_t rgbSize = sizeof( uint8_t ) * colorCount;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; outX += colorCount, ++inX )
+            for ( ; outX != outXEnd; outX += colorCount, ++inX )
                 memset( outX, *inX, rgbSize );
         }
     }
@@ -658,7 +658,7 @@ namespace Image_Function
 
         const size_t lineSize = sizeof( uint8_t ) * width;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn )
             memcpy( outY, inY, lineSize );
     }
 
@@ -696,13 +696,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, inX += colorCount )
+            for ( ; outX != outXEnd; ++outX, inX += colorCount )
                 (*outX) = *(inX);
         }
     }
@@ -728,7 +728,7 @@ namespace Image_Function
 
         const size_t overallWidth = sizeof( uint8_t ) * width;
 
-        for( ; imageY != imageYEnd; imageY += rowSize )
+        for ( ; imageY != imageYEnd; imageY += rowSize )
             memset( imageY, value, overallWidth );
     }
 
@@ -767,30 +767,30 @@ namespace Image_Function
             if( horizontal && !vertical ) {
                 uint8_t * outY = out.data() + startYOut * rowSizeOut + startXOut + width - 1;
 
-                for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+                for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
                     const uint8_t * inX    = inY;
                     uint8_t       * outX   = outY;
                     const uint8_t * inXEnd = inX + width;
 
-                    for( ; inX != inXEnd; ++inX, --outX )
+                    for ( ; inX != inXEnd; ++inX, --outX )
                         (*outX) = (*inX);
                 }
             }
             else if( !horizontal && vertical ) {
                 uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut;
 
-                for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
+                for ( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut )
                     memcpy( outY, inY, sizeof( uint8_t ) * width );
             }
             else {
                 uint8_t * outY = out.data() + (startYOut + height - 1) * rowSizeOut + startXOut + width - 1;
 
-                for( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut ) {
+                for ( ; inY != inYEnd; inY += rowSizeIn, outY -= rowSizeOut ) {
                     const uint8_t * inX    = inY;
                     uint8_t       * outX   = outY;
                     const uint8_t * inXEnd = inX + width;
 
-                    for( ; inX != inXEnd; ++inX, --outX )
+                    for ( ; inX != inXEnd; ++inX, --outX )
                         (*outX) = (*inX);
                 }
             }
@@ -982,13 +982,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = static_cast<uint8_t>( ~(*inX) );
         }
     }
@@ -1009,7 +1009,7 @@ namespace Image_Function
 
         size_t counter = 0u;
 
-        for( std::vector< uint32_t >::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
+        for ( std::vector< uint32_t >::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
             if( (*value) > 0u )
                 ++counter;
         }
@@ -1042,12 +1042,12 @@ namespace Image_Function
 
         const uint8_t * in1YEnd = in1Y + height * rowSize1;
 
-        for( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; in1Y != in1YEnd; in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             const uint8_t * in1XEnd = in1X + width;
 
-            for( ; in1X != in1XEnd; ++in1X, ++in2X ) {
+            for ( ; in1X != in1XEnd; ++in1X, ++in2X ) {
                 if( (*in1X) != (*in2X) )
                     return false;
             }
@@ -1093,13 +1093,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = table[*inX];
         }
     }
@@ -1140,14 +1140,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in2X) < (*in1X) ? (*in1X) : (*in2X);
         }
     }
@@ -1197,7 +1197,7 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             const uint8_t * in3X = in3Y;
@@ -1205,7 +1205,7 @@ namespace Image_Function
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ) {
+            for ( ; outX != outXEnd; ) {
                 *(outX++) = *(in1X++);
                 *(outX++) = *(in2X++);
                 *(outX++) = *(in3X++);
@@ -1249,14 +1249,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = (*in2X) > (*in1X) ? (*in1X) : (*in2X);
         }
     }
@@ -1292,11 +1292,11 @@ namespace Image_Function
 
         const uint32_t realWidth = width * colorCount;
 
-        for( ; inY != inYEnd; inY += rowSizeIn ) {
+        for ( ; inY != inYEnd; inY += rowSizeIn ) {
             const uint8_t * inX = inY;
             const uint8_t * inXEnd = inX + realWidth;
 
-            for( ; inX != inXEnd; ++inX ) {
+            for ( ; inX != inXEnd; ++inX ) {
                 if( minimum > (*inX) )
                     minimum = (*inX);
 
@@ -1314,7 +1314,7 @@ namespace Image_Function
             // We precalculate all values and store them in lookup table
             std::vector < uint8_t > value( 256 );
 
-            for( uint16_t i = 0; i < 256; ++i )
+            for ( uint16_t i = 0; i < 256; ++i )
                 value[i] = static_cast <uint8_t>((i - minimum) * correction + 0.5);
 
             LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
@@ -1356,11 +1356,11 @@ namespace Image_Function
 
             std::vector < uint32_t > ::iterator data = projection.begin();
 
-            for( ; imageX != imageXEnd; ++imageX, ++data ) {
+            for ( ; imageX != imageXEnd; ++imageX, ++data ) {
                 const uint8_t * imageY    = imageX;
                 const uint8_t * imageYEnd = imageY + height * rowSize;
 
-                for( ; imageY != imageYEnd; imageY += rowSize )
+                for ( ; imageY != imageYEnd; imageY += rowSize )
                     (*data) += (*imageY);
             }
         }
@@ -1370,11 +1370,11 @@ namespace Image_Function
 
             std::vector < uint32_t > ::iterator data = projection.begin();
 
-            for( ; imageY != imageYEnd; imageY += rowSize, ++data ) {
+            for ( ; imageY != imageYEnd; imageY += rowSize, ++data ) {
                 const uint8_t * imageX    = imageY;
                 const uint8_t * imageXEnd = imageX + width;
 
-                for( ; imageX != imageXEnd; ++imageX )
+                for ( ; imageX != imageXEnd; ++imageX )
                     (*data) += (*imageX);
             }
         }
@@ -1455,10 +1455,10 @@ namespace Image_Function
 
         // Precalculation of X position
         std::vector < uint32_t > positionX( widthOut );
-        for( uint32_t x = 0; x < widthOut; ++x )
+        for ( uint32_t x = 0; x < widthOut; ++x )
             positionX[x] = x * widthIn / widthOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
             const uint8_t * inX  = inY + (idY * heightIn / heightOut) * rowSizeIn;
             uint8_t       * outX = outY;
 
@@ -1466,7 +1466,7 @@ namespace Image_Function
 
             const uint32_t * idX = positionX.data();
 
-            for( ; outX != outXEnd; ++outX, ++idX )
+            for ( ; outX != outXEnd; ++outX, ++idX )
                 (*outX) = *(inX + (*idX));
         }
     }
@@ -1505,13 +1505,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; outX += colorCount, inX += colorCount ) {
+            for ( ; outX != outXEnd; outX += colorCount, inX += colorCount ) {
                 *(outX + 2) = *(inX);
                 *(outX + 1) = *(inX + 1);
                 *(outX) = *(inX + 2);
@@ -1553,13 +1553,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+            for ( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
                 *(outX) = *(inX);
                 *(outX + 1) = *(inX + 1);
                 *(outX + 2) = *(inX + 2);
@@ -1602,13 +1602,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
+            for ( ; outX != outXEnd; outX += colorCountOut, inX += colorCountIn ) {
                 *(outX) = *(inX);
                 *(outX + 1) = *(inX + 1);
                 *(outX + 2) = *(inX + 2);
@@ -1655,14 +1655,14 @@ namespace Image_Function
         const uint32_t maxX = startXIn + width - 1u;
         const uint32_t maxY = startYIn + height - 1u;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inXPos += sinAngle, inYPos += cosAngle ) {
             uint8_t       * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
             double posX = inXPos;
             double posY = inYPos;
 
-            for( ; outX != outXEnd; ++outX, posX += cosAngle, posY -= sinAngle ) {
+            for ( ; outX != outXEnd; ++outX, posX += cosAngle, posY -= sinAngle ) {
                 if( posX < minX || posY < minY ) {
                     (*outX) = 0; // we actually do not know what is beyond an image so we set value 0
                 }
@@ -1716,7 +1716,7 @@ namespace Image_Function
         const uint32_t width  = image.width();
         const uint32_t height = image.height();
 
-        for( ; x != end; ++x, ++y ) {
+        for ( ; x != end; ++x, ++y ) {
             if( (*x) >= width || (*y) >= height )
                 throw imageException( "Position of point [x, y] is out of image" );
 
@@ -1794,13 +1794,13 @@ namespace Image_Function
         inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
 
         const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
-        for( ; outY != outYEnd; outY+=rowSizeOut )
+        for ( ; outY != outYEnd; outY+=rowSizeOut )
             memset( outY, 0, width );
 
         inY += emptyTopArea * rowSizeIn;
 
         outYEnd = outY + realHeight * rowSizeOut;
-        for( ; outY != outYEnd; outY+=rowSizeOut, inY+=rowSizeIn ) {
+        for ( ; outY != outYEnd; outY+=rowSizeOut, inY+=rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + emptyLeftArea + realWidth;
@@ -1808,7 +1808,7 @@ namespace Image_Function
             memset( outX, 0, emptyLeftArea );
             inX += emptyLeftArea;
 
-            for( ; outX != outXEnd; ++outX ) {
+            for ( ; outX != outXEnd; ++outX ) {
                 uint32_t data  = (*(inX))  * coeff0;
                 data += (*(inX+rowSizeIn)) * coeff3;
                 data += (*(++inX))         * coeff1; // here we increment inX
@@ -1821,7 +1821,7 @@ namespace Image_Function
         }
 
         outYEnd = outY + emptyBottomArea * rowSizeOut;
-        for( ; outY != outYEnd; outY+=rowSizeOut )
+        for ( ; outY != outYEnd; outY+=rowSizeOut )
             memset( outY, 0, width );
     }
 
@@ -1858,7 +1858,7 @@ namespace Image_Function
 
         const uint8_t * inYEnd = inY + height * rowSizeIn;
 
-        for( ; inY != inYEnd; inY += rowSizeIn, out1Y += rowSizeOut1, out2Y += rowSizeOut2, out3Y += rowSizeOut3 ) {
+        for ( ; inY != inYEnd; inY += rowSizeIn, out1Y += rowSizeOut1, out2Y += rowSizeOut2, out3Y += rowSizeOut3 ) {
             const uint8_t * inX = inY;
             uint8_t * out1X = out1Y;
             uint8_t * out2X = out2Y;
@@ -1866,7 +1866,7 @@ namespace Image_Function
 
             const uint8_t * inXEnd = inX + width;
 
-            for( ; inX != inXEnd; ) {
+            for ( ; inX != inXEnd; ) {
                 *(out1X++) = *(inX++);
                 *(out2X++) = *(inX++);
                 *(out3X++) = *(inX++);
@@ -1910,14 +1910,14 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSize1, in2Y += rowSize2 ) {
             const uint8_t * in1X = in1Y;
             const uint8_t * in2X = in2Y;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
+            for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X )
                 (*outX) = static_cast<uint8_t>( (*in2X) > (*in1X) ? 0u : static_cast<uint32_t>(*in1X) - static_cast<uint32_t>(*in2X) );
         }
     }
@@ -1940,11 +1940,11 @@ namespace Image_Function
 
         uint32_t sum = 0;
 
-        for( ; imageY != imageYEnd; imageY += rowSize ) {
+        for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + width;
 
-            for( ; imageX != imageXEnd; ++imageX )
+            for ( ; imageX != imageXEnd; ++imageX )
                 sum += (*imageX);
         }
 
@@ -1981,13 +1981,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = (*inX) < threshold ? 0 : 255;
         }
     }
@@ -2026,13 +2026,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX  = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX )
+            for ( ; outX != outXEnd; ++outX, ++inX )
                 (*outX) = (*inX) < minThreshold || (*inX) > maxThreshold ? 0 : 255;
         }
     }
@@ -2067,13 +2067,13 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + width * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, ++inX ) {
             const uint8_t * inY  = inX;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + height;
 
-            for( ; outX != outXEnd; ++outX, inY += rowSizeIn )
+            for ( ; outX != outXEnd; ++outX, inY += rowSizeIn )
                 (*outX) = *(inY);
         }
     }

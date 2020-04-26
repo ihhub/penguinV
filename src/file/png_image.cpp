@@ -93,7 +93,7 @@ namespace Png_Operation
 
         const size_t rowByteCount = png_get_rowbytes( png, info );
 
-        for( uint32_t y = 0; y < height; ++y )
+        for ( uint32_t y = 0; y < height; ++y )
             row_pointers[y] = reinterpret_cast<uint8_t*>( malloc( rowByteCount ) );
 
         png_read_image( png, row_pointers );
@@ -103,7 +103,7 @@ namespace Png_Operation
         penguinV::Image image( width, height, isGrayScale ? penguinV::GRAY_SCALE : penguinV::RGB );
 
         uint8_t * outY = image.data();
-        for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
+        for ( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
             const uint8_t * column = row_pointers[y];
             uint8_t * outX = outY;
 
@@ -122,7 +122,7 @@ namespace Png_Operation
 
         fclose( file );
 
-        for( uint32_t y = 0; y < height; ++y )
+        for ( uint32_t y = 0; y < height; ++y )
             free( row_pointers[y] );
         free( row_pointers );
 
@@ -171,11 +171,11 @@ namespace Png_Operation
 
         const size_t rowByteCount = png_get_rowbytes( png, info );
 
-        for( uint32_t y = 0; y < height; ++y )
+        for ( uint32_t y = 0; y < height; ++y )
             row_pointers[y] = reinterpret_cast<uint8_t*>( malloc( rowByteCount ) );
 
         const uint8_t * outY = image.data() + startY * image.rowSize() + startX * image.colorCount();
-        for( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
+        for ( uint32_t y = 0; y < height; ++y, outY += image.rowSize() ) {
             uint8_t * column = row_pointers[y];
             const uint8_t * outX = outY;
 
@@ -197,7 +197,7 @@ namespace Png_Operation
 
         fclose( file );
 
-        for( uint32_t y = 0; y < height; ++y )
+        for ( uint32_t y = 0; y < height; ++y )
             free( row_pointers[y] );
         free( row_pointers );
 

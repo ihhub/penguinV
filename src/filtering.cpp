@@ -92,23 +92,23 @@ namespace Image_Function
 
         const uint8_t * outYEnd = outY + height * rowSizeOut;
 
-        for( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t       * outX = outY;
 
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX, ++inX ) {
+            for ( ; outX != outXEnd; ++outX, ++inX ) {
                 uint8_t * value = data.data();
 
                 const uint8_t * inYRead    = inX;
                 const uint8_t * inYReadEnd = inYRead + kernelSize * rowSizeIn;
 
-                for( ; inYRead != inYReadEnd; inYRead += rowSizeIn ) {
+                for ( ; inYRead != inYReadEnd; inYRead += rowSizeIn ) {
                     const uint8_t * inXRead    = inYRead;
                     const uint8_t * inXReadEnd = inXRead + kernelSize;
 
-                    for( ; inXRead != inXReadEnd; ++inXRead, ++value )
+                    for ( ; inXRead != inXReadEnd; ++inXRead, ++value )
                         *value = *inXRead;
                 }
 
@@ -186,7 +186,7 @@ namespace Image_Function
 
         static const FilterKernel<3u> kernel(multiplier);
 
-        for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+        for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             uint8_t       * outX   = outY;
 
             if ( startXOffset == 0u ) {
@@ -198,7 +198,7 @@ namespace Image_Function
             const uint8_t * inX    = inY;
             const uint8_t * inXEnd = inX + gradientWidth;
 
-            for( ; inX != inXEnd; ++inX, ++outX ) {
+            for ( ; inX != inXEnd; ++inX, ++outX ) {
                 //      | +1  0 -1|
                 // Gx = | +1  0 -1|
                 //      | +1  0 -1|
@@ -294,7 +294,7 @@ namespace Image_Function
         const uint32_t yMinusX = rowSizeIn - 1u;
         static const FilterKernel<4u> kernel(multiplier);
 
-        for( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
+        for ( ; inY != inYEnd; inY += rowSizeIn, outY += rowSizeOut ) {
             uint8_t       * outX   = outY;
 
             if ( startXOffset == 0u ) {
@@ -306,7 +306,7 @@ namespace Image_Function
             const uint8_t * inX    = inY;
             const uint8_t * inXEnd = inX + gradientWidth;
 
-            for( ; inX != inXEnd; ++inX, ++outX ) {
+            for ( ; inX != inXEnd; ++inX, ++outX ) {
                 //      | +1  0 -1|
                 // Gx = | +2  0 -2|
                 //      | +1  0 -1|
@@ -354,12 +354,12 @@ namespace Image_Function
 
         float sum = 0;
 
-        for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
+        for ( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + twiceKernelSizePlusOne;
             const int32_t posY2 = posY * posY;
 
-            for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
+            for ( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
                 *x = doubleSigmaPiInv * expf( -static_cast<float>(posX * posX + posY2) / doubleSigma );
                 sum += *x;
             }
@@ -369,11 +369,11 @@ namespace Image_Function
 
         y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
 
-        for( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
+        for ( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + twiceKernelSizePlusOne;
 
-            for( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
+            for ( int32_t posX = -static_cast<int32_t>( kernelSize ) ; x != endX; ++x, ++posX ) {
                 *x *= normalization;
             }
         }

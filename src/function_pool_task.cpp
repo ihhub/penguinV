@@ -32,7 +32,7 @@ namespace Function_Pool
         if( info._size() > 0 ) {
             bool yAxis = true;
 
-            for( size_t i = 0; i < info._size() - 1; ++i ) {
+            for ( size_t i = 0; i < info._size() - 1; ++i ) {
                 if( info.startX[i] != info.startX[i + 1] || info.width[i] != info.width[i + 1] ) {
                     yAxis = false;
                     break;
@@ -72,7 +72,7 @@ namespace Function_Pool
             uint32_t remainValue = height_ % count;
             uint32_t previousValue = y;
 
-            for( size_t i = 0; i < count; ++i ) {
+            for ( size_t i = 0; i < count; ++i ) {
                 height[i] = height_ / count;
                 if( remainValue > 0 ) {
                     --remainValue;
@@ -89,7 +89,7 @@ namespace Function_Pool
             uint32_t remainValue = width_ % count;
             uint32_t previousValue = x;
 
-            for( size_t i = 0; i < count; ++i ) {
+            for ( size_t i = 0; i < count; ++i ) {
                 width[i] = width_ / count;
                 if( remainValue > 0 ) {
                     --remainValue;
