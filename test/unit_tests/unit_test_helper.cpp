@@ -27,7 +27,7 @@ namespace
             const _Type * outputX = outputY;
             const _Type * endX    = outputX + width;
 
-            for( ; outputX != endX; ++outputX ) {
+            for ( ; outputX != endX; ++outputX ) {
                 if( (*outputX) != value )
                     return false;
             }
@@ -54,10 +54,10 @@ namespace
             const _Type * endX    = outputX + width;
 
             if( isAnyValue ) {
-                for( ; outputX != endX; ++outputX ) {
+                for ( ; outputX != endX; ++outputX ) {
                     bool equal = false;
 
-                    for( typename std::vector < _Type >::const_iterator v = value.begin(); v != value.end(); ++v ) {
+                    for ( typename std::vector<_Type>::const_iterator v = value.begin(); v != value.end(); ++v ) {
                         if( (*outputX) == (*v) ) {
                             equal = true;
                             break;
@@ -70,7 +70,7 @@ namespace
             }
             else {
                 size_t id = 0;
-                for( ; outputX != endX; ++outputX ) {
+                for ( ; outputX != endX; ++outputX ) {
                     if( (*outputX) != value[id++] )
                         return false;
 
@@ -121,7 +121,7 @@ namespace Unit_Test
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX ) {
+            for ( ; outX != outXEnd; ++outX ) {
                 (*outX) = value[id++];
                 if ( id == valueSize )
                     id = 0u;
@@ -219,7 +219,7 @@ namespace Unit_Test
             uint8_t * outputX    = outputY;
             const uint8_t * endX = outputX + width;
 
-            for( ; outputX != endX; ++outputX ) {
+            for ( ; outputX != endX; ++outputX ) {
                 (*outputX) = value[id++];
                 if ( id == valueSize )
                     id = 0;
@@ -231,7 +231,7 @@ namespace Unit_Test
     {
         std::vector < std::pair < uint32_t, uint32_t> > imageSize( image.size() );
 
-        for( size_t i = 0; i < image.size(); ++i )
+        for ( size_t i = 0; i < image.size(); ++i )
             imageSize[i] = std::pair < uint32_t, uint32_t >( image[i].width(), image[i].height() ) ;
 
         generateRoi( imageSize, x, y, width, height );
@@ -243,8 +243,7 @@ namespace Unit_Test
         uint32_t maximumWidth  = 0;
         uint32_t maximumHeight = 0;
 
-        for( std::vector < std::pair< uint32_t, uint32_t > >::const_iterator im = imageSize.begin();
-             im != imageSize.end(); ++im ) {
+        for ( std::vector<std::pair<uint32_t, uint32_t>>::const_iterator im = imageSize.begin(); im != imageSize.end(); ++im ) {
             if( maximumWidth == 0 )
                 maximumWidth = im->first;
             else if( maximumWidth > im->first )
@@ -262,7 +261,7 @@ namespace Unit_Test
         x.resize( imageSize.size() );
         y.resize( imageSize.size() );
 
-        for( size_t i = 0; i < imageSize.size(); ++i ) {
+        for ( size_t i = 0; i < imageSize.size(); ++i ) {
             x[i] = randomValue<uint32_t>( imageSize[i].first  - width );
             y[i] = randomValue<uint32_t>( imageSize[i].second - height );
         }

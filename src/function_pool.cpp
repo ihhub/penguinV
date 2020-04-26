@@ -61,18 +61,18 @@ namespace Function_Pool
             }
             else {
                 size_t totalSize = 0u;
-                for( size_t i = 0; i < projection.size(); ++i )
+                for ( size_t i = 0; i < projection.size(); ++i )
                     totalSize += projection[i].size();
 
                 if ( projection_.size() != totalSize )
                     throw imageException( "Projection array is invalid" );
 
                 uint32_t * out = projection_.data();
-                for( size_t i = 0; i < projection.size(); ++i ) {
+                for ( size_t i = 0; i < projection.size(); ++i ) {
                     std::vector < uint32_t >::const_iterator in  = projection[i].begin();
                     std::vector < uint32_t >::const_iterator end = projection[i].end();
 
-                    for( ; in != end; ++in, ++out )
+                    for ( ; in != end; ++in, ++out )
                         *out = *in;
                 }
                 projection.clear(); // to guarantee that no one can use it second time
@@ -86,7 +86,7 @@ namespace Function_Pool
 
             uint32_t total = 0;
 
-            for( std::vector < uint32_t >::const_iterator value = sum.begin(); value != sum.end(); ++value )
+            for ( std::vector<uint32_t>::const_iterator value = sum.begin(); value != sum.end(); ++value )
                 total += *value;
 
             sum.clear(); // to guarantee that no one can use it second time
@@ -101,7 +101,7 @@ namespace Function_Pool
 
             bool equal = true;
 
-            for( std::vector < uint8_t >::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
+            for ( std::vector<uint8_t>::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
                 if( !(*value) ) {
                     equal = false;
                     break;
@@ -123,12 +123,12 @@ namespace Function_Pool
             if( std::any_of( input.begin(), input.end(), [&output]( std::vector <uint32_t> & v ) { return v.size() != output.size(); } ) )
                 throw imageException( "Returned histograms are not the same size" );
 
-            for( size_t i = 1; i < input.size(); ++i ) {
+            for ( size_t i = 1; i < input.size(); ++i ) {
                 std::vector < uint32_t >::iterator       out = output.begin();
                 std::vector < uint32_t >::const_iterator in  = input[i].begin();
                 std::vector < uint32_t >::const_iterator end = input[i].end();
 
-                for( ; in != end; ++in, ++out )
+                for ( ; in != end; ++in, ++out )
                     *out += *in;
             }
 
@@ -964,7 +964,7 @@ namespace Function_Pool
             // We precalculate all values and store them in lookup table
             std::vector < uint8_t > value( 256 );
 
-            for( uint16_t i = 0; i < 256; ++i )
+            for ( uint16_t i = 0; i < 256; ++i )
                 value[i] = static_cast <uint8_t>((i - minimum) * correction + 0.5);
 
             FunctionTask().LookupTable( in, startXIn, startYIn, out, startXOut, startYOut, width, height, value );
