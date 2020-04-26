@@ -491,7 +491,7 @@ namespace Bitmap_Operation
                 const uint8_t * inXEnd = inY;
                 uint8_t * outX = outY + 3u * (image.width() - 1u);
 
-                for ( ; ; --inX, outX -= 3u ) {
+                for ( ;; --inX, outX -= 3u ) {
                     const uint8_t * palleteValue = pallete.data() + (*inX) * 4u;
                     *(outX    ) = *(palleteValue++);
                     *(outX + 1) = *(palleteValue++);

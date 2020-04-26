@@ -57,7 +57,7 @@ namespace
                 for ( ; outputX != endX; ++outputX ) {
                     bool equal = false;
 
-                    for ( typename std::vector < _Type >::const_iterator v = value.begin(); v != value.end(); ++v ) {
+                    for ( typename std::vector <_Type>::const_iterator v = value.begin(); v != value.end(); ++v ) {
                         if( (*outputX) == (*v) ) {
                             equal = true;
                             break;
@@ -243,8 +243,7 @@ namespace Unit_Test
         uint32_t maximumWidth  = 0;
         uint32_t maximumHeight = 0;
 
-        for ( std::vector < std::pair< uint32_t, uint32_t > >::const_iterator im = imageSize.begin();
-             im != imageSize.end(); ++im ) {
+        for ( std::vector <std::pair<uint32_t, uint32_t>>::const_iterator im = imageSize.begin(); im != imageSize.end(); ++im ) {
             if( maximumWidth == 0 )
                 maximumWidth = im->first;
             else if( maximumWidth > im->first )

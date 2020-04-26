@@ -1009,7 +1009,7 @@ namespace Image_Function
 
         size_t counter = 0u;
 
-        for ( std::vector< uint32_t >::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
+        for ( std::vector<uint32_t>::const_iterator value = histogram.begin(); value != histogram.end(); ++value ) {
             if( (*value) > 0u )
                 ++counter;
         }
@@ -1800,7 +1800,7 @@ namespace Image_Function
         inY += emptyTopArea * rowSizeIn;
 
         outYEnd = outY + realHeight * rowSizeOut;
-        for ( ; outY != outYEnd; outY+=rowSizeOut, inY+=rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY+=rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + emptyLeftArea + realWidth;
@@ -1821,7 +1821,7 @@ namespace Image_Function
         }
 
         outYEnd = outY + emptyBottomArea * rowSizeOut;
-        for ( ; outY != outYEnd; outY+=rowSizeOut )
+        for ( ; outY != outYEnd; outY += rowSizeOut )
             memset( outY, 0, width );
     }
 

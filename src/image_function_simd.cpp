@@ -599,7 +599,7 @@ namespace avx
 
                 for ( ; imageX != imageXEnd; ++imageX, ++outX )
                     (*outX) += (*imageX);
-            }   
+            }
         }
     }
 
@@ -1106,7 +1106,6 @@ namespace avx
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue,
                 minCompareValue, minCompareValue, minCompareValue, minCompareValue );
 
-
             for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
                 const simd * src1 = reinterpret_cast <const simd*> (inY);
                 simd       * dst  = reinterpret_cast <simd*> (outY);
@@ -1238,7 +1237,7 @@ namespace sse
 
                 for ( ; imageX != imageXEnd; ++imageX, ++outX )
                     (*outX) += (*imageX);
-            }   
+            }
         }
     }
 
@@ -1576,7 +1575,7 @@ namespace sse
 
                 simd * dst = reinterpret_cast <simd*> (out);
 
-                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize ) {
                     const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
 
                     const simd data = _mm_loadu_si128( src );
@@ -2242,7 +2241,7 @@ namespace neon
 
                 uint32_t * dst = out;
 
-                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize ) {
                     const uint8_t * src = imageSimdY;
 
                     const uint8x16_t data = vld1q_u8( src );

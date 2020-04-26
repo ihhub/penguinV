@@ -354,12 +354,12 @@ namespace Image_Function
 
         float sum = 0;
 
-        for ( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
+        for ( int32_t posY = -static_cast<int32_t>( kernelSize ); y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + twiceKernelSizePlusOne;
             const int32_t posY2 = posY * posY;
 
-            for ( int32_t posX = -static_cast<int32_t>(kernelSize) ; x != endX; ++x, ++posX ) {
+            for ( int32_t posX = -static_cast<int32_t>( kernelSize ); x != endX; ++x, ++posX ) {
                 *x = doubleSigmaPiInv * expf( -static_cast<float>(posX * posX + posY2) / doubleSigma );
                 sum += *x;
             }
@@ -369,11 +369,11 @@ namespace Image_Function
 
         y = filter.data() + (height / 2 - kernelSize) * width + width / 2 - kernelSize;
 
-        for ( int32_t posY = -static_cast<int32_t>(kernelSize) ; y != endY; y += width, ++posY ) {
+        for ( int32_t posY = -static_cast<int32_t>( kernelSize ); y != endY; y += width, ++posY ) {
             float * x = y;
             const float * endX = x + twiceKernelSizePlusOne;
 
-            for ( int32_t posX = -static_cast<int32_t>( kernelSize ) ; x != endX; ++x, ++posX ) {
+            for ( int32_t posX = -static_cast<int32_t>( kernelSize ); x != endX; ++x, ++posX ) {
                 *x *= normalization;
             }
         }
