@@ -1811,13 +1811,13 @@ namespace Image_Function
         inY += shiftXIntegral + shiftYIntegral * static_cast<int32_t>( rowSizeIn );
 
         const uint8_t * outYEnd = outY + emptyTopArea * rowSizeOut;
-        for ( ; outY != outYEnd; outY+=rowSizeOut )
+        for ( ; outY != outYEnd; outY += rowSizeOut )
             memset( outY, 0, width );
 
         inY += emptyTopArea * rowSizeIn;
 
         outYEnd = outY + realHeight * rowSizeOut;
-        for ( ; outY != outYEnd; outY += rowSizeOut, inY+=rowSizeIn ) {
+        for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const uint8_t * inX = inY;
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + emptyLeftArea + realWidth;

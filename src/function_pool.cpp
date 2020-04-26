@@ -86,7 +86,7 @@ namespace Function_Pool
 
             uint32_t total = 0;
 
-            for ( std::vector <uint32_t>::const_iterator value = sum.begin(); value != sum.end(); ++value )
+            for ( std::vector<uint32_t>::const_iterator value = sum.begin(); value != sum.end(); ++value )
                 total += *value;
 
             sum.clear(); // to guarantee that no one can use it second time
@@ -101,7 +101,7 @@ namespace Function_Pool
 
             bool equal = true;
 
-            for ( std::vector <uint8_t>::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
+            for ( std::vector<uint8_t>::const_iterator value = equality.begin(); value != equality.end(); ++value ) {
                 if( !(*value) ) {
                     equal = false;
                     break;

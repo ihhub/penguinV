@@ -845,7 +845,7 @@ namespace avx
 
                 simd * dst = reinterpret_cast <simd*> (out);
 
-                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize) {
+                for ( ; imageSimdY != imageSimdYEnd; imageSimdY += rowSize ) {
                     const simd * src    = reinterpret_cast <const simd*> (imageSimdY);
 
                     const simd data = _mm256_loadu_si256( src );
