@@ -86,7 +86,7 @@ namespace penguinV
                 if( _rowSize % alignment() != 0 )
                     _rowSize = (_rowSize / alignment() + 1) * alignment();
 
-                _data = _allocate( _height * _rowSize );
+                _data = _allocate( static_cast<size_t>( _height ) * static_cast<size_t>( _rowSize ) );
             }
         }
 
@@ -214,7 +214,7 @@ namespace penguinV
             _alignment  = image._alignment;
 
             if( image._data != nullptr ) {
-                _data = _allocate( _height * _rowSize );
+                _data = _allocate( static_cast<size_t>( _height ) * static_cast<size_t>( _rowSize ) );
 
                 _copy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
             }
