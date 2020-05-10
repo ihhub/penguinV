@@ -65,6 +65,7 @@ else()
                                      -Wpedantic        # warn if non-standard C++ is used
                                      -Wconversion
                                      -Wsign-conversion
+                                     -Werror
                                      -O2
                                      -march=native)
 endif()
