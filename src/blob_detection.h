@@ -23,7 +23,7 @@ namespace Blob_Detection
 
         void verify() const
         {
-            if ( checkMaximum && checkMinimum && (minimum > maximum) )
+            if ( checkMaximum && checkMinimum && ( minimum > maximum ) )
                 throw imageException( "Minimum value cannot be bigger than maximum value" );
         }
 
