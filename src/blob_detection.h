@@ -21,10 +21,10 @@ namespace Blob_Detection
         Data maximum;
         bool checkMaximum;
 
-        void verify()
+        void verify() const
         {
-            if( checkMaximum && checkMinimum && (minimum > maximum) )
-                std::swap( minimum, maximum );
+            if ( checkMaximum && checkMinimum && ( minimum > maximum ) )
+                throw imageException( "Minimum value cannot be bigger than maximum value" );
         }
 
         void set( Data min, Data max )
@@ -62,7 +62,7 @@ namespace Blob_Detection
         Parameter < uint32_t > width;       // width, in pixels
 
         // this function will be called in BlobInfo class before finding blobs
-        void _verify()
+        void _verify() const
         {
             circularity.verify();
             elongation.verify();
@@ -185,9 +185,9 @@ namespace Blob_Detection
         // Sorting blobs will be in alphabet order of sorting criteria
         // Example: length and width criteria enabled. So first all blobs would be removed if they are not fitting length criterion
         // and then all remain blobs would be removed if they are not fitting for width criterion
-        const std::vector<BlobInfo> & find( const penguinV::Image & image, BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
+        const std::vector<BlobInfo> & find( const penguinV::Image & image, const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 );
         const std::vector<BlobInfo> & find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
-                                            BlobParameters parameter = BlobParameters(), uint8_t threshold = 1 );
+                                            const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 );
 
         // Retrieve an array of all found blobs
         const std::vector < BlobInfo > & get() const;
