@@ -133,7 +133,8 @@ ThreadPool::ThreadPool( size_t threads )
     , _threadCount        ( 0 )
     , _threadsCreated     ( false )
 {
-    resize( threads );
+    if ( threads > 0 )
+        resize( threads );
 }
 
 ThreadPool::~ThreadPool()
