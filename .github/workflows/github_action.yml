@@ -13,13 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: check directory
       run: pwd
-    - name: move to test directory
-      run: cd test
-    - name: check directory
-      run: ls
-    - name: move to unit test directory
-      run: cd unit_tests
-    - name: check directory
-      run: ls
     - name: make
       run: make
+      with:
+        path: test/unit_tests
