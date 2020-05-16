@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: move to test directory
+      run: cd test
+    - name: check directory
+      run: ls
     - name: move to unit test directory
-      run: cd test/unit_tests
+      run: cd unit_tests
     - name: check directory
       run: ls
     - name: make
