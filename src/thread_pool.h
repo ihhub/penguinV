@@ -67,8 +67,7 @@ private:
 class ThreadPool
 {
 public:
-    ThreadPool() { }
-    explicit ThreadPool( size_t threads );
+    explicit ThreadPool( size_t threads = 0u );
     ThreadPool & operator=( const ThreadPool & ) = delete;
     ThreadPool( const ThreadPool & ) = delete;
     ~ThreadPool();
