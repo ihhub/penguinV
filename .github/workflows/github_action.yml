@@ -14,6 +14,6 @@ jobs:
     - name: check directory
       run: pwd
     - name: configure
-      run: mkdir build && cd build
+      run: mkdir build
     - name: build
       run: cmake --build build --config Release
