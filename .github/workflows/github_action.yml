@@ -16,4 +16,4 @@ jobs:
     - name: configure
       run: mkdir build && cd build
     - name: build
-      run: cmake --build . --config Release
+      run: cmake --build build --config Release
