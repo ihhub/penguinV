@@ -271,15 +271,7 @@ namespace avx512
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const char maskValue = static_cast<char>(0xffu);
-        const simd mask = _mm512_set_epi8(
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
+        const simd mask = _mm512_set1_epi8( maskValue );
 
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd * src1 = reinterpret_cast<const simd*>( inY );
