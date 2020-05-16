@@ -18,4 +18,4 @@ jobs:
     - name: build
       run: cmake --build build --config Release -- -j 2
     - name: run tests
-      run: ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+      run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
