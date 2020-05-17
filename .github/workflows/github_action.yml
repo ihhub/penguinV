@@ -33,8 +33,5 @@ jobs:
     - name: Check swig
       run: swig -version
     - name: Build Python
-      run: |
-        swig -version;
-        swig.exe -version;
-        python setup.py build_ext --inplace
+      run: python setup.py build_ext --inplace
       working-directory: src/python
