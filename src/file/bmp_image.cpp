@@ -393,7 +393,7 @@ namespace Bitmap_Operation
 
         std::vector < uint8_t > data( sizeof( BitmapFileHeader ) );
 
-        file.read( reinterpret_cast<char *>(data.data()), header.overallSize );
+        file.read( reinterpret_cast<char *>( data.data() ), static_cast<std::streamsize>( header.overallSize ) );
 
         header.set( data );
 
@@ -559,12 +559,12 @@ namespace Bitmap_Operation
         std::vector < uint8_t > data( sizeof( BitmapFileHeader ) );
 
         header.get( data );
-        file.write( reinterpret_cast<const char *>(data.data()), header.overallSize );
+        file.write( reinterpret_cast<const char *>( data.data() ), static_cast<std::streamsize>( header.overallSize ) );
 
         data.resize( sizeof( BitmapInfoHeader ) );
 
         info.get( data );
-        file.write( reinterpret_cast<const char *>(data.data()), info.size() );
+        file.write( reinterpret_cast<const char *>( data.data() ), static_cast<std::streamsize>( info.size() ) );
 
         if( !pallete.empty() )
             file.write( reinterpret_cast<const char *>(pallete.data()), static_cast<std::streamsize>(pallete.size()) );
@@ -582,7 +582,7 @@ namespace Bitmap_Operation
         for ( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
             memcpy( temp.data(), imageY, imageLineSize );
 
-            file.write( reinterpret_cast<const char *>(temp.data()), lineLength );
+            file.write( reinterpret_cast<const char *>( temp.data() ), static_cast<std::streamsize>( lineLength ) );
             file.flush();
         }
 
