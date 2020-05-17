@@ -1,10 +1,6 @@
 name: compilation on GitHub actions
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   build:
