@@ -26,7 +26,7 @@ jobs:
     - name: Check Python
       run: python --version
     - name: Install swig
-      run: choco install swig --version 3.0.12 --yes --limit-output -dv
+      run: choco install swig --yes --limit-output -dv
     - name: Check swig
       run: swig.exe -version
     - name: Build Python
