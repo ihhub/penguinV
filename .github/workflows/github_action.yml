@@ -10,11 +10,9 @@ jobs:
         os: [ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
-    - name: check directory
-      run: pwd
-    - name: configure
+    - name: Configure
       run: mkdir build && cd build && cmake ..
-    - name: build
+    - name: Build
       run: cmake --build build --config Release -- -j 2
-    - name: run tests
+    - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
