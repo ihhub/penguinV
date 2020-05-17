@@ -26,10 +26,9 @@ jobs:
     - name: Check Python
       run: python --version
     - name: Install swig
-      run: |
-        (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.1.zip","swigwin-4.0.1.zip");
-        Expand-Archive .\swigwin-4.0.1.zip .;
-        echo "::add-path::./swigwin-4.0.1"
+      uses: crazy-max/ghaction-chocolatey@v1
+      with:
+        args: install swig --version 3.0.12 --yes --limit-output -dv
     - name: Check swig
       run: swig.exe -version
     - name: Build Python
