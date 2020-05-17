@@ -582,7 +582,7 @@ namespace Bitmap_Operation
         for ( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
             memcpy( temp.data(), imageY, imageLineSize );
 
-            file.write( reinterpret_cast<const char *>(temp.data()), static_cast<std::streamsize>( lineLength ) );
+            file.write( reinterpret_cast<const char *>( temp.data() ), static_cast<std::streamsize>( lineLength ) );
             file.flush();
         }
 
