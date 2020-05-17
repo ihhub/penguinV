@@ -3182,7 +3182,6 @@ if ( simdType == neon_function ) { \
         #endif
 
         throw imageException( "simd::Sum function has incorrect logic" );
-        return 0u;
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
