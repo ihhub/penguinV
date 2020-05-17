@@ -35,3 +35,5 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Check Python
       run: python --version
+    - name: Install swig
+      run: choco install swig --version 3.0.12 --yes --limit-output -dv
