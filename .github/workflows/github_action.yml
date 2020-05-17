@@ -26,9 +26,7 @@ jobs:
     - name: Check Python
       run: python --version
     - name: Install swig
-      uses: crazy-max/ghaction-chocolatey@v1
-      with:
-        args: install swig --version 3.0.12 --yes --limit-output -dv
+      run: choco install swig --version 3.0.12 --yes --limit-output -dv
     - name: Check swig
       run: swig.exe -version
     - name: Build Python
