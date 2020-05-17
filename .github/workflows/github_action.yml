@@ -22,18 +22,3 @@ jobs:
       run: cmake --build build --config Release -- -j 2
     - name: run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-  python_compilation:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [2.7, 3.7]
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Check Python
-      run: python --version
-    - name: Install swig
-      run: choco install swig --version 3.0.12 --yes --limit-output -dv
