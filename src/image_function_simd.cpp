@@ -2821,7 +2821,7 @@ if ( simdType == neon_function ) { \
         
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -2862,7 +2862,7 @@ if ( simdType == neon_function ) { \
         if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
             simdSize = 8u;
 
-        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( width < simdSize ) || ( !horizontal && vertical ) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( simdType == avx512_function ) || ( width < simdSize ) || ( !horizontal && vertical ) ) {
             AVX_CODE( Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, sse_function ); )
 
             Image_Function::Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
@@ -3058,7 +3058,7 @@ if ( simdType == neon_function ) { \
 
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || ((width * colorCount) < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( ( width * colorCount ) < simdSize ) ) {
             AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
