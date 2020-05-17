@@ -1,0 +1,20 @@
+name: GitHub Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v2
+    - name: check directory
+      run: pwd
+    - name: configure
+      run: mkdir build && cd build && cmake ..
+    - name: build
+      run: cmake --build build --config Release -- -j 2
+    - name: run tests
+      run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl

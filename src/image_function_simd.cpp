@@ -271,15 +271,7 @@ namespace avx512
                  uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
     {
         const char maskValue = static_cast<char>(0xffu);
-        const simd mask = _mm512_set_epi8(
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue,
-            maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue, maskValue );
+        const simd mask = _mm512_set1_epi8( maskValue );
 
         for ( ; outY != outYEnd; outY += rowSizeOut, inY += rowSizeIn ) {
             const simd * src1 = reinterpret_cast<const simd*>( inY );
@@ -2580,6 +2572,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::AbsoluteDifference function has incorrect logic" );
     }
 
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector<uint32_t> & result, SIMDType simdType )
@@ -2616,6 +2610,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Accumulate function has incorrect logic" );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2654,6 +2650,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::BitwiseAnd function has incorrect logic" );
     }
 
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2692,6 +2690,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::BitwiseOr function has incorrect logic" );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2730,6 +2730,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::BitwiseXor function has incorrect logic" );
     }
 
     void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
@@ -2767,6 +2769,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::ConvertTo16Bit function has incorrect logic" );
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2804,6 +2808,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::ConvertTo8Bit function has incorrect logic" );
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2815,7 +2821,7 @@ if ( simdType == neon_function ) { \
         
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || (simdType == avx_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::ConvertToRgb( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -2844,6 +2850,8 @@ if ( simdType == neon_function ) { \
 
         SSSE3_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::ConvertToRgb function has incorrect logic" );
     }
 
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2854,7 +2862,7 @@ if ( simdType == neon_function ) { \
         if( simdType == neon_function ) // for neon, because the algorithm used work with packet of 64 bit
             simdSize = 8u;
 
-        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( width < simdSize ) || ( !horizontal && vertical ) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx_function ) || ( simdType == avx512_function ) || ( width < simdSize ) || ( !horizontal && vertical ) ) {
             AVX_CODE( Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical, sse_function ); )
 
             Image_Function::Flip( in, startXIn, startYIn, out, startXOut, startYOut, width, height, horizontal, vertical );
@@ -2882,6 +2890,8 @@ if ( simdType == neon_function ) { \
                                    vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
             NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
                                    vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+            throw imageException( "simd::Flip function has incorrect logic" );
         }
     }
 
@@ -2919,6 +2929,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Invert function has incorrect logic" );
     }
 
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2957,6 +2969,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Maximum function has incorrect logic" );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2995,6 +3009,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Minimum function has incorrect logic" );
     }
 
     void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
@@ -3028,6 +3044,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
+
+        throw imageException( "simd::ProjectionProfile function has incorrect logic" );
     }
 
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3040,7 +3058,7 @@ if ( simdType == neon_function ) { \
 
         const uint8_t colorCount = RGB;
 
-        if( (simdType == cpu_function) || ((width * colorCount) < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( ( width * colorCount ) < simdSize ) ) {
             AVX_CODE( RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height, sse_function ); )
 
             Image_Function::RgbToBgr( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
@@ -3075,6 +3093,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         SSSE3_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::RgbToBgr function has incorrect logic" );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -3113,6 +3133,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Subtract function has incorrect logic" );
     }
 
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, SIMDType simdType )
@@ -3159,6 +3181,7 @@ if ( simdType == neon_function ) { \
             return neon::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
         #endif
 
+        throw imageException( "simd::Sum function has incorrect logic" );
         return 0u;
     }
 
@@ -3167,7 +3190,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold, sse_function ); )
 
             Image_Function::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
@@ -3194,6 +3217,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Threshold function has incorrect logic" );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3201,7 +3226,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold, sse_function ); )
 
             Image_Function::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
@@ -3228,6 +3253,8 @@ if ( simdType == neon_function ) { \
         AVX_CODE( avx::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         SSE_CODE( sse::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
+
+        throw imageException( "simd::Threshold function has incorrect logic" );
     }
 }
 
