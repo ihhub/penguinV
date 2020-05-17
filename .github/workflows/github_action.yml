@@ -34,5 +34,6 @@ jobs:
     - name: Build Python
       run: python setup.py build_ext --inplace
       working-directory: src/python
-    - name: Check swig
-      run: swig -version
+    - name: Run tests
+      run: python bitmap_operation.py
+      working-directory: examples/python
