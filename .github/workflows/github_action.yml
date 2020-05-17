@@ -16,3 +16,22 @@ jobs:
       run: cmake --build build --config Release -- -j 2
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+  python_on_windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check Python
+      run: python --version
+    - name: Install swig
+      run: choco install swig --yes --limit-output -dv
+    - name: Check swig
+      run: swig.exe -version
+    - name: Build Python
+      run: python setup.py build_ext --inplace
+      working-directory: src/python
+    - name: Run tests
+      run: python bitmap_operation.py
+      working-directory: examples/python
