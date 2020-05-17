@@ -32,3 +32,5 @@ jobs:
         echo "::add-path::./swigwin-4.0.1"
     - name: Check swig
       run: swig -version
+    - name: Build Python
+      run: cd src/python && python setup.py build_ext --inplace
