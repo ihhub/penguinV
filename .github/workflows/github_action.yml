@@ -16,7 +16,7 @@ jobs:
       run: cmake --build build --config Release -- -j 2
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-  python:
+  python_on_windows:
     runs-on: windows-latest
     strategy:
       matrix:
