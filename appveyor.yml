@@ -23,33 +23,6 @@ environment:
     - JOB: Release_x64
       configuration: Release
       platform: x64
-    - JOB: Python2.7
-      PYTHON: "C:\\Python27-x64"
-    - JOB: Python3.7
-      PYTHON: "C:\\Python37-x64"
-
-for:
--
-  matrix:
-    only:
-      - JOB: Python2.7
-      - JOB: Python3.7
-  init:
-    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-    - python --version
-  install:
-    - if not exist C:\ProgramData\chocolatey\bin\swig.exe choco install swig --version 3.0.12 --yes --limit-output -dv
-  before_build:
-    - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-  build_script:
-    - cmd: cd C:\projects\penguinv\src\python
-    - cmd: python setup.py build_ext --inplace
-  test_script:
-    - cmd: cd C:\projects\penguinv\examples\python
-    - cmd: python bitmap_operation.py
-  cache:
-    - C:\ProgramData\chocolatey\bin -> appveyor.yml
-    - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 # clone directory
 clone_folder: C:\projects\penguinv
