@@ -34,7 +34,7 @@ jobs:
       run: swig -version
     - name: Build Python
       run: |
-        cd src/python
-        swig -version
-        swig.exe -version
+        cd src/python;
+        swig -version;
+        swig.exe -version;
         python setup.py build_ext --inplace
