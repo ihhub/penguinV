@@ -4,6 +4,7 @@ skip_commits:
   - '**/*.md'
   - .gitignore
   - LICENSE
+  - .github/workflows/*
 
 # version format
 version: 1.0.{build}
