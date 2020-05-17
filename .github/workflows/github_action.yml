@@ -1,4 +1,4 @@
-name: compilation on GitHub actions
+name: GitHub Actions
 
 on: [push, pull_request]
 
