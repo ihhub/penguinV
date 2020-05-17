@@ -3189,7 +3189,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold, sse_function ); )
 
             Image_Function::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, threshold );
@@ -3225,7 +3225,7 @@ if ( simdType == neon_function ) { \
     {
         const uint32_t simdSize = getSimdSize( simdType );
 
-        if( (simdType == cpu_function) || (width < simdSize) ) {
+        if ( ( simdType == cpu_function ) || ( simdType == avx512_function ) || ( width < simdSize ) ) {
             AVX_CODE( Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold, sse_function ); )
 
             Image_Function::Threshold( in, startXIn, startYIn, out, startXOut, startYOut, width, height, minThreshold, maxThreshold );
