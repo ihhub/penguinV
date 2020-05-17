@@ -16,3 +16,19 @@ jobs:
       run: cmake --build build --config Release -- -j 2
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+  python:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check Python
+      run: python --version
+    - name: Install swig
+      run: |
+        (New-Object System.Net.WebClient).DownloadFile("http://prdownloads.sourceforge.net/swig/swigwin-4.0.1.zip","swigwin-4.0.1.zip");
+        Expand-Archive .\swigwin-4.0.1.zip .;
+        echo "::add-path::./swigwin-4.0.1"
+    - name: Check swig
+      run: swig -version
