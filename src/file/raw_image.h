@@ -34,7 +34,7 @@ namespace Raw_Operation
 
         const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks
 
-        char * output = reinterpret_cast<const char *>( image.data() );
+        char * output = reinterpret_cast<char *>( image.data() );
         while ( dataToRead > 0 ) {
             size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
