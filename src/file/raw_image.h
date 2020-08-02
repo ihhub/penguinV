@@ -51,8 +51,6 @@ namespace Raw_Operation
     {
         Image_Function::ValidateImageParameters( image );
 
-        std::vector < uint8_t > pallete;
-
         std::fstream file;
         file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
 
