@@ -54,7 +54,7 @@ namespace Raw_Operation
         std::fstream file;
         file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
 
-        if(  !file )
+        if ( !file )
             throw imageException( "Cannot create file for saving" );
 
         size_t dataToWrite = sizeof( _Type ) * image.rowSize() * image.height();
@@ -72,7 +72,7 @@ namespace Raw_Operation
             dataToWrite -= writeSize;
         }
 
-        if( !file )
+        if ( !file )
             throw imageException( "failed to write data into file" );
     }
 
