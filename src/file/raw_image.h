@@ -34,10 +34,11 @@ namespace Raw_Operation
 
         const size_t blockSize = 4 * 1024 * 1024; // read by 4 MB blocks
 
+        const char * output = reinterpret_cast<const char *>( image.data() );
         while ( dataToRead > 0 ) {
             size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-            file.read( reinterpret_cast<char *>(image.data() + dataReaded), static_cast<std::streamsize>(readSize) );
+            file.read( output + dataReaded, static_cast<std::streamsize>(readSize) );
 
             dataReaded += readSize;
             dataToRead -= readSize;
