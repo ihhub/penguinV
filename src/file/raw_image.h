@@ -38,7 +38,7 @@ namespace Raw_Operation
         while ( dataToRead > 0 ) {
             size_t readSize = dataToRead > blockSize ? blockSize : dataToRead;
 
-            file.read( output + dataReaded, static_cast<std::streamsize>(readSize) );
+            file.read( output + dataReaded, static_cast<std::streamsize>( readSize ) );
 
             dataReaded += readSize;
             dataToRead -= readSize;
