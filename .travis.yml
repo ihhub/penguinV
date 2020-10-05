@@ -98,8 +98,7 @@ matrix:
       name: "Dynamic analysis"
       env: DYNAMIC_ANALYSIS=ON PENGUINV_UNIT_TEST_RUN_COUNT=10 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Debug"
       after_script:
-        - cat "${TRAVIS_BUILD_DIR}/build/Testing/Temporary/MemoryChecker.2.log" > out && cat out
-        - test ! -s out
+        - source ${TRAVIS_BUILD_DIR}/script/travis/display_log_files.sh ${TRAVIS_BUILD_DIR}/build/Testing/Temporary
       addons:
         apt:
           update: true
