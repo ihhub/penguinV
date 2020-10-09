@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="penguinV"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\test\;CMake Files\test\performance_tests\;CMake Files\test\performance_tests\opencl\;CMake Files\test\unit_tests\;CMake Files\test\unit_tests\opencl\;CMake Files\cmake\;CMake Files\examples\;CMake Files\examples\file_operation\;CMake Files\examples\blob_detection\;CMake Files\examples\filters\;CMake Files\examples\function_pool\;CMake Files\examples\image_function\;CMake Files\examples\opencl\;CMake Files\examples\opencl\image_function\;CMake Files\examples\edge_detection\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 test"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Nightly">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 Nightly"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Continuous">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 Continuous"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Experimental">
+				<Option working_dir="/Users/kgorecki/projects/penguinV"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 Experimental"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="performance_tests">
+				<Option output="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/performance_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 performance_tests"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="performance_tests/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/performance_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 performance_tests/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="performance_tests_opencl">
+				<Option output="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/bin/performance_tests_opencl" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 performance_tests_opencl"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="performance_tests_opencl/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/bin/performance_tests_opencl" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 performance_tests_opencl/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests">
+				<Option output="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/unit_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DPENGUINV_ENABLED_PNG_SUPPORT"/>
+					<Add option="-DPENGUINV_ENABLED_JPEG_SUPPORT"/>
+					<Add directory="/Library/Frameworks/Mono.framework/Headers"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 unit_tests"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_tests" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/unit_tests"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DPENGUINV_ENABLED_PNG_SUPPORT"/>
+					<Add option="-DPENGUINV_ENABLED_JPEG_SUPPORT"/>
+					<Add directory="/Library/Frameworks/Mono.framework/Headers"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 unit_tests/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests_opencl">
+				<Option output="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/bin/unit_tests_opencl" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 unit_tests_opencl"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="unit_tests_opencl/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/bin/unit_tests_opencl" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/bin"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 unit_tests_opencl/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_file_operation">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/file_operation/example_file_operation" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/file_operation"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 example_file_operation"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_file_operation/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/file_operation/example_file_operation" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/file_operation"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 example_file_operation/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/file_operation/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_blob_detection">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/blob_detection/example_blob_detection" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/blob_detection"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 example_blob_detection"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_blob_detection/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/blob_detection/example_blob_detection" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/blob_detection"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 example_blob_detection/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/blob_detection/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_filters">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/filters/example_filters" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/filters"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 example_filters"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_filters/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/filters/example_filters" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/filters"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 example_filters/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/filters/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_function_pool">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/function_pool/example_function_pool" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/function_pool"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 example_function_pool"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_function_pool/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/function_pool/example_function_pool" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/function_pool"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 example_function_pool/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/function_pool/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_image_function">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/image_function/example_image_function" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/image_function"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 example_image_function"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_image_function/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/image_function/example_image_function" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/image_function"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 example_image_function/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_opencl_image_function">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/opencl/image_function/example_opencl_image_function" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/opencl/image_function"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 example_opencl_image_function"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="example_opencl_image_function/fast">
+				<Option output="/Users/kgorecki/projects/penguinV/examples/opencl/image_function/example_opencl_image_function" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/kgorecki/projects/penguinV/examples/opencl/image_function"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-D_CRT_SECURE_NO_WARNINGS"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/OpenCL.framework"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 example_opencl_image_function/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/Users/kgorecki/projects/penguinV/examples/opencl/image_function/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/blob_detection/example_blob_detection.cpp">
+			<Option target="example_blob_detection"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/file_operation/example_file_operation.cpp">
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/filters/example_filters.cpp">
+			<Option target="example_filters"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/function_pool/example_function_pool.cpp">
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/image_function/example_image_function.cpp">
+			<Option target="example_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/opencl/image_function/main.cpp">
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/blob_detection.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_blob_detection"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/blob_detection.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_blob_detection"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/edge_detection.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/edge_detection.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/fft.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/fft.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/bmp_image.cpp">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/bmp_image.h">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/file_image.cpp">
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/file_image.h">
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/jpeg_image.cpp">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/jpeg_image.h">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/png_image.cpp">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/file/png_image.h">
+			<Option target="unit_tests"/>
+			<Option target="example_file_operation"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/filtering.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_filters"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/filtering.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_filters"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/function_pool.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/function_pool.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/function_pool_task.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/function_pool_task.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function.cpp">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_function_pool"/>
+			<Option target="example_image_function"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function.h">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_function_pool"/>
+			<Option target="example_image_function"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function_helper.cpp">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_function_pool"/>
+			<Option target="example_image_function"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function_helper.h">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_file_operation"/>
+			<Option target="example_blob_detection"/>
+			<Option target="example_filters"/>
+			<Option target="example_function_pool"/>
+			<Option target="example_image_function"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function_simd.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/image_function_simd.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/fft_base.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/fft_base.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/haar_transform.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/haar_transform.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/hough_transform.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/hough_transform.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/math_base.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/math/math_base.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/image_function_opencl.cpp">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/image_function_opencl.h">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/opencl_device.cpp">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/opencl_device.h">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/opencl_helper.cpp">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/opencl/opencl_helper.h">
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests_opencl"/>
+			<Option target="example_opencl_image_function"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/penguinv/penguinv.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/penguinv/penguinv.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.c">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fftnd.c">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fftnd.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thread_pool.cpp">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/src/thread_pool.h">
+			<Option target="performance_tests"/>
+			<Option target="unit_tests"/>
+			<Option target="example_function_pool"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/performance_test_helper_opencl.cpp">
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/performance_test_helper_opencl.h">
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/performance_test_image_function_opencl.cpp">
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/performance_test_image_function_opencl.h">
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/performance_tests_opencl.cpp">
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_blob_detection.cpp">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_blob_detection.h">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_edge_detection.cpp">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_edge_detection.h">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_filtering.cpp">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_filtering.h">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_framework.cpp">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_framework.h">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_helper.cpp">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_helper.h">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_image_function.cpp">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_test_image_function.h">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/performance_tests.cpp">
+			<Option target="performance_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/test_helper.cpp">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/test_helper.h">
+			<Option target="performance_tests"/>
+			<Option target="performance_tests_opencl"/>
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/unit_test_helper_opencl.cpp">
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/unit_test_helper_opencl.h">
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/unit_test_image_function_opencl.cpp">
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/unit_test_image_function_opencl.h">
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/unit_tests_opencl.cpp">
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_blob_detection.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_blob_detection.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_edge_detection.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_edge_detection.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_fft.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_fft.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_file.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_file.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_framework.cpp">
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_framework.h">
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_helper.cpp">
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_helper.h">
+			<Option target="unit_tests"/>
+			<Option target="unit_tests_opencl"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_image_buffer.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_image_buffer.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_image_function.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_image_function.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_math.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_test_math.h">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/unit_tests.cpp">
+			<Option target="unit_tests"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\performance_tests\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/performance_tests/opencl/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\performance_tests\opencl\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\unit_tests\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/test/unit_tests/opencl/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\test\unit_tests\opencl\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/cmake/find_jpeg.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/cmake/find_png.cmake">
+			<Option virtualFolder="CMake Files\cmake\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/file_operation/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\file_operation\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/blob_detection/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\blob_detection\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/filters/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\filters\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/function_pool/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\function_pool\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/image_function/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\image_function\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/opencl/image_function/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\opencl\image_function\"/>
+		</Unit>
+		<Unit filename="/Users/kgorecki/projects/penguinV/examples/edge_detection/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\examples\edge_detection\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

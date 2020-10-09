@@ -21,7 +21,7 @@ int main( int argc, char * argv[] )
         const penguinV::Image original = Bitmap_Operation::Load( filePath );
 
         if ( original.empty() ) // if the image is empty it means that the image doesn't exist or the file is not readable
-            throw imageException( std::string("Cannot load ") + filePath );
+            throw penguinVException( std::string("Cannot load ") + filePath );
 
         penguinV::Image image( original );
         if ( image.colorCount() != penguinV::GRAY_SCALE ) // convert to gray-scale image if it's not

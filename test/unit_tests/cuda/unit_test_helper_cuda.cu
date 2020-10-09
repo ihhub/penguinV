@@ -1,6 +1,6 @@
 #include <cuda_runtime.h>
 #include "../../../src/image_buffer.h"
-#include "../../../src/image_exception.h"
+#include "../../../src/penguin_v_exception.h"
 #include "../../../src/image_function.h"
 #include "../../../src/cuda/cuda_types.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"

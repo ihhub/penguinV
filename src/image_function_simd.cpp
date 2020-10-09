@@ -2573,7 +2573,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::AbsoluteDifference( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::AbsoluteDifference function has incorrect logic" );
+        throw penguinVException( "simd::AbsoluteDifference function has incorrect logic" );
     }
 
     void Accumulate( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, std::vector<uint32_t> & result, SIMDType simdType )
@@ -2591,7 +2591,7 @@ if ( simdType == neon_function ) { \
         width = width * colorCount;
 
         if( result.size() != width * height )
-            throw imageException( "Array size is not equal to image ROI (width * height) size" );
+            throw penguinVException( "Array size is not equal to image ROI (width * height) size" );
 
         Image_Function::OptimiseRoi( width, height, image );
 
@@ -2611,7 +2611,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Accumulate( rowSize, imageY, imageYEnd, outY, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Accumulate function has incorrect logic" );
+        throw penguinVException( "simd::Accumulate function has incorrect logic" );
     }
 
     void BitwiseAnd( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2651,7 +2651,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseAnd( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::BitwiseAnd function has incorrect logic" );
+        throw penguinVException( "simd::BitwiseAnd function has incorrect logic" );
     }
 
     void BitwiseOr( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2691,7 +2691,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseOr( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::BitwiseOr function has incorrect logic" );
+        throw penguinVException( "simd::BitwiseOr function has incorrect logic" );
     }
 
     void BitwiseXor( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2731,7 +2731,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::BitwiseXor( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::BitwiseXor function has incorrect logic" );
+        throw penguinVException( "simd::BitwiseXor function has incorrect logic" );
     }
 
     void ConvertTo16Bit( const Image & in, uint32_t startXIn, uint32_t startYIn, Image16Bit & out, uint32_t startXOut, uint32_t startYOut,
@@ -2747,7 +2747,7 @@ if ( simdType == neon_function ) { \
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
         Image_Function::ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw penguinVException( "Color counts of images are different" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -2770,7 +2770,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertTo16Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::ConvertTo16Bit function has incorrect logic" );
+        throw penguinVException( "simd::ConvertTo16Bit function has incorrect logic" );
     }
 
     void ConvertTo8Bit( const Image16Bit & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2786,7 +2786,7 @@ if ( simdType == neon_function ) { \
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
         Image_Function::ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw penguinVException( "Color counts of images are different" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -2809,7 +2809,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertTo8Bit( outY, outYEnd, inY, rowSizeOut, rowSizeIn, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::ConvertTo8Bit function has incorrect logic" );
+        throw penguinVException( "simd::ConvertTo8Bit function has incorrect logic" );
     }
 
     void ConvertToRgb( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2851,7 +2851,7 @@ if ( simdType == neon_function ) { \
         SSSE3_CODE( sse::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::ConvertToRgb( outY, outYEnd, inY, rowSizeOut, rowSizeIn, colorCount, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::ConvertToRgb function has incorrect logic" );
+        throw penguinVException( "simd::ConvertToRgb function has incorrect logic" );
     }
 
     void Flip( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -2891,7 +2891,7 @@ if ( simdType == neon_function ) { \
             NEON_CODE( neon::Flip( out, startXOut, startYOut, width, height, rowSizeIn, rowSizeOut, inY, inYEnd, horizontal, 
                                    vertical, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-            throw imageException( "simd::Flip function has incorrect logic" );
+            throw penguinVException( "simd::Flip function has incorrect logic" );
         }
     }
 
@@ -2930,7 +2930,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Invert( rowSizeIn, rowSizeOut, inY, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Invert function has incorrect logic" );
+        throw penguinVException( "simd::Invert function has incorrect logic" );
     }
 
     void Maximum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -2970,7 +2970,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Maximum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Maximum function has incorrect logic" );
+        throw penguinVException( "simd::Maximum function has incorrect logic" );
     }
 
     void Minimum( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -3010,7 +3010,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Minimum( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Minimum function has incorrect logic" );
+        throw penguinVException( "simd::Minimum function has incorrect logic" );
     }
 
     void ProjectionProfile( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal,
@@ -3045,7 +3045,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
         NEON_CODE( neon::ProjectionProfile( rowSize, imageStart, height, horizontal, out, simdWidth, totalSimdWidth, nonSimdWidth ) )
 
-        throw imageException( "simd::ProjectionProfile function has incorrect logic" );
+        throw penguinVException( "simd::ProjectionProfile function has incorrect logic" );
     }
 
     void RgbToBgr( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3094,7 +3094,7 @@ if ( simdType == neon_function ) { \
         SSSE3_CODE( sse::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::RgbToBgr( outY, inY, outYEnd, rowSizeOut, rowSizeIn, colorCount, rgbSimdSize, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::RgbToBgr function has incorrect logic" );
+        throw penguinVException( "simd::RgbToBgr function has incorrect logic" );
     }
 
     void Subtract( const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
@@ -3134,7 +3134,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Subtract( rowSizeIn1, rowSizeIn2, rowSizeOut, in1Y, in2Y, outY, outYEnd, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Subtract function has incorrect logic" );
+        throw penguinVException( "simd::Subtract function has incorrect logic" );
     }
 
     uint32_t Sum( const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, SIMDType simdType )
@@ -3181,7 +3181,7 @@ if ( simdType == neon_function ) { \
             return neon::Sum( rowSize, imageY, imageYEnd, simdWidth, totalSimdWidth, nonSimdWidth );
         #endif
 
-        throw imageException( "simd::Sum function has incorrect logic" );
+        throw penguinVException( "simd::Sum function has incorrect logic" );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3217,7 +3217,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, threshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Threshold function has incorrect logic" );
+        throw penguinVException( "simd::Threshold function has incorrect logic" );
     }
 
     void Threshold( const Image & in, uint32_t startXIn, uint32_t startYIn, Image & out, uint32_t startXOut, uint32_t startYOut,
@@ -3253,7 +3253,7 @@ if ( simdType == neon_function ) { \
         SSE_CODE( sse::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
         NEON_CODE( neon::Threshold( rowSizeIn, rowSizeOut, inY, outY, outYEnd, minThreshold, maxThreshold, simdWidth, totalSimdWidth, nonSimdWidth ); )
 
-        throw imageException( "simd::Threshold function has incorrect logic" );
+        throw penguinVException( "simd::Threshold function has incorrect logic" );
     }
 }
 

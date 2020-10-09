@@ -50,7 +50,7 @@ Contains classes for multithreading using thread pool:
 
 ## Functions
 
-All images in function parameter list must have width and height greater than 0 otherwise an exception imageException is raised.
+All images in function parameter list must have width and height greater than 0 otherwise an exception penguinVException is raised.
 
 - **AbsoluteDifference** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -69,7 +69,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
     
 	##### Syntax:
 	```cpp
@@ -88,7 +88,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of absolute difference    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -117,7 +117,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where absolute difference operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of absolute difference with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -152,7 +152,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where absolute difference operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception penguinVException is raised.
 
 - **Accumulate** [_Namespaces: **Image_Function, Image_Function_Simd**_]
 
@@ -171,7 +171,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an array    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -196,7 +196,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an array    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 
 - **BitwiseAnd** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -215,7 +215,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
     
 	##### Syntax:
 	```cpp
@@ -234,7 +234,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise AND    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -263,7 +263,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation AND is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise AND with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -298,7 +298,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation AND is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception penguinVException is raised.
 
 - **BitwiseOr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -317,7 +317,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -336,7 +336,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise OR    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -365,7 +365,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation OR is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise OR with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -400,7 +400,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation OR is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 
 - **BitwiseXor** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -419,7 +419,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -438,7 +438,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of bitwise XOR    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -467,7 +467,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation XOR is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise XOR with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -502,7 +502,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation XOR is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **CheckCommonColorCount** [_Namespaces: **Image_Function**_]
 	
@@ -522,7 +522,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -542,7 +542,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;color count. If the function fails exception penguinVException is raised.
 	
 - **ConvertToGrayScale** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 	
@@ -559,7 +559,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a color image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a gray-scale image with same width and height. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a gray-scale image with same width and height. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -576,7 +576,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - a gray-scale image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -599,7 +599,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a gray-scale image with same width and height. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a gray-scale image with same width and height. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -628,7 +628,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 - **ConvertToRgb** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL, Image_Function_Simd**_]
 
@@ -645,7 +645,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - a gray-scale image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception penguinVException is raised.
 
 	##### Syntax:
 	```cpp
@@ -662,7 +662,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -685,7 +685,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image with same width and height. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -714,7 +714,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 - **Copy** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -733,7 +733,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -756,7 +756,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a copy of area of [width, height] size . If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a copy of area of [width, height] size . If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -785,7 +785,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **ExtractChannel** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -804,7 +804,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -823,7 +823,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -848,7 +848,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a color component of input image. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -879,7 +879,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;channelId - channel ID (0, 1 or 2 for RGB images)    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Fill** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 	
@@ -898,7 +898,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;value - value to set    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -923,7 +923,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;value - value to set    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Flip** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL, Image_Function_Simd**_]
 
@@ -944,7 +944,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which in a result of image flipping. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -965,7 +965,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -992,7 +992,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of image flipping with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of image flipping with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1025,7 +1025,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;vertical - specificator to set flip relatively to X axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **GammaCorrection** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1046,7 +1046,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1067,7 +1067,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1094,7 +1094,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of gamma correction with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1127,7 +1127,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;gamma - gamma coefficient    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **GetPixel** [_Namespaces: **Image_Function**_]
 	
@@ -1148,7 +1148,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;y - position of pixel by Y axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;pixel intensity value. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;pixel intensity value. If the function fails exception penguinVException is raised.
 
 - **GetThreshold** [_Namespaces: **Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1165,7 +1165,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image histogram    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;threshold value. If the function fails exception penguinVException is raised.
 		
 - **Histogram** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1182,7 +1182,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;array as a histogram of pixel intensities. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;array as a histogram of pixel intensities. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -1199,7 +1199,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;histogram - an array what is histogram of pixel intensities    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -1222,7 +1222,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;array as a histogram of pixel intensities. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;array as a histogram of pixel intensities. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -1247,7 +1247,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;histogram - an array what is histogram of pixel intensities    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 - **Invert** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1264,7 +1264,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1281,7 +1281,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of bitwise NOT. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1304,7 +1304,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation NOT is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of bitwise NOT with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1333,7 +1333,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where Bitwise operation NOT is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **IsCorrectColorCount** [_Namespaces: **Image_Function**_]
 
@@ -1370,7 +1370,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in1 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1399,7 +1399,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where comparison is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;comparison result. If the function fails exception penguinVException is raised.
 	
 - **Load** [_Namespaces: **Bitmap_Operation**_]
 	
@@ -1416,7 +1416,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;path - a path of bitmap image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1433,7 +1433,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;raw - image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **LookupTable** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1452,7 +1452,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of pixel intensity transformation. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of pixel intensity transformation. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1471,7 +1471,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of transformation. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1496,7 +1496,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of transformation with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of transformation with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1527,7 +1527,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;table - a lookup table    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Maximum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1546,7 +1546,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1565,7 +1565,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of maximum operation    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1594,7 +1594,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where maximum operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of maximum operation with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1629,7 +1629,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where maximum operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception penguinVException is raised.
 	
 - **Median** [_Namespaces: **Image_Function**_]
 
@@ -1648,7 +1648,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1667,7 +1667,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1692,7 +1692,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of median filtering with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1723,7 +1723,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;kernelSize - a kernel size    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 
 - **Merge** [_Namespaces: **Image_Function**_]
 
@@ -1744,7 +1744,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in3 - third gray-scale image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a color image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image. If the function fails exception penguinVException is raised.
 
 	##### Syntax:
 	```cpp
@@ -1765,7 +1765,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - a color image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1800,7 +1800,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;a color image of [width, height] size. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;a color image of [width, height] size. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1841,7 +1841,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Minimum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -1860,7 +1860,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
     
 	##### Syntax:
 	```cpp
@@ -1879,7 +1879,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of minimum operation    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1908,7 +1908,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where minimum operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of minimum operation with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1943,7 +1943,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where minimum operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception penguinVException is raised.
 	
 - **Normalize** [_Namespaces: **Function_Pool, Image_Function**_]
 
@@ -1960,7 +1960,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -1977,7 +1977,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of normalization. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2000,7 +2000,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where normalization is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of normalization with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2029,7 +2029,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where normalization is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **ValidateImageParameters** [_Namespaces: **Image_Function**_]
 
@@ -2047,7 +2047,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2065,7 +2065,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2085,7 +2085,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image3 - third image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2109,7 +2109,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2139,7 +2139,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2175,7 +2175,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **ProjectionProfile** [_Namespaces: **Function_Pool, Image_Function**, Image_Function_Simd**_]
 
@@ -2194,7 +2194,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2213,7 +2213,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;projection - an array of pixel intensities sums    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2238,7 +2238,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;horizontal - axis type    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;array of pixel intensities sums. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2265,7 +2265,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;projection - an array of pixel intensities sums    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 
 - **RgbToBgr** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd**_]
 
@@ -2282,7 +2282,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an input image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion. Height and width of result image are the same as of input image. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion. Height and width of result image are the same as of input image. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2299,7 +2299,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image which is a result of conversion. Height and width of result image are the same as of input image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2322,7 +2322,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of conversion with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2351,7 +2351,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where conversion is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Resize** [_Namespaces: **Image_Function**_]
 
@@ -2372,7 +2372,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of output image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2389,7 +2389,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image as a result of resizing    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2416,7 +2416,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [widthOut, heightOut] size which is a result of resizing. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2449,7 +2449,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;heightOut - height of image area to what image will be resized    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Rotate** [_Namespaces: **Image_Function**_]
 
@@ -2478,7 +2478,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;angle - rotation anle    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Save** [_Namespaces: **Bitmap_Operation**_]
 	
@@ -2497,7 +2497,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2522,7 +2522,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **SetPixel** [_Namespaces: **Image_Function**_]
 	
@@ -2545,7 +2545,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;value - intensity value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2566,7 +2566,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;value - intensity value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Shift** [_Namespaces: **Image_Function**_]
 
@@ -2587,7 +2587,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image of same size. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image of same size. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2608,7 +2608,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2635,7 +2635,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image of [width, height] size which is a result of shifting. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [width, height] size which is a result of shifting. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2668,7 +2668,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;shiftY - shift by Y axis    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Split** [_Namespaces: **Function_Pool, Image_Function**_]
 
@@ -2691,7 +2691,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out3 - third gray-scale image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2732,7 +2732,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Subtract** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -2751,7 +2751,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction. Height and width of result image are the same as of input images. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction. Height and width of result image are the same as of input images. If the function fails exception penguinVException is raised.
     
 	##### Syntax:
 	```cpp
@@ -2770,7 +2770,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - image which is a result of subtraction    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2799,7 +2799,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where subtraction operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction with size [width, height]. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image which is a result of subtraction with size [width, height]. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2834,7 +2834,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where subtraction operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If function fails exception penguinVException is raised.
 	
 - **Sum** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd**_]
 	
@@ -2851,7 +2851,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image - an image      
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -2874,7 +2874,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of an image area    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;sum of all pixel intensities. If the function fails exception penguinVException is raised.
 	
 - **Threshold** [_Namespaces: **Function_Pool, Image_Function, Image_Function_Simd, Image_Function_Cuda, Image_Function_OpenCL**_]
 
@@ -2895,7 +2895,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2914,7 +2914,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2935,7 +2935,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2956,7 +2956,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -2983,7 +2983,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -3010,7 +3010,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image as a result of thresholding. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -3043,7 +3043,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;threshold - threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3076,7 +3076,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;maxThreshold - maximum threshold value    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **Transpose** [_Namespaces: **Image_Function**_]
 
@@ -3093,7 +3093,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image       
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image {of [height, width] size} which is a result of image (matrix) transpose. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image {of [height, width] size} which is a result of image (matrix) transpose. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3110,7 +3110,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - output image as a result of transpose    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3133,7 +3133,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area       
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image of [height, width] size which is a result of image (matrix) transpose. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image of [height, width] size which is a result of image (matrix) transpose. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3162,7 +3162,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;height - height of image area where transpose operation is performed    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 
 - **VerifyColoredImage** [_Namespaces: **Image_Function**_]
 
@@ -3180,7 +3180,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3198,7 +3198,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3218,7 +3218,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **VerifyGrayScaleImage** [_Namespaces: **Image_Function**_]
 
@@ -3236,7 +3236,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image1 - an image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3254,7 +3254,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - second image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 	##### Syntax:
 	```cpp
@@ -3274,5 +3274,5 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;image2 - third image    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	

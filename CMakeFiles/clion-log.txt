@@ -1,0 +1,40 @@
+/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE= -G "CodeBlocks - Unix Makefiles" /Users/kgorecki/projects/penguinV
+-- The C compiler identification is AppleClang 12.0.0.12000032
+-- The CXX compiler identification is AppleClang 12.0.0.12000032
+-- Check for working C compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc
+-- Check for working C compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
+-- Check for working CXX compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for pthread_create
+-- Looking for pthread_create - found
+CMake Warning at CMakeLists.txt:17 (find_package):
+  By not providing "FindQt5Widgets.cmake" in CMAKE_MODULE_PATH this project
+  has asked CMake to find a package configuration file provided by
+  "Qt5Widgets", but CMake did not find one.
+
+  Could not find a package configuration file provided by "Qt5Widgets" with
+  any of the following names:
+
+    Qt5WidgetsConfig.cmake
+    qt5widgets-config.cmake
+
+  Add the installation prefix of "Qt5Widgets" to CMAKE_PREFIX_PATH or set
+  "Qt5Widgets_DIR" to a directory containing one of the above files.  If
+  "Qt5Widgets" provides a separate development package or SDK, be sure it has
+  been installed.
+
+
+CUDA_TOOLKIT_ROOT_DIR not found or specified
+-- Could NOT find CUDA (missing: CUDA_TOOLKIT_ROOT_DIR CUDA_NVCC_EXECUTABLE CUDA_INCLUDE_DIRS CUDA_CUDART_LIBRARY) 
+-- Found JPEG: /usr/local/lib/libjpeg.dylib  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/kgorecki/projects/penguinV

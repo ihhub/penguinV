@@ -5,7 +5,7 @@
 #include <mutex>
 #include "opencl_device.h"
 #include "opencl_helper.h"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 
 namespace
 {
@@ -100,9 +100,9 @@ namespace multiCL
 #if defined(CL_VERSION_1_2)
                 const cl_int error = clEnqueueFillBuffer( OpenCLDeviceManager::instance().device().queue()(), data, pattern, patternSize, offset, size, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot fill a memory for a device" );
+                    throw penguinVException( "Cannot fill a memory for a device" );
 #else
-                throw imageException( "clEnqueueFillBuffer is not supported in OpenCL with version 1.1 and lower" );
+                throw penguinVException( "clEnqueueFillBuffer is not supported in OpenCL with version 1.1 and lower" );
 #endif
             }
         }
@@ -206,7 +206,7 @@ namespace multiCL
             }
 
             clReleaseProgram( _program );
-            throw imageException( (std::string( "Failed to build a program for OpenCL device with following code :\n" ) + fullLog).data() );
+            throw penguinVException( (std::string( "Failed to build a program for OpenCL device with following code :\n" ) + fullLog).data() );
         }
     }
 
@@ -475,7 +475,7 @@ namespace multiCL
     void OpenCLDeviceManager::initializeDevice( uint32_t deviceId )
     {
         if( deviceId >= _supportedDeviceId.size() )
-            throw imageException( "System does not contain a device with such ID" );
+            throw penguinVException( "System does not contain a device with such ID" );
 
         std::list<OpenCLDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                               [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
@@ -486,7 +486,7 @@ namespace multiCL
     void OpenCLDeviceManager::closeDevice( uint32_t deviceId )
     {
         if( deviceId >= _supportedDeviceId.size() )
-            throw imageException( "System does not contain a device with such ID" );
+            throw penguinVException( "System does not contain a device with such ID" );
 
         std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                         [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
@@ -527,12 +527,12 @@ namespace multiCL
     OpenCLDevice & OpenCLDeviceManager::device( uint32_t deviceId )
     {
         if( _device.empty() )
-            throw imageException( "Device manager does not contain any devices" );
+            throw penguinVException( "Device manager does not contain any devices" );
 
         std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                         [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
         if( foundDevice == _device.end() )
-            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
         return *(*foundDevice);
     }
@@ -540,12 +540,12 @@ namespace multiCL
     const OpenCLDevice & OpenCLDeviceManager::device( uint32_t deviceId ) const
     {
         if( _device.empty() )
-            throw imageException( "Device manager does not contain any devices" );
+            throw penguinVException( "Device manager does not contain any devices" );
 
         std::list<OpenCLDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                               [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
         if( foundDevice == _device.end() )
-            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
         return *(*foundDevice);
     }
@@ -555,7 +555,7 @@ namespace multiCL
         std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
                                                                         [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
         if( foundDevice == _device.end() )
-            throw imageException( "Device ID is invalid. Please check that you initialize devices!" );
+            throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
         setDefaultDeviceId( deviceId );
     }

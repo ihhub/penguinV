@@ -1,0 +1,8 @@
+perf_test 2 65.1247
+performance_tests_opencl 0 0
+unit_test 0 0
+unit_tests_opencl 0 0
+---
+performance_tests_opencl
+unit_test
+unit_tests_opencl

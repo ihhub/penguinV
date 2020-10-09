@@ -1,5 +1,5 @@
 #include "fft_base.h"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 
 namespace FFT
 {
@@ -16,7 +16,7 @@ namespace FFT
     void BaseFFTExecutor::initialize( uint32_t width_, uint32_t height_ )
     {
         if ( width_ == 0 || height_ == 0 )
-            throw imageException( "Invalid parameters for FFTExecutor::intialize()" );
+            throw penguinVException( "Invalid parameters for FFTExecutor::intialize()" );
 
         _clean();
         _width  = width_;

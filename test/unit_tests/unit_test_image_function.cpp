@@ -56,7 +56,7 @@ namespace
         {
             std::map<UnitTestFramework::testFunction, std::string>::const_iterator pos = _function.find( test );
             if ( pos != _function.cend() )
-                throw imageException( pos->second + " and " + name + " are totally same functions" );
+                throw penguinVException( pos->second + " and " + name + " are totally same functions" );
             else
                 _function[test] = name;
         }

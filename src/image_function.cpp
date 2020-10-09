@@ -231,7 +231,7 @@ namespace Image_Function
         OptimiseRoi( width, height, image );
 
         if( result.size() != width * height )
-            throw imageException( "Array size is not equal to image ROI (width * height) size" );
+            throw penguinVException( "Array size is not equal to image ROI (width * height) size" );
 
         const uint32_t rowSize = image.rowSize();
 
@@ -448,7 +448,7 @@ namespace Image_Function
         ValidateImageParameters( in, startXIn, startYIn, width, height );
         ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw penguinVException( "Color counts of images are different" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -504,7 +504,7 @@ namespace Image_Function
         ValidateImageParameters( in, startXIn, startYIn, width, height );
         ValidateImageParameters( out, startXOut, startYOut, width, height );
         if ( in.colorCount() != out.colorCount() )
-            throw imageException( "Color counts of images are different" );
+            throw penguinVException( "Color counts of images are different" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -684,7 +684,7 @@ namespace Image_Function
         VerifyGrayScaleImage( out );
 
         if( channelId >= in.colorCount() )
-            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+            throw penguinVException( "Channel ID for color image is greater than channel count in input image" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -825,7 +825,7 @@ namespace Image_Function
     uint8_t GetPixel( const Image & image, uint32_t x, uint32_t y )
     {
         if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Position of point [x, y] is out of image" );
+            throw penguinVException( "Position of point [x, y] is out of image" );
 
         return *(image.data() + y * image.rowSize() + x);
     }
@@ -1078,7 +1078,7 @@ namespace Image_Function
         ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         if( table.size() != 256u )
-            throw imageException( "Lookup table size is not equal to 256" );
+            throw penguinVException( "Lookup table size is not equal to 256" );
 
         const uint8_t colorCount = CheckCommonColorCount( in, out );
         width = width * colorCount;
@@ -1181,7 +1181,7 @@ namespace Image_Function
         const uint8_t colorCount = RGB;
 
         if( colorCount != out.colorCount() )
-            throw imageException( "Color image is not 3-colored image" );
+            throw penguinVException( "Color image is not 3-colored image" );
 
         const uint32_t rowSizeIn1 = in1.rowSize();
         const uint32_t rowSizeIn2 = in2.rowSize();
@@ -1395,7 +1395,7 @@ namespace Image_Function
         VerifyRGBImage( rgb );
 
         if ( channelId >= RGB )
-            throw imageException( "Channel ID is greater than number of channels in RGB image" );
+            throw penguinVException( "Channel ID is greater than number of channels in RGB image" );
 
         const uint32_t rowSizeIn  = channel.rowSize();
         const uint32_t rowSizeOut = rgb.rowSize();
@@ -1713,7 +1713,7 @@ namespace Image_Function
     void SetPixel( Image & image, uint32_t x, uint32_t y, uint8_t value )
     {
         if( image.empty() || x >= image.width() || y >= image.height() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Position of point [x, y] is out of image" );
+            throw penguinVException( "Position of point [x, y] is out of image" );
 
         *(image.data() + y * image.rowSize() + x) = value;
     }
@@ -1721,7 +1721,7 @@ namespace Image_Function
     void SetPixel( Image & image, const std::vector < uint32_t > & X, const std::vector < uint32_t > & Y, uint8_t value )
     {
         if( image.empty() || X.empty() || X.size() != Y.size() || image.colorCount() != GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         const uint32_t rowSize = image.rowSize();
         uint8_t * data = image.data();
@@ -1735,7 +1735,7 @@ namespace Image_Function
 
         for ( ; x != end; ++x, ++y ) {
             if( (*x) >= width || (*y) >= height )
-                throw imageException( "Position of point [x, y] is out of image" );
+                throw penguinVException( "Position of point [x, y] is out of image" );
 
             *(data + (*y) * rowSize + (*x)) = value;
         }
@@ -1763,7 +1763,7 @@ namespace Image_Function
         VerifyGrayScaleImage( in, out );
 
         if ( (fabs(shiftX) > width - 1) || (fabs(shiftY) > height - 1) )
-            throw imageException("Shift value by value bigger than ROI");
+            throw penguinVException("Shift value by value bigger than ROI");
 
         // take a note that we use an opposite values
         int32_t shiftXIntegral = -static_cast<int32_t>( shiftX );
@@ -2033,7 +2033,7 @@ namespace Image_Function
         OptimiseRoi( width, height, in, out );
 
         if( minThreshold > maxThreshold )
-            throw imageException( "Minimum threshold value is bigger than maximum threshold value" );
+            throw penguinVException( "Minimum threshold value is bigger than maximum threshold value" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();

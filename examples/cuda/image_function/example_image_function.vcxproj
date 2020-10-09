@@ -29,7 +29,7 @@
     <ClInclude Include="..\..\..\src\cuda\image_function_cuda.cuh" />
     <ClInclude Include="..\..\..\src\file\bmp_image.h" />
     <ClInclude Include="..\..\..\src\image_buffer.h" />
-    <ClInclude Include="..\..\..\src\image_exception.h" />
+    <ClInclude Include="..\..\..\src\penguin_v_exception.h" />
     <ClInclude Include="..\..\..\src\image_function.h" />
     <ClInclude Include="..\..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\..\src\memory\memory_allocator.h" />

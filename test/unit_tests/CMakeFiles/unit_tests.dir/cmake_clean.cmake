@@ -1,0 +1,40 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/unit_tests.dir/__/__/src/file/bmp_image.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/file/jpeg_image.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/file/png_image.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/math/haar_transform.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/math/hough_transform.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/math/math_base.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/penguinv/penguinv.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/thirdparty/kissfft/kiss_fft.c.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/thirdparty/kissfft/kiss_fftnd.c.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/blob_detection.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/edge_detection.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/filtering.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/math/fft_base.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/fft.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/function_pool.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/function_pool_task.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/image_function.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/image_function_helper.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/image_function_simd.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/__/src/thread_pool.cpp.o"
+  "CMakeFiles/unit_tests.dir/__/test_helper.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_tests.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_blob_detection.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_edge_detection.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_fft.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_file.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_framework.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_helper.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_image_buffer.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_image_function.cpp.o"
+  "CMakeFiles/unit_tests.dir/unit_test_math.cpp.o"
+  "unit_tests.pdb"
+  "unit_tests"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C CXX)
+  include(CMakeFiles/unit_tests.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

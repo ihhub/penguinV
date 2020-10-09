@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <list>
-#include "../../src/image_exception.h"
+#include "../../src/penguin_v_exception.h"
 #include "unit_test_framework.h"
 
 void UnitTestFramework::add( const testFunction test, const std::string & name )
@@ -28,7 +28,7 @@ int UnitTestFramework::run() const
                 std::cout << "FAIL" << std::endl;
             }
         }
-        catch( const imageException & ex ) {
+        catch( const penguinVException & ex ) {
             failedFunctionId.push_back( test->second );
             std::cout << "ERROR : library exception '" << ex.what() << "' raised" << std::endl;
         }

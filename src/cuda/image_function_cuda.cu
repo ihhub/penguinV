@@ -544,20 +544,20 @@ namespace Image_Function_Cuda
 
         if ( in.width() != out.width() || in.height() != out.height() ||
              in.colorCount() != out.colorCount() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         if ( in.alignment() == 1u || (in.rowSize() == in.width() * in.colorCount()) )
         {
             const uint32_t size = in.rowSize() * in.height();
 
             if ( !multiCuda::cudaSafeCheck( cudaMemcpy( out.data(), in.data(), size * sizeof( uint8_t ), cudaMemcpyHostToDevice ) ) )
-                throw imageException( "Cannot copy a memory to CUDA device" );
+                throw penguinVException( "Cannot copy a memory to CUDA device" );
         }
         else
         {
             if ( !multiCuda::cudaSafeCheck( cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
                                                           in.colorCount() * in.width(), in.height(), cudaMemcpyHostToDevice ) ) )
-                throw imageException( "Cannot copy a memory to CUDA device" );
+                throw penguinVException( "Cannot copy a memory to CUDA device" );
         }
     }
 
@@ -577,20 +577,20 @@ namespace Image_Function_Cuda
 
         if ( in.width() != out.width() || in.height() != out.height() ||
              in.colorCount() != out.colorCount() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         if ( out.alignment() == 1u || (out.rowSize() == out.width() * out.colorCount()) )
         {
             const uint32_t size = in.rowSize() * in.height();
 
             if ( !multiCuda::cudaSafeCheck( cudaMemcpy( out.data(), in.data(), size, cudaMemcpyDeviceToHost ) ) )
-                throw imageException( "Cannot copy a memory from CUDA device" );
+                throw penguinVException( "Cannot copy a memory from CUDA device" );
         }
         else
         {
             if ( !multiCuda::cudaSafeCheck( cudaMemcpy2D( out.data(), out.rowSize(), in.data(), in.rowSize(),
                                                           in.colorCount() * in.width(), in.height(), cudaMemcpyDeviceToHost ) ) )
-                throw imageException( "Cannot copy a memory to CUDA device" );
+                throw penguinVException( "Cannot copy a memory to CUDA device" );
         }
     }
 
@@ -722,7 +722,7 @@ namespace Image_Function_Cuda
         Image_Function::VerifyGrayScaleImage( out );
 
         if ( channelId >= in.colorCount() )
-            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+            throw penguinVException( "Channel ID for color image is greater than channel count in input image" );
 
         const uint32_t rowSizeIn  = in.rowSize();
         const uint32_t rowSizeOut = out.rowSize();
@@ -942,7 +942,7 @@ namespace Image_Function_Cuda
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         if ( table.size() != 256u )
-            throw imageException( "Lookup table size is not equal to 256" );
+            throw penguinVException( "Lookup table size is not equal to 256" );
 
         const uint8_t colorCount = Image_Function::CheckCommonColorCount( in, out );
         width = width * colorCount;
@@ -1102,7 +1102,7 @@ namespace Image_Function_Cuda
         Image_Function::ValidateImageParameters( image );
 
         if ( x >= image.width() || y >= image.height() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         launchKernel1D( setPixelCuda, 1,
                         image.data(), image.rowSize(), image.width(), image.height(), x, y, value );
@@ -1113,7 +1113,7 @@ namespace Image_Function_Cuda
         Image_Function::ValidateImageParameters( image );
 
         if ( X.size() != Y.size() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         if ( X.size() > 0 ) {
             const uint32_t width = image.width();
@@ -1121,7 +1121,7 @@ namespace Image_Function_Cuda
 
             for ( size_t i = 0; i < X.size(); ++i ) {
                 if ( X[i] >= width || Y[i] >= height )
-                    throw imageException( "Bad input parameters in image function" );
+                    throw penguinVException( "Bad input parameters in image function" );
             }
 
             multiCuda::Array<uint32_t> pointX( X );

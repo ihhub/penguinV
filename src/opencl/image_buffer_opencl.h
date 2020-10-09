@@ -64,7 +64,7 @@ namespace penguinV
 
             const cl_int error = clEnqueueCopyBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), inMem, outMem, 0, 0, size, 0, NULL, NULL );
             if( error != CL_SUCCESS )
-                throw imageException( "Cannot copy a memory in GPU device" );
+                throw penguinVException( "Cannot copy a memory in GPU device" );
         }
 
         static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )

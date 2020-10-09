@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/_kiss_fft_guts.h
+kiss_fft.h
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.h
+limits.h
+-
+alloca.h
+-
+
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.c
+_kiss_fft_guts.h
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/_kiss_fft_guts.h
+
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.h
+stdlib.h
+-
+stdio.h
+-
+math.h
+-
+string.h
+-
+xmmintrin.h
+-
+sys/types.h
+-
+
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fftnd.c
+kiss_fftnd.h
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fftnd.h
+_kiss_fft_guts.h
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/_kiss_fft_guts.h
+
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fftnd.h
+kiss_fft.h
+/Users/kgorecki/projects/penguinV/src/thirdparty/kissfft/kiss_fft.h
+

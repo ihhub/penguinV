@@ -38,7 +38,7 @@ int main( int argc, char * argv[] )
 
         return returnValue;
     } 
-    catch ( const imageException & ex ) {
+    catch ( const penguinVException & ex ) {
         std::cout << "Exception " << ex.what() << " raised during OpenCL unit tests." << std::endl;
         return 0;
     }

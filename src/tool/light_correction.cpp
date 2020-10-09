@@ -31,7 +31,7 @@ void LightCorrection::analyze( const penguinV::Image & image )
     }
 
     if ( minValue >= maxValue )
-        throw imageException( "Image in invalid. Minimum value cannot be greater or equal to maximum value." );
+        throw penguinVException( "Image in invalid. Minimum value cannot be greater or equal to maximum value." );
 
     imageY = image.data();
     imageYEnd = imageY + _height * rowSize;
@@ -63,7 +63,7 @@ void LightCorrection::correct( penguinV::Image & image, uint32_t x, uint32_t y, 
 {
     Image_Function::ValidateImageParameters( image, x, y, width, height );
     if ( _width == 0 || _height == 0 )
-        throw imageException( "Image is not being analyzed before calling correction. Analyze first." );
+        throw penguinVException( "Image is not being analyzed before calling correction. Analyze first." );
 
     const uint32_t rowSize = image.rowSize();
 

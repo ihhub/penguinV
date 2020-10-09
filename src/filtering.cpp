@@ -63,7 +63,7 @@ namespace Image_Function
         VerifyGrayScaleImage( in, out );
 
         if( kernelSize < 3 || kernelSize % 2 == 0 || kernelSize >= width || kernelSize >= height )
-            throw imageException( "Kernel size for filter is not correct" );
+            throw penguinVException( "Kernel size for filter is not correct" );
 
         // Border's problem is well-known problem which can be solved in different ways
         // We just copy parts of original image without applying filtering
@@ -154,7 +154,7 @@ namespace Image_Function
         VerifyGrayScaleImage( in, out );
 
         if( width < 3 || height < 3 )
-            throw imageException( "Input image is very small for Sobel filter to be applied" );
+            throw penguinVException( "Input image is very small for Sobel filter to be applied" );
 
         const uint32_t startXOffset = (startXIn > 0u) ? 1u : 0u;
         const uint32_t startYOffset = (startYIn > 0u) ? 1u : 0u;
@@ -263,7 +263,7 @@ namespace Image_Function
         VerifyGrayScaleImage( in, out );
 
         if( width < 3 || height < 3 )
-            throw imageException( "Input image is very small for Sobel filter to be applied" );
+            throw penguinVException( "Input image is very small for Sobel filter to be applied" );
 
         const uint32_t startXOffset = (startXIn > 0u) ? 1u : 0u;
         const uint32_t startYOffset = (startYIn > 0u) ? 1u : 0u;
@@ -338,7 +338,7 @@ namespace Image_Function
     void GetGaussianKernel( std::vector<float> & filter, uint32_t width, uint32_t height, uint32_t kernelSize, float sigma )
     {
         if( width < 3 || height < 3 || kernelSize == 0 || width < (kernelSize * 2 + 1) || height < (kernelSize * 2 + 1) || sigma < 0 )
-            throw imageException( "Incorrect input parameters for Gaussian filter kernel" );
+            throw penguinVException( "Incorrect input parameters for Gaussian filter kernel" );
 
         filter.resize( width * height );
 
