@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cuda_device.cuh"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 
 namespace multiCuda
 {
@@ -102,10 +102,10 @@ namespace multiCuda
             if( _data != NULL && in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw penguinVException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -119,10 +119,10 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, &in, sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw penguinVException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -133,10 +133,10 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( &out, _data, sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw penguinVException( "Memory in CUDA device is not allocated" );
             }
 
             return out;
@@ -271,10 +271,10 @@ namespace multiCuda
             if( in._data != NULL ) {
                 cudaError_t error = cudaMemcpy( _data, in._data, _size * sizeof( TData ), cudaMemcpyDeviceToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
             else {
-                throw imageException( "Memory in CUDA device is not allocated" );
+                throw penguinVException( "Memory in CUDA device is not allocated" );
             }
         }
 
@@ -289,7 +289,7 @@ namespace multiCuda
             if( _data != NULL && _size == data.size() ) {
                 cudaError_t error = cudaMemcpy( _data, data.data(), _size * sizeof( TData ), cudaMemcpyHostToDevice );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
         }
 
@@ -300,7 +300,7 @@ namespace multiCuda
             if( _data != NULL ) {
                 cudaError_t error = cudaMemcpy( out.data(), _data, _size * sizeof( TData ), cudaMemcpyDeviceToHost );
                 if( error != cudaSuccess )
-                    throw imageException( "Cannot copy a memory in CUDA device" );
+                    throw penguinVException( "Cannot copy a memory in CUDA device" );
             }
 
             return out;

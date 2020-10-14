@@ -54,7 +54,7 @@ void cpuCode( const std::string & filePath )
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if ( image.empty() )
-        throw imageException( "Cannot load the image" );
+        throw penguinVException( "Cannot load the image" );
 
     // Convert to gray-scale image if it's not
     if ( image.colorCount() != penguinV::GRAY_SCALE )
@@ -74,7 +74,7 @@ void gpuCode( const std::string & filePath )
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if ( image.empty() )
-        throw imageException( std::string("Cannot load ") + filePath );
+        throw penguinVException( std::string("Cannot load ") + filePath );
 
     multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
     deviceManager.initializeDevices();

@@ -3,7 +3,7 @@
 #include <numeric>
 #include <vector>
 #include "performance_test_helper.h"
-#include "../../src/image_exception.h"
+#include "../../src/penguin_v_exception.h"
 
 namespace
 {
@@ -74,7 +74,7 @@ namespace Performance_Test
     std::pair < double, double > BaseTimerContainer::mean()
     {
         if( _time.empty() )
-            throw imageException( "Cannot find mean value of empty array" );
+            throw penguinVException( "Cannot find mean value of empty array" );
 
         // We remove first value because it is on 'cold' cache
         _time.pop_front();

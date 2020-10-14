@@ -2,7 +2,7 @@
 
 #ifndef _WIN32 // Not for Windows
 
-#include "../../image_exception.h"
+#include "../../penguin_v_exception.h"
 
 UiWindowX11::UiWindowX11( const penguinV::Image & image, const std::string & title )
     : UiWindow( image, title )
@@ -16,7 +16,7 @@ UiWindowX11::UiWindowX11( const penguinV::Image & image, const std::string & tit
 {
     _uiDisplay = XOpenDisplay( NULL );
     if ( _uiDisplay == nullptr )
-        throw imageException( "Cannot create window for display" );
+        throw penguinVException( "Cannot create window for display" );
 
     _window = XCreateSimpleWindow( _uiDisplay, RootWindow( _uiDisplay, _screen ), 10, 10, _width, _height, 1,
                                    BlackPixel( _uiDisplay, _screen ), WhitePixel( _uiDisplay, _screen ) );
@@ -88,7 +88,7 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
     }
     else {
         if ( image.colorCount() != penguinV::RGB )
-            throw imageException( "Color image has different than 3 color channels." );
+            throw penguinVException( "Color image has different than 3 color channels." );
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
             const uint8_t * imageX    = imageY;
             const uint8_t * imageXEnd = imageX + _width * 3u;

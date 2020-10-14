@@ -3,7 +3,7 @@
 #include "filtering_cuda.cuh"
 #include "../filtering.h"
 #include "../image_buffer.h"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 #include "../parameter_validation.h"
 
 namespace Image_Function_Cuda
@@ -24,7 +24,7 @@ namespace Image_Function_Cuda
         Image_Function::ValidateImageParameters( in, out );
 
         if( sigma < 0 )
-            throw imageException( "Sigma value cannot be negative" );
+            throw penguinVException( "Sigma value cannot be negative" );
 
         FFT_Cuda::ComplexData image( in );
         FFT_Cuda::ComplexData filter = GetGaussianKernel( in.width(), in.height(), kernelSize, sigma );

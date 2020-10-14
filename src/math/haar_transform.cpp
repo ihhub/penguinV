@@ -1,6 +1,6 @@
 #include "haar_transform.h"
 #include <cmath>
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 
 namespace
 {
@@ -8,7 +8,7 @@ namespace
     void directTransform( const std::vector< _Type > & input, std::vector< _Type > & output, size_t width, size_t height )
     {
         if ( input.empty() || input.size() != output.size() || input.size() != width * height || (width % 2) != 0 || (height % 2) != 0 )
-            throw imageException( "Incorrect input parameters for Haar direct transform" );
+            throw penguinVException( "Incorrect input parameters for Haar direct transform" );
 
         // Direct Haar Matrix
         // |  1/sqrt(2) 1/sqrt(2) |
@@ -60,7 +60,7 @@ namespace
     void inverseTransform( const std::vector< _Type > & input, std::vector< _Type > & output, size_t width, size_t height )
     {
         if ( input.empty() || input.size() != output.size() || input.size() != width * height || (width % 2) != 0 || (height % 2) != 0 )
-            throw imageException( "Incorrect input parameters for Haar inverse transform" );
+            throw penguinVException( "Incorrect input parameters for Haar inverse transform" );
 
         // Inverse Haar Matrix
         // | 1/sqrt(2) -1/sqrt(2) |

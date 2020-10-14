@@ -3,7 +3,7 @@
 #include <vector>
 #include "opencl_device.h"
 #include "opencl_helper.h"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 
 namespace
 {
@@ -105,7 +105,7 @@ namespace multiCL
     void openCLCheck( cl_int error )
     {
         if( error != CL_SUCCESS )
-            throw imageException( std::string( "Failed to run OpenCL function with error ") + std::to_string( error ) );
+            throw penguinVException( std::string( "Failed to run OpenCL function with error ") + std::to_string( error ) );
     }
 
     bool openCLSafeCheck( cl_int error )

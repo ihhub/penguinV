@@ -19,7 +19,7 @@ namespace
     {
         if ( func == nullptr ) {
             const std::string error( std::string("Function ") + std::string(functionName) + std::string(" is not defined") );
-            throw imageException(error.data());
+            throw penguinVException(error.data());
         }
     }
 

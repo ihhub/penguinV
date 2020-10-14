@@ -342,11 +342,11 @@ EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, 
 void EdgeParameter::verify() const
 {
     if ( groupFactor == 0u )
-        throw imageException( "Grouping factor for edge detection cannot be 0" );
+        throw penguinVException( "Grouping factor for edge detection cannot be 0" );
     if ( skipFactor == 0u )
-        throw imageException( "Skip factor for edge detection cannot be 0" );
+        throw penguinVException( "Skip factor for edge detection cannot be 0" );
     if ( minimumContrast == 0u )
-        throw imageException( "Minimum contrast for edge detection cannot be 0" );
+        throw penguinVException( "Minimum contrast for edge detection cannot be 0" );
 }
 
 void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,

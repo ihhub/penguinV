@@ -392,7 +392,7 @@ namespace Image_Function_Helper
     std::vector<uint8_t> GetGammaCorrectionLookupTable( double a, double gamma )
     {
         if ( a < 0 || gamma < 0 )
-            throw imageException( "Gamma correction parameters are invalid" );
+            throw penguinVException( "Gamma correction parameters are invalid" );
 
         // We precalculate all values and store them in lookup table
         std::vector<uint8_t> value( 256, 255u );
@@ -410,7 +410,7 @@ namespace Image_Function_Helper
     uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
     {
         if( histogram.size() != 256 )
-            throw imageException( "Histogram size is not 256" );
+            throw penguinVException( "Histogram size is not 256" );
 
         // It is well-known Otsu's method to find threshold
         uint32_t pixelCount = histogram[0] + histogram[1];
@@ -1111,7 +1111,7 @@ const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTab
 {
     std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator table = _functionTableMap.find( type );
     if ( table == _functionTableMap.end() )
-        throw imageException( "Function table is not initialised" );
+        throw penguinVException( "Function table is not initialised" );
 
     return table->second;
 }
@@ -1119,7 +1119,7 @@ const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTab
 void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable::CopyForm1 Copy, const penguinV::Image & in, const penguinV::Image & out )
 {
     if ( in.type() == out.type() )
-        throw imageException( "Cannot register same type images for intertype copy" );
+        throw penguinVException( "Cannot register same type images for intertype copy" );
 
     _intertypeConvertMap[std::pair<uint8_t, uint8_t>( in.type(), out.type() )] = Copy;
 
@@ -1132,7 +1132,7 @@ void ImageTypeManager::convert( const penguinV::Image & in, penguinV::Image & ou
     std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
         _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
     if ( copy == _intertypeConvertMap.cend() )
-        throw imageException( "Copy function between different image types is not registered" );
+        throw penguinVException( "Copy function between different image types is not registered" );
 
     copy->second( in, out );
 }
@@ -1141,7 +1141,7 @@ penguinV::Image ImageTypeManager::image( uint8_t type ) const
 {
     std::map<uint8_t, penguinV::Image>::const_iterator image = _image.find( type );
     if ( image == _image.cend() )
-        throw imageException( "Image is not registered" );
+        throw penguinVException( "Image is not registered" );
 
     return image->second;
 }

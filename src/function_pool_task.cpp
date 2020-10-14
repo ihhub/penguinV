@@ -7,7 +7,7 @@ namespace
     {
         const uint32_t count = static_cast<uint32_t>(ThreadPoolMonoid::instance().threadCount());
         if( count == 0 )
-            throw imageException( "Thread Pool is not initialized." );
+            throw penguinVException( "Thread Pool is not initialized." );
         return count;
     }
 
@@ -214,12 +214,12 @@ namespace Function_Pool
         _run( _infoIn1->_size() );
 
         if( !_wait() )
-            throw imageException( "An error occured during task execution in function pool" );
+            throw penguinVException( "An error occured during task execution in function pool" );
     }
 
     void FunctionPoolTask::_validateTask()
     {
         if( !_ready() )
-            throw imageException( "FunctionPoolTask object was called multiple times!" );
+            throw penguinVException( "FunctionPoolTask object was called multiple times!" );
     }
 }

@@ -9,7 +9,7 @@ namespace Image_Function
     uint8_t CheckCommonColorCount( const TImage & image1, const TImage & image2 )
     {
         if ( image1.colorCount() != image2.colorCount() )
-            throw imageException( "The number of color channels in images is different" );
+            throw penguinVException( "The number of color channels in images is different" );
 
         return image1.colorCount();
     }
@@ -18,7 +18,7 @@ namespace Image_Function
     uint8_t CheckCommonColorCount( const TImage & image1, const TImage & image2, const TImage & image3 )
     {
         if ( image1.colorCount() != image2.colorCount() || image1.colorCount() != image3.colorCount() )
-            throw imageException( "The number of color channels in images is different" );
+            throw penguinVException( "The number of color channels in images is different" );
 
         return image1.colorCount();
     }
@@ -33,14 +33,14 @@ namespace Image_Function
     void VerifyRGBImage( const TImage & image )
     {
         if ( image.colorCount() != penguinV::RGB )
-            throw imageException( "Bad input parameters in image function: colored image has different than 3 color channels" );
+            throw penguinVException( "Bad input parameters in image function: colored image has different than 3 color channels" );
     }
 
     template <typename TImage>
     void VerifyRGBAImage( const TImage & image )
     {
         if ( image.colorCount() != penguinV::RGBA )
-            throw imageException( "Bad input parameters in image function: colored image has different than 4 color channels" );
+            throw penguinVException( "Bad input parameters in image function: colored image has different than 4 color channels" );
     }
 
     template <typename TImage, typename... Args>
@@ -54,7 +54,7 @@ namespace Image_Function
     void VerifyGrayScaleImage( const TImage & image )
     {
         if ( image.colorCount() != penguinV::GRAY_SCALE )
-            throw imageException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
+            throw penguinVException( "Bad input parameters in image function: gray-scaled image has more than 1 color channels" );
     }
 
     template <typename TImage, typename... Args>
@@ -68,7 +68,7 @@ namespace Image_Function
     void ValidateImageParameters( const TImage & image1 )
     {
         if ( image1.empty() || !IsCorrectColorCount( image1 ) )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
     }
 
     template <typename TImage>
@@ -76,7 +76,7 @@ namespace Image_Function
     {
         if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
             image1.width() != image2.width() || image1.height() != image2.height() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
     }
 
     template <typename TImage, typename... Args>
@@ -103,7 +103,7 @@ namespace Image_Function
     {
         if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() ||
             startX + width < width || startY + height < height )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
     }
 
     template <typename TImage, typename... Args>

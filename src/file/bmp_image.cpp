@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 #include "bmp_image.h"
-#include "../image_exception.h"
+#include "../penguin_v_exception.h"
 #include "../parameter_validation.h"
 
 namespace Bitmap_Operation
@@ -371,7 +371,7 @@ namespace Bitmap_Operation
     penguinV::Image Load( const std::string & path )
     {
         if( path.empty() )
-            throw imageException( "Incorrect parameters for bitmap loading" );
+            throw penguinVException( "Incorrect parameters for bitmap loading" );
 
         std::fstream file;
         file.open( path, std::fstream::in | std::fstream::binary );
@@ -554,7 +554,7 @@ namespace Bitmap_Operation
         file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
 
         if( !file )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         std::vector < uint8_t > data( sizeof( BitmapFileHeader ) );
 
@@ -587,6 +587,6 @@ namespace Bitmap_Operation
         }
 
         if( !file )
-            throw imageException( "failed to write data into file" );
+            throw penguinVException( "failed to write data into file" );
     }
 }

@@ -10,35 +10,35 @@
 #define NOEXCEPT
 #endif
 
-class imageException : public std::exception
+class penguinVException : public std::exception
 {
 public:
-    imageException()
+    penguinVException()
         :  _name( "unknown image library exception" )
     {
     }
 
-    explicit imageException( const char * message )
+    explicit penguinVException( const char * message )
         : _name( message )
     {
     }
 
-    explicit imageException( const std::string & message )
+    explicit penguinVException( const std::string & message )
         : _name( message.data() )
     {
     }
 
-    imageException( const imageException & ex )
+    penguinVException( const penguinVException & ex )
         : std::exception( ex )
         , _name         ( ex._name )
     {
     }
 
-    virtual ~imageException()
+    virtual ~penguinVException()
     {
     }
 
-    imageException & operator=( const imageException & ex )
+    penguinVException & operator=( const penguinVException & ex )
     {
         std::exception::operator=( ex );
 

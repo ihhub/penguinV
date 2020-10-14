@@ -1,5 +1,5 @@
 #include "fft.h"
-#include "image_exception.h"
+#include "penguin_v_exception.h"
 
 namespace FFT
 {
@@ -36,7 +36,7 @@ namespace FFT
     void ComplexData::set( const penguinV::Image & image )
     {
         if ( image.empty() || image.colorCount() != 1u )
-            throw imageException( "Failed to allocate complex data for empty or coloured image" );
+            throw penguinVException( "Failed to allocate complex data for empty or coloured image" );
 
         _clean();
 
@@ -69,7 +69,7 @@ namespace FFT
     void ComplexData::set( const std::vector<float> & data )
     {
         if ( data.empty() || _width == 0 || _height == 0 || data.size() != _width * _height )
-            throw imageException( "Failed to allocate complex data for empty or coloured image" );
+            throw penguinVException( "Failed to allocate complex data for empty or coloured image" );
 
         const float * in = data.data();
         kiss_fft_cpx * out = _data;
@@ -142,7 +142,7 @@ namespace FFT
     void FFTExecutor::directTransform( const ComplexData & in, ComplexData & out )
     {
         if ( _planDirect == 0 || !equalSize( *this, in ) || !equalSize( in, out ) )
-            throw imageException( "Invalid parameters for FFTExecutor::directTransform()" );
+            throw penguinVException( "Invalid parameters for FFTExecutor::directTransform()" );
 
         kiss_fftnd( _planDirect, in.data(), out.data() );
     }
@@ -155,7 +155,7 @@ namespace FFT
     void FFTExecutor::inverseTransform( const ComplexData & in, ComplexData & out )
     {
         if ( _planInverse == 0 || !equalSize( *this, in ) || !equalSize( in, out ) )
-            throw imageException( "Invalid parameters for FFTExecutor::inverseTransform()" );
+            throw penguinVException( "Invalid parameters for FFTExecutor::inverseTransform()" );
 
         kiss_fftnd( _planInverse, in.data(), out.data() );
     }
@@ -163,7 +163,7 @@ namespace FFT
     void FFTExecutor::complexMultiplication( const ComplexData & in1, const ComplexData & in2, ComplexData & out ) const
     {
         if ( !equalSize( in1, in2 ) || !equalSize( in1, out ) || in1.width() == 0 || in1.height() == 0 )
-            throw imageException( "Invalid parameters for FFTExecutor::complexMultiplication" );
+            throw penguinVException( "Invalid parameters for FFTExecutor::complexMultiplication" );
 
         // in1 = A + iB
         // in2 = C + iD

@@ -633,7 +633,7 @@ namespace Blob_Detection
                 return *(std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 )
                     { return blob1.width() < blob2.width(); } ));
             default:
-                throw imageException( "Bad criterion for blob finding" );
+                throw penguinVException( "Bad criterion for blob finding" );
         }
     }
 
@@ -665,7 +665,7 @@ namespace Blob_Detection
                     { return blob1.width() > blob2.width(); } );
                 break;
             default:
-                throw imageException( "Bad criterion for blob sorting" );
+                throw penguinVException( "Bad criterion for blob sorting" );
         }
     }
 }

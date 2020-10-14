@@ -54,7 +54,7 @@ namespace Function_Pool
         void getProjection( std::vector <uint32_t> & projection_ )
         {
             if( projection.empty() )
-                throw imageException( "Projection array is empty" );
+                throw penguinVException( "Projection array is empty" );
 
             if ( projection_.size() == projection.front().size() ) {
                 _getArray( projection, projection_ );
@@ -65,7 +65,7 @@ namespace Function_Pool
                     totalSize += projection[i].size();
 
                 if ( projection_.size() != totalSize )
-                    throw imageException( "Projection array is invalid" );
+                    throw penguinVException( "Projection array is invalid" );
 
                 uint32_t * out = projection_.data();
                 for ( size_t i = 0; i < projection.size(); ++i ) {
@@ -82,7 +82,7 @@ namespace Function_Pool
         uint32_t getSum()
         {
             if( sum.empty() )
-                throw imageException( "Output array is empty" );
+                throw penguinVException( "Output array is empty" );
 
             uint32_t total = 0;
 
@@ -97,7 +97,7 @@ namespace Function_Pool
         bool isEqual()
         {
             if( equality.empty() )
-                throw imageException( "Output array is empty" );
+                throw penguinVException( "Output array is empty" );
 
             bool equal = true;
 
@@ -116,12 +116,12 @@ namespace Function_Pool
         void _getArray( std::vector < std::vector < uint32_t > > & input, std::vector < uint32_t > & output ) const
         {
             if( input.empty() )
-                throw imageException( "Output array is empty" );
+                throw penguinVException( "Output array is empty" );
 
             output = input.front();
 
             if( std::any_of( input.begin(), input.end(), [&output]( std::vector <uint32_t> & v ) { return v.size() != output.size(); } ) )
-                throw imageException( "Returned histograms are not the same size" );
+                throw penguinVException( "Returned histograms are not the same size" );
 
             for ( size_t i = 1; i < input.size(); ++i ) {
                 std::vector < uint32_t >::iterator       out = output.begin();
@@ -230,7 +230,7 @@ namespace Function_Pool
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
             if( a < 0 || gamma < 0 )
-                throw imageException( "Bad input parameters in image function" );
+                throw penguinVException( "Bad input parameters in image function" );
 
             _dataIn.coefficientA     = a;
             _dataIn.coefficientGamma = gamma;
@@ -359,7 +359,7 @@ namespace Function_Pool
             _setup( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
             if( minThreshold > maxThreshold )
-                throw imageException( "Minimum threshold value is bigger than maximum threshold value" );
+                throw penguinVException( "Minimum threshold value is bigger than maximum threshold value" );
 
             _dataIn.minThreshold = minThreshold;
             _dataIn.maxThreshold = maxThreshold;
@@ -407,7 +407,7 @@ namespace Function_Pool
         {
             switch( functionId ) {
                 case _none:
-                    throw imageException( "Image function task is not setup" );
+                    throw penguinVException( "Image function task is not setup" );
                 case _AbsoluteDifference:
                     penguinV::AbsoluteDifference(
                         _infoIn1->image, _infoIn1->startX[taskId], _infoIn1->startY[taskId],
@@ -553,7 +553,7 @@ namespace Function_Pool
                                          _infoIn1->width[taskId], _infoIn1->height[taskId] );
                     break;
                 default:
-                    throw imageException( "Unknown image function task" );
+                    throw penguinVException( "Unknown image function task" );
             }
         }
 
@@ -941,7 +941,7 @@ namespace Function_Pool
     {
         const std::vector<uint32_t> histogram = Function_Pool::Histogram( in, startXIn, startYIn, width, height );
         if ( histogram.size() != 256u )
-            throw imageException( "Histogram size is not equal to 256" );
+            throw penguinVException( "Histogram size is not equal to 256" );
 
         uint16_t minimum = 255u;
         uint16_t maximum = 0u;
