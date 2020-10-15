@@ -1,6 +1,6 @@
 #include "haar_transform.h"
 #include <cmath>
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace
 {

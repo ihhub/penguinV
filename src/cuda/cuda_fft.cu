@@ -3,7 +3,7 @@
 #include <cuda_runtime.h>
 #include "cuda_fft.cuh"
 #include "cuda_helper.cuh"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace
 {

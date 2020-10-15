@@ -3,7 +3,7 @@
 #include "filtering_cuda.cuh"
 #include "../filtering.h"
 #include "../image_buffer.h"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 #include "../parameter_validation.h"
 
 namespace Image_Function_Cuda

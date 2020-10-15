@@ -3,7 +3,7 @@
 #include <numeric>
 #include <vector>
 #include "performance_test_helper.h"
-#include "../../src/penguin_v_exception.h"
+#include "../../src/penguinv_exception.h"
 
 namespace
 {

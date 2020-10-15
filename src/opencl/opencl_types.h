@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include "opencl_device.h"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace multiCL
 {

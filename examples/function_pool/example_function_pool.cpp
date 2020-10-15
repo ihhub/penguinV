@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "../../src/function_pool.h"
-#include "../../src/penguin_v_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "../../src/image_function.h"
 #include "../../src/thread_pool.h"
 

@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
-#include "../../src/penguin_v_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "performance_test_framework.h"
 
 void PerformanceTestFramework::add( const testFunction test, const std::string & name )

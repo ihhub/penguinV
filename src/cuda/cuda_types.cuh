@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cuda_device.cuh"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace multiCuda
 {

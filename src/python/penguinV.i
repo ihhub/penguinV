@@ -103,7 +103,7 @@ namespace Image_Function {
 
 }
 
-// For custom exceptions in ../penguin_v_exception.h, it is easier to just manually redeclare the custom exceptions in python.
+// For custom exceptions in ../penguinv_exception.h, it is easier to just manually redeclare the custom exceptions in python.
 
 %pythoncode %{
 

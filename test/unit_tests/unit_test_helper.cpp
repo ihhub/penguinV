@@ -1,5 +1,5 @@
 #include "unit_test_helper.h"
-#include "../../src/penguin_v_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "../../src/image_function.h"
 #include "../../src/parameter_validation.h"
 

@@ -1,5 +1,5 @@
 #include "png_image.h"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 #ifndef PENGUINV_ENABLED_PNG_SUPPORT
 

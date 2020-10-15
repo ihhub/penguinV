@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "cuda_device.cuh"
 #include "cuda_helper.cuh"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace
 {

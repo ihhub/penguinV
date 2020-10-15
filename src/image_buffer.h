@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include <vector>
-#include "penguin_v_exception.h"
+#include "penguinv_exception.h"
 #include "memory/cpu_memory.h"
 
 namespace penguinV

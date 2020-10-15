@@ -2,7 +2,7 @@
 
 #ifndef _WIN32 // Not for Windows
 
-#include "../../penguin_v_exception.h"
+#include "../../penguinv_exception.h"
 
 UiWindowX11::UiWindowX11( const penguinV::Image & image, const std::string & title )
     : UiWindow( image, title )

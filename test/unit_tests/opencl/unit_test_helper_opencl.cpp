@@ -1,7 +1,7 @@
 #include <map>
 #include <memory>
 
-#include "../../../src/penguin_v_exception.h"
+#include "../../../src/penguinv_exception.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/opencl_types.h"

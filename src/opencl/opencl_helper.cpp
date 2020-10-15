@@ -3,7 +3,7 @@
 #include <vector>
 #include "opencl_device.h"
 #include "opencl_helper.h"
-#include "../penguin_v_exception.h"
+#include "../penguinv_exception.h"
 
 namespace
 {

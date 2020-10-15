@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <list>
-#include "../../src/penguin_v_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "unit_test_framework.h"
 
 void UnitTestFramework::add( const testFunction test, const std::string & name )

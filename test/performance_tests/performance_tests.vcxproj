@@ -170,7 +170,7 @@
     <ClInclude Include="..\..\src\function_pool.h" />
     <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
-    <ClInclude Include="..\..\src\penguin_v_exception.h" />
+    <ClInclude Include="..\..\src\penguinv_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\image_function_simd.h" />
