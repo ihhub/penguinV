@@ -9,7 +9,7 @@ namespace Raw_Operation
     penguinV::ImageTemplate<_Type> Load( const std::string & path, uint32_t width, uint32_t height, uint8_t colorCount )
     {
         if ( path.empty() || width == 0 || height == 0 || colorCount == 0 )
-            throw imageException( "Incorrect parameters for raw image loading" );
+            throw penguinVException( "Incorrect parameters for raw image loading" );
 
         std::fstream file;
         file.open( path, std::fstream::in | std::fstream::binary );
@@ -56,7 +56,7 @@ namespace Raw_Operation
         file.open( path, std::fstream::out | std::fstream::trunc | std::fstream::binary );
 
         if ( !file )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         size_t dataToWrite = sizeof( _Type ) * image.rowSize() * image.height();
         size_t dataWritten = 0;
@@ -75,7 +75,7 @@ namespace Raw_Operation
         }
 
         if ( !file )
-            throw imageException( "failed to write data into file" );
+            throw penguinVException( "failed to write data into file" );
     }
 
     template <typename _Type>

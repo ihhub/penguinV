@@ -1,6 +1,6 @@
 #include "cuda_device.cuh"
 #include "cuda_helper.cuh"
-#include "../image_exception.h"
+#include "../penguinv_exception.h"
 
 namespace
 {
@@ -74,7 +74,7 @@ namespace multiCuda
         if( error != cudaSuccess ) {
             char errorMessage[64];
             sprintf( errorMessage, "Failed to launch CUDA kernel with error %d", error );
-            throw imageException( errorMessage );
+            throw penguinVException( errorMessage );
         }
     }
 
@@ -86,7 +86,7 @@ namespace multiCuda
             char errorMessage[64];
             sprintf( errorMessage, "Failed to run CUDA function with error %d", error );
 
-            throw imageException( errorMessage );
+            throw penguinVException( errorMessage );
         }
     }
 
@@ -145,7 +145,7 @@ namespace multiCuda
         const uint32_t threadsPerBlockX = (threadTotalCount <= blockDimension.x) ? threadTotalCount : blockDimension.x;
 
         if( threadsPerBlockX * dimensionSize.x < sizeX )
-            throw imageException( "Input parameters for kernel execution are out of limits" );
+            throw penguinVException( "Input parameters for kernel execution are out of limits" );
 
         return GridParameters( (sizeX + threadsPerBlockX - 1) / threadsPerBlockX, threadsPerBlockX );
     }
@@ -161,7 +161,7 @@ namespace multiCuda
         adjust2DThreadsPerBlock( threadTotalCount, blockDimension, threadsPerBlock );
 
         if( (threadsPerBlock.x * dimensionSize.x < sizeX) || (threadsPerBlock.y * dimensionSize.y < sizeY) )
-            throw imageException( "Input parameters for kernel execution are out of limits" );
+            throw penguinVException( "Input parameters for kernel execution are out of limits" );
 
         const dim3 blocksPerGrid( (sizeX + threadsPerBlock.x - 1) / threadsPerBlock.x,
                                   (sizeY + threadsPerBlock.y - 1) / threadsPerBlock.y );
@@ -180,7 +180,7 @@ namespace multiCuda
         adjust3DThreadsPerBlock( threadTotalCount, blockDimension, threadsPerBlock );
 
         if( (threadsPerBlock.x * dimensionSize.x < sizeX) || (threadsPerBlock.y * dimensionSize.y < sizeY) || (threadsPerBlock.z * dimensionSize.z < sizeZ) )
-            throw imageException( "Input parameters for kernel execution are out of limits" );
+            throw penguinVException( "Input parameters for kernel execution are out of limits" );
 
         const dim3 blocksPerGrid( (sizeX + threadsPerBlock.x - 1) / threadsPerBlock.x,
                                   (sizeY + threadsPerBlock.y - 1) / threadsPerBlock.y,
@@ -210,7 +210,7 @@ namespace multiCuda
             return 0u;
 
         if( CudaDeviceManager::instance().device().sharedMemoryPerBlock() < requiredSize )
-            throw imageException( "Requested shared memory size per block is bigger than supported memory size" );
+            throw penguinVException( "Requested shared memory size per block is bigger than supported memory size" );
 
         return requiredSize;
     }

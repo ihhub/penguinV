@@ -55,14 +55,14 @@ namespace penguinV
         {
             cudaError error = cudaMemcpy( out, in, size, cudaMemcpyDeviceToDevice );
             if( error != cudaSuccess )
-                throw imageException( "Cannot copy a memory in CUDA device" );
+                throw penguinVException( "Cannot copy a memory in CUDA device" );
         }
 
         static void _setMemory( TColorDepth * data, TColorDepth value, size_t size )
         {
             cudaError_t error = cudaMemset( data, value, size );
             if( error != cudaSuccess )
-                throw imageException( "Cannot fill a memory for CUDA device" );
+                throw penguinVException( "Cannot fill a memory for CUDA device" );
         }
     };
 

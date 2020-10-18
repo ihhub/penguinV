@@ -166,7 +166,7 @@ UiWindowWin::UiWindowWin( const penguinV::Image & image, const std::string & tit
 {
     static const UiWindowWinRegistrator registrator; // we need to register only once hence static variable
     if ( !registrator.registered )
-        throw imageException( "Unable to create Windows API class" );
+        throw penguinVException( "Unable to create Windows API class" );
 
 #ifdef UNICODE
     const std::wstring titleName = std::wstring( title.begin(), title.end() );
@@ -177,7 +177,7 @@ UiWindowWin::UiWindowWin( const penguinV::Image & image, const std::string & tit
                               CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle( 0 ), this ) ;
 
     if ( _window == nullptr )
-        throw imageException( "Unable to create Windows API window" );
+        throw penguinVException( "Unable to create Windows API window" );
 
     UiWindowWin::setImage( image );
 }

@@ -47,7 +47,7 @@ namespace penguinV
 
             cudaError_t error = cudaMallocHost( &data, sizeof(uint8_t) * size );
             if( error != cudaSuccess )
-                throw imageException( "Cannot allocate pinned memory on HOST" );
+                throw penguinVException( "Cannot allocate pinned memory on HOST" );
 
             return data;
         }
@@ -56,7 +56,7 @@ namespace penguinV
         {
             cudaError_t error = cudaFreeHost( data );
             if( error != cudaSuccess )
-                throw imageException( "Cannot deallocate pinned memory on HOST" );
+                throw penguinVException( "Cannot deallocate pinned memory on HOST" );
         }
     };
 

@@ -547,7 +547,7 @@ namespace Image_Function_OpenCL
 
         if( in.width() != out.width() || in.height() != out.height() ||
             in.colorCount() != out.colorCount())
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         if (in.alignment() == 1u || (in.rowSize() == in.width() * in.colorCount()))
         {
@@ -579,7 +579,7 @@ namespace Image_Function_OpenCL
 
         if( in.width() != out.width() || in.height() != out.height() ||
             in.colorCount() != out.colorCount())
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         if (out.alignment() == 1u || (out.rowSize() == out.width() * out.colorCount()))
         {
@@ -732,7 +732,7 @@ namespace Image_Function_OpenCL
         Image_Function::VerifyGrayScaleImage( out );
 
         if( channelId >= in.colorCount() )
-            throw imageException( "Channel ID for color image is greater than channel count in input image" );
+            throw penguinVException( "Channel ID for color image is greater than channel count in input image" );
 
         const multiCL::OpenCLProgram & program = GetProgram();
         multiCL::OpenCLKernel kernel( program, "extractChannelOpenCL");
@@ -971,7 +971,7 @@ namespace Image_Function_OpenCL
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, out, startXOut, startYOut, width, height );
 
         if( table.size() != 256u )
-            throw imageException( "Lookup table size is not equal to 256" );
+            throw penguinVException( "Lookup table size is not equal to 256" );
 
         multiCL::Array< uint8_t > tableOpenCL( table );
 
@@ -1221,7 +1221,7 @@ namespace Image_Function_OpenCL
         multiCL::OpenCLKernel kernel( program, "setPixelOpenCL" );
 
         if ( image.empty() || x >= image.width() || y >= image.height() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         const uint32_t width = image.width();
         const uint32_t height = image.height();
@@ -1241,7 +1241,7 @@ namespace Image_Function_OpenCL
         multiCL::OpenCLKernel kernel( program, "setPixelOpenCL");
 
         if ( image.empty() || X.empty() || X.size() != Y.size() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         const uint32_t width = image.width();
         const uint32_t height = image.height();
@@ -1249,7 +1249,7 @@ namespace Image_Function_OpenCL
         for ( size_t i = 0; i < X.size(); ++i)
         {
             if ( X[i] >= width || Y[i] >= height)
-                throw imageException( "Bad input parameters in image function" );
+                throw penguinVException( "Bad input parameters in image function" );
         }
 
         const uint32_t rowSize = image.rowSize();

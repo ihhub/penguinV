@@ -27,7 +27,7 @@ def saveGrayScaleCopy(filenameToOpen, filenameToSave):
     image = penguinV.Load(filenameToOpen)
 
     if image.empty():
-        raise penguinV.ImageException('penguinV.Load()', 'Problem loading file ' + filenameToOpen)
+        raise penguinV.penguinVException('penguinV.Load()', 'Problem loading file ' + filenameToOpen)
 
     if image.colorCount() != penguinV.GRAY_SCALE:
         image = penguinV.ConvertToGrayScale(image)
@@ -47,7 +47,7 @@ try:
                      )
     print('Output image was saved into result.bmp file')
 
-except penguinV.ImageException as err:
+except penguinV.penguinVException as err:
         # This error occurs when there was trouble opening the file.
         print(err)
 

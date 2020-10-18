@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
-#include "../../src/image_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "performance_test_framework.h"
 
 void PerformanceTestFramework::add( const testFunction test, const std::string & name )
@@ -25,7 +25,7 @@ void PerformanceTestFramework::run() const
             // We must display 3 sigma value because almost all values would be in this range
             std::cout << std::setprecision( 4 ) << result.first << "+/-" << 3 * result.second << " ms" << std::endl;
         }
-        catch( imageException & ex ) {
+        catch( penguinVException & ex ) {
             failedFunctionId.push_back( test->second );
             std::cout << "ERROR : library exception '" << ex.what() << "' raised" << std::endl;
         }

@@ -1,5 +1,5 @@
 #include "png_image.h"
-#include "../image_exception.h"
+#include "../penguinv_exception.h"
 
 #ifndef PENGUINV_ENABLED_PNG_SUPPORT
 
@@ -15,17 +15,17 @@ namespace Png_Operation
 
     void Load( const std::string &, penguinV::Image & )
     {
-        throw imageException( "PNG is not supported" );
+        throw penguinVException( "PNG is not supported" );
     }
 
     void Save( const std::string &, const penguinV::Image & )
     {
-        throw imageException( "PNG is not supported" );
+        throw penguinVException( "PNG is not supported" );
     }
 
     void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
-        throw imageException( "PNG is not supported" );
+        throw penguinVException( "PNG is not supported" );
     }
 }
 
@@ -41,7 +41,7 @@ namespace Png_Operation
     penguinV::Image Load( const std::string & path )
     {
         if( path.empty() )
-            throw imageException( "Incorrect file path for image file loading" );
+            throw penguinVException( "Incorrect file path for image file loading" );
 
         FILE * file = fopen( path.data(), "rb" );
         if( !file )
@@ -147,15 +147,15 @@ namespace Png_Operation
 
         FILE * file = fopen( path.data(), "wb" );
         if( !file )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         png_structp png = png_create_write_struct( PNG_LIBPNG_VER_STRING, NULL, NULL, NULL );
         if( !png )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         png_infop info = png_create_info_struct( png );
         if( !info )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         png_init_io( png, file );
 

@@ -1,5 +1,5 @@
 #include "jpeg_image.h"
-#include "../image_exception.h"
+#include "../penguinv_exception.h"
 #include "../parameter_validation.h"
 
 namespace
@@ -25,7 +25,7 @@ namespace Jpeg_Operation
     void SetImageQuality( int quality )
     {
         if ( quality < 1 || quality > 100 )
-            throw imageException( "JPEG quality value must be between 1 and 100" );
+            throw penguinVException( "JPEG quality value must be between 1 and 100" );
 
         jpegQuality = quality;
     }
@@ -42,12 +42,12 @@ namespace Jpeg_Operation
 {
     void Load( const std::string &, penguinV::Image & )
     {
-        throw imageException( "JPEG is not supported" );
+        throw penguinVException( "JPEG is not supported" );
     }
 
     void Save( const std::string &, const penguinV::Image &, uint32_t, uint32_t, uint32_t, uint32_t )
     {
-        throw imageException( "JPEG is not supported" );
+        throw penguinVException( "JPEG is not supported" );
     }
 }
 
@@ -61,11 +61,11 @@ namespace Jpeg_Operation
     void Load( const std::string & path, penguinV::Image & image )
     {
         if ( path.empty() )
-            throw imageException( "Incorrect parameters for Jpeg image loading" );
+            throw penguinVException( "Incorrect parameters for Jpeg image loading" );
 
         FILE * file = fopen( path.data(), "rb" );
         if ( file == nullptr )
-            throw imageException( "Cannot open Jpeg image" );
+            throw penguinVException( "Cannot open Jpeg image" );
 
         struct jpeg_decompress_struct info;
         struct jpeg_error_mgr error;
@@ -98,7 +98,7 @@ namespace Jpeg_Operation
 
         FILE * file = fopen( path.data(), "wb" );
         if ( !file )
-            throw imageException( "Cannot create file for saving" );
+            throw penguinVException( "Cannot create file for saving" );
 
         struct jpeg_compress_struct info;
         struct jpeg_error_mgr jerr;

@@ -1,5 +1,5 @@
 #include "unit_test_helper.h"
-#include "../../src/image_exception.h"
+#include "../../src/penguinv_exception.h"
 #include "../../src/image_function.h"
 #include "../../src/parameter_validation.h"
 
@@ -14,7 +14,7 @@ namespace
     bool imageVerification( const penguinV::ImageTemplate<_Type> & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, _Type value )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         width = width * image.colorCount();
         Image_Function::OptimiseRoi( width, height, image );
@@ -41,7 +41,7 @@ namespace
                             const std::vector < _Type > & value, bool isAnyValue )
     {
         if( image.empty() || width == 0 || height == 0 || x + width > image.width() || y + height > image.height() )
-            throw imageException( "Bad input parameters in image function" );
+            throw penguinVException( "Bad input parameters in image function" );
 
         const uint32_t rowSize = image.rowSize();
         const _Type * outputY  = image.data() + y * rowSize + x * image.colorCount();

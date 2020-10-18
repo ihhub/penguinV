@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <cstring>
 #include <vector>
-#include "image_exception.h"
+#include "penguinv_exception.h"
 #include "memory/cpu_memory.h"
 
 namespace penguinV
@@ -115,7 +115,7 @@ namespace penguinV
         void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
             if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
-                throw imageException( "Invalid image assignment parameters" );
+                throw penguinVException( "Invalid image assignment parameters" );
 
             clear();
 
@@ -202,7 +202,7 @@ namespace penguinV
         void copy( const ImageTemplate & image )
         {
             if( _type != image._type )
-                throw imageException( "Cannot copy image of one type to another type." );
+                throw penguinVException( "Cannot copy image of one type to another type." );
 
             clear();
 
@@ -381,7 +381,7 @@ namespace penguinV
             TFunction _getFunction(const std::vector< TFunction >& data, uint8_t index ) const
             {
                 if ( data[index] == nullptr )
-                    throw imageException( "A function is not defined for this type of image" );
+                    throw penguinVException( "A function is not defined for this type of image" );
 
                 return data[index];
             }

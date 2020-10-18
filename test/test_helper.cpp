@@ -121,7 +121,7 @@ namespace Test_Helper
     std::vector<penguinV::Image> uniformImages( uint32_t images, const penguinV::Image & reference )
     {
         if( images == 0 )
-            throw imageException( "Invalid parameter: number of images is 0" );
+            throw penguinVException( "Invalid parameter: number of images is 0" );
 
         std::vector<uint8_t> intesity( images );
         for( size_t i = 0u; i < intesity.size(); ++i )
@@ -133,7 +133,7 @@ namespace Test_Helper
     std::vector<penguinV::Image> uniformImages( const std::vector<uint8_t> & intensityValue, const penguinV::Image & reference )
     {
         if( intensityValue.size() == 0 )
-            throw imageException( "Invalid parameter" );
+            throw penguinVException( "Invalid parameter" );
 
         std::vector<penguinV::Image> image;
 

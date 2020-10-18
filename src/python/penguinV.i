@@ -103,7 +103,7 @@ namespace Image_Function {
 
 }
 
-// For custom exceptions in ../image_exception.h, it is easier to just manually redeclare the custom exceptions in python.
+// For custom exceptions in ../penguinv_exception.h, it is easier to just manually redeclare the custom exceptions in python.
 
 %pythoncode %{
 
@@ -111,7 +111,7 @@ class PenguinV_Error(Exception):
     '''Base class for errors/exceptions in penguinV.'''
     pass
 
-class ImageException(PenguinV_Error):
+class penguinVException(PenguinV_Error):
     ''' Exceptions raised by image operations.
     Attributes:
     expression - input expression in which the error occurred.

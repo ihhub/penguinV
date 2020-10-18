@@ -24,7 +24,7 @@ namespace Blob_Detection
         void verify() const
         {
             if ( checkMaximum && checkMinimum && ( minimum > maximum ) )
-                throw imageException( "Minimum value cannot be bigger than maximum value" );
+                throw penguinVException( "Minimum value cannot be bigger than maximum value" );
         }
 
         void set( Data min, Data max )

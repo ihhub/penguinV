@@ -156,7 +156,7 @@
     <ClInclude Include="..\..\src\edge_detection.h" />
     <ClInclude Include="..\..\src\file\bmp_image.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
-    <ClInclude Include="..\..\src\image_exception.h" />
+    <ClInclude Include="..\..\src\penguinv_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
     <ClInclude Include="..\..\src\math\math_base.h" />

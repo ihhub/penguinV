@@ -39,7 +39,7 @@ namespace template_image
 
             image.assign( fakeArray, fakeValue, fakeValue, fakeValue, fakeValue );
         }
-        catch( imageException & ) {
+        catch( penguinVException & ) {
             return true;
         }
 

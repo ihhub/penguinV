@@ -1,5 +1,5 @@
 #include <algorithm>
-#include "image_exception.h"
+#include "penguinv_exception.h"
 #include "thread_pool.h"
 
 AbstractTaskProvider::AbstractTaskProvider()
@@ -145,7 +145,7 @@ ThreadPool::~ThreadPool()
 void ThreadPool::resize( size_t threads )
 {
     if( threads == 0 )
-        throw imageException( "Try to set zero threads in thread pool" );
+        throw penguinVException( "Try to set zero threads in thread pool" );
 
     if( threads > threadCount() ) {
         _taskInfo.lock();
@@ -193,10 +193,10 @@ size_t ThreadPool::threadCount() const
 void ThreadPool::add( AbstractTaskProvider * provider, size_t taskCount )
 {
     if( taskCount == 0 )
-        throw imageException( "Try to add zero tasks to thread pool" );
+        throw penguinVException( "Try to add zero tasks to thread pool" );
 
     if( threadCount() == 0 )
-        throw imageException( "No threads in thread pool" );
+        throw penguinVException( "No threads in thread pool" );
 
     provider->_completion.lock();
     provider->_running = true;

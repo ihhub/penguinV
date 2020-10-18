@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 #include "opencl_device.h"
-#include "../image_exception.h"
+#include "../penguinv_exception.h"
 
 namespace multiCL
 {
@@ -94,7 +94,7 @@ namespace multiCL
 
         void _copy( const Type & )
         {
-            throw imageException( "Memory copy in OpenCL device is not implemented" );
+            throw penguinVException( "Memory copy in OpenCL device is not implemented" );
         }
 
         void _swap( Type & in )
@@ -108,10 +108,10 @@ namespace multiCL
                 cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
                                                      &in, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot copy a memory into OpenCL device" );
+                    throw penguinVException( "Cannot copy a memory into OpenCL device" );
             }
             else {
-                throw imageException( "Memory in OpenCL device is not allocated" );
+                throw penguinVException( "Memory in OpenCL device is not allocated" );
             }
         }
 
@@ -123,10 +123,10 @@ namespace multiCL
                 cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
                                                     &out, 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot copy a memory from OpenCL device" );
+                    throw penguinVException( "Cannot copy a memory from OpenCL device" );
             }
             else {
-                throw imageException( "Memory in OpenCL device is not allocated" );
+                throw penguinVException( "Memory in OpenCL device is not allocated" );
             }
 
             return out;
@@ -251,7 +251,7 @@ namespace multiCL
 
         void _copy( const Array & )
         {
-            throw imageException( "Memory copy in OpenCL device is not implemented" );
+            throw penguinVException( "Memory copy in OpenCL device is not implemented" );
         }
 
         void _swap( Array & in )
@@ -266,7 +266,7 @@ namespace multiCL
                 cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
                                                      data.data(), 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot copy a memory into OpenCL device" );
+                    throw penguinVException( "Cannot copy a memory into OpenCL device" );
             }
         }
 
@@ -278,7 +278,7 @@ namespace multiCL
                 cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
                                                     out.data(), 0, NULL, NULL );
                 if( error != CL_SUCCESS )
-                    throw imageException( "Cannot copy a memory from OpenCL device" );
+                    throw penguinVException( "Cannot copy a memory from OpenCL device" );
             }
 
             return out;

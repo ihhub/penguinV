@@ -1,5 +1,5 @@
 #include "math_base.h"
-#include "../image_exception.h"
+#include "../penguinv_exception.h"
 
 namespace pvmath
 {
@@ -40,7 +40,7 @@ namespace pvmath
     void getMatrixRoots( const std::vector<double> & squareMatrix, const std::vector<double> freeTerms, std::vector<double> & roots )
     {
         if ( squareMatrix.empty() || freeTerms.empty() || squareMatrix.size() != freeTerms.size() * freeTerms.size() || freeTerms.size() < 2 )
-            throw imageException( "Invalid parameters for getMatrixRoots function" );
+            throw penguinVException( "Invalid parameters for getMatrixRoots function" );
 
         const size_t size = freeTerms.size();
         std::vector<size_t> matrixIndices( size * size );
@@ -70,7 +70,7 @@ namespace pvmath
             }
 
             if ( maxCoeff < 1e-10 )
-                throw imageException( "Invalid matrix" );
+                throw penguinVException( "Invalid matrix" );
 
             if ( maxColumnId != i ) {
                 for ( size_t k = 0; k < size; ++k ) {

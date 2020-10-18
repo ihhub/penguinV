@@ -9,7 +9,7 @@ Contains all basic functions for image processing by OpenCL.
 
 ## Functions
 
-All images in function parameter list must have width and height greater than 0 otherwise exception imageException is raised.
+All images in function parameter list must have width and height greater than 0 otherwise exception penguinVException is raised.
 
 - **ConvertFromOpenCL** [_Namespaces: **Image_Function_OpenCL**_]
 
@@ -26,7 +26,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in GPU memory        
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image in main memory. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image in main memory. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -43,7 +43,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - an image in main memory    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
 	
 - **ConvertToOpenCL** [_Namespaces: **Image_Function_OpenCL**_]
 
@@ -60,7 +60,7 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;in - an image in main memory      
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;image in GPU memory. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;image in GPU memory. If the function fails exception penguinVException is raised.
 		
 	##### Syntax:
 	```cpp
@@ -77,4 +77,4 @@ All images in function parameter list must have width and height greater than 0 
 	&nbsp;&nbsp;&nbsp;&nbsp;out - an image in GPU memory    
 	
 	**Return value:**    
-	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception imageException is raised.
+	&nbsp;&nbsp;&nbsp;&nbsp;void. If the function fails exception penguinVException is raised.
