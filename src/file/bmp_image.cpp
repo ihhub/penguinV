@@ -575,14 +575,15 @@ namespace Bitmap_Operation
 
         const uint8_t * imageY = image.data() + (startY + height - 1) * rowSize + startX * colorCount;
 
-        std::vector < uint8_t > temp( lineLength, 0 );
-
         const size_t imageLineSize = sizeof( uint8_t ) * width * colorCount;
 
-        for ( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
-            memcpy( temp.data(), imageY, imageLineSize );
+        const std::streamsize alignmentDiff = static_cast<std::streamsize>(lineLength - imageLineSize);
+        const uint32_t zero = 0;
 
-            file.write( reinterpret_cast<const char *>( temp.data() ), static_cast<std::streamsize>( lineLength ) );
+        for ( uint32_t rowId = 0; rowId < height; ++rowId, imageY -= rowSize ) {
+
+            file.write( reinterpret_cast<const char *>( imageY ), static_cast<std::streamsize>( imageLineSize ) );
+            file.write( reinterpret_cast<const char *>( &zero ), alignmentDiff );
             file.flush();
         }
 
