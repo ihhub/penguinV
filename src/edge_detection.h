@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include "image_buffer.h"
 #include "math/math_base.h"
+#include <vector>
 
 struct EdgeParameter
 {
@@ -31,9 +31,8 @@ struct EdgeParameter
         ALL
     };
 
-    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL,
-                   uint32_t _groupFactor = 1u, uint32_t _skipFactor = 1u, uint32_t _contrastCheckLeftSideOffset = 0u,
-                   uint32_t _contrastCheckRightSideOffset = 0u, uint8_t _minimumContrast = 10 );
+    EdgeParameter( directionType _direction = LEFT_TO_RIGHT, gradientType _gradient = ANY, edgeType _edge = ALL, uint32_t _groupFactor = 1u, uint32_t _skipFactor = 1u,
+                   uint32_t _contrastCheckLeftSideOffset = 0u, uint32_t _contrastCheckRightSideOffset = 0u, uint8_t _minimumContrast = 10 );
 
     directionType direction;
     gradientType gradient;
@@ -79,12 +78,12 @@ public:
         EdgeDetectionHelper::find( *this, image, x, y, width, height, edgeParameter );
     }
 
-    const std::vector < PointBase2D<_Type> > & positiveEdge() const
+    const std::vector<PointBase2D<_Type>> & positiveEdge() const
     {
         return positiveEdgePoint;
     }
 
-    const std::vector < PointBase2D<_Type> > & negativeEdge() const
+    const std::vector<PointBase2D<_Type>> & negativeEdge() const
     {
         return negativeEdgePoint;
     }
@@ -92,8 +91,8 @@ public:
     friend class EdgeDetectionHelper;
 
 private:
-    std::vector < PointBase2D<_Type> > positiveEdgePoint;
-    std::vector < PointBase2D<_Type> > negativeEdgePoint;
+    std::vector<PointBase2D<_Type>> positiveEdgePoint;
+    std::vector<PointBase2D<_Type>> negativeEdgePoint;
 };
 
 typedef EdgeDetectionBase<double> EdgeDetection;

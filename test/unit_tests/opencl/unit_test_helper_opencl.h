@@ -1,9 +1,9 @@
 #pragma once
 
+#include "../../../src/image_buffer.h"
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
-#include "../../../src/image_buffer.h"
 
 // A bunch of functions to help writing unit tests
 namespace Unit_Test

@@ -1,11 +1,11 @@
-#include <iostream>
-#include "unit_test_image_function_cuda.h"
-#include "../unit_test_framework.h"
-#include "../unit_test_helper.h"
 #include "../../../src/cuda/cuda_device.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
+#include "../unit_test_framework.h"
+#include "../unit_test_helper.h"
+#include "unit_test_image_function_cuda.h"
+#include <iostream>
 
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
     if ( !multiCuda::isCudaSupported() ) {
         std::cout << "No CUDA devices in the system" << std::endl;

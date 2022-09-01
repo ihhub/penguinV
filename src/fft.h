@@ -1,9 +1,9 @@
 #pragma once
-#include <vector>
 #include "image_buffer.h"
 #include "math/fft_base.h"
 #include "thirdparty/kissfft/kiss_fft.h"
 #include "thirdparty/kissfft/kiss_fftnd.h"
+#include <vector>
 
 namespace FFT
 {

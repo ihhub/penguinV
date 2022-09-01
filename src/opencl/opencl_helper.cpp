@@ -1,24 +1,28 @@
+#include "opencl_helper.h"
+#include "../penguinv_exception.h"
+#include "opencl_device.h"
 #include <assert.h>
 #include <fstream>
 #include <vector>
-#include "opencl_device.h"
-#include "opencl_helper.h"
-#include "../penguinv_exception.h"
 
 namespace
 {
     struct dim3
     {
         size_t x, y, z;
-        dim3( size_t vx = 1, size_t vy = 1, size_t vz = 1 ) : x( vx ), y( vy ), z( vz ) {}
+        dim3( size_t vx = 1, size_t vy = 1, size_t vz = 1 )
+            : x( vx )
+            , y( vy )
+            , z( vz )
+        {}
     };
 
     // Helper functions for internal calculations
     dim3 get2DThreadsPerBlock( size_t threadTotalCount )
     {
         size_t threadCount = 1;
-        size_t overallThreadCount = (1 << 2);
-        while( overallThreadCount <= threadTotalCount ) {
+        size_t overallThreadCount = ( 1 << 2 );
+        while ( overallThreadCount <= threadTotalCount ) {
             threadCount <<= 1;
             overallThreadCount <<= 2;
         }
@@ -29,8 +33,8 @@ namespace
     dim3 get3DThreadsPerBlock( size_t threadTotalCount )
     {
         size_t threadCount = 1;
-        size_t overallThreadCount = (1 << 3);
-        while( overallThreadCount <= threadTotalCount ) {
+        size_t overallThreadCount = ( 1 << 3 );
+        while ( overallThreadCount <= threadTotalCount ) {
             threadCount <<= 1;
             overallThreadCount <<= 3;
         }
@@ -45,9 +49,8 @@ namespace
     {
         cl_event waitingEvent;
 
-        multiCL::openCLCheck( clEnqueueNDRangeKernel( multiCL::OpenCLDeviceManager::instance().device().queue()(), kernel(),
-                                                     parameters.dimensionCount, NULL, parameters.dimensionSize, parameters.threadsPerBlock,
-                                                     0, NULL, &waitingEvent ) );
+        multiCL::openCLCheck( clEnqueueNDRangeKernel( multiCL::OpenCLDeviceManager::instance().device().queue()(), kernel(), parameters.dimensionCount, NULL,
+                                                      parameters.dimensionSize, parameters.threadsPerBlock, 0, NULL, &waitingEvent ) );
 
         multiCL::openCLCheck( clWaitForEvents( 1, &waitingEvent ) );
     }
@@ -65,25 +68,25 @@ namespace multiCL
 
         cl_uint platformCount = 0u;
 
-        if( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) )
+        if ( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) )
             return false;
 
-        if( platformCount == 0u )
+        if ( platformCount == 0u )
             return false;
 
-        std::vector <cl_platform_id> platform( platformCount );
-        if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) )
+        std::vector<cl_platform_id> platform( platformCount );
+        if ( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) )
             return false;
 
         const cl_device_type deviceType = ( isGPUSupportEnabled ? CL_DEVICE_TYPE_GPU : 0u ) + ( isCPUSupportEnabled ? CL_DEVICE_TYPE_CPU : 0u );
 
-        for( std::vector<cl_platform_id>::const_iterator singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
+        for ( std::vector<cl_platform_id>::const_iterator singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
             cl_uint deviceCount = 0u;
 
-            if( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, deviceType, 0, NULL, &deviceCount ) ) )
+            if ( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, deviceType, 0, NULL, &deviceCount ) ) )
                 continue;
 
-            if( deviceCount > 0u )
+            if ( deviceCount > 0u )
                 return true;
         }
 
@@ -104,13 +107,13 @@ namespace multiCL
 
     void openCLCheck( cl_int error )
     {
-        if( error != CL_SUCCESS )
-            throw penguinVException( std::string( "Failed to run OpenCL function with error ") + std::to_string( error ) );
+        if ( error != CL_SUCCESS )
+            throw penguinVException( std::string( "Failed to run OpenCL function with error " ) + std::to_string( error ) );
     }
 
     bool openCLSafeCheck( cl_int error )
     {
-        return (error == CL_SUCCESS);
+        return ( error == CL_SUCCESS );
     }
 
     OpenCLProgram CreateProgramFromFile( const std::string & fileName )
@@ -123,18 +126,18 @@ namespace multiCL
         std::fstream file;
         file.open( fileName, std::fstream::in | std::fstream::binary );
 
-        if( !file )
+        if ( !file )
             return OpenCLProgram( context, "" );
 
         file.seekg( 0, file.end );
         const std::streamoff fileLength = file.tellg();
 
-        if( fileLength == std::char_traits<char>::pos_type( -1 ) )
+        if ( fileLength == std::char_traits<char>::pos_type( -1 ) )
             return OpenCLProgram( context, "" );
 
         file.seekg( 0, file.beg );
 
-        std::vector <char> fileContent( static_cast<size_t>(fileLength) );
+        std::vector<char> fileContent( static_cast<size_t>( fileLength ) );
 
         file.read( fileContent.data(), fileLength );
 
@@ -146,17 +149,17 @@ namespace multiCL
     KernelParameters::KernelParameters()
         : dimensionCount( 1 )
     {
-        dimensionSize[0]   = dimensionSize[1]   = dimensionSize[2]   = 1u;
+        dimensionSize[0] = dimensionSize[1] = dimensionSize[2] = 1u;
         threadsPerBlock[0] = threadsPerBlock[1] = threadsPerBlock[2] = 1u;
     }
 
     KernelParameters::KernelParameters( size_t sizeX, size_t threadsPerX )
         : dimensionCount( 1 )
     {
-        assert( (sizeX >= threadsPerX) && (threadsPerX > 0) && ((sizeX % threadsPerX) == 0) );
+        assert( ( sizeX >= threadsPerX ) && ( threadsPerX > 0 ) && ( ( sizeX % threadsPerX ) == 0 ) );
 
-        dimensionSize[0]   = sizeX;
-        dimensionSize[1]   = dimensionSize[2]   = 1u;
+        dimensionSize[0] = sizeX;
+        dimensionSize[1] = dimensionSize[2] = 1u;
         threadsPerBlock[0] = threadsPerX;
         threadsPerBlock[1] = threadsPerBlock[2] = 1u;
     }
@@ -164,12 +167,12 @@ namespace multiCL
     KernelParameters::KernelParameters( size_t sizeX, size_t sizeY, size_t threadsPerX, size_t threadsPerY )
         : dimensionCount( 2 )
     {
-        assert( (sizeX >= threadsPerX) && (sizeY >= threadsPerY) && (threadsPerX > 0) && (threadsPerY > 0) &&
-            ((sizeX % threadsPerX) == 0) && ((sizeY % threadsPerY) == 0) );
+        assert( ( sizeX >= threadsPerX ) && ( sizeY >= threadsPerY ) && ( threadsPerX > 0 ) && ( threadsPerY > 0 ) && ( ( sizeX % threadsPerX ) == 0 )
+                && ( ( sizeY % threadsPerY ) == 0 ) );
 
-        dimensionSize[0]   = sizeX;
-        dimensionSize[1]   = sizeY;
-        dimensionSize[2]   = 1u;
+        dimensionSize[0] = sizeX;
+        dimensionSize[1] = sizeY;
+        dimensionSize[2] = 1u;
         threadsPerBlock[0] = threadsPerX;
         threadsPerBlock[1] = threadsPerY;
         threadsPerBlock[2] = 1u;
@@ -178,13 +181,12 @@ namespace multiCL
     KernelParameters::KernelParameters( size_t sizeX, size_t sizeY, size_t sizeZ, size_t threadsPerX, size_t threadsPerY, size_t threadsPerZ )
         : dimensionCount( 3 )
     {
-        assert( (sizeX >= threadsPerX) && (sizeY >= threadsPerY) && (sizeZ >= threadsPerZ) &&
-            (threadsPerX > 0) && (threadsPerY > 0) && (threadsPerZ > 0) &&
-                ((sizeX % threadsPerX) == 0) && ((sizeY % threadsPerY) == 0) && ((sizeZ % threadsPerZ) == 0) );
+        assert( ( sizeX >= threadsPerX ) && ( sizeY >= threadsPerY ) && ( sizeZ >= threadsPerZ ) && ( threadsPerX > 0 ) && ( threadsPerY > 0 ) && ( threadsPerZ > 0 )
+                && ( ( sizeX % threadsPerX ) == 0 ) && ( ( sizeY % threadsPerY ) == 0 ) && ( ( sizeZ % threadsPerZ ) == 0 ) );
 
-        dimensionSize[0]   = sizeX;
-        dimensionSize[1]   = sizeY;
-        dimensionSize[2]   = sizeZ;
+        dimensionSize[0] = sizeX;
+        dimensionSize[1] = sizeY;
+        dimensionSize[2] = sizeZ;
         threadsPerBlock[0] = threadsPerX;
         threadsPerBlock[1] = threadsPerY;
         threadsPerBlock[2] = threadsPerZ;
@@ -194,7 +196,7 @@ namespace multiCL
     {
         const size_t threadTotalCount = OpenCLDeviceManager::instance().device().threadsPerBlock( kernel );
 
-        return KernelParameters( ((sizeX + threadTotalCount - 1) / threadTotalCount) * threadTotalCount, threadTotalCount );
+        return KernelParameters( ( ( sizeX + threadTotalCount - 1 ) / threadTotalCount ) * threadTotalCount, threadTotalCount );
     }
 
     KernelParameters getKernelParameters( const OpenCLKernel & kernel, size_t sizeX, size_t sizeY )
@@ -202,9 +204,8 @@ namespace multiCL
         const size_t threadTotalCount = OpenCLDeviceManager::instance().device().threadsPerBlock( kernel );
         const dim3 & threadsPerBlock = get2DThreadsPerBlock( threadTotalCount );
 
-        return KernelParameters( ((sizeX + threadsPerBlock.x - 1) / threadsPerBlock.x) * threadsPerBlock.x,
-            ((sizeY + threadsPerBlock.y - 1) / threadsPerBlock.y) * threadsPerBlock.y,
-                                 threadsPerBlock.x, threadsPerBlock.y );
+        return KernelParameters( ( ( sizeX + threadsPerBlock.x - 1 ) / threadsPerBlock.x ) * threadsPerBlock.x,
+                                 ( ( sizeY + threadsPerBlock.y - 1 ) / threadsPerBlock.y ) * threadsPerBlock.y, threadsPerBlock.x, threadsPerBlock.y );
     }
 
     KernelParameters getKernelParameters( const OpenCLKernel & kernel, size_t sizeX, size_t sizeY, size_t sizeZ )
@@ -212,13 +213,12 @@ namespace multiCL
         const size_t threadTotalCount = OpenCLDeviceManager::instance().device().threadsPerBlock( kernel );
         const dim3 & threadsPerBlock = get3DThreadsPerBlock( threadTotalCount );
 
-        return KernelParameters( ((sizeX + threadsPerBlock.x - 1) / threadsPerBlock.x) * threadsPerBlock.x,
-            ((sizeY + threadsPerBlock.y - 1) / threadsPerBlock.y) * threadsPerBlock.y,
-                                 ((sizeZ + threadsPerBlock.z - 1) / threadsPerBlock.z) * threadsPerBlock.z,
-                                 threadsPerBlock.x, threadsPerBlock.y, threadsPerBlock.z );
+        return KernelParameters( ( ( sizeX + threadsPerBlock.x - 1 ) / threadsPerBlock.x ) * threadsPerBlock.x,
+                                 ( ( sizeY + threadsPerBlock.y - 1 ) / threadsPerBlock.y ) * threadsPerBlock.y,
+                                 ( ( sizeZ + threadsPerBlock.z - 1 ) / threadsPerBlock.z ) * threadsPerBlock.z, threadsPerBlock.x, threadsPerBlock.y, threadsPerBlock.z );
     }
 
-    void launchKernel1D( const OpenCLKernel& kernel, size_t sizeX )
+    void launchKernel1D( const OpenCLKernel & kernel, size_t sizeX )
     {
         runKernel( kernel, getKernelParameters( kernel, sizeX ) );
     }

@@ -1,11 +1,11 @@
 #pragma once
 
+#include "memory/cpu_memory.h"
+#include "penguinv_exception.h"
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
 #include <vector>
-#include "penguinv_exception.h"
-#include "memory/cpu_memory.h"
 
 namespace penguinV
 {
@@ -14,14 +14,14 @@ namespace penguinV
     {
     public:
         explicit ImageTemplate( uint32_t width_ = 0u, uint32_t height_ = 0u, uint8_t colorCount_ = 1u, uint8_t alignment_ = 1u )
-            : _width     ( 0 )       // width of image
-            , _height    ( 0 )       // height of image
-            , _colorCount( 1 )       // number of colors per pixel
-            , _alignment ( 1 )       // some formats require that row size must be a multiple of some value (alignment)
-                                     // for example for Bitmap it must be a multiple of 4
-            , _rowSize   ( 0 )       // size of single row on image, usually it is equal to width
-            , _data      ( nullptr ) // an array what store image information (pixel data)
-            , _type      ( 0 )       // special attribute to specify different types of images based on technology it is used for
+            : _width( 0 ) // width of image
+            , _height( 0 ) // height of image
+            , _colorCount( 1 ) // number of colors per pixel
+            , _alignment( 1 ) // some formats require that row size must be a multiple of some value (alignment)
+                              // for example for Bitmap it must be a multiple of 4
+            , _rowSize( 0 ) // size of single row on image, usually it is equal to width
+            , _data( nullptr ) // an array what store image information (pixel data)
+            , _type( 0 ) // special attribute to specify different types of images based on technology it is used for
         {
             _setType();
 
@@ -31,20 +31,20 @@ namespace penguinV
         }
 
         ImageTemplate( const ImageTemplate & image )
-            : _data      ( nullptr )
-            , _type      ( image._type )
+            : _data( nullptr )
+            , _type( image._type )
         {
             copy( image );
         }
 
         ImageTemplate( ImageTemplate && image )
-            : _width     ( 0 )
-            , _height    ( 0 )
+            : _width( 0 )
+            , _height( 0 )
             , _colorCount( 1 )
-            , _alignment ( 1 )
-            , _rowSize   ( 0 )
-            , _data      ( nullptr )
-            , _type      ( 0 )
+            , _alignment( 1 )
+            , _rowSize( 0 )
+            , _data( nullptr )
+            , _type( 0 )
         {
             swap( image );
         }
@@ -53,20 +53,20 @@ namespace penguinV
         {
             copy( image );
 
-            return (*this);
+            return ( *this );
         }
 
         ImageTemplate & operator=( ImageTemplate && image )
         {
             swap( image );
 
-            return (*this);
+            return ( *this );
         }
 
         bool operator==( const ImageTemplate & image ) const
         {
-            return _data == image._data && _width == image._width && _height == image._height && _colorCount == image._colorCount &&
-                   _alignment == image._alignment && _type == image._type;
+            return _data == image._data && _width == image._width && _height == image._height && _colorCount == image._colorCount && _alignment == image._alignment
+                   && _type == image._type;
         }
 
         virtual ~ImageTemplate()
@@ -76,15 +76,15 @@ namespace penguinV
 
         void resize( uint32_t width_, uint32_t height_ )
         {
-            if( width_ > 0 && height_ > 0 && (width_ != _width || height_ != _height) ) {
+            if ( width_ > 0 && height_ > 0 && ( width_ != _width || height_ != _height ) ) {
                 clear();
 
-                _width  = width_;
+                _width = width_;
                 _height = height_;
 
                 _rowSize = width() * colorCount();
-                if( _rowSize % alignment() != 0 )
-                    _rowSize = (_rowSize / alignment() + 1) * alignment();
+                if ( _rowSize % alignment() != 0 )
+                    _rowSize = ( _rowSize / alignment() + 1 ) * alignment();
 
                 _data = _allocate( static_cast<size_t>( _height ) * static_cast<size_t>( _rowSize ) );
             }
@@ -92,13 +92,13 @@ namespace penguinV
 
         void clear()
         {
-            if( _data != nullptr ) {
+            if ( _data != nullptr ) {
                 _deallocate( _data );
                 _data = nullptr;
             }
 
-            _width   = 0;
-            _height  = 0;
+            _width = 0;
+            _height = 0;
             _rowSize = 0;
         }
 
@@ -114,12 +114,12 @@ namespace penguinV
 
         void assign( TColorDepth * data_, uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
-            if( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
+            if ( data_ == nullptr || width_ == 0 || height_ == 0 || colorCount_ == 0 || alignment_ == 0 )
                 throw penguinVException( "Invalid image assignment parameters" );
 
             clear();
 
-            _width  = width_;
+            _width = width_;
             _height = height_;
 
             _colorCount = colorCount_;
@@ -128,8 +128,8 @@ namespace penguinV
             _data = data_;
 
             _rowSize = width() * colorCount();
-            if( _rowSize % alignment() != 0 )
-                _rowSize = (_rowSize / alignment() + 1) * alignment();
+            if ( _rowSize % alignment() != 0 )
+                _rowSize = ( _rowSize / alignment() + 1 ) * alignment();
         }
 
         bool empty() const
@@ -159,7 +159,7 @@ namespace penguinV
 
         void setColorCount( uint8_t colorCount_ )
         {
-            if( colorCount_ > 0 && _colorCount != colorCount_ ) {
+            if ( colorCount_ > 0 && _colorCount != colorCount_ ) {
                 clear();
                 _colorCount = colorCount_;
             }
@@ -172,7 +172,7 @@ namespace penguinV
 
         void setAlignment( uint8_t alignment_ )
         {
-            if( alignment_ > 0 && alignment_ != _alignment ) {
+            if ( alignment_ > 0 && alignment_ != _alignment ) {
                 clear();
                 _alignment = alignment_;
             }
@@ -180,7 +180,7 @@ namespace penguinV
 
         void fill( TColorDepth value )
         {
-            if( empty() )
+            if ( empty() )
                 return;
 
             _set( data(), value, sizeof( TColorDepth ) * height() * rowSize() );
@@ -192,8 +192,8 @@ namespace penguinV
             std::swap( _height, image._height );
 
             std::swap( _colorCount, image._colorCount );
-            std::swap( _rowSize   , image._rowSize );
-            std::swap( _alignment , image._alignment );
+            std::swap( _rowSize, image._rowSize );
+            std::swap( _alignment, image._alignment );
 
             std::swap( _data, image._data );
             std::swap( _type, image._type );
@@ -201,19 +201,19 @@ namespace penguinV
 
         void copy( const ImageTemplate & image )
         {
-            if( _type != image._type )
+            if ( _type != image._type )
                 throw penguinVException( "Cannot copy image of one type to another type." );
 
             clear();
 
-            _width  = image._width;
+            _width = image._width;
             _height = image._height;
 
             _colorCount = image._colorCount;
-            _rowSize    = image._rowSize;
-            _alignment  = image._alignment;
+            _rowSize = image._rowSize;
+            _alignment = image._alignment;
 
-            if( image._data != nullptr ) {
+            if ( image._data != nullptr ) {
                 _data = _allocate( static_cast<size_t>( _height ) * static_cast<size_t>( _rowSize ) );
 
                 _copy( _data, image._data, sizeof( TColorDepth ) * _height * _rowSize );
@@ -222,20 +222,19 @@ namespace penguinV
 
         bool mutate( uint32_t width_, uint32_t height_, uint8_t colorCount_, uint8_t alignment_ )
         {
-            if( colorCount_ > 0 && alignment_ > 0 )
-            {
+            if ( colorCount_ > 0 && alignment_ > 0 ) {
                 uint32_t rowSize_ = width_ * colorCount_;
-                if( rowSize_ % alignment_ != 0 )
-                    rowSize_ = (rowSize_ / alignment_ + 1) * alignment_;
+                if ( rowSize_ % alignment_ != 0 )
+                    rowSize_ = ( rowSize_ / alignment_ + 1 ) * alignment_;
 
-                if( rowSize_ * height_ != _rowSize * _height )
+                if ( rowSize_ * height_ != _rowSize * _height )
                     return false;
 
-                _width      = width_;
-                _height     = height_;
+                _width = width_;
+                _height = height_;
                 _colorCount = colorCount_;
-                _alignment  = alignment_;
-                _rowSize    = rowSize_;
+                _alignment = alignment_;
+                _rowSize = rowSize_;
 
                 return true;
             }
@@ -259,11 +258,12 @@ namespace penguinV
 
             return image;
         }
+
     protected:
-        typedef TColorDepth * ( *AllocateFunction   )( size_t size );
-        typedef void          ( *DeallocateFunction )( TColorDepth * data );
-        typedef void          ( *CopyFunction       )( TColorDepth * out, TColorDepth * in, size_t size );
-        typedef void          ( *SetFunction        )( TColorDepth * data, TColorDepth value, size_t size );
+        typedef TColorDepth * ( *AllocateFunction )( size_t size );
+        typedef void ( *DeallocateFunction )( TColorDepth * data );
+        typedef void ( *CopyFunction )( TColorDepth * out, TColorDepth * in, size_t size );
+        typedef void ( *SetFunction )( TColorDepth * data, TColorDepth value, size_t size );
 
         void _setType( uint8_t type = 0u, AllocateFunction allocateFunction = _allocateMemory, DeallocateFunction deallocateFunction = _deallocateMemory,
                        CopyFunction copyFunction = _copyMemory, SetFunction setFunction = _setMemory )
@@ -316,13 +316,13 @@ namespace penguinV
         uint32_t _width;
         uint32_t _height;
 
-        uint8_t  _colorCount;
-        uint8_t  _alignment;
+        uint8_t _colorCount;
+        uint8_t _alignment;
         uint32_t _rowSize;
 
         TColorDepth * _data;
 
-        uint8_t  _type;
+        uint8_t _type;
 
         class FunctionFacade
         {
@@ -333,15 +333,13 @@ namespace penguinV
                 return facade;
             }
 
-            void initialize( uint8_t type, AllocateFunction allocateFunction, DeallocateFunction deallocateFunction, CopyFunction copyFunction,
-                             SetFunction setFunction )
+            void initialize( uint8_t type, AllocateFunction allocateFunction, DeallocateFunction deallocateFunction, CopyFunction copyFunction, SetFunction setFunction )
             {
-                if( _allocate[type] == nullptr )
-                {
-                    _allocate  [type] = allocateFunction;
+                if ( _allocate[type] == nullptr ) {
+                    _allocate[type] = allocateFunction;
                     _deallocate[type] = deallocateFunction;
-                    _copy      [type] = copyFunction;
-                    _set       [type] = setFunction;
+                    _copy[type] = copyFunction;
+                    _set[type] = setFunction;
                 }
             }
 
@@ -368,17 +366,20 @@ namespace penguinV
         private:
             FunctionFacade()
             {
-                _allocate  .resize( 256, nullptr );
+                _allocate.resize( 256, nullptr );
                 _deallocate.resize( 256, nullptr );
-                _copy      .resize( 256, nullptr );
-                _set       .resize( 256, nullptr );
+                _copy.resize( 256, nullptr );
+                _set.resize( 256, nullptr );
             }
 
-            FunctionFacade & operator=( const FunctionFacade & ) { return (*this); }
+            FunctionFacade & operator=( const FunctionFacade & )
+            {
+                return ( *this );
+            }
             FunctionFacade( const FunctionFacade & ) {}
 
             template <typename TFunction>
-            TFunction _getFunction(const std::vector< TFunction >& data, uint8_t index ) const
+            TFunction _getFunction( const std::vector<TFunction> & data, uint8_t index ) const
             {
                 if ( data[index] == nullptr )
                     throw penguinVException( "A function is not defined for this type of image" );
@@ -386,15 +387,15 @@ namespace penguinV
                 return data[index];
             }
 
-            std::vector < AllocateFunction > _allocate;
-            std::vector < DeallocateFunction > _deallocate;
-            std::vector < CopyFunction > _copy;
-            std::vector < SetFunction > _set;
+            std::vector<AllocateFunction> _allocate;
+            std::vector<DeallocateFunction> _deallocate;
+            std::vector<CopyFunction> _copy;
+            std::vector<SetFunction> _set;
         };
     };
 
-    typedef ImageTemplate <uint8_t> Image;
-    typedef ImageTemplate <uint16_t> Image16Bit;
+    typedef ImageTemplate<uint8_t> Image;
+    typedef ImageTemplate<uint16_t> Image16Bit;
 
     const static uint8_t GRAY_SCALE = 1u;
     const static uint8_t RGB = 3u;

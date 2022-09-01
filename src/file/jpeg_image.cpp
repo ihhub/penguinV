@@ -1,6 +1,6 @@
 #include "jpeg_image.h"
-#include "../penguinv_exception.h"
 #include "../parameter_validation.h"
+#include "../penguinv_exception.h"
 
 namespace
 {
@@ -81,7 +81,7 @@ namespace Jpeg_Operation
         image.setColorCount( colorCount );
         image.resize( info.output_width, info.output_height );
 
-        uint8_t * line[1] = {nullptr};
+        uint8_t * line[1] = { nullptr };
         while ( info.output_scanline < info.output_height ) {
             line[0] = image.data() + image.rowSize() * info.output_scanline;
             jpeg_read_scanlines( &info, line, 1 );

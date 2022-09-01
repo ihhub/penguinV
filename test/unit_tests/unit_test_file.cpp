@@ -9,8 +9,8 @@
 
 namespace file_operation
 {
-    typedef penguinV::Image (*ImageLoad)( const std::string & path );
-    typedef void (*ImageSave)( const std::string & path, const penguinV::Image & image );
+    typedef penguinV::Image ( *ImageLoad )( const std::string & path );
+    typedef void ( *ImageSave )( const std::string & path, const penguinV::Image & image );
 
     bool WhiteGrayScaleImage( const std::string & filename, ImageLoad loadImage, ImageSave saveImage )
     {
@@ -20,8 +20,8 @@ namespace file_operation
         const penguinV::Image loaded = loadImage( filename );
         remove( filename.data() );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() ||
-             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 255u ) )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount()
+             || !Unit_Test::verifyImage( loaded, 255u ) )
             return false;
 
         return true;
@@ -35,8 +35,8 @@ namespace file_operation
         const penguinV::Image loaded = loadImage( filename );
         remove( filename.data() );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() ||
-             original.colorCount() != loaded.colorCount() || !Unit_Test::verifyImage( loaded, 0u ) )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount()
+             || !Unit_Test::verifyImage( loaded, 0u ) )
             return false;
 
         return true;
@@ -50,14 +50,13 @@ namespace file_operation
         const penguinV::Image loaded = loadImage( filename );
         remove( filename.data() );
 
-        if ( original.height() != loaded.height() || original.width() != loaded.width() ||
-            original.colorCount() != loaded.colorCount() )
+        if ( original.height() != loaded.height() || original.width() != loaded.width() || original.colorCount() != loaded.colorCount() )
             return false;
 
-        const uint32_t rowSizeIn  = original.rowSize();
+        const uint32_t rowSizeIn = original.rowSize();
         const uint32_t rowSizeOut = loaded.rowSize();
         const uint32_t width = original.width() * original.colorCount();
-        const uint8_t * inY  = original.data();
+        const uint8_t * inY = original.data();
         const uint8_t * outY = loaded.data();
         const uint8_t * inYEnd = inY + rowSizeIn * original.height();
 
@@ -128,15 +127,15 @@ void addTests_File( UnitTestFramework & framework )
 {
     framework.add( file_operation::WhiteGrayScaleImageBitmap, "File: Save and load white gray-scale bitmap image" );
     framework.add( file_operation::BlackGrayScaleImageBitmap, "File: Save and load black gray-scale bitmap image" );
-    framework.add( file_operation::RandomRGBImageBitmap,      "File: Save and load random RGB bitmap image" );
+    framework.add( file_operation::RandomRGBImageBitmap, "File: Save and load random RGB bitmap image" );
 #if defined( PENGUINV_ENABLED_PNG_SUPPORT )
-    framework.add( file_operation::WhiteGrayScaleImagePng,    "File: Save and load white gray-scale png image" );
-    framework.add( file_operation::BlackGrayScaleImagePng,    "File: Save and load black gray-scale png image" );
-    framework.add( file_operation::RandomRGBImagePng,         "File: Save and load random RGB png image" );
+    framework.add( file_operation::WhiteGrayScaleImagePng, "File: Save and load white gray-scale png image" );
+    framework.add( file_operation::BlackGrayScaleImagePng, "File: Save and load black gray-scale png image" );
+    framework.add( file_operation::RandomRGBImagePng, "File: Save and load random RGB png image" );
 #endif
 #if defined( PENGUINV_ENABLED_JPEG_SUPPORT )
-    framework.add( file_operation::WhiteGrayScaleImageJpeg,   "File: Save and load white gray-scale jpeg image" );
-    framework.add( file_operation::BlackGrayScaleImageJpeg,   "File: Save and load black gray-scale jpeg image" );
+    framework.add( file_operation::WhiteGrayScaleImageJpeg, "File: Save and load white gray-scale jpeg image" );
+    framework.add( file_operation::BlackGrayScaleImageJpeg, "File: Save and load black gray-scale jpeg image" );
 #endif
-    framework.add( file_operation::RawRGBImage,               "File: Save and load raw RGB image" );
+    framework.add( file_operation::RawRGBImage, "File: Save and load raw RGB image" );
 }

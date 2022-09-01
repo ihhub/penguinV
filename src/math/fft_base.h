@@ -14,13 +14,13 @@ namespace FFT
     template <typename _type1, typename _type2 = _type1>
     bool equalSize( const _type1 & first, const _type2 & second )
     {
-        return (first.width() == second.width()) && (first.height() == second.height());
+        return ( first.width() == second.width() ) && ( first.height() == second.height() );
     }
 
     // This class template is the base for storing complex-valued data ([real, imaginary]) for
     // the purpose of using in a Fast Fourier Transform. The template parameter is the type of
     // data to use. Instances of this class template are meant to be inherited by a sub-class.
-    // The sub-class should define _allocateData(), _freeData(), and _copyData(). 
+    // The sub-class should define _allocateData(), _freeData(), and _copyData().
     //
     // The function template definitions are in fft_base.tpp, and this file is included at the
     // end of this file (after the class template declarations).
@@ -30,15 +30,12 @@ namespace FFT
     {
     public:
         BaseComplexData()
-            : _data  ( nullptr )
-            , _width ( 0u )
+            : _data( nullptr )
+            , _width( 0u )
             , _height( 0u )
-        {
-        }
+        {}
 
-        virtual ~BaseComplexData()
-        {
-        }
+        virtual ~BaseComplexData() {}
 
         BaseComplexData & operator=( const BaseComplexData & data )
         {
@@ -56,8 +53,7 @@ namespace FFT
 
         void resize( uint32_t width_, uint32_t height_ )
         {
-            if ( (_width != width_ || _height != height_) && width_ != 0 && height_ != 0 )
-            {
+            if ( ( _width != width_ || _height != height_ ) && width_ != 0 && height_ != 0 ) {
                 _clean();
 
                 const uint32_t size = width_ * height_;
@@ -125,14 +121,14 @@ namespace FFT
 
         void _swap( BaseComplexData & data )
         {
-            std::swap( _data  , data._data   );
-            std::swap( _width , data._width  );
+            std::swap( _data, data._data );
+            std::swap( _width, data._width );
             std::swap( _height, data._height );
         }
     };
 
     // The base class fft execution. Sub-classes need to implement the direct and inverse
-    // transformations. 
+    // transformations.
     // - conversion from original domain of data to frequency domain and vice versa
     // - complex multiplication in frequency domain (convolution)
 

@@ -1,17 +1,16 @@
 #pragma once
-#include <string>
 #include "../image_buffer.h"
 #include "../math/math_base.h"
+#include <string>
 
 struct PaintColor
 {
     PaintColor( uint8_t _red = 0u, uint8_t _green = 0u, uint8_t _blue = 0u, uint8_t _alpha = 255u )
-        : red  ( _red   )
+        : red( _red )
         , green( _green )
-        , blue ( _blue  )
+        , blue( _blue )
         , alpha( _alpha )
-    {
-    }
+    {}
 
     uint8_t red;
     uint8_t green;
@@ -30,6 +29,7 @@ public:
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
     virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );
     virtual void drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color );
+
 protected:
     virtual void _display();
 

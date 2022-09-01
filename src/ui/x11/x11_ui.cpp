@@ -18,8 +18,8 @@ UiWindowX11::UiWindowX11( const penguinV::Image & image, const std::string & tit
     if ( _uiDisplay == nullptr )
         throw penguinVException( "Cannot create window for display" );
 
-    _window = XCreateSimpleWindow( _uiDisplay, RootWindow( _uiDisplay, _screen ), 10, 10, _width, _height, 1,
-                                   BlackPixel( _uiDisplay, _screen ), WhitePixel( _uiDisplay, _screen ) );
+    _window = XCreateSimpleWindow( _uiDisplay, RootWindow( _uiDisplay, _screen ), 10, 10, _width, _height, 1, BlackPixel( _uiDisplay, _screen ),
+                                   WhitePixel( _uiDisplay, _screen ) );
     XSelectInput( _uiDisplay, _window, ExposureMask | KeyPressMask );
     XMapWindow( _uiDisplay, _window );
 
@@ -52,11 +52,11 @@ void UiWindowX11::_display()
             for ( size_t i = 0u; i < _point.size(); ++i ) {
                 const Point2d & point = _point[i].first;
                 XSetForeground( _uiDisplay, defaultGC, _point[i].second );
-                XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>(point.x - 1), static_cast<int>(point.y - 1),
-                           static_cast<int>(point.x + 1), static_cast<int>(point.y + 1) );
+                XDrawLine( _uiDisplay, _window, defaultGC, static_cast<int>( point.x - 1 ), static_cast<int>( point.y - 1 ), static_cast<int>( point.x + 1 ),
+                           static_cast<int>( point.y + 1 ) );
             }
         }
-        else if ( (e.type == ClientMessage) && (static_cast<unsigned int>(e.xclient.data.l[0]) == _deleteWindowEvent) )
+        else if ( ( e.type == ClientMessage ) && ( static_cast<unsigned int>( e.xclient.data.l[0] ) == _deleteWindowEvent ) )
             break;
     }
 }
@@ -75,7 +75,7 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
 
     if ( image.colorCount() == penguinV::GRAY_SCALE ) {
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
-            const uint8_t * imageX    = imageY;
+            const uint8_t * imageX = imageY;
             const uint8_t * imageXEnd = imageX + _width;
 
             for ( ; imageX != imageXEnd; ++imageX ) {
@@ -90,7 +90,7 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
         if ( image.colorCount() != penguinV::RGB )
             throw penguinVException( "Color image has different than 3 color channels." );
         for ( ; imageY != imageYEnd; imageY += rowSize ) {
-            const uint8_t * imageX    = imageY;
+            const uint8_t * imageX = imageY;
             const uint8_t * imageXEnd = imageX + _width * 3u;
 
             for ( ; imageX != imageXEnd; imageX += 3 ) {
@@ -109,7 +109,7 @@ void UiWindowX11::_setupImage( const penguinV::Image & image )
 
 void UiWindowX11::drawPoint( const Point2d & point, const PaintColor & color )
 {
-    _point.push_back( std::make_pair( point, (color.red << 16) + (color.green << 8) + color.blue ) );
+    _point.push_back( std::make_pair( point, ( color.red << 16 ) + ( color.green << 8 ) + color.blue ) );
 }
 
 #endif

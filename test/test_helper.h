@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdlib>
 #include "../src/image_buffer.h"
+#include <cstdlib>
 
 namespace Test_Helper
 {
@@ -27,28 +27,28 @@ namespace Test_Helper
 
     // Iteration count for tests
     uint32_t runCount(); // fixed value for all test loops
-    void setRunCount( int argc, char* argv[], uint32_t count );
+    void setRunCount( int argc, char * argv[], uint32_t count );
 
     // Return random value for specific range or variable type
     template <typename data>
     data randomValue( uint32_t maximum )
     {
-        if( maximum == 0 )
+        if ( maximum == 0 )
             return 0;
         else
-            return static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            return static_cast<data>( static_cast<uint32_t>( rand() ) % maximum );
     }
 
     template <typename data>
     data randomValue( data minimum, uint32_t maximum )
     {
-        if( maximum == 0 ) {
+        if ( maximum == 0 ) {
             return 0;
         }
         else {
-            data value = static_cast<data>(static_cast<uint32_t>(rand()) % maximum);
+            data value = static_cast<data>( static_cast<uint32_t>( rand() ) % maximum );
 
-            if( value < minimum )
+            if ( value < minimum )
                 value = minimum;
 
             return value;

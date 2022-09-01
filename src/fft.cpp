@@ -3,9 +3,7 @@
 
 namespace FFT
 {
-    ComplexData::ComplexData()
-    {
-    }
+    ComplexData::ComplexData() {}
 
     ComplexData::ComplexData( const penguinV::Image & image )
     {
@@ -44,19 +42,19 @@ namespace FFT
 
         _allocateData( size * sizeof( kiss_fft_cpx ) );
 
-        _width  = image.width();
+        _width = image.width();
         _height = image.height();
 
         // Copy data from input image to FFT array
         const uint32_t rowSize = image.rowSize();
 
-        const uint8_t * inY  = image.data();
-        kiss_fft_cpx  * out = _data;
+        const uint8_t * inY = image.data();
+        kiss_fft_cpx * out = _data;
 
         const uint8_t * inYEnd = inY + _height * rowSize;
 
         for ( ; inY != inYEnd; inY += rowSize ) {
-            const uint8_t * inX  = inY;
+            const uint8_t * inX = inY;
             const uint8_t * inXEnd = inX + _width;
 
             for ( ; inX != inXEnd; ++inX, ++out ) {
@@ -90,17 +88,17 @@ namespace FFT
         uint8_t * out = image.data();
 
         const uint32_t size = _width * _height;
-        const uint32_t middleX = _width  / 2;
+        const uint32_t middleX = _width / 2;
         const uint32_t middleY = _height / 2;
 
         for ( uint32_t inY = 0; inY < _height; ++inY ) {
-            const uint32_t outY = (inY < middleY) ? middleY + inY : inY - middleY;
+            const uint32_t outY = ( inY < middleY ) ? middleY + inY : inY - middleY;
 
             const uint32_t posYIn = inY * _width;
             const uint32_t posYOut = outY * _width;
             for ( uint32_t inX = 0; inX < _width; ++inX ) {
-                const uint32_t outX = (inX < middleX) ? middleX + inX : inX - middleX;
-                out[posYOut + outX] = static_cast<uint8_t>(_data[posYIn + inX].r / static_cast<float>(size) + 0.5);
+                const uint32_t outX = ( inX < middleX ) ? middleX + inX : inX - middleX;
+                out[posYOut + outX] = static_cast<uint8_t>( _data[posYIn + inX].r / static_cast<float>( size ) + 0.5 );
             }
         }
 
@@ -123,8 +121,8 @@ namespace FFT
     }
 
     FFTExecutor::FFTExecutor( uint32_t width_, uint32_t height_ )
-        : _planDirect    ( 0 )
-        , _planInverse   ( 0 )
+        : _planDirect( 0 )
+        , _planInverse( 0 )
     {
         initialize( width_, height_ );
     }
@@ -184,8 +182,8 @@ namespace FFT
 
     void FFTExecutor::_makePlans()
     {
-        const int dims[2] = { static_cast<int>(_width), static_cast<int>(_height) };
-        _planDirect  = kiss_fftnd_alloc( dims, 2, false, 0, 0 );
+        const int dims[2] = { static_cast<int>( _width ), static_cast<int>( _height ) };
+        _planDirect = kiss_fftnd_alloc( dims, 2, false, 0, 0 );
         _planInverse = kiss_fftnd_alloc( dims, 2, true, 0, 0 );
     }
 

@@ -14,29 +14,23 @@ class penguinVException : public std::exception
 {
 public:
     penguinVException()
-        :  _name( "unknown image library exception" )
-    {
-    }
+        : _name( "unknown image library exception" )
+    {}
 
     explicit penguinVException( const char * message )
         : _name( message )
-    {
-    }
+    {}
 
     explicit penguinVException( const std::string & message )
         : _name( message.data() )
-    {
-    }
+    {}
 
     penguinVException( const penguinVException & ex )
         : std::exception( ex )
-        , _name         ( ex._name )
-    {
-    }
+        , _name( ex._name )
+    {}
 
-    virtual ~penguinVException()
-    {
-    }
+    virtual ~penguinVException() {}
 
     penguinVException & operator=( const penguinVException & ex )
     {
@@ -44,7 +38,7 @@ public:
 
         _name = ex._name;
 
-        return (*this);
+        return ( *this );
     }
 
     virtual const char * what() const NOEXCEPT

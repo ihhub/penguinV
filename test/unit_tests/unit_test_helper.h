@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdlib>
-#include <vector>
 #include "../../src/image_buffer.h"
 #include "../test_helper.h"
+#include <cstdlib>
+#include <vector>
 
 // A bunch of functions to help writing unit tests
 namespace Unit_Test
@@ -18,25 +18,23 @@ namespace Unit_Test
 
     // Generate pixel intensity values
     uint8_t intensityValue();
-    std::vector < uint8_t > intensityArray( uint32_t size );
+    std::vector<uint8_t> intensityArray( uint32_t size );
 
     // Image size and ROI verification
     template <typename data>
     bool equalSize( const data & image1, const data & image2 )
     {
-        return image1.height() == image2.height() && image1.width() == image2.width() &&
-            image1.alignment() == image2.alignment() && image1.colorCount() == image2.colorCount()
-            && image1.rowSize() == image2.rowSize();
+        return image1.height() == image2.height() && image1.width() == image2.width() && image1.alignment() == image2.alignment()
+               && image1.colorCount() == image2.colorCount() && image1.rowSize() == image2.rowSize();
     }
 
     template <typename data>
-    bool equalSize( const data & image, uint32_t width, uint32_t height, uint32_t rowSize, uint8_t colorCount,
-                    uint8_t alignment )
+    bool equalSize( const data & image, uint32_t width, uint32_t height, uint32_t rowSize, uint8_t colorCount, uint8_t alignment )
     {
-        return ((width == 0 || height == 0) && image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
-                 image.colorCount() == colorCount && image.alignment() == alignment && image.rowSize() == 0) ||
-                 (width == image.width() && height == image.height() && colorCount == image.colorCount() &&
-                   alignment == image.alignment() && rowSize == image.rowSize());
+        return ( ( width == 0 || height == 0 ) && image.data() == nullptr && image.width() == 0 && image.height() == 0 && image.colorCount() == colorCount
+                 && image.alignment() == alignment && image.rowSize() == 0 )
+               || ( width == image.width() && height == image.height() && colorCount == image.colorCount() && alignment == image.alignment()
+                    && rowSize == image.rowSize() );
     }
 
     bool equalSize( const penguinV::Image & image, uint32_t width, uint32_t height );
@@ -50,8 +48,7 @@ namespace Unit_Test
     template <typename data>
     bool isEmpty( const penguinV::ImageTemplate<data> & image )
     {
-        return image.data() == nullptr && image.width() == 0 && image.height() == 0 &&
-               image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
+        return image.data() == nullptr && image.width() == 0 && image.height() == 0 && image.colorCount() == 1 && image.alignment() == 1 && image.rowSize() == 0;
     }
 
     bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value );
@@ -74,16 +71,16 @@ namespace Unit_Test
     template <typename _Type>
     void generateRoi( const penguinV::ImageTemplate<_Type> & image, uint32_t & x, uint32_t & y, uint32_t & width, uint32_t & height )
     {
-        width  = randomValue<uint32_t>( 1, image.width()  + 1 );
+        width = randomValue<uint32_t>( 1, image.width() + 1 );
         height = randomValue<uint32_t>( 1, image.height() + 1 );
 
-        x = randomValue<uint32_t>( image.width()  - width );
+        x = randomValue<uint32_t>( image.width() - width );
         y = randomValue<uint32_t>( image.height() - height );
     }
     void generateRoi( const std::vector<penguinV::Image> & image, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width, uint32_t & height );
     // first element in pair structure is width, second - height
-    void generateRoi( const std::vector < std::pair< uint32_t, uint32_t > > & imageSize, std::vector < uint32_t > & x,
-                      std::vector < uint32_t > & y, uint32_t & width, uint32_t & height );
+    void generateRoi( const std::vector<std::pair<uint32_t, uint32_t>> & imageSize, std::vector<uint32_t> & x, std::vector<uint32_t> & y, uint32_t & width,
+                      uint32_t & height );
 
     void generateOffset( const penguinV::Image & image, uint32_t & x, uint32_t & y, uint32_t width, uint32_t height );
 
@@ -99,13 +96,13 @@ namespace Unit_Test
     template <typename data>
     data randomFloatValue( data minimum, data maximum, data stepVal )
     {
-        if (minimum > maximum || stepVal < 0)
+        if ( minimum > maximum || stepVal < 0 )
             return minimum;
 
-        int range = static_cast<int>( (maximum - minimum) / stepVal );
-        if (range <= 0)
+        int range = static_cast<int>( ( maximum - minimum ) / stepVal );
+        if ( range <= 0 )
             range = 1;
 
-        return static_cast<data>(rand() % range) * stepVal + minimum;
+        return static_cast<data>( rand() % range ) * stepVal + minimum;
     }
 }

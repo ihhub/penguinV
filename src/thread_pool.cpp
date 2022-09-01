@@ -1,24 +1,22 @@
-#include <algorithm>
-#include "penguinv_exception.h"
 #include "thread_pool.h"
+#include "penguinv_exception.h"
+#include <algorithm>
 
 AbstractTaskProvider::AbstractTaskProvider()
-    : _taskCount         ( 0 )
-    , _givenTaskCount    ( 0 )
+    : _taskCount( 0 )
+    , _givenTaskCount( 0 )
     , _completedTaskCount( 0 )
-    , _running           ( false )
-    , _exceptionRaised   ( false )
-{
-}
+    , _running( false )
+    , _exceptionRaised( false )
+{}
 
 AbstractTaskProvider::AbstractTaskProvider( const AbstractTaskProvider & )
-    : _taskCount         ( 0 )
-    , _givenTaskCount    ( 0 )
+    : _taskCount( 0 )
+    , _givenTaskCount( 0 )
     , _completedTaskCount( 0 )
-    , _running           ( false )
-    , _exceptionRaised   ( false )
-{
-}
+    , _running( false )
+    , _exceptionRaised( false )
+{}
 
 AbstractTaskProvider::~AbstractTaskProvider()
 {
@@ -27,28 +25,28 @@ AbstractTaskProvider::~AbstractTaskProvider()
 
 AbstractTaskProvider & AbstractTaskProvider::operator=( const AbstractTaskProvider & )
 {
-    return (*this);
+    return ( *this );
 }
 
 void AbstractTaskProvider::_taskRun( bool skip )
 {
     const size_t taskId = _givenTaskCount++;
 
-    if( taskId < _taskCount ) {
-        if( !skip ) {
+    if ( taskId < _taskCount ) {
+        if ( !skip ) {
             try {
                 _task( taskId );
             }
-            catch( ... ) {
+            catch ( ... ) {
                 // here should be some logging code stating about an exception
                 // or add your code to feedback about an exception
                 _exceptionRaised = true;
             }
         }
 
-        const size_t completedTasks = (++_completedTaskCount);
+        const size_t completedTasks = ( ++_completedTaskCount );
 
-        if( completedTasks == _taskCount ) {
+        if ( completedTasks == _taskCount ) {
             _completion.lock();
 
             _running = false;
@@ -61,7 +59,7 @@ void AbstractTaskProvider::_taskRun( bool skip )
 
 bool AbstractTaskProvider::_wait()
 {
-    std::unique_lock < std::mutex > _mutexLock( _completion );
+    std::unique_lock<std::mutex> _mutexLock( _completion );
     _waiting.wait( _mutexLock, [&] { return !_running; } );
 
     const bool noException = !_exceptionRaised;
@@ -75,35 +73,31 @@ bool AbstractTaskProvider::_ready() const
     return !_running;
 }
 
-
 TaskProvider::TaskProvider()
-    : _threadPool ( nullptr )
-{
-}
+    : _threadPool( nullptr )
+{}
 
 TaskProvider::TaskProvider( ThreadPool * pool )
-    : _threadPool ( pool )
-{
-}
+    : _threadPool( pool )
+{}
 
 TaskProvider::TaskProvider( const TaskProvider & provider )
-    : AbstractTaskProvider ( provider )
-    , _threadPool          ( provider._threadPool )
-{
-}
+    : AbstractTaskProvider( provider )
+    , _threadPool( provider._threadPool )
+{}
 
 TaskProvider::~TaskProvider()
 {
-    if( _threadPool != nullptr )
+    if ( _threadPool != nullptr )
         _threadPool->remove( this );
 }
 
 TaskProvider & TaskProvider::operator=( const TaskProvider & provider )
 {
-    if( this != &provider )
+    if ( this != &provider )
         _threadPool = provider._threadPool;
 
-    return (*this);
+    return ( *this );
 }
 
 void TaskProvider::setThreadPool( ThreadPool * pool )
@@ -113,9 +107,9 @@ void TaskProvider::setThreadPool( ThreadPool * pool )
 
 void TaskProvider::_run( size_t taskCount )
 {
-    if( _ready() && taskCount > 0 ) {
-        _taskCount          = taskCount;
-        _givenTaskCount     = 0;
+    if ( _ready() && taskCount > 0 ) {
+        _taskCount = taskCount;
+        _givenTaskCount = 0;
         _completedTaskCount = 0;
 
         _threadPool->add( this, _taskCount );
@@ -127,11 +121,10 @@ bool TaskProvider::_ready() const
     return AbstractTaskProvider::_ready() && _threadPool != nullptr;
 }
 
-
 ThreadPool::ThreadPool( size_t threads )
-    : _runningThreadCount ( 0 )
-    , _threadCount        ( 0 )
-    , _threadsCreated     ( false )
+    : _runningThreadCount( 0 )
+    , _threadCount( 0 )
+    , _threadsCreated( false )
 {
     if ( threads > 0 )
         resize( threads );
@@ -144,10 +137,10 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::resize( size_t threads )
 {
-    if( threads == 0 )
+    if ( threads == 0 )
         throw penguinVException( "Try to set zero threads in thread pool" );
 
-    if( threads > threadCount() ) {
+    if ( threads > threadCount() ) {
         _taskInfo.lock();
         _run.resize( threads, 1 );
         _exit.resize( threads, 0 );
@@ -155,22 +148,22 @@ void ThreadPool::resize( size_t threads )
 
         _threadCount = threads;
 
-        while( threads > threadCount() )
-            _worker.push_back( std::thread ( ThreadPool::_workerThread, this, threadCount() ) );
+        while ( threads > threadCount() )
+            _worker.push_back( std::thread( ThreadPool::_workerThread, this, threadCount() ) );
 
-        std::unique_lock < std::mutex > _mutexLock( _creation );
+        std::unique_lock<std::mutex> _mutexLock( _creation );
         _completeCreation.wait( _mutexLock, [&] { return _threadsCreated; } );
     }
-    else if( threads < threadCount() ) {
+    else if ( threads < threadCount() ) {
         _taskInfo.lock();
 
-        std::fill( _exit.begin() + static_cast<std::vector < uint8_t >::difference_type>(threads), _exit.end(), 1 );
-        std::fill( _run.begin()  + static_cast<std::vector < uint8_t >::difference_type>(threads), _run.end(), 1 );
+        std::fill( _exit.begin() + static_cast<std::vector<uint8_t>::difference_type>( threads ), _exit.end(), 1 );
+        std::fill( _run.begin() + static_cast<std::vector<uint8_t>::difference_type>( threads ), _run.end(), 1 );
         _waiting.notify_all();
 
         _taskInfo.unlock();
 
-        while( threads < threadCount() ) {
+        while ( threads < threadCount() ) {
             _worker.back().join();
 
             _worker.pop_back();
@@ -192,10 +185,10 @@ size_t ThreadPool::threadCount() const
 
 void ThreadPool::add( AbstractTaskProvider * provider, size_t taskCount )
 {
-    if( taskCount == 0 )
+    if ( taskCount == 0 )
         throw penguinVException( "Try to add zero tasks to thread pool" );
 
-    if( threadCount() == 0 )
+    if ( threadCount() == 0 )
         throw penguinVException( "No threads in thread pool" );
 
     provider->_completion.lock();
@@ -246,7 +239,7 @@ void ThreadPool::stop()
 {
     clear();
 
-    if( !_worker.empty() ) {
+    if ( !_worker.empty() ) {
         _taskInfo.lock();
 
         std::fill( _exit.begin(), _exit.end(), 1 );
@@ -255,7 +248,7 @@ void ThreadPool::stop()
 
         _taskInfo.unlock();
 
-        for( std::vector < std::thread >::iterator thread = _worker.begin(); thread != _worker.end(); ++thread )
+        for ( std::vector<std::thread>::iterator thread = _worker.begin(); thread != _worker.end(); ++thread )
             thread->join();
 
         _worker.clear();
@@ -264,24 +257,24 @@ void ThreadPool::stop()
 
 void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
 {
-    if( ++(pool->_runningThreadCount) == pool->_threadCount ) {
+    if ( ++( pool->_runningThreadCount ) == pool->_threadCount ) {
         pool->_creation.lock();
         pool->_threadsCreated = true;
         pool->_completeCreation.notify_one();
         pool->_creation.unlock();
     }
 
-    while( !pool->_exit[threadId] ) {
-        std::unique_lock < std::mutex > _mutexLock( pool->_taskInfo );
+    while ( !pool->_exit[threadId] ) {
+        std::unique_lock<std::mutex> _mutexLock( pool->_taskInfo );
         pool->_waiting.wait( _mutexLock, [&] { return pool->_run[threadId]; } );
         _mutexLock.unlock();
 
-        if( pool->_exit[threadId] )
+        if ( pool->_exit[threadId] )
             break;
 
         pool->_taskInfo.lock();
 
-        if( !pool->_task.empty() ) {
+        if ( !pool->_task.empty() ) {
             AbstractTaskProvider * task = pool->_task.front();
 
             pool->_task.pop_front();
@@ -297,9 +290,8 @@ void ThreadPool::_workerThread( ThreadPool * pool, size_t threadId )
         }
     }
 
-    --(pool->_runningThreadCount);
+    --( pool->_runningThreadCount );
 }
-
 
 ThreadPool & ThreadPoolMonoid::instance()
 {
@@ -308,15 +300,11 @@ ThreadPool & ThreadPoolMonoid::instance()
     return provider._pool;
 }
 
-
-TaskProviderSingleton::TaskProviderSingleton()
-{
-}
+TaskProviderSingleton::TaskProviderSingleton() {}
 
 TaskProviderSingleton::TaskProviderSingleton( const TaskProviderSingleton & provider )
     : AbstractTaskProvider( provider )
-{
-}
+{}
 
 TaskProviderSingleton::~TaskProviderSingleton()
 {
@@ -325,14 +313,14 @@ TaskProviderSingleton::~TaskProviderSingleton()
 
 TaskProviderSingleton & TaskProviderSingleton::operator=( const TaskProviderSingleton & )
 {
-    return (*this);
+    return ( *this );
 }
 
 void TaskProviderSingleton::_run( size_t taskCount )
 {
-    if( _ready() && taskCount > 0 ) {
-        _taskCount          = taskCount;
-        _givenTaskCount     = 0;
+    if ( _ready() && taskCount > 0 ) {
+        _taskCount = taskCount;
+        _givenTaskCount = 0;
         _completedTaskCount = 0;
 
         ThreadPoolMonoid::instance().add( this, _taskCount );

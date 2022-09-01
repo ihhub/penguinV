@@ -1,9 +1,9 @@
 // Example application of blob detection utilization
-#include <iostream>
 #include "../../src/blob_detection.h"
+#include "../../src/file/bmp_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include "../../src/file/bmp_image.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {
@@ -18,14 +18,14 @@ int main( int argc, char * argv[] )
 
         // If the image is empty it means that the image doesn't exist or the file is not readable
         if ( image.empty() )
-            throw penguinVException( std::string("Cannot load ") + filePath );
+            throw penguinVException( std::string( "Cannot load " ) + filePath );
 
         // Convert to gray-scale image if it's not
         if ( image.colorCount() != penguinV::GRAY_SCALE )
             image = Image_Function::ConvertToGrayScale( image );
 
         // Threshold image with calculated optimal threshold
-        const std::vector< uint32_t > histogram = Image_Function::Histogram( image );
+        const std::vector<uint32_t> histogram = Image_Function::Histogram( image );
         const uint8_t thresholdValue = Image_Function::GetThreshold( histogram );
         image = Image_Function::Threshold( image, thresholdValue );
 

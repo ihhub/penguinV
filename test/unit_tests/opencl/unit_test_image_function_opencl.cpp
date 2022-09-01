@@ -17,14 +17,15 @@ namespace image_function_opencl
 
     bool AbsoluteDifference2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::AbsoluteDifference( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
+            if ( !equalSize( input[0], output )
+                 || !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] )
+                                                                              : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
                 return false;
         }
 
@@ -33,13 +34,14 @@ namespace image_function_opencl
 
     bool AbsoluteDifference3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::AbsoluteDifference( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] )
+                                                                             : static_cast<uint8_t>( intensity[1] - intensity[0] ) ) )
                 return false;
         }
 
@@ -48,13 +50,13 @@ namespace image_function_opencl
 
     bool BitwiseAnd2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::BitwiseAnd( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] & intensity[1] ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] & intensity[1] ) )
                 return false;
         }
 
@@ -63,13 +65,13 @@ namespace image_function_opencl
 
     bool BitwiseAnd3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseAnd( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] & intensity[1] ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] & intensity[1] ) )
                 return false;
         }
 
@@ -78,13 +80,13 @@ namespace image_function_opencl
 
     bool BitwiseOr2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::BitwiseOr( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] | intensity[1] ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] | intensity[1] ) )
                 return false;
         }
 
@@ -93,13 +95,13 @@ namespace image_function_opencl
 
     bool BitwiseOr3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseOr( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] | intensity[1] ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] | intensity[1] ) )
                 return false;
         }
 
@@ -108,13 +110,13 @@ namespace image_function_opencl
 
     bool BitwiseXor2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             penguinV::Image output = Image_Function_OpenCL::BitwiseXor( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] ^ intensity[1] ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] ^ intensity[1] ) )
                 return false;
         }
 
@@ -123,13 +125,13 @@ namespace image_function_opencl
 
     bool BitwiseXor3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::BitwiseXor( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] ^ intensity[1] ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] ^ intensity[1] ) )
                 return false;
         }
 
@@ -138,13 +140,13 @@ namespace image_function_opencl
 
     bool ConvertToGrayScale1ParameterTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 1 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 1 );
             const penguinV::Image input = uniformRGBImage( intensity[0], reference );
 
             const penguinV::Image output = Image_Function_OpenCL::ConvertToGrayScale( input );
 
-            if( !OpenCL::verifyImage( output, intensity[0] ) )
+            if ( !OpenCL::verifyImage( output, intensity[0] ) )
                 return false;
         }
 
@@ -153,8 +155,8 @@ namespace image_function_opencl
 
     bool ConvertToGrayScale2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const penguinV::Image input = uniformRGBImage( intensity[0], reference );
             penguinV::ImageOpenCL output( input.width(), input.height() );
 
@@ -162,7 +164,7 @@ namespace image_function_opencl
 
             Image_Function_OpenCL::ConvertToGrayScale( input, output );
 
-            if( !OpenCL::verifyImage( output, intensity[0] ) )
+            if ( !OpenCL::verifyImage( output, intensity[0] ) )
                 return false;
         }
 
@@ -171,13 +173,13 @@ namespace image_function_opencl
 
     bool ConvertToRgb1ParameterTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 1 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 1 );
             const penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::ConvertToRgb( input );
 
-            if( !OpenCL::verifyImage( output, intensity[0] ) )
+            if ( !OpenCL::verifyImage( output, intensity[0] ) )
                 return false;
         }
 
@@ -186,8 +188,8 @@ namespace image_function_opencl
 
     bool ConvertToRgb2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const penguinV::Image input = uniformImage( intensity[0], 0, 0, reference );
             penguinV::ImageOpenCL output( input.width(), input.height(), penguinV::RGB );
 
@@ -195,7 +197,7 @@ namespace image_function_opencl
 
             Image_Function_OpenCL::ConvertToRgb( input, output );
 
-            if( !OpenCL::verifyImage( output, intensity[0] ) )
+            if ( !OpenCL::verifyImage( output, intensity[0] ) )
                 return false;
         }
 
@@ -204,19 +206,19 @@ namespace image_function_opencl
 
     bool GammaCorrection3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            const double a = randomValue<uint32_t>( 100 ) / 100.0;
+            const double gamma = randomValue<uint32_t>( 300 ) / 100.0;
 
             const penguinV::Image output = Image_Function_OpenCL::GammaCorrection( input, a, gamma );
 
             const double value = a * pow( intensity / 255.0, gamma ) * 255 + 0.5;
-            const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255u;
+            const uint8_t corrected = ( value < 256 ) ? static_cast<uint8_t>( value ) : 255u;
 
-            if( !OpenCL::verifyImage( output, corrected ) )
+            if ( !OpenCL::verifyImage( output, corrected ) )
                 return false;
         }
 
@@ -225,19 +227,19 @@ namespace image_function_opencl
 
     bool GammaCorrection4ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
-            const double a     = randomValue <uint32_t>( 100 ) / 100.0;
-            const double gamma = randomValue <uint32_t>( 300 ) / 100.0;
+            const double a = randomValue<uint32_t>( 100 ) / 100.0;
+            const double gamma = randomValue<uint32_t>( 300 ) / 100.0;
 
             Image_Function_OpenCL::GammaCorrection( input[0], input[1], a, gamma );
 
             double value = a * pow( intensity[0] / 255.0, gamma ) * 255 + 0.5;
-            const uint8_t corrected = (value < 256) ? static_cast<uint8_t>(value) : 255u;
+            const uint8_t corrected = ( value < 256 ) ? static_cast<uint8_t>( value ) : 255u;
 
-            if( !OpenCL::verifyImage( input[1], corrected ) )
+            if ( !OpenCL::verifyImage( input[1], corrected ) )
                 return false;
         }
 
@@ -246,14 +248,14 @@ namespace image_function_opencl
 
     bool Histogram1ParameterTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image image = uniformImage( intensity, 0, 0, reference );
 
-            const std::vector < uint32_t > histogram = Image_Function_OpenCL::Histogram( image );
+            const std::vector<uint32_t> histogram = Image_Function_OpenCL::Histogram( image );
 
-            if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
-                std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
+            if ( histogram.size() != 256u || histogram[intensity] != image.width() * image.height()
+                 || std::accumulate( histogram.begin(), histogram.end(), 0u ) != image.width() * image.height() )
                 return false;
         }
 
@@ -262,15 +264,15 @@ namespace image_function_opencl
 
     bool Histogram2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image image = uniformImage( intensity, 0, 0, reference );
 
-            std::vector < uint32_t > histogram;
+            std::vector<uint32_t> histogram;
             Image_Function_OpenCL::Histogram( image, histogram );
 
-            if( histogram.size() != 256u || histogram[intensity] != image.width() * image.height() ||
-                std::accumulate( histogram.begin(), histogram.end(), 0u )  != image.width() * image.height() )
+            if ( histogram.size() != 256u || histogram[intensity] != image.width() * image.height()
+                 || std::accumulate( histogram.begin(), histogram.end(), 0u ) != image.width() * image.height() )
                 return false;
         }
 
@@ -279,13 +281,13 @@ namespace image_function_opencl
 
     bool Invert1ParameterTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Invert( input );
 
-            if( !equalSize( input, output ) || !OpenCL::verifyImage( output, static_cast<uint8_t>( ~intensity ) ) )
+            if ( !equalSize( input, output ) || !OpenCL::verifyImage( output, static_cast<uint8_t>( ~intensity ) ) )
                 return false;
         }
 
@@ -294,13 +296,13 @@ namespace image_function_opencl
 
     bool Invert2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Invert( input[0], input[1] );
 
-            if( !OpenCL::verifyImage( input[1], static_cast<uint8_t>( ~intensity[0] ) ) )
+            if ( !OpenCL::verifyImage( input[1], static_cast<uint8_t>( ~intensity[0] ) ) )
                 return false;
         }
 
@@ -309,23 +311,23 @@ namespace image_function_opencl
 
     bool LookupTable2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL( randomImage( intensity ) );
 
-            std::vector < uint8_t > lookupTable( 256, 0 );
+            std::vector<uint8_t> lookupTable( 256, 0 );
 
             lookupTable[intensity[0]] = intensityValue();
             lookupTable[intensity[1]] = intensityValue();
 
             const penguinV::Image output = Image_Function_OpenCL::LookupTable( input, lookupTable );
 
-            std::vector < uint8_t > normalized( 2 );
+            std::vector<uint8_t> normalized( 2 );
 
             normalized[0] = lookupTable[intensity[0]];
             normalized[1] = lookupTable[intensity[1]];
 
-            if( !OpenCL::verifyImage( output, normalized ) )
+            if ( !OpenCL::verifyImage( output, normalized ) )
                 return false;
         }
 
@@ -334,26 +336,26 @@ namespace image_function_opencl
 
     bool LookupTable3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const penguinV::Image input = Image_Function_OpenCL::ConvertToOpenCL( randomImage( intensity ) );
             penguinV::ImageOpenCL output( input.width(), input.height() );
 
             output.fill( intensityValue() );
 
-            std::vector < uint8_t > lookupTable( 256, 0 );
+            std::vector<uint8_t> lookupTable( 256, 0 );
 
             lookupTable[intensity[0]] = intensityValue();
             lookupTable[intensity[1]] = intensityValue();
 
             Image_Function_OpenCL::LookupTable( input, output, lookupTable );
 
-            std::vector < uint8_t > normalized( 2 );
+            std::vector<uint8_t> normalized( 2 );
 
             normalized[0] = lookupTable[intensity[0]];
             normalized[1] = lookupTable[intensity[1]];
 
-            if( !OpenCL::verifyImage( output, normalized ) )
+            if ( !OpenCL::verifyImage( output, normalized ) )
                 return false;
         }
 
@@ -362,14 +364,13 @@ namespace image_function_opencl
 
     bool Maximum2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Maximum( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
                 return false;
         }
 
@@ -378,13 +379,13 @@ namespace image_function_opencl
 
     bool Maximum3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Maximum( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? intensity[0] : intensity[1] ) )
                 return false;
         }
 
@@ -393,14 +394,13 @@ namespace image_function_opencl
 
     bool Minimum2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Minimum( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
                 return false;
         }
 
@@ -409,13 +409,13 @@ namespace image_function_opencl
 
     bool Minimum3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Minimum( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] < intensity[1] ? intensity[0] : intensity[1] ) )
                 return false;
         }
 
@@ -424,14 +424,13 @@ namespace image_function_opencl
 
     bool Subtract2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             const std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
             const penguinV::Image output = Image_Function_OpenCL::Subtract( input[0], input[1] );
 
-            if( !equalSize( input[0], output ) ||
-                !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
+            if ( !equalSize( input[0], output ) || !OpenCL::verifyImage( output, intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
                 return false;
         }
 
@@ -440,13 +439,13 @@ namespace image_function_opencl
 
     bool Subtract3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 3 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 3 );
             std::vector<penguinV::Image> image = uniformImages( intensity, reference );
 
             Image_Function_OpenCL::Subtract( image[0], image[1], image[2] );
 
-            if( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
+            if ( !OpenCL::verifyImage( image[2], intensity[0] > intensity[1] ? static_cast<uint8_t>( intensity[0] - intensity[1] ) : 0 ) )
                 return false;
         }
 
@@ -455,15 +454,15 @@ namespace image_function_opencl
 
     bool Threshold2ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const uint8_t threshold = randomValue <uint8_t>( 255 );
+            const uint8_t threshold = randomValue<uint8_t>( 255 );
 
             const Image_Function_OpenCL::Image output = Image_Function_OpenCL::Threshold( input, threshold );
 
-            if( !OpenCL::verifyImage( output, intensity < threshold ? 0 : 255 ) )
+            if ( !OpenCL::verifyImage( output, intensity < threshold ? 0 : 255 ) )
                 return false;
         }
 
@@ -472,15 +471,15 @@ namespace image_function_opencl
 
     bool Threshold3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
-            const uint8_t threshold = randomValue <uint8_t>( 255 );
+            const uint8_t threshold = randomValue<uint8_t>( 255 );
 
             Image_Function_OpenCL::Threshold( input[0], input[1], threshold );
 
-            if( !OpenCL::verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
+            if ( !OpenCL::verifyImage( input[1], intensity[0] < threshold ? 0 : 255 ) )
                 return false;
         }
 
@@ -489,16 +488,16 @@ namespace image_function_opencl
 
     bool ThresholdDouble3ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
             const uint8_t intensity = intensityValue();
             const penguinV::Image input = uniformImage( intensity, 0, 0, reference );
 
-            const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-            const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+            const uint8_t minThreshold = randomValue<uint8_t>( 255 );
+            const uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 255 );
 
             const penguinV::Image output = Image_Function_OpenCL::Threshold( input, minThreshold, maxThreshold );
 
-            if( !OpenCL::verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
+            if ( !OpenCL::verifyImage( output, intensity < minThreshold || intensity > maxThreshold ? 0 : 255 ) )
                 return false;
         }
 
@@ -507,16 +506,16 @@ namespace image_function_opencl
 
     bool ThresholdDouble4ParametersTest()
     {
-        for( uint32_t i = 0; i < runCount(); ++i ) {
-            const std::vector < uint8_t > intensity = intensityArray( 2 );
+        for ( uint32_t i = 0; i < runCount(); ++i ) {
+            const std::vector<uint8_t> intensity = intensityArray( 2 );
             std::vector<penguinV::Image> input = uniformImages( intensity, reference );
 
-            const uint8_t minThreshold = randomValue <uint8_t>( 255 );
-            const uint8_t maxThreshold = randomValue <uint8_t>( minThreshold, 255 );
+            const uint8_t minThreshold = randomValue<uint8_t>( 255 );
+            const uint8_t maxThreshold = randomValue<uint8_t>( minThreshold, 255 );
 
             Image_Function_OpenCL::Threshold( input[0], input[1], minThreshold, maxThreshold );
 
-            if( !OpenCL::verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
+            if ( !OpenCL::verifyImage( input[1], intensity[0] < minThreshold || intensity[0] > maxThreshold ? 0 : 255 ) )
                 return false;
         }
 

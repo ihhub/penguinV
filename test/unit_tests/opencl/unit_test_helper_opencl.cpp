@@ -1,10 +1,10 @@
 #include <map>
 #include <memory>
 
-#include "../../../src/penguinv_exception.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/opencl_helper.h"
 #include "../../../src/opencl/opencl_types.h"
+#include "../../../src/penguinv_exception.h"
 #include "../unit_test_helper.h"
 #include "unit_test_helper_opencl.h"
 
@@ -48,17 +48,17 @@ namespace
         }
     )";
 
-    const multiCL::OpenCLProgram& GetProgram()
+    const multiCL::OpenCLProgram & GetProgram()
     {
-        static std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > > deviceProgram;
+        static std::map<cl_device_id, std::shared_ptr<multiCL::OpenCLProgram>> deviceProgram;
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
-        std::map< cl_device_id, std::shared_ptr< multiCL::OpenCLProgram > >::const_iterator program = deviceProgram.find( device.deviceId() );
+        std::map<cl_device_id, std::shared_ptr<multiCL::OpenCLProgram>>::const_iterator program = deviceProgram.find( device.deviceId() );
         if ( program != deviceProgram.cend() )
-            return *(program->second);
+            return *( program->second );
 
-        deviceProgram[device.deviceId()] = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
-        return *(deviceProgram[device.deviceId()]);
+        deviceProgram[device.deviceId()] = std::shared_ptr<multiCL::OpenCLProgram>( new multiCL::OpenCLProgram( device.context(), programCode.data() ) );
+        return *( deviceProgram[device.deviceId()] );
     }
 }
 
@@ -78,7 +78,7 @@ namespace Unit_Test
 
         bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t value )
         {
-            multiCL::Type< uint32_t > differenceCount( 0u );
+            multiCL::Type<uint32_t> differenceCount( 0u );
 
             const multiCL::OpenCLProgram & program = GetProgram();
             multiCL::OpenCLKernel kernel( program, "isEqualOpenCL" );
@@ -95,7 +95,7 @@ namespace Unit_Test
         }
         bool verifyImage( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, const std::vector<uint8_t> & value )
         {
-            multiCL::Type< uint32_t > differenceCount( 0u );
+            multiCL::Type<uint32_t> differenceCount( 0u );
 
             cl_mem valueOpenCL = multiCL::MemoryManager::memory().allocate<uint8_t>( value.size() );
             multiCL::writeBuffer( valueOpenCL, sizeof( uint8_t ) * value.size(), value.data() );

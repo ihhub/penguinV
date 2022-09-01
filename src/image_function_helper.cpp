@@ -1,65 +1,62 @@
 #include "image_function_helper.h"
-#include <cmath>
 #include "parameter_validation.h"
 #include "penguinv/cpu_identification.h"
+#include <cmath>
 
 namespace
 {
     template <typename _Function>
     void setFunction( _Function & F1, const _Function & F2, bool forceSetup )
     {
-        if ( (F1 == nullptr) || (forceSetup && (F2 != nullptr)) )
-        {
+        if ( ( F1 == nullptr ) || ( forceSetup && ( F2 != nullptr ) ) ) {
             F1 = F2;
         }
     }
 
-#define SET_FUNCTION( functionName ) \
-    setFunction( oldTable.functionName, newTable.functionName, forceSetup );
+#define SET_FUNCTION( functionName ) setFunction( oldTable.functionName, newTable.functionName, forceSetup );
 
     void setupTable( Image_Function_Helper::FunctionTableHolder & oldTable, const Image_Function_Helper::FunctionTableHolder & newTable, bool forceSetup )
     {
-        SET_FUNCTION(AbsoluteDifference)
-        SET_FUNCTION(Accumulate)
-        SET_FUNCTION(BitwiseAnd)
-        SET_FUNCTION(BitwiseOr)
-        SET_FUNCTION(BitwiseXor)
-        SET_FUNCTION(ConvertTo16Bit)
-        SET_FUNCTION(ConvertTo8Bit)
-        SET_FUNCTION(ConvertToGrayScale)
-        SET_FUNCTION(ConvertToRgb)
-        SET_FUNCTION(Copy)
-        SET_FUNCTION(ExtractChannel)
-        SET_FUNCTION(Fill)
-        SET_FUNCTION(Flip)
-        SET_FUNCTION(GammaCorrection)
-        SET_FUNCTION(GetPixel)
-        SET_FUNCTION(Histogram)
-        SET_FUNCTION(Invert)
-        SET_FUNCTION(IsEqual)
-        SET_FUNCTION(LookupTable)
-        SET_FUNCTION(Maximum)
-        SET_FUNCTION(Merge)
-        SET_FUNCTION(Minimum)
-        SET_FUNCTION(Normalize)
-        SET_FUNCTION(ProjectionProfile)
-        SET_FUNCTION(Resize)
-        SET_FUNCTION(RgbToBgr)
-        SET_FUNCTION(SetPixel)
-        SET_FUNCTION(SetPixel2)
-        SET_FUNCTION(Split)
-        SET_FUNCTION(Subtract)
-        SET_FUNCTION(Sum)
-        SET_FUNCTION(Threshold)
-        SET_FUNCTION(Threshold2)
-        SET_FUNCTION(Transpose)
+        SET_FUNCTION( AbsoluteDifference )
+        SET_FUNCTION( Accumulate )
+        SET_FUNCTION( BitwiseAnd )
+        SET_FUNCTION( BitwiseOr )
+        SET_FUNCTION( BitwiseXor )
+        SET_FUNCTION( ConvertTo16Bit )
+        SET_FUNCTION( ConvertTo8Bit )
+        SET_FUNCTION( ConvertToGrayScale )
+        SET_FUNCTION( ConvertToRgb )
+        SET_FUNCTION( Copy )
+        SET_FUNCTION( ExtractChannel )
+        SET_FUNCTION( Fill )
+        SET_FUNCTION( Flip )
+        SET_FUNCTION( GammaCorrection )
+        SET_FUNCTION( GetPixel )
+        SET_FUNCTION( Histogram )
+        SET_FUNCTION( Invert )
+        SET_FUNCTION( IsEqual )
+        SET_FUNCTION( LookupTable )
+        SET_FUNCTION( Maximum )
+        SET_FUNCTION( Merge )
+        SET_FUNCTION( Minimum )
+        SET_FUNCTION( Normalize )
+        SET_FUNCTION( ProjectionProfile )
+        SET_FUNCTION( Resize )
+        SET_FUNCTION( RgbToBgr )
+        SET_FUNCTION( SetPixel )
+        SET_FUNCTION( SetPixel2 )
+        SET_FUNCTION( Split )
+        SET_FUNCTION( Subtract )
+        SET_FUNCTION( Sum )
+        SET_FUNCTION( Threshold )
+        SET_FUNCTION( Threshold2 )
+        SET_FUNCTION( Transpose )
     }
 }
 
 namespace Image_Function_Helper
 {
-    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
-                              const Image & in1, const Image & in2 )
+    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -70,17 +67,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
-                             const Image & in1, const Image & in2, Image & out )
+    void AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         absoluteDifference( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference,
-                              const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                              uint32_t width, uint32_t height )
+    Image AbsoluteDifference( FunctionTable::AbsoluteDifferenceForm4 absoluteDifference, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2,
+                              uint32_t startX2, uint32_t startY2, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -91,16 +86,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Accumulate( FunctionTable::AccumulateForm2 accumulate,
-                     const Image & image, std::vector < uint32_t > & result )
+    void Accumulate( FunctionTable::AccumulateForm2 accumulate, const Image & image, std::vector<uint32_t> & result )
     {
         Image_Function::ValidateImageParameters( image );
 
         accumulate( image, 0, 0, image.width(), image.height(), result );
     }
 
-    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
-                      const Image & in1, const Image & in2 )
+    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -111,17 +104,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
-                     const Image & in1, const Image & in2, Image & out )
+    void BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         bitwiseAnd( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd,
-                      const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseAnd( FunctionTable::BitwiseAndForm4 bitwiseAnd, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2,
+                      uint32_t startY2, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -132,8 +123,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
-                     const Image & in1, const Image & in2 )
+    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -144,17 +134,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
-                    const Image & in1, const Image & in2, Image & out )
+    void BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         bitwiseOr( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr,
-                     const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                     uint32_t width, uint32_t height )
+    Image BitwiseOr( FunctionTable::BitwiseOrForm4 bitwiseOr, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2,
+                     uint32_t startY2, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -165,8 +153,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
-                      const Image & in1, const Image & in2 )
+    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -177,17 +164,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
-                     const Image & in1, const Image & in2, Image & out )
+    void BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         bitwiseXor( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor,
-                      const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
-                      uint32_t width, uint32_t height )
+    Image BitwiseXor( FunctionTable::BitwiseXorForm4 bitwiseXor, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2,
+                      uint32_t startY2, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
 
@@ -198,8 +183,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit,
-                         const Image & in, Image16Bit & out )
+    void ConvertTo16Bit( FunctionTable::ConvertTo16BitForm4 convertTo16Bit, const Image & in, Image16Bit & out )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::ValidateImageParameters( out );
@@ -207,8 +191,7 @@ namespace Image_Function_Helper
         convertTo16Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit,
-                        const Image16Bit & in, Image & out )
+    void ConvertTo8Bit( FunctionTable::ConvertTo8BitForm4 convertTo8Bit, const Image16Bit & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::ValidateImageParameters( out );
@@ -216,8 +199,7 @@ namespace Image_Function_Helper
         convertTo8Bit( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
-                              const Image & in )
+    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -228,16 +210,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
-                             const Image & in, Image & out )
+    void ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         convertToGrayScale( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale,
-                              const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToGrayScale( FunctionTable::ConvertToGrayScaleForm4 convertToGrayScale, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width,
+                              uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -248,8 +229,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
-                        const Image & in )
+    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -260,16 +240,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
-                       const Image & in, Image & out )
+    void ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         convertToRgb( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb,
-                        const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image ConvertToRgb( FunctionTable::ConvertToRgbForm4 convertToRgb, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -280,8 +258,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Copy( FunctionTable::CopyForm3 copy,
-                const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Copy( FunctionTable::CopyForm3 copy, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -292,8 +269,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
-                          const Image & in, uint8_t channelId )
+    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel, const Image & in, uint8_t channelId )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -304,16 +280,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
-                         const Image & in, Image & out, uint8_t channelId )
+    void ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel, const Image & in, Image & out, uint8_t channelId )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         extractChannel( in, 0, 0, out, 0, 0, in.width(), in.height(), channelId );
     }
 
-    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel,
-                          const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint8_t channelId )
+    Image ExtractChannel( FunctionTable::ExtractChannelForm4 extractChannel, const Image & in, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
+                          uint8_t channelId )
     {
         Image_Function::ValidateImageParameters( in, x, y, width, height );
 
@@ -324,8 +299,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Flip( FunctionTable::FlipForm4 flip,
-                const Image & in, bool horizontal, bool vertical )
+    Image Flip( FunctionTable::FlipForm4 flip, const Image & in, bool horizontal, bool vertical )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -336,17 +310,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Flip( FunctionTable::FlipForm4 flip,
-               const Image & in, Image & out, bool horizontal, bool vertical )
+    void Flip( FunctionTable::FlipForm4 flip, const Image & in, Image & out, bool horizontal, bool vertical )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         flip( in, 0, 0, out, 0, 0, out.width(), out.height(), horizontal, vertical );
     }
 
-    Image Flip( FunctionTable::FlipForm4 flip,
-                const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                bool horizontal, bool vertical )
+    Image Flip( FunctionTable::FlipForm4 flip, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, bool horizontal, bool vertical )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -357,8 +328,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
-                           const Image & in, double a, double gamma )
+    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection, const Image & in, double a, double gamma )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -369,16 +339,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
-                          const Image & in, Image & out, double a, double gamma )
+    void GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection, const Image & in, Image & out, double a, double gamma )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         gammaCorrection( in, 0, 0, out, 0, 0, out.width(), out.height(), a, gamma );
     }
 
-    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection,
-                           const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double a, double gamma )
+    Image GammaCorrection( FunctionTable::GammaCorrectionForm4 gammaCorrection, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                           double a, double gamma )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -407,15 +376,15 @@ namespace Image_Function_Helper
         return value;
     }
 
-    uint8_t GetThreshold( const std::vector < uint32_t > & histogram )
+    uint8_t GetThreshold( const std::vector<uint32_t> & histogram )
     {
-        if( histogram.size() != 256 )
+        if ( histogram.size() != 256 )
             throw penguinVException( "Histogram size is not 256" );
 
         // It is well-known Otsu's method to find threshold
         uint32_t pixelCount = histogram[0] + histogram[1];
         uint32_t sum = histogram[1];
-        for( uint16_t i = 2; i < 256; ++i ) {
+        for ( uint16_t i = 2; i < 256; ++i ) {
             sum = sum + i * histogram[i];
             pixelCount += histogram[i];
         }
@@ -427,23 +396,22 @@ namespace Image_Function_Helper
 
         uint8_t threshold = 0;
 
-        for( uint16_t i = 0; i < 256; ++i ) {
+        for ( uint16_t i = 0; i < 256; ++i ) {
             pixelCountTemp += histogram[i];
 
-            if( pixelCountTemp == pixelCount )
+            if ( pixelCountTemp == pixelCount )
                 break;
 
-            if( pixelCountTemp > 0 ) {
+            if ( pixelCountTemp > 0 ) {
                 sumTemp += i * histogram[i];
 
-                const double w1 = static_cast<double>(pixelCountTemp) / pixelCount;
-                const double a  = static_cast<double>(sumTemp       ) / pixelCountTemp -
-                                  static_cast<double>(sum - sumTemp ) / (pixelCount - pixelCountTemp);
-                const double sigma = w1 * (1 - w1) * a * a;
+                const double w1 = static_cast<double>( pixelCountTemp ) / pixelCount;
+                const double a = static_cast<double>( sumTemp ) / pixelCountTemp - static_cast<double>( sum - sumTemp ) / ( pixelCount - pixelCountTemp );
+                const double sigma = w1 * ( 1 - w1 ) * a * a;
 
-                if( sigma > maximumSigma ) {
+                if ( sigma > maximumSigma ) {
                     maximumSigma = sigma;
-                    threshold = static_cast <uint8_t>(i);
+                    threshold = static_cast<uint8_t>( i );
                 }
             }
         }
@@ -451,71 +419,64 @@ namespace Image_Function_Helper
         return threshold;
     }
 
-    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
-                                        const Image & image )
+    std::vector<uint32_t> Histogram( FunctionTable::HistogramForm4 histogram, const Image & image )
     {
-        std::vector < uint32_t > histogramTable;
+        std::vector<uint32_t> histogramTable;
 
         histogram( image, 0, 0, image.width(), image.height(), histogramTable );
 
         return histogramTable;
     }
 
-    void Histogram( FunctionTable::HistogramForm4 histogram,
-                    const Image & image, std::vector < uint32_t > & histogramTable )
+    void Histogram( FunctionTable::HistogramForm4 histogram, const Image & image, std::vector<uint32_t> & histogramTable )
     {
         Image_Function::ValidateImageParameters( image );
 
         histogram( image, 0, 0, image.width(), image.height(), histogramTable );
     }
 
-    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm4 histogram,
-                                        const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
+    std::vector<uint32_t> Histogram( FunctionTable::HistogramForm4 histogram, const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( image, x, y, width, height );
 
-        std::vector < uint32_t > histogramTable;
+        std::vector<uint32_t> histogramTable;
 
         histogram( image, x, y, width, height, histogramTable );
 
         return histogramTable;
     }
 
-    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
-                                        const Image & image, const Image & mask )
+    std::vector<uint32_t> Histogram( FunctionTable::HistogramForm8 histogram, const Image & image, const Image & mask )
     {
         Image_Function::ValidateImageParameters( image, mask );
 
-        std::vector < uint32_t > histogramTable;
+        std::vector<uint32_t> histogramTable;
 
         histogram( image, 0, 0, mask, 0, 0, image.width(), image.height(), histogramTable );
 
         return histogramTable;
     }
 
-    void Histogram( FunctionTable::HistogramForm8 histogram,
-                    const Image & image, const Image & mask, std::vector < uint32_t > & histogramTable )
+    void Histogram( FunctionTable::HistogramForm8 histogram, const Image & image, const Image & mask, std::vector<uint32_t> & histogramTable )
     {
         Image_Function::ValidateImageParameters( image, mask );
 
         histogram( image, 0, 0, mask, 0, 0, image.width(), image.height(), histogramTable );
     }
 
-    std::vector < uint32_t > Histogram( FunctionTable::HistogramForm8 histogram,
-                                        const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX, uint32_t maskY,
-                                        uint32_t width, uint32_t height )
+    std::vector<uint32_t> Histogram( FunctionTable::HistogramForm8 histogram, const Image & image, uint32_t x, uint32_t y, const Image & mask, uint32_t maskX,
+                                     uint32_t maskY, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( image, x, y, mask, maskX, maskY, width, height );
 
-        std::vector < uint32_t > histogramTable;
+        std::vector<uint32_t> histogramTable;
 
         histogram( image, x, y, mask, maskX, maskY, width, height, histogramTable );
 
         return histogramTable;
     }
 
-    Image Invert( FunctionTable::InvertForm4 invert,
-                  const Image & in )
+    Image Invert( FunctionTable::InvertForm4 invert, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -526,16 +487,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Invert( FunctionTable::InvertForm4 invert,
-                 const Image & in, Image & out )
+    void Invert( FunctionTable::InvertForm4 invert, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         invert( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Invert( FunctionTable::InvertForm4 invert,
-                  const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Invert( FunctionTable::InvertForm4 invert, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -546,16 +505,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    bool IsEqual( FunctionTable::IsEqualForm2 isEqual,
-                  const Image & in1, const Image & in2 )
+    bool IsEqual( FunctionTable::IsEqualForm2 isEqual, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
         return isEqual( in1, 0, 0, in2, 0, 0, in1.width(), in1.height() );
     }
 
-    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
-                       const Image & in, const std::vector < uint8_t > & table )
+    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable, const Image & in, const std::vector<uint8_t> & table )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -566,17 +523,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void LookupTable( FunctionTable::LookupTableForm4 lookupTable,
-                      const Image & in, Image & out, const std::vector < uint8_t > & table )
+    void LookupTable( FunctionTable::LookupTableForm4 lookupTable, const Image & in, Image & out, const std::vector<uint8_t> & table )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         lookupTable( in, 0, 0, out, 0, 0, out.width(), out.height(), table );
     }
 
-    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable,
-                       const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
-                       const std::vector < uint8_t > & table )
+    Image LookupTable( FunctionTable::LookupTableForm4 lookupTable, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                       const std::vector<uint8_t> & table )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -587,8 +542,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Maximum( FunctionTable::MaximumForm4 maximum,
-                   const Image & in1, const Image & in2 )
+    Image Maximum( FunctionTable::MaximumForm4 maximum, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -599,16 +553,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Maximum( FunctionTable::MaximumForm4 maximum,
-                  const Image & in1, const Image & in2, Image & out )
+    void Maximum( FunctionTable::MaximumForm4 maximum, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         maximum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Maximum( FunctionTable::MaximumForm4 maximum,
-                   const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+    Image Maximum( FunctionTable::MaximumForm4 maximum, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
@@ -620,8 +572,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Merge( FunctionTable::MergeForm4 merge,
-                 const Image & in1, const Image & in2, const Image & in3 )
+    Image Merge( FunctionTable::MergeForm4 merge, const Image & in1, const Image & in2, const Image & in3 )
     {
         Image_Function::ValidateImageParameters( in1, in2, in3 );
 
@@ -632,8 +583,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Merge( FunctionTable::MergeForm4 merge,
-                const Image & in1, const Image & in2, const Image & in3, Image & out )
+    void Merge( FunctionTable::MergeForm4 merge, const Image & in1, const Image & in2, const Image & in3, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, in3 );
         Image_Function::ValidateImageParameters( in1, out );
@@ -641,8 +591,7 @@ namespace Image_Function_Helper
         merge( in1, 0, 0, in2, 0, 0, in3, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Merge( FunctionTable::MergeForm4 merge,
-                 const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
+    Image Merge( FunctionTable::MergeForm4 merge, const Image & in1, uint32_t startXIn1, uint32_t startYIn1, const Image & in2, uint32_t startXIn2, uint32_t startYIn2,
                  const Image & in3, uint32_t startXIn3, uint32_t startYIn3, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startXIn1, startYIn1, in2, startXIn2, startYIn2, in3, startXIn3, startYIn3, width, height );
@@ -654,8 +603,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Minimum( FunctionTable::MinimumForm4 minimum,
-                   const Image & in1, const Image & in2 )
+    Image Minimum( FunctionTable::MinimumForm4 minimum, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -666,16 +614,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Minimum( FunctionTable::MinimumForm4 minimum,
-                  const Image & in1, const Image & in2, Image & out )
+    void Minimum( FunctionTable::MinimumForm4 minimum, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         minimum( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Minimum( FunctionTable::MinimumForm4 minimum,
-                   const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+    Image Minimum( FunctionTable::MinimumForm4 minimum, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                    uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
@@ -687,8 +633,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Normalize( FunctionTable::NormalizeForm4 normalize,
-                     const Image & in )
+    Image Normalize( FunctionTable::NormalizeForm4 normalize, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -699,16 +644,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Normalize( FunctionTable::NormalizeForm4 normalize,
-                    const Image & in, Image & out )
+    void Normalize( FunctionTable::NormalizeForm4 normalize, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         normalize( in, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Normalize( FunctionTable::NormalizeForm4 normalize,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Normalize( FunctionTable::NormalizeForm4 normalize, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -719,34 +662,31 @@ namespace Image_Function_Helper
         return out;
     }
 
-    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
-                                                const Image & image, bool horizontal )
+    std::vector<uint32_t> ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile, const Image & image, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector<uint32_t> projection;
 
         projectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
 
         return projection;
     }
 
-    void ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
-                            const Image & image, bool horizontal, std::vector < uint32_t > & projection )
+    void ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile, const Image & image, bool horizontal, std::vector<uint32_t> & projection )
     {
         projectionProfile( image, 0, 0, image.width(), image.height(), horizontal, projection );
     }
 
-    std::vector < uint32_t > ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile,
-                                                const Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height, bool horizontal )
+    std::vector<uint32_t> ProjectionProfile( FunctionTable::ProjectionProfileForm4 projectionProfile, const Image & image, uint32_t x, uint32_t y, uint32_t width,
+                                             uint32_t height, bool horizontal )
     {
-        std::vector < uint32_t > projection;
+        std::vector<uint32_t> projection;
 
         projectionProfile( image, x, y, width, height, horizontal, projection );
 
         return projection;
     }
 
-    Image Resize( FunctionTable::ResizeForm4 resize,
-                  const Image & in, uint32_t widthOut, uint32_t heightOut )
+    Image Resize( FunctionTable::ResizeForm4 resize, const Image & in, uint32_t widthOut, uint32_t heightOut )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -757,8 +697,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Resize( FunctionTable::ResizeForm4 resize,
-                 const Image & in, Image & out )
+    void Resize( FunctionTable::ResizeForm4 resize, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::ValidateImageParameters( out );
@@ -766,9 +705,8 @@ namespace Image_Function_Helper
         resize( in, 0, 0, in.width(), in.height(), out, 0, 0, out.width(), out.height() );
     }
 
-    Image Resize( FunctionTable::ResizeForm4 resize,
-                  const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn,
-                  uint32_t widthOut, uint32_t heightOut )
+    Image Resize( FunctionTable::ResizeForm4 resize, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t widthIn, uint32_t heightIn, uint32_t widthOut,
+                  uint32_t heightOut )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, widthIn, heightIn );
 
@@ -779,8 +717,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
-                    const Image & in )
+    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -791,16 +728,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
-                  const Image & in, Image & out )
+    void RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         rgbToBgr( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr,
-                    const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image RgbToBgr( FunctionTable::RgbToBgrForm4 rgbToBgr, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -811,8 +746,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
-                     const Image & in )
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::VerifyRGBImage( in );
@@ -824,8 +758,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
-                    const Image & in, Image & out )
+    void RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
         Image_Function::VerifyRGBImage( in );
@@ -834,8 +767,7 @@ namespace Image_Function_Helper
         rgbToRgba( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image RgbToRgba( FunctionTable::RgbToRgbaForm4 rgbToRgba, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
         Image_Function::VerifyRGBImage( in );
@@ -847,8 +779,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
-                     const Image & in )
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::VerifyRGBAImage( in );
@@ -860,8 +791,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
-                    const Image & in, Image & out )
+    void RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in, out );
         Image_Function::VerifyRGBAImage( in );
@@ -870,8 +800,7 @@ namespace Image_Function_Helper
         rgbaToRgb( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image RgbaToRgb( FunctionTable::RgbaToRgbForm4 rgbaToRgb, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
         Image_Function::VerifyRGBAImage( in );
@@ -883,8 +812,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Rotate( FunctionTable::RotateForm4 rotate,
-                  const Image & in, double centerX, double centerY, double angle )
+    Image Rotate( FunctionTable::RotateForm4 rotate, const Image & in, double centerX, double centerY, double angle )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::VerifyGrayScaleImage( in );
@@ -895,16 +823,16 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Rotate( FunctionTable::RotateForm4 rotate,
-                 const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut, double angle )
+    void Rotate( FunctionTable::RotateForm4 rotate, const Image & in, double centerXIn, double centerYIn, Image & out, double centerXOut, double centerYOut,
+                 double angle )
     {
         Image_Function::ValidateImageParameters( in, out );
         Image_Function::VerifyGrayScaleImage( in, out );
         rotate( in, 0, 0, centerXIn, centerYIn, out, 0, 0, centerXOut, centerYOut, in.width(), in.height(), angle );
     }
 
-    Image Rotate( FunctionTable::RotateForm4 rotate,
-                  const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height, double angle )
+    Image Rotate( FunctionTable::RotateForm4 rotate, const Image & in, uint32_t x, uint32_t y, double centerX, double centerY, uint32_t width, uint32_t height,
+                  double angle )
     {
         Image_Function::ValidateImageParameters( in, x, y, width, height );
         Image_Function::VerifyGrayScaleImage( in );
@@ -916,8 +844,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Shift( FunctionTable::ShiftForm4 shift,
-                 const Image & in, double shiftX, double shiftY )
+    Image Shift( FunctionTable::ShiftForm4 shift, const Image & in, double shiftX, double shiftY )
     {
         Image_Function::ValidateImageParameters( in );
         Image out = in.generate( in.width(), in.height() );
@@ -926,16 +853,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void  Shift( FunctionTable::ShiftForm4 shift,
-                 const Image & in, Image & out, double shiftX, double shiftY )
+    void Shift( FunctionTable::ShiftForm4 shift, const Image & in, Image & out, double shiftX, double shiftY )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         shift( in, 0, 0, out, 0, 0, out.width(), out.height(), shiftX, shiftY );
     }
 
-    Image Shift( FunctionTable::ShiftForm4 shift,
-                 const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
+    Image Shift( FunctionTable::ShiftForm4 shift, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, double shiftX, double shiftY )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -946,8 +871,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Split( FunctionTable::SplitForm2 split,
-                const Image & in, Image & out1, Image & out2, Image & out3 )
+    void Split( FunctionTable::SplitForm2 split, const Image & in, Image & out1, Image & out2, Image & out3 )
     {
         Image_Function::ValidateImageParameters( in, out1, out2 );
         Image_Function::ValidateImageParameters( in, out3 );
@@ -955,8 +879,7 @@ namespace Image_Function_Helper
         split( in, 0, 0, out1, 0, 0, out2, 0, 0, out3, 0, 0, in.width(), in.height() );
     }
 
-    Image Subtract( FunctionTable::SubtractForm4 subtract,
-                    const Image & in1, const Image & in2 )
+    Image Subtract( FunctionTable::SubtractForm4 subtract, const Image & in1, const Image & in2 )
     {
         Image_Function::ValidateImageParameters( in1, in2 );
 
@@ -967,16 +890,14 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Subtract( FunctionTable::SubtractForm4 subtract,
-                   const Image & in1, const Image & in2, Image & out )
+    void Subtract( FunctionTable::SubtractForm4 subtract, const Image & in1, const Image & in2, Image & out )
     {
         Image_Function::ValidateImageParameters( in1, in2, out );
 
         subtract( in1, 0, 0, in2, 0, 0, out, 0, 0, out.width(), out.height() );
     }
 
-    Image Subtract( FunctionTable::SubtractForm4 subtract,
-                    const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
+    Image Subtract( FunctionTable::SubtractForm4 subtract, const Image & in1, uint32_t startX1, uint32_t startY1, const Image & in2, uint32_t startX2, uint32_t startY2,
                     uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in1, startX1, startY1, in2, startX2, startY2, width, height );
@@ -988,8 +909,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Threshold( FunctionTable::ThresholdForm4 threshold,
-                     const Image & in, uint8_t thresholdValue )
+    Image Threshold( FunctionTable::ThresholdForm4 threshold, const Image & in, uint8_t thresholdValue )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -1000,16 +920,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Threshold( FunctionTable::ThresholdForm4 threshold,
-                    const Image & in, Image & out, uint8_t thresholdValue )
+    void Threshold( FunctionTable::ThresholdForm4 threshold, const Image & in, Image & out, uint8_t thresholdValue )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), thresholdValue );
     }
 
-    Image Threshold( FunctionTable::ThresholdForm4 threshold,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t thresholdValue )
+    Image Threshold( FunctionTable::ThresholdForm4 threshold, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                     uint8_t thresholdValue )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -1020,8 +939,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
-                     const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
+    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold, const Image & in, uint8_t minThreshold, uint8_t maxThreshold )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -1032,17 +950,15 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
-                    const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
+    void Threshold( FunctionTable::ThresholdDoubleForm4 threshold, const Image & in, Image & out, uint8_t minThreshold, uint8_t maxThreshold )
     {
         Image_Function::ValidateImageParameters( in, out );
 
         threshold( in, 0, 0, out, 0, 0, out.width(), out.height(), minThreshold, maxThreshold );
     }
 
-    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height, uint8_t minThreshold,
-                     uint8_t maxThreshold )
+    Image Threshold( FunctionTable::ThresholdDoubleForm4 threshold, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height,
+                     uint8_t minThreshold, uint8_t maxThreshold )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -1053,8 +969,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    Image Transpose( FunctionTable::TransposeForm4 transpose,
-                     const Image & in )
+    Image Transpose( FunctionTable::TransposeForm4 transpose, const Image & in )
     {
         Image_Function::ValidateImageParameters( in );
 
@@ -1065,8 +980,7 @@ namespace Image_Function_Helper
         return out;
     }
 
-    void Transpose( FunctionTable::TransposeForm4 transpose,
-                    const Image & in, Image & out )
+    void Transpose( FunctionTable::TransposeForm4 transpose, const Image & in, Image & out )
     {
         Image_Function::ValidateImageParameters( in );
         Image_Function::ValidateImageParameters( out );
@@ -1074,8 +988,7 @@ namespace Image_Function_Helper
         transpose( in, 0, 0, out, 0, 0, in.width(), in.height() );
     }
 
-    Image Transpose( FunctionTable::TransposeForm4 transpose,
-                     const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
+    Image Transpose( FunctionTable::TransposeForm4 transpose, const Image & in, uint32_t startXIn, uint32_t startYIn, uint32_t width, uint32_t height )
     {
         Image_Function::ValidateImageParameters( in, startXIn, startYIn, width, height );
 
@@ -1089,8 +1002,7 @@ namespace Image_Function_Helper
 
 ImageTypeManager::ImageTypeManager()
     : _enabledIntertypeConversion( false )
-{
-}
+{}
 
 ImageTypeManager & ImageTypeManager::instance()
 {
@@ -1100,7 +1012,7 @@ ImageTypeManager & ImageTypeManager::instance()
 
 void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Helper::FunctionTableHolder & table, bool forceSetup )
 {
-    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::iterator oldTable = _functionTableMap.find( type );
+    std::map<uint8_t, Image_Function_Helper::FunctionTableHolder>::iterator oldTable = _functionTableMap.find( type );
     if ( oldTable != _functionTableMap.end() )
         setupTable( oldTable->second, table, forceSetup );
     else
@@ -1109,7 +1021,7 @@ void ImageTypeManager::setFunctionTable( uint8_t type, const Image_Function_Help
 
 const Image_Function_Helper::FunctionTableHolder & ImageTypeManager::functionTable( uint8_t type ) const
 {
-    std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator table = _functionTableMap.find( type );
+    std::map<uint8_t, Image_Function_Helper::FunctionTableHolder>::const_iterator table = _functionTableMap.find( type );
     if ( table == _functionTableMap.end() )
         throw penguinVException( "Function table is not initialised" );
 
@@ -1129,8 +1041,8 @@ void ImageTypeManager::setConvertFunction( Image_Function_Helper::FunctionTable:
 
 void ImageTypeManager::convert( const penguinV::Image & in, penguinV::Image & out ) const
 {
-    std::map< std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1 >::const_iterator copy =
-        _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
+    std::map<std::pair<uint8_t, uint8_t>, Image_Function_Helper::FunctionTable::CopyForm1>::const_iterator copy
+        = _intertypeConvertMap.find( std::pair<uint8_t, uint8_t>( in.type(), out.type() ) );
     if ( copy == _intertypeConvertMap.cend() )
         throw penguinVException( "Copy function between different image types is not registered" );
 
@@ -1146,11 +1058,11 @@ penguinV::Image ImageTypeManager::image( uint8_t type ) const
     return image->second;
 }
 
-std::vector< uint8_t > ImageTypeManager::imageTypes() const
+std::vector<uint8_t> ImageTypeManager::imageTypes() const
 {
-    std::vector< uint8_t > type;
+    std::vector<uint8_t> type;
 
-    for ( std::map< uint8_t, Image_Function_Helper::FunctionTableHolder >::const_iterator item = _functionTableMap.cbegin(); item != _functionTableMap.cend(); ++item )
+    for ( std::map<uint8_t, Image_Function_Helper::FunctionTableHolder>::const_iterator item = _functionTableMap.cbegin(); item != _functionTableMap.cend(); ++item )
         type.push_back( item->first );
 
     return type;
@@ -1190,12 +1102,12 @@ namespace simd
     {
         isAvxEnabled = enable;
     }
-    
+
     void EnableSse( bool enable )
     {
         isSseEnabled = enable;
     }
-    
+
     void EnableNeon( bool enable )
     {
         isNeonEnabled = enable;
@@ -1203,25 +1115,25 @@ namespace simd
 
     SIMDType actualSimdType()
     {
-        #ifdef PENGUINV_AVX512_SKL_SET
+#ifdef PENGUINV_AVX512_SKL_SET
         if ( SimdInfo::isAVX512SKLAvailable() && isAvx512Enabled )
             return avx512_function;
-        #endif
+#endif
 
-        #ifdef PENGUINV_AVX_SET
+#ifdef PENGUINV_AVX_SET
         if ( SimdInfo::isAvxAvailable() && isAvxEnabled )
             return avx_function;
-        #endif
+#endif
 
-        #ifdef PENGUINV_SSE_SET
+#ifdef PENGUINV_SSE_SET
         if ( SimdInfo::isSseAvailable() && isSseEnabled )
             return sse_function;
-        #endif
+#endif
 
-        #ifdef PENGUINV_NEON_SET
+#ifdef PENGUINV_NEON_SET
         if ( SimdInfo::isNeonAvailable() && isNeonEnabled )
             return neon_function;
-        #endif
+#endif
 
         return cpu_function;
     }

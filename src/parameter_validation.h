@@ -44,7 +44,7 @@ namespace Image_Function
     }
 
     template <typename TImage, typename... Args>
-    void VerifyRGBImage( const TImage & image, Args... args)
+    void VerifyRGBImage( const TImage & image, Args... args )
     {
         VerifyRGBImage( image );
         VerifyRGBImage( args... );
@@ -58,7 +58,7 @@ namespace Image_Function
     }
 
     template <typename TImage, typename... Args>
-    void VerifyGrayScaleImage( const TImage & image, Args... args)
+    void VerifyGrayScaleImage( const TImage & image, Args... args )
     {
         VerifyGrayScaleImage( image );
         VerifyGrayScaleImage( args... );
@@ -74,8 +74,8 @@ namespace Image_Function
     template <typename TImage>
     void ValidateImageParameters( const TImage & image1, const TImage & image2 )
     {
-        if( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) ||
-            image1.width() != image2.width() || image1.height() != image2.height() )
+        if ( image1.empty() || image2.empty() || !IsCorrectColorCount( image1 ) || !IsCorrectColorCount( image2 ) || image1.width() != image2.width()
+             || image1.height() != image2.height() )
             throw penguinVException( "Bad input parameters in image function" );
     }
 
@@ -101,8 +101,8 @@ namespace Image_Function
     template <typename TImage>
     void ValidateImageParameters( const TImage & image, uint32_t startX, uint32_t startY, uint32_t width, uint32_t height )
     {
-        if( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height() ||
-            startX + width < width || startY + height < height )
+        if ( image.empty() || !IsCorrectColorCount( image ) || width == 0 || height == 0 || startX + width > image.width() || startY + height > image.height()
+             || startX + width < width || startY + height < height )
             throw penguinVException( "Bad input parameters in image function" );
     }
 
@@ -133,7 +133,7 @@ namespace Image_Function
     template <typename TImage, typename... Args>
     void OptimiseRoi( uint32_t & width, uint32_t & height, const TImage & image, Args... args )
     {
-        if( IsFullImageRow(width, image, args...) && ( width < (std::numeric_limits<uint32_t>::max() / height) ) ) {
+        if ( IsFullImageRow( width, image, args... ) && ( width < ( std::numeric_limits<uint32_t>::max() / height ) ) ) {
             width = width * height;
             height = 1u;
         }

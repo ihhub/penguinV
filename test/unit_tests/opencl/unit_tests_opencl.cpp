@@ -1,14 +1,13 @@
-#include <iostream>
-#include "unit_test_image_function_opencl.h"
-#include "../unit_test_framework.h"
-#include "../unit_test_helper.h"
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
+#include "../unit_test_framework.h"
+#include "../unit_test_helper.h"
+#include "unit_test_image_function_opencl.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {
-    try 
-    {
+    try {
         // The main purpose of this application is to test everything within library
         // To do this we need an engine (framework) and a bunch of tests
         if ( !multiCL::isOpenCLSupported() ) {
@@ -37,7 +36,7 @@ int main( int argc, char * argv[] )
         }
 
         return returnValue;
-    } 
+    }
     catch ( const penguinVException & ex ) {
         std::cout << "Exception " << ex.what() << " raised during OpenCL unit tests." << std::endl;
         return 0;
@@ -45,5 +44,5 @@ int main( int argc, char * argv[] )
     catch ( ... ) {
         std::cout << "Unknown exception raised during OpenCL unit tests." << std::endl;
         return 0;
-  }
+    }
 }

@@ -1,10 +1,10 @@
 // Example application of edge detection utilization
-#include <iostream>
 #include "../../src/edge_detection.h"
+#include "../../src/file/bmp_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include "../../src/file/bmp_image.h"
-#if defined (_WIN32)
+#include <iostream>
+#if defined( _WIN32 )
 #include "../../src/ui/win/win_ui.h"
 #else
 #include "../../src/ui/x11/x11_ui.h"
@@ -21,7 +21,7 @@ int main( int argc, char * argv[] )
         const penguinV::Image original = Bitmap_Operation::Load( filePath );
 
         if ( original.empty() ) // if the image is empty it means that the image doesn't exist or the file is not readable
-            throw penguinVException( std::string("Cannot load ") + filePath );
+            throw penguinVException( std::string( "Cannot load " ) + filePath );
 
         penguinV::Image image( original );
         if ( image.colorCount() != penguinV::GRAY_SCALE ) // convert to gray-scale image if it's not
@@ -31,7 +31,7 @@ int main( int argc, char * argv[] )
         edgeParameter.minimumContrast = 64u; // in intensity grades
         // We know that image would give a lot of false detected points due to single pixel intensity variations
         // In such case we set a range of pixels to verify that found edge point is really an edge
-        edgeParameter.contrastCheckLeftSideOffset  = 3u; // in pixels
+        edgeParameter.contrastCheckLeftSideOffset = 3u; // in pixels
         edgeParameter.contrastCheckRightSideOffset = 3u; // in pixels
 
         EdgeDetection edgeDetection;
@@ -40,7 +40,7 @@ int main( int argc, char * argv[] )
         const std::vector<Point2d> & negativeEdge = edgeDetection.negativeEdge();
         const std::vector<Point2d> & positiveEdge = edgeDetection.positiveEdge();
 
-#if defined (_WIN32)
+#if defined( _WIN32 )
         UiWindowWin window( original, "Edge detection" );
 #else
         UiWindowX11 window( original, "Edge detection" );

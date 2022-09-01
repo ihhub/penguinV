@@ -6,12 +6,12 @@
 
 namespace
 {
-    #define TEST_FUNCTION_LOOP( testFunction )                         \
-        for( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) { \
-            timer.start();                                             \
-            testFunction;                                              \
-            timer.stop();                                              \
-        }
+#define TEST_FUNCTION_LOOP( testFunction )                                                                                                                               \
+    for ( uint32_t i = 0; i < Performance_Test::runCount(); ++i ) {                                                                                                      \
+        timer.start();                                                                                                                                                   \
+        testFunction;                                                                                                                                                    \
+        timer.stop();                                                                                                                                                    \
+    }
 
     void AbsoluteDifference( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
@@ -65,7 +65,7 @@ namespace
     void LookupTable( Performance_Test::Cuda_Helper::TimerContainerCuda & timer, uint32_t size )
     {
         std::vector<penguinV::Image> image = Performance_Test::Cuda_Helper::uniformImages( 2, size, size );
-        const std::vector<uint8_t> table( 256, 0);
+        const std::vector<uint8_t> table( 256, 0 );
 
         TEST_FUNCTION_LOOP( Image_Function_Cuda::LookupTable( image[0], image[1], table ) )
     }
@@ -107,75 +107,123 @@ namespace
 }
 
 // Function naming: function_name_(image_size)_(divider_of_maximim_thread_count)
-#define SET_FUNCTION( function )                                                                                                  \
-namespace cuda_##function                                                                                                         \
-{                                                                                                                                 \
-    std::pair < double, double >  _256_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 1 ); } \
-    std::pair < double, double >  _512_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 1 ); } \
-    std::pair < double, double > _1024_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 1 ); } \
-    std::pair < double, double > _2048_1() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 1 ); } \
-    std::pair < double, double >  _256_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 2 ); } \
-    std::pair < double, double >  _512_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 2 ); } \
-    std::pair < double, double > _1024_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 2 ); } \
-    std::pair < double, double > _2048_2() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 2 ); } \
-    std::pair < double, double >  _256_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 4 ); } \
-    std::pair < double, double >  _512_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 4 ); } \
-    std::pair < double, double > _1024_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 4 ); } \
-    std::pair < double, double > _2048_4() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 4 ); } \
-    std::pair < double, double >  _256_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  256, 8 ); } \
-    std::pair < double, double >  _512_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function,  512, 8 ); } \
-    std::pair < double, double > _1024_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 8 ); } \
-    std::pair < double, double > _2048_8() { return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 8 ); } \
+#define SET_FUNCTION( function )                                                                                                                                         \
+    namespace cuda_##function                                                                                                                                            \
+    {                                                                                                                                                                    \
+        std::pair<double, double> _256_1()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 256, 1 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _512_1()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 512, 1 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _1024_1()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 1 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _2048_1()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 1 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _256_2()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 256, 2 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _512_2()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 512, 2 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _1024_2()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 2 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _2048_2()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 2 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _256_4()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 256, 4 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _512_4()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 512, 4 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _1024_4()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 4 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _2048_4()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 4 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _256_8()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 256, 8 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _512_8()                                                                                                                               \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 512, 8 );                                                                            \
+        }                                                                                                                                                                \
+        std::pair<double, double> _1024_8()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 1024, 8 );                                                                           \
+        }                                                                                                                                                                \
+        std::pair<double, double> _2048_8()                                                                                                                              \
+        {                                                                                                                                                                \
+            return Performance_Test::Cuda_Helper::runPerformanceTestCuda( function, 2048, 8 );                                                                           \
+        }                                                                                                                                                                \
+    }
+
+namespace
+{
+    SET_FUNCTION( AbsoluteDifference )
+    SET_FUNCTION( BitwiseAnd )
+    SET_FUNCTION( BitwiseOr )
+    SET_FUNCTION( BitwiseXor )
+    SET_FUNCTION( Flip )
+    SET_FUNCTION( Histogram )
+    SET_FUNCTION( Invert )
+    SET_FUNCTION( LookupTable )
+    SET_FUNCTION( Maximum )
+    SET_FUNCTION( Minimum )
+    SET_FUNCTION( Subtract )
+    SET_FUNCTION( Threshold )
+    SET_FUNCTION( ThresholdDouble )
 }
 
- namespace
- {
-    SET_FUNCTION( AbsoluteDifference )
-    SET_FUNCTION( BitwiseAnd         )
-    SET_FUNCTION( BitwiseOr          )
-    SET_FUNCTION( BitwiseXor         )
-    SET_FUNCTION( Flip               )
-    SET_FUNCTION( Histogram          )
-    SET_FUNCTION( Invert             )
-    SET_FUNCTION( LookupTable        )
-    SET_FUNCTION( Maximum            )
-    SET_FUNCTION( Minimum            )
-    SET_FUNCTION( Subtract           )
-    SET_FUNCTION( Threshold          )
-    SET_FUNCTION( ThresholdDouble    )
- }
-
-#define ADD_TEST_FUNCTION( framework, function ) \
-ADD_TEST( framework, cuda_##function:: _256_1 ); \
-ADD_TEST( framework, cuda_##function:: _512_1 ); \
-ADD_TEST( framework, cuda_##function::_1024_1 ); \
-ADD_TEST( framework, cuda_##function::_2048_1 ); \
-ADD_TEST( framework, cuda_##function:: _256_2 ); \
-ADD_TEST( framework, cuda_##function:: _512_2 ); \
-ADD_TEST( framework, cuda_##function::_1024_2 ); \
-ADD_TEST( framework, cuda_##function::_2048_2 ); \
-ADD_TEST( framework, cuda_##function:: _256_4 ); \
-ADD_TEST( framework, cuda_##function:: _512_4 ); \
-ADD_TEST( framework, cuda_##function::_1024_4 ); \
-ADD_TEST( framework, cuda_##function::_2048_4 ); \
-ADD_TEST( framework, cuda_##function:: _256_8 ); \
-ADD_TEST( framework, cuda_##function:: _512_8 ); \
-ADD_TEST( framework, cuda_##function::_1024_8 ); \
-ADD_TEST( framework, cuda_##function::_2048_8 );
+#define ADD_TEST_FUNCTION( framework, function )                                                                                                                         \
+    ADD_TEST( framework, cuda_##function::_256_1 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_512_1 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_1024_1 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_2048_1 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_256_2 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_512_2 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_1024_2 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_2048_2 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_256_4 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_512_4 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_1024_4 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_2048_4 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_256_8 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_512_8 );                                                                                                                      \
+    ADD_TEST( framework, cuda_##function::_1024_8 );                                                                                                                     \
+    ADD_TEST( framework, cuda_##function::_2048_8 );
 
 void addTests_Image_Function_Cuda( PerformanceTestFramework & framework )
 {
     ADD_TEST_FUNCTION( framework, AbsoluteDifference )
-    ADD_TEST_FUNCTION( framework, BitwiseAnd         )
-    ADD_TEST_FUNCTION( framework, BitwiseOr          )
-    ADD_TEST_FUNCTION( framework, BitwiseXor         )
-    ADD_TEST_FUNCTION( framework, Flip               )
-    ADD_TEST_FUNCTION( framework, Histogram          )
-    ADD_TEST_FUNCTION( framework, Invert             )
-    ADD_TEST_FUNCTION( framework, LookupTable        )
-    ADD_TEST_FUNCTION( framework, Maximum            )
-    ADD_TEST_FUNCTION( framework, Minimum            )
-    ADD_TEST_FUNCTION( framework, Subtract           )
-    ADD_TEST_FUNCTION( framework, Threshold          )
-    ADD_TEST_FUNCTION( framework, ThresholdDouble    )
+    ADD_TEST_FUNCTION( framework, BitwiseAnd )
+    ADD_TEST_FUNCTION( framework, BitwiseOr )
+    ADD_TEST_FUNCTION( framework, BitwiseXor )
+    ADD_TEST_FUNCTION( framework, Flip )
+    ADD_TEST_FUNCTION( framework, Histogram )
+    ADD_TEST_FUNCTION( framework, Invert )
+    ADD_TEST_FUNCTION( framework, LookupTable )
+    ADD_TEST_FUNCTION( framework, Maximum )
+    ADD_TEST_FUNCTION( framework, Minimum )
+    ADD_TEST_FUNCTION( framework, Subtract )
+    ADD_TEST_FUNCTION( framework, Threshold )
+    ADD_TEST_FUNCTION( framework, ThresholdDouble )
 }

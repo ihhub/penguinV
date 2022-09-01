@@ -1,20 +1,20 @@
 // Example application of library's function pool utilization
+#include "../../src/function_pool.h"
+#include "../../src/image_function.h"
+#include "../../src/penguinv_exception.h"
+#include "../../src/thread_pool.h"
 #include <cstdlib>
 #include <iostream>
-#include "../../src/function_pool.h"
-#include "../../src/penguinv_exception.h"
-#include "../../src/image_function.h"
-#include "../../src/thread_pool.h"
 
-void basic        ( const std::vector<penguinV::Image> & frame );
+void basic( const std::vector<penguinV::Image> & frame );
 void multithreaded( const std::vector<penguinV::Image> & frame );
 
-double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start );
+double getElapsedTime( std::chrono::time_point<std::chrono::system_clock> start );
 
 template <class T_>
 T_ randomValue( uint32_t maximum )
 {
-    return static_cast<T_>( static_cast<uint32_t>(rand()) % maximum );
+    return static_cast<T_>( static_cast<uint32_t>( rand() ) % maximum );
 }
 
 int main()
@@ -42,43 +42,41 @@ int main()
 
         for ( std::vector<penguinV::Image>::iterator image = frame.begin(); image != frame.end(); ++image ) {
             // Fill background. Let's assume that background varies from 0 to 15 gray scale values
-            image->fill( randomValue<uint8_t>(16u) );
+            image->fill( randomValue<uint8_t>( 16u ) );
 
             // Then add some 'suspicious' objects on some random images
-            if( randomValue<int>(10) == 0 ) { // at least ~6 of 60 images would have objects
+            if ( randomValue<int>( 10 ) == 0 ) { // at least ~6 of 60 images would have objects
                 // generate random place of object, in our case is rectangle
-                const uint32_t x      = randomValue<uint32_t>(image->width()  * 2 / 3);
-                const uint32_t y      = randomValue<uint32_t>(image->height() * 2 / 3);
-                const uint32_t width  = randomValue<uint32_t>(image->width()  - x);
-                const uint32_t height = randomValue<uint32_t>(image->height() - y);
+                const uint32_t x = randomValue<uint32_t>( image->width() * 2 / 3 );
+                const uint32_t y = randomValue<uint32_t>( image->height() * 2 / 3 );
+                const uint32_t width = randomValue<uint32_t>( image->width() - x );
+                const uint32_t height = randomValue<uint32_t>( image->height() - y );
 
                 // fill an area with some random value what is bigger than background value
-                Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>( randomValue<uint8_t>(128u) + 64u ) );
+                Image_Function::Fill( *image, x, y, width, height, static_cast<uint8_t>( randomValue<uint8_t>( 128u ) + 64u ) );
             }
         }
 
-        std::cout << "----------" << std::endl
-            << "Basic functions. Evaluating time..." << std::endl << "----------" << std::endl;
-        std::chrono::time_point < std::chrono::system_clock > startTime = std::chrono::system_clock::now();
+        std::cout << "----------" << std::endl << "Basic functions. Evaluating time..." << std::endl << "----------" << std::endl;
+        std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
 
         basic( frame );
 
         std::cout << "Total time is " << getElapsedTime( startTime ) << " seconds" << std::endl;
 
-        std::cout << "----------" << std::endl
-            << "Functions with thread pool support. Evaluating time..." << std::endl << "----------" << std::endl;
+        std::cout << "----------" << std::endl << "Functions with thread pool support. Evaluating time..." << std::endl << "----------" << std::endl;
         startTime = std::chrono::system_clock::now();
 
         multithreaded( frame );
 
         std::cout << "Total time is " << getElapsedTime( startTime ) << " seconds" << std::endl;
     }
-    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+    catch ( const std::exception & ex ) { // uh-oh, something went wrong!
         std::cout << ex.what() << ". Press any button to continue." << std::endl;
         std::cin.ignore();
         return 1;
     }
-    catch( ... ) { // uh-oh, something terrible happen!
+    catch ( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Press any button to continue." << std::endl;
         std::cin.ignore();
         return 2;
@@ -88,10 +86,10 @@ int main()
     return 0;
 }
 
-double getElapsedTime( std::chrono::time_point < std::chrono::system_clock > start )
+double getElapsedTime( std::chrono::time_point<std::chrono::system_clock> start )
 {
-    const std::chrono::time_point < std::chrono::system_clock > end = std::chrono::system_clock::now();
-    const std::chrono::duration < double > time = end - start;
+    const std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+    const std::chrono::duration<double> time = end - start;
 
     return time.count();
 }
@@ -104,14 +102,14 @@ void basic( const std::vector<penguinV::Image> & frame )
 
     penguinV::Image result( map.width(), map.height() );
 
-    for( size_t i = 0; i + 1 < frame.size(); ++i ) {
+    for ( size_t i = 0; i + 1 < frame.size(); ++i ) {
         // subtract one image from another
         Image_Function::Subtract( frame[i + 1], frame[i], result );
 
         // find optimal threshold
         uint8_t threshold = Image_Function::GetThreshold( Image_Function::Histogram( result ) );
 
-        if( threshold > 0 ) { // there is something more than just background!
+        if ( threshold > 0 ) { // there is something more than just background!
             // threshold image
             Image_Function::Threshold( result, result, threshold );
             // add result to the map
@@ -134,14 +132,14 @@ void multithreaded( const std::vector<penguinV::Image> & frame )
     penguinV::Image result( map.width(), map.height() );
 
     // As you see the only difference in this loop is namespace name
-    for( size_t i = 0; i + 1 < frame.size(); ++i ) {
+    for ( size_t i = 0; i + 1 < frame.size(); ++i ) {
         // subtract one image from another
         Function_Pool::Subtract( frame[i + 1], frame[i], result );
 
         // find optimal threshold
         uint8_t threshold = Image_Function::GetThreshold( Function_Pool::Histogram( result ) );
 
-        if( threshold > 0 ) { // there is something more than just background!
+        if ( threshold > 0 ) { // there is something more than just background!
             // threshold image
             Function_Pool::Threshold( result, result, threshold );
             // add result to the map

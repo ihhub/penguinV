@@ -1,13 +1,13 @@
-#include <iostream>
-#include "performance_test_image_function_cuda.h"
-#include "../performance_test_framework.h"
-#include "../performance_test_helper.h"
 #include "../../../src/cuda/cuda_device.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
+#include "../performance_test_framework.h"
+#include "../performance_test_helper.h"
+#include "performance_test_image_function_cuda.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {
-    if( !multiCuda::isCudaSupported() ) {
+    if ( !multiCuda::isCudaSupported() ) {
         std::cout << "No CUDA devices in the system" << std::endl;
         return 0;
     }

@@ -1,7 +1,7 @@
 #pragma once
-#include <fstream>
 #include "../image_buffer.h"
 #include "../parameter_validation.h"
+#include <fstream>
 
 namespace Raw_Operation
 {

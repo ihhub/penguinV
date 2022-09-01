@@ -31,19 +31,19 @@ namespace pvmath
     template <typename _Type>
     bool houghTransform()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>(-180, 180, 1 ) ) );
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const _Type angle = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>( -180, 180, 1 ) ) );
             const _Type angleTolerance = static_cast<_Type>( toRadians( Unit_Test::randomFloatValue<_Type>( 0, 10, 0.1f ) + 0.1f ) );
             const _Type angleStep = angleTolerance / static_cast<_Type>( Unit_Test::randomValue( 10, 50 ) );
             const _Type lineTolerance = Unit_Test::randomFloatValue<_Type>( 0.1f, 5, 0.01f );
 
-            std::vector< PointBase2D<_Type> > point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
+            std::vector<PointBase2D<_Type>> point( Unit_Test::randomValue<uint32_t>( 50u, 100u ) );
             const _Type noiseValue = lineTolerance / static_cast<_Type>( 3 * 100 * point.size() );
 
             const _Type sinVal = std::sin( angle );
             const _Type cosVal = std::cos( angle );
 
-            for ( typename std::vector< PointBase2D<_Type> >::iterator p = point.begin(); p != point.end(); ++p ) {
+            for ( typename std::vector<PointBase2D<_Type>>::iterator p = point.begin(); p != point.end(); ++p ) {
                 const _Type x = Unit_Test::randomFloatValue<_Type>( -100, 100, 0.01f ) + Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
                 const _Type y = Unit_Test::randomFloatValue<_Type>( -noiseValue, noiseValue, noiseValue / 10 );
 
@@ -51,11 +51,10 @@ namespace pvmath
                 p->y = x * sinVal + y * cosVal;
             }
 
-            std::vector< PointBase2D<_Type> > pointOnLine;
-            std::vector< PointBase2D<_Type> > pointOffLine;
+            std::vector<PointBase2D<_Type>> pointOnLine;
+            std::vector<PointBase2D<_Type>> pointOffLine;
 
-            if ( !Image_Function::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine ) ||
-                 !pointOffLine.empty() )
+            if ( !Image_Function::HoughTransform( point, angle, angleTolerance, angleStep, lineTolerance, pointOnLine, pointOffLine ) || !pointOffLine.empty() )
                 return false;
         }
 
@@ -65,23 +64,23 @@ namespace pvmath
     template <typename _Type>
     bool haarTransform()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width  = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2; // to make sure that number is divided by 2
             const uint32_t height = Unit_Test::randomValue<uint32_t>( 16u, 256u ) * 2;
-            std::vector< _Type > input ( width * height );
-            std::vector< _Type > direct( width * height );
+            std::vector<_Type> input( width * height );
+            std::vector<_Type> direct( width * height );
 
             for ( size_t id = 0; id < input.size(); ++id ) {
-                input [id] = Unit_Test::randomFloatValue<_Type>( 0, 255, 1.0f );
+                input[id] = Unit_Test::randomFloatValue<_Type>( 0, 255, 1.0f );
                 direct[id] = Unit_Test::randomFloatValue<_Type>( 0, 255, 1.0f );
             }
 
-            std::vector< _Type > inverse ( width * height );
-            Image_Function::HaarDirectTransform ( input, direct, width, height );
+            std::vector<_Type> inverse( width * height );
+            Image_Function::HaarDirectTransform( input, direct, width, height );
             Image_Function::HaarInverseTransform( direct, inverse, width, height );
 
             for ( size_t id = 0; id < input.size(); ++id ) {
-                if (std::fabs(input[id] - inverse[id]) > 0.001f)
+                if ( std::fabs( input[id] - inverse[id] ) > 0.001f )
                     return false;
             }
         }
@@ -92,7 +91,7 @@ namespace pvmath
     template <typename _Type>
     bool lineConstructor()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const LineBase2D<_Type> line( point1, point2 );
@@ -103,14 +102,14 @@ namespace pvmath
     template <typename _Type>
     bool parallelLine()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const LineBase2D<_Type> line1( point1, point2 );
 
             const PointBase2D<_Type> offset( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
-            const bool inverse = ( (i % 2) == 0 );
-            const LineBase2D<_Type> line2( (inverse ? point1 : point2) + offset, (inverse ? point2 : point1) + offset );
+            const bool inverse = ( ( i % 2 ) == 0 );
+            const LineBase2D<_Type> line2( ( inverse ? point1 : point2 ) + offset, ( inverse ? point2 : point1 ) + offset );
             if ( !line1.isParallel( line2 ) )
                 return false;
         }
@@ -120,7 +119,7 @@ namespace pvmath
     template <typename _Type>
     bool lineIntersection()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             const PointBase2D<_Type> point1( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const PointBase2D<_Type> point2( Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ), Unit_Test::randomFloatValue<_Type>( -1000, 1000, 0.01f ) );
             const LineBase2D<_Type> line1( point1, point2 );
