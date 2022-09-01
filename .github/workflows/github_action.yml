@@ -39,3 +39,25 @@ jobs:
     - name: Run tests
       run: python bitmap_operation.py
       working-directory: examples/python
+  build_on_windows:
+    strategy:
+      matrix:
+        config:
+        - name: Release x86
+          platform: x86
+          build_config: Release
+        - name: Release x64
+          platform: x64
+          build_config: Release
+    name: MSVC (${{ matrix.config.name }})
+    runs-on: windows-2019
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - uses: microsoft/setup-msbuild@v1
+    - name: Build
+      run: |
+        MSBuild.exe test/unit_tests/unit_tests-vs2019.vcxproj /property:Platform=${{ matrix.config.platform }} /property:Configuration=${{ matrix.config.build_config }}
