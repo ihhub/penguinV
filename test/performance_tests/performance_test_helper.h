@@ -1,10 +1,10 @@
 #pragma once
 
+#include "../test_helper.h"
 #include <chrono>
 #include <cstdlib>
 #include <list>
 #include <vector>
-#include "../test_helper.h"
 
 namespace Performance_Test
 {
@@ -16,11 +16,12 @@ namespace Performance_Test
         BaseTimerContainer();
         ~BaseTimerContainer();
 
-        std::pair < double, double > mean(); // returns mean and sigma values
+        std::pair<double, double> mean(); // returns mean and sigma values
     protected:
-        void push(double value);
+        void push( double value );
+
     private:
-        std::list < double > _time;
+        std::list<double> _time;
     };
 
     class TimerContainer : public BaseTimerContainer
@@ -30,11 +31,11 @@ namespace Performance_Test
         ~TimerContainer();
 
         void start(); // start time measurement
-        void stop();  // stop time measurement
+        void stop(); // stop time measurement
     private:
-        std::chrono::time_point < std::chrono::high_resolution_clock > _startTime;
+        std::chrono::time_point<std::chrono::high_resolution_clock> _startTime;
     };
 
-    typedef void(*performanceFunction)( TimerContainer &, uint32_t);
-    std::pair < double, double > runPerformanceTest(performanceFunction function, uint32_t size );
+    typedef void ( *performanceFunction )( TimerContainer &, uint32_t );
+    std::pair<double, double> runPerformanceTest( performanceFunction function, uint32_t size );
 }

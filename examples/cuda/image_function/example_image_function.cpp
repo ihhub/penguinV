@@ -1,12 +1,12 @@
 // Example application of library CUDA module utilization
-#include <iostream>
-#include "../../../src/image_buffer.h"
-#include "../../../src/image_function.h"
-#include "../../../src/file/bmp_image.h"
 #include "../../../src/cuda/cuda_device.cuh"
 #include "../../../src/cuda/cuda_helper.cuh"
 #include "../../../src/cuda/image_buffer_cuda.cuh"
 #include "../../../src/cuda/image_function_cuda.cuh"
+#include "../../../src/file/bmp_image.h"
+#include "../../../src/image_buffer.h"
+#include "../../../src/image_function.h"
+#include <iostream>
 
 void cpuCode( const std::string & filePath );
 void gpuCode( const std::string & filePath );
@@ -30,12 +30,12 @@ int main( int argc, char * argv[] )
         // GPU code
         gpuCode( filePath );
     }
-    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+    catch ( const std::exception & ex ) { // uh-oh, something went wrong!
         std::cout << ex.what() << ". Press any button to continue." << std::endl;
         std::cin.ignore();
         return 1;
     }
-    catch( ... ) { // uh-oh, something terrible happen!
+    catch ( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Press any button to continue." << std::endl;
         std::cin.ignore();
         return 2;
@@ -74,7 +74,7 @@ void gpuCode( const std::string & filePath )
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if ( image.empty() )
-        throw penguinVException( std::string("Cannot load ") + filePath );
+        throw penguinVException( std::string( "Cannot load " ) + filePath );
 
     multiCuda::CudaDeviceManager & deviceManager = multiCuda::CudaDeviceManager::instance();
     deviceManager.initializeDevices();

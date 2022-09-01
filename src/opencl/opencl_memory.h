@@ -1,13 +1,13 @@
 #pragma once
 
-#if defined(__APPLE__) || defined(__MACOSX)
+#if defined( __APPLE__ ) || defined( __MACOSX )
 #include <OpenCL/cl.h>
 #else
 #include <CL/cl.h>
 #endif
 
-#include <map>
 #include "../memory/memory_allocator.h"
+#include <map>
 
 namespace multiCL
 {
@@ -16,12 +16,12 @@ namespace multiCL
     {
     public:
         MemoryAllocator( cl_context context, cl_device_id deviceId, size_t availableSpace )
-            : _context          ( context )
-            , _minimumSizeChunk ( 1 )
-            , _data             ( NULL )
-            , _availableSize    ( availableSpace ) 
+            : _context( context )
+            , _minimumSizeChunk( 1 )
+            , _data( NULL )
+            , _availableSize( availableSpace )
         {
-            const cl_int error = clGetDeviceInfo( deviceId, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof(cl_uint), &_minimumSizeChunk, NULL );
+            const cl_int error = clGetDeviceInfo( deviceId, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof( cl_uint ), &_minimumSizeChunk, NULL );
             if ( error != CL_SUCCESS )
                 throw std::logic_error( "Cannot get an information about minimum allocation size on OpenCL device" );
         }
@@ -43,7 +43,7 @@ namespace multiCL
 
                 if ( _split( level ) ) {
                     cl_buffer_region region;
-                    region.origin = *(_freeChunk[level].begin());
+                    region.origin = *( _freeChunk[level].begin() );
                     region.size = size;
 
                     cl_int error;
@@ -51,7 +51,8 @@ namespace multiCL
                     if ( error != CL_SUCCESS )
                         throw std::logic_error( "Cannot allocate a subbuffer memory for OpenCL device" );
 
-                    _allocatedChunk.insert( std::pair< cl_mem, std::pair < size_t, uint8_t > >( memory,  std::pair < size_t, uint8_t >(*(_freeChunk[level].begin()), level) ) );
+                    _allocatedChunk.insert(
+                        std::pair<cl_mem, std::pair<size_t, uint8_t>>( memory, std::pair<size_t, uint8_t>( *( _freeChunk[level].begin() ), level ) ) );
                     _freeChunk[level].erase( _freeChunk[level].begin() );
                     return memory;
                 }
@@ -59,7 +60,7 @@ namespace multiCL
 
             // if no space is in preallocated memory just allocate as usual memory
             cl_int error;
-            cl_mem memory = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
+            cl_mem memory = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error );
             if ( error != CL_SUCCESS )
                 throw std::logic_error( "Cannot allocate a memory for OpenCL device" );
 
@@ -73,7 +74,7 @@ namespace multiCL
         void free( cl_mem memory )
         {
             if ( _data != NULL ) {
-                std::map < cl_mem, std::pair < size_t, uint8_t > >::iterator pos = _allocatedChunk.find( memory );
+                std::map<cl_mem, std::pair<size_t, uint8_t>>::iterator pos = _allocatedChunk.find( memory );
 
                 if ( pos != _allocatedChunk.end() ) {
                     _freeChunk[pos->second.second].insert( pos->second.first );
@@ -91,6 +92,7 @@ namespace multiCL
         {
             return _availableSize;
         }
+
     private:
         cl_context _context;
         cl_uint _minimumSizeChunk;
@@ -101,7 +103,7 @@ namespace multiCL
         // first paramter is a pointer to allocated memory in OpenCL terms
         // second parameter is an offset from preallocated memory
         // third parameter is a power of 2 (level)
-        std::map < cl_mem, std::pair < size_t, uint8_t > > _allocatedChunk;
+        std::map<cl_mem, std::pair<size_t, uint8_t>> _allocatedChunk;
 
         // true memory allocation on OpenCL devices
         virtual void _allocate( size_t size )
@@ -116,7 +118,7 @@ namespace multiCL
                 _free();
 
                 cl_int error;
-                _data = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error);
+                _data = clCreateBuffer( _context, CL_MEM_READ_WRITE, size, NULL, &error );
                 if ( error != CL_SUCCESS )
                     throw std::logic_error( "Cannot allocate a memory for OpenCL device" );
 
@@ -140,8 +142,10 @@ namespace multiCL
         MemoryAllocator( const MemoryAllocator & allocator )
             : BaseMemoryAllocator( allocator )
             , _availableSize( 0 )
+        {}
+        MemoryAllocator & operator=( const MemoryAllocator & )
         {
+            return ( *this );
         }
-        MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
     };
 }

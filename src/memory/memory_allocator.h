@@ -11,12 +11,9 @@ class BaseMemoryAllocator
 public:
     BaseMemoryAllocator()
         : _size( 0 )
-    {
-    }
+    {}
 
-    virtual ~BaseMemoryAllocator()
-    {
-    }
+    virtual ~BaseMemoryAllocator() {}
 
     // Allocates a chunk of memory. We recommend to call this function only one time at the startup of an application.
     // Do not reallocate memory if some objects in your source code are allocated through this allocator.
@@ -34,7 +31,7 @@ public:
 
         while ( size > 0 ) {
             uint8_t levelCount = _getAllocationLevel( size );
-            size_t value = static_cast<size_t>(1) << levelCount;
+            size_t value = static_cast<size_t>( 1 ) << levelCount;
 
             if ( value > size ) {
                 value >>= 1;
@@ -50,6 +47,7 @@ public:
             size -= value;
         }
     }
+
 protected:
     void _free()
     {
@@ -91,7 +89,7 @@ protected:
             return false;
 
         if ( startLevel > from ) {
-            size_t memorySize = static_cast<size_t>(1) << (startLevel - 1);
+            size_t memorySize = static_cast<size_t>( 1 ) << ( startLevel - 1 );
 
             for ( ; startLevel > from; --startLevel, memorySize >>= 1 ) {
                 const size_t previousLevelValue = *_freeChunk[startLevel].begin();
@@ -107,18 +105,17 @@ protected:
     // merges preallocated memory by levels
     void _merge( size_t offset, uint8_t from )
     {
-        size_t memorySize = static_cast<size_t>(1) << from;
+        size_t memorySize = static_cast<size_t>( 1 ) << from;
 
-        for ( std::vector < std::set < size_t > >::iterator level = _freeChunk.begin() + from; level < _freeChunk.end();
-              ++level, memorySize <<= 1 ) {
-            std::set< size_t >::iterator pos = level->find( offset );
-            std::set< size_t >::iterator neighbour = pos;
+        for ( std::vector<std::set<size_t>>::iterator level = _freeChunk.begin() + from; level < _freeChunk.end(); ++level, memorySize <<= 1 ) {
+            std::set<size_t>::iterator pos = level->find( offset );
+            std::set<size_t>::iterator neighbour = pos;
             ++neighbour;
 
             if ( neighbour != level->end() ) {
-                if ( *(neighbour)-*(pos) == memorySize ) {
+                if ( *( neighbour ) - *( pos ) == memorySize ) {
                     offset = *pos;
-                    (level + 1)->insert( offset );
+                    ( level + 1 )->insert( offset );
                     level->erase( pos, ++neighbour );
                     continue;
                 }
@@ -128,9 +125,9 @@ protected:
                 neighbour = pos;
                 --neighbour;
 
-                if ( *(pos)-*(neighbour) == memorySize ) {
+                if ( *( pos ) - *( neighbour ) == memorySize ) {
                     offset = *neighbour;
-                    (level + 1)->insert( offset );
+                    ( level + 1 )->insert( offset );
                     level->erase( neighbour, ++pos );
                     continue;
                 }
@@ -141,7 +138,7 @@ protected:
     }
 
     size_t _size; // a size of memory allocated chunk
-    std::vector < std::set < size_t > > _freeChunk; // free memory in preallocated memory
+    std::vector<std::set<size_t>> _freeChunk; // free memory in preallocated memory
 
 private:
     virtual void _allocate( size_t size ) = 0; // true memory allocation

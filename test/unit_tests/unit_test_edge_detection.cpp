@@ -8,7 +8,7 @@ namespace edge_detection
     template <typename _Type>
     bool DetectHorizontalEdge()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             penguinV::Image image = Unit_Test::blackImage();
 
             uint32_t roiX, roiY;
@@ -16,7 +16,7 @@ namespace edge_detection
             Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiXEnd = roiX + roiWidth;
-            const bool isValidLeftEdge  = ( roiX > 1u ) && ( roiX    + 1u < image.width() );
+            const bool isValidLeftEdge = ( roiX > 1u ) && ( roiX + 1u < image.width() );
             const bool isValidRightEdge = ( roiX > 0u ) && ( roiXEnd + 2u < image.width() );
 
             if ( !isValidLeftEdge && !isValidRightEdge )
@@ -25,20 +25,20 @@ namespace edge_detection
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetectionBase<_Type> edgeDetection;
-            edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT) );
+            edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT ) );
 
-            const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();
-            const std::vector< PointBase2D<_Type> > & negative = edgeDetection.negativeEdge();
+            const std::vector<PointBase2D<_Type>> & positive = edgeDetection.positiveEdge();
+            const std::vector<PointBase2D<_Type>> & negative = edgeDetection.negativeEdge();
 
-            if ( ( isValidLeftEdge && (positive.size() != roiHeight) ) || ( isValidRightEdge && (negative.size() != roiHeight) ) )
+            if ( ( isValidLeftEdge && ( positive.size() != roiHeight ) ) || ( isValidRightEdge && ( negative.size() != roiHeight ) ) )
                 return false;
 
-            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( typename std::vector<PointBase2D<_Type>>::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->x - static_cast<_Type>( roiX ) ) > 1.0 )
                     return false;
             }
 
-            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( typename std::vector<PointBase2D<_Type>>::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->x - static_cast<_Type>( roiXEnd ) ) > 1.0 )
                     return false;
             }
@@ -50,7 +50,7 @@ namespace edge_detection
     template <typename _Type>
     bool DetectVerticalEdge()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
             penguinV::Image image = Unit_Test::blackImage();
 
             uint32_t roiX, roiY;
@@ -58,7 +58,7 @@ namespace edge_detection
             Unit_Test::generateRoi( image, roiX, roiY, roiWidth, roiHeight );
 
             const uint32_t roiYEnd = roiY + roiHeight;
-            const bool isValidTopEdge    = ( roiY > 1u ) && ( roiY    + 1u < image.height() );
+            const bool isValidTopEdge = ( roiY > 1u ) && ( roiY + 1u < image.height() );
             const bool isValidBottomEdge = ( roiY > 0u ) && ( roiYEnd + 2u < image.height() );
 
             if ( !isValidTopEdge && !isValidBottomEdge )
@@ -67,20 +67,20 @@ namespace edge_detection
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetectionBase<_Type> edgeDetection;
-            edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM) );
+            edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM ) );
 
-            const std::vector< PointBase2D<_Type> > & positive = edgeDetection.positiveEdge();
-            const std::vector< PointBase2D<_Type> > & negative = edgeDetection.negativeEdge();
+            const std::vector<PointBase2D<_Type>> & positive = edgeDetection.positiveEdge();
+            const std::vector<PointBase2D<_Type>> & negative = edgeDetection.negativeEdge();
 
-            if ( ( isValidTopEdge && (positive.size() != roiWidth) ) || ( isValidBottomEdge && (negative.size() != roiWidth) ) )
+            if ( ( isValidTopEdge && ( positive.size() != roiWidth ) ) || ( isValidBottomEdge && ( negative.size() != roiWidth ) ) )
                 return false;
 
-            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
+            for ( typename std::vector<PointBase2D<_Type>>::const_iterator point = positive.cbegin(); point != positive.cend(); ++point ) {
                 if ( fabs( point->y - static_cast<_Type>( roiY ) ) > 1.0 )
                     return false;
             }
 
-            for ( typename std::vector< PointBase2D<_Type> >::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
+            for ( typename std::vector<PointBase2D<_Type>>::const_iterator point = negative.cbegin(); point != negative.cend(); ++point ) {
                 if ( fabs( point->y - static_cast<_Type>( roiYEnd ) ) > 1.0 )
                     return false;
             }

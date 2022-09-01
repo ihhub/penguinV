@@ -1,9 +1,9 @@
 #pragma once
 
+#include "../penguinv_exception.h"
+#include "opencl_device.h"
 #include <cstdint>
 #include <vector>
-#include "opencl_device.h"
-#include "../penguinv_exception.h"
 
 namespace multiCL
 {
@@ -74,12 +74,13 @@ namespace multiCL
         {
             return _copyTo();
         }
+
     private:
         cl_mem _data;
 
         void _free()
         {
-            if( _data != NULL ) {
+            if ( _data != NULL ) {
                 MemoryManager::memory().free( _data );
                 _data = NULL;
             }
@@ -104,10 +105,9 @@ namespace multiCL
 
         void _copyFrom( const TData & in )
         {
-            if( _data != NULL ) {
-                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
-                                                     &in, 0, NULL, NULL );
-                if( error != CL_SUCCESS )
+            if ( _data != NULL ) {
+                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &in, 0, NULL, NULL );
+                if ( error != CL_SUCCESS )
                     throw penguinVException( "Cannot copy a memory into OpenCL device" );
             }
             else {
@@ -119,10 +119,9 @@ namespace multiCL
         {
             TData out;
 
-            if( _data != NULL ) {
-                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ),
-                                                    &out, 0, NULL, NULL );
-                if( error != CL_SUCCESS )
+            if ( _data != NULL ) {
+                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &out, 0, NULL, NULL );
+                if ( error != CL_SUCCESS )
                     throw penguinVException( "Cannot copy a memory from OpenCL device" );
             }
             else {
@@ -225,13 +224,14 @@ namespace multiCL
         {
             _allocate( size );
         }
+
     private:
         cl_mem _data;
         size_t _size;
 
         void _free()
         {
-            if( _data != NULL ) {
+            if ( _data != NULL ) {
                 MemoryManager::memory().free( _data );
                 _data = NULL;
             }
@@ -239,10 +239,10 @@ namespace multiCL
 
         void _allocate( size_t size )
         {
-            if( _size != size ) {
+            if ( _size != size ) {
                 _free();
 
-                if( size != 0 )
+                if ( size != 0 )
                     _data = MemoryManager::memory().allocate<TData>( size );
 
                 _size = size;
@@ -262,10 +262,10 @@ namespace multiCL
 
         void _copyFrom( const std::vector<TData> & data )
         {
-            if( _data != NULL && _size == data.size() ) {
-                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
-                                                     data.data(), 0, NULL, NULL );
-                if( error != CL_SUCCESS )
+            if ( _data != NULL && _size == data.size() ) {
+                cl_int error
+                    = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), data.data(), 0, NULL, NULL );
+                if ( error != CL_SUCCESS )
                     throw penguinVException( "Cannot copy a memory into OpenCL device" );
             }
         }
@@ -274,10 +274,10 @@ namespace multiCL
         {
             std::vector<TData> out( _size );
 
-            if( _data != NULL ) {
-                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ),
-                                                    out.data(), 0, NULL, NULL );
-                if( error != CL_SUCCESS )
+            if ( _data != NULL ) {
+                cl_int error
+                    = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), out.data(), 0, NULL, NULL );
+                if ( error != CL_SUCCESS )
                     throw penguinVException( "Cannot copy a memory from OpenCL device" );
             }
 

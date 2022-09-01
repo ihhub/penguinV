@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(__APPLE__) || defined(__MACOSX)
+#if defined( __APPLE__ ) || defined( __MACOSX )
 #include <OpenCL/cl.h>
 #else
 #include <CL/cl.h>
@@ -37,19 +37,20 @@ namespace penguinV
         {
             ImageTemplate<TColorDepth>::operator=( image );
 
-            return (*this);
+            return ( *this );
         }
 
         ImageTemplateOpenCL & operator=( ImageTemplateOpenCL && image )
         {
             ImageTemplate<TColorDepth>::swap( image );
 
-            return (*this);
+            return ( *this );
         }
+
     private:
         static TColorDepth * _allocateMemory( size_t size )
         {
-            return reinterpret_cast<TColorDepth*>( multiCL::MemoryManager::memory().allocate<TColorDepth>( size ) );
+            return reinterpret_cast<TColorDepth *>( multiCL::MemoryManager::memory().allocate<TColorDepth>( size ) );
         }
 
         static void _deallocateMemory( TColorDepth * data )
@@ -59,11 +60,11 @@ namespace penguinV
 
         static void _copyMemory( TColorDepth * out, TColorDepth * in, size_t size )
         {
-            cl_mem inMem  = reinterpret_cast<cl_mem>( in );
+            cl_mem inMem = reinterpret_cast<cl_mem>( in );
             cl_mem outMem = reinterpret_cast<cl_mem>( out );
 
             const cl_int error = clEnqueueCopyBuffer( multiCL::OpenCLDeviceManager::instance().device().queue()(), inMem, outMem, 0, 0, size, 0, NULL, NULL );
-            if( error != CL_SUCCESS )
+            if ( error != CL_SUCCESS )
                 throw penguinVException( "Cannot copy a memory in GPU device" );
         }
 

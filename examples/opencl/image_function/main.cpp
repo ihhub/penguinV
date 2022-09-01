@@ -1,12 +1,12 @@
 // Example application of library OpenCL module utilization
-#include <iostream>
+#include "../../../src/file/bmp_image.h"
 #include "../../../src/image_buffer.h"
 #include "../../../src/image_function.h"
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../../../src/opencl/image_function_opencl.h"
-#include "../../../src/file/bmp_image.h"
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
+#include <iostream>
 
 void cpuCode( const std::string & filePath );
 void gpuCode( const std::string & filePath );
@@ -30,12 +30,12 @@ int main( int argc, char * argv[] )
         // GPU code
         gpuCode( filePath );
     }
-    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+    catch ( const std::exception & ex ) { // uh-oh, something went wrong!
         std::cout << ex.what() << ". Press any button to continue." << std::endl;
         std::cin.ignore();
         return 1;
     }
-    catch( ... ) { // uh-oh, something terrible happen!
+    catch ( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Press any button to continue." << std::endl;
         std::cin.ignore();
         return 2;
@@ -52,7 +52,7 @@ void cpuCode( const std::string & filePath )
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if ( image.empty() )
-        throw penguinVException( std::string("Cannot load ") + filePath );
+        throw penguinVException( std::string( "Cannot load " ) + filePath );
 
     // Convert to gray-scale image if it's not
     if ( image.colorCount() != penguinV::GRAY_SCALE )
@@ -72,11 +72,11 @@ void gpuCode( const std::string & filePath )
 
     // If the image is empty it means that the image doesn't exist or the file is not readable
     if ( image.empty() )
-        throw penguinVException( std::string("Cannot load ") + filePath );
+        throw penguinVException( std::string( "Cannot load " ) + filePath );
 
     multiCL::OpenCLDeviceManager & deviceManager = multiCL::OpenCLDeviceManager::instance();
     deviceManager.initializeDevices();
-    for ( uint32_t deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId) {
+    for ( uint32_t deviceId = 0; deviceId < deviceManager.deviceCount(); ++deviceId ) {
         deviceManager.setActiveDevice( deviceId );
         // It is recommended to use preallocated buffers for GPU memory usage
         // So we preallocate 32 MB of GPU memory for our usage

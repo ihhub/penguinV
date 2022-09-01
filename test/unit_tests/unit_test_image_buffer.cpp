@@ -13,13 +13,13 @@ namespace template_image
 
     bool Constructor()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 2048 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 2048 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint32_t height = Unit_Test::randomValue<uint32_t>( 2048 );
+            const uint8_t colorCount = Unit_Test::randomValue<uint8_t>( 1, 4 );
+            const uint8_t alignment = Unit_Test::randomValue<uint8_t>( 1, 32 );
 
-            if ( !Unit_Test::equalSize( penguinV::ImageTemplate < uint8_t >( width, height, colorCount, alignment ), width, height,
+            if ( !Unit_Test::equalSize( penguinV::ImageTemplate<uint8_t>( width, height, colorCount, alignment ), width, height,
                                         Unit_Test::rowSize( width, colorCount, alignment ), colorCount, alignment ) )
                 return false;
         }
@@ -34,12 +34,12 @@ namespace template_image
 
             uint8_t fakeArray[1];
             uint8_t fakeValue = Unit_Test::randomValue<uint8_t>( 2 );
-            if( fakeValue == 1 )
+            if ( fakeValue == 1 )
                 fakeValue = 0;
 
             image.assign( fakeArray, fakeValue, fakeValue, fakeValue, fakeValue );
         }
-        catch( penguinVException & ) {
+        catch ( penguinVException & ) {
             return true;
         }
 
@@ -49,18 +49,18 @@ namespace template_image
     template <typename _Type>
     bool _CopyConstructor()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint32_t height = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint8_t colorCount = Unit_Test::randomValue<uint8_t>( 1, 4 );
+            const uint8_t alignment = Unit_Test::randomValue<uint8_t>( 1, 32 );
 
             penguinV::ImageTemplate<_Type> image( width, height, colorCount, alignment );
             image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
 
             const penguinV::ImageTemplate<_Type> image_copy( image );
 
-            if( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
+            if ( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
                 return false;
         }
 
@@ -70,11 +70,11 @@ namespace template_image
     template <typename _Type>
     bool _AssignmentOperator()
     {
-        for( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
-            const uint32_t width      = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint32_t height     = Unit_Test::randomValue<uint32_t>( 1024 );
-            const uint8_t  colorCount = Unit_Test::randomValue<uint8_t >( 1, 4 );
-            const uint8_t  alignment  = Unit_Test::randomValue<uint8_t >( 1, 32 );
+        for ( uint32_t i = 0; i < Unit_Test::runCount(); ++i ) {
+            const uint32_t width = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint32_t height = Unit_Test::randomValue<uint32_t>( 1024 );
+            const uint8_t colorCount = Unit_Test::randomValue<uint8_t>( 1, 4 );
+            const uint8_t alignment = Unit_Test::randomValue<uint8_t>( 1, 32 );
 
             penguinV::ImageTemplate<_Type> image( width, height, colorCount, alignment );
             image.fill( static_cast<_Type>( Unit_Test::randomValue<uint8_t>( 256u ) ) );
@@ -83,7 +83,7 @@ namespace template_image
 
             image_copy = image;
 
-            if( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
+            if ( !Unit_Test::equalSize( image, image_copy ) || !Unit_Test::equalData( image, image_copy ) )
                 return false;
         }
 
@@ -91,9 +91,9 @@ namespace template_image
     }
 }
 
-#define ADD_TEMPLATE_FUNCTION( function, type )                                                                     \
-    framework.add( template_image::_##function < type >, std::string("template_image::") + std::string(#function) + \
-                   std::string(" (") + std::string(#type) + std::string(")") );
+#define ADD_TEMPLATE_FUNCTION( function, type )                                                                                                                          \
+    framework.add( template_image::_##function<type>,                                                                                                                    \
+                   std::string( "template_image::" ) + std::string( #function ) + std::string( " (" ) + std::string( #type ) + std::string( ")" ) );
 
 void addTests_Image_Buffer( UnitTestFramework & framework )
 {

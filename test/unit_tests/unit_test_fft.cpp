@@ -8,13 +8,13 @@ namespace fft
     bool RandomImageFFT()
     {
         for ( uint32_t i = 0u; i < 32u; ++i ) { // a special case for FFT because it take a lot of time for execution
-            const uint32_t dimension = (2u << Unit_Test::randomValue<uint8_t>( 11 ));
+            const uint32_t dimension = ( 2u << Unit_Test::randomValue<uint8_t>( 11 ) );
 
             const penguinV::Image input = Unit_Test::randomImage( dimension, dimension );
 
             penguinV::Image diracDelta( input.width(), input.height() );
             diracDelta.fill( 0u );
-            diracDelta.data()[diracDelta.height() / 2 * diracDelta.rowSize() + diracDelta.width() / 2 ] = 1u;
+            diracDelta.data()[diracDelta.height() / 2 * diracDelta.rowSize() + diracDelta.width() / 2] = 1u;
 
             FFT::ComplexData complexDataInput( input );
             FFT::ComplexData complexDataDracDelta( diracDelta );
@@ -28,13 +28,13 @@ namespace fft
 
             const penguinV::Image output = complexDataInput.get();
 
-            if( input.height() != output.height() || input.width() != output.width() || input.colorCount() != output.colorCount() )
+            if ( input.height() != output.height() || input.width() != output.width() || input.colorCount() != output.colorCount() )
                 return false;
 
-            const uint32_t rowSizeIn  = input.rowSize();
+            const uint32_t rowSizeIn = input.rowSize();
             const uint32_t rowSizeOut = output.rowSize();
             const uint32_t width = input.width() * input.colorCount();
-            const uint8_t * inY  = input.data();
+            const uint8_t * inY = input.data();
             const uint8_t * outY = output.data();
             const uint8_t * inYEnd = inY + rowSizeIn * input.height();
 

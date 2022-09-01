@@ -1,17 +1,17 @@
+#include "opencl_device.h"
+#include "../penguinv_exception.h"
+#include "opencl_helper.h"
 #include <algorithm>
 #include <assert.h>
 #include <map>
 #include <memory>
 #include <mutex>
-#include "opencl_device.h"
-#include "opencl_helper.h"
-#include "../penguinv_exception.h"
 
 namespace
 {
-#if (_MSC_VER && _MSC_VER >= 1400)
+#if ( _MSC_VER && _MSC_VER >= 1400 )
 #ifndef thread_local
-#define thread_local __declspec(thread)
+#define thread_local __declspec( thread )
 #endif
 #endif
 
@@ -46,29 +46,29 @@ namespace
             program.reset();
         }
 
-        std::shared_ptr< multiCL::OpenCLProgram > program;
-        std::shared_ptr< multiCL::OpenCLKernel  > kernel;
+        std::shared_ptr<multiCL::OpenCLProgram> program;
+        std::shared_ptr<multiCL::OpenCLKernel> kernel;
     };
 
     multiCL::OpenCLKernel & getMemsetKernel()
     {
-        static std::map< cl_device_id, MemsetKernelHolder > deviceProgram;
+        static std::map<cl_device_id, MemsetKernelHolder> deviceProgram;
         static std::mutex mapGuard;
         std::lock_guard<std::mutex> lock( mapGuard );
 
         multiCL::OpenCLDevice & device = multiCL::OpenCLDeviceManager::instance().device();
 
-        std::map< cl_device_id, MemsetKernelHolder >::const_iterator program = deviceProgram.find( device.deviceId() );
+        std::map<cl_device_id, MemsetKernelHolder>::const_iterator program = deviceProgram.find( device.deviceId() );
         if ( program != deviceProgram.cend() )
-            return *(program->second.kernel);
+            return *( program->second.kernel );
 
         MemsetKernelHolder holder;
-        holder.program = std::shared_ptr< multiCL::OpenCLProgram >( new multiCL::OpenCLProgram( device.context(), memsetCode.data() ) );
-        holder.kernel = std::shared_ptr< multiCL::OpenCLKernel >( new multiCL::OpenCLKernel( *(holder.program), "memsetOpenCL" ) );
+        holder.program = std::shared_ptr<multiCL::OpenCLProgram>( new multiCL::OpenCLProgram( device.context(), memsetCode.data() ) );
+        holder.kernel = std::shared_ptr<multiCL::OpenCLKernel>( new multiCL::OpenCLKernel( *( holder.program ), "memsetOpenCL" ) );
 
         deviceProgram[device.deviceId()] = holder;
 
-        return *(deviceProgram[device.deviceId()].kernel);
+        return *( deviceProgram[device.deviceId()].kernel );
     }
 }
 
@@ -91,15 +91,14 @@ namespace multiCL
             if ( patternSize == 1u ) {
                 multiCL::OpenCLKernel & kernel = getMemsetKernel();
                 kernel.reset();
-                const uint8_t value = *(static_cast<const uint8_t*>(pattern));
-                kernel.setArgument( data, static_cast<uint32_t>(offset), static_cast<uint32_t>(size), value );
+                const uint8_t value = *( static_cast<const uint8_t *>( pattern ) );
+                kernel.setArgument( data, static_cast<uint32_t>( offset ), static_cast<uint32_t>( size ), value );
                 multiCL::launchKernel1D( kernel, size );
             }
-            else
-            {
-#if defined(CL_VERSION_1_2)
+            else {
+#if defined( CL_VERSION_1_2 )
                 const cl_int error = clEnqueueFillBuffer( OpenCLDeviceManager::instance().device().queue()(), data, pattern, patternSize, offset, size, 0, NULL, NULL );
-                if( error != CL_SUCCESS )
+                if ( error != CL_SUCCESS )
                     throw penguinVException( "Cannot fill a memory for a device" );
 #else
                 throw penguinVException( "clEnqueueFillBuffer is not supported in OpenCL with version 1.1 and lower" );
@@ -117,21 +116,18 @@ namespace multiCL
 
     OpenCLContext::OpenCLContext( cl_context context )
         : _context( context )
-    {
-    }
+    {}
 
     OpenCLContext::~OpenCLContext()
     {
         clReleaseContext( _context );
     }
 
-    OpenCLContext::OpenCLContext( const OpenCLContext& )
-    {
-    }
+    OpenCLContext::OpenCLContext( const OpenCLContext & ) {}
 
-    OpenCLContext& OpenCLContext::operator= ( const OpenCLContext& )
+    OpenCLContext & OpenCLContext::operator=( const OpenCLContext & )
     {
-        return (*this);
+        return ( *this );
     }
 
     cl_context OpenCLContext::operator()() const
@@ -139,7 +135,7 @@ namespace multiCL
         return _context;
     }
 
-    OpenCLQueue::OpenCLQueue( const OpenCLContext& context, cl_device_id deviceId )
+    OpenCLQueue::OpenCLQueue( const OpenCLContext & context, cl_device_id deviceId )
     {
         cl_int error;
         _commandQueue = clCreateCommandQueue( context(), deviceId, 0, &error );
@@ -148,21 +144,18 @@ namespace multiCL
 
     OpenCLQueue::OpenCLQueue( cl_command_queue queue )
         : _commandQueue( queue )
-    {
-    }
+    {}
 
     OpenCLQueue::~OpenCLQueue()
     {
         clReleaseCommandQueue( _commandQueue );
     }
 
-    OpenCLQueue::OpenCLQueue( const OpenCLQueue& )
-    {
-    }
+    OpenCLQueue::OpenCLQueue( const OpenCLQueue & ) {}
 
-    OpenCLQueue& OpenCLQueue::operator= ( const OpenCLQueue& )
+    OpenCLQueue & OpenCLQueue::operator=( const OpenCLQueue & )
     {
-        return (*this);
+        return ( *this );
     }
 
     cl_command_queue OpenCLQueue::operator()() const
@@ -175,28 +168,28 @@ namespace multiCL
         openCLCheck( clFinish( _commandQueue ) );
     }
 
-    OpenCLProgram::OpenCLProgram(const OpenCLContext& context, const char * program )
+    OpenCLProgram::OpenCLProgram( const OpenCLContext & context, const char * program )
         : _program( NULL )
     {
         cl_int error;
         _program = clCreateProgramWithSource( context(), 1, &program, NULL, &error );
         openCLCheck( error );
 
-        if( !openCLSafeCheck( clBuildProgram( _program, 0, NULL, NULL, NULL, NULL ) ) ) {
+        if ( !openCLSafeCheck( clBuildProgram( _program, 0, NULL, NULL, NULL, NULL ) ) ) {
             cl_uint deviceCount = 0u;
             openCLCheck( clGetContextInfo( context(), CL_CONTEXT_NUM_DEVICES, sizeof( cl_uint ), &deviceCount, NULL ) );
             assert( deviceCount > 0u );
 
-            std::vector <cl_device_id> device( deviceCount );
+            std::vector<cl_device_id> device( deviceCount );
             openCLCheck( clGetContextInfo( context(), CL_CONTEXT_DEVICES, sizeof( cl_device_id ) * deviceCount, device.data(), NULL ) );
 
             std::string fullLog;
-            for( std::vector <cl_device_id>::iterator deviceId = device.begin(); deviceId != device.end(); ++deviceId ) {
+            for ( std::vector<cl_device_id>::iterator deviceId = device.begin(); deviceId != device.end(); ++deviceId ) {
                 size_t logSize = 0;
                 clGetProgramBuildInfo( _program, *deviceId, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize );
 
                 // Allocate memory for the log
-                std::vector <char> log( logSize );
+                std::vector<char> log( logSize );
 
                 // Get the log
                 clGetProgramBuildInfo( _program, OpenCLDeviceManager::instance().device().deviceId(), CL_PROGRAM_BUILD_LOG, logSize, log.data(), NULL );
@@ -206,14 +199,13 @@ namespace multiCL
             }
 
             clReleaseProgram( _program );
-            throw penguinVException( (std::string( "Failed to build a program for OpenCL device with following code :\n" ) + fullLog).data() );
+            throw penguinVException( ( std::string( "Failed to build a program for OpenCL device with following code :\n" ) + fullLog ).data() );
         }
     }
 
     OpenCLProgram::OpenCLProgram( cl_program program )
         : _program( program )
-    {
-    }
+    {}
 
     OpenCLProgram::OpenCLProgram( OpenCLProgram && program )
         : _program( NULL )
@@ -226,13 +218,11 @@ namespace multiCL
         clReleaseProgram( _program );
     }
 
-    OpenCLProgram::OpenCLProgram( const OpenCLProgram& )
-    {
-    }
+    OpenCLProgram::OpenCLProgram( const OpenCLProgram & ) {}
 
-    OpenCLProgram& OpenCLProgram::operator=( const OpenCLProgram& )
+    OpenCLProgram & OpenCLProgram::operator=( const OpenCLProgram & )
     {
-        return (*this);
+        return ( *this );
     }
 
     cl_program OpenCLProgram::operator()() const
@@ -240,7 +230,7 @@ namespace multiCL
         return _program;
     }
 
-    OpenCLKernel::OpenCLKernel( const OpenCLProgram& program, const std::string& name )
+    OpenCLKernel::OpenCLKernel( const OpenCLProgram & program, const std::string & name )
         : _parameterId( 0 )
     {
         cl_int error;
@@ -251,21 +241,18 @@ namespace multiCL
     OpenCLKernel::OpenCLKernel( cl_kernel kernel )
         : _kernel( kernel )
         , _parameterId( 0 )
-    {
-    }
+    {}
 
     OpenCLKernel::~OpenCLKernel()
     {
         clReleaseKernel( _kernel );
     }
 
-    OpenCLKernel::OpenCLKernel( const OpenCLKernel& )
-    {
-    }
+    OpenCLKernel::OpenCLKernel( const OpenCLKernel & ) {}
 
-    OpenCLKernel& OpenCLKernel::operator=( const OpenCLKernel& )
+    OpenCLKernel & OpenCLKernel::operator=( const OpenCLKernel & )
     {
-        return (*this);
+        return ( *this );
     }
 
     cl_kernel OpenCLKernel::operator()() const
@@ -285,11 +272,11 @@ namespace multiCL
     }
 
     OpenCLDevice::OpenCLDevice( cl_device_id deviceId )
-        : _deviceId      ( deviceId )
-        , _context       ( _deviceId )
+        : _deviceId( deviceId )
+        , _context( _deviceId )
         , _currentQueueId( 0u )
     {
-        _allocator = new MemoryAllocator( _context(), _deviceId, static_cast<size_t>(totalMemorySize()) );
+        _allocator = new MemoryAllocator( _context(), _deviceId, static_cast<size_t>( totalMemorySize() ) );
 
         setQueueCount( 1u );
     }
@@ -298,20 +285,19 @@ namespace multiCL
     {
         delete _allocator;
 
-        for( std::vector< OpenCLQueue * >::iterator queueId = _queue.begin(); queueId != _queue.end(); ++queueId )
-            delete (*queueId);
+        for ( std::vector<OpenCLQueue *>::iterator queueId = _queue.begin(); queueId != _queue.end(); ++queueId )
+            delete ( *queueId );
     }
 
-    OpenCLDevice::OpenCLDevice( const OpenCLDevice& )
-        : _deviceId      ( NULL )
-        , _context       ( _deviceId )
+    OpenCLDevice::OpenCLDevice( const OpenCLDevice & )
+        : _deviceId( NULL )
+        , _context( _deviceId )
         , _currentQueueId( 0u )
-    {
-    }
+    {}
 
-    OpenCLDevice& OpenCLDevice::operator= ( const OpenCLDevice& )
+    OpenCLDevice & OpenCLDevice::operator=( const OpenCLDevice & )
     {
-        return (*this);
+        return ( *this );
     }
 
     cl_device_id OpenCLDevice::deviceId() const
@@ -329,14 +315,14 @@ namespace multiCL
         return _context;
     }
 
-    size_t OpenCLDevice::threadsPerBlock( const OpenCLKernel& kernel ) const
+    size_t OpenCLDevice::threadsPerBlock( const OpenCLKernel & kernel ) const
     {
         uint64_t threadsPerBlock = 0u;
         openCLCheck( clGetKernelWorkGroupInfo( kernel(), _deviceId, CL_KERNEL_WORK_GROUP_SIZE, sizeof( threadsPerBlock ), &threadsPerBlock, NULL ) );
 
         assert( threadsPerBlock > 0 );
 
-        return static_cast<size_t>(threadsPerBlock);
+        return static_cast<size_t>( threadsPerBlock );
     }
 
     uint64_t OpenCLDevice::totalMemorySize() const
@@ -377,8 +363,8 @@ namespace multiCL
 
     void OpenCLDevice::synchronize()
     {
-        for( std::vector< OpenCLQueue * >::iterator queueId = _queue.begin(); queueId != _queue.end(); ++queueId )
-            (*queueId)->synchronize();
+        for ( std::vector<OpenCLQueue *>::iterator queueId = _queue.begin(); queueId != _queue.end(); ++queueId )
+            ( *queueId )->synchronize();
     }
 
     size_t OpenCLDevice::currentQueueId() const
@@ -388,28 +374,28 @@ namespace multiCL
 
     void OpenCLDevice::setCurrentQueueId( size_t queueId )
     {
-        if( _currentQueueId != queueId && queueId < _queue.size() )
+        if ( _currentQueueId != queueId && queueId < _queue.size() )
             _currentQueueId = queueId;
     }
 
     OpenCLQueue & OpenCLDevice::queue()
     {
-        return *(_queue[_currentQueueId]);
+        return *( _queue[_currentQueueId] );
     }
 
     const OpenCLQueue & OpenCLDevice::queue() const
     {
-        return *(_queue[_currentQueueId]);
+        return *( _queue[_currentQueueId] );
     }
 
     OpenCLQueue & OpenCLDevice::queue( size_t queueId )
     {
-        return *(_queue[queueId]);
+        return *( _queue[queueId] );
     }
 
     const OpenCLQueue & OpenCLDevice::queue( size_t queueId ) const
     {
-        return *(_queue[queueId]);
+        return *( _queue[queueId] );
     }
 
     size_t OpenCLDevice::queueCount() const
@@ -419,20 +405,20 @@ namespace multiCL
 
     void OpenCLDevice::setQueueCount( size_t queueCount )
     {
-        if( queueCount > 255u ) // no real device needs more than 255 queues
+        if ( queueCount > 255u ) // no real device needs more than 255 queues
             queueCount = 255u;
 
-        if( queueCount != _queue.size() ) {
-            if( queueCount > _queue.size() ) {
-                while( queueCount != _queue.size() )
+        if ( queueCount != _queue.size() ) {
+            if ( queueCount > _queue.size() ) {
+                while ( queueCount != _queue.size() )
                     _queue.push_back( new OpenCLQueue( _context, _deviceId ) );
             }
             else {
-                if( _currentQueueId >= queueCount )
+                if ( _currentQueueId >= queueCount )
                     _currentQueueId = 0;
 
-                for( std::vector< OpenCLQueue * >::iterator queueId = _queue.begin() + static_cast<uint8_t>( queueCount ); queueId != _queue.end(); ++queueId )
-                    delete (*queueId);
+                for ( std::vector<OpenCLQueue *>::iterator queueId = _queue.begin() + static_cast<uint8_t>( queueCount ); queueId != _queue.end(); ++queueId )
+                    delete ( *queueId );
 
                 _queue.resize( queueCount );
             }
@@ -448,7 +434,6 @@ namespace multiCL
     {
         return *_allocator;
     }
-
 
     OpenCLDeviceManager::OpenCLDeviceManager()
     {
@@ -468,50 +453,50 @@ namespace multiCL
 
     void OpenCLDeviceManager::initializeDevices()
     {
-        for( uint32_t deviceId = 0; deviceId < _supportedDeviceId.size(); ++deviceId )
+        for ( uint32_t deviceId = 0; deviceId < _supportedDeviceId.size(); ++deviceId )
             initializeDevice( deviceId );
     }
 
     void OpenCLDeviceManager::initializeDevice( uint32_t deviceId )
     {
-        if( deviceId >= _supportedDeviceId.size() )
+        if ( deviceId >= _supportedDeviceId.size() )
             throw penguinVException( "System does not contain a device with such ID" );
 
-        std::list<OpenCLDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
-                                                                              [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
-        if( foundDevice == _device.end() )
+        std::list<OpenCLDevice *>::const_iterator foundDevice
+            = std::find_if( _device.begin(), _device.end(), [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
+        if ( foundDevice == _device.end() )
             _device.push_back( new OpenCLDevice( _supportedDeviceId[deviceId] ) );
     }
 
     void OpenCLDeviceManager::closeDevice( uint32_t deviceId )
     {
-        if( deviceId >= _supportedDeviceId.size() )
+        if ( deviceId >= _supportedDeviceId.size() )
             throw penguinVException( "System does not contain a device with such ID" );
 
-        std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
-                                                                        [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
-        if( foundDevice != _device.end() ) {
-            delete (*foundDevice);
+        std::list<OpenCLDevice *>::iterator foundDevice
+            = std::find_if( _device.begin(), _device.end(), [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
+        if ( foundDevice != _device.end() ) {
+            delete ( *foundDevice );
             _device.erase( foundDevice );
         }
     }
 
     void OpenCLDeviceManager::closeDevices()
     {
-        for( std::list<OpenCLDevice *>::iterator device = _device.begin(); device != _device.end(); ++device )
-            delete (*device);
+        for ( std::list<OpenCLDevice *>::iterator device = _device.begin(); device != _device.end(); ++device )
+            delete ( *device );
 
         _device.clear();
     }
 
     uint32_t OpenCLDeviceManager::deviceCount() const
     {
-        return static_cast<uint32_t>(_device.size());
+        return static_cast<uint32_t>( _device.size() );
     }
 
     uint32_t OpenCLDeviceManager::supportedDeviceCount() const
     {
-        return static_cast<uint32_t>(_supportedDeviceId.size());
+        return static_cast<uint32_t>( _supportedDeviceId.size() );
     }
 
     OpenCLDevice & OpenCLDeviceManager::device()
@@ -526,35 +511,35 @@ namespace multiCL
 
     OpenCLDevice & OpenCLDeviceManager::device( uint32_t deviceId )
     {
-        if( _device.empty() )
+        if ( _device.empty() )
             throw penguinVException( "Device manager does not contain any devices" );
 
-        std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
-                                                                        [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
-        if( foundDevice == _device.end() )
+        std::list<OpenCLDevice *>::iterator foundDevice
+            = std::find_if( _device.begin(), _device.end(), [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
+        if ( foundDevice == _device.end() )
             throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
-        return *(*foundDevice);
+        return *( *foundDevice );
     }
 
     const OpenCLDevice & OpenCLDeviceManager::device( uint32_t deviceId ) const
     {
-        if( _device.empty() )
+        if ( _device.empty() )
             throw penguinVException( "Device manager does not contain any devices" );
 
-        std::list<OpenCLDevice *>::const_iterator foundDevice = std::find_if( _device.begin(), _device.end(),
-                                                                              [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
-        if( foundDevice == _device.end() )
+        std::list<OpenCLDevice *>::const_iterator foundDevice
+            = std::find_if( _device.begin(), _device.end(), [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
+        if ( foundDevice == _device.end() )
             throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
-        return *(*foundDevice);
+        return *( *foundDevice );
     }
 
     void OpenCLDeviceManager::setActiveDevice( uint32_t deviceId )
     {
-        std::list<OpenCLDevice *>::iterator foundDevice = std::find_if( _device.begin(), _device.end(),
-                                                                        [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
-        if( foundDevice == _device.end() )
+        std::list<OpenCLDevice *>::iterator foundDevice
+            = std::find_if( _device.begin(), _device.end(), [&]( const OpenCLDevice * device ) { return device->deviceId() == _supportedDeviceId[deviceId]; } );
+        if ( foundDevice == _device.end() )
             throw penguinVException( "Device ID is invalid. Please check that you initialize devices!" );
 
         setDefaultDeviceId( deviceId );
@@ -566,10 +551,10 @@ namespace multiCL
         _supportedDeviceId.clear();
 
         cl_uint platformCount = 0u;
-        std::vector <cl_platform_id> platformId;
-        if( openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) && (platformCount > 0u) ) {
+        std::vector<cl_platform_id> platformId;
+        if ( openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) && ( platformCount > 0u ) ) {
             platformId.resize( platformCount );
-            if( !openCLSafeCheck( clGetPlatformIDs( platformCount, platformId.data(), NULL ) ) ) {
+            if ( !openCLSafeCheck( clGetPlatformIDs( platformCount, platformId.data(), NULL ) ) ) {
                 platformId.clear();
             }
         }
@@ -581,12 +566,12 @@ namespace multiCL
         const cl_device_type deviceType = ( isGPUSupportEnabled ? CL_DEVICE_TYPE_GPU : 0u ) + ( isCPUSupportEnabled ? CL_DEVICE_TYPE_CPU : 0u );
 
         uint32_t supportedDeviceCount = 0u;
-        for( std::vector <cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
+        for ( std::vector<cl_platform_id>::iterator platform = platformId.begin(); platform != platformId.end(); ++platform ) {
             uint32_t deviceCount = 0u;
-            if( openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, 0, NULL, &deviceCount ) ) ) {
+            if ( openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, 0, NULL, &deviceCount ) ) ) {
                 _supportedDeviceId.resize( supportedDeviceCount + deviceCount );
 
-                if( !openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
+                if ( !openCLSafeCheck( clGetDeviceIDs( *platform, deviceType, deviceCount, _supportedDeviceId.data() + supportedDeviceCount, NULL ) ) ) {
                     _supportedDeviceId.resize( supportedDeviceCount );
                     continue;
                 }

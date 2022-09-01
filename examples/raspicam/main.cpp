@@ -1,16 +1,16 @@
+#include "../../src/blob_detection.h"
+#include "../../src/image_function.h"
+#include "../../src/parameter_validation.h"
 #include <cstdint>
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <unistd.h>
 #include <raspicam/raspicam.h>
-#include "../../src/image_function.h"
-#include "../../src/blob_detection.h"
-#include "../../src/parameter_validation.h"
+#include <unistd.h>
+#include <vector>
 
 void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green, const penguinV::Image & blue, penguinV::Image & out, double coeff );
 
-int main( int argc, char **argv )
+int main( int argc, char ** argv )
 {
     // This example application is made to show how to work with Raspberry Pi camera
     // using RaspiCam library
@@ -46,7 +46,7 @@ int main( int argc, char **argv )
         // Save original image
         std::ofstream fileOriginal( "original.ppm", std::ios::binary );
         fileOriginal << "P6\n" << camera.getWidth() << " " << camera.getHeight() << " 255\n";
-        fileOriginal.write( reinterpret_cast<const char *>(data), camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB ) );
+        fileOriginal.write( reinterpret_cast<const char *>( data ), camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB ) );
 
         std::cout << "Original image saved at original.ppm" << std::endl;
 
@@ -91,7 +91,7 @@ int main( int argc, char **argv )
         // Save corrected image
         std::ofstream fileCorrected( "corrected.ppm", std::ios::binary );
         fileCorrected << "P6\n" << camera.getWidth() << " " << camera.getHeight() << " 255\n";
-        fileCorrected.write( reinterpret_cast<const char *>(rgbImage.data()), camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB ) );
+        fileCorrected.write( reinterpret_cast<const char *>( rgbImage.data() ), camera.getImageTypeSize( raspicam::RASPICAM_FORMAT_RGB ) );
 
         std::cout << "Corrected image saved at corrected.ppm" << std::endl;
 
@@ -102,7 +102,7 @@ int main( int argc, char **argv )
         // your magic code must be here to recover from bad things
         return 1;
     }
-    catch( ... ) { // uh-oh, something terrible happen!
+    catch ( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Closing the application..." << std::endl;
         return 2;
     }
@@ -123,23 +123,23 @@ void ExtractGreen( const penguinV::Image & red, const penguinV::Image & green, c
     const uint8_t * in1Y = red.data();
     const uint8_t * in2Y = green.data();
     const uint8_t * in3Y = blue.data();
-    uint8_t       * outY = out.data();
+    uint8_t * outY = out.data();
 
     const uint8_t * outYEnd = outY + out.height() * rowSizeOut;
 
-    for( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3 ) {
+    for ( ; outY != outYEnd; outY += rowSizeOut, in1Y += rowSizeIn1, in2Y += rowSizeIn2, in3Y += rowSizeIn3 ) {
         const uint8_t * in1X = in1Y;
         const uint8_t * in2X = in2Y;
         const uint8_t * in3X = in3Y;
-        uint8_t       * outX = outY;
+        uint8_t * outX = outY;
 
         const uint8_t * outXEnd = outX + out.width();
 
-        for( ; outX != outXEnd; ++outX, ++in1X, ++in2X, ++in3X ) {
-            if( *(in2X) > *(in1X) * coeff && *(in2X) > *(in3X) * coeff )
-                *(outX) = 255;
+        for ( ; outX != outXEnd; ++outX, ++in1X, ++in2X, ++in3X ) {
+            if ( *( in2X ) > *(in1X)*coeff && *( in2X ) > *(in3X)*coeff )
+                *( outX ) = 255;
             else
-                *(outX) = 0;
+                *( outX ) = 0;
         }
     }
 }

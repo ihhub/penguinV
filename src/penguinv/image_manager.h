@@ -1,15 +1,14 @@
 #pragma once
 
-#include <vector>
 #include "../image_buffer.h"
+#include <vector>
 
 template <typename _Type>
 struct ReferenceOwner
 {
     explicit ReferenceOwner( penguinV::ImageTemplate<_Type> & data_ )
         : data( data_ )
-    {
-    }
+    {}
     penguinV::ImageTemplate<_Type> & data;
 };
 
@@ -18,8 +17,7 @@ struct ConstReferenceOwner
 {
     explicit ConstReferenceOwner( const penguinV::ImageTemplate<_Type> & data_ )
         : data( data_ )
-    {
-    }
+    {}
     const penguinV::ImageTemplate<_Type> & data;
 };
 
@@ -34,12 +32,11 @@ public:
         : _type( requiredType )
         , _generateImage( generateImage )
         , _convertImage( convertImage )
-    {
-    }
+    {}
 
     ~ImageManager()
     {
-        for ( typename std::vector<ConstReferenceOwner< _Type > *>::iterator data = _input.begin(); data != _input.end(); ++data )
+        for ( typename std::vector<ConstReferenceOwner<_Type> *>::iterator data = _input.begin(); data != _input.end(); ++data )
             delete *data;
 
         for ( size_t i = 0u; i < _output.size(); ++i ) {
@@ -63,7 +60,7 @@ public:
     penguinV::ImageTemplate<_Type> & operator()( penguinV::ImageTemplate<_Type> & image )
     {
         if ( image.type() != _type ) {
-            _output.push_back( new ReferenceOwner< _Type >( image ) );
+            _output.push_back( new ReferenceOwner<_Type>( image ) );
             _outputClone.push_back( _clone( image ) );
             return _outputClone.back();
         }
@@ -71,12 +68,13 @@ public:
             return image;
         }
     }
+
 private:
     uint8_t _type;
     GenerateImage _generateImage;
     ConvertImage _convertImage;
-    std::vector< ConstReferenceOwner< _Type > * > _input;
-    std::vector< ReferenceOwner< _Type > * > _output;
+    std::vector<ConstReferenceOwner<_Type> *> _input;
+    std::vector<ReferenceOwner<_Type> *> _output;
     std::vector<penguinV::ImageTemplate<_Type>> _inputClone;
     std::vector<penguinV::ImageTemplate<_Type>> _outputClone;
 

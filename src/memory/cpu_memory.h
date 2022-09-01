@@ -1,8 +1,8 @@
 #pragma once
 
+#include "memory_allocator.h"
 #include <map>
 #include <mutex>
-#include "memory_allocator.h"
 
 namespace cpu_Memory
 {
@@ -12,9 +12,8 @@ namespace cpu_Memory
     public:
         MemoryAllocator()
             : _data( nullptr )
-            , _alignedData( nullptr)
-        {
-        }
+            , _alignedData( nullptr )
+        {}
 
         static MemoryAllocator & instance()
         {
@@ -32,7 +31,7 @@ namespace cpu_Memory
         // Returns a pointer to an allocated memory. If memory size of allocated memory chuck is enough for requested size
         // then return a point from preallocated memory, otherwise allocate heap memory
         template <typename _DataType = uint8_t>
-        _DataType* allocate( size_t size = 1 )
+        _DataType * allocate( size_t size = 1 )
         {
             _lock.lock();
             if ( _data != nullptr ) {
@@ -42,9 +41,9 @@ namespace cpu_Memory
                     const uint8_t level = _getAllocationLevel( overallSize );
 
                     if ( _split( level ) ) {
-                        std::set < size_t >::iterator chunk = _freeChunk[level].begin();
-                        _DataType* address = reinterpret_cast<_DataType*>( _alignedData + *chunk );
-                        _allocatedChunk.insert( std::pair<size_t, uint8_t >( *chunk, level ) );
+                        std::set<size_t>::iterator chunk = _freeChunk[level].begin();
+                        _DataType * address = reinterpret_cast<_DataType *>( _alignedData + *chunk );
+                        _allocatedChunk.insert( std::pair<size_t, uint8_t>( *chunk, level ) );
                         _freeChunk[level].erase( chunk );
                         _lock.unlock();
                         return address;
@@ -63,8 +62,8 @@ namespace cpu_Memory
         void free( _DataType * address )
         {
             _lock.lock();
-            if ( _data != nullptr && reinterpret_cast<uint8_t*>( address ) >= _alignedData ) {
-                std::map <size_t, uint8_t>::iterator pos = _allocatedChunk.find( static_cast<size_t>( reinterpret_cast<uint8_t*>(address) - _alignedData ) );
+            if ( _data != nullptr && reinterpret_cast<uint8_t *>( address ) >= _alignedData ) {
+                std::map<size_t, uint8_t>::iterator pos = _allocatedChunk.find( static_cast<size_t>( reinterpret_cast<uint8_t *>( address ) - _alignedData ) );
 
                 if ( pos != _allocatedChunk.end() ) {
                     _freeChunk[pos->second].insert( pos->first );
@@ -78,6 +77,7 @@ namespace cpu_Memory
 
             delete[] address;
         }
+
     private:
         uint8_t * _data; // a pointer to memory allocated chunk
         uint8_t * _alignedData; // aligned pointer for SIMD access
@@ -85,7 +85,7 @@ namespace cpu_Memory
 
         // a map which holds an information about allocated memory in preallocated memory chunk
         // first parameter is an offset from preallocated memory, second parameter is a power of 2 (level)
-        std::map <size_t, uint8_t> _allocatedChunk;
+        std::map<size_t, uint8_t> _allocatedChunk;
 
         // true memory allocation on CPU
         virtual void _allocate( size_t size )
@@ -120,6 +120,9 @@ namespace cpu_Memory
         }
 
         MemoryAllocator( const MemoryAllocator & ) {}
-        MemoryAllocator & operator=( const MemoryAllocator & ) { return (*this); }
+        MemoryAllocator & operator=( const MemoryAllocator & )
+        {
+            return ( *this );
+        }
     };
 }

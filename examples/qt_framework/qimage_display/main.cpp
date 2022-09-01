@@ -1,24 +1,21 @@
-#include <iostream>
+#include "../../../src/blob_detection.h"
+#include "../../../src/file/bmp_image.h"
+#include "../../../src/image_buffer.h"
+#include "../../../src/image_function.h"
+#include "../../../src/ui/qt/qt_ui.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
-#include "../../../src/blob_detection.h"
-#include "../../../src/image_buffer.h"
-#include "../../../src/image_function.h"
-#include "../../../src/file/bmp_image.h"
-#include "../../../src/ui/qt/qt_ui.h"
+#include <iostream>
 
-int main( int argc, char *argv[] )
+int main( int argc, char * argv[] )
 {
-    try
-    {
+    try {
         // First of all we create QT application
         QApplication app( argc, argv );
 
         // Then we retrieve a path for bitmap file
-        const QString & fileName = QFileDialog::getOpenFileName( NULL,
-                                                                 QObject::tr("Open Bitmap image"), "",
-                                                                 QObject::tr("Bitmap (*.bmp);;All Files (*)") );
+        const QString & fileName = QFileDialog::getOpenFileName( NULL, QObject::tr( "Open Bitmap image" ), "", QObject::tr( "Bitmap (*.bmp);;All Files (*)" ) );
 
         // Load a color image from storage
         penguinV::Image original = Bitmap_Operation::Load( fileName.toUtf8().constData() );
@@ -59,7 +56,7 @@ int main( int argc, char *argv[] )
         // Sort blobs by size and do NOT draw an edge of biggest blob what is actually white backgroud
         detection.sort( Blob_Detection::BlobDetection::BY_SIZE );
 
-        for( std::vector <Blob_Detection::BlobInfo>::const_iterator blob = detection().begin() + 1; blob != detection().end(); ++blob )
+        for ( std::vector<Blob_Detection::BlobInfo>::const_iterator blob = detection().begin() + 1; blob != detection().end(); ++blob )
             Image_Function::SetPixel( output, blob->edgeX(), blob->edgeY(), 255 );
 
         // Display image in separate window
@@ -68,12 +65,12 @@ int main( int argc, char *argv[] )
 
         return app.exec();
     }
-    catch( const std::exception & ex ) { // uh-oh, something went wrong!
+    catch ( const std::exception & ex ) { // uh-oh, something went wrong!
         std::cout << ex.what() << ". Press any button to continue." << std::endl;
         std::cin.ignore();
         return 1;
     }
-    catch( ... ) { // uh-oh, something terrible happen!
+    catch ( ... ) { // uh-oh, something terrible happen!
         std::cout << "Generic exception raised. Press any button to continue." << std::endl;
         std::cin.ignore();
         return 2;

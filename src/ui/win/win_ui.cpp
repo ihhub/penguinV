@@ -13,8 +13,7 @@ namespace WindowsUi
     public:
         explicit UiWindowWinInfo( const UiWindowWin * window )
             : _window( window )
-        {
-        }
+        {}
 
         const penguinV::Image & image() const
         {
@@ -28,7 +27,7 @@ namespace WindowsUi
 
         bool valid() const
         {
-            return (_window != nullptr) && !_window->_image.empty() && (_window->_bmpInfo != nullptr);
+            return ( _window != nullptr ) && !_window->_image.empty() && ( _window->_bmpInfo != nullptr );
         }
 
         void paint( HDC hdc, RECT clientRoi ) const
@@ -36,28 +35,28 @@ namespace WindowsUi
             const double xFactor = static_cast<double>( clientRoi.right - clientRoi.left ) / _window->_image.width() * _window->_scaleFactor;
             const double yFactor = static_cast<double>( clientRoi.bottom - clientRoi.top ) / _window->_image.height() * _window->_scaleFactor;
 
-            const int minPointFactor = static_cast<int>(xFactor < yFactor ? xFactor : yFactor);
+            const int minPointFactor = static_cast<int>( xFactor < yFactor ? xFactor : yFactor );
             const int pointMultiplicator = minPointFactor > 1 ? minPointFactor / 2 : 1;
 
-            for ( std::vector < UiWindowWin::PointToDraw >::const_iterator point = _window->_point.cbegin(); point != _window->_point.cend(); ++point ) {
-                const int x = static_cast<int>(point->point.x * xFactor);
-                const int y = static_cast<int>(point->point.y * yFactor);
+            for ( std::vector<UiWindowWin::PointToDraw>::const_iterator point = _window->_point.cbegin(); point != _window->_point.cend(); ++point ) {
+                const int x = static_cast<int>( point->point.x * xFactor );
+                const int y = static_cast<int>( point->point.y * yFactor );
 
                 HPEN hPen = CreatePen( PS_SOLID, 1, RGB( point->color.red, point->color.green, point->color.blue ) );
                 HGDIOBJ hOldPen = SelectObject( hdc, hPen );
                 MoveToEx( hdc, x - pointMultiplicator, y - pointMultiplicator, NULL );
-                LineTo  ( hdc, x + pointMultiplicator, y + pointMultiplicator );
+                LineTo( hdc, x + pointMultiplicator, y + pointMultiplicator );
                 MoveToEx( hdc, x + pointMultiplicator, y - pointMultiplicator, NULL );
-                LineTo  ( hdc, x - pointMultiplicator, y + pointMultiplicator );
+                LineTo( hdc, x - pointMultiplicator, y + pointMultiplicator );
                 SelectObject( hdc, hOldPen );
                 DeleteObject( hPen );
             }
 
-            for ( std::vector < UiWindowWin::LineToDraw >::const_iterator line = _window->_line.cbegin(); line != _window->_line.cend(); ++line ) {
-                const int xStart = static_cast<int>(line->start.x * xFactor);
-                const int yStart = static_cast<int>(line->start.y * yFactor);
-                const int xEnd   = static_cast<int>(line->end.x * xFactor);
-                const int yEnd   = static_cast<int>(line->end.y * yFactor);
+            for ( std::vector<UiWindowWin::LineToDraw>::const_iterator line = _window->_line.cbegin(); line != _window->_line.cend(); ++line ) {
+                const int xStart = static_cast<int>( line->start.x * xFactor );
+                const int yStart = static_cast<int>( line->start.y * yFactor );
+                const int xEnd = static_cast<int>( line->end.x * xFactor );
+                const int yEnd = static_cast<int>( line->end.y * yFactor );
 
                 HPEN hPen = CreatePen( PS_SOLID, 1, RGB( line->color.red, line->color.green, line->color.blue ) );
                 HGDIOBJ hOldPen = SelectObject( hdc, hPen );
@@ -67,7 +66,7 @@ namespace WindowsUi
                 DeleteObject( hPen );
             }
 
-            for ( std::vector < UiWindowWin::EllipseToDraw >::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
+            for ( std::vector<UiWindowWin::EllipseToDraw>::const_iterator ellipse = _window->_ellipse.cbegin(); ellipse != _window->_ellipse.cend(); ++ellipse ) {
                 const int left = static_cast<int>( ellipse->left * xFactor );
                 const int top = static_cast<int>( ellipse->top * yFactor );
                 const int right = static_cast<int>( ellipse->right * xFactor );
@@ -91,34 +90,31 @@ namespace
     LRESULT __stdcall WindowProcedure( HWND window, unsigned int msg, WPARAM wp, LPARAM lp )
     {
         switch ( msg ) {
-            case WM_CREATE:
-                // register owner class object pointer
-                SetWindowLongPtr( window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCT*>(lp)->lpCreateParams) );
-                break;
-            case WM_PAINT:
-            {
-                PAINTSTRUCT paintStructure;
-                HDC handleToDisplayDevice = BeginPaint( window, &paintStructure );
-
-                const WindowsUi::UiWindowWinInfo info( reinterpret_cast<UiWindowWin*>(GetWindowLongPtr( window, GWLP_USERDATA )) );
-                if ( info.valid() ) { // make sure that we draw a valid image
-                    RECT clientRoi;
-                    GetClientRect( window, &clientRoi );
-                    const DWORD result = StretchDIBits( handleToDisplayDevice, 0, 0, clientRoi.right, clientRoi.bottom,
-                                                        0, 0, info.image().width(), info.image().height(),
-                                                        info.image().data(), info.bitmapInfo(), DIB_RGB_COLORS, SRCCOPY );
-                    if ( result != info.image().height() )
-                        DebugBreak(); // drawing failed
-
-                    info.paint( handleToDisplayDevice, clientRoi );
-                }
-                EndPaint( window, &paintStructure );
-            }
+        case WM_CREATE:
+            // register owner class object pointer
+            SetWindowLongPtr( window, GWLP_USERDATA, reinterpret_cast<LONG_PTR>( reinterpret_cast<CREATESTRUCT *>( lp )->lpCreateParams ) );
             break;
-            case WM_DESTROY:
-                PostQuitMessage( 0 ) ;
-            default:
-                return DefWindowProc( window, msg, wp, lp );
+        case WM_PAINT: {
+            PAINTSTRUCT paintStructure;
+            HDC handleToDisplayDevice = BeginPaint( window, &paintStructure );
+
+            const WindowsUi::UiWindowWinInfo info( reinterpret_cast<UiWindowWin *>( GetWindowLongPtr( window, GWLP_USERDATA ) ) );
+            if ( info.valid() ) { // make sure that we draw a valid image
+                RECT clientRoi;
+                GetClientRect( window, &clientRoi );
+                const DWORD result = StretchDIBits( handleToDisplayDevice, 0, 0, clientRoi.right, clientRoi.bottom, 0, 0, info.image().width(), info.image().height(),
+                                                    info.image().data(), info.bitmapInfo(), DIB_RGB_COLORS, SRCCOPY );
+                if ( result != info.image().height() )
+                    DebugBreak(); // drawing failed
+
+                info.paint( handleToDisplayDevice, clientRoi );
+            }
+            EndPaint( window, &paintStructure );
+        } break;
+        case WM_DESTROY:
+            PostQuitMessage( 0 );
+        default:
+            return DefWindowProc( window, msg, wp, lp );
         }
 
         return 0;
@@ -135,18 +131,18 @@ namespace
 #endif
         {
             WNDCLASSEX wcex;
-            wcex.cbSize        = sizeof( WNDCLASSEX );
-            wcex.style         = CS_HREDRAW | CS_VREDRAW;
-            wcex.lpfnWndProc   = WindowProcedure;
-            wcex.cbClsExtra    = 0;
-            wcex.cbWndExtra    = 0;
-            wcex.hInstance     = 0;
-            wcex.hIcon         = 0;
-            wcex.hCursor       = LoadCursor( NULL, IDC_CROSS );
-            wcex.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW);
-            wcex.lpszMenuName  = NULL;
+            wcex.cbSize = sizeof( WNDCLASSEX );
+            wcex.style = CS_HREDRAW | CS_VREDRAW;
+            wcex.lpfnWndProc = WindowProcedure;
+            wcex.cbClsExtra = 0;
+            wcex.cbWndExtra = 0;
+            wcex.hInstance = 0;
+            wcex.hIcon = 0;
+            wcex.hCursor = LoadCursor( NULL, IDC_CROSS );
+            wcex.hbrBackground = reinterpret_cast<HBRUSH>( COLOR_WINDOW );
+            wcex.lpszMenuName = NULL;
             wcex.lpszClassName = className.data();
-            wcex.hIconSm       = 0;
+            wcex.hIconSm = 0;
 
             registered = RegisterClassEx( &wcex );
         }
@@ -173,8 +169,8 @@ UiWindowWin::UiWindowWin( const penguinV::Image & image, const std::string & tit
 #else
     const std::string & titleName = title;
 #endif
-    _window = CreateWindowEx( 0, registrator.className.data(), titleName.data(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-                              CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, GetModuleHandle( 0 ), this ) ;
+    _window = CreateWindowEx( 0, registrator.className.data(), titleName.data(), WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 0, 0,
+                              GetModuleHandle( 0 ), this );
 
     if ( _window == nullptr )
         throw penguinVException( "Unable to create Windows API window" );
@@ -212,8 +208,8 @@ void UiWindowWin::setImage( const penguinV::Image & image )
 
     const int maxWindowWidth = GetSystemMetrics( SM_CXSCREEN ) * 95 / 100;
     const int maxWindowHeight = GetSystemMetrics( SM_CYSCREEN ) * 95 / 100;
-    if ( maxWindowWidth > 0 && static_cast<uint32_t>( maxWindowWidth ) < image.width() ||
-         maxWindowHeight > 0 && static_cast<uint32_t>( maxWindowHeight ) < image.height() ) {
+    if ( maxWindowWidth > 0 && static_cast<uint32_t>( maxWindowWidth ) < image.width()
+         || maxWindowHeight > 0 && static_cast<uint32_t>( maxWindowHeight ) < image.height() ) {
         const double scaleX = static_cast<double>( maxWindowWidth ) / image.width();
         const double scaleY = static_cast<double>( maxWindowHeight ) / image.height();
 
@@ -228,17 +224,17 @@ void UiWindowWin::setImage( const penguinV::Image & image )
         const uint32_t heightIn = image.height();
         const uint32_t heightOut = _image.height();
 
-        const uint32_t rowSizeIn  = image.rowSize();
+        const uint32_t rowSizeIn = image.rowSize();
         const uint32_t rowSizeOut = _image.rowSize();
 
-        const uint8_t * inY  = image.data();
-        uint8_t       * outY = _image.data();
+        const uint8_t * inY = image.data();
+        uint8_t * outY = _image.data();
         const uint8_t * outYEnd = outY + heightOut * rowSizeOut;
 
         uint32_t idY = 0;
 
         // Precalculation of X position
-        std::vector < uint32_t > positionX( widthOut );
+        std::vector<uint32_t> positionX( widthOut );
         for ( uint32_t x = 0; x < widthOut; ++x )
             positionX[x] = ( x * widthIn / widthOut ) * colorCount;
 
@@ -247,14 +243,14 @@ void UiWindowWin::setImage( const penguinV::Image & image )
         const size_t pixelSize = sizeof( uint8_t ) * colorCount;
 
         for ( ; outY != outYEnd; outY += rowSizeOut, ++idY ) {
-            uint8_t       * outX = outY;
+            uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + widthOut;
 
-            const uint8_t * inX  = inY + ( heightIn - 1 - ( idY * heightIn / heightOut ) ) * rowSizeIn;
+            const uint8_t * inX = inY + ( heightIn - 1 - ( idY * heightIn / heightOut ) ) * rowSizeIn;
             const uint32_t * idX = positionX.data();
 
             for ( ; outX != outXEnd; outX += colorCount, ++idX )
-                memcpy( outX, inX + (*idX), pixelSize );
+                memcpy( outX, inX + ( *idX ), pixelSize );
         }
     }
     else {
@@ -262,12 +258,12 @@ void UiWindowWin::setImage( const penguinV::Image & image )
 
         _image.resize( image.width(), image.height() );
 
-        const uint32_t rowSizeIn  = image.rowSize();
+        const uint32_t rowSizeIn = image.rowSize();
         const uint32_t rowSizeOut = _image.rowSize();
-        const uint32_t width      = image.width() * image.colorCount();
+        const uint32_t width = image.width() * image.colorCount();
 
-        const uint8_t * inY     = image.data() + image.rowSize() * (image.height() - 1);
-        uint8_t       * outY    = _image.data();
+        const uint8_t * inY = image.data() + image.rowSize() * ( image.height() - 1 );
+        uint8_t * outY = _image.data();
         const uint8_t * outYEnd = outY + image.height() * rowSizeOut;
 
         for ( ; outY != outYEnd; outY += rowSizeOut, inY -= rowSizeIn )
@@ -275,26 +271,26 @@ void UiWindowWin::setImage( const penguinV::Image & image )
     }
 
     const bool rgbImage = ( _image.colorCount() != 1u );
-    const DWORD bmpInfoSize = sizeof( BITMAPINFOHEADER ) + (rgbImage ? 1 : 256) * sizeof( RGBQUAD );
+    const DWORD bmpInfoSize = sizeof( BITMAPINFOHEADER ) + ( rgbImage ? 1 : 256 ) * sizeof( RGBQUAD );
 
-    _bmpInfo = reinterpret_cast<BITMAPINFO*>(malloc( bmpInfoSize ));
-    _bmpInfo->bmiHeader.biSize          = sizeof( BITMAPINFOHEADER );
-    _bmpInfo->bmiHeader.biWidth         = _image.width();
-    _bmpInfo->bmiHeader.biHeight        = _image.height();
-    _bmpInfo->bmiHeader.biPlanes        = 1;
-    _bmpInfo->bmiHeader.biBitCount      = _image.colorCount() * 8;
-    _bmpInfo->bmiHeader.biCompression   = BI_RGB;
-    _bmpInfo->bmiHeader.biSizeImage     = _image.rowSize() * _image.height();
+    _bmpInfo = reinterpret_cast<BITMAPINFO *>( malloc( bmpInfoSize ) );
+    _bmpInfo->bmiHeader.biSize = sizeof( BITMAPINFOHEADER );
+    _bmpInfo->bmiHeader.biWidth = _image.width();
+    _bmpInfo->bmiHeader.biHeight = _image.height();
+    _bmpInfo->bmiHeader.biPlanes = 1;
+    _bmpInfo->bmiHeader.biBitCount = _image.colorCount() * 8;
+    _bmpInfo->bmiHeader.biCompression = BI_RGB;
+    _bmpInfo->bmiHeader.biSizeImage = _image.rowSize() * _image.height();
     _bmpInfo->bmiHeader.biXPelsPerMeter = 0;
     _bmpInfo->bmiHeader.biYPelsPerMeter = 0;
-    _bmpInfo->bmiHeader.biClrUsed       = rgbImage ? 0 : 256;
-    _bmpInfo->bmiHeader.biClrImportant  = 0;
+    _bmpInfo->bmiHeader.biClrUsed = rgbImage ? 0 : 256;
+    _bmpInfo->bmiHeader.biClrImportant = 0;
 
     if ( !rgbImage ) {
-        for ( uint8_t i = 0u; ; ++i ) {
-            _bmpInfo->bmiColors[i].rgbRed   = i;
+        for ( uint8_t i = 0u;; ++i ) {
+            _bmpInfo->bmiColors[i].rgbRed = i;
             _bmpInfo->bmiColors[i].rgbGreen = i;
-            _bmpInfo->bmiColors[i].rgbBlue  = i;
+            _bmpInfo->bmiColors[i].rgbBlue = i;
             _bmpInfo->bmiColors[i].rgbReserved = 0;
 
             if ( i == 255u ) // to avoid variable overflow
@@ -308,9 +304,8 @@ void UiWindowWin::setImage( const penguinV::Image & image )
     GetWindowRect( _window, &windowRoi );
 
     // Resize window to fit image 1 to 1
-    MoveWindow( _window, windowRoi.left, windowRoi.top,
-                windowRoi.right - windowRoi.left - (clientRoi.right - clientRoi.left) + _image.width(),
-                windowRoi.bottom - windowRoi.top - (clientRoi.bottom - clientRoi.top) + _image.height(), FALSE );
+    MoveWindow( _window, windowRoi.left, windowRoi.top, windowRoi.right - windowRoi.left - ( clientRoi.right - clientRoi.left ) + _image.width(),
+                windowRoi.bottom - windowRoi.top - ( clientRoi.bottom - clientRoi.top ) + _image.height(), FALSE );
 }
 
 void UiWindowWin::drawPoint( const Point2d & point, const PaintColor & color )

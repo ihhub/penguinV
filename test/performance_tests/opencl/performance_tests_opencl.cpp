@@ -1,13 +1,13 @@
-#include <iostream>
-#include "performance_test_image_function_opencl.h"
-#include "../performance_test_framework.h"
-#include "../performance_test_helper.h"
 #include "../../../src/opencl/opencl_device.h"
 #include "../../../src/opencl/opencl_helper.h"
+#include "../performance_test_framework.h"
+#include "../performance_test_helper.h"
+#include "performance_test_image_function_opencl.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {
-    if( !multiCL::isOpenCLSupported() ) {
+    if ( !multiCL::isOpenCLSupported() ) {
         std::cout << "No GPU devices in the system" << std::endl;
         return 0;
     }

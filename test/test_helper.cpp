@@ -25,16 +25,16 @@ namespace
         uint32_t width = image.width() * image.colorCount();
         Image_Function::OptimiseRoi( width, height, image );
 
-        const uint32_t rowSize  = image.rowSize();
-        uint8_t * outY          = image.data();
+        const uint32_t rowSize = image.rowSize();
+        uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + height * rowSize;
 
         for ( ; outY != outYEnd; outY += rowSize ) {
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX )
-                (*outX) = Test_Helper::randomValue<uint8_t>( 256 );
+            for ( ; outX != outXEnd; ++outX )
+                ( *outX ) = Test_Helper::randomValue<uint8_t>( 256 );
         }
     }
 
@@ -50,12 +50,12 @@ namespace Test_Helper
 
     penguinV::Image uniformImage( uint8_t value, uint32_t width, uint32_t height, const penguinV::Image & reference )
     {
-        return generateImage<uint8_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
+        return generateImage<uint8_t>( ( width > 0u ) ? width : randomSize(), ( height > 0u ) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
     }
 
     penguinV::Image16Bit uniformImage16Bit( uint16_t value, uint32_t width, uint32_t height, const penguinV::Image16Bit & reference )
     {
-        return generateImage<uint16_t>( (width > 0u) ? width : randomSize(), (height > 0u) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
+        return generateImage<uint16_t>( ( width > 0u ) ? width : randomSize(), ( height > 0u ) ? height : randomSize(), penguinV::GRAY_SCALE, value, reference );
     }
 
     penguinV::Image uniformRGBImage( const penguinV::Image & reference )
@@ -120,11 +120,11 @@ namespace Test_Helper
 
     std::vector<penguinV::Image> uniformImages( uint32_t images, const penguinV::Image & reference )
     {
-        if( images == 0 )
+        if ( images == 0 )
             throw penguinVException( "Invalid parameter: number of images is 0" );
 
         std::vector<uint8_t> intesity( images );
-        for( size_t i = 0u; i < intesity.size(); ++i )
+        for ( size_t i = 0u; i < intesity.size(); ++i )
             intesity[i] = randomValue<uint8_t>( 256 );
 
         return uniformImages( intesity, reference );
@@ -132,7 +132,7 @@ namespace Test_Helper
 
     std::vector<penguinV::Image> uniformImages( const std::vector<uint8_t> & intensityValue, const penguinV::Image & reference )
     {
-        if( intensityValue.size() == 0 )
+        if ( intensityValue.size() == 0 )
             throw penguinVException( "Invalid parameter" );
 
         std::vector<penguinV::Image> image;
@@ -141,7 +141,7 @@ namespace Test_Helper
 
         image.resize( intensityValue.size() );
 
-        for( size_t i = 1u; i < image.size(); ++i ) {
+        for ( size_t i = 1u; i < image.size(); ++i ) {
             image[i] = reference.generate( image[0].width(), image[0].height() );
             image[i].fill( intensityValue[i] );
         }
@@ -160,7 +160,7 @@ namespace Test_Helper
 
     penguinV::Image randomRGBImage( const penguinV::Image & reference )
     {
-        penguinV::Image image = reference.generate(randomSize(), randomSize(), penguinV::RGB);
+        penguinV::Image image = reference.generate( randomSize(), randomSize(), penguinV::RGB );
 
         fillRandomData( image );
 
@@ -169,7 +169,7 @@ namespace Test_Helper
 
     penguinV::Image randomImage( const std::vector<uint8_t> & value )
     {
-        if( value.empty() )
+        if ( value.empty() )
             return randomImage();
 
         penguinV::Image image( randomSize(), randomSize() );
@@ -179,11 +179,11 @@ namespace Test_Helper
 
         const size_t valueSize = value.size();
 
-        if ( valueSize <= width && (width % static_cast<uint32_t>(valueSize)) == 0 )
+        if ( valueSize <= width && ( width % static_cast<uint32_t>( valueSize ) ) == 0 )
             Image_Function::OptimiseRoi( width, height, image );
 
-        const uint32_t rowSize  = image.rowSize();
-        uint8_t * outY          = image.data();
+        const uint32_t rowSize = image.rowSize();
+        uint8_t * outY = image.data();
         const uint8_t * outYEnd = outY + height * rowSize;
 
         size_t id = 0;
@@ -192,8 +192,8 @@ namespace Test_Helper
             uint8_t * outX = outY;
             const uint8_t * outXEnd = outX + width;
 
-            for( ; outX != outXEnd; ++outX ) {
-                (*outX) = value[id++];
+            for ( ; outX != outXEnd; ++outX ) {
+                ( *outX ) = value[id++];
                 if ( id == valueSize )
                     id = 0u;
             }
@@ -207,7 +207,7 @@ namespace Test_Helper
         return testRunCount;
     }
 
-    void setRunCount( int argc, char* argv[], uint32_t count )
+    void setRunCount( int argc, char * argv[], uint32_t count )
     {
         testRunCount = count;
         if ( argc >= 2 ) {
@@ -217,4 +217,3 @@ namespace Test_Helper
         }
     }
 }
-

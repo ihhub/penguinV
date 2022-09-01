@@ -4,12 +4,9 @@ UiWindow::UiWindow( const penguinV::Image & image, const std::string & title )
     : _image( image )
     , _title( title )
     , _shown( false )
-{
-}
+{}
 
-UiWindow::~UiWindow()
-{
-}
+UiWindow::~UiWindow() {}
 
 void UiWindow::show()
 {
@@ -43,6 +40,4 @@ void UiWindow::drawRectangle( const Point2d &, double, double, const PaintColor 
     _display();
 }
 
-void UiWindow::_display()
-{
-}
+void UiWindow::_display() {}

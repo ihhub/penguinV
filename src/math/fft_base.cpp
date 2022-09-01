@@ -4,14 +4,11 @@
 namespace FFT
 {
     BaseFFTExecutor::BaseFFTExecutor()
-        : _width ( 0u )
+        : _width( 0u )
         , _height( 0u )
-    {
-    }
+    {}
 
-    BaseFFTExecutor::~BaseFFTExecutor()
-    {
-    }
+    BaseFFTExecutor::~BaseFFTExecutor() {}
 
     void BaseFFTExecutor::initialize( uint32_t width_, uint32_t height_ )
     {
@@ -19,7 +16,7 @@ namespace FFT
             throw penguinVException( "Invalid parameters for FFTExecutor::intialize()" );
 
         _clean();
-        _width  = width_;
+        _width = width_;
         _height = height_;
         _makePlans();
     }
@@ -37,7 +34,7 @@ namespace FFT
     void BaseFFTExecutor::_clean()
     {
         _cleanPlans();
-        _width  = 0u;
+        _width = 0u;
         _height = 0u;
     }
 }

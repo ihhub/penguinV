@@ -1,8 +1,8 @@
 // Example application of library utilization with images
-#include <iostream>
 #include "../../src/file/file_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
+#include <iostream>
 
 int main( int argc, char * argv[] )
 {

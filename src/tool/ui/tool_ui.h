@@ -1,10 +1,10 @@
 #pragma once
 
-#include <algorithm>
 #include "../../ui/ui.h"
+#include <algorithm>
 
-template < typename _Type >
-void DisplayHistogram( UiWindow & window, const std::vector < _Type > & histogram )
+template <typename _Type>
+void DisplayHistogram( UiWindow & window, const std::vector<_Type> & histogram )
 {
     if ( histogram.empty() )
         return;
@@ -23,7 +23,7 @@ void DisplayHistogram( UiWindow & window, const std::vector < _Type > & histogra
     uint8_t * dataX = image.data() + ( image.height() - 1u ) * rowSize;
 
     for ( size_t i = 0u; i < histogram.size(); ++i, ++dataX ) {
-        const _Type limit = (histogram[i] - minValue) * 100 / range;
+        const _Type limit = ( histogram[i] - minValue ) * 100 / range;
         uint8_t * dataY = dataX;
         for ( _Type y = 0; y < limit; ++y, dataY -= rowSize )
             *dataY = 255;

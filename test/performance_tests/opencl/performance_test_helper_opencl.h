@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include "../../../src/opencl/image_buffer_opencl.h"
 #include "../performance_test_helper.h"
+#include <vector>
 
 namespace Performance_Test
 {

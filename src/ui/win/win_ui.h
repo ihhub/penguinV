@@ -2,9 +2,9 @@
 
 #ifdef _WIN32 // Windows
 
-#include <windows.h>
-#include <vector>
 #include "../ui.h"
+#include <vector>
+#include <windows.h>
 
 namespace WindowsUi
 {
@@ -22,8 +22,10 @@ public:
     virtual void drawLine( const Point2d & start, const Point2d & end, const PaintColor & color );
     virtual void drawEllipse( const Point2d & center, double xRadius, double yRadius, const PaintColor & color );
     virtual void drawRectangle( const Point2d & topLeftCorner, double width, double height, const PaintColor & color );
+
 protected:
     virtual void _display();
+
 private:
     HWND _window; // Windows OS window handle (just an unique ID)
     BITMAPINFO * _bmpInfo; // bitmap structure needed for drawing
@@ -33,8 +35,7 @@ private:
         PointToDraw( const Point2d & point_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : point( point_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d point;
         PaintColor color;
@@ -44,10 +45,9 @@ private:
     {
         LineToDraw( const Point2d & start_ = Point2d(), const Point2d & end_ = Point2d(), const PaintColor & color_ = PaintColor() )
             : start( start_ )
-            , end  ( end_   )
+            , end( end_ )
             , color( color_ )
-        {
-        }
+        {}
 
         Point2d start;
         Point2d end;
@@ -57,13 +57,12 @@ private:
     struct EllipseToDraw
     {
         EllipseToDraw( double left_ = 0, double top_ = 0, double right_ = 0, double bottom_ = 0, const PaintColor & color_ = PaintColor() )
-            : left  ( left_   )
-            , top   ( top_    )
-            , right ( right_  )
+            : left( left_ )
+            , top( top_ )
+            , right( right_ )
             , bottom( bottom_ )
-            , color ( color_  )
-        {
-        }
+            , color( color_ )
+        {}
 
         double left;
         double top;
@@ -72,9 +71,9 @@ private:
         PaintColor color;
     };
 
-    std::vector < PointToDraw   > _point;
-    std::vector < LineToDraw    > _line;
-    std::vector < EllipseToDraw > _ellipse;
+    std::vector<PointToDraw> _point;
+    std::vector<LineToDraw> _line;
+    std::vector<EllipseToDraw> _ellipse;
 
     double _scaleFactor;
 

@@ -1,7 +1,7 @@
 #pragma once
-#include <vector>
 #include "image_buffer.h"
 #include "math/math_base.h"
+#include <vector>
 
 namespace Blob_Detection
 {
@@ -9,11 +9,11 @@ namespace Blob_Detection
     struct Parameter
     {
         Parameter()
-            : minimum     ( 0 )     // minimum value
+            : minimum( 0 ) // minimum value
             , checkMinimum( false ) // set to compare a value with minimum value
-            , maximum     ( 0 )     // maximum value
+            , maximum( 0 ) // maximum value
             , checkMaximum( false ) // set to compare a value with maximum value
-        { }
+        {}
 
         Data minimum;
         bool checkMinimum;
@@ -36,13 +36,13 @@ namespace Blob_Detection
         void setMinimum( Data min )
         {
             checkMinimum = true;
-            minimum      = min;
+            minimum = min;
         }
 
         void setMaximum( Data max )
         {
             checkMaximum = true;
-            maximum      = max;
+            maximum = max;
         }
 
         void reset()
@@ -53,13 +53,13 @@ namespace Blob_Detection
 
     struct BlobParameters
     {
-        Parameter < double   > circularity; // this parameter will be 1 if blob is ideal circle and will be less than 1 if it's not
-                                            // closer this value to 1 --> blob shape is closer to circle
-        Parameter < double   > elongation;  // some people call it inertia: ratio of the minor and major axes of a blob
-        Parameter < uint32_t > height;      // height, in pixels
-        Parameter < double   > length;      // maximum distance between any of 2 pixels, in pixels
-        Parameter < uint32_t > size;        // overall size of blobs, in pixels
-        Parameter < uint32_t > width;       // width, in pixels
+        Parameter<double> circularity; // this parameter will be 1 if blob is ideal circle and will be less than 1 if it's not
+                                       // closer this value to 1 --> blob shape is closer to circle
+        Parameter<double> elongation; // some people call it inertia: ratio of the minor and major axes of a blob
+        Parameter<uint32_t> height; // height, in pixels
+        Parameter<double> length; // maximum distance between any of 2 pixels, in pixels
+        Parameter<uint32_t> size; // overall size of blobs, in pixels
+        Parameter<uint32_t> width; // width, in pixels
 
         // this function will be called in BlobInfo class before finding blobs
         void _verify() const
@@ -86,19 +86,19 @@ namespace Blob_Detection
     struct Area
     {
         Area()
-            : left  ( 0 )
-            , right ( 0 )
-            , top   ( 0 )
+            : left( 0 )
+            , right( 0 )
+            , top( 0 )
             , bottom( 0 )
-        { }
+        {}
 
         // this constructor is made to avoid 'Value' template restriction
         explicit Area( uint32_t value )
-            : left  ( value )
-            , right ( value )
-            , top   ( value )
+            : left( value )
+            , right( value )
+            , top( value )
             , bottom( value )
-        { }
+        {}
 
         uint32_t left;
         uint32_t right;
@@ -112,7 +112,7 @@ namespace Blob_Detection
         Value()
             : value( 0 )
             , found( false )
-        { }
+        {}
 
         Data value;
         bool found;
@@ -127,48 +127,48 @@ namespace Blob_Detection
     public:
         friend class BlobDetection;
 
-        const std::vector < uint32_t > & pointX() const;   // returns an array what contains all blob's pixel X positions (unsorted)
-        const std::vector < uint32_t > & pointY() const;   // returns an array what contains all blob's pixel Y positions (unsorted)
-        const std::vector < uint32_t > & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
-        const std::vector < uint32_t > & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
-        const std::vector < uint32_t > & edgeX() const;    // returns an array what contains all blob's edge pixel X positions (unsorted)
-        const std::vector < uint32_t > & edgeY() const;    // returns an array what contains all blob's edge pixel Y positions (unsorted)
+        const std::vector<uint32_t> & pointX() const; // returns an array what contains all blob's pixel X positions (unsorted)
+        const std::vector<uint32_t> & pointY() const; // returns an array what contains all blob's pixel Y positions (unsorted)
+        const std::vector<uint32_t> & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
+        const std::vector<uint32_t> & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
+        const std::vector<uint32_t> & edgeX() const; // returns an array what contains all blob's edge pixel X positions (unsorted)
+        const std::vector<uint32_t> & edgeY() const; // returns an array what contains all blob's edge pixel Y positions (unsorted)
 
         // Each function has 2 overloaded forms:
         // - non-constant function check whether value was calculated, calculates it if neccessary and return value
         // - constant function return value no matter a value was calculated or not
-        Area     area();              // minimum fitting rectangle what can contain blob
-        Area     area() const;        // minimum fitting rectangle what can contain blob
-        Point2d  center();            // gravity center of blob
-        Point2d  center() const;      // gravity center of blob
-        double   circularity();       // circularity of blob
-        double   circularity() const; // circularity of blob
-        double   elongation();        // elongation of blob
-        double   elongation() const;  // elongation of blob
-        uint32_t height();            // height of blob
-        uint32_t height() const;      // height of blob
-        double   length();            // length of blob
-        double   length() const;      // length of blob
-        size_t   size() const;        // total number of pixels in blob
-        uint32_t width();             // width of blob
-        uint32_t width() const;       // width of blob
+        Area area(); // minimum fitting rectangle what can contain blob
+        Area area() const; // minimum fitting rectangle what can contain blob
+        Point2d center(); // gravity center of blob
+        Point2d center() const; // gravity center of blob
+        double circularity(); // circularity of blob
+        double circularity() const; // circularity of blob
+        double elongation(); // elongation of blob
+        double elongation() const; // elongation of blob
+        uint32_t height(); // height of blob
+        uint32_t height() const; // height of blob
+        double length(); // length of blob
+        double length() const; // length of blob
+        size_t size() const; // total number of pixels in blob
+        uint32_t width(); // width of blob
+        uint32_t width() const; // width of blob
 
-        bool isSolid() const;         // true if blob does not have inner edge points
+        bool isSolid() const; // true if blob does not have inner edge points
     private:
-        std::vector < uint32_t > _pointX;
-        std::vector < uint32_t > _pointY;
-        std::vector < uint32_t > _contourX;
-        std::vector < uint32_t > _contourY;
-        std::vector < uint32_t > _edgeX;
-        std::vector < uint32_t > _edgeY;
+        std::vector<uint32_t> _pointX;
+        std::vector<uint32_t> _pointY;
+        std::vector<uint32_t> _contourX;
+        std::vector<uint32_t> _contourY;
+        std::vector<uint32_t> _edgeX;
+        std::vector<uint32_t> _edgeY;
 
-        Value < Area   > _area;
-        Value < Point2d> _center;
-        Value < double > _circularity;
-        Value < double > _elongation;
-        Value <uint32_t> _height;
-        Value < double > _length;
-        Value <uint32_t> _width;
+        Value<Area> _area;
+        Value<Point2d> _center;
+        Value<double> _circularity;
+        Value<double> _elongation;
+        Value<uint32_t> _height;
+        Value<double> _length;
+        Value<uint32_t> _width;
 
         void _getArea();
         void _getCenter();
@@ -190,10 +190,10 @@ namespace Blob_Detection
                                             const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 );
 
         // Retrieve an array of all found blobs
-        const std::vector < BlobInfo > & get() const;
-        std::vector < BlobInfo > & get();
-        const std::vector < BlobInfo > & operator()() const; // these are same functions, added to simplify coding
-        std::vector < BlobInfo > & operator()();
+        const std::vector<BlobInfo> & get() const;
+        std::vector<BlobInfo> & get();
+        const std::vector<BlobInfo> & operator()() const; // these are same functions, added to simplify coding
+        std::vector<BlobInfo> & operator()();
 
         enum BlobCriterion
         {
@@ -209,7 +209,8 @@ namespace Blob_Detection
         const BlobInfo & getBestBlob( BlobCriterion criterion ) const;
         // sorting all found blobs in ascending order
         void sort( BlobCriterion criterion );
+
     protected:
-        std::vector < BlobInfo > _blob;
+        std::vector<BlobInfo> _blob;
     };
 }
