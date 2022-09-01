@@ -1,6 +1,8 @@
 penguinV
 ======
-PenguinV is a simple and fast C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
+PenguinV is a powerful **image processing** library with focus on heterogeneous systems.
+The library is designed with an idea to have common API for CPUs and GPUs simplifying developer's work on context switching between devices.
+Core features of the library:
 
 - heterogeneous system support (CPUs and GPUs)
 - CUDA, OpenCL and SIMD (SSE, AVX, NEON) support
@@ -13,7 +15,8 @@ PenguinV is a simple and fast C++ **image processing** library with focus on het
 
 What can it do?
 ---------------------------
-You can develop a software within minutes of your time to obtain **high performance** and **accuracy**. It is up to developer to decide which device (CPU or GPU) would execute the code or give such control to the library.
+You can develop a software within minutes of your time to obtain **high performance** and **accuracy**.
+It is up to developer to decide which device (CPU or GPU) would execute the code or give such control to the library.
 
 Example code for below images could look like this:
 ```cpp
@@ -40,7 +43,9 @@ The trick behind the code is that you have a **single interface** for CPU as wel
 Contribution
 ---------------------------
 [![Actions Status](https://github.com/ihhub/penguinv/workflows/GitHub%20Actions/badge.svg)](https://github.com/ihhub/penguinv/actions) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/alerts/)
-We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
+
+We welcome and appreciate any help, even if it's a tiny text or code change.
+Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request.
 Not sure what to start with? Feel free to refer to <kbd>[good first issue](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[help wanted](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
 
 Requirements
