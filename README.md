@@ -1,7 +1,5 @@
 penguinV
 ======
- [![Build status](https://travis-ci.org/ihhub/penguinV.svg?branch=master)](https://travis-ci.org/ihhub/penguinV) [![Build status](https://ci.appveyor.com/api/projects/status/g4a42ac5ktra8utq/branch/master?svg=true)](https://ci.appveyor.com/project/ihhub/penguinv/branch/master) [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/context:cpp) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/alerts/) [![Actions Status](https://github.com/ihhub/penguinv/workflows/GitHub%20Actions/badge.svg)](https://github.com/ihhub/penguinv/actions)
-
 PenguinV is a simple and fast C++ **image processing** library with focus on heterogeneous systems. The library is designed with an idea to have simple common API for CPUs and GPUs simplifying developer's work on context switching between devices. Core features of the library:
 
 - heterogeneous system support (CPUs and GPUs)
@@ -41,6 +39,7 @@ The trick behind the code is that you have a **single interface** for CPU as wel
 
 Contribution
 ---------------------------
+[![Actions Status](https://github.com/ihhub/penguinv/workflows/GitHub%20Actions/badge.svg)](https://github.com/ihhub/penguinv/actions) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/alerts/)
 We welcome and appreciate any help, even if it's a tiny text or code change. Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request. All contributors are listed in the project's wiki [page](https://github.com/ihhub/penguinV/wiki/Contributors). 
 Not sure what to start with? Feel free to refer to <kbd>[good first issue](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)</kbd> or <kbd>[help wanted](https://github.com/ihhub/penguinV/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)</kbd> tags.
 

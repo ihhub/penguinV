@@ -8,6 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
+    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
     - name: Configure
@@ -21,6 +22,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
+    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -58,6 +60,24 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: microsoft/setup-msbuild@v1
-    - name: Build
+    - name: build unit tests
       run: |
         MSBuild.exe test/unit_tests/unit_tests-vs2019.vcxproj /property:Platform=${{ matrix.config.platform }} /property:Configuration=${{ matrix.config.build_config }}
+    - name: build performance tests
+      run: |
+        MSBuild.exe test/unit_tests/performance_tests-vs2019.vcxproj /property:Platform=${{ matrix.config.platform }} /property:Configuration=${{ matrix.config.build_config }}
+  style:
+    name: Code style check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 50
+    - name: Setup clang-format
+      run: |
+        sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100
+        sudo update-alternatives --install /usr/bin/clang-format-diff clang-format-diff /usr/bin/clang-format-diff-12 100
+    - name: Check code format
+      run: |
+        bash script/tools/check_code_format.sh
