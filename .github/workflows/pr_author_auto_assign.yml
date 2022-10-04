@@ -1,0 +1,15 @@
+name: PR author auto assign
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+jobs:
+  assign:
+    name: PR author auto assign
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: toshimaru/auto-author-assign@v1.4.0
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
