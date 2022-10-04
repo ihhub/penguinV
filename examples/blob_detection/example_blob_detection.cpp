@@ -8,8 +8,9 @@
 int main( int argc, char * argv[] )
 {
     std::string filePath = "mercury.bmp"; // default image path
-    if ( argc > 1 ) // Check input data
+    if ( argc > 1 )  { // Check input data
         filePath = argv[1];
+	}
 
     try // <---- do not forget to put your code into try.. catch block!
     {
@@ -17,12 +18,14 @@ int main( int argc, char * argv[] )
         penguinV::Image image = Bitmap_Operation::Load( filePath );
 
         // If the image is empty it means that the image doesn't exist or the file is not readable
-        if ( image.empty() )
+        if ( image.empty() ) {
             throw penguinVException( std::string( "Cannot load " ) + filePath );
+		}
 
         // Convert to gray-scale image if it's not
-        if ( image.colorCount() != penguinV::GRAY_SCALE )
+        if ( image.colorCount() != penguinV::GRAY_SCALE ) {
             image = Image_Function::ConvertToGrayScale( image );
+		}
 
         // Threshold image with calculated optimal threshold
         const std::vector<uint32_t> histogram = Image_Function::Histogram( image );
@@ -41,8 +44,9 @@ int main( int argc, char * argv[] )
             // clear image and draw contour of found blob
             image.fill( 0 );
 
-            for ( size_t i = 0; i < blob.contourX().size(); ++i )
+            for ( size_t i = 0; i < blob.contourX().size(); ++i ) {
                 Image_Function::SetPixel( image, blob.contourX()[i], blob.contourY()[i], 255u );
+			}
         }
 
         // Save result into file
