@@ -130,7 +130,7 @@ namespace Blob_Detection
     struct Value
     {
         Value()
-            : value( 0 )
+            : value()
             , found( false )
         {}
 
