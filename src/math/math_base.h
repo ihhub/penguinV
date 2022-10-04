@@ -62,7 +62,12 @@ namespace pvmath
 template <typename _Type>
 struct PointBase2D
 {
-    PointBase2D( _Type _x = 0, _Type _y = 0 )
+    PointBase2D()
+        : x( 0 )
+        , y( 0 )
+    {}
+
+    PointBase2D( _Type _x, _Type _y )
         : x( _x )
         , y( _y )
     {}
@@ -119,7 +124,12 @@ PointBase2D<_Type> operator*( const T & value, const PointBase2D<_Type> & point 
 template <typename _Type>
 struct PointBase3D : public PointBase2D<_Type>
 {
-    PointBase3D( _Type _x = 0, _Type _y = 0, _Type _z = 0 )
+    PointBase3D()
+        : PointBase2D<_Type>()
+        , z( 0 )
+    {}
+
+    PointBase3D( _Type _x, _Type _y, _Type _z )
         : PointBase2D<_Type>( _x, _y )
         , z( _z )
     {}
