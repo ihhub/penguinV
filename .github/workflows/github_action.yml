@@ -2,6 +2,9 @@ name: GitHub Actions
 
 on: [push, pull_request]
 
+concurrency:
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
