@@ -1,6 +1,5 @@
 // Example application of library utilization
-#include "../../src/image_buffer.h"
-#include "../../src/image_function.h"
+#include "../../src/penguinv/penguinv.h"
 #include <iostream>
 
 void example1( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut );
@@ -77,38 +76,38 @@ void example1( const penguinV::Image & imageIn1, const penguinV::Image & imageIn
     // Copy information from input images to cropped images
 
     // It is not a good style of programming but it is easy to explain all parameters!
-    Image_Function::Copy( imageIn1, // first input image
-                          10, // X coordinate where we get information from first input image
-                          10, // Y coordinate where we get information from first input image
-                          croppedIn1, // first cropped image
-                          0, // X coordinate where we put information to first cropped image
-                          0, // Y coordinate where we put information to first cropped image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( imageIn1, // first input image
+                    10, // X coordinate where we get information from first input image
+                    10, // Y coordinate where we get information from first input image
+                    croppedIn1, // first cropped image
+                    0, // X coordinate where we put information to first cropped image
+                    0, // Y coordinate where we put information to first cropped image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 
-    Image_Function::Copy( imageIn2, // second input image
-                          650, // X coordinate where we get information from second input image
-                          768, // Y coordinate where we get information from second input image
-                          croppedIn1, // second cropped image
-                          0, // X coordinate where we put information to second cropped image
-                          0, // Y coordinate where we put information to second cropped image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( imageIn2, // second input image
+                    650, // X coordinate where we get information from second input image
+                    768, // Y coordinate where we get information from second input image
+                    croppedIn2, // second cropped image
+                    0, // X coordinate where we put information to second cropped image
+                    0, // Y coordinate where we put information to second cropped image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 
     // Do Bitwise OR
-    Image_Function::BitwiseOr( croppedIn1, croppedIn2, croppedOut );
+    penguinV::BitwiseOr( croppedIn1, croppedIn2, croppedOut );
 
     // Copy the result into output image
-    Image_Function::Copy( croppedOut, // cropped output image
-                          0, // X coordinate where we get information from cropped output image
-                          0, // Y coordinate where we get information from cropped output image
-                          imageOut, // output image
-                          0, // X coordinate where we put information to output image
-                          0, // Y coordinate where we put information to output image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( croppedOut, // cropped output image
+                    0, // X coordinate where we get information from cropped output image
+                    0, // Y coordinate where we get information from cropped output image
+                    imageOut, // output image
+                    0, // X coordinate where we put information to output image
+                    0, // Y coordinate where we put information to output image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 }
 
@@ -120,79 +119,79 @@ void example2( const penguinV::Image & imageIn1, const penguinV::Image & imageIn
 
     // Copy information from input images to cropped images
 
-    Image_Function::Copy( imageIn1, // first input image
-                          10, // X coordinate where we get information from first input image
-                          10, // Y coordinate where we get information from first input image
-                          croppedIn1, // first cropped image
-                          0, // X coordinate where we put information to first cropped image
-                          0, // Y coordinate where we put information to first cropped image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( imageIn1, // first input image
+                    10, // X coordinate where we get information from first input image
+                    10, // Y coordinate where we get information from first input image
+                    croppedIn1, // first cropped image
+                    0, // X coordinate where we put information to first cropped image
+                    0, // Y coordinate where we put information to first cropped image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 
-    Image_Function::Copy( imageIn2, // second input image
-                          650, // X coordinate where we get information from second input image
-                          768, // Y coordinate where we get information from second input image
-                          croppedIn1, // second cropped image
-                          0, // X coordinate where we put information to second cropped image
-                          0, // Y coordinate where we put information to second cropped image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( imageIn2, // second input image
+                    650, // X coordinate where we get information from second input image
+                    768, // Y coordinate where we get information from second input image
+                    croppedIn2, // second cropped image
+                    0, // X coordinate where we put information to second cropped image
+                    0, // Y coordinate where we put information to second cropped image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 
     // Do Bitwise OR and store result in cropped output image (move operator)
-    penguinV::Image croppedOut = Image_Function::BitwiseOr( croppedIn1, croppedIn2 );
+    penguinV::Image croppedOut = penguinV::BitwiseOr( croppedIn1, croppedIn2 );
 
     // Copy the result into output image
-    Image_Function::Copy( croppedOut, // cropped output image
-                          0, // X coordinate where we get information from cropped output image
-                          0, // Y coordinate where we get information from cropped output image
-                          imageOut, // output image
-                          0, // X coordinate where we put information to output image
-                          0, // Y coordinate where we put information to output image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( croppedOut, // cropped output image
+                    0, // X coordinate where we get information from cropped output image
+                    0, // Y coordinate where we get information from cropped output image
+                    imageOut, // output image
+                    0, // X coordinate where we put information to output image
+                    0, // Y coordinate where we put information to output image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 }
 
 void example3( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
     // Do Bitwise OR and store result in cropped output image (move operator)
-    penguinV::Image croppedOut = Image_Function::BitwiseOr( imageIn1, // first input image
-                                                            10, // X coordinate of first input image area
-                                                            10, // Y coordinate of first input image area
-                                                            imageIn2, // second input image
-                                                            650, // X coordinate of second input image area
-                                                            768, // Y coordinate of second input image area
-                                                            128, // width of the area
-                                                            128 // height of the area
+    penguinV::Image croppedOut = penguinV::BitwiseOr( imageIn1, // first input image
+                                                      10, // X coordinate of first input image area
+                                                      10, // Y coordinate of first input image area
+                                                      imageIn2, // second input image
+                                                      650, // X coordinate of second input image area
+                                                      768, // Y coordinate of second input image area
+                                                      128, // width of the area
+                                                      128 // height of the area
     );
 
     // Copy the result into output image
-    Image_Function::Copy( croppedOut, // cropped output image
-                          0, // X coordinate where we get information from cropped output image
-                          0, // Y coordinate where we get information from cropped output image
-                          imageOut, // output image
-                          0, // X coordinate where we put information to output image
-                          0, // Y coordinate where we put information to output image
-                          128, // width of copying area
-                          128 // height of copying area
+    penguinV::Copy( croppedOut, // cropped output image
+                    0, // X coordinate where we get information from cropped output image
+                    0, // Y coordinate where we get information from cropped output image
+                    imageOut, // output image
+                    0, // X coordinate where we put information to output image
+                    0, // Y coordinate where we put information to output image
+                    128, // width of copying area
+                    128 // height of copying area
     );
 }
 
 void example4( const penguinV::Image & imageIn1, const penguinV::Image & imageIn2, penguinV::Image & imageOut )
 {
-    Image_Function::BitwiseOr( imageIn1, // first input image
-                               10, // X coordinate of first input image area
-                               10, // Y coordinate of first input image area
-                               imageIn2, // second input image
-                               650, // X coordinate of second input image area
-                               768, // Y coordinate of second input image area
-                               imageOut, // output image
-                               0, // X coordinate of output image area
-                               0, // Y coordinate of output image area
-                               128, // width of the area
-                               128 // height of the area
+    penguinV::BitwiseOr( imageIn1, // first input image
+                         10, // X coordinate of first input image area
+                         10, // Y coordinate of first input image area
+                         imageIn2, // second input image
+                         650, // X coordinate of second input image area
+                         768, // Y coordinate of second input image area
+                         imageOut, // output image
+                         0, // X coordinate of output image area
+                         0, // Y coordinate of output image area
+                         128, // width of the area
+                         128 // height of the area
     );
     // And that's all
 }

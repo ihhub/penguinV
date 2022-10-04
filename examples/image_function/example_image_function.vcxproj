@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -144,11 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
+    <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
     <ClCompile Include="example_image_function.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\image_buffer.h" />
+    <ClInclude Include="..\..\src\penguinv\penguinv.h" />
     <ClInclude Include="..\..\src\penguinv_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
