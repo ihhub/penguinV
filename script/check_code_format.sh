@@ -18,14 +18,17 @@
 #
 # This script assumes to be invoked at the project root directory.
 
-FILES_TO_CHECK=$(git diff --name-only HEAD^ | grep -E ".*\.(cpp|cc|c\+\+|cxx|c|h|hpp)$")
+set -e -o pipefail
+
+FILES_TO_CHECK=$(git diff --name-only HEAD^ | (grep -E ".*\.(cpp|cc|c\+\+|cxx|c|h|hpp)$" || true) \
+                                            | (grep -v "^src/thirdparty/.*/.*" || true))
 
 if [ -z "${FILES_TO_CHECK}" ]; then
   echo "No source code to check for formatting."
   exit 0
 fi
 
-FORMAT_DIFF=$(git diff -U0 HEAD^ -- ${FILES_TO_CHECK} | python $TRAVIS_BUILD_DIR/script/clang-format-diff.py -p1 -style=file)
+FORMAT_DIFF=$(git diff -U0 HEAD^ -- ${FILES_TO_CHECK} | clang-format-diff -p1 -style=file)
 
 if [ -z "${FORMAT_DIFF}" ]; then
   echo "All source code in PR properly formatted."
