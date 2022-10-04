@@ -10,7 +10,7 @@ int main( int argc, char * argv[] )
     std::string filePath = "mercury.bmp"; // default image path
     if ( argc > 1 ) { // Check input data
         filePath = argv[1];
-	}
+    }
 
     try // <---- do not forget to put your code into try.. catch block!
     {
