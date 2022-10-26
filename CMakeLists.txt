@@ -23,6 +23,8 @@ if(CUDA_FOUND)
         set(CUDA_PROPAGATE_HOST_FLAGS OFF)
         list(APPEND CUDA_NVCC_FLAGS -std=c++11 -Wno-deprecated-gpu-targets)
     endif()
+    add_subdirectory(examples/cuda/image_function)
+    add_subdirectory(examples/cuda/pinned_memory)
 endif()
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm*|ARM*)")
