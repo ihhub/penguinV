@@ -1,7 +1,5 @@
 
 PWD := $(shell pwd)
-PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
-JPEG_NOT_EXISTS = $(shell g++ -ljpeg 2>&1 > /dev/null | grep 'cannot find' | wc -c)
 LIB_DIR := $(PWD)/../../src
 TEST_DIR := $(PWD)/..
 SRCS :=  \
@@ -60,10 +58,14 @@ else
 	ifeq ($(dOS),Linux)
 		PNG_MESSAGE_OS := "\nYou can install libpng-dev by:\n$ sudo apt install libpng-dev\n"
 		JPG_MESSAGE_OS := "\nYou can install libjpeg-dev by:\n$ sudo apt install libjpeg-dev\n"
+		PNG_NOT_EXISTS = $(shell g++ -lpng 2>&1 > /dev/null | grep 'cannot find' | wc -c)
+		JPEG_NOT_EXISTS = $(shell g++ -ljpeg 2>&1 > /dev/null | grep 'cannot find' | wc -c)
 	endif
 	ifeq ($(dOS),Darwin)
 		PNG_MESSAGE_OS := "\nYou can install libpng-dev by:\n$ brew install libpng\n"
 		JPG_MESSAGE_OS := "\nYou can install libjpeg-dev by:\n$ brew install libjpeg\n"
+		PNG_NOT_EXISTS = $(shell brew ls --version libpng > /dev/null; echo $$?)
+		JPEG_NOT_EXISTS = $(shell brew ls --version libjpeg > /dev/null; echo $$?)
 	endif
 endif
 
