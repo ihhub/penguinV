@@ -41,3 +41,7 @@ option(PENGUINV_BUILD_EXAMPLE "Build examples of penguinV" ON)
 if(${PENGUINV_BUILD_EXAMPLE} AND (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
     add_subdirectory(examples)
 endif()
+
+message("copying example data files from ${CMAKE_SOURCE_DIR}/data to ${CMAKE_INSTALL_PREFIX}")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/data" DESTINATION "${CMAKE_INSTALL_PREFIX}")
