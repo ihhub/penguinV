@@ -22,3 +22,6 @@ elseif(UNIX AND NOT APPLE)
     target_link_libraries(example_edge_detection
         PRIVATE example_features_options example_features_warnings Threads::Threads ${X11_LIBRARIES})
 endif()
+
+#copy example data to binary directory
+copy_data_files()

@@ -27,6 +27,15 @@ if(CUDA_FOUND)
     add_subdirectory(examples/cuda/pinned_memory)
 endif()
 
+function(copy_data_files)
+        set(EXAMPLE_DATA_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+        set(EXAMPLE_DATA_DIR "${CMAKE_SOURCE_DIR}/data/")
+        file(GLOB files "${EXAMPLE_DATA_DIR}/*.bmp" "${EXAMPLE_DATA_DIR}/*.png")
+        foreach(file ${files})
+            file(COPY ${file} DESTINATION ${EXAMPLE_DATA_INSTALL_DIR})
+        endforeach()
+    endfunction()
+
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm*|ARM*)")
     add_compile_options(-mfpu=neon-vfpv4)
 endif()
@@ -42,6 +51,3 @@ if(${PENGUINV_BUILD_EXAMPLE} AND (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE
     add_subdirectory(examples)
 endif()
 
-message("copying example data files from ${CMAKE_SOURCE_DIR}/data to ${CMAKE_INSTALL_PREFIX}")
-set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}")
-file(COPY "${CMAKE_SOURCE_DIR}/data" DESTINATION "${CMAKE_INSTALL_PREFIX}")
