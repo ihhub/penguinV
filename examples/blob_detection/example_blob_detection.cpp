@@ -23,12 +23,11 @@
 #include "../../src/file/bmp_image.h"
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
-#include <config.h>
 #include <iostream>
 
 int main( int argc, char * argv[] )
 {
-    std::string filePath = DataPath + "mercury.bmp"; // default image path
+    std::string filePath = "mercury.bmp"; // default image path
     if ( argc > 1 ) { // Check input data
         filePath = argv[1];
     }

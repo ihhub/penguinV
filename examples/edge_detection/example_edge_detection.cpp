@@ -24,7 +24,6 @@
 #include "../../src/image_buffer.h"
 #include "../../src/image_function.h"
 #include <iostream>
-#include <config.h>
 #if defined( _WIN32 )
 #include "../../src/ui/win/win_ui.h"
 #else
@@ -35,7 +34,7 @@ int main( int argc, char * argv[] )
 {
     try // <---- do not forget to put your code into try.. catch block!
     {
-        std::string filePath = DataPath + "mercury.bmp"; // default image path
+        std::string filePath = "mercury.bmp"; // default image path
         if ( argc > 1 ) // Check input data
             filePath = argv[1];
 

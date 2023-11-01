@@ -2,13 +2,6 @@
 add_library(example_features_options INTERFACE)
 target_compile_features(example_features_options INTERFACE cxx_std_11)
 
-configure_file(
-  "${CMAKE_SOURCE_DIR}/data/config.h.in"
-  "${CMAKE_SOURCE_DIR}/data/config.h"
-)
-
-include_directories("${CMAKE_SOURCE_DIR}/data")
-
 # Link this 'library' to use the standard warnings
 add_library(example_features_warnings INTERFACE)
 if(MSVC)
