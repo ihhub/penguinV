@@ -42,7 +42,7 @@ The trick behind the code is that you have a **single interface** for CPU as wel
 
 Contribution
 ---------------------------
-[![Actions Status](https://github.com/ihhub/penguinv/workflows/GitHub%20Actions/badge.svg)](https://github.com/ihhub/penguinv/actions) [![Total alerts](https://img.shields.io/lgtm/alerts/g/ihhub/penguinV.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ihhub/penguinV/alerts/)
+[![Actions Status](https://github.com/ihhub/penguinv/workflows/GitHub%20Actions/badge.svg)](https://github.com/ihhub/penguinv/actions)
 
 We welcome and appreciate any help, even if it's a tiny text or code change.
 Please read [contribution](https://github.com/ihhub/penguinV/blob/master/CONTRIBUTING.md) page before starting work on a pull request.
