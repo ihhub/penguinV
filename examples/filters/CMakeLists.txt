@@ -7,5 +7,5 @@ add_executable(example_filters
 target_link_libraries(example_filters
     PRIVATE example_features_options example_features_warnings)
 
-#copy example data to binary directory
+# Copy example data to binary directory.
 copy_data_files()
