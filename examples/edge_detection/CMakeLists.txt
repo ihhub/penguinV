@@ -23,5 +23,5 @@ elseif(UNIX AND NOT APPLE)
         PRIVATE example_features_options example_features_warnings Threads::Threads ${X11_LIBRARIES})
 endif()
 
-#copy example data to binary directory
+# Copy example data to binary directory.
 copy_data_files()
