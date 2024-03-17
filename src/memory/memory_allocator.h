@@ -160,7 +160,7 @@ protected:
     }
 
     // A size of memory allocated chunk.
-    size_t _size{ 0 }; 
+    size_t _size{ 0 };
 
     // Free memory in preallocated memory.
     std::vector<std::set<size_t>> _freeChunk;

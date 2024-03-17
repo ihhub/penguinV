@@ -421,7 +421,7 @@ namespace penguinV
     static const uint8_t GRAY_SCALE{ 1u };
     static const uint8_t RGB{ 3u };
     static const uint8_t RGBA{ 4u };
-    static const uint8_t RED_CHANNEL{ 0u} ;
+    static const uint8_t RED_CHANNEL{ 0u };
     static const uint8_t GREEN_CHANNEL{ 1u };
     static const uint8_t BLUE_CHANNEL{ 2u };
     static const uint8_t ALPHA_CHANNEL{ 3u };

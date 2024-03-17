@@ -228,11 +228,13 @@ namespace
         getDerivatives( data, first, second );
         getEdgePoints( negative, data, first, second, edgeParameter );
         removeSimilarPoints( negative );
-        if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST ) || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST ) ) {
+        if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST )
+             || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST ) ) {
             leaveFirstElement( positive );
             leaveLastElement( negative );
         }
-        else if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST ) || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST ) ) {
+        else if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST )
+                  || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST ) ) {
             leaveLastElement( positive );
             leaveFirstElement( negative );
         }

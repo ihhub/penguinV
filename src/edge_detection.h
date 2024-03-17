@@ -65,7 +65,7 @@ struct EdgeParameter
     uint32_t groupFactor;
 
     // Skip specific number of rows or columns to do not find edge points on all rows/columns. Default is 1 - no skipping.
-    uint32_t skipFactor; 
+    uint32_t skipFactor;
 
     // Specify a number of pixels from each side of potential edge point to get pixel intensity needed for contrast verification
     // Such offsets are useful for very smooth edge when pixel intensity increases very slowly per pixel

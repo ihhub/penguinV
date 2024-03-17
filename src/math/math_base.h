@@ -321,6 +321,6 @@ private:
     PointBase2D<_Type> _direction;
 };
 
-using Point2d = PointBase2D<double> ;
-using Point3d = PointBase3D<double> ;
-using Line2d = LineBase2D<double> ;
+using Point2d = PointBase2D<double>;
+using Point3d = PointBase3D<double>;
+using Line2d = LineBase2D<double>;
