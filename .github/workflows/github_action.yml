@@ -34,7 +34,7 @@ jobs:
     - name: Build
       # TODO: remove this disabled option. It was added due to libpng error:
       #       libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
-      run: cmake -DPENGUINV_ENABLE_PNG_SUPPORT=OFF --build build --config Release -- -j 2 
+      run: cmake -DPENGUINV_ENABLE_PNG_SUPPORT=OFF --build build --config Release -j 2 --
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
   python_on_windows:
