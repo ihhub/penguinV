@@ -30,10 +30,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Configure
-      run: mkdir build && cd build && cmake -DPENGUINV_ENABLE_PNG_SUPPORT=OFF ..
+      # TODO: remove these disabled options. It was added due to compilation errors:
+      #       - libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
+      #       - /Users/runner/work/penguinV/penguinV/src/file/jpeg_image.cpp:76:10: fatal error: 'jerror.h' file not found
+      run: mkdir build && cd build && cmake -DPENGUINV_ENABLE_PNG_SUPPORT=OFF -DPENGUINV_ENABLE_JPEG_SUPPORT=OFF ..
     - name: Build
-      # TODO: remove this disabled option. It was added due to libpng error:
-      #       libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
       run: cmake --build build --config Release -- -j 2
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
