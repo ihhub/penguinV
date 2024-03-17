@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,38 +28,38 @@ namespace Blob_Detection
     template <typename Data>
     struct Parameter
     {
-        Parameter()
-            : minimum( 0 ) // minimum value
-            , checkMinimum( false ) // set to compare a value with minimum value
-            , maximum( 0 ) // maximum value
-            , checkMaximum( false ) // set to compare a value with maximum value
-        {}
+        // Minimum value.
+        Data minimum{ 0 };
 
-        Data minimum;
-        bool checkMinimum;
+        // Whether the value should be compared with the minimum value.
+        bool checkMinimum{ false };
 
-        Data maximum;
-        bool checkMaximum;
+        // Maximum value.
+        Data maximum{ 0 };
+
+        // Whether the value should be compared with the maximum value.
+        bool checkMaximum{ false };
 
         void verify() const
         {
-            if ( checkMaximum && checkMinimum && ( minimum > maximum ) )
+            if ( checkMaximum && checkMinimum && ( minimum > maximum ) ) {
                 throw penguinVException( "Minimum value cannot be bigger than maximum value" );
+            }
         }
 
-        void set( Data min, Data max )
+        void set( const Data min, const Data max )
         {
             setMinimum( min );
             setMaximum( max );
         }
 
-        void setMinimum( Data min )
+        void setMinimum( const Data min )
         {
             checkMinimum = true;
             minimum = min;
         }
 
-        void setMaximum( Data max )
+        void setMaximum( const Data max )
         {
             checkMaximum = true;
             maximum = max;
@@ -67,19 +67,30 @@ namespace Blob_Detection
 
         void reset()
         {
-            *this = Parameter();
+            *this = {};
         }
     };
 
     struct BlobParameters
     {
-        Parameter<double> circularity; // this parameter will be 1 if blob is ideal circle and will be less than 1 if it's not
-                                       // closer this value to 1 --> blob shape is closer to circle
-        Parameter<double> elongation; // some people call it inertia: ratio of the minor and major axes of a blob
-        Parameter<uint32_t> height; // height, in pixels
-        Parameter<double> length; // maximum distance between any of 2 pixels, in pixels
-        Parameter<uint32_t> size; // overall size of blobs, in pixels
-        Parameter<uint32_t> width; // width, in pixels
+        // This parameter will be 1 if blob is ideal circle and will be less than 1 if it's not,
+        // Closer this value to 1 --> blob shape is closer to circle,
+        Parameter<double> circularity;
+
+        // Some people call it inertia: ratio of the minor and major axes of a blob.
+        Parameter<double> elongation;
+
+        // Width, in pixels.
+        Parameter<uint32_t> width;
+
+        // Height, in pixels.
+        Parameter<uint32_t> height;
+
+        // Maximum distance between any of 2 pixels, in pixels.
+        Parameter<double> length;
+
+        // Overall size of blobs, in pixels.
+        Parameter<uint32_t> size;
 
         // this function will be called in BlobInfo class before finding blobs
         void _verify() const
@@ -91,6 +102,7 @@ namespace Blob_Detection
             size.verify();
             width.verify();
         }
+
         // reset all parameters to initial values
         void _reset()
         {
@@ -105,12 +117,7 @@ namespace Blob_Detection
 
     struct Area
     {
-        Area()
-            : left( 0 )
-            , right( 0 )
-            , top( 0 )
-            , bottom( 0 )
-        {}
+        Area() = default;
 
         // this constructor is made to avoid 'Value' template restriction
         explicit Area( uint32_t value )
@@ -118,24 +125,21 @@ namespace Blob_Detection
             , right( value )
             , top( value )
             , bottom( value )
-        {}
+        {
+            // Do nothing.
+        }
 
-        uint32_t left;
-        uint32_t right;
-        uint32_t top;
-        uint32_t bottom;
+        uint32_t left{ 0 };
+        uint32_t right{ 0 };
+        uint32_t top{ 0 };
+        uint32_t bottom{ 0 };
     };
 
     template <typename Data>
     struct Value
     {
-        Value()
-            : value()
-            , found( false )
-        {}
-
         Data value;
-        bool found;
+        bool found{ false };
     };
 
     // This class follows an idea of lazy computations:
@@ -147,33 +151,156 @@ namespace Blob_Detection
     public:
         friend class BlobDetection;
 
-        const std::vector<uint32_t> & pointX() const; // returns an array what contains all blob's pixel X positions (unsorted)
-        const std::vector<uint32_t> & pointY() const; // returns an array what contains all blob's pixel Y positions (unsorted)
-        const std::vector<uint32_t> & contourX() const; // returns an array what contains all blob's contour pixel X positions (unsorted)
-        const std::vector<uint32_t> & contourY() const; // returns an array what contains all blob's contour pixel Y positions (unsorted)
-        const std::vector<uint32_t> & edgeX() const; // returns an array what contains all blob's edge pixel X positions (unsorted)
-        const std::vector<uint32_t> & edgeY() const; // returns an array what contains all blob's edge pixel Y positions (unsorted)
+        // Returns an array what contains all blob's pixel X positions (unsorted).
+        const std::vector<uint32_t> & pointX() const
+        {
+            return _pointX;
+        }
+
+        // Returns an array what contains all blob's pixel Y positions (unsorted).
+        const std::vector<uint32_t> & pointY() const
+        {
+            return _pointY;
+        }
+
+        // Returns an array what contains all blob's contour pixel X positions (unsorted).
+        const std::vector<uint32_t> & contourX() const
+        {
+            return _contourX;
+        }
+
+        // Returns an array what contains all blob's contour pixel Y positions (unsorted).
+        const std::vector<uint32_t> & contourY() const
+        {
+            return _contourY;
+        }
+
+        // Returns an array what contains all blob's edge pixel X positions (unsorted).
+        const std::vector<uint32_t> & edgeX() const
+        {
+            return _edgeX;
+        }
+
+        // Returns an array what contains all blob's edge pixel Y positions (unsorted).
+        const std::vector<uint32_t> & edgeY() const
+        {
+            return _edgeY;
+        }
 
         // Each function has 2 overloaded forms:
-        // - non-constant function check whether value was calculated, calculates it if neccessary and return value
-        // - constant function return value no matter a value was calculated or not
-        Area area(); // minimum fitting rectangle what can contain blob
-        Area area() const; // minimum fitting rectangle what can contain blob
-        Point2d center(); // gravity center of blob
-        Point2d center() const; // gravity center of blob
-        double circularity(); // circularity of blob
-        double circularity() const; // circularity of blob
-        double elongation(); // elongation of blob
-        double elongation() const; // elongation of blob
-        uint32_t height(); // height of blob
-        uint32_t height() const; // height of blob
-        double length(); // length of blob
-        double length() const; // length of blob
-        size_t size() const; // total number of pixels in blob
-        uint32_t width(); // width of blob
-        uint32_t width() const; // width of blob
+        // - non-constant function check whether value was calculated, calculates it, if necessary, and return value
+        // - constant function return value no matter a value was calculated or not.
 
-        bool isSolid() const; // true if blob does not have inner edge points
+        // Minimum fitting rectangle what can contain the blob.
+        Area area()
+        {
+            _getArea();
+
+            return _area.value;
+        }
+
+        // Minimum fitting rectangle what can contain the blob.
+        Area area() const
+        {
+            return _area.value;
+        }
+
+        // Gravity center of the blob.
+        Point2d center()
+        {
+            _getCenter();
+
+            return _center.value;
+        }
+
+        // Gravity center of the blob.
+        Point2d center() const
+        {
+            return _center.value;
+        }
+
+        // Circularity of the blob.
+        double circularity()
+        {
+            _getCircularity();
+
+            return _circularity.value;
+        }
+
+        // Circularity of the blob.
+        double circularity() const
+        {
+            return _circularity.value;
+        }
+
+        // Elongation of the blob.
+        double elongation()
+        {
+            _getElongation();
+
+            return _elongation.value;
+        }
+
+        // Elongation of the blob.
+        double elongation() const
+        {
+            return _elongation.value;
+        }
+
+        // Width of the blob.
+        uint32_t width()
+        {
+            _getWidth();
+
+            return _width.value;
+        }
+
+        // Width of the blob.
+        uint32_t width() const
+        {
+            return _width.value;
+        }
+
+        // Height of the blob.
+        uint32_t height()
+        {
+            _getHeight();
+
+            return _height.value;
+        }
+
+        // Height of the blob.
+        uint32_t height() const
+        {
+            return _height.value;
+        }
+
+        // Length of the blob.
+        double length()
+        {
+            _getLength();
+
+            return _length.value;
+        }
+
+        // Length of the blob.
+        double length() const
+        {
+            return _length.value;
+        }
+
+        // Total number of pixels in the blob.
+        size_t size() const
+        {
+            return _pointX.size();
+        }
+
+        // Returns true if blob does not have inner edge points.
+        bool isSolid() const
+        {
+            return _contourX.size() == _edgeX.size();
+        }
+
     private:
         std::vector<uint32_t> _pointX;
         std::vector<uint32_t> _pointY;
@@ -205,17 +332,37 @@ namespace Blob_Detection
         // Sorting blobs will be in alphabet order of sorting criteria
         // Example: length and width criteria enabled. So first all blobs would be removed if they are not fitting length criterion
         // and then all remain blobs would be removed if they are not fitting for width criterion
-        const std::vector<BlobInfo> & find( const penguinV::Image & image, const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 );
+        const std::vector<BlobInfo> & find( const penguinV::Image & image, const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 )
+        {
+            return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
+        }
+
         const std::vector<BlobInfo> & find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
                                             const BlobParameters & parameter = BlobParameters(), uint8_t threshold = 1 );
 
         // Retrieve an array of all found blobs
-        const std::vector<BlobInfo> & get() const;
-        std::vector<BlobInfo> & get();
-        const std::vector<BlobInfo> & operator()() const; // these are same functions, added to simplify coding
-        std::vector<BlobInfo> & operator()();
+        const std::vector<BlobInfo> & get() const
+        {
+            return _blob;
+        }
 
-        enum BlobCriterion
+        std::vector<BlobInfo> & get()
+        {
+            return _blob;
+        }
+
+        // These are same functions, added to simplify coding.
+        const std::vector<BlobInfo> & operator()() const
+        {
+            return _blob;
+        }
+
+        std::vector<BlobInfo> & operator()()
+        {
+            return _blob;
+        }
+
+        enum class BlobCriterion : uint8_t
         {
             BY_CIRCULARITY,
             BY_ELONGATION,

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +27,7 @@
 
 namespace
 {
-    enum PixelState
+    enum PixelState : uint8_t
     {
         EMPTY = 0u,
         NOT_IN_USE = 1u,
@@ -39,169 +39,45 @@ namespace
     double getLengthFromCountour( const std::vector<uint32_t> & contourX, const std::vector<uint32_t> & contourY, PointBase2D<uint32_t> & startPoint,
                                   PointBase2D<uint32_t> & endPoint )
     {
-        if ( contourX.size() > 1 ) {
-            std::vector<uint32_t>::const_iterator x = contourX.cbegin();
-            std::vector<uint32_t>::const_iterator y = contourY.cbegin();
-            std::vector<uint32_t>::const_iterator end = contourX.cend();
-
-            int32_t maximumDistance = 0;
-
-            for ( ; x != ( end - 1 ); ++x, ++y ) {
-                std::vector<uint32_t>::const_iterator xx = x + 1;
-                std::vector<uint32_t>::const_iterator yy = y + 1;
-
-                for ( ; xx != end; ++xx, ++yy ) {
-                    const int32_t distance
-                        = static_cast<int32_t>( *x - *xx ) * static_cast<int32_t>( *x - *xx ) + static_cast<int32_t>( *y - *yy ) * static_cast<int32_t>( *y - *yy );
-
-                    if ( maximumDistance < distance ) {
-                        maximumDistance = distance;
-
-                        startPoint.x = *x;
-                        startPoint.y = *y;
-
-                        endPoint.x = *xx;
-                        endPoint.y = *xx;
-                    }
-                }
-            }
-            return sqrt( static_cast<double>( maximumDistance ) );
-        }
-        else {
+        if ( contourX.size() <= 1 ) {
             return 0;
         }
+
+        auto x = contourX.cbegin();
+        auto y = contourY.cbegin();
+        auto end = contourX.cend();
+
+        int32_t maximumDistance = 0;
+
+        for ( ; x != ( end - 1 ); ++x, ++y ) {
+            auto xx = x + 1;
+            auto yy = y + 1;
+
+            for ( ; xx != end; ++xx, ++yy ) {
+                const int32_t distance
+                    = static_cast<int32_t>( *x - *xx ) * static_cast<int32_t>( *x - *xx ) + static_cast<int32_t>( *y - *yy ) * static_cast<int32_t>( *y - *yy );
+
+                if ( maximumDistance < distance ) {
+                    maximumDistance = distance;
+
+                    startPoint.x = *x;
+                    startPoint.y = *y;
+
+                    endPoint.x = *xx;
+                    endPoint.y = *xx;
+                }
+            }
+        }
+
+        return sqrt( static_cast<double>( maximumDistance ) );
     }
 }
 
 namespace Blob_Detection
 {
-    const std::vector<uint32_t> & BlobInfo::pointX() const
-    {
-        return _pointX;
-    }
-
-    const std::vector<uint32_t> & BlobInfo::pointY() const
-    {
-        return _pointY;
-    }
-
-    const std::vector<uint32_t> & BlobInfo::contourX() const
-    {
-        return _contourX;
-    }
-
-    const std::vector<uint32_t> & BlobInfo::contourY() const
-    {
-        return _contourY;
-    }
-
-    const std::vector<uint32_t> & BlobInfo::edgeX() const
-    {
-        return _edgeX;
-    }
-
-    const std::vector<uint32_t> & BlobInfo::edgeY() const
-    {
-        return _edgeY;
-    }
-
-    Area BlobInfo::area()
-    {
-        _getArea();
-
-        return _area.value;
-    }
-
-    Area BlobInfo::area() const
-    {
-        return _area.value;
-    }
-
-    Point2d BlobInfo::center()
-    {
-        _getCenter();
-
-        return _center.value;
-    }
-
-    Point2d BlobInfo::center() const
-    {
-        return _center.value;
-    }
-
-    double BlobInfo::circularity()
-    {
-        _getCircularity();
-
-        return _circularity.value;
-    }
-
-    double BlobInfo::circularity() const
-    {
-        return _circularity.value;
-    }
-
-    double BlobInfo::elongation()
-    {
-        _getElongation();
-
-        return _elongation.value;
-    }
-
-    double BlobInfo::elongation() const
-    {
-        return _elongation.value;
-    }
-
-    uint32_t BlobInfo::height()
-    {
-        _getHeight();
-
-        return _height.value;
-    }
-
-    uint32_t BlobInfo::height() const
-    {
-        return _height.value;
-    }
-
-    double BlobInfo::length()
-    {
-        _getLength();
-
-        return _length.value;
-    }
-
-    double BlobInfo::length() const
-    {
-        return _length.value;
-    }
-
-    size_t BlobInfo::size() const
-    {
-        return _pointX.size();
-    }
-
-    uint32_t BlobInfo::width()
-    {
-        _getWidth();
-
-        return _width.value;
-    }
-
-    uint32_t BlobInfo::width() const
-    {
-        return _width.value;
-    }
-
-    bool BlobInfo::isSolid() const
-    {
-        return _contourX.size() == _edgeX.size();
-    }
-
     void BlobInfo::_getArea()
     {
-        if ( !_contourX.empty() && !_contourY.empty() && !_area.found ) {
+        if ( !_area.found && !_contourX.empty() && !_contourY.empty() ) {
             _area.value.left = *( std::min_element( _contourX.begin(), _contourX.end() ) );
             _area.value.right = *( std::max_element( _contourX.begin(), _contourX.end() ) ) + 1; // note that we add 1
             _area.value.top = *( std::min_element( _contourY.begin(), _contourY.end() ) );
@@ -213,7 +89,7 @@ namespace Blob_Detection
 
     void BlobInfo::_getCenter()
     {
-        if ( !_pointX.empty() && !_pointY.empty() && !_center.found ) {
+        if ( !_center.found && !_pointX.empty() && !_pointY.empty() ) {
             _center.value.x = static_cast<double>( std::accumulate( _pointX.begin(), _pointX.end(), 0 ) ) / static_cast<double>( size() );
             _center.value.y = static_cast<double>( std::accumulate( _pointY.begin(), _pointY.end(), 0 ) ) / static_cast<double>( size() );
 
@@ -223,15 +99,15 @@ namespace Blob_Detection
 
     void BlobInfo::_getCircularity()
     {
-        if ( !_contourX.empty() && !_circularity.found ) {
+        if ( !_circularity.found && !_contourX.empty() ) {
             const double radius = sqrt( static_cast<double>( size() ) / pvmath::pi );
             _getCenter();
 
             double difference = 0;
 
-            std::vector<uint32_t>::const_iterator x = _contourX.begin();
-            std::vector<uint32_t>::const_iterator y = _contourY.begin();
-            std::vector<uint32_t>::const_iterator end = _contourX.end();
+            auto x = _contourX.begin();
+            auto y = _contourY.begin();
+            auto end = _contourX.end();
 
             for ( ; x != end; ++x, ++y ) {
                 difference += fabs( sqrt( ( *x - _center.value.x ) * ( *x - _center.value.x ) + ( *y - _center.value.y ) * ( *y - _center.value.y ) ) - radius );
@@ -245,7 +121,7 @@ namespace Blob_Detection
 
     void BlobInfo::_getElongation()
     {
-        if ( !_contourX.empty() && !_contourY.empty() && !_elongation.found ) {
+        if ( !_elongation.found && !_contourX.empty() && !_contourY.empty() ) {
             if ( _contourX.size() > 1 ) {
                 PointBase2D<uint32_t> startPoint;
                 PointBase2D<uint32_t> endPoint;
@@ -257,17 +133,19 @@ namespace Blob_Detection
 
                 std::vector<double> contourYTemp( _contourY.begin(), _contourY.end() );
 
-                std::vector<uint32_t>::const_iterator xRotated = _contourX.begin();
-                std::vector<double>::iterator yRotated = contourYTemp.begin();
-                std::vector<uint32_t>::const_iterator endRotated = _contourX.end();
+                auto xRotated = _contourX.begin();
+                auto yRotated = contourYTemp.begin();
+                auto endRotated = _contourX.end();
 
-                for ( ; xRotated != endRotated; ++xRotated, ++yRotated )
+                for ( ; xRotated != endRotated; ++xRotated, ++yRotated ) {
                     ( *yRotated ) = ( *xRotated - startPoint.x ) * _sin + ( *yRotated - startPoint.y ) * _cos;
+                }
 
                 double height = *( std::max_element( contourYTemp.begin(), contourYTemp.end() ) ) - *( std::min_element( contourYTemp.begin(), contourYTemp.end() ) );
 
-                if ( height < 1 )
+                if ( height < 1 ) {
                     height = 1;
+                }
 
                 _elongation.value = length / height;
             }
@@ -281,7 +159,7 @@ namespace Blob_Detection
 
     void BlobInfo::_getHeight()
     {
-        if ( !_contourY.empty() && !_height.found ) {
+        if ( !_height.found && !_contourY.empty() ) {
             _height.value = *( std::max_element( _contourY.begin(), _contourY.end() ) ) - *( std::min_element( _contourY.begin(), _contourY.end() ) ) + 1;
 
             _height.found = true;
@@ -290,7 +168,7 @@ namespace Blob_Detection
 
     void BlobInfo::_getLength()
     {
-        if ( !_contourX.empty() && !_contourY.empty() && !_length.found ) {
+        if ( !_length.found && !_contourX.empty() && !_contourY.empty() ) {
             PointBase2D<uint32_t> startPoint;
             PointBase2D<uint32_t> endPoint;
             _length.value = getLengthFromCountour( _contourX, _contourY, startPoint, endPoint );
@@ -301,16 +179,11 @@ namespace Blob_Detection
 
     void BlobInfo::_getWidth()
     {
-        if ( !_contourX.empty() && !_width.found ) {
+        if ( !_width.found && !_contourX.empty() ) {
             _width.value = *( std::max_element( _contourX.begin(), _contourX.end() ) ) - *( std::min_element( _contourX.begin(), _contourX.end() ) ) + 1;
 
             _width.found = true;
         }
-    }
-
-    const std::vector<BlobInfo> & BlobDetection::find( const penguinV::Image & image, const BlobParameters & parameter, uint8_t threshold )
-    {
-        return find( image, 0, 0, image.width(), image.height(), parameter, threshold );
     }
 
     const std::vector<BlobInfo> & BlobDetection::find( const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
@@ -343,8 +216,9 @@ namespace Blob_Detection
             uint8_t * mapValueY = mapValueX;
 
             for ( ; imageX != imageXEnd; ++imageX, ++mapValueY ) {
-                if ( ( *imageX ) >= threshold )
+                if ( ( *imageX ) >= threshold ) {
                     *mapValueY = NOT_IN_USE;
+                }
             }
         }
 
@@ -609,71 +483,51 @@ namespace Blob_Detection
         return get();
     }
 
-    const std::vector<BlobInfo> & BlobDetection::get() const
-    {
-        return _blob;
-    }
-
-    std::vector<BlobInfo> & BlobDetection::get()
-    {
-        return _blob;
-    }
-
-    const std::vector<BlobInfo> & BlobDetection::operator()() const
-    {
-        return _blob;
-    }
-
-    std::vector<BlobInfo> & BlobDetection::operator()()
-    {
-        return _blob;
-    }
-
     const BlobInfo & BlobDetection::getBestBlob( BlobCriterion criterion ) const
     {
         switch ( criterion ) {
-        case BY_CIRCULARITY:
+        case BlobCriterion::BY_CIRCULARITY:
             return *( std::max_element( _blob.begin(), _blob.end(),
                                         []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.circularity() < blob2.circularity(); } ) );
-        case BY_ELONGATION:
+        case BlobCriterion::BY_ELONGATION:
             return *( std::max_element( _blob.begin(), _blob.end(),
                                         []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.elongation() < blob2.elongation(); } ) );
-        case BY_HEIGHT:
+        case BlobCriterion::BY_HEIGHT:
             return *( std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.height() < blob2.height(); } ) );
-        case BY_LENGTH:
+        case BlobCriterion::BY_LENGTH:
             return *( std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.length() < blob2.length(); } ) );
-        case BY_SIZE:
+        case BlobCriterion::BY_SIZE:
             return *( std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.size() < blob2.size(); } ) );
-        case BY_WIDTH:
+        case BlobCriterion::BY_WIDTH:
             return *( std::max_element( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.width() < blob2.width(); } ) );
         default:
-            throw penguinVException( "Bad criterion for blob finding" );
+            throw penguinVException( "No criterion for blob sorting was set. Did you add a new criterion?" );
         }
     }
 
     void BlobDetection::sort( BlobCriterion criterion )
     {
         switch ( criterion ) {
-        case BY_CIRCULARITY:
+        case BlobCriterion::BY_CIRCULARITY:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.circularity() > blob2.circularity(); } );
             break;
-        case BY_ELONGATION:
+        case BlobCriterion::BY_ELONGATION:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.elongation() > blob2.elongation(); } );
             break;
-        case BY_HEIGHT:
+        case BlobCriterion::BY_HEIGHT:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.height() > blob2.height(); } );
             break;
-        case BY_LENGTH:
+        case BlobCriterion::BY_LENGTH:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.length() > blob2.length(); } );
             break;
-        case BY_SIZE:
+        case BlobCriterion::BY_SIZE:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.size() > blob2.size(); } );
             break;
-        case BY_WIDTH:
+        case BlobCriterion::BY_WIDTH:
             std::sort( _blob.begin(), _blob.end(), []( const BlobInfo & blob1, const BlobInfo & blob2 ) { return blob1.width() > blob2.width(); } );
             break;
         default:
-            throw penguinVException( "Bad criterion for blob sorting" );
+            throw penguinVException( "No criterion for blob sorting was set. Did you add a new criterion?" );
         }
     }
 }

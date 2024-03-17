@@ -280,7 +280,7 @@ public:
         _Type sumYY = 0;
         _Type sumXY = 0;
 
-        for ( typename _container<PointBase2D<_Type>>::const_iterator point = points.begin(); point != points.end(); ++point ) {
+        for ( auto point = points.begin(); point != points.end(); ++point ) {
             const _Type x = point->x;
             const _Type y = point->y;
             sumX += x;

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,10 +30,10 @@ namespace cpu_Memory
     class MemoryAllocator : public BaseMemoryAllocator
     {
     public:
-        MemoryAllocator()
-            : _data( nullptr )
-            , _alignedData( nullptr )
-        {}
+        MemoryAllocator() = default;
+
+        MemoryAllocator( const MemoryAllocator & ) = delete;
+        MemoryAllocator & operator=( const MemoryAllocator & ) = delete;
 
         static MemoryAllocator & instance()
         {
@@ -61,7 +61,7 @@ namespace cpu_Memory
                     const uint8_t level = _getAllocationLevel( overallSize );
 
                     if ( _split( level ) ) {
-                        std::set<size_t>::iterator chunk = _freeChunk[level].begin();
+                        auto chunk = _freeChunk[level].begin();
                         _DataType * address = reinterpret_cast<_DataType *>( _alignedData + *chunk );
                         _allocatedChunk.insert( std::pair<size_t, uint8_t>( *chunk, level ) );
                         _freeChunk[level].erase( chunk );
@@ -83,7 +83,7 @@ namespace cpu_Memory
         {
             _lock.lock();
             if ( _data != nullptr && reinterpret_cast<uint8_t *>( address ) >= _alignedData ) {
-                std::map<size_t, uint8_t>::iterator pos = _allocatedChunk.find( static_cast<size_t>( reinterpret_cast<uint8_t *>( address ) - _alignedData ) );
+                auto pos = _allocatedChunk.find( static_cast<size_t>( reinterpret_cast<uint8_t *>( address ) - _alignedData ) );
 
                 if ( pos != _allocatedChunk.end() ) {
                     _freeChunk[pos->second].insert( pos->first );
@@ -99,8 +99,8 @@ namespace cpu_Memory
         }
 
     private:
-        uint8_t * _data; // a pointer to memory allocated chunk
-        uint8_t * _alignedData; // aligned pointer for SIMD access
+        uint8_t * _data{ nullptr }; // a pointer to memory allocated chunk
+        uint8_t * _alignedData{ nullptr }; // aligned pointer for SIMD access
         std::mutex _lock;
 
         // a map which holds an information about allocated memory in preallocated memory chunk
@@ -112,8 +112,9 @@ namespace cpu_Memory
         {
             _lock.lock();
             if ( _size != size && size > 0 ) {
-                if ( !_allocatedChunk.empty() )
+                if ( !_allocatedChunk.empty() ) {
                     throw std::logic_error( "Cannot free a memory on CPU. Not all objects were previously deallocated from allocator." );
+                }
 
                 _free();
 
@@ -137,12 +138,6 @@ namespace cpu_Memory
             }
 
             _allocatedChunk.clear();
-        }
-
-        MemoryAllocator( const MemoryAllocator & ) {}
-        MemoryAllocator & operator=( const MemoryAllocator & )
-        {
-            return ( *this );
         }
     };
 }

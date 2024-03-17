@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,27 +29,17 @@ namespace Function_Pool
     // This structure holds input parameters for some specific functions
     struct InputInfo
     {
-        InputInfo()
-            : minThreshold( 0 )
-            , maxThreshold( 255 )
-            , horizontalProjection( false )
-            , coefficientA( 1 )
-            , coefficientGamma( 1 )
-            , extractChannelId( 255 )
-            , horizontalFlip( false )
-            , verticalFlip( false )
-        {}
-
-        uint8_t minThreshold; // for Threshold() function same as threshold
-        uint8_t maxThreshold; // for Threshold() function
-        bool horizontalProjection; // for ProjectionProfile() function
-        double coefficientA; // for GammaCorrection() function
-        double coefficientGamma; // for GammaCorrection() function
-        uint8_t extractChannelId; // for ExtractChannel() function
+        uint8_t minThreshold{ 0 }; // for Threshold() function same as threshold
+        uint8_t maxThreshold{ 255 }; // for Threshold() function
+        uint8_t extractChannelId{ 255 }; // for ExtractChannel() function
+        bool horizontalProjection{ false }; // for ProjectionProfile() function
+        bool horizontalFlip{ false };
+        bool verticalFlip{ false };
+        double coefficientA{ 1.0 }; // for GammaCorrection() function
+        double coefficientGamma{ 1.0 }; // for GammaCorrection() function
         std::vector<uint8_t> lookupTable; // for LookupTable() function
-        bool horizontalFlip;
-        bool verticalFlip;
     };
+
     // This structure holds output data for some specific functions
     struct OutputInfo
     {
@@ -145,12 +135,13 @@ namespace Function_Pool
                 throw penguinVException( "Returned histograms are not the same size" );
 
             for ( size_t i = 1; i < input.size(); ++i ) {
-                std::vector<uint32_t>::iterator out = output.begin();
-                std::vector<uint32_t>::const_iterator in = input[i].begin();
-                std::vector<uint32_t>::const_iterator end = input[i].end();
+                auto out = output.begin();
+                auto in = input[i].begin();
+                auto end = input[i].end();
 
-                for ( ; in != end; ++in, ++out )
+                for ( ; in != end; ++in, ++out ) {
                     *out += *in;
+                }
             }
 
             input.clear(); // to guarantee that no one can use it second time
