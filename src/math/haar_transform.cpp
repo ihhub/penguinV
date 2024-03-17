@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,8 +27,9 @@ namespace
     template <typename _Type>
     void directTransform( const std::vector<_Type> & input, std::vector<_Type> & output, size_t width, size_t height )
     {
-        if ( input.empty() || input.size() != output.size() || input.size() != width * height || ( width % 2 ) != 0 || ( height % 2 ) != 0 )
-            throw penguinVException( "Incorrect input parameters for Haar direct transform" );
+        if ( input.empty() || input.size() != output.size() || input.size() != width * height || ( width % 2 ) != 0 || ( height % 2 ) != 0 ) {
+            throw penguinVException( "Incorrect input parameters for Haar direct transform." );
+        }
 
         // Direct Haar Matrix
         // |  1/sqrt(2) 1/sqrt(2) |
@@ -80,7 +81,7 @@ namespace
     void inverseTransform( const std::vector<_Type> & input, std::vector<_Type> & output, size_t width, size_t height )
     {
         if ( input.empty() || input.size() != output.size() || input.size() != width * height || ( width % 2 ) != 0 || ( height % 2 ) != 0 )
-            throw penguinVException( "Incorrect input parameters for Haar inverse transform" );
+            throw penguinVException( "Incorrect input parameters for Haar inverse transform." );
 
         // Inverse Haar Matrix
         // | 1/sqrt(2) -1/sqrt(2) |

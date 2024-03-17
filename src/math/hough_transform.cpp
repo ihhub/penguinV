@@ -36,8 +36,9 @@ namespace
                             std::vector<PointBase2D<_Type>> & outOnLine, std::vector<PointBase2D<_Type>> & outOffLine )
     {
         // validate input data
-        if ( input.size() < 2u )
+        if ( input.size() < 2u ) {
             return false;
+        }
 
         if ( angleStep < minimumAngleStep ) {
             angleStep = minimumAngleStep;
@@ -91,8 +92,9 @@ namespace
                 const _Type tolerance = lineToleranceRange + distanceToLine[pointId];
 
                 for ( ; endPointId < inputPointCount; ++endPointId ) {
-                    if ( tolerance < distanceToLine[endPointId] )
+                    if ( tolerance < distanceToLine[endPointId] ) {
                         break;
+                    }
                 }
 
                 if ( onLinePointCount < endPointId - pointId ) {
@@ -130,10 +132,12 @@ namespace
         for ( ; point != pointEnd; ++point, ++distanceVal ) {
             ( *distanceVal ) = point->x * sinVal + point->y * cosVal;
 
-            if ( ( ( *distanceVal ) < minDistance ) || ( ( *distanceVal ) > maxDistance ) )
-                outOffLine.push_back( ( *point ) );
-            else
-                outOnLine.push_back( ( *point ) );
+            if ( ( ( *distanceVal ) < minDistance ) || ( ( *distanceVal ) > maxDistance ) ) {
+                outOffLine.push_back( *point );
+            }
+            else {
+                outOnLine.push_back( *point );
+            }
         }
 
         return true;

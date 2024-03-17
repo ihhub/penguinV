@@ -29,8 +29,9 @@ namespace
     template <typename _Type>
     void leaveFirstElement( std::vector<_Type> & data )
     {
-        if ( data.size() > 1u )
+        if ( data.size() > 1u ) {
             data.resize( 1u );
+        }
     }
 
     template <typename _Type>
@@ -46,29 +47,33 @@ namespace
     template <typename _Type>
     void createPositiveXEdge( const std::vector<_Type> & data, std::vector<PointBase2D<_Type>> & point, _Type x, _Type y )
     {
-        for ( typename std::vector<_Type>::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+        for ( auto dataX = data.cbegin(); dataX != data.cend(); ++dataX ) {
             point.push_back( PointBase2D<_Type>( ( *dataX ) + x, y ) );
+        }
     }
 
     template <typename _Type>
     void createNegativeXEdge( const std::vector<_Type> & data, std::vector<PointBase2D<_Type>> & point, _Type x, _Type y )
     {
-        for ( typename std::vector<_Type>::const_iterator dataX = data.cbegin(); dataX != data.cend(); ++dataX )
+        for ( auto dataX = data.cbegin(); dataX != data.cend(); ++dataX ) {
             point.push_back( PointBase2D<_Type>( x - ( *dataX ), y ) );
+        }
     }
 
     template <typename _Type>
     void createPositiveYEdge( const std::vector<_Type> & data, std::vector<PointBase2D<_Type>> & point, _Type x, _Type y )
     {
-        for ( typename std::vector<_Type>::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+        for ( auto dataY = data.cbegin(); dataY != data.cend(); ++dataY ) {
             point.push_back( PointBase2D<_Type>( x, y + ( *dataY ) ) );
+        }
     }
 
     template <typename _Type>
     void createNegativeYEdge( const std::vector<_Type> & data, std::vector<PointBase2D<_Type>> & point, _Type x, _Type y )
     {
-        for ( typename std::vector<_Type>::const_iterator dataY = data.cbegin(); dataY != data.cend(); ++dataY )
+        for ( auto dataY = data.cbegin(); dataY != data.cend(); ++dataY ) {
             point.push_back( PointBase2D<_Type>( x, y - ( *dataY ) ) );
+        }
     }
 
     template <typename _Type>
@@ -78,8 +83,9 @@ namespace
         const int maxIntensity = *( std::max_element( data.begin() + leftSideOffset, data.begin() + rightSideOffset + 1 ) );
         const int minIntensity = *( std::min_element( data.begin() + leftSideOffset, data.begin() + rightSideOffset + 1 ) );
 
-        if ( maxIntensity - minIntensity < minimumContrast )
+        if ( maxIntensity - minIntensity < minimumContrast ) {
             return false;
+        }
 
         if ( checkContrast && leftSideContrastCheck <= position && ( rightSideContrastCheck + position ) < size ) {
             const uint32_t blackContrastEnd = position;
@@ -99,10 +105,13 @@ namespace
         }
 
         if ( !checkContrast ) {
-            if ( second[position] != second[position + 1] )
+            if ( second[position] != second[position + 1] ) {
                 edge.push_back( static_cast<_Type>( position + static_cast<double>( second[position] ) / ( second[position] - second[position + 1u] ) ) );
-            else
+            }
+            else {
                 edge.push_back( static_cast<_Type>( position ) + 0.5f );
+            }
+
             return true;
         }
 
@@ -119,13 +128,15 @@ namespace
         const bool checkContrast = ( edgeParameter.contrastCheckLeftSideOffset > 0u ) && ( edgeParameter.contrastCheckRightSideOffset > 0u );
 
         for ( uint32_t i = 1u; i < dataSize - 2u; i++ ) {
-            if ( second[i] < 0 || second[i + 1] > 0 )
+            if ( second[i] < 0 || second[i + 1] > 0 ) {
                 continue;
+            }
 
             const int maxGradient = ( first[i] > first[i + 1] ) ? first[i] : first[i + 1];
 
-            if ( maxGradient <= 0 )
+            if ( maxGradient <= 0 ) {
                 continue;
+            }
 
             const int minGradientValue = ( maxGradient < 3 ) ? 1 : maxGradient / 3;
             const int halfGradient = ( maxGradient < 2 ) ? 1 : maxGradient / 2;
@@ -200,18 +211,20 @@ namespace
     void removeSimilarPoints( std::vector<_Type> & edge )
     {
         for ( size_t i = 1u; i < edge.size(); ) {
-            if ( ( edge[i] - edge[i - 1u] ) < 1.0 )
+            if ( ( edge[i] - edge[i - 1u] ) < 1.0 ) {
                 edge.erase( edge.begin() + static_cast<typename std::vector<_Type>::difference_type>( i ) ); // it's safe to do
-            else
+            }
+            else {
                 ++i;
+            }
         }
     }
 
     void getDerivatives( const std::vector<int> & image, std::vector<int> & first, std::vector<int> & second )
     {
         // input array range is [0; n)
-        // first deriviative range is [0; n - 1)
-        // second deriviative range is [1; n - 1)
+        // first derivative range is [0; n - 1)
+        // second derivative range is [1; n - 1)
         std::transform( image.begin() + 1u, image.end(), image.begin(), first.begin(), std::minus<int>() );
         std::transform( first.begin() + 1u, first.end(), first.begin(), second.begin() + 1u, std::minus<int>() );
     }
@@ -251,8 +264,9 @@ namespace
         const bool horizontalEdgeDetectionBase
             = ( edgeParameter.direction == EdgeParameter::DirectionType::LEFT_TO_RIGHT || edgeParameter.direction == EdgeParameter::DirectionType::RIGHT_TO_LEFT );
 
-        if ( ( horizontalEdgeDetectionBase && ( width < 4u ) ) || ( !horizontalEdgeDetectionBase && ( height < 4u ) ) )
+        if ( ( horizontalEdgeDetectionBase && ( width < 4u ) ) || ( !horizontalEdgeDetectionBase && ( height < 4u ) ) ) {
             return;
+        }
 
         const uint32_t rowSize = image.rowSize();
 
@@ -275,8 +289,9 @@ namespace
                     imageXEnd = imageX + width;
                     dataX = data.data();
 
-                    for ( ; imageX != imageXEnd; ++imageX, ++dataX )
+                    for ( ; imageX != imageXEnd; ++imageX, ++dataX ) {
                         *dataX += *imageX;
+                    }
                 }
 
                 std::vector<_Type> edgePositive;
@@ -287,18 +302,22 @@ namespace
                 const _Type yPosition = static_cast<_Type>( y + rowId + ( edgeParameter.groupFactor - 1 ) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::DirectionType::LEFT_TO_RIGHT ) {
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createPositiveXEdge( edgePositive, positiveEdgePoint, static_cast<_Type>( x ), yPosition );
+                    }
 
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createNegativeXEdge( edgeNegative, negativeEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
+                    }
                 }
                 else {
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createNegativeXEdge( edgeNegative, positiveEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
+                    }
 
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createPositiveXEdge( edgePositive, negativeEdgePoint, static_cast<_Type>( x ), yPosition );
+                    }
                 }
             }
         }
@@ -312,16 +331,18 @@ namespace
                 const uint8_t * imageY = imageX;
                 const uint8_t * imageYEnd = imageY + height * rowSize;
                 int * dataX = data.data();
-                for ( ; imageY != imageYEnd; imageY += rowSize, ++dataX )
+                for ( ; imageY != imageYEnd; imageY += rowSize, ++dataX ) {
                     *dataX = *imageY;
+                }
 
                 for ( uint32_t groupId = 1u; groupId < edgeParameter.groupFactor; ++groupId ) {
                     imageY = imageX + groupId;
                     imageYEnd = imageY + height * rowSize;
                     dataX = data.data();
 
-                    for ( ; imageY != imageYEnd; imageY += rowSize, ++dataX )
+                    for ( ; imageY != imageYEnd; imageY += rowSize, ++dataX ) {
                         *dataX += *imageY;
+                    }
                 }
 
                 std::vector<_Type> edgePositive;
@@ -332,18 +353,22 @@ namespace
                 const _Type xPosition = static_cast<_Type>( x + rowId + ( edgeParameter.groupFactor - 1 ) / 2.0 );
 
                 if ( edgeParameter.direction == EdgeParameter::DirectionType::TOP_TO_BOTTOM ) {
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createPositiveYEdge( edgePositive, positiveEdgePoint, xPosition, static_cast<_Type>( y ) );
+                    }
 
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createNegativeYEdge( edgeNegative, negativeEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
+                    }
                 }
                 else {
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createNegativeYEdge( edgeNegative, positiveEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
+                    }
 
-                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY ) {
                         createPositiveYEdge( edgePositive, negativeEdgePoint, xPosition, static_cast<_Type>( y ) );
+                    }
                 }
             }
         }
@@ -360,16 +385,23 @@ EdgeParameter::EdgeParameter( DirectionType _direction, GradientType _gradient, 
     , contrastCheckLeftSideOffset( _contrastCheckLeftSideOffset )
     , contrastCheckRightSideOffset( _contrastCheckRightSideOffset )
     , minimumContrast( _minimumContrast )
-{}
+{
+    // Do nothing.
+}
 
 void EdgeParameter::verify() const
 {
-    if ( groupFactor == 0u )
+    if ( groupFactor == 0u ) {
         throw penguinVException( "Grouping factor for edge detection cannot be 0" );
-    if ( skipFactor == 0u )
+    }
+
+    if ( skipFactor == 0u ) {
         throw penguinVException( "Skip factor for edge detection cannot be 0" );
-    if ( minimumContrast == 0u )
+    }
+
+    if ( minimumContrast == 0u ) {
         throw penguinVException( "Minimum contrast for edge detection cannot be 0" );
+    }
 }
 
 void EdgeDetectionHelper::find( EdgeDetectionBase<double> & edgeDetection, const penguinV::Image & image, uint32_t x, uint32_t y, uint32_t width, uint32_t height,
