@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -228,11 +228,13 @@ namespace
         getDerivatives( data, first, second );
         getEdgePoints( negative, data, first, second, edgeParameter );
         removeSimilarPoints( negative );
-        if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::FIRST ) || ( !forwardDirection && edgeParameter.edge == EdgeParameter::LAST ) ) {
+        if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST )
+             || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST ) ) {
             leaveFirstElement( positive );
             leaveLastElement( negative );
         }
-        else if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::LAST ) || ( !forwardDirection && edgeParameter.edge == EdgeParameter::FIRST ) ) {
+        else if ( ( forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::LAST )
+                  || ( !forwardDirection && edgeParameter.edge == EdgeParameter::EdgeType::FIRST ) ) {
             leaveLastElement( positive );
             leaveFirstElement( negative );
         }
@@ -246,7 +248,8 @@ namespace
         Image_Function::ValidateImageParameters( image, x, y, width, height );
         edgeParameter.verify();
 
-        const bool horizontalEdgeDetectionBase = ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT || edgeParameter.direction == EdgeParameter::RIGHT_TO_LEFT );
+        const bool horizontalEdgeDetectionBase
+            = ( edgeParameter.direction == EdgeParameter::DirectionType::LEFT_TO_RIGHT || edgeParameter.direction == EdgeParameter::DirectionType::RIGHT_TO_LEFT );
 
         if ( ( horizontalEdgeDetectionBase && ( width < 4u ) ) || ( !horizontalEdgeDetectionBase && ( height < 4u ) ) )
             return;
@@ -279,22 +282,22 @@ namespace
                 std::vector<_Type> edgePositive;
                 std::vector<_Type> edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter,
-                                ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) );
+                                ( edgeParameter.direction == EdgeParameter::DirectionType::LEFT_TO_RIGHT ) );
 
                 const _Type yPosition = static_cast<_Type>( y + rowId + ( edgeParameter.groupFactor - 1 ) / 2.0 );
 
-                if ( edgeParameter.direction == EdgeParameter::LEFT_TO_RIGHT ) {
-                    if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                if ( edgeParameter.direction == EdgeParameter::DirectionType::LEFT_TO_RIGHT ) {
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createPositiveXEdge( edgePositive, positiveEdgePoint, static_cast<_Type>( x ), yPosition );
 
-                    if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createNegativeXEdge( edgeNegative, negativeEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
                 }
                 else {
-                    if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createNegativeXEdge( edgeNegative, positiveEdgePoint, static_cast<_Type>( x + width - 1 ), yPosition );
 
-                    if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createPositiveXEdge( edgePositive, negativeEdgePoint, static_cast<_Type>( x ), yPosition );
                 }
             }
@@ -324,22 +327,22 @@ namespace
                 std::vector<_Type> edgePositive;
                 std::vector<_Type> edgeNegative;
                 findEdgePoints( edgePositive, edgeNegative, data, firstDerivative, secondDerivative, edgeParameter,
-                                ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) );
+                                ( edgeParameter.direction == EdgeParameter::DirectionType::TOP_TO_BOTTOM ) );
 
                 const _Type xPosition = static_cast<_Type>( x + rowId + ( edgeParameter.groupFactor - 1 ) / 2.0 );
 
-                if ( edgeParameter.direction == EdgeParameter::TOP_TO_BOTTOM ) {
-                    if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                if ( edgeParameter.direction == EdgeParameter::DirectionType::TOP_TO_BOTTOM ) {
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createPositiveYEdge( edgePositive, positiveEdgePoint, xPosition, static_cast<_Type>( y ) );
 
-                    if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createNegativeYEdge( edgeNegative, negativeEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
                 }
                 else {
-                    if ( edgeParameter.gradient == EdgeParameter::POSITIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::POSITIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createNegativeYEdge( edgeNegative, positiveEdgePoint, xPosition, static_cast<_Type>( y + height - 1 ) );
 
-                    if ( edgeParameter.gradient == EdgeParameter::NEGATIVE || edgeParameter.gradient == EdgeParameter::ANY )
+                    if ( edgeParameter.gradient == EdgeParameter::GradientType::NEGATIVE || edgeParameter.gradient == EdgeParameter::GradientType::ANY )
                         createPositiveYEdge( edgePositive, negativeEdgePoint, xPosition, static_cast<_Type>( y ) );
                 }
             }
@@ -347,7 +350,7 @@ namespace
     }
 }
 
-EdgeParameter::EdgeParameter( directionType _direction, gradientType _gradient, edgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
+EdgeParameter::EdgeParameter( DirectionType _direction, GradientType _gradient, EdgeType _edge, uint32_t _groupFactor, uint32_t _skipFactor,
                               uint32_t _contrastCheckLeftSideOffset, uint32_t _contrastCheckRightSideOffset, uint8_t _minimumContrast )
     : direction( _direction )
     , gradient( _gradient )

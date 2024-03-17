@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,24 +32,28 @@ namespace
 namespace
 {
     template <typename _Type>
-    bool runHoughTransform( const std::vector<PointBase2D<_Type>> & input, _Type initialAngle, _Type angleTolerance, _Type angleStep, _Type lineTolerance,
+    bool runHoughTransform( const std::vector<PointBase2D<_Type>> & input, const _Type initialAngle, _Type angleTolerance, _Type angleStep, _Type lineTolerance,
                             std::vector<PointBase2D<_Type>> & outOnLine, std::vector<PointBase2D<_Type>> & outOffLine )
     {
         // validate input data
         if ( input.size() < 2u )
             return false;
 
-        if ( angleStep < minimumAngleStep )
+        if ( angleStep < minimumAngleStep ) {
             angleStep = minimumAngleStep;
+        }
 
-        if ( angleTolerance < minimumAngleStep )
+        if ( angleTolerance < minimumAngleStep ) {
             angleTolerance = minimumAngleStep;
+        }
 
-        if ( angleTolerance < angleStep )
+        if ( angleTolerance < angleStep ) {
             angleTolerance = angleStep;
+        }
 
-        if ( lineTolerance < minimumLineTolerance )
+        if ( lineTolerance < minimumLineTolerance ) {
             lineTolerance = minimumLineTolerance;
+        }
 
         // find a range of search
         const int angleStepPerSide = static_cast<int>( ( angleTolerance / angleStep ) + 0.5 );
@@ -68,17 +72,18 @@ namespace
             const _Type cosVal = std::cos( angleVal );
             const _Type sinVal = std::sin( angleVal );
 
-            // find and sort distances
+            // Find and sort distances.
             _Type * distanceVal = distanceToLine.data();
             const PointBase2D<_Type> * point = input.data();
             const PointBase2D<_Type> * pointEnd = point + inputPointCount;
 
-            for ( ; point != pointEnd; ++point, ++distanceVal )
+            for ( ; point != pointEnd; ++point, ++distanceVal ) {
                 ( *distanceVal ) = point->x * sinVal + point->y * cosVal;
+            }
 
             std::sort( distanceToLine.begin(), distanceToLine.end() );
 
-            // find maximum number of points
+            // Find maximum number of points.
             size_t initialPointId = 0u;
             size_t onLinePointCount = 1u;
 
@@ -137,13 +142,13 @@ namespace
 
 namespace Image_Function
 {
-    bool HoughTransform( const std::vector<PointBase2D<double>> & input, double initialAngle, double angleTolerance, double angleStep, double lineTolerance,
+    bool HoughTransform( const std::vector<PointBase2D<double>> & input, const double initialAngle, double angleTolerance, double angleStep, double lineTolerance,
                          std::vector<PointBase2D<double>> & outOnLine, std::vector<PointBase2D<double>> & outOffLine )
     {
         return runHoughTransform<double>( input, initialAngle, angleTolerance, angleStep, lineTolerance, outOnLine, outOffLine );
     }
 
-    bool HoughTransform( const std::vector<PointBase2D<float>> & input, float initialAngle, float angleTolerance, float angleStep, float lineTolerance,
+    bool HoughTransform( const std::vector<PointBase2D<float>> & input, const float initialAngle, float angleTolerance, float angleStep, float lineTolerance,
                          std::vector<PointBase2D<float>> & outOnLine, std::vector<PointBase2D<float>> & outOffLine )
     {
         return runHoughTransform<float>( input, initialAngle, angleTolerance, angleStep, lineTolerance, outOnLine, outOffLine );
