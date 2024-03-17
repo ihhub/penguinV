@@ -32,15 +32,11 @@ jobs:
     - name: Configure
       run: mkdir build && cd build && cmake ..
     - name: Build
-      run: cmake --build build --config Release -- -j 2
+      # TODO: remove this disabled option. It was added due to libpng error:
+      #       libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
+      run: cmake --build build --config Release -- -j 2 -DPENGUINV_ENABLED_PNG_SUPPORT=OFF
     - name: Run tests
       run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
-      env:
-        # TODO: remove this disabled option. It was added due to libpng error:
-        #       libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
-        PENGUINV_ENABLE_PNG_SUPPORT: OFF
-        # TODO: OpenCL does not work on macOS out of the box. Find a proper way to do it.
-        PENGUINV_BUILD_UNIT_TEST_OPENCL: OFF
   python_on_windows:
     runs-on: windows-latest
     strategy:
