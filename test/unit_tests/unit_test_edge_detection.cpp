@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -45,7 +45,7 @@ namespace edge_detection
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetectionBase<_Type> edgeDetection;
-            edgeDetection.find( image, EdgeParameter( EdgeParameter::LEFT_TO_RIGHT ) );
+            edgeDetection.find( image, EdgeParameter( EdgeParameter::DirectionType::LEFT_TO_RIGHT ) );
 
             const std::vector<PointBase2D<_Type>> & positive = edgeDetection.positiveEdge();
             const std::vector<PointBase2D<_Type>> & negative = edgeDetection.negativeEdge();
@@ -87,7 +87,7 @@ namespace edge_detection
             Unit_Test::fillImage( image, roiX, roiY, roiWidth, roiHeight, Unit_Test::randomValue<uint8_t>( 64, 256 ) );
 
             EdgeDetectionBase<_Type> edgeDetection;
-            edgeDetection.find( image, EdgeParameter( EdgeParameter::TOP_TO_BOTTOM ) );
+            edgeDetection.find( image, EdgeParameter( EdgeParameter::DirectionType::TOP_TO_BOTTOM ) );
 
             const std::vector<PointBase2D<_Type>> & positive = edgeDetection.positiveEdge();
             const std::vector<PointBase2D<_Type>> & negative = edgeDetection.negativeEdge();

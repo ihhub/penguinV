@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -148,14 +148,16 @@ void addTests_File( UnitTestFramework & framework )
     framework.add( file_operation::WhiteGrayScaleImageBitmap, "File: Save and load white gray-scale bitmap image" );
     framework.add( file_operation::BlackGrayScaleImageBitmap, "File: Save and load black gray-scale bitmap image" );
     framework.add( file_operation::RandomRGBImageBitmap, "File: Save and load random RGB bitmap image" );
+    framework.add( file_operation::RawRGBImage, "File: Save and load raw RGB image" );
+
 #if defined( PENGUINV_ENABLED_PNG_SUPPORT )
     framework.add( file_operation::WhiteGrayScaleImagePng, "File: Save and load white gray-scale png image" );
     framework.add( file_operation::BlackGrayScaleImagePng, "File: Save and load black gray-scale png image" );
     framework.add( file_operation::RandomRGBImagePng, "File: Save and load random RGB png image" );
 #endif
+
 #if defined( PENGUINV_ENABLED_JPEG_SUPPORT )
     framework.add( file_operation::WhiteGrayScaleImageJpeg, "File: Save and load white gray-scale jpeg image" );
     framework.add( file_operation::BlackGrayScaleImageJpeg, "File: Save and load black gray-scale jpeg image" );
 #endif
-    framework.add( file_operation::RawRGBImage, "File: Save and load raw RGB image" );
 }

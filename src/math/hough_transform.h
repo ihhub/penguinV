@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,9 +25,9 @@
 
 namespace Image_Function
 {
-    bool HoughTransform( const std::vector<PointBase2D<double>> & input, double initialAngle, double angleTolerance, double angleStep, double lineTolerance,
+    bool HoughTransform( const std::vector<PointBase2D<double>> & input, const double initialAngle, double angleTolerance, double angleStep, double lineTolerance,
                          std::vector<PointBase2D<double>> & outOnLine, std::vector<PointBase2D<double>> & outOffLine );
 
-    bool HoughTransform( const std::vector<PointBase2D<float>> & input, float initialAngle, float angleTolerance, float angleStep, float lineTolerance,
+    bool HoughTransform( const std::vector<PointBase2D<float>> & input, const float initialAngle, float angleTolerance, float angleStep, float lineTolerance,
                          std::vector<PointBase2D<float>> & outOnLine, std::vector<PointBase2D<float>> & outOffLine );
 }

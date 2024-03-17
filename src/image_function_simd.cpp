@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -80,7 +80,7 @@ namespace avx512
     const uint32_t simdSize = 64u;
 
 #ifdef PENGUINV_AVX512_SKL_SET
-    typedef __m512i simd;
+    using simd = __m512i;
 
     void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y, uint8_t * outY,
                              const uint8_t * outYEnd, uint32_t simdWidth, uint32_t totalSimdWidth, uint32_t nonSimdWidth )
@@ -538,7 +538,7 @@ namespace avx
     const uint32_t simdSize = 32u;
 
 #ifdef PENGUINV_AVX_SET
-    typedef __m256i simd;
+    using simd = __m256i;
 
     // We are not sure that input data is aligned by 32 bytes so we use loadu() functions instead of load()
 
@@ -1155,7 +1155,7 @@ namespace sse
     const uint32_t simdSize = 16u;
 
 #ifdef PENGUINV_SSE_SET
-    typedef __m128i simd;
+    using simd = __m128i;
 
     // We are not sure that input data is aligned by 16 bytes so we use loadu() functions instead of load()
 
@@ -1826,7 +1826,7 @@ namespace neon
     const uint32_t simdSize = 16u;
 
 #ifdef PENGUINV_NEON_SET
-    typedef uint8x16_t simd;
+    using simd = uint8x16_t;
 
     void AbsoluteDifference( uint32_t rowSizeIn1, uint32_t rowSizeIn2, uint32_t rowSizeOut, const uint8_t * in1Y, const uint8_t * in2Y, uint8_t * outY,
                              const uint8_t * outYEnd, uint32_t, uint32_t totalSimdWidth, uint32_t nonSimdWidth )

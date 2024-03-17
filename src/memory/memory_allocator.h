@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -29,9 +29,7 @@
 class BaseMemoryAllocator
 {
 public:
-    BaseMemoryAllocator()
-        : _size( 0 )
-    {}
+    BaseMemoryAllocator() = default;
 
     virtual ~BaseMemoryAllocator() {}
 
@@ -39,11 +37,13 @@ public:
     // Do not reallocate memory if some objects in your source code are allocated through this allocator.
     void reserve( size_t size )
     {
-        if ( size == 0 )
+        if ( size == 0 ) {
             throw std::logic_error( "Memory size cannot be 0" );
+        }
 
-        if ( size == _size )
+        if ( size == _size ) {
             return;
+        }
 
         _allocate( size );
 
@@ -58,8 +58,9 @@ public:
                 --levelCount;
             }
 
-            if ( usedSize == 0 )
+            if ( usedSize == 0 ) {
                 _freeChunk.resize( levelCount + 1u );
+            }
 
             _freeChunk[levelCount].insert( usedSize );
 
@@ -77,7 +78,7 @@ protected:
         _size = 0;
     }
 
-    // returns a level (power of 2) needed for a required size
+    // Returns a level (power of 2) needed for a required size.
     static uint8_t _getAllocationLevel( size_t initialSize )
     {
         size_t size = 1;
@@ -91,7 +92,7 @@ protected:
         return level;
     }
 
-    // splits the preallocated memory by levels
+    // Splits the preallocated memory by levels.
     bool _split( uint8_t from )
     {
         bool levelFound = false;
@@ -105,8 +106,9 @@ protected:
             }
         }
 
-        if ( !levelFound )
+        if ( !levelFound ) {
             return false;
+        }
 
         if ( startLevel > from ) {
             size_t memorySize = static_cast<size_t>( 1 ) << ( startLevel - 1 );
@@ -157,10 +159,16 @@ protected:
         }
     }
 
-    size_t _size; // a size of memory allocated chunk
-    std::vector<std::set<size_t>> _freeChunk; // free memory in preallocated memory
+    // A size of memory allocated chunk.
+    size_t _size{ 0 }; 
+
+    // Free memory in preallocated memory.
+    std::vector<std::set<size_t>> _freeChunk;
 
 private:
-    virtual void _allocate( size_t size ) = 0; // true memory allocation
-    virtual void _deallocate() = 0; // true memory deallocation
+    // True memory allocation method. Implementation details are in child classes.
+    virtual void _allocate( size_t size ) = 0;
+
+    // True memory deallocation method. Implementation details are in child classes.
+    virtual void _deallocate() = 0;
 };
