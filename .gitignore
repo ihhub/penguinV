@@ -61,6 +61,8 @@
 *.cu.deps
 *.cu.cache
 *.deps
+*.vcxproj.FileListAbsolute.txt
+*.exe.recipe
 
 # Build
 build/*

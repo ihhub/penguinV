@@ -28,27 +28,27 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -144,26 +144,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\image_function_helper.cpp" />
-    <ClCompile Include="..\..\src\image_function_simd.cpp" />
-    <ClCompile Include="..\..\src\penguinv\penguinv.cpp" />
-    <ClCompile Include="example_function_pool.cpp" />
-    <ClCompile Include="..\..\src\thread_pool.cpp" />
+    <ClCompile Include="example_file_operation.cpp" />
+    <ClCompile Include="..\..\src\file\file_image.cpp" />
+    <ClCompile Include="..\..\src\file\bmp_image.cpp" />
+    <ClCompile Include="..\..\src\file\png_image.cpp" />
+    <ClCompile Include="..\..\src\file\jpeg_image.cpp" />
     <ClCompile Include="..\..\src\image_function.cpp" />
-    <ClCompile Include="..\..\src\function_pool.cpp" />
-    <ClCompile Include="..\..\src\function_pool_task.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\file\file_image.h" />
+    <ClInclude Include="..\..\src\file\bmp_image.h" />
+    <ClInclude Include="..\..\src\file\png_image.h" />
+    <ClInclude Include="..\..\src\file\jpeg_image.h" />
     <ClInclude Include="..\..\src\image_buffer.h" />
     <ClInclude Include="..\..\src\penguinv_exception.h" />
     <ClInclude Include="..\..\src\image_function.h" />
-    <ClInclude Include="..\..\src\function_pool.h" />
-    <ClInclude Include="..\..\src\function_pool_task.h" />
     <ClInclude Include="..\..\src\image_function_helper.h" />
-    <ClInclude Include="..\..\src\image_function_simd.h" />
     <ClInclude Include="..\..\src\parameter_validation.h" />
-    <ClInclude Include="..\..\src\penguinv\cpu_identification.h" />
-    <ClInclude Include="..\..\src\penguinv\penguinv.h" />
-    <ClInclude Include="..\..\src\thread_pool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
