@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,6 +17,23 @@ jobs:
     - uses: actions/checkout@v2
     - name: Configure
       run: mkdir build && cd build && cmake ..
+    - name: Build
+      run: cmake --build build --config Release -- -j 2
+    - name: Run tests
+      run: cd build && ctest -E 'perf_test' --extra-verbose # execute unit_test and unit_test_opencl
+  build-macos:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v2
+    - name: Configure
+      # TODO: remove these disabled options. It was added due to compilation errors:
+      #       - libpng warning: Application built with libpng-1.4.12 but running with 1.6.42
+      #       - /Users/runner/work/penguinV/penguinV/src/file/jpeg_image.cpp:76:10: fatal error: 'jerror.h' file not found
+      run: mkdir build && cd build && cmake -DPENGUINV_ENABLE_PNG_SUPPORT=OFF -DPENGUINV_ENABLE_JPEG_SUPPORT=OFF ..
     - name: Build
       run: cmake --build build --config Release -- -j 2
     - name: Run tests
