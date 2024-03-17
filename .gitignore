@@ -60,6 +60,7 @@
 *.fatbin
 *.cu.deps
 *.cu.cache
+*.deps
 
 # Build
 build/*
