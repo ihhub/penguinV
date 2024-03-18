@@ -79,8 +79,7 @@ namespace multiCL
                         throw std::logic_error( "Cannot allocate a subbuffer memory for OpenCL device" );
                     }
 
-                    _allocatedChunk.emplace(
-                        memory, std::pair<size_t, uint8_t>( *( _freeChunk[level].begin() ), level ) );
+                    _allocatedChunk.emplace( memory, std::pair<size_t, uint8_t>( *( _freeChunk[level].begin() ), level ) );
                     _freeChunk[level].erase( _freeChunk[level].begin() );
                     return memory;
                 }
