@@ -144,7 +144,13 @@ namespace multiCL
     OpenCLQueue::OpenCLQueue( const OpenCLContext & context, cl_device_id deviceId )
     {
         cl_int error;
+
+#if defined( __APPLE__ ) || defined( __MACOSX )
+        _commandQueue = clCreateCommandQueue( context(), deviceId, 0, &error );
+#else
         _commandQueue = clCreateCommandQueueWithProperties( context(), deviceId, 0, &error );
+#endif
+
         openCLCheck( error );
     }
 

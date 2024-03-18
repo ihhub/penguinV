@@ -20,11 +20,12 @@
 
 #pragma once
 
-#define CL_TARGET_OPENCL_VERSION 210
-
 #if defined( __APPLE__ ) || defined( __MACOSX )
 #include <OpenCL/cl.h>
 #else
+
+#define CL_TARGET_OPENCL_VERSION 210
+
 #include <CL/cl.h>
 #endif
 
