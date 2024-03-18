@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,7 +20,7 @@
 
 #pragma once
 
-#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
+#define CL_TARGET_OPENCL_VERSION 210
 
 #if defined( __APPLE__ ) || defined( __MACOSX )
 #include <OpenCL/cl.h>
@@ -45,7 +45,7 @@ namespace multiCL
         MemoryAllocator & memory();
 
         // Returns memory allocator for specified device ID
-        MemoryAllocator & memory( uint32_t deviceId );
+        MemoryAllocator & memory( const uint32_t deviceId );
 
         void memorySet( cl_mem data, const void * pattern, size_t patternSize, size_t offset, size_t size );
     }
@@ -54,43 +54,82 @@ namespace multiCL
     {
     public:
         explicit OpenCLContext( cl_device_id deviceId );
-        explicit OpenCLContext( cl_context context );
+
+        explicit OpenCLContext( cl_context context )
+            : _context( context )
+        {
+            // Do nothing.
+        }
+
+        OpenCLContext( const OpenCLContext & ) = delete;
+
+        OpenCLContext & operator=( const OpenCLContext & ) = delete;
+
         ~OpenCLContext();
 
-        cl_context operator()() const;
+        cl_context operator()() const
+        {
+            return _context;
+        }
 
     private:
         cl_context _context;
-
-        OpenCLContext( const OpenCLContext & );
-        OpenCLContext & operator=( const OpenCLContext & );
     };
 
     class OpenCLProgram
     {
     public:
         OpenCLProgram( const OpenCLContext & context, const char * program );
-        explicit OpenCLProgram( cl_program program );
-        OpenCLProgram( OpenCLProgram && program );
+
+        explicit OpenCLProgram( cl_program program )
+            : _program( program )
+        {
+            // Do nothing.
+        }
+
+        OpenCLProgram( OpenCLProgram && program )
+            : _program( NULL )
+        {
+            std::swap( _program, program._program );
+        }
+
+        OpenCLProgram( const OpenCLProgram & ) = delete;
+
+        OpenCLProgram & operator=( const OpenCLProgram & ) = delete;
+
         ~OpenCLProgram();
 
-        cl_program operator()() const;
+        cl_program operator()() const
+        {
+            return _program;
+        }
 
     private:
         cl_program _program;
-
-        OpenCLProgram( const OpenCLProgram & );
-        OpenCLProgram & operator=( const OpenCLProgram & );
     };
 
     class OpenCLKernel
     {
     public:
         OpenCLKernel( const OpenCLProgram & program, const std::string & name );
-        explicit OpenCLKernel( cl_kernel kernel );
+
+        explicit OpenCLKernel( cl_kernel kernel )
+            : _kernel( kernel )
+            , _parameterId( 0 )
+        {
+            // Do nothing.
+        }
+
+        OpenCLKernel( const OpenCLKernel & ) = delete;
+
+        OpenCLKernel & operator=( const OpenCLKernel & ) = delete;
+
         ~OpenCLKernel();
 
-        cl_kernel operator()() const;
+        cl_kernel operator()() const
+        {
+            return _kernel;
+        }
 
         template <typename T>
         void setArgument( T value )
@@ -105,14 +144,14 @@ namespace multiCL
             setArgument( args... );
         }
 
-        void reset();
+        void reset()
+        {
+            _parameterId = 0;
+        }
 
     private:
         cl_kernel _kernel;
         cl_uint _parameterId;
-
-        OpenCLKernel( const OpenCLKernel & );
-        OpenCLKernel & operator=( const OpenCLKernel & );
 
         void _setArgument( size_t size, const void * data );
     };
@@ -121,18 +160,28 @@ namespace multiCL
     {
     public:
         OpenCLQueue( const OpenCLContext & context, cl_device_id deviceId );
-        explicit OpenCLQueue( cl_command_queue queue );
+
+        explicit OpenCLQueue( cl_command_queue queue )
+            : _commandQueue( queue )
+        {
+            // Do nothing.
+        }
+
+        OpenCLQueue( const OpenCLQueue & ) = delete;
+
+        OpenCLQueue & operator=( const OpenCLQueue & ) = delete;
+
         ~OpenCLQueue();
 
-        cl_command_queue operator()() const;
+        cl_command_queue operator()() const
+        {
+            return _commandQueue;
+        }
 
         void synchronize();
 
     private:
         cl_command_queue _commandQueue;
-
-        OpenCLQueue( const OpenCLQueue & );
-        OpenCLQueue & operator=( const OpenCLQueue & );
     };
 
     class OpenCLDevice
@@ -140,50 +189,108 @@ namespace multiCL
     public:
         friend class OpenCLDeviceManager;
 
+        OpenCLDevice( const OpenCLDevice & ) = delete;
+
+        OpenCLDevice & operator=( const OpenCLDevice & ) = delete;
+
         ~OpenCLDevice();
 
         // Device information
-        cl_device_id deviceId() const;
+        cl_device_id deviceId() const
+        {
+            return _deviceId;
+        }
 
-        size_t threadsPerBlock( const OpenCLKernel & kernel ) const; // maximum available number of threads per block
+        // Maximum available number of threads per block.
+        size_t threadsPerBlock( const OpenCLKernel & kernel ) const;
 
-        uint64_t totalMemorySize() const; // total available memory in bytes
+        // Total available memory in bytes.
+        uint64_t totalMemorySize() const;
+
         std::string name() const;
+
         std::string computeCapability() const;
 
         // Device manipulation
         void synchronize(); // synchronize all operations on device with CPU
 
-        OpenCLContext & context();
-        const OpenCLContext & context() const;
+        OpenCLContext & context()
+        {
+            return _context;
+        }
 
-        size_t currentQueueId() const; // current queue ID which is used as a default value in queue() function
-        void setCurrentQueueId( size_t queueId );
+        const OpenCLContext & context() const
+        {
+            return _context;
+        }
 
-        OpenCLQueue & queue(); // a reference to current queue
-        const OpenCLQueue & queue() const;
+        // Current queue ID which is used as a default value in queue() function.
+        size_t currentQueueId() const
+        {
+            return _currentQueueId;
+        }
 
-        OpenCLQueue & queue( size_t queueId ); // a reference to queue with specified ID
-        const OpenCLQueue & queue( size_t queueId ) const;
+        void setCurrentQueueId( const size_t queueId )
+        {
+            if ( _currentQueueId != queueId && queueId < _queue.size() ) {
+                _currentQueueId = queueId;
+            }
+        }
 
-        size_t queueCount() const; // total number of queues
+        // A reference to current queue.
+        OpenCLQueue & queue()
+        {
+            return *( _queue[_currentQueueId] );
+        }
+
+        const OpenCLQueue & queue() const
+        {
+            return *( _queue[_currentQueueId] );
+        }
+
+        // A reference to queue with specified ID.
+        OpenCLQueue & queue( size_t queueId )
+        {
+            return *( _queue[queueId] );
+        }
+
+        const OpenCLQueue & queue( size_t queueId ) const
+        {
+            return *( _queue[queueId] );
+        }
+
+        // Total number of queues.
+        size_t queueCount() const
+        {
+            return _queue.size();
+        }
+
         void setQueueCount( size_t queueCount );
 
-        MemoryAllocator & allocator(); // memory allocator associated with device
-        const MemoryAllocator & allocator() const;
+        // Memory allocator associated with device.
+        MemoryAllocator & allocator()
+        {
+            return *_allocator;
+        }
+
+        const MemoryAllocator & allocator() const
+        {
+            return *_allocator;
+        }
 
     private:
         cl_device_id _deviceId;
         OpenCLContext _context;
 
         size_t _currentQueueId;
-        std::vector<OpenCLQueue *> _queue; // array of queues within the device
 
-        MemoryAllocator * _allocator; // memory allocator on current device
+        // Array of queues within the device.
+        std::vector<OpenCLQueue *> _queue;
+
+        // Memory allocator on the current device.
+        MemoryAllocator * _allocator;
 
         explicit OpenCLDevice( cl_device_id deviceId );
-        OpenCLDevice( const OpenCLDevice & );
-        OpenCLDevice & operator=( const OpenCLDevice & );
     };
 
     class OpenCLDeviceManager
@@ -191,29 +298,61 @@ namespace multiCL
     public:
         static OpenCLDeviceManager & instance();
 
-        void initializeDevices(); // initializes all devices available in system
-        void initializeDevice( uint32_t deviceId ); // initializes a device with specified ID
-        void closeDevice( uint32_t deviceId ); // closes initialized device with specified ID
-        void closeDevices(); // closes all devices initialized by manager
+        // Initializes all devices available in system.
+        void initializeDevices();
 
-        uint32_t deviceCount() const; // initialized devices via manager
-        uint32_t supportedDeviceCount() const; // maximum available devices in the system
+        // Initializes a device with specified ID.
+        void initializeDevice( uint32_t deviceId );
 
-        OpenCLDevice & device(); // returns device within current thread
-        const OpenCLDevice & device() const; // returns device within current thread
+        // Closes initialized device with specified ID.
+        void closeDevice( uint32_t deviceId );
 
-        OpenCLDevice & device( uint32_t deviceId ); // returns device with specified ID
-        const OpenCLDevice & device( uint32_t deviceId ) const; // returns device with specified ID
+        // Closes all devices initialized by manager.
+        void closeDevices();
 
-        void setActiveDevice( uint32_t deviceId ); // set device with specified ID as a active device in current thread
+        // Initialized devices via manager.
+        uint32_t deviceCount() const
+        {
+            return static_cast<uint32_t>( _device.size() );
+        }
+
+        // Maximum available devices in the system.
+        uint32_t supportedDeviceCount() const
+        {
+            return static_cast<uint32_t>( _supportedDeviceId.size() );
+        }
+
+        // Returns device within current thread.
+        OpenCLDevice & device();
+
+        // Returns device within current thread.
+        const OpenCLDevice & device() const;
+
+        // Returns device with specified ID.
+        OpenCLDevice & device( uint32_t deviceId );
+
+        // Returns device with specified ID.
+        const OpenCLDevice & device( uint32_t deviceId ) const;
+
+        // Set device with specified ID as a active device in current thread.
+        void setActiveDevice( uint32_t deviceId );
 
         void resetSupportedDevice();
 
     private:
-        OpenCLDeviceManager();
-        ~OpenCLDeviceManager();
+        OpenCLDeviceManager()
+        {
+            resetSupportedDevice();
+        }
+
+        ~OpenCLDeviceManager()
+        {
+            closeDevices();
+        }
 
         std::vector<cl_device_id> _supportedDeviceId;
-        std::list<OpenCLDevice *> _device; // a list of initialized devices
+
+        // A list of initialized devices.
+        std::list<OpenCLDevice *> _device;
     };
 }

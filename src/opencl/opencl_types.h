@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,23 +35,23 @@ namespace multiCL
     {
     public:
         Type()
-            : _data( NULL )
         {
             _allocate();
         }
 
         Type( const TData & in )
-            : _data( NULL )
         {
             _allocate();
             _copyFrom( in );
         }
 
         Type( Type && in )
-            : _data( NULL )
         {
             _swap( in );
         }
+
+        // Copy constructor is disabled to avoid a situation of assigning this type as a kernel argument.
+        Type( const Type & ) = delete;
 
         ~Type()
         {
@@ -89,14 +89,14 @@ namespace multiCL
             return _data;
         }
 
-        // Use this function if you want to retrieve a value from device to host
+        // Use this function if you want to retrieve a value from device to host.
         TData get() const
         {
             return _copyTo();
         }
 
     private:
-        cl_mem _data;
+        cl_mem _data{ NULL };
 
         void _free()
         {
@@ -125,13 +125,13 @@ namespace multiCL
 
         void _copyFrom( const TData & in )
         {
-            if ( _data != NULL ) {
-                cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &in, 0, NULL, NULL );
-                if ( error != CL_SUCCESS )
-                    throw penguinVException( "Cannot copy a memory into OpenCL device" );
-            }
-            else {
+            if ( _data == NULL ) {
                 throw penguinVException( "Memory in OpenCL device is not allocated" );
+            }
+
+            cl_int error = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &in, 0, NULL, NULL );
+            if ( error != CL_SUCCESS ) {
+                throw penguinVException( "Cannot copy a memory into OpenCL device" );
             }
         }
 
@@ -139,53 +139,44 @@ namespace multiCL
         {
             TData out;
 
-            if ( _data != NULL ) {
-                cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &out, 0, NULL, NULL );
-                if ( error != CL_SUCCESS )
-                    throw penguinVException( "Cannot copy a memory from OpenCL device" );
-            }
-            else {
+            if ( _data == NULL ) {
                 throw penguinVException( "Memory in OpenCL device is not allocated" );
+            }
+
+            cl_int error = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, sizeof( TData ), &out, 0, NULL, NULL );
+            if ( error != CL_SUCCESS ) {
+                throw penguinVException( "Cannot copy a memory from OpenCL device" );
             }
 
             return out;
         }
-
-        Type( const Type & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
-        {}
     };
 
-    // A class which contains an array of values of specific type
+    // A class which contains an array of values of specific type.
     template <typename TData>
     class Array
     {
     public:
-        Array()
-            : _data( NULL )
-            , _size( 0 )
-        {}
+        Array() = default;
 
         Array( const std::vector<TData> & data )
-            : _data( NULL )
-            , _size( 0 )
         {
             _allocate( data.size() );
             _copyFrom( data );
         }
 
         Array( size_t size )
-            : _data( NULL )
-            , _size( 0 )
         {
             _allocate( size );
         }
 
         Array( Array && in )
-            : _data( NULL )
-            , _size( 0 )
         {
             _swap( in );
         }
+
+        // Copy constructor is disabled to avoid a situation of assigning this type as a kernel argument.
+        Array( const Array & ) = delete;
 
         ~Array()
         {
@@ -224,7 +215,7 @@ namespace multiCL
             return _data;
         }
 
-        // Use this function if you want to retrieve a value from device to host
+        // Use this function if you want to retrieve a value from device to host.
         std::vector<TData> get() const
         {
             return _copyTo();
@@ -246,8 +237,8 @@ namespace multiCL
         }
 
     private:
-        cl_mem _data;
-        size_t _size;
+        cl_mem _data{ NULL };
+        size_t _size{ 0 };
 
         void _free()
         {
@@ -285,8 +276,9 @@ namespace multiCL
             if ( _data != NULL && _size == data.size() ) {
                 cl_int error
                     = clEnqueueWriteBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), data.data(), 0, NULL, NULL );
-                if ( error != CL_SUCCESS )
+                if ( error != CL_SUCCESS ) {
                     throw penguinVException( "Cannot copy a memory into OpenCL device" );
+                }
             }
         }
 
@@ -297,14 +289,12 @@ namespace multiCL
             if ( _data != NULL ) {
                 cl_int error
                     = clEnqueueReadBuffer( OpenCLDeviceManager::instance().device().queue()(), _data, CL_TRUE, 0, _size * sizeof( TData ), out.data(), 0, NULL, NULL );
-                if ( error != CL_SUCCESS )
+                if ( error != CL_SUCCESS ) {
                     throw penguinVException( "Cannot copy a memory from OpenCL device" );
+                }
             }
 
             return out;
         }
-
-        Array( const Array & ) // copy constructor is disabled to avoid a situation of assigning this type as a kernel argument
-        {}
     };
 }
