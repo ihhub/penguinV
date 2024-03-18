@@ -1,6 +1,6 @@
 /***************************************************************************
  *   penguinV: https://github.com/ihhub/penguinV                           *
- *   Copyright (C) 2017 - 2022                                             *
+ *   Copyright (C) 2017 - 2024                                             *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,14 +27,22 @@
 
 namespace
 {
+    bool isGPUSupportEnabled = true;
+    bool isCPUSupportEnabled = false;
+
     struct dim3
     {
-        size_t x, y, z;
-        dim3( size_t vx = 1, size_t vy = 1, size_t vz = 1 )
+        size_t x{ 1 };
+        size_t y{ 1 };
+        size_t z{ 1 };
+
+        dim3( const size_t vx = 1, const size_t vy = 1, const size_t vz = 1 )
             : x( vx )
             , y( vy )
             , z( vz )
-        {}
+        {
+            // Do nothing.
+        }
     };
 
     // Helper functions for internal calculations
@@ -74,40 +82,43 @@ namespace
 
         multiCL::openCLCheck( clWaitForEvents( 1, &waitingEvent ) );
     }
-
-    bool isGPUSupportEnabled = true;
-    bool isCPUSupportEnabled = false;
 }
 
 namespace multiCL
 {
     bool isOpenCLSupported()
     {
-        if ( !isGPUSupportEnabled && !isCPUSupportEnabled )
+        if ( !isGPUSupportEnabled && !isCPUSupportEnabled ) {
             return false;
+        }
 
         cl_uint platformCount = 0u;
 
-        if ( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) )
+        if ( !openCLSafeCheck( clGetPlatformIDs( 0, NULL, &platformCount ) ) ) {
             return false;
+        }
 
-        if ( platformCount == 0u )
+        if ( platformCount == 0u ) {
             return false;
+        }
 
         std::vector<cl_platform_id> platform( platformCount );
-        if ( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) )
+        if ( !openCLSafeCheck( clGetPlatformIDs( platformCount, platform.data(), NULL ) ) ) {
             return false;
+        }
 
         const cl_device_type deviceType = ( isGPUSupportEnabled ? CL_DEVICE_TYPE_GPU : 0u ) + ( isCPUSupportEnabled ? CL_DEVICE_TYPE_CPU : 0u );
 
-        for ( std::vector<cl_platform_id>::const_iterator singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
+        for ( auto singlePlatform = platform.begin(); singlePlatform != platform.end(); ++singlePlatform ) {
             cl_uint deviceCount = 0u;
 
-            if ( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, deviceType, 0, NULL, &deviceCount ) ) )
+            if ( !openCLSafeCheck( clGetDeviceIDs( *singlePlatform, deviceType, 0, NULL, &deviceCount ) ) ) {
                 continue;
+            }
 
-            if ( deviceCount > 0u )
+            if ( deviceCount > 0u ) {
                 return true;
+            }
         }
 
         return false;
@@ -127,8 +138,9 @@ namespace multiCL
 
     void openCLCheck( cl_int error )
     {
-        if ( error != CL_SUCCESS )
+        if ( error != CL_SUCCESS ) {
             throw penguinVException( std::string( "Failed to run OpenCL function with error " ) + std::to_string( error ) );
+        }
     }
 
     bool openCLSafeCheck( cl_int error )
@@ -146,14 +158,16 @@ namespace multiCL
         std::fstream file;
         file.open( fileName, std::fstream::in | std::fstream::binary );
 
-        if ( !file )
+        if ( !file ) {
             return OpenCLProgram( context, "" );
+        }
 
         file.seekg( 0, file.end );
         const std::streamoff fileLength = file.tellg();
 
-        if ( fileLength == std::char_traits<char>::pos_type( -1 ) )
+        if ( fileLength == std::char_traits<char>::pos_type( -1 ) ) {
             return OpenCLProgram( context, "" );
+        }
 
         file.seekg( 0, file.beg );
 
@@ -169,8 +183,13 @@ namespace multiCL
     KernelParameters::KernelParameters()
         : dimensionCount( 1 )
     {
-        dimensionSize[0] = dimensionSize[1] = dimensionSize[2] = 1u;
-        threadsPerBlock[0] = threadsPerBlock[1] = threadsPerBlock[2] = 1u;
+        dimensionSize[0] = 1u;
+        dimensionSize[1] = 1u;
+        dimensionSize[2] = 1u;
+
+        threadsPerBlock[0] = 1u;
+        threadsPerBlock[1] = 1u;
+        threadsPerBlock[2] = 1u;
     }
 
     KernelParameters::KernelParameters( size_t sizeX, size_t threadsPerX )
@@ -179,9 +198,12 @@ namespace multiCL
         assert( ( sizeX >= threadsPerX ) && ( threadsPerX > 0 ) && ( ( sizeX % threadsPerX ) == 0 ) );
 
         dimensionSize[0] = sizeX;
-        dimensionSize[1] = dimensionSize[2] = 1u;
+        dimensionSize[1] = 1u;
+        dimensionSize[2] = 1u;
+
         threadsPerBlock[0] = threadsPerX;
-        threadsPerBlock[1] = threadsPerBlock[2] = 1u;
+        threadsPerBlock[1] = 1u;
+        threadsPerBlock[2] = 1u;
     }
 
     KernelParameters::KernelParameters( size_t sizeX, size_t sizeY, size_t threadsPerX, size_t threadsPerY )
@@ -193,6 +215,7 @@ namespace multiCL
         dimensionSize[0] = sizeX;
         dimensionSize[1] = sizeY;
         dimensionSize[2] = 1u;
+
         threadsPerBlock[0] = threadsPerX;
         threadsPerBlock[1] = threadsPerY;
         threadsPerBlock[2] = 1u;
@@ -207,6 +230,7 @@ namespace multiCL
         dimensionSize[0] = sizeX;
         dimensionSize[1] = sizeY;
         dimensionSize[2] = sizeZ;
+
         threadsPerBlock[0] = threadsPerX;
         threadsPerBlock[1] = threadsPerY;
         threadsPerBlock[2] = threadsPerZ;
